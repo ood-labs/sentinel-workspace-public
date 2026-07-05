@@ -1,0 +1,67 @@
+name: "PL Grid"
+version: "1.0"
+mode: generator
+resolution: [256, 64]
+working_format: RGBA8
+
+buffers:
+  - name: nodes
+    structured: true
+    element_size: 48
+    element_count: 256
+
+parameters:
+  - name: mode
+    display: "Mode"
+    type: enum
+    options: [Grid, Ring, Spiral, Scatter, Line, Border, Radial]
+    default: 0
+    flags: button_grid
+    group: "Structure"
+  - { name: active_count, display: "Count", type: int, min: 0, max: 256, default: 64, group: "Structure" }
+  - { name: grid_cols, display: "Cols", type: int, min: 1, max: 32, default: 8, group: "Grid" }
+  - { name: grid_rows, display: "Rows", type: int, min: 1, max: 32, default: 6, group: "Grid" }
+  - { name: rings, display: "Rings / Spokes", type: int, min: 1, max: 16, default: 4, group: "Ring/Radial" }
+  - { name: per_ring, display: "Per Ring", type: int, min: 1, max: 64, default: 16, group: "Ring/Radial" }
+  - { name: center, display: "Center", type: point2D, min: [-2.0, -1.5], max: [2.0, 1.5], default: [0.0, 0.0], group: "Place" }
+  - { name: extent, display: "Extent", type: point2D, min: [0.0, 0.0], max: [2.0, 1.5], default: [0.8, 0.5], group: "Place" }
+  - { name: line_start, display: "Line Start", type: point2D, min: [-2.0, -1.5], max: [2.0, 1.5], default: [-1.0, 0.0], group: "Line" }
+  - { name: line_end, display: "Line End", type: point2D, min: [-2.0, -1.5], max: [2.0, 1.5], default: [1.0, 0.0], group: "Line" }
+  - { name: radius, display: "Radius", type: float, min: 0.0, max: 1.5, default: 0.3, group: "Ring/Radial" }
+  - { name: radius_step, display: "Radius Step", type: float, min: 0.0, max: 0.4, default: 0.05, group: "Ring/Radial" }
+  - { name: angle_offset, display: "Angle Offset", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Ring/Radial" }
+  - { name: jitter, display: "Jitter", type: float, min: 0.0, max: 0.3, default: 0.0, group: "Structure" }
+  - { name: depth_base, display: "Depth Base", type: float, min: 0.0, max: 1.0, default: 0.6, group: "Depth" }
+  - { name: depth_var, display: "Depth Var", type: float, min: 0.0, max: 0.5, default: 0.1, group: "Depth" }
+  - { name: weight_falloff, display: "Weight Falloff", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Style" }
+  - { name: base_kind, display: "Base Kind", type: int, min: 0, max: 31, default: 0, group: "Style" }
+  - { name: kind_span, display: "Kind Span", type: int, min: 1, max: 32, default: 1, group: "Style" }
+  - { name: seed, display: "Seed", type: int, min: 0, max: 63, default: 3, group: "Structure" }
+
+passes:
+  - name: compute
+    shader: grid.hlsl
+    target: cs_5_0
+    dispatch: [4, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:nodes"
+  - { name: preview, shader: preview.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:nodes" } ] }
+
+outputs:
+  - { name: "Preview", pass: preview }
+
+data_outputs:
+  - name: "Nodes"
+    buffer: "nodes"
+    schema:
+      - { name: pos, type: float2 }
+      - { name: dir, type: float2 }
+      - { name: depth, type: float }
+      - { name: u, type: float }
+      - { name: v, type: float }
+      - { name: weight, type: float }
+      - { name: group, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: active, type: float }

@@ -66,6 +66,80 @@ Hard, sparse, individually-addressable geometry as bezier-capable segment record
   strings via the scientifica font in `modules/_shared/fonts/`; use `#define OS_NO_RECORD_BUFFER`
   with the os_terminal glyph blit). · *compose-with:* any point producer; `_shared` font includes.
 
+## Instancing, atlases & depth
+
+Data-driven widget instancing: **generator compute nodes emit placement records**
+(`StructuredBuffer<Widget>`) that a **renderer stamps from a primitive atlas**,
+projected through a drifting camera so depth becomes real parallax + fog. The way
+to get *many* addressable primitives composited in 3D without a monolith. Seeded
+from the `fui_dashboard` v2 build.
+
+- **Primitive atlas bake** — *procedural → texture (grid atlas)* · `prim_atlas` ·
+  bakes N primitives (rings/ticks/reticles/boxes/brackets/chevron/triangle/bars/
+  hatch/dot-grid/text-block/mini-dial/markers…) into an 8×N grid, one primitive
+  per cell in local `q∈[-1,1]` space, packing `R=body, G=core` tiers. The stamp
+  vocabulary an instance renderer draws from. · *compose-with:* `widget_render`.
+- **Widget placement generator** — *compute → StructuredBuffer\<Widget\>* ·
+  `layout_gen` (structural: reticle rows, panel stacks, hero ring clusters, tick
+  fans, corner tabs, bg depth rings), `detail_gen` (dense: scattered readouts,
+  marker clusters, connector-dot chains, far dust). One thread = one record;
+  clusters keyed by index range; `seed`/`density` restructure the whole HUD. The
+  `Widget` contract = `pos.xy, depth, rot, scale.xy, kind, value, p01, p23, tier,
+  active, group, seed` (64B). Multiple generators feed one renderer on separate
+  data slots. · *compose-with:* `prim_atlas`, `widget_render`, `signal`.
+- **Atlas-instance depth renderer** — *StructuredBuffer\<Widget\> ×N + atlas →
+  texture* · `widget_render` · per-pixel gather over every record: projects the
+  widget's `pos+depth` through a drifting camera (`cam_amp`/`cam_speed`/`parallax`
+  → real 3D parallax), scales/fogs by depth, transforms the pixel into instance
+  local space, stamps the atlas cell, additively accumulates with a cheap bbox
+  reject. Order-independent glow; ~384 records/pixel at 60fps. Two data inputs
+  (layout + detail) on distinct pass-binding slots so the atlas `_Tex0` doesn't
+  collide. · *compose-with:* `prim_atlas`, `layout_gen`/`detail_gen`.
+
+## Layout kit (composable placement pipeline)
+
+A family of buffer nodes that all speak ONE record type — `PNode` (48 B: `pos.xy,
+dir.xy, depth, u, v, weight, group, kind, seed, active`) — so any node connects to
+any other. Pull *placement* out of renderers: build a **grid → splines → points**
+chain, then map points to whatever you draw. Stamp the same chain down many times
+in different modes for different regions. Seeded from `fui_dashboard` v3.
+
+- **Parametric structure source** — *compute → StructuredBuffer\<PNode\>* · `pl_grid` ·
+  7 modes (Grid / Ring / Spiral / Scatter / Line / Border / Radial) with count /
+  rows·cols / rings·per_ring / center / extent / radius / jitter / depth. Emits
+  grouped, u-ordered anchors. The node you duplicate everywhere. · *compose-with:*
+  every node below.
+- **Spline shaper** — *PNode → PNode* · `pl_path` · groups input by `group`, fits a
+  Catmull-Rom curve per group (control points gathered in buffer order = u order),
+  resamples to `points_per_path` points with `dir` = tangent. Modes Smooth/Linear/
+  Loop. "Draw splines within the grid." · *compose-with:* `pl_grid` (source),
+  `spline_render` / `pl_style` (consumers).
+- **Placement distributor** — *PNode → PNode* · `pl_spawn` · Jitter / Decimate /
+  Branch(perp offset) / Passthrough, plus weight/depth jitter. Organic density on
+  top of a structured source. · *compose-with:* any PNode stage.
+- **Previewable cloner renderer** — *PNode + atlas → texture* · `pl_render` · the
+  combined style+stamp node: maps each point to a primitive (kind FromNode/Fixed/
+  Cycle/Hash/ByGroup over an explicit 4-kind set; scale base×aspect×weight|depth|hash;
+  tier Fixed/ByWeight/GroupParity/Hash; rot FromDir/Fixed/Hash; density gate) AND
+  renders it to a full texture with atlas stamp + depth-camera parallax — so **each
+  chain owns a renderer and its node preview shows exactly what it draws** (the key
+  advantage over the merged `widget_render`: per-chain visibility for editing). One
+  `pl_render` per chain; a compositor sums the layer textures. · *compose-with:*
+  `pl_grid`/`pl_path`/`pl_spawn` (source), `prim_atlas`, additive compositor.
+- **PNode → Widget adapter** — *PNode → StructuredBuffer\<Widget\>* · `pl_style` ·
+  the buffer-only variant (maps points → Widget records) for when many chains merge
+  into ONE `widget_render` (see Instancing). Prefer `pl_render` when you want
+  per-chain previews; `pl_style`+`widget_render` when you want a single merged pass.
+- **Spline stroke renderer** — *PNode → texture* · `spline_render` · connects
+  consecutive same-`group` PNodes with `sdSegment` (+ dashes, end-node dots). The
+  data-driven connector/leader renderer; the alt consumer of a `pl_path` output. ·
+  *compose-with:* `pl_grid`→`pl_path`.
+
+Canonical composition (each stamped many times with different params): `pl_grid[mode]
+→ [pl_spawn] → pl_style → widget_render` for stamped primitives, and `pl_grid →
+pl_path → spline_render` for drawn curves. `widget_render` takes 6 Widget inputs so
+several style chains merge into one render.
+
 ## Control & reactivity
 
 - **Control-output signal bus** — *compute → control outputs* · `signal` · one tiny module runs N
@@ -74,6 +148,41 @@ Hard, sparse, individually-addressable geometry as bezier-capable segment record
   from the animated nodes, so swapping the source (LFO → audio/OSC) makes a scene reactive with no
   rewiring. The cleanest reuse pattern in the library. · *compose-with:* any parameter, via
   `sentinel_expression`.
+
+## FUI / HUD chrome
+
+Procedural sci-fi interface widgets — flat 2D screen-space graphics, each a
+render node emitting `float4(col, luminance)` for additive compositing. No data
+ports; layout lives in typed params / in-shader placement tables. Compose as a
+layer stack through a compositor. Seeded from the `fui_dashboard` build.
+
+- **Multi-instance dial system** — *procedural polar → texture* · `hud_gauge` ·
+  a table of gauge instances drawn in one pass: concentric solid/dashed/tick
+  rings, a value arc (0..1), a signature thick bright arc segment, radial spokes,
+  inner crosshair, plus a wedge-clipped radiating **tick-fan** instance. Two
+  brightness tiers (body/core) for bloom. Value/sweep drivable via `ref()`. ·
+  *compose-with:* `signal` (animate spin/value), `hud_comp`, `post`.
+- **Orbital rings + wireframe globe** — *procedural ellipse strokes → texture* ·
+  `hud_orbits` · tilted crossing ellipses (gyroscope/atom look) with a travelling
+  node, and a lat/long wireframe sphere (foreshortened latitude ellipses +
+  precessing meridians). `ellipseStroke(q,a,b,rot,w)` helper. · *compose-with:*
+  `hud_comp`.
+- **Data-panel chrome** — *procedural rect/segment → texture* · `hud_panels` ·
+  composable helpers: framed panels with header bars + hashed fake "text" rows,
+  warning triangle, X / grid icons, vertical bar-chart block, edge tab boxes.
+  Static accumulators for body/core/dim tiers. · *compose-with:* `hud_labels`
+  (real text over the tab boxes), `hud_comp`.
+- **Dashed leader/connector lines** — *procedural segment SDF → texture* ·
+  `hud_leaders` · `sdSeg` + dash-phase strokes over a hand-authored route table
+  with elbow routing and end-node dots. The FUI cousin of `link_render` for the
+  few specific connectors a HUD needs (no buffer pipeline). · *compose-with:*
+  any widget layer, `hud_comp`.
+- **Fixed-string glyph labels** — *procedural glyph blit → texture* ·
+  `hud_labels` · self-contained variant of `label_render`: a placement table
+  (id, UV, scale, accent tier) blits scientifica strings via `_shared` font with
+  `#define OS_NO_RECORD_BUFFER` — no data buffer. For hand-placed HUD tokens
+  (percent readouts, corner tabs, technical labels). · *compose-with:*
+  `_shared` fonts, `hud_panels`, `hud_comp`.
 
 ## Compositing & finish
 

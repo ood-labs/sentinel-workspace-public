@@ -1,6 +1,6 @@
 ---
 name: modular-scene-authoring
-description: Author Sentinel scenes as a modular Module graph — separable generator, data-lane, renderer, compositor, and post nodes wired by typed data ports — instead of one monolithic shader. Use when recreating a reference image or building a complex scene. Covers the mandatory design-first workflow (decide 2D-vs-3D, composite-vs-single-scene, and the transport per element before building), composing structured-buffer / texture-field / atlas / control-output lanes, preserving route/group ids, the compile-check→force-reload iteration loop, and harvesting reusable techniques into the library afterward.
+description: Author Sentinel scenes as a modular Module graph — separable generator, data-lane, renderer, compositor, and post nodes wired by typed data ports — instead of one monolithic shader. Use when recreating a reference image or building a complex scene. Covers the mandatory design-first workflow (decide 2D-vs-3D, composite-vs-single-scene, and the transport per element before building), composing structured-buffer / texture-field / atlas / control-output lanes, and — for dense instanced HUD/FUI scenes — the reusable data-driven cloner kit (pl_grid→pl_path→pl_spawn→pl_render + prim_atlas) stamped many times, with per-chain previewable rendering, shared control sources, signal-bus motion, and point2D pads. Also preserving route/group ids, the compile-check→force-reload iteration loop, and harvesting reusable techniques into the library afterward.
 distribution: true
 ---
 
@@ -48,6 +48,7 @@ Pick the native technique for each element and mix freely in one graph. Choosing
 | Continuous organic field (terrain, contours, flow, fog, height) | domain-warped FBM / scalar field; derive isolines, gradients, warps **from** it | **float texture lane** (R32F / RGBA16F) via `set_input` |
 | Hard, sparse, individually-addressable geometry (nodes, connectors, routes, arcs) | seeded/derived point & segment records; bezier-capable | **StructuredBuffer records** via `add_link` (zero-copy SRV data ports) |
 | Repeated stamps / glyphs / text labels | atlas sample + per-instance placement | **atlas texture + placement/instance buffer** |
+| **Dense field of many addressable widgets** (HUD/FUI dashboards, panels, dials, markers, reticles) | the **reusable cloner kit** — structure → [splines] → distribute → map+stamp, one renderer per cloner | **PNode placement buffers + primitive atlas + per-chain render layers** (see *the Layout Kit* below) |
 | 3D volumetric form with shared lighting/occlusion | raymarched SDF scene, one material pass | **single scene node** (not layers) |
 | Cross-module animation / reactivity | LFOs / trackers publishing scalars | **control outputs + `ref()` expressions** (a signal bus) |
 | Cheap procedural chrome (rings, ticks, dust, stars) | procedural polar/hash | **procedural render node**, no data ports |
@@ -111,6 +112,40 @@ A single scene usually combines several of these. Pick per element; name each ch
 
 ---
 
+## Dense & instanced scenes: the Layout Kit (data-driven cloners)
+
+**This is the default architecture for a dense field of many small addressable widgets** — a FUI/HUD dashboard, a control panel, a schematic, a reticle field. It is what separates a shallow first attempt (a handful of hand-placed elements in one shader) from a scene that reads like the reference. Two anti-patterns to avoid: **do not hand-place widgets in shader code** (opaque, uneditable, doesn't scale past ~15 things), and **do not render them all in one merged pass** (correct pixels, but every source node previews as a blank placeholder and you edit blind). Instead build from a **reusable placement kit you stamp down many times**, separating *where things go* from *what gets drawn*.
+
+**The pipeline — one universal record, `PNode`, flows through every stage** (so any node chains to any other):
+
+```
+pl_grid ──► pl_path ──► pl_spawn ──► pl_render          (map each point → a primitive-atlas cell, stamp it)
+(structure) (splines)  (distribute)      └► spline_render  (draw the paths themselves as strokes)
+```
+
+- **`pl_grid`** — the structure source. Modes: **Grid / Ring / Spiral / Scatter / Line / Border / Radial**, with count / rows·cols / rings / center / extent / radius / jitter / depth. Emits grouped, `u`-ordered anchor points. **This is the node you duplicate** — one instance per region (left panels = Grid, hero halo = Ring, marker field = Scatter, top row = Line, corner tabs = Border, connectors = Line/Grid → spline).
+- **`pl_path`** — fits a Catmull-Rom curve through each group's anchors and resamples to points-along-the-curve with tangents. This is literally "draw splines within the grid, then spawn points on them."
+- **`pl_spawn`** — jitter / decimate / branch the points for organic density on top of a structured source.
+- **`pl_render`** — maps each `PNode` → a primitive (kind / scale / tier / rotation modes over an explicit kind-set) **and renders it to a full texture** with an atlas stamp + drifting-camera depth parallax. This node is the payoff — it is `pl_style`'s mapping and the renderer fused so the chain is previewable (rule 2 below).
+- **`spline_render`** — draws the paths as glowing dashed strokes (data-driven connectors / leaders; the cousin of a segment-stroke renderer).
+- **`prim_atlas`** — bakes N HUD primitives (rings, ticks, reticles, boxes, brackets, warning triangle, bars, hatch, glyph-blocks, mini-dials, markers…) into one grid texture **once**; every renderer stamps cells from it. Adding vocabulary = add an atlas cell, reference its index in a kind-set.
+
+**The three rules that make this work:**
+
+1. **Compose the same kit many times, differentiated only by params.** A dense scene is ~6 `pl_grid → [pl_spawn] → pl_render` chains plus a `pl_grid → pl_path → spline_render` connector chain. One kit, many node instances, no new shaders. Changing one `pl_grid` mode re-forms a whole region. This is the instanced-scene form of *generate once, derive many*: one placement kit, many configured cloners.
+2. **Render per-chain — never merge into one monolith.** Each cloner gets its **own** `pl_render` so **its node preview shows exactly what it draws**; you select it and tune it live (add a boundary, change the kind-set, move the grid) and watch that layer. A single renderer that consumes every placement buffer at once is correct but leaves every upstream node a blank solid-colour placeholder — you're editing blind. A wide **additive compositor** sums the per-chain layer textures. (A merged `widget_render` + buffer-only `pl_style` exist for the rare "one big pass" case; default to `pl_render`.)
+3. **3D via depth, not stacked layers.** Give each `PNode` a depth; `pl_render` projects it through a slowly drifting camera → real parallax + depth fog. Far widgets recede into haze, near ones read sharp — all from one flat kit, no separate 3D scene.
+
+**Cohesion patterns — make the scene feel like one instrument, not scattered parts:**
+
+- **Shared control source.** When two nodes must move together (a bespoke hero dial + its cloner-halo; a `25%` label + the dial it annotates), never duplicate the position. Publish it once from a tiny control node — a **`focal` node** with a `point2D` pad → `x`/`y` control outputs — and drive both consumers with `ref()` expressions, converting coordinate spaces inside the expression where they differ (e.g. world→UV: `0.5 + ref("focal/control_outputs/x") * (1/(2*aspect))`). One pad now moves the whole focal point as a unit.
+- **Signal bus for motion.** A **`signal` node** runs a few LFOs (pulse / sweep / beat / slow) as control outputs; drive *many* params from it — a cloner's `angle_offset` (rotation), a layer's intensity (breathing / beat pulse), a value arc, a label glow. Motion authority lives in one node, so swapping `signal` for an audio/OSC source makes the whole scene reactive with zero rewiring. Apply it liberally — a still HUD reads as dead.
+- **Boundary frame.** A cloner renderer can compute the bounding box of *its own* point cloud and draw a padded frame around it, so the gridded objects sit inside a titled module. Make it a per-chain toggle, generic to any cloner.
+
+The exemplar modules live under the **Layout kit**, **Instancing / atlases / depth**, and **FUI / HUD chrome** sections of `knowledge/technique-catalogue.md`. Reach for this kit whenever the element count is high and the widgets are individually addressable; reach for a single procedural chrome node only for a *few* bespoke focal pieces (the hero dial, the globe) that deserve hand-authored detail.
+
+---
+
 ## Routing graphics rules
 
 For graphic-design references with obvious angle systems:
@@ -148,6 +183,7 @@ If several downstream nodes need route-level behavior, add a small route-group m
 Use typed controls, and make every one visibly matter:
 
 - `enum` for presets and modes, `int` for true counts, `float` for precise fractional controls, `point2D` for pan/offset, `color` for colors. (See `module-authoring` for the fixed int/enum/bool cbuffer path.)
+- **Position with `point2D` XY pads, never separate `_x`/`_y` float sliders.** A pad reads and edits as one point. A `point2D` named `center` still exposes `center_x`/`center_y` state paths and appears in HLSL as `float2 center`, so **converting an existing float pair to a pad preserves its value and any expression** (the reload reports zero params added/removed). For a line/segment placement, expose an explicit **start and end `point2D`** (two draggable handles) rather than a center-plus-extent that distributes outward from the middle.
 - A seed, preset, or mode must change whole structures or families, not add tiny jitter. If a control barely changes the image, redesign it.
 - Avoid hidden randomness where the user needs direct control. For a "one large dash" look, expose `dash_count` (precise float range) and `dash_offset` (explicit 0..1 phase) instead of silently hashing ids into a phase.
 - Keep experimental controls default-off when they can damage the design language. Do not apply organic sine displacement to a hard graphic-design reference.
@@ -205,7 +241,7 @@ This is the one-way valve that keeps `modules/` a navigable toolkit instead of a
 
 ## Cross-links
 
-- `knowledge/technique-catalogue.md`: the map of the technique library — consult it in Phase 0, extend it at harvest.
+- `knowledge/technique-catalogue.md`: the map of the technique library — consult it in Phase 0, extend it at harvest. For dense instanced scenes, read its **Layout kit**, **Instancing / atlases / depth**, and **FUI / HUD chrome** sections first.
 - `module-authoring` skill: manifest syntax, compiler name mappings, structured buffer I/O, hot-reload, control outputs.
 - `docs/knowledge/module-pipeline.md`: data ports, `resolution_source`, bundling, write-order gotcha.
 - `laser-content-authoring` skill: multi-output Module composition and HStack routing for laser/vector output.

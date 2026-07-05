@@ -1,0 +1,128 @@
+name: "Widget Render"
+version: "1.0"
+mode: generator
+resolution: [1920, 1080]
+working_format: RGBA16F
+output_format: RGBA16F
+
+inputs:
+  - { name: "Atlas", slot: 0, required: true }
+
+data_inputs:
+  - name: "Layout"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: depth, type: float }
+      - { name: rot, type: float }
+      - { name: scale, type: float2 }
+      - { name: kind, type: float }
+      - { name: value, type: float }
+      - { name: p01, type: float2 }
+      - { name: p23, type: float2 }
+      - { name: tier, type: float }
+      - { name: active, type: float }
+      - { name: group, type: float }
+      - { name: seed, type: float }
+  - name: "Detail"
+    slot: 1
+    schema:
+      - { name: pos, type: float2 }
+      - { name: depth, type: float }
+      - { name: rot, type: float }
+      - { name: scale, type: float2 }
+      - { name: kind, type: float }
+      - { name: value, type: float }
+      - { name: p01, type: float2 }
+      - { name: p23, type: float2 }
+      - { name: tier, type: float }
+      - { name: active, type: float }
+      - { name: group, type: float }
+      - { name: seed, type: float }
+  - name: "Chain C"
+    slot: 2
+    schema:
+      - { name: pos, type: float2 }
+      - { name: depth, type: float }
+      - { name: rot, type: float }
+      - { name: scale, type: float2 }
+      - { name: kind, type: float }
+      - { name: value, type: float }
+      - { name: p01, type: float2 }
+      - { name: p23, type: float2 }
+      - { name: tier, type: float }
+      - { name: active, type: float }
+      - { name: group, type: float }
+      - { name: seed, type: float }
+  - name: "Chain D"
+    slot: 3
+    schema:
+      - { name: pos, type: float2 }
+      - { name: depth, type: float }
+      - { name: rot, type: float }
+      - { name: scale, type: float2 }
+      - { name: kind, type: float }
+      - { name: value, type: float }
+      - { name: p01, type: float2 }
+      - { name: p23, type: float2 }
+      - { name: tier, type: float }
+      - { name: active, type: float }
+      - { name: group, type: float }
+      - { name: seed, type: float }
+  - name: "Chain E"
+    slot: 4
+    schema:
+      - { name: pos, type: float2 }
+      - { name: depth, type: float }
+      - { name: rot, type: float }
+      - { name: scale, type: float2 }
+      - { name: kind, type: float }
+      - { name: value, type: float }
+      - { name: p01, type: float2 }
+      - { name: p23, type: float2 }
+      - { name: tier, type: float }
+      - { name: active, type: float }
+      - { name: group, type: float }
+      - { name: seed, type: float }
+  - name: "Chain F"
+    slot: 5
+    schema:
+      - { name: pos, type: float2 }
+      - { name: depth, type: float }
+      - { name: rot, type: float }
+      - { name: scale, type: float2 }
+      - { name: kind, type: float }
+      - { name: value, type: float }
+      - { name: p01, type: float2 }
+      - { name: p23, type: float2 }
+      - { name: tier, type: float }
+      - { name: active, type: float }
+      - { name: group, type: float }
+      - { name: seed, type: float }
+
+parameters:
+  - { name: intensity, display: "Intensity", type: float, min: 0.0, max: 3.0, default: 1.0, group: "Output" }
+  - { name: body_gain, display: "Body Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Output" }
+  - { name: body_color, display: "Body Color", type: color, default: [0.32, 0.80, 0.62], group: "Color" }
+  - { name: core_color, display: "Core Color", type: color, default: [0.78, 1.0, 0.90], group: "Color" }
+  - { name: cam_amp, display: "Camera Drift", type: float, min: 0.0, max: 0.3, default: 0.06, group: "Depth 3D" }
+  - { name: cam_speed, display: "Camera Speed", type: float, min: 0.0, max: 2.0, default: 0.25, group: "Depth 3D" }
+  - { name: parallax, display: "Parallax", type: float, min: 0.0, max: 2.0, default: 0.7, group: "Depth 3D" }
+  - { name: depth_scale, display: "Depth Scale", type: float, min: 0.0, max: 0.6, default: 0.18, group: "Depth 3D" }
+  - { name: depth_fog, display: "Depth Fog", type: float, min: 0.0, max: 1.0, default: 0.28, group: "Depth 3D" }
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+      - { slot: 3, source: "data:2" }
+      - { slot: 4, source: "data:3" }
+      - { slot: 5, source: "data:4" }
+      - { slot: 6, source: "data:5" }
+
+outputs:
+  - { name: "Widgets", pass: render }
