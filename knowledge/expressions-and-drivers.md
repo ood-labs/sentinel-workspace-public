@@ -1,0 +1,71 @@
+# Expressions And Drivers
+
+Expressions make Sentinel parameters update every frame. Use them when one node should drive another node, such as a hand pinch controlling a shader amount.
+
+## Use sentinel_expression
+
+Use the typed MCP expression tool with:
+
+- `path`: full StateTree parameter path.
+- `expression`: formula text.
+
+Example:
+
+```json
+{
+  "action": "set",
+  "path": "/sentinel/pipelines/ripple_module/parameters/wave_amount",
+  "expression": "0.2 + ref(\"hand_track/control_outputs/pinch_primary\") * 2.0"
+}
+```
+
+Regular StateTree `set` is not enough for drivers. It writes a value, but it does not compile or register an expression.
+
+## Expression Basics
+
+Expressions can use:
+
+- `time`: seconds since app start.
+- `dt`: frame delta time.
+- `frame`: frame counter.
+- `self`: the current parameter value.
+- math functions such as `sin`, `cos`, `abs`, `clamp`, `min`, `max`, `sqrt`, `floor`, and `ceil`.
+- `ref("...")` to read another parameter or control output.
+
+Common forms:
+
+```text
+sin(time * 2.0) * 0.5 + 0.5
+clamp(ref("features_0/control_outputs/largest_size") * 3.0, 0.0, 1.0)
+0.1 + ref("mediapipe_0/control_outputs/pinch_primary") * 4.0
+```
+
+## Control Output Refs
+
+Control outputs live under:
+
+```text
+/sentinel/pipelines/<pipeline_id>/control_outputs/<name>
+```
+
+In expression strings, use the compact `ref()` form:
+
+```text
+ref("mediapipe_0/control_outputs/pinch_primary")
+ref("features_0/control_outputs/blob_count")
+ref("module_lfo/control_outputs/speed")
+```
+
+## Rename Safety
+
+Use real rename operations, not delete-and-recreate, when changing node names. Sentinel rewrites stored expressions during true renames so references keep working.
+
+## Inspecting Drivers
+
+Useful MCP actions:
+
+- `sentinel_expression action=get path=<state path>`
+- `sentinel_expression action=clear path=<state path>`
+- `sentinel_expression action=list`
+
+Use `sentinel_pipeline info` to find parameter names and current control output summaries.

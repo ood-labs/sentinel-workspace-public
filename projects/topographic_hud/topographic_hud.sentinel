@@ -1,0 +1,1151 @@
+{
+  "graph": {
+    "canvasZoom": 1.0,
+    "links": [
+      {
+        "endPinId": 3,
+        "id": 1,
+        "startPinId": 2
+      },
+      {
+        "endPinId": 5,
+        "id": 2,
+        "startPinId": 2
+      },
+      {
+        "endPinId": 7,
+        "id": 3,
+        "startPinId": 2
+      },
+      {
+        "endPinId": 9,
+        "id": 4,
+        "startPinId": 2
+      },
+      {
+        "endPinId": 12,
+        "id": 5,
+        "startPinId": 11
+      },
+      {
+        "endPinId": 14,
+        "id": 6,
+        "startPinId": 11
+      },
+      {
+        "endPinId": 17,
+        "id": 7,
+        "startPinId": 16
+      },
+      {
+        "endPinId": 19,
+        "id": 8,
+        "startPinId": 11
+      },
+      {
+        "endPinId": 22,
+        "id": 9,
+        "startPinId": 21
+      },
+      {
+        "endPinId": 29,
+        "id": 38,
+        "startPinId": 28
+      },
+      {
+        "endPinId": 31,
+        "id": 39,
+        "startPinId": 8
+      },
+      {
+        "endPinId": 32,
+        "id": 40,
+        "startPinId": 4
+      },
+      {
+        "endPinId": 33,
+        "id": 41,
+        "startPinId": 6
+      },
+      {
+        "endPinId": 34,
+        "id": 42,
+        "startPinId": 18
+      },
+      {
+        "endPinId": 35,
+        "id": 43,
+        "startPinId": 13
+      },
+      {
+        "endPinId": 36,
+        "id": 44,
+        "startPinId": 25
+      },
+      {
+        "endPinId": 37,
+        "id": 45,
+        "startPinId": 23
+      },
+      {
+        "endPinId": 38,
+        "id": 46,
+        "startPinId": 26
+      },
+      {
+        "endPinId": 39,
+        "id": 47,
+        "startPinId": 30
+      },
+      {
+        "endPinId": 47,
+        "id": 48,
+        "startPinId": 40
+      }
+    ],
+    "nextLinkId": 49,
+    "nextNodeId": 18,
+    "nextPinId": 48,
+    "nodes": [
+      {
+        "displayName": "field_gen",
+        "entityId": "field_gen",
+        "id": 1,
+        "posX": 100.0,
+        "posY": 484.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "contour_blue",
+        "entityId": "contour_blue",
+        "id": 2,
+        "posX": 300.0,
+        "posY": 388.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "contour_accent",
+        "entityId": "contour_accent",
+        "id": 3,
+        "posX": 300.0,
+        "posY": 196.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "grid_warp",
+        "entityId": "grid_warp",
+        "id": 4,
+        "posX": 300.0,
+        "posY": 580.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "node_gen",
+        "entityId": "node_gen",
+        "id": 5,
+        "posX": 300.0,
+        "posY": 772.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "node_render",
+        "entityId": "node_render",
+        "id": 6,
+        "posX": 500.0,
+        "posY": 484.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "link_gen",
+        "entityId": "link_gen",
+        "id": 7,
+        "posX": 500.0,
+        "posY": 676.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "link_render",
+        "entityId": "link_render",
+        "id": 8,
+        "posX": 700.0,
+        "posY": 580.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "label_gen",
+        "entityId": "label_gen",
+        "id": 9,
+        "posX": 500.0,
+        "posY": 292.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "label_render",
+        "entityId": "label_render",
+        "id": 10,
+        "posX": 700.0,
+        "posY": 388.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "frame_hud",
+        "entityId": "frame_hud",
+        "id": 11,
+        "posX": 100.0,
+        "posY": 292.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "atmosphere",
+        "entityId": "atmosphere",
+        "id": 12,
+        "posX": 100.0,
+        "posY": 100.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "compositor",
+        "entityId": "compositor",
+        "id": 13,
+        "posX": 900.0,
+        "posY": 484.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "post",
+        "entityId": "post",
+        "id": 14,
+        "posX": 1100.0,
+        "posY": 484.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "signal",
+        "entityId": "signal",
+        "id": 15,
+        "posX": 100.0,
+        "posY": 868.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "field_gen publishes an RGBA16F height field → contour_blue / contour_accent / grid_warp / node_gen all derive from it. node_gen → link_gen + label_gen (structured-buffer data lanes) → renderers. atmosphere + frame_hud (porthole + viewport mask). compositor stacks all layers → post (bloom/vignette/teal grade). signal drives node pulse / field warp / accent beat / ring spin via expressions.",
+        "annotationColor": "#0a2a3aff",
+        "annotationTitle": "TOPOGRAPHIC HUD — modular scene",
+        "displayName": "TOPOGRAPHIC HUD — modular scene",
+        "entityId": "annotation_16",
+        "height": 100.0,
+        "id": 16,
+        "posX": 100.0,
+        "posY": 676.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": false,
+        "type": 4,
+        "width": 1000.0
+      },
+      {
+        "displayName": "TOPO_HUD",
+        "entityId": "TOPO_HUD",
+        "id": 17,
+        "posX": 1300.0,
+        "posY": 484.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 2
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "Field",
+        "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "kind": 0,
+        "name": "Field",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 4,
+        "kind": 1,
+        "name": "Blue Contours",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 5,
+        "kind": 0,
+        "name": "Field",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "Accent Contours",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 7,
+        "kind": 0,
+        "name": "Field",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "Grid",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 9,
+        "kind": 0,
+        "name": "Field",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 10,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 11,
+        "kind": 1,
+        "name": "Nodes",
+        "nodeId": 5,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 12,
+        "kind": 0,
+        "name": "Nodes",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 13,
+        "kind": 1,
+        "name": "Nodes Glow",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 14,
+        "kind": 0,
+        "name": "Nodes",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 15,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 16,
+        "kind": 1,
+        "name": "Links",
+        "nodeId": 7,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 17,
+        "kind": 0,
+        "name": "Links",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 18,
+        "kind": 1,
+        "name": "Links",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 19,
+        "kind": 0,
+        "name": "Nodes",
+        "nodeId": 9,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 20,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 9,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 21,
+        "kind": 1,
+        "name": "Labels",
+        "nodeId": 9,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 22,
+        "kind": 0,
+        "name": "Labels",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 23,
+        "kind": 1,
+        "name": "Labels Tex",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 25,
+        "kind": 1,
+        "name": "HUD",
+        "nodeId": 11,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 26,
+        "kind": 1,
+        "name": "Viewport Mask",
+        "nodeId": 11,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 28,
+        "kind": 1,
+        "name": "Atmosphere",
+        "nodeId": 12,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 29,
+        "kind": 0,
+        "name": "Atmosphere",
+        "nodeId": 13,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 30,
+        "kind": 1,
+        "name": "Scene",
+        "nodeId": 13,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 31,
+        "kind": 0,
+        "name": "Grid",
+        "nodeId": 13,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 32,
+        "kind": 0,
+        "name": "Blue Contours",
+        "nodeId": 13,
+        "slotIndex": 2,
+        "type": 0
+      },
+      {
+        "id": 33,
+        "kind": 0,
+        "name": "Accent Contours",
+        "nodeId": 13,
+        "slotIndex": 3,
+        "type": 0
+      },
+      {
+        "id": 34,
+        "kind": 0,
+        "name": "Links",
+        "nodeId": 13,
+        "slotIndex": 4,
+        "type": 0
+      },
+      {
+        "id": 35,
+        "kind": 0,
+        "name": "Nodes Glow",
+        "nodeId": 13,
+        "slotIndex": 5,
+        "type": 0
+      },
+      {
+        "id": 36,
+        "kind": 0,
+        "name": "HUD",
+        "nodeId": 13,
+        "slotIndex": 6,
+        "type": 0
+      },
+      {
+        "id": 37,
+        "kind": 0,
+        "name": "Labels Tex",
+        "nodeId": 13,
+        "slotIndex": 7,
+        "type": 0
+      },
+      {
+        "id": 38,
+        "kind": 0,
+        "name": "Viewport Mask",
+        "nodeId": 13,
+        "slotIndex": 8,
+        "type": 0
+      },
+      {
+        "id": 39,
+        "kind": 0,
+        "name": "Scene",
+        "nodeId": 14,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 40,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 14,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 42,
+        "kind": 1,
+        "name": "Signal",
+        "nodeId": 15,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 43,
+        "kind": 1,
+        "name": "pulse",
+        "nodeId": 15,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 44,
+        "kind": 1,
+        "name": "sweep",
+        "nodeId": 15,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 45,
+        "kind": 1,
+        "name": "beat",
+        "nodeId": 15,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 46,
+        "kind": 1,
+        "name": "slow",
+        "nodeId": 15,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 47,
+        "kind": 0,
+        "name": "In",
+        "nodeId": 17,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "",
+  "name": "topographic_hud",
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [
+    {
+      "height": 1080,
+      "id": "TOPO_HUD",
+      "matchInputResolution": true,
+      "name": "TOPO_HUD",
+      "senderName": "TOPO_HUD",
+      "type": "spout",
+      "wasActive": true,
+      "width": 1920
+    }
+  ],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "node_render",
+      "enabled": true,
+      "expressions": {
+        "intensity": "0.42 + ref(\"signal/control_outputs/pulse\") * 0.4"
+      },
+      "fitMode": 1,
+      "id": "node_render",
+      "inputSlotSourceIds": [
+        "node_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "core_size": "0.320000",
+        "glow_falloff": "0.350000",
+        "glow_radius": "0.500000",
+        "intensity": "0.690635",
+        "orange_color_b": "0.200000",
+        "orange_color_g": "0.550000",
+        "orange_color_r": "1.000000",
+        "project_dir": "modules/node_render",
+        "pulse_amount": "0.250000",
+        "pulse_speed": "2.200000",
+        "ray_count": "4.000000",
+        "ray_length": "0.700000",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "star_rays": "1.000000",
+        "white_color_b": "1.000000",
+        "white_color_g": "0.930000",
+        "white_color_r": "0.850000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "contour_blue",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "contour_blue",
+      "inputSlotSourceIds": [
+        "field_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "blue_color_b": "0.950000",
+        "blue_color_g": "0.550000",
+        "blue_color_r": "0.220000",
+        "elevation_fade": "0.200000",
+        "intensity": "1.400000",
+        "line_count": "64.000000",
+        "line_width": "0.017000",
+        "major_boost": "2.300000",
+        "major_color_b": "1.000000",
+        "major_color_g": "0.850000",
+        "major_color_r": "0.650000",
+        "major_every": "5.000000",
+        "max_level": "1.000000",
+        "min_level": "0.000000",
+        "phase_speed": "0.040000",
+        "project_dir": "modules/contour_blue",
+        "sharpness": "0.350000",
+        "slope_warp": "0.600000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "field_gen",
+      "enabled": true,
+      "expressions": {
+        "warp_amount": "0.8 + ref(\"signal/control_outputs/slow\") * 0.35"
+      },
+      "fitMode": 1,
+      "id": "field_gen",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "aspect": "1.000000",
+        "center_count": "5.000000",
+        "detail_gain": "1.000000",
+        "elevation_bias": "0.000000",
+        "field_mode": "2.000000",
+        "flow_dir_x": "0.150000",
+        "flow_dir_y": "0.100000",
+        "flow_speed": "0.060000",
+        "frequency": "1.600000",
+        "gain": "0.500000",
+        "lacunarity": "2.000000",
+        "octaves": "5.000000",
+        "project_dir": "modules/field_gen",
+        "region_split": "4.000000",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "seed": "3.000000",
+        "warp_amount": "0.802636"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "node_gen",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "node_gen",
+      "inputSlotSourceIds": [
+        "field_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "ascent_rate": "0.050000",
+        "ascent_steps": "7.000000",
+        "color_mix": "0.350000",
+        "intensity": "1.000000",
+        "jitter": "0.040000",
+        "node_count": "72.000000",
+        "placement_mode": "4.000000",
+        "project_dir": "modules/node_gen",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "ring_radius": "0.340000",
+        "seed": "5.000000",
+        "size_max": "0.028000",
+        "size_min": "0.012000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "contour_accent",
+      "enabled": true,
+      "expressions": {
+        "glow": "0.8 + ref(\"signal/control_outputs/beat\") * 1.6"
+      },
+      "fitMode": 1,
+      "id": "contour_accent",
+      "inputSlotSourceIds": [
+        "field_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "accent_color_b": "0.160000",
+        "accent_color_g": "0.500000",
+        "accent_color_r": "1.000000",
+        "accent_count": "6.000000",
+        "accent_level": "0.600000",
+        "accent_mode": "0.000000",
+        "band_width": "0.090000",
+        "glow": "1.649922",
+        "index_ticks": "0.000000",
+        "intensity": "1.400000",
+        "line_count": "52.000000",
+        "line_width": "0.015000",
+        "phase_speed": "0.030000",
+        "project_dir": "modules/contour_accent"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "link_gen",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "link_gen",
+      "inputSlotSourceIds": [
+        "node_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "curve_amount": "0.090000",
+        "dash": "0.000000",
+        "draw_progress": "1.000000",
+        "link_count": "26.000000",
+        "link_mode": "0.000000",
+        "max_dist": "0.340000",
+        "min_dist": "0.140000",
+        "orbit_arc": "1.000000",
+        "orbit_radius": "0.440000",
+        "orbit_spin": "0.040000",
+        "orbit_width": "1.600000",
+        "project_dir": "modules/link_gen",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "seed": "0.000000",
+        "width": "0.003500"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "compositor",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "compositor",
+      "inputSlotSourceIds": [
+        "atmosphere",
+        "grid_warp",
+        "contour_blue",
+        "contour_accent",
+        "link_render",
+        "node_render",
+        "frame_hud",
+        "label_render",
+        "frame_hud"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "accent_gain": "1.150000",
+        "bg_gain": "1.000000",
+        "bg_tint_b": "0.180000",
+        "bg_tint_g": "0.120000",
+        "bg_tint_r": "0.040000",
+        "blue_gain": "1.500000",
+        "clip_amount": "0.850000",
+        "grid_gain": "0.500000",
+        "hud_gain": "0.900000",
+        "labels_gain": "0.900000",
+        "links_gain": "0.700000",
+        "master_mix": "1.000000",
+        "nodes_gain": "0.500000",
+        "project_dir": "modules/compositor",
+        "viewport_clip": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "grid_warp",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "grid_warp",
+      "inputSlotSourceIds": [
+        "field_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "drift_speed": "0.015000",
+        "fade_center": "0.250000",
+        "fade_edges": "0.700000",
+        "grid_color_b": "0.720000",
+        "grid_color_g": "0.550000",
+        "grid_color_r": "0.350000",
+        "grid_density": "30.000000",
+        "intensity": "0.550000",
+        "line_width": "0.030000",
+        "perspective": "0.500000",
+        "project_dir": "modules/grid_warp",
+        "warp_amount": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "link_render",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "link_render",
+      "inputSlotSourceIds": [
+        "link_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "dash_count": "14.000000",
+        "dash_offset": "0.000000",
+        "dash_speed": "0.250000",
+        "glow": "0.400000",
+        "intensity": "1.000000",
+        "link_color_b": "1.000000",
+        "link_color_g": "0.930000",
+        "link_color_r": "0.850000",
+        "orbit_color_b": "0.140000",
+        "orbit_color_g": "0.500000",
+        "orbit_color_r": "1.000000",
+        "project_dir": "modules/link_render",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "softness": "0.002500",
+        "width_scale": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "label_gen",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "label_gen",
+      "inputSlotSourceIds": [
+        "node_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "attach_mode": "0.000000",
+        "color_mix": "0.300000",
+        "jitter": "0.020000",
+        "label_count": "18.000000",
+        "project_dir": "modules/label_gen",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "ring_radius": "0.460000",
+        "rotation": "0.000000",
+        "scale": "1.000000",
+        "seed": "2.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "label_render",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "label_render",
+      "inputSlotSourceIds": [
+        "label_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "dim_color_b": "0.250000",
+        "dim_color_g": "0.600000",
+        "dim_color_r": "0.950000",
+        "glow": "0.250000",
+        "intensity": "1.000000",
+        "label_color_b": "0.950000",
+        "label_color_g": "0.850000",
+        "label_color_r": "0.750000",
+        "project_dir": "modules/label_render",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "show_ticks": "1.000000",
+        "text_scale": "2.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "frame_hud",
+      "enabled": true,
+      "expressions": {
+        "rot_speed_a": "0.015 + ref(\"signal/control_outputs/slow\") * 0.05"
+      },
+      "fitMode": 1,
+      "id": "frame_hud",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "accent_color_b": "0.200000",
+        "accent_color_g": "0.550000",
+        "accent_color_r": "1.000000",
+        "corner_ticks": "1.000000",
+        "inner_ratio": "0.520000",
+        "intensity": "1.000000",
+        "project_dir": "modules/frame_hud",
+        "radius_spread": "0.240000",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "ring_color_b": "0.720000",
+        "ring_color_g": "0.550000",
+        "ring_color_r": "0.350000",
+        "ring_count": "20.000000",
+        "rot_speed_a": "0.015377",
+        "rot_speed_b": "-0.030000",
+        "segment_gaps": "4.000000",
+        "tick_density": "190.000000",
+        "viewport_radius": "0.940000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "atmosphere",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "atmosphere",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "depth_gradient": "1.100000",
+        "drift_speed": "0.012000",
+        "dust_brightness": "0.180000",
+        "dust_density": "280.000000",
+        "haze_color_b": "0.240000",
+        "haze_color_g": "0.170000",
+        "haze_color_r": "0.050000",
+        "haze_strength": "0.700000",
+        "intensity": "1.000000",
+        "project_dir": "modules/atmosphere",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "star_density": "95.000000",
+        "twinkle": "3.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "post",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "post",
+      "inputSlotSourceIds": [
+        "compositor"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "TOPO_HUD",
+      "parameters": {
+        "bloom_intensity": "0.800000",
+        "bloom_radius": "0.032000",
+        "bloom_threshold": "0.500000",
+        "chroma": "0.080000",
+        "contrast": "1.080000",
+        "exposure": "1.050000",
+        "grain_amt": "0.035000",
+        "highlight_tint_b": "0.250000",
+        "highlight_tint_g": "0.600000",
+        "highlight_tint_r": "1.000000",
+        "project_dir": "modules/post",
+        "saturation": "1.120000",
+        "shadow_tint_b": "0.220000",
+        "shadow_tint_g": "0.140000",
+        "shadow_tint_r": "0.000000",
+        "split_balance": "0.220000",
+        "vignette": "0.950000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "signal",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "signal",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "beat_rate": "2.000000",
+        "beat_sharp": "3.000000",
+        "project_dir": "modules/signal",
+        "pulse_rate": "0.800000",
+        "resolution_height": "64",
+        "resolution_width": "256",
+        "slow_rate": "0.050000",
+        "sweep_rate": "0.100000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1783239332033,
+  "sources": [],
+  "version": 5
+}

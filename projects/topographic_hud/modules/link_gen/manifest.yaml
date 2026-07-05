@@ -1,0 +1,76 @@
+name: "Link Gen"
+version: "1.0"
+mode: generator
+resolution: [1920, 1080]
+working_format: RGBA16F
+
+data_inputs:
+  - name: "Nodes"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: radius, type: float }
+      - { name: intensity, type: float }
+      - { name: color_mix, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: active, type: float }
+
+buffers:
+  - name: links
+    structured: true
+    element_size: 64
+    element_count: 192
+
+parameters:
+  - name: link_mode
+    display: "Link Mode"
+    type: enum
+    options: [Nearest, Chain, Radial, Hub]
+    default: 0
+    flags: button_grid
+    group: "Links"
+  - { name: link_count, display: "Link Count", type: int, min: 0, max: 120, default: 26, group: "Links" }
+  - { name: min_dist, display: "Min Distance", type: float, min: 0.0, max: 0.5, default: 0.14, group: "Links" }
+  - { name: max_dist, display: "Max Distance", type: float, min: 0.05, max: 1.5, default: 0.6, group: "Links" }
+  - { name: curve_amount, display: "Curve Amount", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Links" }
+  - { name: width, display: "Width", type: float, min: 0.0008, max: 0.02, default: 0.0035, group: "Links" }
+  - { name: dash, display: "Dashed", type: bool, default: false, flags: button, group: "Links" }
+  - { name: draw_progress, display: "Draw Progress", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Links" }
+  - { name: orbit_arc, display: "Orbit Arc", type: bool, default: true, flags: button, group: "Orbit" }
+  - { name: orbit_radius, display: "Orbit Radius", type: float, min: 0.1, max: 0.6, default: 0.44, group: "Orbit" }
+  - { name: orbit_width, display: "Orbit Width", type: float, min: 0.5, max: 5.0, default: 1.6, group: "Orbit" }
+  - { name: orbit_spin, display: "Orbit Spin", type: float, min: -1.0, max: 1.0, default: 0.04, group: "Orbit" }
+  - { name: seed, display: "Seed", type: int, min: 0, max: 63, default: 0, group: "Links" }
+
+passes:
+  - name: expand
+    shader: expand_links.hlsl
+    target: cs_5_0
+    dispatch: [3, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:links"
+    inputs:
+      - { slot: 0, source: "data:0" }
+  - { name: preview, shader: preview_links.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:links" } ] }
+
+outputs:
+  - { name: "Preview", pass: preview }
+
+data_outputs:
+  - name: "Links"
+    buffer: "links"
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: c, type: float2 }
+      - { name: d, type: float2 }
+      - { name: width, type: float }
+      - { name: group_id, type: float }
+      - { name: style, type: float }
+      - { name: intensity, type: float }
+      - { name: progress, type: float }
+      - { name: active, type: float }
+      - { name: curve, type: float }
+      - { name: pad0, type: float }

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "sentinel-mcp": {
+      "args": [],
+      "command": "C:\\Program Files\\OODLabs\\Sentinel\\sentinel-mcp.exe",
+      "type": "stdio"
+    }
+  }
+}

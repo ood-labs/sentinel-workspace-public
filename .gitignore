@@ -1,0 +1,44 @@
+# ─────────────────────────────────────────────────────────────
+# Sentinel Workspace — curated seed repo
+#
+# This repo is NOT a dump of the local workspace. modules/ and
+# projects/ are allowlisted below: everything under them is ignored
+# by default, and only blessed, shippable/example content is tracked.
+# To add a new module/project: add a matching `!` line here (or use
+# `git add -f <path>`). Experiments stay local and untracked.
+# ─────────────────────────────────────────────────────────────
+
+# ── Generated / local artifacts ──────────────────────────────
+captures/
+**/captures/
+*.previous
+projects/recovery_*.sentinel
+*.log
+# compiled shader caches (regenerated on load; build/GPU-specific)
+**/shader_cache/
+
+# ── Curated module library ───────────────────────────────────
+# Ignore all modules, then re-include the shipped ones.
+modules/*
+!modules/_shared/
+# topographic_hud module set (15)
+!modules/field_gen/
+!modules/contour_blue/
+!modules/contour_accent/
+!modules/grid_warp/
+!modules/node_gen/
+!modules/node_render/
+!modules/link_gen/
+!modules/link_render/
+!modules/label_gen/
+!modules/label_render/
+!modules/frame_hud/
+!modules/atmosphere/
+!modules/compositor/
+!modules/post/
+!modules/signal/
+
+# ── Curated projects ─────────────────────────────────────────
+# Ignore all projects, then re-include the shipped ones.
+projects/*
+!projects/topographic_hud/

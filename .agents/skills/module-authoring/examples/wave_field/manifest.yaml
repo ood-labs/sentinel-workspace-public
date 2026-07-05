@@ -1,0 +1,108 @@
+name: "Wave Field"
+version: "1.0"
+mode: generator
+resolution: [1920, 1080]
+features: [camera]
+
+parameters:
+  - name: speed
+    display: "Speed"
+    type: float
+    min: 0.0
+    max: 5.0
+    default: 1.0
+    group: "Animation"
+
+  - name: wave_freq
+    display: "Wave Frequency"
+    type: float
+    min: 0.5
+    max: 10.0
+    default: 3.5
+    group: "Waves"
+
+  - name: wave_amp
+    display: "Wave Amplitude"
+    type: float
+    min: 0.0
+    max: 2.0
+    default: 0.5
+    group: "Waves"
+
+  - name: iso_level
+    display: "Iso Threshold"
+    type: float
+    min: 0.2
+    max: 3.0
+    default: 1.0
+    group: "Surface"
+
+  - name: grid_strength
+    display: "Grid Lines"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.3
+    group: "Surface"
+
+  - name: surface_hue
+    display: "Hue Shift"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.55
+    group: "Color"
+
+  - name: iridescence
+    display: "Iridescence"
+    type: float
+    min: 0.0
+    max: 2.0
+    default: 1.0
+    group: "Color"
+
+  - name: dot_glow
+    display: "Dot Glow"
+    type: float
+    min: 0.0
+    max: 3.0
+    default: 1.5
+    group: "Network"
+
+  - name: connect_dist
+    display: "Connection Range"
+    type: float
+    min: 0.5
+    max: 6.0
+    default: 3.5
+    group: "Network"
+
+  - name: connect_bright
+    display: "Line Brightness"
+    type: float
+    min: 0.0
+    max: 2.0
+    default: 0.7
+    group: "Network"
+
+passes:
+  # 1. Ray march the wave isosurface + dot network — RGBA (alpha = depth)
+  - name: march
+    shader: wave_field.hlsl
+    target: cs_5_0
+
+  # 2. Extract color (alpha = 1.0 for display)
+  - name: color_output
+    shader: color_out.hlsl
+    inputs:
+      - { slot: 0, source: "pass:march" }
+
+  # 3. Extract depth from alpha channel
+  - name: depth_output
+    shader: depth_out.hlsl
+    inputs:
+      - { slot: 0, source: "pass:march" }
+
+outputs:
+  - { name: "Out", pass: color_output }
+  - { name: "Depth", pass: depth_output }
