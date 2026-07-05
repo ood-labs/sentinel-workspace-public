@@ -1,11 +1,13 @@
 # ─────────────────────────────────────────────────────────────
 # Sentinel Workspace — curated seed repo
 #
-# This repo is NOT a dump of the local workspace. modules/ and
-# projects/ are allowlisted below: everything under them is ignored
-# by default, and only blessed, shippable/example content is tracked.
-# To add a new module/project: add a matching `!` line here (or use
-# `git add -f <path>`). Experiments stay local and untracked.
+# This repo is NOT a dump of the local workspace.
+#   scratch/   → throwaway experiments + archived legacy. Never tracked.
+#   modules/   → the curated technique library. Fully tracked; only
+#                harvested, documented techniques live here (see
+#                knowledge/technique-catalogue.md). Junk goes to scratch/.
+#   projects/  → allowlisted; only blessed example shows are tracked.
+# To ship a new project: add a `!projects/<name>/` line below.
 # ─────────────────────────────────────────────────────────────
 
 # ── Generated / local artifacts ──────────────────────────────
@@ -16,27 +18,13 @@ projects/recovery_*.sentinel
 *.log
 # compiled shader caches (regenerated on load; build/GPU-specific)
 **/shader_cache/
+# scratch: throwaway experiments + archived legacy modules. Never shipped.
+scratch/
 
 # ── Curated module library ───────────────────────────────────
-# Ignore all modules, then re-include the shipped ones.
-modules/*
-!modules/_shared/
-# topographic_hud module set (15)
-!modules/field_gen/
-!modules/contour_blue/
-!modules/contour_accent/
-!modules/grid_warp/
-!modules/node_gen/
-!modules/node_render/
-!modules/link_gen/
-!modules/link_render/
-!modules/label_gen/
-!modules/label_render/
-!modules/frame_hud/
-!modules/atmosphere/
-!modules/compositor/
-!modules/post/
-!modules/signal/
+# modules/ is fully tracked — it holds only harvested, documented
+# techniques. Throwaway experiments live in scratch/ (ignored above),
+# never here. A harvested technique auto-tracks; no allowlist needed.
 
 # ── Curated projects ─────────────────────────────────────────
 # Ignore all projects, then re-include the shipped ones.

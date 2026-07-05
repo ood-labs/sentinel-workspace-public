@@ -145,6 +145,16 @@ Create Spout or NDI outputs with `sentinel_pipeline action=create_output`, then 
 
 OSC receive configuration is available through StateTree. Read or set `/sentinel/osc/receive_port`, then verify the OSC section in `sentinel_app action=diagnostic` or by sending a real OSC message.
 
+## Workspace Structure & Technique Library
+
+Three homes, kept distinct:
+
+- `scratch/` — throwaway experiments and tinkering. Never committed, never catalogued.
+- `projects/<name>/` — structured scene builds (bundled `.sentinel` shows). The workbench; creative work happens here.
+- `modules/` — the curated technique library: only harvested, reusable techniques, each documented in `knowledge/technique-catalogue.md`. `modules/_shared/` holds common includes (fonts, os_text).
+
+When recreating a reference or building a complex scene, use the `modular-scene-authoring` skill. It mandates a design-first plan — decide 2D-vs-3D, composite-vs-single-scene, and the right transport per element up front — then builds autonomously. Consult `knowledge/technique-catalogue.md` while planning to reuse what already exists; at session close (`/wrap` or `/end-session`), harvest any novel, reusable technique back into `modules/` and the catalogue so the toolkit compounds over time.
+
 ## Reference Docs
 
 Start with:
@@ -155,11 +165,13 @@ Start with:
 - `knowledge/expressions-and-drivers.md`
 - `knowledge/tracking-suite.md`
 - `knowledge/module-pipeline.md`
+- `knowledge/technique-catalogue.md`
 - `knowledge/video-source.md`
 - `knowledge/streamdiff.md`
 
 Use skills for authoring details:
 
+- `modular-scene-authoring`
 - `module-authoring`
 - `shader-authoring`
 - `mcp-automation`
