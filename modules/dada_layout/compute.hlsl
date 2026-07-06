@@ -52,6 +52,8 @@ DadaPart mk(float3 pos, float3 sc, float3 rot, float kind, float mat, float grp,
 }
 DadaPart sph(float3 pos, float r, float mat, float grp) { return mk(pos, r.xxx, float3(0,0,0), K_SPHERE, mat, grp, float3(0,0,0)); }
 
+float h11(float p) { p = frac(p * 0.1031); p *= p + 33.33; p *= p + p; return frac(p); }
+
 #define NPARTS 33
 
 DadaPart basePart(uint i)
@@ -110,6 +112,26 @@ void main(uint3 DTid : SV_DispatchThreadID)
     }
 
     DadaPart d = basePart(i);
-    // Stage 3 external transforms (spread / explode / group offsets / jitter) go here.
+
+    // ---- external arrangement transforms (drive from outside) ----
+    static const float3 CENTER = float3(0.0, 4.5, 0.3);
+    float3 pos = float3(d.pos_xy.x, d.pos_xy.y, d.pos_z);
+
+    pos = CENTER + (pos - CENTER) * spread;                 // uniform expand/contract
+
+    float2 rad = pos.xz - CENTER.xz;                        // push outward from spine axis
+    float rl = length(rad) + 1e-4;
+    pos.xz += (rad / rl) * explode;
+
+    float3 jit = float3(h11(i * 1.73 + seed * 3.1) - 0.5,
+                        h11(i * 2.91 + seed * 1.3) - 0.5,
+                        h11(i * 4.13 + seed * 2.7) - 0.5);
+    pos += jit * jitter;                                    // seeded scatter
+
+    pos.y += lift;                                          // raise/lower whole totem
+
+    d.pos_xy = pos.xy; d.pos_z = pos.z;
+    d.sc_xy *= size_mul; d.sc_z *= size_mul;                // global size
+
     PartsOut[i] = d;
 }

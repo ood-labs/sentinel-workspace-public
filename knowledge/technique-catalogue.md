@@ -175,6 +175,21 @@ kind-indexed vocabulary, `sdf_shading` normals/AO/shadow/camera with a
   the SDF "spline" transport for wires, rigging, hanging cables and bent arcs;
   `obj_baluster(p,base)` is a lathe-like stack of primitives (turned-wood / chess-pawn
   finial). Harvested from `dada_totem`. · *compose-with:* any raymarched sceneMap.
+- **Data-driven SDF assemblage + distortion (desert_totem v2)** — *compute → StructuredBuffer\<DadaPart\> → texture* ·
+  `dada_layout` / `dada_scatter` / `dada_render` / `dada_control` (project `desert_totem`) · the
+  externally-drivable evolution of the hero assemblage: pack every object into a 64 B `DadaPart`
+  record (float2s-first: `pos_xy, sc_xy, pos_z, sc_z, yaw, tilt, roll, kind, mat, group, p0..p2,
+  active`) authored by a compute generator, then a forked single-pass renderer **brute-forces**
+  both buffers with a 1D height-band reject (no ray-sphere shortlist — a vertical stack defeats it;
+  the monolith is the perf proof) plus a hardcoded armature/wires, and colours objects with a
+  once-per-pixel `shadeSample`. **Domain distortion** as driveable params, partitioned by type:
+  `melt` (fbm/sin warp of the solids' domain × a Lipschitz safety factor), affine `sag`, radial
+  `mirror` fold (applied pre-loop so culling stays valid), and shading-only `painterly`. Generators
+  ship a **front-view layout-map preview** (each record → a placed disc) so the node shows the
+  arrangement, not a debug strip. A `dada_control` macro node publishes melt/sag/spread/explode as
+  control outputs → `ref()` drives layout + render from one place; `sdf_dada.hlsli` is the kind
+  vocabulary. Warp distortion costs ~10× via normal/AO/shadow re-entry — keep field fbm to 2–3
+  octaves. · *compose-with:* `sdf_dada`, `post`, `signal`, `sentinel_expression`.
 - **Hero SDF assemblage (single-pass, hand-placed)** — *generator → texture* ·
   `dada_totem` (project `desert_totem`) · the bespoke counterpart to `sdf_scene_render`:
   when a scene is a *specific* arrangement of unique objects (a Dada totem, a still
