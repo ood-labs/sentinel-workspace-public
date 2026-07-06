@@ -1,0 +1,96 @@
+name: "Dada Render"
+version: "0.1"
+mode: generator
+resolution: [900, 1350]
+features: [camera]
+
+# STAGE 2 — data-driven: consumes a DadaPart buffer (data:0). Distortion params and
+# the second scatter input are added in later stages.
+
+data_inputs:
+  - name: "Parts"
+    slot: 0
+    schema:
+      - { name: pos_xy, type: float2 }
+      - { name: sc_xy, type: float2 }
+      - { name: pos_z, type: float }
+      - { name: sc_z, type: float }
+      - { name: yaw, type: float }
+      - { name: tilt, type: float }
+      - { name: roll, type: float }
+      - { name: kind, type: float }
+      - { name: mat, type: float }
+      - { name: group, type: float }
+      - { name: p0, type: float }
+      - { name: p1, type: float }
+      - { name: p2, type: float }
+      - { name: active, type: float }
+  - name: "Scatter"
+    slot: 1
+    schema:
+      - { name: pos_xy, type: float2 }
+      - { name: sc_xy, type: float2 }
+      - { name: pos_z, type: float }
+      - { name: sc_z, type: float }
+      - { name: yaw, type: float }
+      - { name: tilt, type: float }
+      - { name: roll, type: float }
+      - { name: kind, type: float }
+      - { name: mat, type: float }
+      - { name: group, type: float }
+      - { name: p0, type: float }
+      - { name: p1, type: float }
+      - { name: p2, type: float }
+      - { name: active, type: float }
+
+parameters:
+  # ---- distortion / surreal ----
+  - { name: melt_amt,     display: "Melt",         type: float, min: 0.0, max: 1.5, default: 0.0, group: "Distortion" }
+  - { name: warp_freq,    display: "Warp Freq",    type: float, min: 0.2, max: 3.0, default: 1.0, group: "Distortion" }
+  - { name: warp_speed,   display: "Warp Speed",   type: float, min: 0.0, max: 3.0, default: 0.6, group: "Distortion" }
+  - { name: sag_amt,      display: "Sag / Droop",  type: float, min: 0.0, max: 1.0, default: 0.0, group: "Distortion" }
+  - { name: mirror_count, display: "Mirror Count", type: int,   min: 0, max: 8, default: 0, group: "Distortion" }
+  - { name: painterly_amt,display: "Painterly",    type: float, min: 0.0, max: 1.0, default: 0.0, group: "Distortion" }
+  - { name: heat_amt,     display: "Heat Haze",    type: float, min: 0.0, max: 1.0, default: 0.35, group: "Distortion" }
+
+  # ---- environment ----
+  - { name: sky_zenith,  display: "Sky Zenith",  type: color, default: [0.50, 0.64, 0.74], group: "Environment" }
+  - { name: sky_horizon, display: "Sky Horizon", type: color, default: [0.86, 0.83, 0.75], group: "Environment" }
+  - { name: fog_density, display: "Haze Density", type: float, min: 0.0, max: 3.0, default: 1.0, group: "Environment" }
+  - { name: exposure,    display: "Exposure",     type: float, min: 0.2, max: 3.0, default: 1.05, group: "Environment" }
+  - { name: march_dist,  display: "March Distance", type: float, min: 20.0, max: 300.0, default: 120.0, group: "Environment" }
+
+  # ---- structure (the hardcoded armature; a few exposed knobs for modularity) ----
+  - { name: spine_height, display: "Spine Half-Height", type: float, min: 2.0, max: 5.0, default: 3.55, group: "Structure" }
+  - { name: board_yaw,    display: "Base Board Yaw",    type: float, min: -0.6, max: 0.6, default: 0.14, group: "Structure" }
+
+  # ---- sun / lighting ----
+  - { name: sun_azimuth,   display: "Sun Azimuth",   type: float, min: 0.0, max: 360.0, default: 62.0, group: "Sun" }
+  - { name: sun_elevation, display: "Sun Elevation", type: float, min: 5.0, max: 89.0, default: 48.0, group: "Sun" }
+  - { name: shadows,       display: "Sun Shadows",   type: bool, default: true, flags: button, group: "Sun" }
+
+  # ---- camera ----
+  - name: cam_mode
+    display: "Camera Mode"
+    type: enum
+    options: [Fly, Orbit]
+    default: 0
+    flags: button_grid
+    group: "Camera"
+  - { name: cam_orbit,     display: "Camera Orbit",     type: float, min: 0.0, max: 360.0, default: 87.0, group: "Camera" }
+  - { name: cam_elevation, display: "Camera Elevation", type: float, min: -30.0, max: 85.0, default: 4.0, group: "Camera" }
+  - { name: cam_distance,  display: "Camera Distance",  type: float, min: 1.0, max: 40.0, default: 15.0, group: "Camera" }
+  - { name: cam_target_y,  display: "Camera Target Y",  type: float, min: -2.0, max: 12.0, default: 4.9, group: "Camera" }
+  - { name: cam_focal,     display: "Camera Focal",     type: float, min: 0.6, max: 4.0, default: 2.6, group: "Camera" }
+  - { name: rotate_speed,  display: "Auto Rotate",      type: float, min: 0.0, max: 2.0, default: 0.0, group: "Camera" }
+
+passes:
+  - name: render
+    shader: scene.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+
+outputs:
+  - { name: "Render", pass: render }

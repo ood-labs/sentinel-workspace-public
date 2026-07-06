@@ -1,0 +1,343 @@
+// dada_render — data-driven surreal renderer for desert_totem v2. Marches two DadaPart
+// buffers (totem props on data:0, scatter accents on data:1) in ONE depth domain with a
+// hardcoded armature + wires, plus domain distortion (melt / sag / mirror), painterly
+// surface, and a full painterly-surreal desert-mountain horizon. Fly/orbit camera.
+
+#include "../_shared/sdf/sdf_ops.hlsli"
+#include "../_shared/sdf/sdf_extras.hlsli"
+#include "../_shared/sdf/sdf_dada.hlsli"
+#include "../_shared/sdf/sdf_shading.hlsli"
+
+RWTexture2D<float4> OutputUAV : register(u0);
+
+struct DadaPart {
+    float2 pos_xy; float2 sc_xy;
+    float pos_z; float sc_z; float yaw; float tilt; float roll;
+    float kind; float mat; float group; float p0; float p1; float p2; float active;
+};
+
+static float3 g_camPos = float3(0, 0, 0);
+float3 sd_rotZ(float3 p, float a) { p.xy = sd_rot2(p.xy, a); return p; }
+
+// ---- value noise / fbm --------------------------------------------------------
+float vnoise2(float2 p)
+{
+    float2 i = floor(p); float2 f = frac(p);
+    f = f * f * (3.0 - 2.0 * f);
+    float a = sd_hash21(i);
+    float b = sd_hash21(i + float2(1, 0));
+    float c = sd_hash21(i + float2(0, 1));
+    float d = sd_hash21(i + float2(1, 1));
+    return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
+}
+float fbm2(float2 p)
+{
+    float s = 0.0, a = 0.5;
+    for (int i = 0; i < 5; i++) { s += a * vnoise2(p); p *= 2.02; a *= 0.5; }
+    return s;
+}
+
+// ---- material palette ---------------------------------------------------------
+#define M_GROUND 0.0
+#define M_WOOD   1.0
+#define M_BLACK  2.0
+#define M_WHITE  3.0
+
+float3 woodAlbedo(float3 p)
+{
+    float g   = fbm2(float2(p.x * 1.1 + p.z * 0.2, p.z * 0.5 + p.y * 0.3));
+    float ring = frac(g * 3.0 + p.x * 0.55 + p.z * 0.15);
+    float streak = smoothstep(0.15, 0.85, ring * 0.55 + g * 0.45);
+    return lerp(float3(0.30, 0.19, 0.10), float3(0.56, 0.41, 0.24), streak);
+}
+float3 groundAlbedo(float3 p)
+{
+    float g = fbm2(p.xz * 0.6);
+    return lerp(float3(0.80, 0.72, 0.57), float3(0.86, 0.79, 0.65), g);
+}
+float3 matAlbedo(float mat, float3 p)
+{
+    if (mat < 0.5) return groundAlbedo(p);
+    if (mat < 1.5) return woodAlbedo(p);
+    if (mat < 2.5) return float3(0.018, 0.018, 0.022);
+    if (mat < 3.5) return float3(0.945, 0.935, 0.905);
+    if (mat < 10.5) return float3(0.86, 0.13, 0.09);
+    if (mat < 11.5) return float3(0.95, 0.75, 0.10);
+    if (mat < 12.5) return float3(0.90, 0.40, 0.08);
+    if (mat < 13.5) return float3(0.48, 0.52, 0.24);
+    if (mat < 14.5) return float3(0.52, 0.53, 0.55);
+    if (mat < 15.5) return float3(0.020, 0.020, 0.024);
+    if (mat < 16.5) return float3(0.955, 0.945, 0.915);
+    return float3(0.85, 0.66, 0.24);
+}
+float2 matSpec(float mat)
+{
+    if (mat < 0.5) return float2(0.02, 16.0);
+    if (mat < 1.5) return float2(0.04, 18.0);
+    if (mat < 2.5) return float2(0.03, 24.0);
+    if (mat < 3.5) return float2(0.07, 26.0);
+    if (mat < 13.5) return float2(0.09, 26.0);
+    if (mat < 14.5) return float2(0.20, 40.0);
+    if (mat < 15.5) return float2(0.22, 44.0);
+    if (mat < 16.5) return float2(0.20, 40.0);
+    return float2(0.72, 42.0);
+}
+
+// ---- hardcoded armature + wires (not data-driven) -----------------------------
+float2 mapStructure(float3 p)
+{
+    float3 bq = p - float3(0.0, 0.15, 0.35);
+    bq.xz = sd_rot2(bq.xz, board_yaw);
+    float2 res = float2(sd_box(bq, float3(3.1, 0.14, 1.75)), M_WOOD);
+    float spine = sd_box(p - float3(0.0, 1.05 + spine_height, -0.15), float3(0.80, spine_height, 0.28));
+    float panel = sd_box(p - float3(0.0, 6.60, -0.20), float3(1.34, 1.42, 0.24));
+    float cross = sd_box(p - float3(0.0, 3.55, -0.12), float3(1.95, 0.30, 0.32));
+    res = op_matmin(res, float2(min(spine, min(panel, cross)), M_BLACK));
+    float shelf  = sd_rbox(p - float3(0.15, 3.60, 0.60), float3(2.15, 0.055, 0.95), 0.015);
+    float plinth = sd_rbox(p - float3(-1.70, 2.25, 0.30), float3(0.52, 1.15, 0.55), 0.03);
+    res = op_matmin(res, float2(min(shelf, plinth), M_WHITE));
+    return res;
+}
+float2 mapWires(float3 p)
+{
+    float3 mastTop = float3(-2.55, 7.75, -0.05);
+    float mast = sd_capsule(p, float3(-1.55, 3.75, 0.20), mastTop, 0.03);
+    float ps1 = sd_capsule(p, float3(-2.05, 3.30, 0.05), float3(-2.35, 2.70, 0.05), 0.012);
+    float ps2 = sd_capsule(p, float3(-2.35, 2.70, 0.05), float3(-2.35, 1.92, 0.05), 0.012);
+    float ps3 = sd_capsule(p, float3(-2.35, 1.92, 0.05), float3(-2.35, 1.20, 0.05), 0.012);
+    float2 res = float2(min(mast, min(ps1, min(ps2, ps3))), M_BLACK);
+    float rig1 = sd_bezierTube(p, mastTop, float3(-1.1, 6.0, 0.3), float3(-0.1, 4.0, 0.6), 0.012);
+    float rig2 = sd_bezierTube(p, mastTop, float3(-3.0, 5.8, 0.2), float3(-2.3, 3.9, 0.4), 0.012);
+    res = op_matmin(res, float2(min(rig1, rig2), 17.0));
+    float rod = sd_capsule(p, float3(1.75, 5.55, 0.30), float3(1.75, 6.90, 0.30), 0.022);
+    float arc = sd_bezierTube(p, float3(1.15, 0.55, 0.45), float3(2.75, 1.35, 0.15), float3(2.05, 0.15, 0.55), 0.03);
+    res = op_matmin(res, float2(min(rod, arc), 14.0));
+    return res;
+}
+
+// ---- domain distortion (melt / sag / mirror) ---------------------------------
+float3 warpField(float3 p)
+{
+    float t = _Time * warp_speed;
+    float f = warp_freq;
+    return float3(
+        sin(p.y * f + t)        + 0.5 * sin(p.z * f * 1.7 - t * 1.3),
+        sin(p.z * f * 0.9 + t)  + 0.5 * sin(p.x * f * 1.5 + t * 1.1),
+        sin(p.x * f * 1.1 - t)  + 0.5 * sin(p.y * f * 1.3 + t * 0.7));
+}
+// distort the solids' domain (ground stays flat). Returns the point at which to
+// evaluate structure/wires/instances.
+float3 domainDistort(float3 p)
+{
+    float3 q = p;
+    // sag: upper/outer forms droop under gravity
+    if (sag_amt > 0.001)
+    {
+        float horiz = length(float2(q.x, q.z - 0.1));
+        q.y -= sag_amt * horiz * smoothstep(1.0, 7.5, q.y) * 0.9;
+    }
+    // mirror / radial kaleidoscope fold about the spine
+    if (mirror_count > 0.5)
+    {
+        float2 c = float2(q.x, q.z - 0.2);
+        float a = atan2(c.y, c.x);
+        float seg = 6.28318530 / mirror_count;
+        a = (abs(frac(a / seg + 0.5) - 0.5)) * seg;
+        float r = length(c);
+        q.x = cos(a) * r; q.z = sin(a) * r + 0.2;
+    }
+    // melt: fbm/sin domain warp (animated ooze)
+    if (melt_amt > 0.001) q += melt_amt * warpField(q);
+    return q;
+}
+float distortLip() { return 1.0 / (1.0 + melt_amt * warp_freq * 0.65 + sag_amt * 0.6 + (mirror_count > 0.5 ? 0.2 : 0.0)); }
+
+// ---- instance helpers --------------------------------------------------------
+float3 partLocal(DadaPart d, float3 p, out float minsc)
+{
+    float3 q = p - float3(d.pos_xy.x, d.pos_xy.y, d.pos_z);
+    q = sd_rotY(q, -d.yaw); q = sd_rotX(q, -d.tilt); q = sd_rotZ(q, -d.roll);
+    float3 sc = float3(d.sc_xy.x, d.sc_xy.y, d.sc_z);
+    minsc = min(sc.x, min(sc.y, sc.z));
+    return q / sc;
+}
+float partBand(DadaPart d) { return DADA_BOUND_R * max(d.sc_xy.x, max(d.sc_xy.y, d.sc_z)) + 0.06; }
+
+// ---- the scene (contract for sdf_shading.hlsli) ------------------------------
+float2 sceneMap(float3 p)
+{
+    float ground = p.y + 0.04 * fbm2(p.xz * 0.15) - 0.02;
+    float2 res = float2(ground, M_GROUND);
+
+    float3 pw = domainDistort(p);
+    res = op_matmin(res, mapStructure(pw));
+    res = op_matmin(res, mapWires(pw));
+
+    uint c0 = min((uint)_Data0_Count, 128u);
+    [loop]
+    for (uint i = 0u; i < 128u; i++)
+    {
+        if (i >= c0) break;
+        DadaPart d = _Data0[i];
+        if (d.active < 0.5) continue;
+        if (abs(pw.y - d.pos_xy.y) > partBand(d)) continue;
+        float minsc; float3 q = partLocal(d, pw, minsc);
+        res = op_matmin(res, float2(dada_obj(q, (int)d.kind, d.p0, d.p1, d.p2) * minsc, 20.0 + d.kind));
+    }
+    uint c1 = min((uint)_Data1_Count, 128u);
+    [loop]
+    for (uint j = 0u; j < 128u; j++)
+    {
+        if (j >= c1) break;
+        DadaPart d = _Data1[j];
+        if (d.active < 0.5) continue;
+        if (abs(pw.y - d.pos_xy.y) > partBand(d)) continue;
+        float minsc; float3 q = partLocal(d, pw, minsc);
+        res = op_matmin(res, float2(dada_obj(q, (int)d.kind, d.p0, d.p1, d.p2) * minsc, 20.0 + d.kind));
+    }
+
+    res.x *= distortLip();   // Lipschitz safety for the warped field
+    return res;
+}
+
+// nearest-surface colour, once per hit pixel
+void shadeSample(float3 pos, out float3 albedo, out float2 spec)
+{
+    float3 pw = domainDistort(pos);
+    float ground = pos.y + 0.04 * fbm2(pos.xz * 0.15) - 0.02;
+    float2 sres = float2(ground, M_GROUND);
+    sres = op_matmin(sres, mapStructure(pw));
+    sres = op_matmin(sres, mapWires(pw));
+    float best = sres.x;
+    albedo = matAlbedo(sres.y, pos); spec = matSpec(sres.y);
+
+    uint c0 = min((uint)_Data0_Count, 128u);
+    [loop]
+    for (uint i = 0u; i < 128u; i++)
+    {
+        if (i >= c0) break;
+        DadaPart d = _Data0[i];
+        if (d.active < 0.5) continue;
+        if (abs(pw.y - d.pos_xy.y) > partBand(d)) continue;
+        float minsc; float3 q = partLocal(d, pw, minsc);
+        float dd = dada_obj(q, (int)d.kind, d.p0, d.p1, d.p2) * minsc;
+        if (dd < best) { best = dd; float3 sc; if (dada_special_albedo((int)d.kind, q, d.p0, d.p1, d.p2, sc)) albedo = sc; else albedo = matAlbedo(d.mat, pos); spec = matSpec(d.mat); }
+    }
+    uint c1 = min((uint)_Data1_Count, 128u);
+    [loop]
+    for (uint j = 0u; j < 128u; j++)
+    {
+        if (j >= c1) break;
+        DadaPart d = _Data1[j];
+        if (d.active < 0.5) continue;
+        if (abs(pw.y - d.pos_xy.y) > partBand(d)) continue;
+        float minsc; float3 q = partLocal(d, pw, minsc);
+        float dd = dada_obj(q, (int)d.kind, d.p0, d.p1, d.p2) * minsc;
+        if (dd < best) { best = dd; float3 sc; if (dada_special_albedo((int)d.kind, q, d.p0, d.p1, d.p2, sc)) albedo = sc; else albedo = matAlbedo(d.mat, pos); spec = matSpec(d.mat); }
+    }
+}
+
+// ---- surreal desert-mountain horizon -----------------------------------------
+float3 skyColor(float3 rd)
+{
+    float3 zen = lerp(sky_zenith.rgb, float3(0.28, 0.48, 0.70), 0.5);   // deeper blue
+    float3 hor = sky_horizon.rgb;
+    float3 col = lerp(hor, zen, pow(saturate(rd.y), 0.55));
+
+    float az = atan2(rd.z, rd.x);
+    // three atmospheric mountain ridges, far -> near
+    [unroll]
+    for (int L = 0; L < 3; L++)
+    {
+        float fl = 1.6 + L * 2.4;
+        float amp = 0.055 - L * 0.013;
+        float base = 0.052 - L * 0.016;
+        float ridge = base + (fbm2(float2(az * fl, L * 3.7 + 2.0)) - 0.5) * amp * 2.0;
+        float m = smoothstep(ridge + 0.004, ridge - 0.004, rd.y) * smoothstep(-0.16, 0.0, rd.y);
+        float3 mcol = lerp(float3(0.50, 0.57, 0.70), hor, 0.72 - L * 0.26);
+        col = lerp(col, mcol, m);
+    }
+    // tiny wrong-scale marks on the plain: distant figures + a couple of mini-totems
+    float mark = 0.0;
+    [unroll]
+    for (int f = 0; f < 6; f++)
+    {
+        float fa = -1.5 + f * 0.42;
+        float da = abs(az - fa);
+        float tall = (f == 2 || f == 5) ? 0.010 : 0.003;   // 2 mini-totems, rest figures
+        mark += smoothstep(0.012, 0.0, da) * smoothstep(0.0, tall, rd.y) * smoothstep(tall + 0.004, tall, rd.y);
+    }
+    col = lerp(col, float3(0.22, 0.21, 0.24), saturate(mark) * 0.7);
+    return col;
+}
+
+[numthreads(8, 8, 1)]
+void main(uint3 DTid : SV_DispatchThreadID)
+{
+    uint2 pixel = DTid.xy;
+    if (pixel.x >= (uint)_Resolution.x || pixel.y >= (uint)_Resolution.y) return;
+
+    float2 uv = ((float2)pixel + 0.5) / _Resolution.xy;
+    float2 ndc = (uv * 2.0 - 1.0) * float2(_Resolution.x / _Resolution.y, -1.0);
+
+    float3 ro, rd;
+    if (cam_mode == 0)
+    {
+        float2 ndcv = float2(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0);
+        float4 nearW = mul(_InvViewProjMatrix, float4(ndcv, 0.0, 1.0));
+        float4 farW  = mul(_InvViewProjMatrix, float4(ndcv, 1.0, 1.0));
+        nearW /= nearW.w; farW /= farW.w;
+        ro = _CameraPos; rd = normalize(farW.xyz - nearW.xyz);
+    }
+    else
+    {
+        float az = cam_orbit + rotate_speed * _Time * 30.0;
+        sdf_orbitRay(az, cam_elevation, cam_distance, float3(0.0, cam_target_y, 0.0), ndc, cam_focal, ro, rd);
+    }
+    g_camPos = ro;
+
+    float3 sun = sdf_sunDir(sun_azimuth, sun_elevation);
+    float3 haze = lerp(sky_horizon.rgb, float3(0.86, 0.83, 0.76), 0.5);
+
+    float mat;
+    float t = sdf_march(ro, rd, march_dist, 200, mat);
+
+    float3 col;
+    if (t < 0.0)
+    {
+        // heat-haze shimmer near the horizon
+        float3 rr = rd;
+        float hz = smoothstep(0.16, 0.0, abs(rd.y)) * heat_amt;
+        rr.y += sin(rd.x * 46.0 + _Time * 3.0) * 0.0025 * hz;
+        col = skyColor(rr);
+    }
+    else
+    {
+        float3 pos = ro + rd * t;
+        float3 n = sdf_calcNormal(pos);
+        float ao = sdf_calcAO(pos, n);
+        float sha = 1.0;
+        if (shadows != 0) sha = sdf_softShadow(pos + n * 0.02, sun, 16.0, 24.0);
+
+        float3 albedo; float2 sp;
+        shadeSample(pos, albedo, sp);
+
+        // painterly surface: perturb normal + vary albedo so solids read hand-made
+        if (painterly_amt > 0.001)
+        {
+            float3 rnd = float3(fbm2(pos.xy * 7.3) - 0.5, fbm2(pos.yz * 7.3 + 3.1) - 0.5, fbm2(pos.zx * 7.3 + 7.7) - 0.5);
+            n = normalize(n + painterly_amt * 0.35 * rnd);
+            albedo *= 1.0 - painterly_amt * 0.20 * (fbm2(pos.xz * 9.0 + pos.y * 3.0) - 0.5) * 2.0;
+        }
+
+        col = sdf_shade(albedo, n, rd, sun, sha, ao, sp.x, sp.y);
+        float sky_up = saturate(0.5 + 0.5 * n.y);
+        col += albedo * sky_zenith.rgb * sky_up * 0.10;
+        col += albedo * float3(0.95, 0.80, 0.55) * 0.07 * saturate(0.35 - n.y) * ao;
+        float fog = 1.0 - exp(-fog_density * 0.020 * max(t - 16.0, 0.0));
+        col = lerp(col, haze, fog);
+    }
+
+    col = pow(saturate(col * exposure), 1.0 / 2.2);
+    OutputUAV[pixel] = float4(col, 1.0);
+}
