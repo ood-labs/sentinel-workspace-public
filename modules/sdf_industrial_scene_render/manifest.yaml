@@ -1,0 +1,97 @@
+name: "SDF Industrial Scene Render"
+version: "1.0"
+mode: generator
+resolution: [540, 810]
+working_format: RGBA16F
+features: [camera]
+
+data_inputs:
+  - name: "StructParts"
+    slot: 0
+    schema:
+      - { name: center, type: float3 }
+      - { name: axis, type: float3 }
+      - { name: up, type: float3 }
+      - { name: half_extents, type: float3 }
+      - { name: length, type: float }
+      - { name: radius, type: float }
+      - { name: kind, type: float }
+      - { name: material, type: float }
+      - { name: seed, type: float }
+      - { name: group, type: float }
+      - { name: active, type: float }
+      - { name: spare, type: float }
+  - name: "Greebles"
+    slot: 1
+    schema:
+      - { name: anchor, type: float3 }
+      - { name: normal, type: float3 }
+      - { name: tangent, type: float3 }
+      - { name: uv, type: float2 }
+      - { name: size, type: float3 }
+      - { name: kind, type: float }
+      - { name: material, type: float }
+      - { name: parent_id, type: float }
+      - { name: seed, type: float }
+      - { name: active, type: float }
+      - { name: spare, type: float }
+
+parameters:
+  - { name: max_struct_parts, display: "Max Struct Parts", type: int, min: 1, max: 1024, default: 220, group: "Performance" }
+  - { name: max_greebles, display: "Max Greebles", type: int, min: 0, max: 4096, default: 0, group: "Performance" }
+  - { name: march_steps, display: "March Steps", type: int, min: 24, max: 220, default: 72, group: "Performance" }
+  - { name: max_distance, display: "Max Distance", type: float, min: 5.0, max: 120.0, default: 60.0, group: "Performance" }
+  - { name: detail_guard, display: "Detail Guard", type: float, min: 0.05, max: 3.0, default: 0.75, group: "Performance" }
+  - { name: greeble_distance, display: "Greeble Distance", type: float, min: 0.01, max: 3.0, default: 0.35, group: "Performance" }
+  - { name: enable_greebles, display: "Greebles", type: bool, default: false, flags: button, group: "Enable" }
+  - { name: enable_shadows, display: "Shadows", type: bool, default: false, flags: button, group: "Enable" }
+  - { name: enable_ground, display: "Ground", type: bool, default: true, flags: button, group: "Enable" }
+  - { name: camera_preset, display: "Camera Preset", type: enum, options: [ReferencePortrait, LowUpview, CenterShaft, SideCatwalk, Orbit], default: 0, flags: button_grid, group: "Camera" }
+  - { name: use_fly_cam, display: "Use Fly Camera", type: bool, default: false, flags: button, group: "Camera" }
+  - { name: cam_orbit, display: "Orbit", type: float, min: 0.0, max: 360.0, default: 220.0, group: "Camera" }
+  - { name: cam_elevation, display: "Elevation", type: float, min: -20.0, max: 89.0, default: 24.0, group: "Camera" }
+  - { name: cam_distance, display: "Distance", type: float, min: 1.0, max: 30.0, default: 10.5, group: "Camera" }
+  - { name: cam_target, display: "Target", type: vec3, min: [-10.0, -2.0, -10.0], max: [10.0, 15.0, 10.0], default: [0.0, 4.5, 0.0], group: "Camera" }
+  - { name: cam_offset, display: "Offset", type: vec3, min: [-10.0, -10.0, -10.0], max: [10.0, 10.0, 10.0], default: [0.0, 0.0, 0.0], group: "Camera" }
+  - { name: cam_roll, display: "Roll", type: float, min: -0.75, max: 0.75, default: -0.06, group: "Camera" }
+  - { name: focal_length, display: "Focal Length", type: float, min: 0.7, max: 3.0, default: 1.45, group: "Camera" }
+  - { name: rotate_speed, display: "Auto Orbit", type: float, min: 0.0, max: 2.0, default: 0.0, group: "Camera" }
+  - { name: key_azimuth, display: "Key Azimuth", type: float, min: 0.0, max: 360.0, default: 42.0, group: "Lighting" }
+  - { name: key_elevation, display: "Key Elevation", type: float, min: 2.0, max: 89.0, default: 55.0, group: "Lighting" }
+  - { name: skylight_power, display: "Skylight Power", type: float, min: 0.0, max: 8.0, default: 2.7, group: "Lighting" }
+  - { name: ambient_floor, display: "Ambient Floor", type: float, min: 0.0, max: 1.0, default: 0.10, group: "Lighting" }
+  - { name: rim_power, display: "Rim/Spec Power", type: float, min: 0.0, max: 2.0, default: 0.65, group: "Lighting" }
+  - { name: shadow_hardness, display: "Shadow Hardness", type: float, min: 2.0, max: 24.0, default: 11.0, group: "Lighting" }
+  - { name: shadow_distance, display: "Shadow Distance", type: float, min: 1.0, max: 30.0, default: 13.0, group: "Lighting" }
+  - { name: steel_color, display: "Worn Steel", type: color, default: [0.55, 0.55, 0.53], group: "Material" }
+  - { name: dark_steel_color, display: "Dark Steel", type: color, default: [0.055, 0.055, 0.057], group: "Material" }
+  - { name: rust_color, display: "Grime/Rust", type: color, default: [0.17, 0.13, 0.10], group: "Material" }
+  - { name: highlight_color, display: "Edge Wear", type: color, default: [0.86, 0.84, 0.78], group: "Material" }
+  - { name: skylight_color, display: "Skylight", type: color, default: [1.0, 0.98, 0.9], group: "Material" }
+  - { name: grime_amount, display: "Grime", type: float, min: 0.0, max: 1.0, default: 0.58, group: "Material" }
+  - { name: edge_wear_strength, display: "Edge Wear", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Material" }
+  - { name: surface_noise_scale, display: "Noise Scale", type: float, min: 0.2, max: 12.0, default: 3.8, group: "Material" }
+  - { name: column_band_spacing, display: "Column Bands", type: float, min: 0.18, max: 1.6, default: 0.62, group: "Micro Geometry" }
+  - { name: column_band_width, display: "Band Width", type: float, min: 0.01, max: 0.18, default: 0.045, group: "Micro Geometry" }
+  - { name: web_thickness, display: "I-Beam Web", type: float, min: 0.05, max: 0.7, default: 0.28, group: "Micro Geometry" }
+  - { name: grating_strength, display: "Deck Grating", type: float, min: 0.0, max: 1.0, default: 0.65, group: "Micro Geometry" }
+  - { name: grating_spacing, display: "Grating Spacing", type: float, min: 0.03, max: 0.5, default: 0.16, group: "Micro Geometry" }
+  - { name: ladder_rung_spacing, display: "Ladder Rungs", type: float, min: 0.06, max: 0.55, default: 0.22, group: "Micro Geometry" }
+  - { name: fog_density, display: "Fog Density", type: float, min: 0.0, max: 2.0, default: 0.28, group: "Atmosphere" }
+  - { name: height_fog, display: "Height Fog", type: float, min: 0.0, max: 1.0, default: 0.12, group: "Atmosphere" }
+  - { name: height_fog_start, display: "Height Fog Start", type: float, min: 0.0, max: 12.0, default: 5.0, group: "Atmosphere" }
+  - { name: void_darkness, display: "Void Darkness", type: float, min: 0.0, max: 1.5, default: 0.52, group: "Atmosphere" }
+  - { name: dust_amount, display: "Dust/Grain", type: float, min: 0.0, max: 0.12, default: 0.025, group: "Atmosphere" }
+  - { name: vignette_pregrade, display: "Pre Vignette", type: float, min: 0.0, max: 1.5, default: 0.45, group: "Atmosphere" }
+  - { name: ground_drop, display: "Ground Drop", type: float, min: -2.0, max: 4.0, default: 0.05, group: "Atmosphere" }
+
+passes:
+  - name: render
+    shader: scene.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+
+outputs:
+  - { name: "Scene", pass: render }

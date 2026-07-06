@@ -1,0 +1,657 @@
+{
+  "graph": {
+    "canvasZoom": 1.0,
+    "links": [
+      {
+        "endPinId": 10,
+        "id": 1,
+        "startPinId": 3
+      },
+      {
+        "endPinId": 4,
+        "id": 2,
+        "startPinId": 3
+      },
+      {
+        "endPinId": 22,
+        "id": 3,
+        "startPinId": 15
+      },
+      {
+        "endPinId": 7,
+        "id": 4,
+        "startPinId": 6
+      },
+      {
+        "endPinId": 16,
+        "id": 5,
+        "startPinId": 9
+      },
+      {
+        "endPinId": 24,
+        "id": 6,
+        "startPinId": 21
+      },
+      {
+        "endPinId": 25,
+        "id": 7,
+        "startPinId": 23
+      }
+    ],
+    "nextLinkId": 8,
+    "nextNodeId": 8,
+    "nextPinId": 27,
+    "nodes": [
+      {
+        "displayName": "industrial_bay_gen",
+        "entityId": "industrial_bay_gen",
+        "id": 1,
+        "posX": 0.0,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "industrial_surface_sampler",
+        "entityId": "industrial_surface_sampler",
+        "id": 2,
+        "posX": 320.0,
+        "posY": 160.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "industrial_greeble_place",
+        "entityId": "industrial_greeble_place",
+        "id": 3,
+        "posX": 640.0,
+        "posY": 160.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "industrial_struct_merge",
+        "entityId": "industrial_struct_merge",
+        "id": 4,
+        "posX": 320.0,
+        "posY": -80.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "industrial_greeble_pack",
+        "entityId": "industrial_greeble_pack",
+        "id": 5,
+        "posX": 960.0,
+        "posY": 160.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "sdf_industrial_scene_render",
+        "entityId": "sdf_industrial_scene_render",
+        "id": 6,
+        "posX": 1280.0,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "industrial_mono_post",
+        "entityId": "industrial_mono_post",
+        "id": 7,
+        "posX": 1600.0,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "kind": 1,
+        "name": "StructParts",
+        "nodeId": 1,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 4,
+        "kind": 0,
+        "name": "StructParts",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 5,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "SurfacePoints",
+        "nodeId": 2,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 7,
+        "kind": 0,
+        "name": "SurfacePoints",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 9,
+        "kind": 1,
+        "name": "Greebles",
+        "nodeId": 3,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 10,
+        "kind": 0,
+        "name": "Struct A",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 11,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 12,
+        "kind": 0,
+        "name": "Struct B",
+        "nodeId": 4,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 13,
+        "kind": 0,
+        "name": "Struct C",
+        "nodeId": 4,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 14,
+        "kind": 0,
+        "name": "Struct D",
+        "nodeId": 4,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 15,
+        "kind": 1,
+        "name": "StructParts",
+        "nodeId": 4,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 16,
+        "kind": 0,
+        "name": "Greebles A",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 17,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 18,
+        "kind": 0,
+        "name": "Greebles B",
+        "nodeId": 5,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 19,
+        "kind": 0,
+        "name": "Greebles C",
+        "nodeId": 5,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 20,
+        "kind": 0,
+        "name": "Greebles D",
+        "nodeId": 5,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 21,
+        "kind": 1,
+        "name": "Greebles",
+        "nodeId": 5,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 22,
+        "kind": 0,
+        "name": "StructParts",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 23,
+        "kind": 1,
+        "name": "Scene",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 24,
+        "kind": 0,
+        "name": "Greebles",
+        "nodeId": 6,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 25,
+        "kind": 0,
+        "name": "Scene",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 26,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "",
+  "name": "industrial_steel_greebled",
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "industrial_bay_gen",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "industrial_bay_gen",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bay_count_x": "3.000000",
+        "bay_count_z": "4.000000",
+        "bay_spacing_x": "1.250000",
+        "bay_spacing_z": "1.150000",
+        "beam_thickness": "0.140000",
+        "brace_density": "0.320000",
+        "brace_radius": "0.055000",
+        "catwalk_width": "0.180000",
+        "collapse_amount": "0.000000",
+        "column_density": "0.820000",
+        "column_width": "0.160000",
+        "deck_density": "0.120000",
+        "deck_thickness": "0.045000",
+        "ladder_density": "0.120000",
+        "level_count": "5.000000",
+        "level_spacing": "1.000000",
+        "missing_span_rate": "0.160000",
+        "pipe_density": "0.180000",
+        "pipe_radius_max": "0.090000",
+        "pipe_radius_min": "0.035000",
+        "preset": "0.000000",
+        "preview_mode": "1.000000",
+        "preview_scale": "0.060000",
+        "primary_beam_density": "0.720000",
+        "project_dir": "modules/industrial_bay_gen",
+        "reference_composition_bias": "0.950000",
+        "resolution_height": "256",
+        "resolution_width": "512",
+        "seed": "17.000000",
+        "skew_amount": "0.220000",
+        "skylight_density": "0.040000",
+        "vertical_pipe_weight": "0.340000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "industrial_surface_sampler",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "industrial_surface_sampler",
+      "inputSlotSourceIds": [
+        "industrial_bay_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "edge_bias": "1.150000",
+        "include_beams": "1.000000",
+        "include_braces": "1.000000",
+        "include_columns": "1.000000",
+        "include_decks": "1.000000",
+        "include_pipes": "0.000000",
+        "joint_bias": "0.580000",
+        "max_parent_parts": "160.000000",
+        "preview_offset_x": "0.000000",
+        "preview_offset_y": "0.000000",
+        "preview_scale": "0.060000",
+        "project_dir": "modules/industrial_surface_sampler",
+        "resolution_height": "256",
+        "resolution_width": "512",
+        "sample_density": "0.220000",
+        "seed": "23.000000",
+        "underside_bias": "0.380000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "industrial_struct_merge",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "industrial_struct_merge",
+      "inputSlotSourceIds": [
+        "industrial_bay_gen",
+        "",
+        "",
+        ""
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "debug_kind_filter": "-1.000000",
+        "enable_beams": "1.000000",
+        "enable_braces": "1.000000",
+        "enable_columns": "1.000000",
+        "enable_decks": "1.000000",
+        "enable_ladders": "1.000000",
+        "enable_pipes": "1.000000",
+        "enable_rooflights": "1.000000",
+        "global_offset_x": "0.000000",
+        "global_offset_y": "0.000000",
+        "global_offset_z": "0.000000",
+        "global_scale": "1.000000",
+        "global_yaw": "0.000000",
+        "max_parts": "512.000000",
+        "preview_offset_x": "0.000000",
+        "preview_offset_y": "0.000000",
+        "preview_scale": "0.060000",
+        "project_dir": "modules/industrial_struct_merge",
+        "resolution_height": "256",
+        "resolution_width": "512"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "industrial_greeble_place",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "industrial_greeble_place",
+      "inputSlotSourceIds": [
+        "industrial_surface_sampler"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "background_detail_density": "0.120000",
+        "bolt_weight": "2.300000",
+        "box_weight": "0.550000",
+        "clamp_weight": "0.800000",
+        "conduit_weight": "0.900000",
+        "detail_scale": "0.750000",
+        "edge_detail_boost": "1.100000",
+        "greeble_density": "0.000000",
+        "hero_detail_density": "0.450000",
+        "plate_weight": "1.700000",
+        "preview_offset_x": "0.000000",
+        "preview_offset_y": "0.000000",
+        "preview_scale": "0.060000",
+        "project_dir": "modules/industrial_greeble_place",
+        "resolution_height": "256",
+        "resolution_width": "512",
+        "rib_weight": "1.100000",
+        "row_alignment": "0.550000",
+        "scale_max": "1.450000",
+        "scale_min": "0.650000",
+        "seed": "41.000000",
+        "stain_weight": "0.550000",
+        "symmetry_amount": "0.450000",
+        "vent_weight": "0.650000",
+        "weld_weight": "0.750000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "industrial_mono_post",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "industrial_mono_post",
+      "inputSlotSourceIds": [
+        "sdf_industrial_scene_render"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bloom_intensity": "0.550000",
+        "bloom_radius": "0.026000",
+        "bloom_threshold": "0.720000",
+        "contrast": "1.180000",
+        "crush_blacks": "0.020000",
+        "exposure": "1.150000",
+        "gamma_lift": "0.880000",
+        "grain_amount": "0.025000",
+        "lift_highlights": "1.000000",
+        "project_dir": "modules/industrial_mono_post",
+        "saturation": "0.000000",
+        "split_tone_amount": "0.080000",
+        "vignette": "0.920000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "industrial_greeble_pack",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "industrial_greeble_pack",
+      "inputSlotSourceIds": [
+        "industrial_greeble_place",
+        "",
+        "",
+        ""
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "debug_greeble_kind": "-1.000000",
+        "enable_bolts": "1.000000",
+        "enable_conduit": "1.000000",
+        "enable_panels": "1.000000",
+        "enable_stains": "1.000000",
+        "enable_welds": "1.000000",
+        "max_greebles": "0.000000",
+        "preview_offset_x": "0.000000",
+        "preview_offset_y": "0.000000",
+        "preview_scale": "0.060000",
+        "project_dir": "modules/industrial_greeble_pack",
+        "resolution_height": "256",
+        "resolution_width": "512"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "sdf_industrial_scene_render",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "sdf_industrial_scene_render",
+      "inputSlotSourceIds": [
+        "industrial_struct_merge",
+        "industrial_greeble_pack"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "ambient_floor": "0.100000",
+        "cam_distance": "10.500000",
+        "cam_elevation": "24.000000",
+        "cam_offset_x": "0.000000",
+        "cam_offset_y": "0.000000",
+        "cam_offset_z": "0.000000",
+        "cam_orbit": "220.000000",
+        "cam_roll": "-0.060000",
+        "cam_target_x": "0.000000",
+        "cam_target_y": "4.500000",
+        "cam_target_z": "0.000000",
+        "camera_far": "100.000000",
+        "camera_fov": "60.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_move_speed": "3.000000",
+        "camera_near": "0.100000",
+        "camera_pitch": "0.000000",
+        "camera_pos_x": "0.000000",
+        "camera_pos_y": "1.000000",
+        "camera_pos_z": "-5.000000",
+        "camera_preset": "0.000000",
+        "camera_yaw": "0.000000",
+        "column_band_spacing": "0.620000",
+        "column_band_width": "0.045000",
+        "dark_steel_color_b": "0.057000",
+        "dark_steel_color_g": "0.055000",
+        "dark_steel_color_r": "0.055000",
+        "detail_guard": "0.750000",
+        "dust_amount": "0.025000",
+        "edge_wear_strength": "0.620000",
+        "enable_greebles": "0.000000",
+        "enable_ground": "1.000000",
+        "enable_shadows": "0.000000",
+        "focal_length": "1.450000",
+        "fog_density": "0.280000",
+        "grating_spacing": "0.160000",
+        "grating_strength": "0.650000",
+        "greeble_distance": "0.350000",
+        "grime_amount": "0.580000",
+        "ground_drop": "0.050000",
+        "height_fog": "0.120000",
+        "height_fog_start": "5.000000",
+        "highlight_color_b": "0.780000",
+        "highlight_color_g": "0.840000",
+        "highlight_color_r": "0.860000",
+        "key_azimuth": "42.000000",
+        "key_elevation": "55.000000",
+        "ladder_rung_spacing": "0.220000",
+        "march_steps": "72.000000",
+        "max_distance": "60.000000",
+        "max_greebles": "0.000000",
+        "max_struct_parts": "220.000000",
+        "project_dir": "modules/sdf_industrial_scene_render",
+        "resolution_height": "810",
+        "resolution_width": "540",
+        "rim_power": "0.650000",
+        "rotate_speed": "0.000000",
+        "rust_color_b": "0.100000",
+        "rust_color_g": "0.130000",
+        "rust_color_r": "0.170000",
+        "shadow_distance": "13.000000",
+        "shadow_hardness": "11.000000",
+        "skylight_color_b": "0.900000",
+        "skylight_color_g": "0.980000",
+        "skylight_color_r": "1.000000",
+        "skylight_power": "2.700000",
+        "steel_color_b": "0.530000",
+        "steel_color_g": "0.550000",
+        "steel_color_r": "0.550000",
+        "surface_noise_scale": "3.800000",
+        "use_fly_cam": "0.000000",
+        "vignette_pregrade": "0.450000",
+        "void_darkness": "0.520000",
+        "web_thickness": "0.280000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1783301374016,
+  "sources": [],
+  "version": 5
+}

@@ -1,0 +1,88 @@
+name: "Industrial Bay Gen"
+version: "1.0"
+mode: generator
+resolution: [512, 256]
+working_format: RGBA8
+
+buffers:
+  - name: parts
+    structured: true
+    element_size: 80
+    element_count: 512
+
+parameters:
+  - name: preset
+    display: "Preset"
+    type: enum
+    options: [FoundryShaft, DenseMill, OpenAtrium, CollapsedBay, PipeMaze]
+    default: 0
+    flags: button_grid
+    group: "Structure"
+  - { name: seed, display: "Seed", type: int, min: 0, max: 999, default: 17, group: "Structure" }
+  - { name: bay_count_x, display: "Bays X", type: int, min: 2, max: 8, default: 3, group: "Structure" }
+  - { name: bay_count_z, display: "Bays Z", type: int, min: 2, max: 8, default: 4, group: "Structure" }
+  - { name: level_count, display: "Levels", type: int, min: 2, max: 10, default: 5, group: "Structure" }
+  - { name: bay_spacing_x, display: "Bay Spacing X", type: float, min: 0.4, max: 3.5, default: 1.25, group: "Scale" }
+  - { name: bay_spacing_z, display: "Bay Spacing Z", type: float, min: 0.4, max: 3.5, default: 1.15, group: "Scale" }
+  - { name: level_spacing, display: "Level Spacing", type: float, min: 0.4, max: 2.8, default: 1.0, group: "Scale" }
+  - { name: column_width, display: "Column Width", type: float, min: 0.04, max: 0.45, default: 0.16, group: "Scale" }
+  - { name: beam_thickness, display: "Beam Thickness", type: float, min: 0.035, max: 0.38, default: 0.14, group: "Scale" }
+  - { name: brace_radius, display: "Brace Radius", type: float, min: 0.015, max: 0.18, default: 0.055, group: "Scale" }
+  - { name: deck_thickness, display: "Deck Thickness", type: float, min: 0.015, max: 0.18, default: 0.045, group: "Scale" }
+  - { name: catwalk_width, display: "Catwalk Width", type: float, min: 0.06, max: 0.7, default: 0.18, group: "Scale" }
+  - { name: pipe_radius_min, display: "Pipe Radius Min", type: float, min: 0.01, max: 0.15, default: 0.035, group: "Scale" }
+  - { name: pipe_radius_max, display: "Pipe Radius Max", type: float, min: 0.02, max: 0.24, default: 0.09, group: "Scale" }
+  - { name: column_density, display: "Columns", type: float, min: 0.0, max: 1.0, default: 0.82, group: "Density" }
+  - { name: primary_beam_density, display: "Beams", type: float, min: 0.0, max: 1.0, default: 0.72, group: "Density" }
+  - { name: brace_density, display: "Braces", type: float, min: 0.0, max: 1.0, default: 0.32, group: "Density" }
+  - { name: deck_density, display: "Decks/Catwalks", type: float, min: 0.0, max: 1.0, default: 0.12, group: "Density" }
+  - { name: pipe_density, display: "Pipes", type: float, min: 0.0, max: 1.0, default: 0.18, group: "Density" }
+  - { name: ladder_density, display: "Ladders", type: float, min: 0.0, max: 1.0, default: 0.12, group: "Density" }
+  - { name: skylight_density, display: "Skylights", type: float, min: 0.0, max: 1.0, default: 0.04, group: "Density" }
+  - { name: missing_span_rate, display: "Missing Spans", type: float, min: 0.0, max: 0.75, default: 0.16, group: "Variation" }
+  - { name: reference_composition_bias, display: "Reference Bias", type: float, min: 0.0, max: 1.5, default: 0.95, group: "Variation" }
+  - { name: skew_amount, display: "Skew", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Variation" }
+  - { name: collapse_amount, display: "Collapse", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Variation" }
+  - { name: vertical_pipe_weight, display: "Vertical Pipes", type: float, min: 0.0, max: 1.0, default: 0.34, group: "Variation" }
+  - name: preview_mode
+    display: "Preview Mode"
+    type: enum
+    options: [Top, Side]
+    default: 1
+    flags: button_grid
+    group: "Preview"
+  - { name: preview_scale, display: "Preview Scale", type: float, min: 0.01, max: 0.25, default: 0.06, group: "Preview" }
+
+passes:
+  - name: compute
+    shader: bay.hlsl
+    target: cs_5_0
+    dispatch: [8, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:parts"
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:parts" }
+
+outputs:
+  - { name: "Preview", pass: preview }
+
+data_outputs:
+  - name: "StructParts"
+    buffer: "parts"
+    schema:
+      - { name: center, type: float3 }
+      - { name: axis, type: float3 }
+      - { name: up, type: float3 }
+      - { name: half_extents, type: float3 }
+      - { name: length, type: float }
+      - { name: radius, type: float }
+      - { name: kind, type: float }
+      - { name: material, type: float }
+      - { name: seed, type: float }
+      - { name: group, type: float }
+      - { name: active, type: float }
+      - { name: spare, type: float }
