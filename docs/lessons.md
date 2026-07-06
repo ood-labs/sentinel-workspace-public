@@ -8,6 +8,27 @@ updated: 2026-07-05
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
 
+## 2026-07-05 - Engraving a groove into an SDF needs a `+eps` surface bridge
+
+**Symptoms**: Carving recessed formwork grooves into a raymarched box lattice did
+*nothing* — panels_on 0 vs 1 gave byte-identical renders, params had no effect. Looked at
+first like a stale/cached render (framerate and param reads were live and correct).
+
+**Cause**: The cutter's near-surface slab was `shell = max(d, -d - depth)`, which evaluates
+to `0` exactly at the surface (`d≈0`). So the cutter was only negative for points *inside*
+the solid — but a ray marching from outside stops at `d≈0` and never samples interior
+points, so the subtraction never moved the zero-crossing. The engrave only affected
+geometry the ray never visits. (`modules/steel_lattice/steel.hlsl`, `carveOne`.)
+
+**Fix**: Make the removal slab straddle the surface with a small outward bridge:
+`shell = max(d - eps, -d - depth)` (eps ≈ 0.02). Now the cutter is negative from a hair
+*outside* the surface down to `depth` inside, so `d = max(d, -cutter)` actually pushes the
+surface inward → a real recess. Same principle for any SDF engrave/emboss.
+
+**Frequency**: recurring (any time you subtract surface detail from a marched SDF)
+
+**Discovered**: 2026-07-05
+
 ## 2026-07-05 - Artist-facing XY controls should be Y-up, not raw UV-down
 
 **Symptoms**: Abstract poster placement pads technically worked, but dragging Y felt inverted.

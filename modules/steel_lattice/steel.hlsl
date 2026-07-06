@@ -11,6 +11,7 @@
 // carveGrooves) — actual geometry that changes the silhouette and self-shadows.
 
 #include "../_shared/sdf/sdf_ops.hlsli"
+#include "../_shared/sdf/sdf_noise.hlsli"
 #include "../_shared/sdf/sdf_shading.hlsli"
 
 RWTexture2D<float4> OutputUAV : register(u0);
@@ -145,21 +146,16 @@ float march(float3 ro, float3 rd, float maxT, int maxSteps)
     return -1.0;
 }
 
-[numthreads(8, 8, 1)]
-void main(uint3 DTid : SV_DispatchThreadID)
+// Full per-ray shade: camera ray -> march -> weathered concrete + headlamp -> fade to
+// black. Returns linear HDR. Called once per sub-sample so supersampling averages both
+// geometry edges AND shading noise (real SSAA).
+float3 shadeRay(float2 uv)
 {
-    uint2 pixel = DTid.xy;
-    if (pixel.x >= (uint)_Resolution.x || pixel.y >= (uint)_Resolution.y) return;
-
-    float2 uv = ((float2)pixel + 0.5) / _Resolution.xy;
     float2 ndc = (uv * 2.0 - 1.0) * float2(_Resolution.x / _Resolution.y, -1.0);
 
     float3 ro; float3 rd;
-    if (cam_mode == 0)   // Fly
+    if (cam_mode == 0)   // Fly: unproject through the live inverse view-projection
     {
-        // canonical fly camera: unproject the near/far NDC points through the live
-        // inverse view-projection so WASD + right-drag in the viewport actually steer.
-        // NDC is Y-flipped for DX clip space (top = +1).
         float2 ndcv = float2(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0);
         float4 nearW = mul(_InvViewProjMatrix, float4(ndcv, 0.0, 1.0));
         float4 farW  = mul(_InvViewProjMatrix, float4(ndcv, 1.0, 1.0));
@@ -167,7 +163,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         ro = _CameraPos;
         rd = normalize(farW.xyz - nearW.xyz);
     }
-    else
+    else                 // Orbit
     {
         float az = cam_orbit + rotate_speed * _Time * 30.0;
         sdf_orbitRay(az, cam_elevation, cam_distance,
@@ -176,33 +172,98 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     g_camPos = ro;   // feed sceneMap's distance LOD (correct in both camera modes)
 
-    float3 sun = sdf_sunDir(sun_azimuth, sun_elevation);
-    float3 bg = bg_color;
-
     float t = march(ro, rd, march_dist, 160);
+    if (t < 0.0) return float3(0.0, 0.0, 0.0);   // miss -> fade-to-black background
 
-    float3 col = bg;
-    if (t >= 0.0)   // march returns -1 for a true miss; t==0 (camera on/in surface) is a hit
+    float3 pos = ro + rd * t;
+    float3 n = sdf_calcNormal(pos);
+    float ao = sdf_calcAO(pos, n);
+
+    // high-frequency surface detail fades with distance to kill shimmer (SSAA does the rest)
+    float detailLod = saturate(1.0 - (t - 8.0) / 26.0);
+
+    // ---- weathered concrete albedo: layered noise, coarse -> fine (heavy decay) ----
+    float ns = noise_scale;
+    float3 albedo = steel_color;
+
+    // macro tone: large patchy staining (triplanar so it wraps faces)
+    float macro = sd_triplanar_fbm(pos, n, ns * 0.5, 4);
+    albedo *= lerp(1.0 - 0.55 * grime_amount, 1.0 + 0.22 * grime_amount, macro);
+
+    // spalled blotches: darker exposed aggregate (low-freq, always on)
+    float spall = sd_fbm3(pos * ns * 0.5 + 13.7, 3);
+    albedo = lerp(albedo, albedo * 0.4, spall_amount * smoothstep(0.5, 0.72, spall));
+
+    // ---- fine detail layers (near-field only: skip far to save cost + avoid alias) ----
+    if (detailLod > 0.004)
     {
-        float3 pos = ro + rd * t;
-        float3 n = sdf_calcNormal(pos);
-        float ao = sdf_calcAO(pos, n);
-
-        float sha = 1.0;
-        if (shadows != 0)
-            sha = sdf_softShadow(pos + n * 0.02, sun, 8.0, 14.0);
-
-        col = sdf_shade(steel_color, n, rd, sun, sha, ao, spec_amt, 28.0);
-
-        // recede into darkness with distance — the reference falls off to black
-        float fog = 1.0 - exp(-fog_density * 0.06 * max(t, 0.0));
-        col = lerp(col, bg, fog);
+        // meso mottle (medium frequency)
+        float meso = sd_fbm3(pos * ns * 2.3 + 5.1, 5);
+        albedo *= lerp(1.0, 0.72 + 0.55 * meso, grime_amount * detailLod);
+        // fine grain / pitting (concrete pores, high frequency)
+        float micro = sd_fbm3(pos * ns * 7.0, 3);
+        albedo *= 1.0 - detail_amount * detailLod * (micro - 0.5) * 0.9;
+        // vertical drip-streaks: domain-warped fbm, sharpened, only on vertical faces
+        float vface = 1.0 - abs(n.y);
+        float streak = sd_fbm3_warp(float3(pos.x, pos.y * 0.2, pos.z) * ns * 1.6, 4, 0.6);
+        streak = pow(saturate(streak), lerp(1.0, 5.0, streak_sharp));
+        albedo *= 1.0 - streak_amount * detailLod * vface * streak;
+        // cracks / veins: ridged turbulence, thin dark lines
+        float cr = sd_ridged3(pos * ns * 1.4, 4);
+        albedo = lerp(albedo, albedo * 0.3, crack_amount * detailLod * smoothstep(0.68, 0.92, cr));
     }
 
-    // optional desaturate toward the black-and-white reference look
-    float luma = dot(col, float3(0.299, 0.587, 0.114));
-    col = lerp(col, luma.xxx, desaturate);
+    // grime settles into the AO recesses (always on)
+    albedo *= lerp(1.0, 0.55, saturate((1.0 - ao) * grime_amount * 1.5));
+    // worn bright edges (geometry-driven arris highlight)
+    float3 an = abs(n);
+    float mx = max(an.x, max(an.y, an.z));
+    float sm = an.x + an.y + an.z - mx - min(an.x, min(an.y, an.z));
+    float edge = smoothstep(0.15, 0.5, sm / max(mx, 1e-3));
+    albedo = lerp(albedo, albedo * 1.7 + 0.06, edge * edge_wear * detailLod);
 
-    col = pow(saturate(col * exposure), 1.0 / 2.2);
-    OutputUAV[pixel] = float4(col, 1.0);
+    // ---- camera headlamp lighting (everything fades to black) ----
+    // the lamp lives at the ACTIVE ray origin ro (correct for fly AND orbit). camDist == t.
+    float3 L = normalize(ro - pos);
+    float diff = max(dot(n, L), 0.0);
+    float atten = exp(-spot_falloff * t);              // distance falloff
+    float cone  = exp(-spot_cone * dot(ndc, ndc));     // torch beam: brighter center
+    float sha = 1.0;
+    if (shadows != 0)
+        sha = sdf_softShadow(pos + n * 0.02, L, 9.0, min(t, 12.0));
+    float key  = spot_intensity * diff * atten * cone * sha;
+    float spec = pow(max(dot(n, L), 0.0), 40.0) * spec_amt * atten * cone;
+    float3 sunDir = sdf_sunDir(sun_azimuth, sun_elevation);
+    float fill = sun_fill * max(dot(n, sunDir), 0.0);
+
+    float3 col = albedo * (ambient * ao + key + fill) + spec;
+    col *= exp(-fog_density * 0.06 * max(t, 0.0));      // recede into pure black
+    return col;
+}
+
+[numthreads(8, 8, 1)]
+void main(uint3 DTid : SV_DispatchThreadID)
+{
+    uint2 pixel = DTid.xy;
+    if (pixel.x >= (uint)_Resolution.x || pixel.y >= (uint)_Resolution.y) return;
+
+    // supersample: cast an ss x ss grid of jittered rays per pixel and average
+    int ss = clamp((int)aa_samples, 1, 8);
+    float3 acc = float3(0.0, 0.0, 0.0);
+    [loop]
+    for (int sy = 0; sy < 8; sy++)
+    {
+        if (sy >= ss) break;
+        [loop]
+        for (int sx = 0; sx < 8; sx++)
+        {
+            if (sx >= ss) break;
+            float2 sub = (float2(sx, sy) + 0.5) / (float)ss;
+            acc += shadeRay(((float2)pixel + sub) / _Resolution.xy);
+        }
+    }
+    acc /= (float)(ss * ss);
+
+    // linear HDR out — bloom + full B&W grade happen downstream in the mono_post node
+    OutputUAV[pixel] = float4(acc, 1.0);
 }

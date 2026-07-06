@@ -170,6 +170,34 @@ kind-indexed vocabulary, `sdf_shading` normals/AO/shadow/camera with a
   lines objects along streets. ~96 instances at 720p with shadows runs real-time on a
   5090. · *compose-with:* `pl_grid`/`pl_spawn`/`pl_path` (placement), `post` (finish),
   `signal` (sun/camera motion).
+- **Industrial structural SDF world** — *StructPart + GreeblePart buffers → one SDF
+  scene* · `industrial_bay_gen`, `industrial_surface_sampler`,
+  `industrial_greeble_place`, `industrial_struct_merge`, `industrial_greeble_pack`,
+  `sdf_industrial_scene_render` · generates multi-level steel interiors with columns,
+  beams, braces, catwalks, pipes, ladders, optional surface-attached greebles, and a
+  fly/orbit camera in one occlusion domain. Defaults are intentionally lightweight
+  (540×810, greebles/shadows off); raise `max_greebles`, `greeble_density`, shadows,
+  and resolution incrementally. · *compose-with:* `industrial_mono_post`, camera
+  expressions, saved projects under `projects/industrial_steel_greebled/`.
+- **Infinite structural lattice** — *generator → HDR texture* · `steel_lattice` · a whole
+  concrete/steel factory interior as ONE raymarched SDF, endless in every direction via
+  pure domain repetition (`rep1(x,c)=x-c*round(x/c)`): vertical columns + X/Z beams
+  unioned, no mesh / no placement buffer / no bounds. Detail is all real geometry: carved
+  formwork grooves (1-Lipschitz cutter with a `+eps` surface bridge; independent H-band /
+  V-flute width+depth, offsets, edge rounding, distance-LOD), and guard-banded junction
+  hardware (connection collar + gridded bolt rows at every node). Layered procedural
+  weathering (macro→meso→fine→cracks→streaks) + a **camera-headlamp** light (lamp at the
+  ray origin, distance falloff + torch cone, fade-to-black) + in-shader SSAA (NxN jittered
+  rays). Outputs linear HDR. ~60 fps/720p at AA 2–4 on a 5090. · *compose-with:*
+  `industrial_mono_post` (B&W bloom grade — the finished two-node graph), `signal` (drive
+  `cam_orbit`/light for motion). Show: `projects/industrial_lattice/`.
+- **Procedural noise header** — *HLSL include* · `_shared/sdf/sdf_noise.hlsli` ·
+  self-contained value-noise kit for SDF surface detail: `sd_hash31`, `sd_vnoise3`,
+  `sd_fbm3(p,oct)`, `sd_triplanar_fbm(p,n,scale,oct)` (normal-weighted, wraps faces),
+  `sd_ridged3` (turbulence — cracks/veins/rock), `sd_fbm3_warp` (domain-warped, breaks the
+  value-noise grid so patterns stop looking stretched). `sd_` prefix, no nested includes —
+  include after `sdf_ops.hlsli`. Compose noise layers at different scales for realistic
+  weathering. · *compose-with:* any raymarched SDF shade pass.
 
 ## Control & reactivity
 
