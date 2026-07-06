@@ -55,6 +55,21 @@ float3 groundAlbedo(float3 p)
     float g = fbm2(p.xz * 0.6);
     return lerp(float3(0.80, 0.72, 0.57), float3(0.86, 0.79, 0.65), g);
 }
+// procedural "photograph" — a tiny desert-mountain landscape painted into a panel,
+// the surrealist collage-inset move. uv derived from the panel-local frame passed in p.
+#define M_PHOTO 30.0
+float3 photoAlbedo(float2 uv)
+{
+    float3 sky = lerp(float3(0.72, 0.78, 0.86), float3(0.30, 0.50, 0.74), saturate(uv.y));
+    float ridge = 0.40 + 0.16 * fbm2(float2(uv.x * 3.2, 1.0)) + 0.06 * fbm2(float2(uv.x * 9.0, 4.0));
+    float m = smoothstep(ridge + 0.02, ridge - 0.02, uv.y);
+    float3 mtn = lerp(float3(0.42, 0.40, 0.46), float3(0.60, 0.55, 0.52), fbm2(uv * 6.0));
+    float3 grd = lerp(float3(0.74, 0.66, 0.48), float3(0.60, 0.50, 0.34), fbm2(uv * 5.0));
+    float g = smoothstep(0.30, 0.26, uv.y);                 // ground band at the bottom
+    float3 c = lerp(sky, mtn, m);
+    return lerp(c, grd, g);
+}
+
 float3 matAlbedo(float mat, float3 p)
 {
     if (mat < 0.5) return groundAlbedo(p);
@@ -72,6 +87,7 @@ float3 matAlbedo(float mat, float3 p)
 }
 float2 matSpec(float mat)
 {
+    if (mat > 29.5) return float2(0.05, 18.0);   // photo panel (matte)
     if (mat < 0.5) return float2(0.02, 16.0);
     if (mat < 1.5) return float2(0.04, 18.0);
     if (mat < 2.5) return float2(0.03, 24.0);
@@ -96,8 +112,13 @@ float2 mapStructure(float3 p)
     float shelf  = sd_rbox(p - float3(0.15, 3.60, 0.60), float3(2.15, 0.055, 0.95), 0.015);
     float plinth = sd_rbox(p - float3(-1.70, 2.25, 0.30), float3(0.52, 1.15, 0.55), 0.03);
     res = op_matmin(res, float2(min(shelf, plinth), M_WHITE));
+    // photo-collage inset panel on the plinth (procedural desert-mountain "photo")
+    float photo = sd_rbox(p - float3(-1.70, 2.85, 0.92), float3(0.55, 0.72, 0.03), 0.02);
+    res = op_matmin(res, float2(photo, M_PHOTO));
     return res;
 }
+
+// (background mini-totems are drawn cheaply as horizon silhouettes in skyColor)
 float2 mapWires(float3 p)
 {
     float3 mastTop = float3(-2.55, 7.75, -0.05);
@@ -209,7 +230,13 @@ void shadeSample(float3 pos, out float3 albedo, out float2 spec)
     sres = op_matmin(sres, mapStructure(pw));
     sres = op_matmin(sres, mapWires(pw));
     float best = sres.x;
-    albedo = matAlbedo(sres.y, pos); spec = matSpec(sres.y);
+    if (sres.y > 29.5)             // photo panel — heavy fbm computed once, not in loops
+    {
+        float2 uv = float2((pos.x + 2.25) / 1.10, (pos.y - 2.13) / 1.44);
+        albedo = photoAlbedo(uv);
+    }
+    else albedo = matAlbedo(sres.y, pos);
+    spec = matSpec(sres.y);
 
     uint c0 = min((uint)_Data0_Count, 128u);
     [loop]
@@ -257,17 +284,22 @@ float3 skyColor(float3 rd)
         float3 mcol = lerp(float3(0.50, 0.57, 0.70), hor, 0.72 - L * 0.26);
         col = lerp(col, mcol, m);
     }
-    // tiny wrong-scale marks on the plain: distant figures + a couple of mini-totems
-    float mark = 0.0;
+    // distant wrong-scale mini-totems on the horizon (cheap silhouettes: bar + top ball)
+    float sil = 0.0;
     [unroll]
-    for (int f = 0; f < 6; f++)
+    for (int f = 0; f < 5; f++)
     {
-        float fa = -1.5 + f * 0.42;
-        float da = abs(az - fa);
-        float tall = (f == 2 || f == 5) ? 0.010 : 0.003;   // 2 mini-totems, rest figures
-        mark += smoothstep(0.012, 0.0, da) * smoothstep(0.0, tall, rd.y) * smoothstep(tall + 0.004, tall, rd.y);
+        float fa = -1.35 + f * 0.62;
+        float da = az - fa;
+        float w = 0.008 + 0.004 * fbm2(float2(fa * 5.0, 2.0));
+        float bodyH = 0.024 + 0.016 * fbm2(float2(fa * 3.0, 7.0));   // wrong-scale height
+        float bar = smoothstep(w, w * 0.55, abs(da))
+                  * smoothstep(bodyH, bodyH - 0.003, rd.y)
+                  * smoothstep(-0.002, 0.0015, rd.y);
+        float ball = smoothstep(w * 2.2, 0.0, length(float2(da, (rd.y - bodyH) * 1.1)));
+        sil = max(sil, max(bar, ball));
     }
-    col = lerp(col, float3(0.22, 0.21, 0.24), saturate(mark) * 0.7);
+    col = lerp(col, float3(0.20, 0.19, 0.23), saturate(sil) * 0.8);
     return col;
 }
 
@@ -300,7 +332,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float3 haze = lerp(sky_horizon.rgb, float3(0.86, 0.83, 0.76), 0.5);
 
     float mat;
-    float t = sdf_march(ro, rd, march_dist, 200, mat);
+    float t = sdf_march(ro, rd, march_dist, 140, mat);
 
     float3 col;
     if (t < 0.0)
