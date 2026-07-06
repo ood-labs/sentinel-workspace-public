@@ -67,7 +67,15 @@ parameters:
   - { name: sun_azimuth, display: "Sun Azimuth", type: float, min: 0.0, max: 360.0, default: 35.0, group: "Sun" }
   - { name: sun_elevation, display: "Sun Elevation", type: float, min: 5.0, max: 89.0, default: 52.0, group: "Sun" }
 
-  - { name: use_fly_cam, display: "Use Fly Camera", type: bool, default: false, flags: button, group: "Camera" }
+  # Fly = WASD + right-drag in viewport (default). Orbit = deterministic rig (drivable
+  # from MCP; use for captures). Enum button-grid, not a bool — a bool did not latch.
+  - name: cam_mode
+    display: "Camera Mode"
+    type: enum
+    options: [Fly, Orbit]
+    default: 0
+    flags: button_grid
+    group: "Camera"
   - { name: cam_orbit, display: "Camera Orbit", type: float, min: 0.0, max: 360.0, default: 30.0, group: "Camera" }
   - { name: cam_elevation, display: "Camera Elevation", type: float, min: -5.0, max: 89.0, default: 18.0, group: "Camera" }
   - { name: cam_distance, display: "Camera Distance", type: float, min: 0.5, max: 20.0, default: 5.5, group: "Camera" }

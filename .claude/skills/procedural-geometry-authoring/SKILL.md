@@ -87,11 +87,39 @@ set_size 4, kinds [4, 4, 6, 7]` (towers weighted double, trees, lamps),
 
 ## Camera
 
-Modules ship both rigs behind `use_fly_cam`: the `camera` feature (WASD + right-drag
-in the viewport; also drivable via `camera_pos_x/y/z`, `camera_yaw/pitch/fov` in
-StateTree) and a deterministic orbit rig (`cam_orbit/elevation/distance/target_y`,
-`rotate_speed` turntable). Use orbit for captures and A/B comparisons so framing is
-reproducible; expressions can drive `cam_orbit` from a `signal` LFO.
+Modules ship two rigs, chosen by a `cam_mode` enum button-grid `[Fly, Orbit]`,
+**default Fly**. Never default to Orbit and never gate the mode behind a `bool` toggle —
+see the two hard-won rules at the end of this section.
+
+- **Fly** (default): the `camera` feature — WASD + right-drag in the viewport. Generate
+  the ray by UNPROJECTING NDC through `_InvViewProjMatrix` (below), NOT the
+  `_RayDirection(uv)` helper, which does not reliably track the live view. The fly camera
+  is driven ONLY by live viewport input: the `camera_pos_x/y/z`, `camera_yaw/pitch`
+  StateTree params do NOT move it (setting them via MCP is a proven no-op), so you cannot
+  frame or capture the fly camera from automation — switch to Orbit for that.
+- **Orbit**: deterministic rig (`cam_orbit/elevation/distance/target_y`, `cam_focal`,
+  `rotate_speed` turntable). Fully drivable from StateTree/MCP, so use it for captures and
+  A/B comparisons; expressions can drive `cam_orbit` from a `signal` LFO.
+
+Fly ray-gen (canonical — matrix path, Y-flipped for DX clip space):
+```hlsl
+if (cam_mode == 0) {                                  // Fly
+    float2 ndcv = float2(uv.x*2-1, 1 - uv.y*2);
+    float4 nW = mul(_InvViewProjMatrix, float4(ndcv,0,1));
+    float4 fW = mul(_InvViewProjMatrix, float4(ndcv,1,1));
+    nW/=nW.w; fW/=fW.w;
+    ro = _CameraPos; rd = normalize(fW.xyz - nW.xyz);
+} else {                                              // Orbit
+    sdf_orbitRay(cam_orbit + rotate_speed*_Time*30.0, cam_elevation, cam_distance,
+                 float3(0, cam_target_y, 0), ndc, cam_focal, ro, rd);
+}
+```
+
+Two rules learned the hard way (industrial_lattice, working example modules/steel_lattice):
+1. **Default to Fly, not Orbit.** A forced orbit branch silently discards the viewport
+   camera every frame, so right-drag/WASD look completely dead ("locked to orbit").
+2. **Use an enum button-grid for the mode switch, not a `bool`+`flags: button`** — the
+   bool checkbox did not latch reliably in the panel, so the mode never actually flipped.
 
 ## Verification loop
 

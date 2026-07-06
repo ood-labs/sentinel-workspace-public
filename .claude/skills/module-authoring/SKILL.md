@@ -389,6 +389,14 @@ features: [math3d, noise, camera]
 
 Provides in cbuffer: `_ViewMatrix`, `_ProjMatrix`, `_ViewProjMatrix`, `_InvViewProjMatrix`, `_CameraPos`, `_CameraNear`, `_CameraFar`, `_CameraFOV`.
 
+**Fly-cam rules (learned the hard way):** for raymarched scenes build the ray by
+unprojecting through `_InvViewProjMatrix` (below) — the `_RayDirection(uv)` helper does
+NOT reliably track right-drag/WASD. If you expose a camera-mode switch, **default it to
+Fly, never Orbit** (a forced orbit branch silently discards the viewport camera, so the
+fly cam looks dead), and use an **enum button-grid**, not a `bool`+`flags: button` (the
+bool did not latch in the panel). Note the live fly camera is driven only by viewport
+input — the `camera_pos_x/y/z` StateTree params do not move it.
+
 For ray-marched scenes, generate rays from camera. **Must Y-flip for DX NDC**:
 ```hlsl
 // Screen UV → NDC (Y-flipped: top=+1, bottom=-1 for DX clip space)

@@ -98,12 +98,16 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float2 ndc = (uv * 2.0 - 1.0) * float2(_Resolution.x / _Resolution.y, -1.0);
 
     float3 ro; float3 rd;
-    if (use_fly_cam != 0)
-    {
+    if (cam_mode == 0)   // Fly: unproject through the live inverse view-projection so
+    {                    // WASD + right-drag actually steer (NOT the _RayDirection helper)
+        float2 ndcv = float2(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0);
+        float4 nW = mul(_InvViewProjMatrix, float4(ndcv, 0.0, 1.0));
+        float4 fW = mul(_InvViewProjMatrix, float4(ndcv, 1.0, 1.0));
+        nW /= nW.w; fW /= fW.w;
         ro = _CameraPos;
-        rd = _RayDirection(uv);
+        rd = normalize(fW.xyz - nW.xyz);
     }
-    else
+    else                 // Orbit: deterministic, MCP-drivable, for captures
     {
         float az = cam_orbit + rotate_speed * _Time * 30.0;
         sdf_orbitRay(az, cam_elevation, cam_distance,
