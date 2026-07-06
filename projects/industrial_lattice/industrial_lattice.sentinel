@@ -1,0 +1,194 @@
+{
+  "graph": {
+    "canvasZoom": 1.4000976085662842,
+    "links": [
+      {
+        "endPinId": 19,
+        "id": 4,
+        "startPinId": 26
+      }
+    ],
+    "nextLinkId": 5,
+    "nextNodeId": 14,
+    "nextPinId": 27,
+    "nodes": [
+      {
+        "displayName": "post",
+        "entityId": "post",
+        "id": 10,
+        "posX": 823.0853271484375,
+        "posY": 17.6351318359375,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "lattice",
+        "entityId": "lattice",
+        "id": 13,
+        "posX": 517.7896118164063,
+        "posY": -7.1617889404296875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 19,
+        "kind": 0,
+        "name": "Scene",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 20,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 26,
+        "kind": 1,
+        "name": "Lattice",
+        "nodeId": 13,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "",
+  "name": "industrial_lattice",
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "post",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "post",
+      "inputSlotSourceIds": [
+        "lattice"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bloom_intensity": "0.825000",
+        "bloom_radius": "0.018000",
+        "bloom_threshold": "0.057000",
+        "contrast": "0.782000",
+        "crush_blacks": "0.074000",
+        "exposure": "1.021000",
+        "gamma_lift": "0.880000",
+        "grain_amount": "0.025000",
+        "lift_highlights": "1.000000",
+        "project_dir": "../../modules/industrial_mono_post",
+        "saturation": "0.000000",
+        "split_tone_amount": "0.080000",
+        "vignette": "0.654000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "lattice",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "lattice",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "aa_samples": "4.000000",
+        "ambient": "0.050000",
+        "band_depth": "0.045000",
+        "band_width": "0.077000",
+        "beam_h": "0.392000",
+        "beam_w": "0.248000",
+        "bolt_pitch": "0.239000",
+        "bolt_radius": "0.023000",
+        "bolts_on": "1.000000",
+        "cam_distance": "15.000000",
+        "cam_elevation": "-8.000000",
+        "cam_focal": "1.400000",
+        "cam_mode": "0.000000",
+        "cam_orbit": "45.000000",
+        "cam_target_y": "3.500000",
+        "camera_far": "100.000000",
+        "camera_fov": "120.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_move_speed": "5.105262",
+        "camera_near": "0.100000",
+        "camera_pitch": "0.404178",
+        "camera_pos_x": "-15.282398",
+        "camera_pos_y": "1.430623",
+        "camera_pos_z": "-4.630461",
+        "camera_yaw": "-0.525977",
+        "cell": "4.493000",
+        "col_thick": "0.420000",
+        "collar_h": "0.359000",
+        "collar_out": "0.187000",
+        "collar_round": "0.030000",
+        "crack_amount": "0.211000",
+        "detail_amount": "0.131000",
+        "edge_wear": "0.400000",
+        "floor_h": "4.000000",
+        "flute_depth": "0.024000",
+        "flute_width": "0.250000",
+        "fog_density": "0.700000",
+        "grime_amount": "0.451000",
+        "junctions_on": "1.000000",
+        "march_dist": "63.660000",
+        "member_round": "0.061000",
+        "noise_scale": "7.730000",
+        "panel_h": "3.586000",
+        "panel_off_x": "0.000000",
+        "panel_off_y": "0.238000",
+        "panel_off_z": "-5.449000",
+        "panel_w": "1.586000",
+        "panels_on": "1.000000",
+        "project_dir": "../../modules/steel_lattice",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "rotate_speed": "0.000000",
+        "shadows": "1.000000",
+        "spall_amount": "0.267000",
+        "spec_amt": "0.220000",
+        "spot_cone": "0.300000",
+        "spot_falloff": "0.040000",
+        "spot_intensity": "2.100000",
+        "steel_color_b": "0.490000",
+        "steel_color_g": "0.510000",
+        "steel_color_r": "0.520000",
+        "streak_amount": "0.158000",
+        "streak_sharp": "0.376000",
+        "sun_azimuth": "55.000000",
+        "sun_elevation": "42.000000",
+        "sun_fill": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1783312473562,
+  "sources": [],
+  "version": 5
+}
