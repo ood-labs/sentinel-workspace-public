@@ -8,6 +8,26 @@ updated: 2026-07-05
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
 
+## 2026-07-05 - Artist-facing XY controls should be Y-up, not raw UV-down
+
+**Symptoms**: Abstract poster placement pads technically worked, but dragging Y felt inverted.
+The scene also had a deeper editability problem: the smaller shape generators exposed many
+placement controls, while the hero ribbon still hid its structure inside shader math.
+
+**Cause**: The poster generators exposed direct UV-space positions (`y=0` at the top) as user
+handles. That is natural for screen-space renderers but wrong for artist-facing layout controls.
+The FUI dashboard modules used the better convention: Y-up/world-like controls in generators, with
+renderers or record emitters converting to UV (`0.5 - y`) at the boundary.
+
+**Fix**: Convert user-facing point pads to Y-up values and hide UV/Y-down conversion inside the
+generators. For the abstract poster, `abstract_shape_gen` and `abstract_triangle_gen` now convert
+inside record emission, while the hero ribbon uses a Y-up `abstract_ribbon_path` generator feeding a
+data-consuming material renderer.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-05
+
 ## 2026-07-05 — A merged buffer-consuming renderer defeats per-node previews
 
 **Symptoms**: Built a data-driven cloner system where N placement generators fed ONE renderer
