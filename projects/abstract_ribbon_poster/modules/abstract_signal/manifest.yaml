@@ -1,0 +1,37 @@
+name: "Abstract Signal"
+version: "1.0"
+mode: generator
+resolution: [256, 64]
+working_format: RGBA8
+
+buffers:
+  - name: sig
+    structured: true
+    element_size: 16
+    element_count: 1
+
+parameters:
+  - { name: pulse_rate, display: "Pulse Rate", type: float, min: 0.0, max: 4.0, default: 0.18, group: "Signal" }
+  - { name: sweep_rate, display: "Sweep Rate", type: float, min: 0.0, max: 2.0, default: 0.035, group: "Signal" }
+  - { name: beat_rate, display: "Beat Rate", type: float, min: 0.0, max: 8.0, default: 0.80, group: "Signal" }
+  - { name: beat_sharp, display: "Beat Sharpness", type: float, min: 0.1, max: 8.0, default: 2.2, group: "Signal" }
+  - { name: slow_rate, display: "Slow Rate", type: float, min: 0.0, max: 1.0, default: 0.020, group: "Signal" }
+
+passes:
+  - name: compute
+    shader: signal_compute.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:sig"
+  - { name: display, shader: signal_display.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:sig" } ] }
+
+outputs:
+  - { name: "Signal", pass: display }
+
+control_outputs:
+  - { name: pulse, buffer: sig, element: 0, field_offset: 0, description: "Slow sine pulse 0-1" }
+  - { name: sweep, buffer: sig, element: 0, field_offset: 4, description: "Saw sweep 0-1" }
+  - { name: beat, buffer: sig, element: 0, field_offset: 8, description: "Accent beat 0-1" }
+  - { name: slow, buffer: sig, element: 0, field_offset: 12, description: "Very slow sine 0-1" }

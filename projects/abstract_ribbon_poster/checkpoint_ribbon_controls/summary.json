@@ -1,0 +1,57 @@
+{
+  "artifacts": {
+    "graph_profile": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint_ribbon_controls\\graph_profile.json",
+    "output_capture": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint_ribbon_controls\\output_capture.json",
+    "output_image": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint_ribbon_controls\\output.png",
+    "project": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\abstract_ribbon_poster.sentinel",
+    "save_project": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint_ribbon_controls\\save_project.json"
+  },
+  "graph_profile": {
+    "frame_index": 3629604,
+    "node_count": 10,
+    "pipeline_ms": 0.48190000653266907,
+    "top_nodes": [
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_signal",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.3608
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_shape_gen",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0122
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_bg",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0099
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_ribbon_path",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0096
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_triangle_gen",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0084
+      }
+    ],
+    "total_ms": 1.517900012433529
+  },
+  "image_diff": null,
+  "pipeline_id": "abstract_post",
+  "project_saved": true,
+  "proof_dir": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint_ribbon_controls",
+  "saved_path": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\abstract_ribbon_poster.sentinel"
+}

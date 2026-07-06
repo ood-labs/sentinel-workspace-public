@@ -1,0 +1,70 @@
+name: "Abstract Ribbon Path"
+version: "1.0"
+mode: generator
+resolution: [512, 640]
+working_format: RGBA8
+
+buffers:
+  - name: path
+    structured: true
+    element_size: 48
+    element_count: 160
+
+parameters:
+  - { name: ribbon_center, display: "Ribbon Center", type: point2D, min: [-0.40, -0.45], max: [0.40, 0.40], default: [-0.030, -0.020], group: "Global" }
+  - { name: global_offset, display: "Global Offset", type: point2D, min: [-0.35, -0.35], max: [0.35, 0.35], default: [-0.010, -0.015], group: "Global" }
+  - { name: ribbon_scale, display: "Scale", type: float, min: 0.55, max: 1.60, default: 0.82, group: "Global" }
+  - { name: rotation, display: "Rotation", type: float, min: -1.20, max: 1.20, default: -0.08, group: "Global" }
+  - { name: active_samples, display: "Samples", type: int, min: 16, max: 160, default: 128, group: "Path" }
+  - { name: top_lip, display: "Top Lip", type: point2D, min: [-0.40, -0.45], max: [0.40, 0.40], default: [-0.080, 0.205], group: "Path Handles" }
+  - { name: left_shoulder, display: "Left Shoulder", type: point2D, min: [-0.40, -0.45], max: [0.40, 0.40], default: [-0.190, 0.085], group: "Path Handles" }
+  - { name: left_belly, display: "Left Belly", type: point2D, min: [-0.40, -0.45], max: [0.40, 0.40], default: [-0.125, -0.075], group: "Path Handles" }
+  - { name: lower_tip, display: "Lower Tip", type: point2D, min: [-0.40, -0.50], max: [0.40, 0.40], default: [0.035, -0.285], group: "Path Handles" }
+  - { name: right_belly, display: "Right Belly", type: point2D, min: [-0.40, -0.45], max: [0.40, 0.40], default: [0.155, -0.045], group: "Path Handles" }
+  - { name: right_lip, display: "Right Lip", type: point2D, min: [-0.40, -0.45], max: [0.40, 0.40], default: [0.110, 0.105], group: "Path Handles" }
+  - { name: inner_throat, display: "Inner Throat", type: point2D, min: [-0.40, -0.45], max: [0.40, 0.40], default: [0.005, 0.120], group: "Path Handles" }
+  - { name: inner_fold, display: "Inner Fold", type: point2D, min: [-0.40, -0.45], max: [0.40, 0.40], default: [-0.055, 0.025], group: "Path Handles" }
+  - { name: width_base, display: "Base Width", type: float, min: 0.010, max: 0.140, default: 0.033, group: "Width" }
+  - { name: width_lower, display: "Lower Bulge", type: float, min: -0.040, max: 0.120, default: 0.030, group: "Width" }
+  - { name: width_right, display: "Right Bulge", type: float, min: -0.040, max: 0.100, default: 0.016, group: "Width" }
+  - { name: width_top_cut, display: "Top Narrowing", type: float, min: 0.0, max: 0.080, default: 0.012, group: "Width" }
+  - { name: lower_width_u, display: "Lower Width U", type: float, min: 0.0, max: 1.0, default: 0.38, group: "Width" }
+  - { name: right_width_u, display: "Right Width U", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Width" }
+  - { name: top_thin_u, display: "Top Thin U", type: float, min: 0.0, max: 1.0, default: 0.02, group: "Width" }
+  - { name: fold_u, display: "Fold U", type: float, min: 0.0, max: 1.0, default: 0.78, group: "Fold" }
+  - { name: fold_width, display: "Fold Width", type: float, min: 0.02, max: 0.35, default: 0.13, group: "Fold" }
+  - { name: phase_offset, display: "Path Phase", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Animation" }
+  - { name: wave_amount, display: "Wave Amount", type: float, min: 0.0, max: 0.060, default: 0.003, group: "Animation" }
+  - { name: wave_count, display: "Wave Count", type: float, min: 0.0, max: 8.0, default: 2.0, group: "Animation" }
+  - { name: breathe_amount, display: "Breathe Width", type: float, min: 0.0, max: 0.30, default: 0.025, group: "Animation" }
+  - { name: animation_rate, display: "Animation Rate", type: float, min: 0.0, max: 2.0, default: 0.06, group: "Animation" }
+  - { name: depth_phase, display: "Depth Phase", type: float, min: -6.28, max: 6.28, default: 0.35, group: "Depth" }
+  - { name: seed, display: "Seed", type: int, min: 0, max: 64, default: 5, group: "Global" }
+
+passes:
+  - name: compute
+    shader: path.hlsl
+    target: cs_5_0
+    dispatch: [3, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:path"
+  - { name: preview, shader: preview.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:path" } ] }
+
+outputs:
+  - { name: "Preview", pass: preview }
+
+data_outputs:
+  - name: "Ribbon Path"
+    buffer: "path"
+    schema:
+      - { name: pos, type: float2 }
+      - { name: dir, type: float2 }
+      - { name: depth, type: float }
+      - { name: u, type: float }
+      - { name: v, type: float }
+      - { name: weight, type: float }
+      - { name: group, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: active, type: float }

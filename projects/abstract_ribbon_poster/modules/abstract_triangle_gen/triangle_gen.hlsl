@@ -9,6 +9,11 @@ struct TriangleRecord {
 
 RWStructuredBuffer<TriangleRecord> OutputBuffer : register(u0);
 
+float2 artistToUv(float2 p)
+{
+    return float2(p.x, 1.0 - p.y);
+}
+
 float hash11_local(float n)
 {
     return frac(sin(n * 37.23 + 19.17) * 43758.5453);
@@ -37,7 +42,8 @@ void main(uint3 id : SV_DispatchThreadID)
     int cx = cellIdx % c;
     int cy = cellIdx / c;
 
-    float2 mn = column_center - column_extent * 0.5;
+    float2 centerUv = artistToUv(column_center);
+    float2 mn = centerUv - column_extent * 0.5;
     float2 cellSize = column_extent / float2((float)c, (float)rw);
     float2 cellMin = mn + float2((float)cx, (float)cy) * cellSize;
     float idf = (float)(cx + cy * 17 + orient * 53 + seed * 7);
