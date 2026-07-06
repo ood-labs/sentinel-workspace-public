@@ -1,7 +1,7 @@
 name: "Dada Render"
 version: "0.1"
 mode: generator
-resolution: [900, 1350]
+resolution: [760, 1140]
 features: [camera]
 
 # STAGE 2 — data-driven: consumes a DadaPart buffer (data:0). Distortion params and
@@ -44,14 +44,45 @@ data_inputs:
       - { name: active, type: float }
 
 parameters:
-  # ---- distortion / surreal ----
-  - { name: melt_amt,     display: "Melt",         type: float, min: 0.0, max: 1.5, default: 0.0, group: "Distortion" }
-  - { name: warp_freq,    display: "Warp Freq",    type: float, min: 0.2, max: 3.0, default: 1.0, group: "Distortion" }
-  - { name: warp_speed,   display: "Warp Speed",   type: float, min: 0.0, max: 3.0, default: 0.6, group: "Distortion" }
-  - { name: sag_amt,      display: "Sag / Droop",  type: float, min: 0.0, max: 1.0, default: 0.0, group: "Distortion" }
-  - { name: mirror_count, display: "Mirror Count", type: int,   min: 0, max: 8, default: 0, group: "Distortion" }
-  - { name: painterly_amt,display: "Painterly",    type: float, min: 0.0, max: 1.0, default: 0.0, group: "Distortion" }
-  - { name: heat_amt,     display: "Heat Haze",    type: float, min: 0.0, max: 1.0, default: 0.35, group: "Distortion" }
+  # ---- warp (melt field) ----
+  - { name: melt_amt,   display: "Melt",       type: float, min: 0.0, max: 1.5, default: 0.0, group: "Warp" }
+  - name: warp_mode
+    display: "Warp Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal]
+    default: 0
+    flags: button_grid
+    group: "Warp"
+  - { name: warp_freq,  display: "Warp Freq",  type: float, min: 0.2, max: 4.0, default: 1.0, group: "Warp" }
+  - { name: warp_speed, display: "Warp Speed", type: float, min: 0.0, max: 3.0, default: 0.6, group: "Warp" }
+
+  # ---- deform (geometric domain ops) ----
+  - { name: twist_amt,  display: "Twist",   type: float, min: -2.0, max: 2.0, default: 0.0, group: "Deform" }
+  - { name: bend_amt,   display: "Bend",    type: float, min: -1.5, max: 1.5, default: 0.0, group: "Deform" }
+  - { name: swirl_amt,  display: "Swirl",   type: float, min: -3.0, max: 3.0, default: 0.0, group: "Deform" }
+  - { name: sag_amt,    display: "Sag",     type: float, min: 0.0,  max: 1.0, default: 0.0, group: "Deform" }
+  - { name: wave_amt,   display: "Wave",    type: float, min: 0.0,  max: 1.0, default: 0.0, group: "Deform" }
+  - { name: wave_freq,  display: "Wave Freq", type: float, min: 0.5, max: 8.0, default: 2.0, group: "Deform" }
+  - { name: pinch_amt,  display: "Pinch/Inflate", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Deform" }
+  - { name: mirror_count, display: "Mirror Count", type: int, min: 0, max: 8, default: 0, group: "Deform" }
+  - name: mirror_mode
+    display: "Mirror Mode"
+    type: enum
+    options: [Radial, MirrorX]
+    default: 0
+    flags: button_grid
+    group: "Deform"
+  - { name: dist_cx, display: "Center X", type: float, min: -3.0, max: 3.0, default: 0.0, group: "Deform" }
+  - { name: dist_cy, display: "Center Y", type: float, min: 0.0,  max: 9.0, default: 4.5, group: "Deform" }
+  - { name: dist_cz, display: "Center Z", type: float, min: -3.0, max: 3.0, default: 0.3, group: "Deform" }
+
+  # ---- surface ----
+  - { name: painterly_amt,   display: "Painterly",     type: float, min: 0.0, max: 1.0, default: 0.0, group: "Surface" }
+  - { name: painterly_scale, display: "Painterly Scale", type: float, min: 2.0, max: 20.0, default: 7.0, group: "Surface" }
+  - { name: facet_amt,       display: "Facet",         type: float, min: 0.0, max: 1.0, default: 0.0, group: "Surface" }
+  - { name: wobble_amt,      display: "Wobble",        type: float, min: 0.0, max: 1.0, default: 0.0, group: "Surface" }
+  - { name: hue_shift,       display: "Hue Shift",     type: float, min: 0.0, max: 1.0, default: 0.0, group: "Surface" }
+  - { name: heat_amt,        display: "Heat Haze",     type: float, min: 0.0, max: 1.0, default: 0.35, group: "Surface" }
 
   # ---- environment ----
   - { name: sky_zenith,  display: "Sky Zenith",  type: color, default: [0.50, 0.64, 0.74], group: "Environment" }

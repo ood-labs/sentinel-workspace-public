@@ -136,42 +136,96 @@ float2 mapWires(float3 p)
     return res;
 }
 
-// ---- domain distortion (melt / sag / mirror) ---------------------------------
+// ---- domain distortion toolkit ------------------------------------------------
+// warp_mode selects the melt field character.
 float3 warpField(float3 p)
 {
     float t = _Time * warp_speed;
     float f = warp_freq;
-    return float3(
-        sin(p.y * f + t)        + 0.5 * sin(p.z * f * 1.7 - t * 1.3),
-        sin(p.z * f * 0.9 + t)  + 0.5 * sin(p.x * f * 1.5 + t * 1.1),
-        sin(p.x * f * 1.1 - t)  + 0.5 * sin(p.y * f * 1.3 + t * 0.7));
+    if (warp_mode == 1)                                    // Ripple (radial)
+    {
+        float r = length(p.xz) + 1e-3;
+        float w = sin(r * f * 2.0 - t * 2.0);
+        return float3(p.x / r * w, sin(p.y * f + t), p.z / r * w) * 0.6;
+    }
+    if (warp_mode == 2)                                    // Turbulent
+        return float3(sin(p.y * f + t), cos(p.x * f - t), sin(p.z * f + t * 1.3));
+    if (warp_mode == 3)                                    // Fractal (2 octaves)
+    {
+        float3 w = float3(sin(p.y * f + t), sin(p.z * f * 1.3 + t), sin(p.x * f * 0.7 - t));
+        w += 0.5 * float3(sin(p.y * f * 2.1 + t * 1.7), sin(p.z * f * 2.3 - t), sin(p.x * f * 1.9 + t));
+        return w;
+    }
+    return float3(                                          // Flow (default)
+        sin(p.y * f + t)       + 0.5 * sin(p.z * f * 1.7 - t * 1.3),
+        sin(p.z * f * 0.9 + t) + 0.5 * sin(p.x * f * 1.5 + t * 1.1),
+        sin(p.x * f * 1.1 - t) + 0.5 * sin(p.y * f * 1.3 + t * 0.7));
 }
-// distort the solids' domain (ground stays flat). Returns the point at which to
-// evaluate structure/wires/instances.
+
+// distort the solids' domain (ground stays flat). Each op is gated by its amount.
 float3 domainDistort(float3 p)
 {
+    float3 c = float3(dist_cx, dist_cy, dist_cz);
     float3 q = p;
-    // sag: upper/outer forms droop under gravity
-    if (sag_amt > 0.001)
+    float h = q.y - c.y;
+
+    if (abs(twist_amt) > 0.001)                            // twist about Y by height
+        q.xz = sd_rot2(q.xz - c.xz, twist_amt * h * 0.35) + c.xz;
+    if (abs(bend_amt) > 0.001)                             // bend / arc the tower
+        q.x += bend_amt * h * h * 0.06;
+    if (abs(swirl_amt) > 0.001)                            // swirl, strongest at centre
+    {
+        float2 d = q.xz - c.xz;
+        q.xz = sd_rot2(d, swirl_amt * exp(-length(d) * 0.4)) + c.xz;
+    }
+    if (sag_amt > 0.001)                                   // gravity droop
     {
         float horiz = length(float2(q.x, q.z - 0.1));
         q.y -= sag_amt * horiz * smoothstep(1.0, 7.5, q.y) * 0.9;
     }
-    // mirror / radial kaleidoscope fold about the spine
-    if (mirror_count > 0.5)
+    if (wave_amt > 0.001)                                  // sinusoidal ripple
+        q += wave_amt * sin(q.yzx * wave_freq + _Time * warp_speed) * 0.3;
+    if (abs(pinch_amt) > 0.001)                            // pinch / inflate radially
     {
-        float2 c = float2(q.x, q.z - 0.2);
-        float a = atan2(c.y, c.x);
-        float seg = 6.28318530 / mirror_count;
-        a = (abs(frac(a / seg + 0.5) - 0.5)) * seg;
-        float r = length(c);
-        q.x = cos(a) * r; q.z = sin(a) * r + 0.2;
+        float2 d = q.xz - c.xz;
+        q.xz = c.xz + d * (1.0 + pinch_amt * (1.0 - saturate(length(d) * 0.3)));
     }
-    // melt: fbm/sin domain warp (animated ooze)
-    if (melt_amt > 0.001) q += melt_amt * warpField(q);
+    if (mirror_count > 0.5)                                // mirror / radial kaleidoscope
+    {
+        float2 d = float2(q.x, q.z - 0.2);
+        if (mirror_mode == 1) d.x = abs(d.x);              // Mirror X
+        else
+        {
+            float a = atan2(d.y, d.x);
+            float seg = 6.28318530 / mirror_count;
+            a = (abs(frac(a / seg + 0.5) - 0.5)) * seg;
+            float r = length(d);
+            d = float2(cos(a) * r, sin(a) * r);
+        }
+        q.x = d.x; q.z = d.y + 0.2;
+    }
+    if (melt_amt > 0.001) q += melt_amt * warpField(q);    // fbm/sin melt
+
     return q;
 }
-float distortLip() { return 1.0 / (1.0 + melt_amt * warp_freq * 0.65 + sag_amt * 0.6 + (mirror_count > 0.5 ? 0.2 : 0.0)); }
+
+// Lipschitz safety factor — under-steps the marcher in proportion to how much the
+// active distortions inflate the distance gradient (prevents overshoot / TDR).
+float distortLip()
+{
+    return 1.0 / (1.0 + melt_amt * warp_freq * 0.6 + sag_amt * 0.6
+                + wave_amt * wave_freq * 0.25 + abs(twist_amt) * 0.4
+                + abs(swirl_amt) * 0.3 + abs(pinch_amt) * 0.5 + abs(bend_amt) * 0.3
+                + (mirror_count > 0.5 ? 0.2 : 0.0));
+}
+
+// hue rotation for the surface hue-shift control
+float3 hueRotate(float3 col, float a)
+{
+    float3 k = float3(0.57735, 0.57735, 0.57735);
+    float cs = cos(a), sn = sin(a);
+    return col * cs + cross(k, col) * sn + k * dot(k, col) * (1.0 - cs);
+}
 
 // ---- instance helpers --------------------------------------------------------
 float3 partLocal(DadaPart d, float3 p, out float minsc)
@@ -354,13 +408,24 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float3 albedo; float2 sp;
         shadeSample(pos, albedo, sp);
 
-        // painterly surface: perturb normal + vary albedo so solids read hand-made
-        if (painterly_amt > 0.001)
+        // ---- surface distortion toolkit ----
+        float ps = painterly_scale;
+        if (facet_amt > 0.001)                                  // low-poly / crystalline facets
         {
-            float3 rnd = float3(fbm2(pos.xy * 7.3) - 0.5, fbm2(pos.yz * 7.3 + 3.1) - 0.5, fbm2(pos.zx * 7.3 + 7.7) - 0.5);
-            n = normalize(n + painterly_amt * 0.35 * rnd);
-            albedo *= 1.0 - painterly_amt * 0.20 * (fbm2(pos.xz * 9.0 + pos.y * 3.0) - 0.5) * 2.0;
+            float k = lerp(24.0, 3.0, saturate(facet_amt));
+            n = normalize(floor(n * k + 0.5) / k + 1e-4);
         }
+        if (painterly_amt > 0.001 || wobble_amt > 0.001)        // hand-made + animated surface
+        {
+            float ta = _Time * 1.5 * wobble_amt;
+            float3 rnd = float3(fbm2(pos.xy * ps + ta) - 0.5,
+                                fbm2(pos.yz * ps + 3.1 - ta) - 0.5,
+                                fbm2(pos.zx * ps + 7.7 + ta) - 0.5);
+            n = normalize(n + (painterly_amt * 0.35 + wobble_amt * 0.40) * rnd);
+            albedo *= 1.0 - painterly_amt * 0.20 * (fbm2(pos.xz * ps * 1.3 + pos.y * 3.0) - 0.5) * 2.0;
+        }
+        if (hue_shift > 0.001)                                  // psychedelic hue rotation up the tower
+            albedo = saturate(hueRotate(albedo, hue_shift * 6.2831 + pos.y * 0.25));
 
         col = sdf_shade(albedo, n, rd, sun, sha, ao, sp.x, sp.y);
         float sky_up = saturate(0.5 + 0.5 * n.y);
