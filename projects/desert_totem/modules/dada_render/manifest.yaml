@@ -1,0 +1,170 @@
+name: "Dada Render"
+version: "0.1"
+mode: generator
+resolution: [760, 1140]
+features: [camera]
+
+# STAGE 2 — data-driven: consumes a DadaPart buffer (data:0). Distortion params and
+# the second scatter input are added in later stages.
+
+data_inputs:
+  - name: "Parts"
+    slot: 0
+    schema:
+      - { name: pos_xy, type: float2 }
+      - { name: sc_xy, type: float2 }
+      - { name: pos_z, type: float }
+      - { name: sc_z, type: float }
+      - { name: yaw, type: float }
+      - { name: tilt, type: float }
+      - { name: roll, type: float }
+      - { name: kind, type: float }
+      - { name: mat, type: float }
+      - { name: group, type: float }
+      - { name: p0, type: float }
+      - { name: p1, type: float }
+      - { name: p2, type: float }
+      - { name: active, type: float }
+  - name: "Scatter"
+    slot: 1
+    schema:
+      - { name: pos_xy, type: float2 }
+      - { name: sc_xy, type: float2 }
+      - { name: pos_z, type: float }
+      - { name: sc_z, type: float }
+      - { name: yaw, type: float }
+      - { name: tilt, type: float }
+      - { name: roll, type: float }
+      - { name: kind, type: float }
+      - { name: mat, type: float }
+      - { name: group, type: float }
+      - { name: p0, type: float }
+      - { name: p1, type: float }
+      - { name: p2, type: float }
+      - { name: active, type: float }
+
+parameters:
+  # ---- warp — master melt + 3 combinable warp slots (each offset+oriented) ----
+  - { name: melt_amt,   display: "Melt (Master)", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Warp" }
+  - { name: warp_speed, display: "Wave Speed",    type: float, min: 0.0, max: 3.0, default: 0.6, group: "Warp" }
+
+  # Warp Slot 1
+  - { name: w1_amt,   display: "1 · Amount", type: float, min: 0.0, max: 3.0, default: 0.5, group: "Warp 1" }
+  - name: w1_mode
+    display: "1 · Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
+    default: 0
+    flags: button_grid
+    group: "Warp 1"
+  - { name: w1_freq,  display: "1 · Freq",  type: float, min: 0.2, max: 4.0, default: 1.0, group: "Warp 1" }
+  - { name: w1_speed, display: "1 · Speed", type: float, min: 0.0, max: 3.0, default: 0.6, group: "Warp 1" }
+  - { name: w1_yaw,   display: "1 · Yaw",   type: float, min: -3.15, max: 3.15, default: 0.0, group: "Warp 1" }
+  - { name: w1_pitch, display: "1 · Pitch", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Warp 1" }
+  - { name: w1_ox,    display: "1 · Offset X", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 1" }
+  - { name: w1_oy,    display: "1 · Offset Y", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 1" }
+  - { name: w1_oz,    display: "1 · Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 1" }
+
+  # Warp Slot 2 (off by default)
+  - { name: w2_amt,   display: "2 · Amount", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Warp 2" }
+  - name: w2_mode
+    display: "2 · Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
+    default: 1
+    flags: button_grid
+    group: "Warp 2"
+  - { name: w2_freq,  display: "2 · Freq",  type: float, min: 0.2, max: 4.0, default: 1.8, group: "Warp 2" }
+  - { name: w2_speed, display: "2 · Speed", type: float, min: 0.0, max: 3.0, default: 0.9, group: "Warp 2" }
+  - { name: w2_yaw,   display: "2 · Yaw",   type: float, min: -3.15, max: 3.15, default: 1.57, group: "Warp 2" }
+  - { name: w2_pitch, display: "2 · Pitch", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Warp 2" }
+  - { name: w2_ox,    display: "2 · Offset X", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 2" }
+  - { name: w2_oy,    display: "2 · Offset Y", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 2" }
+  - { name: w2_oz,    display: "2 · Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 2" }
+
+  # Warp Slot 3 (off by default)
+  - { name: w3_amt,   display: "3 · Amount", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Warp 3" }
+  - name: w3_mode
+    display: "3 · Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
+    default: 3
+    flags: button_grid
+    group: "Warp 3"
+  - { name: w3_freq,  display: "3 · Freq",  type: float, min: 0.2, max: 4.0, default: 2.6, group: "Warp 3" }
+  - { name: w3_speed, display: "3 · Speed", type: float, min: 0.0, max: 3.0, default: 1.3, group: "Warp 3" }
+  - { name: w3_yaw,   display: "3 · Yaw",   type: float, min: -3.15, max: 3.15, default: 0.0, group: "Warp 3" }
+  - { name: w3_pitch, display: "3 · Pitch", type: float, min: -3.15, max: 3.15, default: 1.57, group: "Warp 3" }
+  - { name: w3_ox,    display: "3 · Offset X", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 3" }
+  - { name: w3_oy,    display: "3 · Offset Y", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 3" }
+  - { name: w3_oz,    display: "3 · Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 3" }
+
+  # ---- deform (geometric domain ops) ----
+  - { name: twist_amt,  display: "Twist",   type: float, min: -2.0, max: 2.0, default: 0.0, group: "Deform" }
+  - { name: bend_amt,   display: "Bend",    type: float, min: -1.5, max: 1.5, default: 0.0, group: "Deform" }
+  - { name: swirl_amt,  display: "Swirl",   type: float, min: -3.0, max: 3.0, default: 0.0, group: "Deform" }
+  - { name: sag_amt,    display: "Sag",     type: float, min: 0.0,  max: 1.0, default: 0.0, group: "Deform" }
+  - { name: wave_amt,   display: "Wave",    type: float, min: 0.0,  max: 1.0, default: 0.0, group: "Deform" }
+  - { name: wave_freq,  display: "Wave Freq", type: float, min: 0.5, max: 8.0, default: 2.0, group: "Deform" }
+  - { name: pinch_amt,  display: "Pinch/Inflate", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Deform" }
+  - { name: mirror_count, display: "Mirror Count", type: int, min: 0, max: 8, default: 0, group: "Deform" }
+  - name: mirror_mode
+    display: "Mirror Mode"
+    type: enum
+    options: [Radial, MirrorX]
+    default: 0
+    flags: button_grid
+    group: "Deform"
+  - { name: dist_cx, display: "Center X", type: float, min: -3.0, max: 3.0, default: 0.0, group: "Deform" }
+  - { name: dist_cy, display: "Center Y", type: float, min: 0.0,  max: 9.0, default: 4.5, group: "Deform" }
+  - { name: dist_cz, display: "Center Z", type: float, min: -3.0, max: 3.0, default: 0.3, group: "Deform" }
+
+  # ---- surface ----
+  - { name: painterly_amt,   display: "Painterly",     type: float, min: 0.0, max: 1.0, default: 0.0, group: "Surface" }
+  - { name: painterly_scale, display: "Painterly Scale", type: float, min: 2.0, max: 20.0, default: 7.0, group: "Surface" }
+  - { name: facet_amt,       display: "Facet",         type: float, min: 0.0, max: 1.0, default: 0.0, group: "Surface" }
+  - { name: wobble_amt,      display: "Wobble",        type: float, min: 0.0, max: 1.0, default: 0.0, group: "Surface" }
+  - { name: hue_shift,       display: "Hue Shift",     type: float, min: 0.0, max: 1.0, default: 0.0, group: "Surface" }
+  - { name: heat_amt,        display: "Heat Haze",     type: float, min: 0.0, max: 1.0, default: 0.35, group: "Surface" }
+
+  # ---- environment ----
+  - { name: sky_zenith,  display: "Sky Zenith",  type: color, default: [0.50, 0.64, 0.74], group: "Environment" }
+  - { name: sky_horizon, display: "Sky Horizon", type: color, default: [0.86, 0.83, 0.75], group: "Environment" }
+  - { name: fog_density, display: "Haze Density", type: float, min: 0.0, max: 3.0, default: 1.0, group: "Environment" }
+  - { name: exposure,    display: "Exposure",     type: float, min: 0.2, max: 3.0, default: 1.05, group: "Environment" }
+  - { name: march_dist,  display: "March Distance", type: float, min: 20.0, max: 300.0, default: 120.0, group: "Environment" }
+
+  # ---- structure (the hardcoded armature; a few exposed knobs for modularity) ----
+  - { name: spine_height, display: "Spine Half-Height", type: float, min: 2.0, max: 5.0, default: 3.55, group: "Structure" }
+  - { name: board_yaw,    display: "Base Board Yaw",    type: float, min: -0.6, max: 0.6, default: 0.14, group: "Structure" }
+
+  # ---- sun / lighting ----
+  - { name: sun_azimuth,   display: "Sun Azimuth",   type: float, min: 0.0, max: 360.0, default: 62.0, group: "Sun" }
+  - { name: sun_elevation, display: "Sun Elevation", type: float, min: 5.0, max: 89.0, default: 48.0, group: "Sun" }
+  - { name: shadows,       display: "Sun Shadows",   type: bool, default: true, flags: button, group: "Sun" }
+
+  # ---- camera ----
+  - name: cam_mode
+    display: "Camera Mode"
+    type: enum
+    options: [Fly, Orbit]
+    default: 0
+    flags: button_grid
+    group: "Camera"
+  - { name: cam_orbit,     display: "Camera Orbit",     type: float, min: 0.0, max: 360.0, default: 87.0, group: "Camera" }
+  - { name: cam_elevation, display: "Camera Elevation", type: float, min: -30.0, max: 85.0, default: 4.0, group: "Camera" }
+  - { name: cam_distance,  display: "Camera Distance",  type: float, min: 1.0, max: 40.0, default: 15.0, group: "Camera" }
+  - { name: cam_target_y,  display: "Camera Target Y",  type: float, min: -2.0, max: 12.0, default: 4.9, group: "Camera" }
+  - { name: cam_focal,     display: "Camera Focal",     type: float, min: 0.6, max: 4.0, default: 2.6, group: "Camera" }
+  - { name: rotate_speed,  display: "Auto Rotate",      type: float, min: 0.0, max: 2.0, default: 0.0, group: "Camera" }
+
+passes:
+  - name: render
+    shader: scene.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+
+outputs:
+  - { name: "Render", pass: render }
