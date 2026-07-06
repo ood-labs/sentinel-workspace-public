@@ -137,20 +137,18 @@ float2 mapWires(float3 p)
 }
 
 // ---- domain distortion toolkit ------------------------------------------------
-// warp_mode selects the melt field character.
-float3 warpField(float3 p)
+// one warp field, selectable character (mode), at frequency f and phase t.
+float3 warpFieldMode(float3 p, int mode, float f, float t)
 {
-    float t = _Time * warp_speed;
-    float f = warp_freq;
-    if (warp_mode == 1)                                    // Ripple (radial)
+    if (mode == 1)                                         // Ripple (radial)
     {
         float r = length(p.xz) + 1e-3;
         float w = sin(r * f * 2.0 - t * 2.0);
         return float3(p.x / r * w, sin(p.y * f + t), p.z / r * w) * 0.6;
     }
-    if (warp_mode == 2)                                    // Turbulent
+    if (mode == 2)                                         // Turbulent
         return float3(sin(p.y * f + t), cos(p.x * f - t), sin(p.z * f + t * 1.3));
-    if (warp_mode == 3)                                    // Fractal (2 octaves)
+    if (mode == 3)                                         // Fractal (2 octaves)
     {
         float3 w = float3(sin(p.y * f + t), sin(p.z * f * 1.3 + t), sin(p.x * f * 0.7 - t));
         w += 0.5 * float3(sin(p.y * f * 2.1 + t * 1.7), sin(p.z * f * 2.3 - t), sin(p.x * f * 1.9 + t));
@@ -160,6 +158,20 @@ float3 warpField(float3 p)
         sin(p.y * f + t)       + 0.5 * sin(p.z * f * 1.7 - t * 1.3),
         sin(p.z * f * 0.9 + t) + 0.5 * sin(p.x * f * 1.5 + t * 1.1),
         sin(p.x * f * 1.1 - t) + 0.5 * sin(p.y * f * 1.3 + t * 0.7));
+}
+
+// one warp SLOT: sample the field in a rotated + offset frame, return the (weighted)
+// displacement back in world orientation. Off when amt ~ 0.
+float3 warpLayer(float3 p, float amt, int mode, float f, float spd, float3 off, float yaw, float pitch)
+{
+    if (amt < 0.001) return float3(0.0, 0.0, 0.0);
+    float3 q = p - off;
+    q = sd_rotY(q, yaw);
+    q = sd_rotX(q, pitch);
+    float3 d = warpFieldMode(q, mode, f, _Time * spd);
+    d = sd_rotX(d, -pitch);
+    d = sd_rotY(d, -yaw);
+    return amt * d;
 }
 
 // distort the solids' domain (ground stays flat). Each op is gated by its amount.
@@ -204,7 +216,13 @@ float3 domainDistort(float3 p)
         }
         q.x = d.x; q.z = d.y + 0.2;
     }
-    if (melt_amt > 0.001) q += melt_amt * warpField(q);    // fbm/sin melt
+    if (melt_amt > 0.001)                                  // 3-slot warp stack
+    {
+        float3 disp = warpLayer(q, w1_amt, w1_mode, w1_freq, w1_speed, float3(w1_ox, w1_oy, w1_oz), w1_yaw, w1_pitch)
+                    + warpLayer(q, w2_amt, w2_mode, w2_freq, w2_speed, float3(w2_ox, w2_oy, w2_oz), w2_yaw, w2_pitch)
+                    + warpLayer(q, w3_amt, w3_mode, w3_freq, w3_speed, float3(w3_ox, w3_oy, w3_oz), w3_yaw, w3_pitch);
+        q += melt_amt * disp;
+    }
 
     return q;
 }
@@ -213,7 +231,8 @@ float3 domainDistort(float3 p)
 // active distortions inflate the distance gradient (prevents overshoot / TDR).
 float distortLip()
 {
-    return 1.0 / (1.0 + melt_amt * warp_freq * 0.6 + sag_amt * 0.6
+    float warpF = melt_amt * (w1_amt * w1_freq + w2_amt * w2_freq + w3_amt * w3_freq) * 0.5;
+    return 1.0 / (1.0 + warpF + sag_amt * 0.6
                 + wave_amt * wave_freq * 0.25 + abs(twist_amt) * 0.4
                 + abs(swirl_amt) * 0.3 + abs(pinch_amt) * 0.5 + abs(bend_amt) * 0.3
                 + (mirror_count > 0.5 ? 0.2 : 0.0));

@@ -44,17 +44,60 @@ data_inputs:
       - { name: active, type: float }
 
 parameters:
-  # ---- warp (melt field) ----
-  - { name: melt_amt,   display: "Melt",       type: float, min: 0.0, max: 1.5, default: 0.0, group: "Warp" }
-  - name: warp_mode
-    display: "Warp Mode"
+  # ---- warp — master melt + 3 combinable warp slots (each offset+oriented) ----
+  - { name: melt_amt,   display: "Melt (Master)", type: float, min: 0.0, max: 1.5, default: 0.0, group: "Warp" }
+  - { name: warp_speed, display: "Wave Speed",    type: float, min: 0.0, max: 3.0, default: 0.6, group: "Warp" }
+
+  # Warp Slot 1
+  - { name: w1_amt,   display: "1 · Amount", type: float, min: 0.0, max: 1.5, default: 0.5, group: "Warp 1" }
+  - name: w1_mode
+    display: "1 · Mode"
     type: enum
     options: [Flow, Ripple, Turbulent, Fractal]
     default: 0
     flags: button_grid
-    group: "Warp"
-  - { name: warp_freq,  display: "Warp Freq",  type: float, min: 0.2, max: 4.0, default: 1.0, group: "Warp" }
-  - { name: warp_speed, display: "Warp Speed", type: float, min: 0.0, max: 3.0, default: 0.6, group: "Warp" }
+    group: "Warp 1"
+  - { name: w1_freq,  display: "1 · Freq",  type: float, min: 0.2, max: 4.0, default: 1.0, group: "Warp 1" }
+  - { name: w1_speed, display: "1 · Speed", type: float, min: 0.0, max: 3.0, default: 0.6, group: "Warp 1" }
+  - { name: w1_yaw,   display: "1 · Yaw",   type: float, min: -3.15, max: 3.15, default: 0.0, group: "Warp 1" }
+  - { name: w1_pitch, display: "1 · Pitch", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Warp 1" }
+  - { name: w1_ox,    display: "1 · Offset X", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 1" }
+  - { name: w1_oy,    display: "1 · Offset Y", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 1" }
+  - { name: w1_oz,    display: "1 · Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 1" }
+
+  # Warp Slot 2 (off by default)
+  - { name: w2_amt,   display: "2 · Amount", type: float, min: 0.0, max: 1.5, default: 0.0, group: "Warp 2" }
+  - name: w2_mode
+    display: "2 · Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal]
+    default: 1
+    flags: button_grid
+    group: "Warp 2"
+  - { name: w2_freq,  display: "2 · Freq",  type: float, min: 0.2, max: 4.0, default: 1.8, group: "Warp 2" }
+  - { name: w2_speed, display: "2 · Speed", type: float, min: 0.0, max: 3.0, default: 0.9, group: "Warp 2" }
+  - { name: w2_yaw,   display: "2 · Yaw",   type: float, min: -3.15, max: 3.15, default: 1.57, group: "Warp 2" }
+  - { name: w2_pitch, display: "2 · Pitch", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Warp 2" }
+  - { name: w2_ox,    display: "2 · Offset X", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 2" }
+  - { name: w2_oy,    display: "2 · Offset Y", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 2" }
+  - { name: w2_oz,    display: "2 · Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 2" }
+
+  # Warp Slot 3 (off by default)
+  - { name: w3_amt,   display: "3 · Amount", type: float, min: 0.0, max: 1.5, default: 0.0, group: "Warp 3" }
+  - name: w3_mode
+    display: "3 · Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal]
+    default: 3
+    flags: button_grid
+    group: "Warp 3"
+  - { name: w3_freq,  display: "3 · Freq",  type: float, min: 0.2, max: 4.0, default: 2.6, group: "Warp 3" }
+  - { name: w3_speed, display: "3 · Speed", type: float, min: 0.0, max: 3.0, default: 1.3, group: "Warp 3" }
+  - { name: w3_yaw,   display: "3 · Yaw",   type: float, min: -3.15, max: 3.15, default: 0.0, group: "Warp 3" }
+  - { name: w3_pitch, display: "3 · Pitch", type: float, min: -3.15, max: 3.15, default: 1.57, group: "Warp 3" }
+  - { name: w3_ox,    display: "3 · Offset X", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 3" }
+  - { name: w3_oy,    display: "3 · Offset Y", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 3" }
+  - { name: w3_oz,    display: "3 · Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 3" }
 
   # ---- deform (geometric domain ops) ----
   - { name: twist_amt,  display: "Twist",   type: float, min: -2.0, max: 2.0, default: 0.0, group: "Deform" }
