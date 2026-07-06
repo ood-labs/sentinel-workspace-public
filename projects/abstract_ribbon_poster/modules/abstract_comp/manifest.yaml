@@ -7,17 +7,17 @@ output_format: RGBA16F
 
 inputs:
   - { name: "BG", slot: 0, required: true }
-  - { name: "Column", slot: 1, required: false }
-  - { name: "Solids", slot: 2, required: false }
+  - { name: "Triangles", slot: 1, required: false }
+  - { name: "Shapes", slot: 2, required: false }
   - { name: "Ribbon", slot: 3, required: false }
-  - { name: "Accents", slot: 4, required: false }
+  - { name: "Guides", slot: 4, required: false }
 
 parameters:
   - { name: bg_gain, display: "BG Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layer Gain" }
-  - { name: column_gain, display: "Column Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layer Gain" }
-  - { name: solids_gain, display: "Solids Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layer Gain" }
+  - { name: column_gain, display: "Triangles Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layer Gain" }
+  - { name: solids_gain, display: "Shapes Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layer Gain" }
   - { name: ribbon_gain, display: "Ribbon Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layer Gain" }
-  - { name: accents_gain, display: "Accents Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layer Gain" }
+  - { name: accents_gain, display: "Guides Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layer Gain" }
   - { name: exposure, display: "Exposure", type: float, min: 0.4, max: 2.0, default: 1.04, group: "Grade" }
   - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 2.0, default: 0.50, group: "Grade" }
 

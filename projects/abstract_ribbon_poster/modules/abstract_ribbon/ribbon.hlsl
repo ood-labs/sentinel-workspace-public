@@ -16,7 +16,9 @@ float2 curvePoint(float a)
     float2 q;
     q.x = 0.136 * cos(a) + 0.043 * cos(2.0 * a + 1.15) - 0.017 * sin(3.0 * a);
     q.y = 0.232 * sin(a) - 0.041 * cos(2.0 * a - 0.25) + 0.022 * sin(3.0 * a + 0.6);
-    q = rot2(q, -0.22);
+    q.x += aperture * 0.035 * sin(a);
+    q *= ribbon_scale;
+    q = rot2(q, -0.22 + ribbon_tilt);
     return q + float2(-0.045 + center_shift.x, 0.015 + center_shift.y);
 }
 
@@ -52,6 +54,16 @@ float3 palette(float a, float nrm, float fold)
     col = lerp(col, wine, smoothstep(0.38, 0.57, u) * 0.75);
     col = lerp(col, mint, smoothstep(0.62, 0.82, u) * (1.0 - smoothstep(0.88, 0.99, u)));
     col = lerp(col, blue, fold * 0.95);
+    if (palette_mode == 1)
+    {
+        col = lerp(cream, float3(0.96, 0.18, 0.40), smoothstep(0.15, 0.75, u));
+        col = lerp(col, float3(0.05, 0.04, 0.52), fold);
+    }
+    else if (palette_mode == 2)
+    {
+        col = lerp(float3(0.92, 0.82, 0.58), float3(0.10, 0.18, 0.55), smoothstep(0.0, 1.0, u));
+        col = lerp(col, float3(1.0, 0.45, 0.05), exp(-pow((u - 0.18) * 5.0, 2.0)));
+    }
 
     float edgeLight = smoothstep(0.56, 1.0, abs(nrm));
     col = lerp(col, float3(1.0, 0.92, 0.70), edgeLight * 0.38);
@@ -97,7 +109,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         }
     }
 
-    float w = curveWidth(bestA);
+    float w = curveWidth(bestA) * ribbon_scale;
     float nrm = bestD / max(w, 0.001);
     float mask = 1.0 - smoothstep(0.98, 1.045, nrm);
 

@@ -1,0 +1,72 @@
+{
+  "data": {
+    "bundle_assets": {
+      "copied_count": 0,
+      "entries": []
+    },
+    "bundle_modules": {
+      "copied_count": 1,
+      "entries": [
+        {
+          "bundled_rel_path": "modules/abstract_bg",
+          "copied": false,
+          "pipeline_id": "abstract_bg",
+          "skip_reason": "already-bundled",
+          "source_dir": "C:/Users/cerspense/Sentinel/workspace/projects/abstract_ribbon_poster/modules/abstract_bg"
+        },
+        {
+          "bundled_rel_path": "modules/abstract_shape_render",
+          "copied": false,
+          "pipeline_id": "abstract_shape_render",
+          "skip_reason": "already-bundled",
+          "source_dir": "C:/Users/cerspense/Sentinel/workspace/projects/abstract_ribbon_poster/modules/abstract_shape_render"
+        },
+        {
+          "bundled_rel_path": "modules/abstract_ribbon",
+          "copied": false,
+          "pipeline_id": "abstract_ribbon",
+          "skip_reason": "already-bundled",
+          "source_dir": "C:/Users/cerspense/Sentinel/workspace/projects/abstract_ribbon_poster/modules/abstract_ribbon"
+        },
+        {
+          "bundled_rel_path": "modules/abstract_comp",
+          "copied": false,
+          "pipeline_id": "abstract_comp",
+          "skip_reason": "already-bundled",
+          "source_dir": "C:/Users/cerspense/Sentinel/workspace/projects/abstract_ribbon_poster/modules/abstract_comp"
+        },
+        {
+          "bundled_rel_path": "modules/abstract_post_1",
+          "copied": true,
+          "pipeline_id": "abstract_post",
+          "skip_reason": "",
+          "source_dir": "C:/Users/cerspense/Sentinel/workspace/modules/post"
+        },
+        {
+          "bundled_rel_path": "modules/abstract_shape_gen",
+          "copied": false,
+          "pipeline_id": "abstract_shape_gen",
+          "skip_reason": "already-bundled",
+          "source_dir": "C:/Users/cerspense/Sentinel/workspace/projects/abstract_ribbon_poster/modules/abstract_shape_gen"
+        },
+        {
+          "bundled_rel_path": "modules/abstract_triangle_gen",
+          "copied": false,
+          "pipeline_id": "abstract_triangle_gen",
+          "skip_reason": "already-bundled",
+          "source_dir": "C:/Users/cerspense/Sentinel/workspace/projects/abstract_ribbon_poster/modules/abstract_triangle_gen"
+        },
+        {
+          "bundled_rel_path": "modules/abstract_triangle_render",
+          "copied": false,
+          "pipeline_id": "abstract_triangle_render",
+          "skip_reason": "already-bundled",
+          "source_dir": "C:/Users/cerspense/Sentinel/workspace/projects/abstract_ribbon_poster/modules/abstract_triangle_render"
+        }
+      ]
+    },
+    "name": "abstract_ribbon_poster",
+    "path": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\abstract_ribbon_poster.sentinel"
+  },
+  "status": "ok"
+}

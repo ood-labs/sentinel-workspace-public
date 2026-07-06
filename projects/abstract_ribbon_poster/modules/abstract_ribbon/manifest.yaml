@@ -7,11 +7,15 @@ output_format: RGBA16F
 
 parameters:
   - { name: center_shift, display: "Center Shift", type: point2D, min: [-0.20, -0.20], max: [0.20, 0.20], default: [0.0, 0.0], group: "Layout" }
+  - { name: ribbon_scale, display: "Scale", type: float, min: 0.60, max: 1.50, default: 1.0, group: "Layout" }
+  - { name: ribbon_tilt, display: "Tilt", type: float, min: -0.80, max: 0.80, default: 0.0, group: "Layout" }
+  - { name: aperture, display: "Aperture", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Layout" }
   - { name: width_base, display: "Base Width", type: float, min: 0.020, max: 0.120, default: 0.038, group: "Ribbon" }
   - { name: rib_count, display: "Rib Count", type: float, min: 16.0, max: 96.0, default: 48.0, group: "Ribbon" }
   - { name: rib_width, display: "Rib Width", type: float, min: 0.005, max: 0.180, default: 0.095, group: "Ribbon" }
   - { name: line_strength, display: "Line Strength", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Ribbon" }
   - { name: intensity, display: "Intensity", type: float, min: 0.0, max: 2.0, default: 1.08, group: "Look" }
+  - { name: palette_mode, display: "Palette", type: enum, options: [Reference, Magenta, Dusk], default: 0, flags: button_grid, group: "Look" }
   - { name: shimmer, display: "Shimmer", type: float, min: 0.0, max: 1.0, default: 0.20, group: "Animation" }
   - { name: motion, display: "Motion", type: float, min: 0.0, max: 3.0, default: 0.18, group: "Animation" }
 

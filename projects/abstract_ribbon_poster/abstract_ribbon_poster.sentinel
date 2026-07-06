@@ -1,6 +1,6 @@
 {
   "graph": {
-    "canvasZoom": 1.5,
+    "canvasZoom": 0.6018352508544922,
     "links": [
       {
         "endPinId": 11,
@@ -8,61 +8,46 @@
         "startPinId": 2
       },
       {
-        "endPinId": 13,
-        "id": 2,
-        "startPinId": 4
-      },
-      {
-        "endPinId": 14,
-        "id": 3,
-        "startPinId": 6
-      },
-      {
         "endPinId": 15,
         "id": 4,
         "startPinId": 8
       },
       {
-        "endPinId": 16,
-        "id": 5,
-        "startPinId": 10
-      },
-      {
         "endPinId": 17,
         "id": 6,
         "startPinId": 12
+      },
+      {
+        "endPinId": 22,
+        "id": 7,
+        "startPinId": 21
+      },
+      {
+        "endPinId": 27,
+        "id": 8,
+        "startPinId": 26
+      },
+      {
+        "endPinId": 13,
+        "id": 9,
+        "startPinId": 28
+      },
+      {
+        "endPinId": 14,
+        "id": 10,
+        "startPinId": 23
       }
     ],
-    "nextLinkId": 7,
-    "nextNodeId": 8,
-    "nextPinId": 19,
+    "nextLinkId": 12,
+    "nextNodeId": 12,
+    "nextPinId": 29,
     "nodes": [
       {
         "displayName": "abstract_bg",
         "entityId": "abstract_bg",
         "id": 1,
-        "posX": -171.19821166992188,
-        "posY": 297.6499938964844,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "abstract_column",
-        "entityId": "abstract_column",
-        "id": 2,
-        "posX": 64.68773651123047,
-        "posY": 414.7879638671875,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "abstract_solids",
-        "entityId": "abstract_solids",
-        "id": 3,
-        "posX": 163.5620880126953,
-        "posY": 921.6746215820313,
+        "posX": 100.0,
+        "posY": 100.0,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -71,18 +56,8 @@
         "displayName": "abstract_ribbon",
         "entityId": "abstract_ribbon",
         "id": 4,
-        "posX": -69.49888610839844,
-        "posY": 677.4125366210938,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "abstract_accents",
-        "entityId": "abstract_accents",
-        "id": 5,
-        "posX": 1.12567138671875,
-        "posY": 29.375457763671875,
+        "posX": 100.0,
+        "posY": 292.0,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -91,8 +66,8 @@
         "displayName": "abstract_comp",
         "entityId": "abstract_comp",
         "id": 6,
-        "posX": 526.4085083007813,
-        "posY": 476.9375,
+        "posX": 500.0,
+        "posY": 388.0,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -101,8 +76,48 @@
         "displayName": "abstract_post",
         "entityId": "abstract_post",
         "id": 7,
-        "posX": 795.6205444335938,
-        "posY": 502.15740966796875,
+        "posX": 700.0,
+        "posY": 388.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_shape_gen",
+        "entityId": "abstract_shape_gen",
+        "id": 8,
+        "posX": 100.0,
+        "posY": 484.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_shape_render",
+        "entityId": "abstract_shape_render",
+        "id": 9,
+        "posX": 300.0,
+        "posY": 292.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_triangle_gen",
+        "entityId": "abstract_triangle_gen",
+        "id": 10,
+        "posX": 100.0,
+        "posY": 676.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_triangle_render",
+        "entityId": "abstract_triangle_render",
+        "id": 11,
+        "posX": 300.0,
+        "posY": 484.0,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -118,34 +133,10 @@
         "type": 0
       },
       {
-        "id": 4,
-        "kind": 1,
-        "name": "Column",
-        "nodeId": 2,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 6,
-        "kind": 1,
-        "name": "Solids",
-        "nodeId": 3,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
         "id": 8,
         "kind": 1,
         "name": "Ribbon",
         "nodeId": 4,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 10,
-        "kind": 1,
-        "name": "Accents",
-        "nodeId": 5,
         "slotIndex": 0,
         "type": 0
       },
@@ -168,7 +159,7 @@
       {
         "id": 13,
         "kind": 0,
-        "name": "Column",
+        "name": "Triangles",
         "nodeId": 6,
         "slotIndex": 1,
         "type": 0
@@ -176,7 +167,7 @@
       {
         "id": 14,
         "kind": 0,
-        "name": "Solids",
+        "name": "Shapes",
         "nodeId": 6,
         "slotIndex": 2,
         "type": 0
@@ -192,7 +183,7 @@
       {
         "id": 16,
         "kind": 0,
-        "name": "Accents",
+        "name": "Guides",
         "nodeId": 6,
         "slotIndex": 4,
         "type": 0
@@ -210,6 +201,70 @@
         "kind": 1,
         "name": "Out",
         "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 20,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 21,
+        "kind": 1,
+        "name": "Shapes",
+        "nodeId": 8,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 22,
+        "kind": 0,
+        "name": "Shapes",
+        "nodeId": 9,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 23,
+        "kind": 1,
+        "name": "Shapes",
+        "nodeId": 9,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 25,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 26,
+        "kind": 1,
+        "name": "Triangles",
+        "nodeId": 10,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 27,
+        "kind": 0,
+        "name": "Triangles",
+        "nodeId": 11,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 28,
+        "kind": 1,
+        "name": "Triangles",
+        "nodeId": 11,
         "slotIndex": 0,
         "type": 0
       }
@@ -252,40 +307,22 @@
       "type": "module"
     },
     {
-      "displayName": "abstract_column",
+      "displayName": "abstract_shape_render",
       "enabled": true,
       "expressions": null,
       "fitMode": 1,
-      "id": "abstract_column",
-      "inputSlotSourceIds": [],
+      "id": "abstract_shape_render",
+      "inputSlotSourceIds": [
+        "abstract_shape_gen"
+      ],
       "outputFitMode": 1,
       "outputSinkId": "",
       "parameters": {
-        "opacity": "0.960000",
-        "project_dir": "modules/abstract_column",
+        "intensity": "1.000000",
+        "motion": "0.150000",
+        "project_dir": "modules/abstract_shape_render",
         "resolution_height": "1280",
-        "resolution_width": "1024",
-        "x_offset": "0.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "abstract_solids",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "abstract_solids",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "motion": "0.180000",
-        "project_dir": "modules/abstract_solids",
-        "resolution_height": "1280",
-        "resolution_width": "1024",
-        "solids_gain": "1.000000"
+        "resolution_width": "1024"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -301,18 +338,22 @@
       "outputFitMode": 1,
       "outputSinkId": "",
       "parameters": {
+        "aperture": "0.000000",
         "center_shift_x": "0.000000",
         "center_shift_y": "0.000000",
         "intensity": "1.000000",
         "line_strength": "0.620000",
         "motion": "0.180000",
+        "palette_mode": "0.000000",
         "project_dir": "modules/abstract_ribbon",
         "resolution_height": "1280",
         "resolution_width": "1024",
         "rib_count": "48.000000",
         "rib_width": "0.095000",
+        "ribbon_scale": "1.000000",
+        "ribbon_tilt": "0.000000",
         "shimmer": "0.200000",
-        "width_base": "0.038000"
+        "width_base": "0.031000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -326,10 +367,10 @@
       "id": "abstract_comp",
       "inputSlotSourceIds": [
         "abstract_bg",
-        "abstract_column",
-        "abstract_solids",
+        "abstract_triangle_render",
+        "abstract_shape_render",
         "abstract_ribbon",
-        "abstract_accents"
+        ""
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
@@ -342,25 +383,6 @@
         "ribbon_gain": "1.000000",
         "solids_gain": "1.000000",
         "vignette": "0.500000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "abstract_accents",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "abstract_accents",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "blue_gain": "1.000000",
-        "project_dir": "modules/abstract_accents",
-        "resolution_height": "1280",
-        "resolution_width": "1024"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -388,7 +410,7 @@
         "highlight_tint_b": "0.250000",
         "highlight_tint_g": "0.600000",
         "highlight_tint_r": "1.000000",
-        "project_dir": "modules/abstract_post",
+        "project_dir": "modules/abstract_post_1",
         "saturation": "0.980000",
         "shadow_tint_b": "0.220000",
         "shadow_tint_g": "0.140000",
@@ -399,9 +421,117 @@
       "running": true,
       "secondaryInputFilePaths": null,
       "type": "module"
+    },
+    {
+      "displayName": "abstract_shape_gen",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_shape_gen",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bar_visible": "1.000000",
+        "blue_color_b": "0.920000",
+        "blue_color_g": "0.000000",
+        "blue_color_r": "0.020000",
+        "bottom_capsules_x": "0.160000",
+        "bottom_capsules_y": "0.891000",
+        "capsule_anchor_x": "0.552000",
+        "capsule_anchor_y": "0.092000",
+        "capsule_visible": "0.650000",
+        "global_offset_x": "0.000000",
+        "global_offset_y": "0.000000",
+        "global_scale": "1.000000",
+        "guide_a_end_x": "0.755000",
+        "guide_a_end_y": "0.475000",
+        "guide_a_start_x": "0.392000",
+        "guide_a_start_y": "0.635000",
+        "guide_b_end_x": "0.745000",
+        "guide_b_end_y": "0.705000",
+        "guide_b_start_x": "0.745000",
+        "guide_b_start_y": "0.120000",
+        "guide_visible": "0.700000",
+        "guide_width": "0.001200",
+        "left_stack_x": "0.205000",
+        "left_stack_y": "0.210000",
+        "left_visible": "1.000000",
+        "lower_sphere_x": "0.692000",
+        "lower_sphere_y": "0.898000",
+        "project_dir": "modules/abstract_shape_gen",
+        "resolution_height": "256",
+        "resolution_width": "512",
+        "right_bar_center_x": "0.740000",
+        "right_bar_center_y": "0.650000",
+        "ring_center_x": "0.338000",
+        "ring_center_y": "0.708000",
+        "seed": "3.000000",
+        "solids_visible": "1.000000",
+        "sphere_cluster_x": "0.550000",
+        "sphere_cluster_y": "0.615000",
+        "stripe_center_x": "0.445000",
+        "stripe_center_y": "0.452000",
+        "stripe_freq": "8.000000",
+        "stripe_rot": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "abstract_triangle_gen",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_triangle_gen",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "cols": "4.000000",
+        "column_center_x": "0.735000",
+        "column_center_y": "0.492000",
+        "column_extent_x": "0.200000",
+        "column_extent_y": "0.835000",
+        "contrast": "1.000000",
+        "opacity": "0.950000",
+        "project_dir": "modules/abstract_triangle_gen",
+        "resolution_height": "256",
+        "resolution_width": "512",
+        "rows": "13.000000",
+        "seed": "8.000000",
+        "tint_b": "0.700000",
+        "tint_g": "0.720000",
+        "tint_r": "0.720000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "abstract_triangle_render",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_triangle_render",
+      "inputSlotSourceIds": [
+        "abstract_triangle_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "intensity": "1.000000",
+        "project_dir": "modules/abstract_triangle_render",
+        "resolution_height": "1280",
+        "resolution_width": "1024"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
     }
   ],
-  "saved_at_ms": 1783296640129,
+  "saved_at_ms": 1783297511647,
   "sources": [],
   "version": 5
 }
