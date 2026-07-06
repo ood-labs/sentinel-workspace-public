@@ -72,6 +72,42 @@ float carveGrooves(float d, float3 p)
     return d;
 }
 
+// Add REAL junction hardware at each beam<->column node: a connection collar wrapping
+// the joint plus bolt heads on its faces. Guard-banded so it only evaluates near a node
+// (not across all space). Unioned into the field -> real geometry that self-shadows.
+float addHardware(float d, float3 p)
+{
+    if (junctions_on == 0) return d;
+
+    // nearest node = (XZ grid intersection, Y floor level) — where beams meet a column
+    float3 node = float3(round(p.x / cell) * cell,
+                         round(p.y / floor_h) * floor_h,
+                         round(p.z / cell) * cell);
+    float3 q = p - node;
+
+    float cx = col_thick + collar_out;                 // collar half-width in X/Z
+    float reach = max(cx + bolt_radius, collar_h) + 0.15;
+    if (max(abs(q.x), max(abs(q.y), abs(q.z))) > reach) return d;   // guard-band cull
+
+    // connection collar wrapping the joint (rounded box, proud of the column)
+    float hw = sd_rbox(q, float3(cx, collar_h, cx), min(collar_round, cx * 0.9));
+
+    // bolt heads: hemispheres gridded on the four vertical collar faces, clipped to
+    // the collar rectangle (exact intersection -> Lipschitz-safe, never a hard window)
+    if (bolts_on != 0 && bolt_radius > 0.001)
+    {
+        float3 bx = float3(abs(q.x) - cx, rep1(q.y, bolt_pitch), rep1(q.z, bolt_pitch));
+        float boltX = max(sd_sphere(bx, bolt_radius), sd_box(q, float3(cx + bolt_radius, collar_h, cx)));
+
+        float3 bz = float3(rep1(q.x, bolt_pitch), rep1(q.y, bolt_pitch), abs(q.z) - cx);
+        float boltZ = max(sd_sphere(bz, bolt_radius), sd_box(q, float3(cx, collar_h, cx + bolt_radius)));
+
+        hw = min(hw, min(boltX, boltZ));
+    }
+
+    return min(d, hw);
+}
+
 // ---- the infinite lattice (contract for sdf_shading.hlsli) ------------------
 float2 sceneMap(float3 p)
 {
@@ -89,6 +125,7 @@ float2 sceneMap(float3 p)
 
     float d = min(dCol, min(dBX, dBZ));
     d = carveGrooves(d, p);
+    d = addHardware(d, p);
     return float2(d, 1.0);
 }
 
