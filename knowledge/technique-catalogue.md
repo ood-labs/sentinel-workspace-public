@@ -140,6 +140,37 @@ Canonical composition (each stamped many times with different params): `pl_grid[
 pl_path → spline_render` for drawn curves. `widget_render` takes 6 Widget inputs so
 several style chains merge into one render.
 
+## 3D object geometry (SDF raymarch)
+
+Real 3D objects as signed distance functions in compute passes: no meshes, every
+dimension a typed parameter, CSG booleans and exact fillets as one-line ops. Shared
+headers in `modules/_shared/sdf/` (`sdf_ops` primitives/booleans, `sdf_objects`
+kind-indexed vocabulary, `sdf_shading` normals/AO/shadow/camera with a
+`sceneMap` prototype contract). Authoring method + gotchas live in the
+`procedural-geometry-authoring` skill. Seeded from the SDF geometry lane
+(bracket/chair experiments + `sdf_scene_render` proof).
+
+- **Parametric hero object** — *generator → texture* · pattern in the
+  `procedural-geometry-authoring` skill (bracket + fancy-chair exemplars) · one module
+  raymarches one object built from exact typed dimensions (plate/boss/bolt-circle,
+  seat/back/legs); dual camera rig (deterministic orbit params + fly cam);
+  spec-checklist verification via `vision_eval`. · *compose-with:* `post`, any
+  compositor; drive dimensions from `signal` / OSC for morphing props.
+- **SDF object vocabulary** — *HLSL include* · `_shared/sdf/sdf_objects.hlsli` ·
+  `obj_sdf(p, kind, seed)` dispatching seed-varied objects (crate, column, chair,
+  table, setback tower, arch, tree, lamp) in a shared local-space + bounding-sphere
+  contract, so renderers cull instances uniformly. Extend by adding a kind function. ·
+  *compose-with:* `sdf_scene_render`, any custom raymarcher.
+- **Instanced 3D scene renderer** — *StructuredBuffer\<PNode\> → texture* ·
+  `sdf_scene_render` · consumes the standard 48 B PNode stream (canvas pos → ground
+  plane XZ), maps kind/scale/rot like `pl_render` (FromNode/Fixed/Cycle/Hash), culls
+  per pixel with ray-vs-bounding-sphere shortlists, and raymarches ground + instances
+  with sun soft shadows, AO, per-instance tint, emissive materials, and fog. A grid
+  chain becomes a café; a scatter chain becomes a dusk city; `pl_path` + FromDir yaw
+  lines objects along streets. ~96 instances at 720p with shadows runs real-time on a
+  5090. · *compose-with:* `pl_grid`/`pl_spawn`/`pl_path` (placement), `post` (finish),
+  `signal` (sun/camera motion).
+
 ## Control & reactivity
 
 - **Control-output signal bus** — *compute → control outputs* · `signal` · one tiny module runs N
