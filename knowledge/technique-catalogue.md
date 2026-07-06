@@ -170,6 +170,22 @@ kind-indexed vocabulary, `sdf_shading` normals/AO/shadow/camera with a
   lines objects along streets. ~96 instances at 720p with shadows runs real-time on a
   5090. · *compose-with:* `pl_grid`/`pl_spawn`/`pl_path` (placement), `post` (finish),
   `signal` (sun/camera motion).
+- **Spline tube + turned finial** — *HLSL include* · `_shared/sdf/sdf_extras.hlsli` ·
+  `sd_bezierTube(p,a,b,c,r)` sweeps a capsule along a quadratic bezier (8 segments) —
+  the SDF "spline" transport for wires, rigging, hanging cables and bent arcs;
+  `obj_baluster(p,base)` is a lathe-like stack of primitives (turned-wood / chess-pawn
+  finial). Harvested from `dada_totem`. · *compose-with:* any raymarched sceneMap.
+- **Hero SDF assemblage (single-pass, hand-placed)** — *generator → texture* ·
+  `dada_totem` (project `desert_totem`) · the bespoke counterpart to `sdf_scene_render`:
+  when a scene is a *specific* arrangement of unique objects (a Dada totem, a still
+  life) rather than a kind-field of clones, compose one `sceneMap` from readable
+  sub-maps (`mapSpine`/`mapParts`/`mapHeroes`/`mapSplines`) with an in-shader part list
+  of `op_matmin` primitives, procedural multi-colour materials keyed by material id
+  (gore/stripe/checker from a piece's centre constant), a ray-miss sky+desert+ridge
+  environment, and a fly/orbit camera — all in one depth domain so a fly-cam roams it.
+  NB: the orbit rig's `az=0` looks down **+X**; face-`+Z` flat pieces read frontally at
+  `cam_orbit≈90`. · *compose-with:* `sdf_extras`, `post` (painterly grade), `signal`
+  (self-animation amplitude via `ref()`).
 
 ## Control & reactivity
 
