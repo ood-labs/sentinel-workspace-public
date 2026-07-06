@@ -1,0 +1,57 @@
+{
+  "artifacts": {
+    "graph_profile": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint\\graph_profile.json",
+    "output_capture": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint\\output_capture.json",
+    "output_image": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint\\output.png",
+    "project": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\abstract_ribbon_poster.sentinel",
+    "save_project": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint\\save_project.json"
+  },
+  "graph_profile": {
+    "frame_index": 3535075,
+    "node_count": 7,
+    "pipeline_ms": 0.05909999832510948,
+    "top_nodes": [
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_bg",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0107
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_ribbon",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0069
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_comp",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0051
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_post",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0031
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "abstract_column",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0027
+      }
+    ],
+    "total_ms": 0.7551000230014324
+  },
+  "image_diff": null,
+  "pipeline_id": "abstract_post",
+  "project_saved": true,
+  "proof_dir": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\checkpoint",
+  "saved_path": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\abstract_ribbon_poster\\abstract_ribbon_poster.sentinel"
+}

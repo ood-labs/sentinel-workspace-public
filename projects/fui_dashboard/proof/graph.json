@@ -1,0 +1,559 @@
+{
+  "data": {
+    "link_count": 7,
+    "links": [
+      {
+        "end_pin_id": 11,
+        "from_entity": "hud_bg",
+        "from_pin": "BG",
+        "id": 1,
+        "start_pin_id": 8,
+        "to_entity": "hud_comp",
+        "to_pin": "BG"
+      },
+      {
+        "end_pin_id": 16,
+        "from_entity": "hud_gauge",
+        "from_pin": "Gauge",
+        "id": 2,
+        "start_pin_id": 10,
+        "to_entity": "hud_comp",
+        "to_pin": "Gauge"
+      },
+      {
+        "end_pin_id": 18,
+        "from_entity": "hud_comp",
+        "from_pin": "Scene",
+        "id": 3,
+        "start_pin_id": 12,
+        "to_entity": "post",
+        "to_pin": "Scene"
+      },
+      {
+        "end_pin_id": 13,
+        "from_entity": "hud_orbits",
+        "from_pin": "Orbits",
+        "id": 4,
+        "start_pin_id": 21,
+        "to_entity": "hud_comp",
+        "to_pin": "Orbits"
+      },
+      {
+        "end_pin_id": 14,
+        "from_entity": "hud_panels",
+        "from_pin": "Panels",
+        "id": 5,
+        "start_pin_id": 23,
+        "to_entity": "hud_comp",
+        "to_pin": "Panels"
+      },
+      {
+        "end_pin_id": 15,
+        "from_entity": "hud_leaders",
+        "from_pin": "Leaders",
+        "id": 6,
+        "start_pin_id": 25,
+        "to_entity": "hud_comp",
+        "to_pin": "Leaders"
+      },
+      {
+        "end_pin_id": 17,
+        "from_entity": "hud_labels",
+        "from_pin": "Labels Tex",
+        "id": 7,
+        "start_pin_id": 27,
+        "to_entity": "hud_comp",
+        "to_pin": "Labels"
+      }
+    ],
+    "node_count": 9,
+    "nodes": [
+      {
+        "bounds": {
+          "entity_id": "signal",
+          "height": 225.19696044921875,
+          "max_x": 255.90660095214844,
+          "max_y": 1477.197021484375,
+          "min_x": 100.0,
+          "min_y": 1252.0,
+          "node_id": 1,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.90660095214844,
+          "x": 100.0,
+          "y": 1252.0
+        },
+        "contained_by": [],
+        "display_name": "signal",
+        "entity_id": "signal",
+        "id": 1,
+        "pins": [
+          {
+            "id": 2,
+            "kind": "output",
+            "name": "Signal",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 3,
+            "kind": "output",
+            "name": "pulse",
+            "slot_index": 1,
+            "type": "unknown"
+          },
+          {
+            "id": 4,
+            "kind": "output",
+            "name": "sweep",
+            "slot_index": 2,
+            "type": "unknown"
+          },
+          {
+            "id": 5,
+            "kind": "output",
+            "name": "beat",
+            "slot_index": 3,
+            "type": "unknown"
+          },
+          {
+            "id": 6,
+            "kind": "output",
+            "name": "slow",
+            "slot_index": 4,
+            "type": "unknown"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 1252.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_bg",
+          "height": 171.64759826660156,
+          "max_x": 255.90660095214844,
+          "max_y": 271.6475830078125,
+          "min_x": 100.0,
+          "min_y": 100.0,
+          "node_id": 2,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.90660095214844,
+          "x": 100.0,
+          "y": 100.0
+        },
+        "contained_by": [],
+        "display_name": "hud_bg",
+        "entity_id": "hud_bg",
+        "id": 2,
+        "pins": [
+          {
+            "id": 8,
+            "kind": "output",
+            "name": "BG",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 100.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_gauge",
+          "height": 171.69625854492188,
+          "max_x": 255.90660095214844,
+          "max_y": 463.6962585449219,
+          "min_x": 100.0,
+          "min_y": 292.0,
+          "node_id": 3,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.90660095214844,
+          "x": 100.0,
+          "y": 292.0
+        },
+        "contained_by": [],
+        "display_name": "hud_gauge",
+        "entity_id": "hud_gauge",
+        "id": 3,
+        "pins": [
+          {
+            "id": 10,
+            "kind": "output",
+            "name": "Gauge",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 292.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_comp",
+          "height": 292.8732604980469,
+          "max_x": 772.3401489257812,
+          "max_y": 959.1497802734376,
+          "min_x": 617.63623046875,
+          "min_y": 666.2764892578125,
+          "node_id": 4,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 154.7039031982422,
+          "x": 617.63623046875,
+          "y": 666.2764892578125
+        },
+        "contained_by": [],
+        "display_name": "hud_comp",
+        "entity_id": "hud_comp",
+        "id": 4,
+        "pins": [
+          {
+            "id": 11,
+            "kind": "input",
+            "name": "BG",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 13,
+            "kind": "input",
+            "name": "Orbits",
+            "slot_index": 1,
+            "type": "video"
+          },
+          {
+            "id": 14,
+            "kind": "input",
+            "name": "Panels",
+            "slot_index": 2,
+            "type": "video"
+          },
+          {
+            "id": 15,
+            "kind": "input",
+            "name": "Leaders",
+            "slot_index": 3,
+            "type": "video"
+          },
+          {
+            "id": 16,
+            "kind": "input",
+            "name": "Gauge",
+            "slot_index": 4,
+            "type": "video"
+          },
+          {
+            "id": 17,
+            "kind": "input",
+            "name": "Labels",
+            "slot_index": 5,
+            "type": "video"
+          },
+          {
+            "id": 12,
+            "kind": "output",
+            "name": "Scene",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 617.63623046875,
+        "pos_y": 666.2764892578125,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "post",
+          "height": 171.83416748046875,
+          "max_x": 972.4581298828124,
+          "max_y": 838.1106567382812,
+          "min_x": 817.63623046875,
+          "min_y": 666.2764892578125,
+          "node_id": 5,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 154.8218994140625,
+          "x": 817.63623046875,
+          "y": 666.2764892578125
+        },
+        "contained_by": [],
+        "display_name": "post",
+        "entity_id": "post",
+        "id": 5,
+        "pins": [
+          {
+            "id": 18,
+            "kind": "input",
+            "name": "Scene",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 19,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 817.63623046875,
+        "pos_y": 666.2764892578125,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_orbits",
+          "height": 171.84243774414065,
+          "max_x": 255.90660095214844,
+          "max_y": 1039.8424072265625,
+          "min_x": 100.0,
+          "min_y": 868.0,
+          "node_id": 6,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.90660095214844,
+          "x": 100.0,
+          "y": 868.0
+        },
+        "contained_by": [],
+        "display_name": "hud_orbits",
+        "entity_id": "hud_orbits",
+        "id": 6,
+        "pins": [
+          {
+            "id": 21,
+            "kind": "output",
+            "name": "Orbits",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 868.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_panels",
+          "height": 171.84243774414065,
+          "max_x": 255.90660095214844,
+          "max_y": 1039.8424072265625,
+          "min_x": 100.0,
+          "min_y": 868.0,
+          "node_id": 7,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.90660095214844,
+          "x": 100.0,
+          "y": 868.0
+        },
+        "contained_by": [],
+        "display_name": "hud_panels",
+        "entity_id": "hud_panels",
+        "id": 7,
+        "pins": [
+          {
+            "id": 23,
+            "kind": "output",
+            "name": "Panels",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 868.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_leaders",
+          "height": 171.7935791015625,
+          "max_x": 255.90660095214844,
+          "max_y": 847.7935791015625,
+          "min_x": 100.0,
+          "min_y": 676.0,
+          "node_id": 8,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.90660095214844,
+          "x": 100.0,
+          "y": 676.0
+        },
+        "contained_by": [],
+        "display_name": "hud_leaders",
+        "entity_id": "hud_leaders",
+        "id": 8,
+        "pins": [
+          {
+            "id": 25,
+            "kind": "output",
+            "name": "Leaders",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 676.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_labels",
+          "height": 171.7449188232422,
+          "max_x": 255.90660095214844,
+          "max_y": 655.7449340820312,
+          "min_x": 100.0,
+          "min_y": 484.0,
+          "node_id": 9,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.90660095214844,
+          "x": 100.0,
+          "y": 484.0
+        },
+        "contained_by": [],
+        "display_name": "hud_labels",
+        "entity_id": "hud_labels",
+        "id": 9,
+        "pins": [
+          {
+            "id": 27,
+            "kind": "output",
+            "name": "Labels Tex",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 484.0,
+        "position_set": true,
+        "type": "pipeline"
+      }
+    ],
+    "processing_order": [
+      "signal",
+      "hud_bg",
+      "hud_gauge",
+      "hud_orbits",
+      "hud_panels",
+      "hud_leaders",
+      "hud_labels",
+      "hud_comp",
+      "post"
+    ],
+    "routing": {
+      "hud_bg": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "hud_comp": {
+        "input_entity": "hud_bg",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": [
+          {
+            "entity_id": "hud_orbits",
+            "is_source": false,
+            "slot_index": 1
+          },
+          {
+            "entity_id": "hud_panels",
+            "is_source": false,
+            "slot_index": 2
+          },
+          {
+            "entity_id": "hud_leaders",
+            "is_source": false,
+            "slot_index": 3
+          },
+          {
+            "entity_id": "hud_gauge",
+            "is_source": false,
+            "slot_index": 4
+          },
+          {
+            "entity_id": "hud_labels",
+            "is_source": false,
+            "slot_index": 5
+          }
+        ]
+      },
+      "hud_gauge": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "hud_labels": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "hud_leaders": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "hud_orbits": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "hud_panels": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "post": {
+        "input_entity": "hud_comp",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "signal": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      }
+    }
+  },
+  "status": "ok"
+}

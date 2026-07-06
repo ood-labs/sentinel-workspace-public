@@ -1,0 +1,78 @@
+{
+  "data": {
+    "link_count": 10,
+    "links": [
+      {
+        "from_entity": "hud_bg",
+        "from_slot": 0,
+        "link_id": 1,
+        "to_entity": "hud_comp",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "hud_gauge",
+        "from_slot": 0,
+        "link_id": 2,
+        "to_entity": "hud_comp",
+        "to_slot": 4
+      },
+      {
+        "from_entity": "hud_comp",
+        "from_slot": 0,
+        "link_id": 3,
+        "to_entity": "post",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "hud_orbits",
+        "from_slot": 0,
+        "link_id": 4,
+        "to_entity": "hud_comp",
+        "to_slot": 1
+      },
+      {
+        "from_entity": "hud_leaders",
+        "from_slot": 0,
+        "link_id": 6,
+        "to_entity": "hud_comp",
+        "to_slot": 3
+      },
+      {
+        "from_entity": "hud_labels",
+        "from_slot": 0,
+        "link_id": 7,
+        "to_entity": "hud_comp",
+        "to_slot": 5
+      },
+      {
+        "from_entity": "prim_atlas",
+        "from_slot": 0,
+        "link_id": 8,
+        "to_entity": "widget_render",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "layout_gen",
+        "from_slot": 1,
+        "link_id": 9,
+        "to_entity": "widget_render",
+        "to_slot": 1
+      },
+      {
+        "from_entity": "detail_gen",
+        "from_slot": 1,
+        "link_id": 10,
+        "to_entity": "widget_render",
+        "to_slot": 2
+      },
+      {
+        "from_entity": "widget_render",
+        "from_slot": 0,
+        "link_id": 11,
+        "to_entity": "hud_comp",
+        "to_slot": 2
+      }
+    ]
+  },
+  "status": "ok"
+}

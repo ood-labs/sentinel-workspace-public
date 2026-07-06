@@ -1,0 +1,35 @@
+name: "Spline Render"
+version: "1.0"
+mode: generator
+resolution: [1920, 1080]
+working_format: RGBA16F
+output_format: RGBA16F
+
+data_inputs:
+  - name: "Nodes"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: dir, type: float2 }
+      - { name: depth, type: float }
+      - { name: u, type: float }
+      - { name: v, type: float }
+      - { name: weight, type: float }
+      - { name: group, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: intensity, display: "Intensity", type: float, min: 0.0, max: 3.0, default: 1.0, group: "Output" }
+  - { name: width, display: "Width", type: float, min: 0.001, max: 0.02, default: 0.0035, group: "Stroke" }
+  - { name: dash, display: "Dashed", type: bool, default: true, flags: button, group: "Stroke" }
+  - { name: dash_count, display: "Dash Count", type: float, min: 4.0, max: 120.0, default: 48.0, group: "Stroke" }
+  - { name: line_color, display: "Line Color", type: color, default: [0.26, 0.66, 0.54], group: "Color" }
+  - { name: node_color, display: "Node Color", type: color, default: [0.78, 1.0, 0.90], group: "Color" }
+
+passes:
+  - { name: render, shader: render.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "data:0" } ] }
+
+outputs:
+  - { name: "Splines", pass: render }

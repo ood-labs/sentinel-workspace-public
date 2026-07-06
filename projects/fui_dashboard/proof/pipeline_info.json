@@ -1,0 +1,202 @@
+{
+  "data": {
+    "control_outputs": [],
+    "data_outputs": [],
+    "id": "post",
+    "name": "Module",
+    "output_format": "BGRA8",
+    "parameters": [
+      {
+        "default": 0.0,
+        "description": "Path to shader project folder",
+        "fullPath": "",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "project_dir",
+        "type": 3,
+        "value": "C:\\Users\\cerspense\\Sentinel\\workspace\\modules\\post"
+      },
+      {
+        "default": 0.3499999940395355,
+        "description": "Bloom Threshold",
+        "fullPath": "",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "bloom_threshold",
+        "type": 0,
+        "value": "0.350000"
+      },
+      {
+        "default": 1.100000023841858,
+        "description": "Bloom Intensity",
+        "fullPath": "",
+        "max": 3.0,
+        "min": 0.0,
+        "name": "bloom_intensity",
+        "type": 0,
+        "value": "1.100000"
+      },
+      {
+        "default": 0.03200000151991844,
+        "description": "Bloom Radius",
+        "fullPath": "",
+        "max": 0.07999999821186066,
+        "min": 0.004999999888241291,
+        "name": "bloom_radius",
+        "type": 0,
+        "value": "0.032000"
+      },
+      {
+        "default": 1.0499999523162842,
+        "description": "Exposure",
+        "fullPath": "",
+        "max": 3.0,
+        "min": 0.20000000298023224,
+        "name": "exposure",
+        "type": 0,
+        "value": "1.050000"
+      },
+      {
+        "default": 1.0800000429153442,
+        "description": "Contrast",
+        "fullPath": "",
+        "max": 2.0,
+        "min": 0.5,
+        "name": "contrast",
+        "type": 0,
+        "value": "1.080000"
+      },
+      {
+        "default": 1.1200000047683716,
+        "description": "Saturation",
+        "fullPath": "",
+        "max": 2.0,
+        "min": 0.0,
+        "name": "saturation",
+        "type": 0,
+        "value": "1.120000"
+      },
+      {
+        "default": 0.2199999988079071,
+        "description": "Split Tone",
+        "fullPath": "",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "split_balance",
+        "type": 0,
+        "value": "0.220000"
+      },
+      {
+        "default": 0.949999988079071,
+        "description": "Vignette",
+        "fullPath": "",
+        "max": 2.0,
+        "min": 0.0,
+        "name": "vignette",
+        "type": 0,
+        "value": "0.950000"
+      },
+      {
+        "default": 0.4000000059604645,
+        "description": "Chromatic Aberr",
+        "fullPath": "",
+        "max": 2.0,
+        "min": 0.0,
+        "name": "chroma",
+        "type": 0,
+        "value": "0.400000"
+      },
+      {
+        "default": 0.03500000014901161,
+        "description": "Film Grain",
+        "fullPath": "",
+        "max": 0.20000000298023224,
+        "min": 0.0,
+        "name": "grain_amt",
+        "type": 0,
+        "value": "0.035000"
+      },
+      {
+        "default": 0.0,
+        "description": "",
+        "fullPath": "",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "shadow_tint_r",
+        "type": 0,
+        "value": "0.000000"
+      },
+      {
+        "default": 0.14000000059604645,
+        "description": "",
+        "fullPath": "",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "shadow_tint_g",
+        "type": 0,
+        "value": "0.140000"
+      },
+      {
+        "default": 0.2199999988079071,
+        "description": "",
+        "fullPath": "",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "shadow_tint_b",
+        "type": 0,
+        "value": "0.220000"
+      },
+      {
+        "default": 1.0,
+        "description": "",
+        "fullPath": "",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "highlight_tint_r",
+        "type": 0,
+        "value": "1.000000"
+      },
+      {
+        "default": 0.6000000238418579,
+        "description": "",
+        "fullPath": "",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "highlight_tint_g",
+        "type": 0,
+        "value": "0.600000"
+      },
+      {
+        "default": 0.25,
+        "description": "",
+        "fullPath": "",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "highlight_tint_b",
+        "type": 0,
+        "value": "0.250000"
+      }
+    ],
+    "stats": {
+      "avgFrameMs": 0.0,
+      "compile_ok": true,
+      "enabled": true,
+      "fps": 59.987640380859375,
+      "frameTimeMs": 0.0,
+      "framesProcessed": 29010,
+      "has_preview_srv": true,
+      "health_reasons": [],
+      "healthy": true,
+      "output_resolution": [
+        1920,
+        1080
+      ],
+      "running": true,
+      "statusMessage": "Loaded: Post",
+      "unresolved_project_dir": false,
+      "vramUsedBytes": 0
+    },
+    "version": "1.0.0"
+  },
+  "status": "ok"
+}

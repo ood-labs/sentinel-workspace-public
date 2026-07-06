@@ -1,0 +1,58 @@
+{
+  "artifacts": {
+    "expressions": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof\\expressions.json",
+    "graph": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof\\graph.json",
+    "graph_profile": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof\\graph_profile.json",
+    "links": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof\\links.json",
+    "output_capture": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof\\output_capture.json",
+    "output_image": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof\\output.png",
+    "pipeline_info": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof\\pipeline_info.json",
+    "window_screenshot": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof\\window.jpg"
+  },
+  "graph_profile": {
+    "frame_index": 2821426,
+    "node_count": 9,
+    "pipeline_ms": 0.2619999945163727,
+    "top_nodes": [
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "signal",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.1665
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "hud_bg",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0059
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "hud_gauge",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0038
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "hud_comp",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0038
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "post",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0031
+      }
+    ],
+    "total_ms": 1.26589997112751
+  },
+  "image_diff": null,
+  "pipeline_id": "post",
+  "proof_dir": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof"
+}

@@ -1,0 +1,169 @@
+{
+  "data": {
+    "link_count": 23,
+    "links": [
+      {
+        "from_entity": "hud_bg",
+        "from_slot": 0,
+        "link_id": 1,
+        "to_entity": "hud_comp",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "hud_gauge",
+        "from_slot": 0,
+        "link_id": 2,
+        "to_entity": "hud_comp",
+        "to_slot": 4
+      },
+      {
+        "from_entity": "hud_comp",
+        "from_slot": 0,
+        "link_id": 3,
+        "to_entity": "post",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "hud_orbits",
+        "from_slot": 0,
+        "link_id": 4,
+        "to_entity": "hud_comp",
+        "to_slot": 1
+      },
+      {
+        "from_entity": "hud_labels",
+        "from_slot": 0,
+        "link_id": 7,
+        "to_entity": "hud_comp",
+        "to_slot": 5
+      },
+      {
+        "from_entity": "prim_atlas",
+        "from_slot": 0,
+        "link_id": 8,
+        "to_entity": "widget_render",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "widget_render",
+        "from_slot": 0,
+        "link_id": 11,
+        "to_entity": "hud_comp",
+        "to_slot": 2
+      },
+      {
+        "from_entity": "pg_panels",
+        "from_slot": 1,
+        "link_id": 12,
+        "to_entity": "ps_panels",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "pg_hero",
+        "from_slot": 1,
+        "link_id": 13,
+        "to_entity": "ps_hero",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "pg_inst",
+        "from_slot": 1,
+        "link_id": 15,
+        "to_entity": "ps_inst",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "ps_panels",
+        "from_slot": 1,
+        "link_id": 16,
+        "to_entity": "widget_render",
+        "to_slot": 1
+      },
+      {
+        "from_entity": "ps_hero",
+        "from_slot": 1,
+        "link_id": 17,
+        "to_entity": "widget_render",
+        "to_slot": 2
+      },
+      {
+        "from_entity": "ps_mark",
+        "from_slot": 1,
+        "link_id": 18,
+        "to_entity": "widget_render",
+        "to_slot": 3
+      },
+      {
+        "from_entity": "ps_inst",
+        "from_slot": 1,
+        "link_id": 19,
+        "to_entity": "widget_render",
+        "to_slot": 4
+      },
+      {
+        "from_entity": "pg_tabs",
+        "from_slot": 1,
+        "link_id": 20,
+        "to_entity": "ps_tabs",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "pg_fan",
+        "from_slot": 1,
+        "link_id": 21,
+        "to_entity": "ps_fan",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "ps_tabs",
+        "from_slot": 1,
+        "link_id": 22,
+        "to_entity": "widget_render",
+        "to_slot": 5
+      },
+      {
+        "from_entity": "ps_fan",
+        "from_slot": 1,
+        "link_id": 23,
+        "to_entity": "widget_render",
+        "to_slot": 6
+      },
+      {
+        "from_entity": "pg_conn",
+        "from_slot": 1,
+        "link_id": 24,
+        "to_entity": "path_conn",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "path_conn",
+        "from_slot": 1,
+        "link_id": 25,
+        "to_entity": "spline_render",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "spline_render",
+        "from_slot": 0,
+        "link_id": 26,
+        "to_entity": "hud_comp",
+        "to_slot": 3
+      },
+      {
+        "from_entity": "pg_mark",
+        "from_slot": 1,
+        "link_id": 27,
+        "to_entity": "spawn_mark",
+        "to_slot": 0
+      },
+      {
+        "from_entity": "spawn_mark",
+        "from_slot": 1,
+        "link_id": 28,
+        "to_entity": "ps_mark",
+        "to_slot": 0
+      }
+    ]
+  },
+  "status": "ok"
+}

@@ -1,0 +1,58 @@
+{
+  "artifacts": {
+    "expressions": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof_v3\\expressions.json",
+    "graph": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof_v3\\graph.json",
+    "graph_profile": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof_v3\\graph_profile.json",
+    "links": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof_v3\\links.json",
+    "output_capture": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof_v3\\output_capture.json",
+    "output_image": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof_v3\\output.png",
+    "pipeline_info": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof_v3\\pipeline_info.json",
+    "window_screenshot": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof_v3\\window.jpg"
+  },
+  "graph_profile": {
+    "frame_index": 3037331,
+    "node_count": 25,
+    "pipeline_ms": 0.4677000045776367,
+    "top_nodes": [
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "signal",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.2123
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "hud_labels",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0152
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "path_conn",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0076
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "pg_panels",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0074
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "pg_mark",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0067
+      }
+    ],
+    "total_ms": 1.5934000238776207
+  },
+  "image_diff": null,
+  "pipeline_id": "post",
+  "proof_dir": "C:\\Users\\cerspense\\Sentinel\\workspace\\projects\\fui_dashboard\\proof_v3"
+}

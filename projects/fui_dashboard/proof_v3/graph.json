@@ -1,0 +1,1592 @@
+{
+  "data": {
+    "link_count": 23,
+    "links": [
+      {
+        "end_pin_id": 11,
+        "from_entity": "hud_bg",
+        "from_pin": "BG",
+        "id": 1,
+        "start_pin_id": 8,
+        "to_entity": "hud_comp",
+        "to_pin": "BG"
+      },
+      {
+        "end_pin_id": 16,
+        "from_entity": "hud_gauge",
+        "from_pin": "Gauge",
+        "id": 2,
+        "start_pin_id": 10,
+        "to_entity": "hud_comp",
+        "to_pin": "Gauge"
+      },
+      {
+        "end_pin_id": 18,
+        "from_entity": "hud_comp",
+        "from_pin": "Scene",
+        "id": 3,
+        "start_pin_id": 12,
+        "to_entity": "post",
+        "to_pin": "Scene"
+      },
+      {
+        "end_pin_id": 13,
+        "from_entity": "hud_orbits",
+        "from_pin": "Orbits",
+        "id": 4,
+        "start_pin_id": 21,
+        "to_entity": "hud_comp",
+        "to_pin": "Orbits"
+      },
+      {
+        "end_pin_id": 17,
+        "from_entity": "hud_labels",
+        "from_pin": "Labels Tex",
+        "id": 7,
+        "start_pin_id": 27,
+        "to_entity": "hud_comp",
+        "to_pin": "Labels"
+      },
+      {
+        "end_pin_id": 36,
+        "from_entity": "prim_atlas",
+        "from_pin": "Atlas",
+        "id": 8,
+        "start_pin_id": 29,
+        "to_entity": "widget_render",
+        "to_pin": "Atlas"
+      },
+      {
+        "end_pin_id": 14,
+        "from_entity": "widget_render",
+        "from_pin": "Widgets",
+        "id": 11,
+        "start_pin_id": 37,
+        "to_entity": "hud_comp",
+        "to_pin": "Panels"
+      },
+      {
+        "end_pin_id": 45,
+        "from_entity": "pg_panels",
+        "from_pin": "Nodes",
+        "id": 12,
+        "start_pin_id": 44,
+        "to_entity": "ps_panels",
+        "to_pin": "Nodes"
+      },
+      {
+        "end_pin_id": 51,
+        "from_entity": "pg_hero",
+        "from_pin": "Nodes",
+        "id": 13,
+        "start_pin_id": 50,
+        "to_entity": "ps_hero",
+        "to_pin": "Nodes"
+      },
+      {
+        "end_pin_id": 63,
+        "from_entity": "pg_inst",
+        "from_pin": "Nodes",
+        "id": 15,
+        "start_pin_id": 62,
+        "to_entity": "ps_inst",
+        "to_pin": "Nodes"
+      },
+      {
+        "end_pin_id": 38,
+        "from_entity": "ps_panels",
+        "from_pin": "Widgets",
+        "id": 16,
+        "start_pin_id": 47,
+        "to_entity": "widget_render",
+        "to_pin": "Layout"
+      },
+      {
+        "end_pin_id": 39,
+        "from_entity": "ps_hero",
+        "from_pin": "Widgets",
+        "id": 17,
+        "start_pin_id": 53,
+        "to_entity": "widget_render",
+        "to_pin": "Detail"
+      },
+      {
+        "end_pin_id": 40,
+        "from_entity": "ps_mark",
+        "from_pin": "Widgets",
+        "id": 18,
+        "start_pin_id": 59,
+        "to_entity": "widget_render",
+        "to_pin": "Chain C"
+      },
+      {
+        "end_pin_id": 41,
+        "from_entity": "ps_inst",
+        "from_pin": "Widgets",
+        "id": 19,
+        "start_pin_id": 65,
+        "to_entity": "widget_render",
+        "to_pin": "Chain D"
+      },
+      {
+        "end_pin_id": 71,
+        "from_entity": "pg_tabs",
+        "from_pin": "Nodes",
+        "id": 20,
+        "start_pin_id": 70,
+        "to_entity": "ps_tabs",
+        "to_pin": "Nodes"
+      },
+      {
+        "end_pin_id": 77,
+        "from_entity": "pg_fan",
+        "from_pin": "Nodes",
+        "id": 21,
+        "start_pin_id": 76,
+        "to_entity": "ps_fan",
+        "to_pin": "Nodes"
+      },
+      {
+        "end_pin_id": 66,
+        "from_entity": "ps_tabs",
+        "from_pin": "Widgets",
+        "id": 22,
+        "start_pin_id": 73,
+        "to_entity": "widget_render",
+        "to_pin": "Chain E"
+      },
+      {
+        "end_pin_id": 67,
+        "from_entity": "ps_fan",
+        "from_pin": "Widgets",
+        "id": 23,
+        "start_pin_id": 79,
+        "to_entity": "widget_render",
+        "to_pin": "Chain F"
+      },
+      {
+        "end_pin_id": 83,
+        "from_entity": "pg_conn",
+        "from_pin": "Nodes",
+        "id": 24,
+        "start_pin_id": 82,
+        "to_entity": "path_conn",
+        "to_pin": "Nodes"
+      },
+      {
+        "end_pin_id": 86,
+        "from_entity": "path_conn",
+        "from_pin": "Nodes",
+        "id": 25,
+        "start_pin_id": 85,
+        "to_entity": "spline_render",
+        "to_pin": "Nodes"
+      },
+      {
+        "end_pin_id": 15,
+        "from_entity": "spline_render",
+        "from_pin": "Splines",
+        "id": 26,
+        "start_pin_id": 87,
+        "to_entity": "hud_comp",
+        "to_pin": "Leaders"
+      },
+      {
+        "end_pin_id": 88,
+        "from_entity": "pg_mark",
+        "from_pin": "Nodes",
+        "id": 27,
+        "start_pin_id": 56,
+        "to_entity": "spawn_mark",
+        "to_pin": "Nodes"
+      },
+      {
+        "end_pin_id": 57,
+        "from_entity": "spawn_mark",
+        "from_pin": "Nodes",
+        "id": 28,
+        "start_pin_id": 90,
+        "to_entity": "ps_mark",
+        "to_pin": "Nodes"
+      }
+    ],
+    "node_count": 25,
+    "nodes": [
+      {
+        "bounds": {
+          "entity_id": "signal",
+          "height": 207.92588806152344,
+          "max_x": 255.57791137695312,
+          "max_y": 2611.92578125,
+          "min_x": 100.0,
+          "min_y": 2404.0,
+          "node_id": 1,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 2404.0
+        },
+        "contained_by": [],
+        "display_name": "signal",
+        "entity_id": "signal",
+        "id": 1,
+        "pins": [
+          {
+            "id": 2,
+            "kind": "output",
+            "name": "Signal",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 3,
+            "kind": "output",
+            "name": "pulse",
+            "slot_index": 1,
+            "type": "unknown"
+          },
+          {
+            "id": 4,
+            "kind": "output",
+            "name": "sweep",
+            "slot_index": 2,
+            "type": "unknown"
+          },
+          {
+            "id": 5,
+            "kind": "output",
+            "name": "beat",
+            "slot_index": 3,
+            "type": "unknown"
+          },
+          {
+            "id": 6,
+            "kind": "output",
+            "name": "slow",
+            "slot_index": 4,
+            "type": "unknown"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 2404.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_bg",
+          "height": 166.9187774658203,
+          "max_x": 255.57791137695312,
+          "max_y": 266.91876220703125,
+          "min_x": 100.0,
+          "min_y": 100.0,
+          "node_id": 2,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 100.0
+        },
+        "contained_by": [],
+        "display_name": "hud_bg",
+        "entity_id": "hud_bg",
+        "id": 2,
+        "pins": [
+          {
+            "id": 8,
+            "kind": "output",
+            "name": "BG",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 100.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_gauge",
+          "height": 167.13250732421875,
+          "max_x": 255.57791137695312,
+          "max_y": 459.1325073242187,
+          "min_x": 100.0,
+          "min_y": 292.0,
+          "node_id": 3,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 292.0
+        },
+        "contained_by": [],
+        "display_name": "hud_gauge",
+        "entity_id": "hud_gauge",
+        "id": 3,
+        "pins": [
+          {
+            "id": 10,
+            "kind": "output",
+            "name": "Gauge",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 292.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_comp",
+          "height": 272.95770263671875,
+          "max_x": 855.2847290039062,
+          "max_y": 1524.957763671875,
+          "min_x": 700.0,
+          "min_y": 1252.0,
+          "node_id": 4,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.2847442626953,
+          "x": 700.0,
+          "y": 1252.0
+        },
+        "contained_by": [],
+        "display_name": "hud_comp",
+        "entity_id": "hud_comp",
+        "id": 4,
+        "pins": [
+          {
+            "id": 11,
+            "kind": "input",
+            "name": "BG",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 13,
+            "kind": "input",
+            "name": "Orbits",
+            "slot_index": 1,
+            "type": "video"
+          },
+          {
+            "id": 14,
+            "kind": "input",
+            "name": "Panels",
+            "slot_index": 2,
+            "type": "video"
+          },
+          {
+            "id": 15,
+            "kind": "input",
+            "name": "Leaders",
+            "slot_index": 3,
+            "type": "video"
+          },
+          {
+            "id": 16,
+            "kind": "input",
+            "name": "Gauge",
+            "slot_index": 4,
+            "type": "video"
+          },
+          {
+            "id": 17,
+            "kind": "input",
+            "name": "Labels",
+            "slot_index": 5,
+            "type": "video"
+          },
+          {
+            "id": 12,
+            "kind": "output",
+            "name": "Scene",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 700.0,
+        "pos_y": 1252.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "post",
+          "height": 167.24014282226565,
+          "max_x": 1055.18701171875,
+          "max_y": 1419.2401123046875,
+          "min_x": 900.0,
+          "min_y": 1252.0,
+          "node_id": 5,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.18701171875,
+          "x": 900.0,
+          "y": 1252.0
+        },
+        "contained_by": [],
+        "display_name": "post",
+        "entity_id": "post",
+        "id": 5,
+        "pins": [
+          {
+            "id": 18,
+            "kind": "input",
+            "name": "Scene",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 19,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 900.0,
+        "pos_y": 1252.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_orbits",
+          "height": 166.81263732910156,
+          "max_x": 255.57791137695312,
+          "max_y": 1034.8126220703125,
+          "min_x": 100.0,
+          "min_y": 868.0,
+          "node_id": 6,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 868.0
+        },
+        "contained_by": [],
+        "display_name": "hud_orbits",
+        "entity_id": "hud_orbits",
+        "id": 6,
+        "pins": [
+          {
+            "id": 21,
+            "kind": "output",
+            "name": "Orbits",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 868.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "hud_labels",
+          "height": 167.34625244140625,
+          "max_x": 255.57791137695312,
+          "max_y": 651.3462524414062,
+          "min_x": 100.0,
+          "min_y": 484.0,
+          "node_id": 9,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 484.0
+        },
+        "contained_by": [],
+        "display_name": "hud_labels",
+        "entity_id": "hud_labels",
+        "id": 9,
+        "pins": [
+          {
+            "id": 27,
+            "kind": "output",
+            "name": "Labels Tex",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 484.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "prim_atlas",
+          "height": 158.5905303955078,
+          "max_x": 255.57791137695312,
+          "max_y": 1410.590576171875,
+          "min_x": 100.0,
+          "min_y": 1252.0,
+          "node_id": 10,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 1252.0
+        },
+        "contained_by": [],
+        "display_name": "prim_atlas",
+        "entity_id": "prim_atlas",
+        "id": 10,
+        "pins": [
+          {
+            "id": 29,
+            "kind": "output",
+            "name": "Atlas",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 1252.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "widget_render",
+          "height": 294.1011962890625,
+          "max_x": 655.3824462890625,
+          "max_y": 1546.1011962890625,
+          "min_x": 500.0,
+          "min_y": 1252.0,
+          "node_id": 13,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.38246154785156,
+          "x": 500.0,
+          "y": 1252.0
+        },
+        "contained_by": [],
+        "display_name": "widget_render",
+        "entity_id": "widget_render",
+        "id": 13,
+        "pins": [
+          {
+            "id": 36,
+            "kind": "input",
+            "name": "Atlas",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 38,
+            "kind": "input",
+            "name": "Layout",
+            "slot_index": 1,
+            "type": "data"
+          },
+          {
+            "id": 39,
+            "kind": "input",
+            "name": "Detail",
+            "slot_index": 2,
+            "type": "data"
+          },
+          {
+            "id": 40,
+            "kind": "input",
+            "name": "Chain C",
+            "slot_index": 3,
+            "type": "data"
+          },
+          {
+            "id": 41,
+            "kind": "input",
+            "name": "Chain D",
+            "slot_index": 4,
+            "type": "data"
+          },
+          {
+            "id": 66,
+            "kind": "input",
+            "name": "Chain E",
+            "slot_index": 5,
+            "type": "data"
+          },
+          {
+            "id": 67,
+            "kind": "input",
+            "name": "Chain F",
+            "slot_index": 6,
+            "type": "data"
+          },
+          {
+            "id": 37,
+            "kind": "output",
+            "name": "Widgets",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 500.0,
+        "pos_y": 1252.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "pg_panels",
+          "height": 145.02891540527344,
+          "max_x": 255.57791137695312,
+          "max_y": 2165.02880859375,
+          "min_x": 100.0,
+          "min_y": 2020.0,
+          "node_id": 14,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 2020.0
+        },
+        "contained_by": [],
+        "display_name": "pg_panels",
+        "entity_id": "pg_panels",
+        "id": 14,
+        "pins": [
+          {
+            "id": 43,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 44,
+            "kind": "output",
+            "name": "Nodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 2020.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "ps_panels",
+          "height": 144.49488830566406,
+          "max_x": 455.4801940917969,
+          "max_y": 1684.494873046875,
+          "min_x": 300.0,
+          "min_y": 1540.0,
+          "node_id": 15,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.48019409179688,
+          "x": 300.0,
+          "y": 1540.0
+        },
+        "contained_by": [],
+        "display_name": "ps_panels",
+        "entity_id": "ps_panels",
+        "id": 15,
+        "pins": [
+          {
+            "id": 45,
+            "kind": "input",
+            "name": "Nodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 46,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 47,
+            "kind": "output",
+            "name": "Widgets",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 300.0,
+        "pos_y": 1540.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "pg_hero",
+          "height": 145.3491973876953,
+          "max_x": 255.57791137695312,
+          "max_y": 1589.3492431640625,
+          "min_x": 100.0,
+          "min_y": 1444.0,
+          "node_id": 16,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 1444.0
+        },
+        "contained_by": [],
+        "display_name": "pg_hero",
+        "entity_id": "pg_hero",
+        "id": 16,
+        "pins": [
+          {
+            "id": 49,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 50,
+            "kind": "output",
+            "name": "Nodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 1444.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "ps_hero",
+          "height": 144.81492614746094,
+          "max_x": 455.4801940917969,
+          "max_y": 1108.81494140625,
+          "min_x": 300.0,
+          "min_y": 964.0,
+          "node_id": 17,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.48019409179688,
+          "x": 300.0,
+          "y": 964.0
+        },
+        "contained_by": [],
+        "display_name": "ps_hero",
+        "entity_id": "ps_hero",
+        "id": 17,
+        "pins": [
+          {
+            "id": 51,
+            "kind": "input",
+            "name": "Nodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 52,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 53,
+            "kind": "output",
+            "name": "Widgets",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 300.0,
+        "pos_y": 964.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "pg_mark",
+          "height": 144.81539916992188,
+          "max_x": 255.57791137695312,
+          "max_y": 1972.8154296875,
+          "min_x": 100.0,
+          "min_y": 1828.0,
+          "node_id": 18,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 1828.0
+        },
+        "contained_by": [],
+        "display_name": "pg_mark",
+        "entity_id": "pg_mark",
+        "id": 18,
+        "pins": [
+          {
+            "id": 55,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 56,
+            "kind": "output",
+            "name": "Nodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 1828.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "ps_mark",
+          "height": 145.242431640625,
+          "max_x": 455.4801940917969,
+          "max_y": 1493.242431640625,
+          "min_x": 300.0,
+          "min_y": 1348.0,
+          "node_id": 19,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.48019409179688,
+          "x": 300.0,
+          "y": 1348.0
+        },
+        "contained_by": [],
+        "display_name": "ps_mark",
+        "entity_id": "ps_mark",
+        "id": 19,
+        "pins": [
+          {
+            "id": 57,
+            "kind": "input",
+            "name": "Nodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 58,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 59,
+            "kind": "output",
+            "name": "Widgets",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 300.0,
+        "pos_y": 1348.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "pg_inst",
+          "height": 144.6017608642578,
+          "max_x": 255.57791137695312,
+          "max_y": 1780.601806640625,
+          "min_x": 100.0,
+          "min_y": 1636.0,
+          "node_id": 20,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 1636.0
+        },
+        "contained_by": [],
+        "display_name": "pg_inst",
+        "entity_id": "pg_inst",
+        "id": 20,
+        "pins": [
+          {
+            "id": 61,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 62,
+            "kind": "output",
+            "name": "Nodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 1636.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "ps_inst",
+          "height": 145.0286865234375,
+          "max_x": 455.4801940917969,
+          "max_y": 1301.0286865234375,
+          "min_x": 300.0,
+          "min_y": 1156.0,
+          "node_id": 21,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.48019409179688,
+          "x": 300.0,
+          "y": 1156.0
+        },
+        "contained_by": [],
+        "display_name": "ps_inst",
+        "entity_id": "ps_inst",
+        "id": 21,
+        "pins": [
+          {
+            "id": 63,
+            "kind": "input",
+            "name": "Nodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 64,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 65,
+            "kind": "output",
+            "name": "Widgets",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 300.0,
+        "pos_y": 1156.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "pg_tabs",
+          "height": 145.24290466308594,
+          "max_x": 255.57791137695312,
+          "max_y": 2357.242919921875,
+          "min_x": 100.0,
+          "min_y": 2212.0,
+          "node_id": 22,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 2212.0
+        },
+        "contained_by": [],
+        "display_name": "pg_tabs",
+        "entity_id": "pg_tabs",
+        "id": 22,
+        "pins": [
+          {
+            "id": 69,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 70,
+            "kind": "output",
+            "name": "Nodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 2212.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "ps_tabs",
+          "height": 144.70840454101565,
+          "max_x": 455.4801940917969,
+          "max_y": 1876.7083740234375,
+          "min_x": 300.0,
+          "min_y": 1732.0,
+          "node_id": 23,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.48019409179688,
+          "x": 300.0,
+          "y": 1732.0
+        },
+        "contained_by": [],
+        "display_name": "ps_tabs",
+        "entity_id": "ps_tabs",
+        "id": 23,
+        "pins": [
+          {
+            "id": 71,
+            "kind": "input",
+            "name": "Nodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 72,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 73,
+            "kind": "output",
+            "name": "Widgets",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 300.0,
+        "pos_y": 1732.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "pg_fan",
+          "height": 144.92181396484375,
+          "max_x": 255.57791137695312,
+          "max_y": 1204.921875,
+          "min_x": 100.0,
+          "min_y": 1060.0,
+          "node_id": 24,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.57791137695312,
+          "x": 100.0,
+          "y": 1060.0
+        },
+        "contained_by": [],
+        "display_name": "pg_fan",
+        "entity_id": "pg_fan",
+        "id": 24,
+        "pins": [
+          {
+            "id": 75,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 76,
+            "kind": "output",
+            "name": "Nodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 1060.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "ps_fan",
+          "height": 144.60118103027344,
+          "max_x": 455.4801940917969,
+          "max_y": 916.6011962890624,
+          "min_x": 300.0,
+          "min_y": 772.0,
+          "node_id": 25,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.48019409179688,
+          "x": 300.0,
+          "y": 772.0
+        },
+        "contained_by": [],
+        "display_name": "ps_fan",
+        "entity_id": "ps_fan",
+        "id": 25,
+        "pins": [
+          {
+            "id": 77,
+            "kind": "input",
+            "name": "Nodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 78,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 79,
+            "kind": "output",
+            "name": "Widgets",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 300.0,
+        "pos_y": 772.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "pg_conn",
+          "height": 145.31863403320312,
+          "max_x": 1309.8702392578125,
+          "max_y": 608.09814453125,
+          "min_x": 1154.7318115234375,
+          "min_y": 462.7795104980469,
+          "node_id": 26,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.13844299316406,
+          "x": 1154.7318115234375,
+          "y": 462.7795104980469
+        },
+        "contained_by": [],
+        "display_name": "pg_conn",
+        "entity_id": "pg_conn",
+        "id": 26,
+        "pins": [
+          {
+            "id": 81,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 82,
+            "kind": "output",
+            "name": "Nodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 1154.7318115234375,
+        "pos_y": 462.7795104980469,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "path_conn",
+          "height": 144.75538635253906,
+          "max_x": 1309.8702392578125,
+          "max_y": 761.869140625,
+          "min_x": 1154.7318115234375,
+          "min_y": 617.11376953125,
+          "node_id": 27,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.13844299316406,
+          "x": 1154.7318115234375,
+          "y": 617.11376953125
+        },
+        "contained_by": [],
+        "display_name": "path_conn",
+        "entity_id": "path_conn",
+        "id": 27,
+        "pins": [
+          {
+            "id": 83,
+            "kind": "input",
+            "name": "Nodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 84,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 85,
+            "kind": "output",
+            "name": "Nodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 1154.7318115234375,
+        "pos_y": 617.11376953125,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "spline_render",
+          "height": 166.81040954589844,
+          "max_x": 1309.8702392578125,
+          "max_y": 707.0882568359375,
+          "min_x": 1154.7318115234375,
+          "min_y": 540.27783203125,
+          "node_id": 28,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.13844299316406,
+          "x": 1154.7318115234375,
+          "y": 540.27783203125
+        },
+        "contained_by": [],
+        "display_name": "spline_render",
+        "entity_id": "spline_render",
+        "id": 28,
+        "pins": [
+          {
+            "id": 86,
+            "kind": "input",
+            "name": "Nodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 87,
+            "kind": "output",
+            "name": "Splines",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1154.7318115234375,
+        "pos_y": 540.27783203125,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "spawn_mark",
+          "height": 144.75686645507812,
+          "max_x": 1309.8702392578125,
+          "max_y": 712.8546142578125,
+          "min_x": 1154.7318115234375,
+          "min_y": 568.0977783203125,
+          "node_id": 29,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.13844299316406,
+          "x": 1154.7318115234375,
+          "y": 568.0977783203125
+        },
+        "contained_by": [],
+        "display_name": "spawn_mark",
+        "entity_id": "spawn_mark",
+        "id": 29,
+        "pins": [
+          {
+            "id": 88,
+            "kind": "input",
+            "name": "Nodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 89,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 90,
+            "kind": "output",
+            "name": "Nodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 1154.7318115234375,
+        "pos_y": 568.0977783203125,
+        "position_set": true,
+        "type": "pipeline"
+      }
+    ],
+    "processing_order": [
+      "hud_labels",
+      "signal",
+      "prim_atlas",
+      "hud_bg",
+      "hud_gauge",
+      "hud_orbits",
+      "pg_panels",
+      "pg_hero",
+      "pg_mark",
+      "pg_inst",
+      "pg_tabs",
+      "pg_fan",
+      "pg_conn",
+      "ps_panels",
+      "ps_hero",
+      "spawn_mark",
+      "ps_inst",
+      "ps_tabs",
+      "ps_fan",
+      "path_conn",
+      "ps_mark",
+      "spline_render",
+      "widget_render",
+      "hud_comp",
+      "post"
+    ],
+    "routing": {
+      "hud_bg": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "hud_comp": {
+        "input_entity": "hud_bg",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": [
+          {
+            "entity_id": "hud_orbits",
+            "is_source": false,
+            "slot_index": 1
+          },
+          {
+            "entity_id": "widget_render",
+            "is_source": false,
+            "slot_index": 2
+          },
+          {
+            "entity_id": "spline_render",
+            "is_source": false,
+            "slot_index": 3
+          },
+          {
+            "entity_id": "hud_gauge",
+            "is_source": false,
+            "slot_index": 4
+          },
+          {
+            "entity_id": "hud_labels",
+            "is_source": false,
+            "slot_index": 5
+          }
+        ]
+      },
+      "hud_gauge": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "hud_labels": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "hud_orbits": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "path_conn": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "pg_conn": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "pg_fan": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "pg_hero": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "pg_inst": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "pg_mark": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "pg_panels": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "pg_tabs": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "post": {
+        "input_entity": "hud_comp",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "prim_atlas": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "ps_fan": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "ps_hero": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "ps_inst": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "ps_mark": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "ps_panels": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "ps_tabs": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "signal": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "spawn_mark": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "spline_render": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "widget_render": {
+        "input_entity": "prim_atlas",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      }
+    }
+  },
+  "status": "ok"
+}

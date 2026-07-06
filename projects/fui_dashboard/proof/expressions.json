@@ -1,0 +1,16 @@
+{
+  "data": {
+    "count": 2,
+    "expressions": [
+      {
+        "expression": "0.18 + ref(\"signal/control_outputs/slow\") * 0.16",
+        "path": "/sentinel/pipelines/hud_gauge/parameters/hero_value"
+      },
+      {
+        "expression": "ref(\"signal/control_outputs/sweep\")",
+        "path": "/sentinel/pipelines/hud_gauge/parameters/fan_value"
+      }
+    ]
+  },
+  "status": "ok"
+}

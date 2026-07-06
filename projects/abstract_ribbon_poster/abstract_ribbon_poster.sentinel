@@ -1,0 +1,407 @@
+{
+  "graph": {
+    "canvasZoom": 1.5,
+    "links": [
+      {
+        "endPinId": 11,
+        "id": 1,
+        "startPinId": 2
+      },
+      {
+        "endPinId": 13,
+        "id": 2,
+        "startPinId": 4
+      },
+      {
+        "endPinId": 14,
+        "id": 3,
+        "startPinId": 6
+      },
+      {
+        "endPinId": 15,
+        "id": 4,
+        "startPinId": 8
+      },
+      {
+        "endPinId": 16,
+        "id": 5,
+        "startPinId": 10
+      },
+      {
+        "endPinId": 17,
+        "id": 6,
+        "startPinId": 12
+      }
+    ],
+    "nextLinkId": 7,
+    "nextNodeId": 8,
+    "nextPinId": 19,
+    "nodes": [
+      {
+        "displayName": "abstract_bg",
+        "entityId": "abstract_bg",
+        "id": 1,
+        "posX": -171.19821166992188,
+        "posY": 297.6499938964844,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_column",
+        "entityId": "abstract_column",
+        "id": 2,
+        "posX": 64.68773651123047,
+        "posY": 414.7879638671875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_solids",
+        "entityId": "abstract_solids",
+        "id": 3,
+        "posX": 163.5620880126953,
+        "posY": 921.6746215820313,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_ribbon",
+        "entityId": "abstract_ribbon",
+        "id": 4,
+        "posX": -69.49888610839844,
+        "posY": 677.4125366210938,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_accents",
+        "entityId": "abstract_accents",
+        "id": 5,
+        "posX": 1.12567138671875,
+        "posY": 29.375457763671875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_comp",
+        "entityId": "abstract_comp",
+        "id": 6,
+        "posX": 526.4085083007813,
+        "posY": 476.9375,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "abstract_post",
+        "entityId": "abstract_post",
+        "id": 7,
+        "posX": 795.6205444335938,
+        "posY": 502.15740966796875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "BG",
+        "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 4,
+        "kind": 1,
+        "name": "Column",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "Solids",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "Ribbon",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 10,
+        "kind": 1,
+        "name": "Accents",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 11,
+        "kind": 0,
+        "name": "BG",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 12,
+        "kind": 1,
+        "name": "Scene",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 13,
+        "kind": 0,
+        "name": "Column",
+        "nodeId": 6,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 14,
+        "kind": 0,
+        "name": "Solids",
+        "nodeId": 6,
+        "slotIndex": 2,
+        "type": 0
+      },
+      {
+        "id": 15,
+        "kind": 0,
+        "name": "Ribbon",
+        "nodeId": 6,
+        "slotIndex": 3,
+        "type": 0
+      },
+      {
+        "id": 16,
+        "kind": 0,
+        "name": "Accents",
+        "nodeId": 6,
+        "slotIndex": 4,
+        "type": 0
+      },
+      {
+        "id": 17,
+        "kind": 0,
+        "name": "Scene",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 18,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "",
+  "name": "abstract_ribbon_poster",
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "abstract_bg",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_bg",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "grain_amount": "0.010000",
+        "project_dir": "modules/abstract_bg",
+        "resolution_height": "1280",
+        "resolution_width": "1024",
+        "shadow_strength": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "abstract_column",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_column",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "opacity": "0.960000",
+        "project_dir": "modules/abstract_column",
+        "resolution_height": "1280",
+        "resolution_width": "1024",
+        "x_offset": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "abstract_solids",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_solids",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "motion": "0.180000",
+        "project_dir": "modules/abstract_solids",
+        "resolution_height": "1280",
+        "resolution_width": "1024",
+        "solids_gain": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "abstract_ribbon",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_ribbon",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "center_shift_x": "0.000000",
+        "center_shift_y": "0.000000",
+        "intensity": "1.000000",
+        "line_strength": "0.620000",
+        "motion": "0.180000",
+        "project_dir": "modules/abstract_ribbon",
+        "resolution_height": "1280",
+        "resolution_width": "1024",
+        "rib_count": "48.000000",
+        "rib_width": "0.095000",
+        "shimmer": "0.200000",
+        "width_base": "0.038000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "abstract_comp",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_comp",
+      "inputSlotSourceIds": [
+        "abstract_bg",
+        "abstract_column",
+        "abstract_solids",
+        "abstract_ribbon",
+        "abstract_accents"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "accents_gain": "1.000000",
+        "bg_gain": "1.000000",
+        "column_gain": "1.000000",
+        "exposure": "0.980000",
+        "project_dir": "modules/abstract_comp",
+        "ribbon_gain": "1.000000",
+        "solids_gain": "1.000000",
+        "vignette": "0.500000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "abstract_accents",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_accents",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "blue_gain": "1.000000",
+        "project_dir": "modules/abstract_accents",
+        "resolution_height": "1280",
+        "resolution_width": "1024"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "abstract_post",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "abstract_post",
+      "inputSlotSourceIds": [
+        "abstract_comp"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bloom_intensity": "0.080000",
+        "bloom_radius": "0.032000",
+        "bloom_threshold": "0.800000",
+        "chroma": "0.030000",
+        "contrast": "0.960000",
+        "exposure": "0.820000",
+        "grain_amt": "0.012000",
+        "highlight_tint_b": "0.250000",
+        "highlight_tint_g": "0.600000",
+        "highlight_tint_r": "1.000000",
+        "project_dir": "modules/abstract_post",
+        "saturation": "0.980000",
+        "shadow_tint_b": "0.220000",
+        "shadow_tint_g": "0.140000",
+        "shadow_tint_r": "0.000000",
+        "split_balance": "0.000000",
+        "vignette": "0.100000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1783296640129,
+  "sources": [],
+  "version": 5
+}
