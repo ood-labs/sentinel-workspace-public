@@ -190,6 +190,22 @@ kind-indexed vocabulary, `sdf_shading` normals/AO/shadow/camera with a
   control outputs → `ref()` drives layout + render from one place; `sdf_dada.hlsli` is the kind
   vocabulary. Warp distortion costs ~10× via normal/AO/shadow re-entry — keep field fbm to 2–3
   octaves. · *compose-with:* `sdf_dada`, `post`, `signal`, `sentinel_expression`.
+- **Domain-distortion warp toolkit** ⭐ — *in-renderer, params* · `dada_render`'s
+  `domainDistort(p)` (project `desert_totem`) · **the highest-value technique from this build.**
+  Because a whole procedural scene is ONE distance field, a domain warp applied to `p` before
+  evaluation melts/twists/shatters the entire scene coherently. Structure: a **3-slot warp
+  stack** (each slot: mode ∈ Flow/Ripple/Turbulent/Fractal/Steps/Boxes/Shatter, freq, speed,
+  yaw+pitch orientation, xyz offset — summed under a master melt) + geometric ops (twist, bend,
+  swirl, sag, wave, pinch, mirror-fold, movable center) + surface ops (painterly, facet, wobble,
+  hue-shift). **Two load-bearing rules:** (1) a **Lipschitz safety factor** — multiply the
+  returned distance by `1/(1 + Σ distortion strength)` so the sphere-tracer under-steps and
+  doesn't overshoot the inflated gradient (this is what makes warped-SDF marching stable); (2)
+  **partition by type** — global `p`-warp breaks bounding-sphere culling (so brute-force +
+  height-band instead), radial fold applied pre-loop, sag affine, painterly shading-only.
+  Rectilinear modes (Steps/Boxes/Shatter) give cubist/glitch looks; flowy modes give Dalí melt;
+  they layer. Watch GPU TDR — melt pays ~10× via normal/AO/shadow re-entry; keep field fbm to
+  2–3 octaves, cap resolution/march-steps. · *compose-with:* any single-pass raymarch scene,
+  `signal` (animate slots), `post`.
 - **Hero SDF assemblage (single-pass, hand-placed)** — *generator → texture* ·
   `dada_totem` (project `desert_totem`) · the bespoke counterpart to `sdf_scene_render`:
   when a scene is a *specific* arrangement of unique objects (a Dada totem, a still
