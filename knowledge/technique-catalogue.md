@@ -198,6 +198,53 @@ kind-indexed vocabulary, `sdf_shading` normals/AO/shadow/camera with a
   value-noise grid so patterns stop looking stretched). `sd_` prefix, no nested includes —
   include after `sdf_ops.hlsli`. Compose noise layers at different scales for realistic
   weathering. · *compose-with:* any raymarched SDF shade pass.
+- **Spline tube + turned finial** — *HLSL include* · `_shared/sdf/sdf_extras.hlsli` ·
+  `sd_bezierTube(p,a,b,c,r)` sweeps a capsule along a quadratic bezier (8 segments) —
+  the SDF "spline" transport for wires, rigging, hanging cables and bent arcs;
+  `obj_baluster(p,base)` is a lathe-like stack of primitives (turned-wood / chess-pawn
+  finial). Harvested from `dada_totem`. · *compose-with:* any raymarched sceneMap.
+- **Data-driven SDF assemblage + distortion (desert_totem v2)** — *compute → StructuredBuffer\<DadaPart\> → texture* ·
+  `dada_layout` / `dada_scatter` / `dada_render` / `dada_control` (project `desert_totem`) · the
+  externally-drivable evolution of the hero assemblage: pack every object into a 64 B `DadaPart`
+  record (float2s-first: `pos_xy, sc_xy, pos_z, sc_z, yaw, tilt, roll, kind, mat, group, p0..p2,
+  active`) authored by a compute generator, then a forked single-pass renderer **brute-forces**
+  both buffers with a 1D height-band reject (no ray-sphere shortlist — a vertical stack defeats it;
+  the monolith is the perf proof) plus a hardcoded armature/wires, and colours objects with a
+  once-per-pixel `shadeSample`. **Domain distortion** as driveable params, partitioned by type:
+  `melt` (fbm/sin warp of the solids' domain × a Lipschitz safety factor), affine `sag`, radial
+  `mirror` fold (applied pre-loop so culling stays valid), and shading-only `painterly`. Generators
+  ship a **front-view layout-map preview** (each record → a placed disc) so the node shows the
+  arrangement, not a debug strip. A `dada_control` macro node publishes melt/sag/spread/explode as
+  control outputs → `ref()` drives layout + render from one place; `sdf_dada.hlsli` is the kind
+  vocabulary. Warp distortion costs ~10× via normal/AO/shadow re-entry — keep field fbm to 2–3
+  octaves. · *compose-with:* `sdf_dada`, `post`, `signal`, `sentinel_expression`.
+- **Domain-distortion warp toolkit** ⭐ — *in-renderer, params* · `dada_render`'s
+  `domainDistort(p)` (project `desert_totem`) · **the highest-value technique from this build.**
+  Because a whole procedural scene is ONE distance field, a domain warp applied to `p` before
+  evaluation melts/twists/shatters the entire scene coherently. Structure: a **3-slot warp
+  stack** (each slot: mode ∈ Flow/Ripple/Turbulent/Fractal/Steps/Boxes/Shatter, freq, speed,
+  yaw+pitch orientation, xyz offset — summed under a master melt) + geometric ops (twist, bend,
+  swirl, sag, wave, pinch, mirror-fold, movable center) + surface ops (painterly, facet, wobble,
+  hue-shift). **Two load-bearing rules:** (1) a **Lipschitz safety factor** — multiply the
+  returned distance by `1/(1 + Σ distortion strength)` so the sphere-tracer under-steps and
+  doesn't overshoot the inflated gradient (this is what makes warped-SDF marching stable); (2)
+  **partition by type** — global `p`-warp breaks bounding-sphere culling (so brute-force +
+  height-band instead), radial fold applied pre-loop, sag affine, painterly shading-only.
+  Rectilinear modes (Steps/Boxes/Shatter) give cubist/glitch looks; flowy modes give Dalí melt;
+  they layer. Watch GPU TDR — melt pays ~10× via normal/AO/shadow re-entry; keep field fbm to
+  2–3 octaves, cap resolution/march-steps. · *compose-with:* any single-pass raymarch scene,
+  `signal` (animate slots), `post`.
+- **Hero SDF assemblage (single-pass, hand-placed)** — *generator → texture* ·
+  `dada_totem` (project `desert_totem`) · the bespoke counterpart to `sdf_scene_render`:
+  when a scene is a *specific* arrangement of unique objects (a Dada totem, a still
+  life) rather than a kind-field of clones, compose one `sceneMap` from readable
+  sub-maps (`mapSpine`/`mapParts`/`mapHeroes`/`mapSplines`) with an in-shader part list
+  of `op_matmin` primitives, procedural multi-colour materials keyed by material id
+  (gore/stripe/checker from a piece's centre constant), a ray-miss sky+desert+ridge
+  environment, and a fly/orbit camera — all in one depth domain so a fly-cam roams it.
+  NB: the orbit rig's `az=0` looks down **+X**; face-`+Z` flat pieces read frontally at
+  `cam_orbit≈90`. · *compose-with:* `sdf_extras`, `post` (painterly grade), `signal`
+  (self-animation amplitude via `ref()`).
 
 ## Control & reactivity
 
