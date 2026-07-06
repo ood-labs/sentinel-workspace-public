@@ -45,15 +45,15 @@ data_inputs:
 
 parameters:
   # ---- warp — master melt + 3 combinable warp slots (each offset+oriented) ----
-  - { name: melt_amt,   display: "Melt (Master)", type: float, min: 0.0, max: 1.5, default: 0.0, group: "Warp" }
+  - { name: melt_amt,   display: "Melt (Master)", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Warp" }
   - { name: warp_speed, display: "Wave Speed",    type: float, min: 0.0, max: 3.0, default: 0.6, group: "Warp" }
 
   # Warp Slot 1
-  - { name: w1_amt,   display: "1 · Amount", type: float, min: 0.0, max: 1.5, default: 0.5, group: "Warp 1" }
+  - { name: w1_amt,   display: "1 · Amount", type: float, min: 0.0, max: 3.0, default: 0.5, group: "Warp 1" }
   - name: w1_mode
     display: "1 · Mode"
     type: enum
-    options: [Flow, Ripple, Turbulent, Fractal]
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
     default: 0
     flags: button_grid
     group: "Warp 1"
@@ -66,11 +66,11 @@ parameters:
   - { name: w1_oz,    display: "1 · Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 1" }
 
   # Warp Slot 2 (off by default)
-  - { name: w2_amt,   display: "2 · Amount", type: float, min: 0.0, max: 1.5, default: 0.0, group: "Warp 2" }
+  - { name: w2_amt,   display: "2 · Amount", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Warp 2" }
   - name: w2_mode
     display: "2 · Mode"
     type: enum
-    options: [Flow, Ripple, Turbulent, Fractal]
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
     default: 1
     flags: button_grid
     group: "Warp 2"
@@ -83,11 +83,11 @@ parameters:
   - { name: w2_oz,    display: "2 · Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Warp 2" }
 
   # Warp Slot 3 (off by default)
-  - { name: w3_amt,   display: "3 · Amount", type: float, min: 0.0, max: 1.5, default: 0.0, group: "Warp 3" }
+  - { name: w3_amt,   display: "3 · Amount", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Warp 3" }
   - name: w3_mode
     display: "3 · Mode"
     type: enum
-    options: [Flow, Ripple, Turbulent, Fractal]
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
     default: 3
     flags: button_grid
     group: "Warp 3"

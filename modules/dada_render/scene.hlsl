@@ -154,6 +154,24 @@ float3 warpFieldMode(float3 p, int mode, float f, float t)
         w += 0.5 * float3(sin(p.y * f * 2.1 + t * 1.7), sin(p.z * f * 2.3 - t), sin(p.x * f * 1.9 + t));
         return w;
     }
+    if (mode == 4)                                         // Steps — terraced (rectilinear)
+    {
+        float3 s = float3(sin(p.y * f + t), sin(p.z * f * 1.2 - t), sin(p.x * f * 0.8 + t));
+        return lerp(s, round(s * 3.0) / 3.0, 0.85);        // mostly stepped, slightly smoothed for march safety
+    }
+    if (mode == 5)                                         // Boxes — soft square wave (blocky)
+    {
+        float3 s = float3(sin(p.y * f + t), sin(p.x * f - t), sin(p.z * f * 1.3 + t));
+        return clamp(s * 4.0, -1.0, 1.0) * 0.7;            // flat plateaus, steep sides -> rectilinear pushes
+    }
+    if (mode == 6)                                         // Shatter — per-grid-cell constant offset (cubist)
+    {
+        float3 cell = floor(p * f * 0.6 + t * 0.1);
+        float3 h = float3(frac(sin(dot(cell, float3(12.9, 78.2, 37.7))) * 43758.5),
+                          frac(sin(dot(cell, float3(39.3, 11.1, 83.2))) * 24634.6),
+                          frac(sin(dot(cell, float3(73.1, 52.7,  9.7))) * 13451.2)) - 0.5;
+        return h * 1.4;                                    // piecewise-constant per block
+    }
     return float3(                                          // Flow (default)
         sin(p.y * f + t)       + 0.5 * sin(p.z * f * 1.7 - t * 1.3),
         sin(p.z * f * 0.9 + t) + 0.5 * sin(p.x * f * 1.5 + t * 1.1),
