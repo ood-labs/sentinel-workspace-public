@@ -1,0 +1,713 @@
+{
+  "graph": {
+    "canvasZoom": 0.658221423625946,
+    "links": [
+      {
+        "endPinId": 4,
+        "id": 1,
+        "startPinId": 3
+      },
+      {
+        "endPinId": 34,
+        "id": 17,
+        "startPinId": 13
+      },
+      {
+        "endPinId": 12,
+        "id": 12,
+        "startPinId": 7
+      },
+      {
+        "endPinId": 14,
+        "id": 13,
+        "startPinId": 5
+      },
+      {
+        "endPinId": 15,
+        "id": 14,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 16,
+        "id": 15,
+        "startPinId": 9
+      },
+      {
+        "endPinId": 17,
+        "id": 16,
+        "startPinId": 11
+      }
+    ],
+    "nextLinkId": 18,
+    "nextNodeId": 11,
+    "nextPinId": 36,
+    "nodes": [
+      {
+        "displayName": "blob_layout",
+        "entityId": "blob_layout",
+        "id": 1,
+        "posX": 43.105865478515625,
+        "posY": -157.80194091796875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "blob_render",
+        "entityId": "blob_render",
+        "id": 2,
+        "posX": 245.28103637695313,
+        "posY": -131.86968994140625,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "strata_bg",
+        "entityId": "strata_bg",
+        "id": 3,
+        "posX": 37.5999755859375,
+        "posY": -498.5888671875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "wire_render",
+        "entityId": "wire_render",
+        "id": 4,
+        "posX": 32.094085693359375,
+        "posY": 891.8587646484375,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "marks",
+        "entityId": "marks",
+        "id": 5,
+        "posX": 37.59996032714844,
+        "posY": 531.7176513671875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "plate_comp",
+        "entityId": "plate_comp",
+        "id": 6,
+        "posX": 547.7176513671875,
+        "posY": 330.96453857421875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "marble_panel",
+        "entityId": "marble_panel",
+        "id": 7,
+        "posX": 46.77644348144531,
+        "posY": 183.71759033203125,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "strata_control",
+        "entityId": "strata_control",
+        "id": 8,
+        "posX": -217.87274169921875,
+        "posY": 396.98486328125,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "signal",
+        "entityId": "signal",
+        "id": 9,
+        "posX": -449.7013854980469,
+        "posY": 421.07330322265625,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "post",
+        "entityId": "post",
+        "id": 10,
+        "posX": 734.0352783203125,
+        "posY": 343.64691162109375,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "kind": 1,
+        "name": "Parts",
+        "nodeId": 1,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 11,
+        "kind": 1,
+        "name": "Marks",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 4,
+        "kind": 0,
+        "name": "Parts",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 12,
+        "kind": 0,
+        "name": "BG",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 5,
+        "kind": 1,
+        "name": "Render",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 7,
+        "kind": 1,
+        "name": "BG",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 9,
+        "kind": 1,
+        "name": "Wire",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 13,
+        "kind": 1,
+        "name": "Comp",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 14,
+        "kind": 0,
+        "name": "Blobs",
+        "nodeId": 6,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 15,
+        "kind": 0,
+        "name": "Marble",
+        "nodeId": 6,
+        "slotIndex": 2,
+        "type": 0
+      },
+      {
+        "id": 16,
+        "kind": 0,
+        "name": "Wire",
+        "nodeId": 6,
+        "slotIndex": 3,
+        "type": 0
+      },
+      {
+        "id": 17,
+        "kind": 0,
+        "name": "Marks",
+        "nodeId": 6,
+        "slotIndex": 4,
+        "type": 0
+      },
+      {
+        "id": 19,
+        "kind": 1,
+        "name": "Marble",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 21,
+        "kind": 1,
+        "name": "Control",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 22,
+        "kind": 1,
+        "name": "seed",
+        "nodeId": 8,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 23,
+        "kind": 1,
+        "name": "melt",
+        "nodeId": 8,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 24,
+        "kind": 1,
+        "name": "twist",
+        "nodeId": 8,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 25,
+        "kind": 1,
+        "name": "marble_warp",
+        "nodeId": 8,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 26,
+        "kind": 1,
+        "name": "spread",
+        "nodeId": 8,
+        "slotIndex": 5,
+        "type": 7
+      },
+      {
+        "id": 27,
+        "kind": 1,
+        "name": "wire_scale",
+        "nodeId": 8,
+        "slotIndex": 6,
+        "type": 7
+      },
+      {
+        "id": 29,
+        "kind": 1,
+        "name": "Signal",
+        "nodeId": 9,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 30,
+        "kind": 1,
+        "name": "pulse",
+        "nodeId": 9,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 31,
+        "kind": 1,
+        "name": "sweep",
+        "nodeId": 9,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 32,
+        "kind": 1,
+        "name": "beat",
+        "nodeId": 9,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 33,
+        "kind": 1,
+        "name": "slow",
+        "nodeId": 9,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 34,
+        "kind": 0,
+        "name": "Scene",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 35,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "",
+  "name": "strata",
+  "osc": {
+    "enabled": true,
+    "receivePort": 9000,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9001,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "blob_layout",
+      "enabled": true,
+      "expressions": {
+        "seed": "ref(\"strata_control/control_outputs/seed\")",
+        "spread": "ref(\"strata_control/control_outputs/spread\")"
+      },
+      "fitMode": 1,
+      "id": "blob_layout",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "jitter": "0.000000",
+        "lift": "0.000000",
+        "project_dir": "modules/blob_layout",
+        "resolution_height": "720",
+        "resolution_width": "480",
+        "seed": "12.000000",
+        "size_mul": "1.000000",
+        "spread": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "wire_render",
+      "enabled": true,
+      "expressions": {
+        "wire_scale": "ref(\"strata_control/control_outputs/wire_scale\")",
+        "wire_seed": "ref(\"strata_control/control_outputs/seed\") * 0.7 + 11.0"
+      },
+      "fitMode": 1,
+      "id": "wire_render",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "cage_points": "3.000000",
+        "project_dir": "modules/wire_render",
+        "resolution_height": "1080",
+        "resolution_width": "720",
+        "ring_count": "3.000000",
+        "strand_count": "3.000000",
+        "wire_bright": "1.000000",
+        "wire_opacity": "0.720000",
+        "wire_scale": "0.820000",
+        "wire_seed": "19.400000",
+        "wire_width": "0.850000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "marble_panel",
+      "enabled": true,
+      "expressions": {
+        "marble_seed": "ref(\"strata_control/control_outputs/seed\") * 1.7 + 5.0",
+        "warp_amt": "ref(\"strata_control/control_outputs/marble_warp\")"
+      },
+      "fitMode": 1,
+      "id": "marble_panel",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "flow_speed": "0.250000",
+        "marble_opacity": "1.000000",
+        "marble_scale": "2.200000",
+        "marble_seed": "25.400002",
+        "panel_cx": "0.500000",
+        "panel_cy": "0.500000",
+        "panel_h": "0.300000",
+        "panel_w": "0.260000",
+        "project_dir": "modules/marble_panel",
+        "resolution_height": "1080",
+        "resolution_width": "720",
+        "sheen": "0.600000",
+        "vein_count": "3.500000",
+        "warp_amt": "1.000000",
+        "warp_freq": "1.200000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "blob_render",
+      "enabled": true,
+      "expressions": {
+        "melt_amt": "ref(\"strata_control/control_outputs/melt\") * 1.2",
+        "twist_amt": "ref(\"strata_control/control_outputs/twist\") * 0.6"
+      },
+      "fitMode": 1,
+      "id": "blob_render",
+      "inputSlotSourceIds": [
+        "blob_layout"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "aa": "2.000000",
+        "bend_amt": "0.000000",
+        "blend_k": "0.150000",
+        "cam_distance": "9.500000",
+        "cam_elevation": "2.000000",
+        "cam_focal": "1.700000",
+        "cam_orbit": "90.000000",
+        "cam_target_y": "0.000000",
+        "dist_cx": "0.000000",
+        "dist_cy": "0.000000",
+        "dist_cz": "0.150000",
+        "exposure": "1.050000",
+        "facet_amt": "0.000000",
+        "gloss": "1.000000",
+        "march_dist": "40.000000",
+        "melt_amt": "0.600000",
+        "painterly_amt": "0.000000",
+        "painterly_scale": "7.000000",
+        "project_dir": "modules/blob_render",
+        "refl_amt": "0.500000",
+        "resolution_height": "1080",
+        "resolution_width": "720",
+        "rotate_speed": "0.000000",
+        "shadows": "1.000000",
+        "sun_azimuth": "125.000000",
+        "sun_elevation": "55.000000",
+        "swirl_amt": "0.150000",
+        "twist_amt": "0.240000",
+        "w1_amt": "0.550000",
+        "w1_freq": "0.900000",
+        "w1_mode": "0.000000",
+        "w1_ox": "0.000000",
+        "w1_oy": "0.000000",
+        "w1_oz": "0.000000",
+        "w1_pitch": "0.000000",
+        "w1_speed": "0.600000",
+        "w1_yaw": "0.000000",
+        "w2_amt": "0.000000",
+        "w2_freq": "1.800000",
+        "w2_mode": "2.000000",
+        "w2_ox": "0.000000",
+        "w2_oy": "0.000000",
+        "w2_oz": "0.000000",
+        "w2_pitch": "0.000000",
+        "w2_speed": "0.900000",
+        "w2_yaw": "1.570000",
+        "warp_speed": "0.600000",
+        "wave_amt": "0.000000",
+        "wave_freq": "2.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "plate_comp",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "plate_comp",
+      "inputSlotSourceIds": [
+        "strata_bg",
+        "blob_render",
+        "marble_panel",
+        "wire_render",
+        "marks"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bg_gain": "1.000000",
+        "blob_gain": "1.000000",
+        "blob_mode": "0.000000",
+        "marble_gain": "1.000000",
+        "marble_mode": "0.000000",
+        "marks_gain": "1.000000",
+        "marks_mode": "0.000000",
+        "project_dir": "modules/plate_comp",
+        "resolution_height": "1080",
+        "resolution_width": "720",
+        "wire_gain": "1.000000",
+        "wire_mode": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "strata_bg",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "strata_bg",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bg_bright": "1.000000",
+        "panel_amt": "0.600000",
+        "panel_seed": "2.000000",
+        "panel_step": "0.400000",
+        "project_dir": "modules/strata_bg",
+        "resolution_height": "1080",
+        "resolution_width": "720"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "strata_control",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "strata_control",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "marble_warp_macro": "1.000000",
+        "master_seed": "12.000000",
+        "melt_macro": "0.500000",
+        "project_dir": "modules/strata_control",
+        "resolution_height": "128",
+        "resolution_width": "300",
+        "spread_macro": "1.000000",
+        "twist_macro": "0.400000",
+        "wire_scale_macro": "0.820000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "marks",
+      "enabled": true,
+      "expressions": {
+        "mark_seed": "ref(\"strata_control/control_outputs/seed\") * 1.3 + 3.0"
+      },
+      "fitMode": 1,
+      "id": "marks",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "frame_amt": "1.000000",
+        "mark_opacity": "1.000000",
+        "mark_scale": "1.000000",
+        "mark_seed": "18.599998",
+        "project_dir": "modules/marks",
+        "resolution_height": "1080",
+        "resolution_width": "720",
+        "rivet_count": "5.000000",
+        "rule_count": "1.000000",
+        "square_count": "3.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "signal",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "signal",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "beat_rate": "2.000000",
+        "beat_sharp": "3.000000",
+        "project_dir": "modules/signal",
+        "pulse_rate": "0.800000",
+        "resolution_height": "64",
+        "resolution_width": "256",
+        "slow_rate": "0.050000",
+        "sweep_rate": "0.100000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "post",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "post",
+      "inputSlotSourceIds": [
+        "plate_comp"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bloom_intensity": "0.800000",
+        "bloom_radius": "0.032000",
+        "bloom_threshold": "0.600000",
+        "chroma": "0.220000",
+        "contrast": "1.080000",
+        "exposure": "1.050000",
+        "grain_amt": "0.020000",
+        "highlight_tint_b": "0.250000",
+        "highlight_tint_g": "0.600000",
+        "highlight_tint_r": "1.000000",
+        "project_dir": "modules/post",
+        "saturation": "1.060000",
+        "shadow_tint_b": "0.220000",
+        "shadow_tint_g": "0.140000",
+        "shadow_tint_r": "0.000000",
+        "split_balance": "0.060000",
+        "vignette": "0.550000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1783396340305,
+  "sources": [],
+  "version": 5
+}

@@ -246,6 +246,61 @@ kind-indexed vocabulary, `sdf_shading` normals/AO/shadow/camera with a
   `cam_orbit≈90`. · *compose-with:* `sdf_extras`, `post` (painterly grade), `signal`
   (self-animation amplitude via `ref()`).
 
+## Plate system — matte-aware raymarch plates + multi-plate distortion compositing (strata)
+
+The way to build **many independently-distorted procedural passes composited on alpha** —
+"sharp lines framing distorted things framing sharp lines." Each pass is its own node that
+outputs **premultiplied-alpha RGBA** (a coverage matte, not an opaque frame), so a compositor
+can stack them in 2D screen space with per-plate blend/gain. A raymarched 3D plate and a flat
+2D graphic plate meet in the same stack. Seeded from the `strata` build (dual-reference: glossy
+blob mass + melted marble + graphic framing, one palette, infinitely variable).
+
+- **Matte-aware SDF plate** ⭐ — *generator → premultiplied RGBA* · the reusable contract, embodied
+  by `blob_render` (project `strata`) · a compute raymarch that writes `float4(rgb*cov, cov)`
+  instead of `float4(col,1)` — coverage alpha from ray hit/miss, **NxN SSAA** for clean silhouette
+  matte + interior AA, premultiplied accumulation. This is what lets a 3D raymarch plate composite
+  in 2D over other plates. Orbit-only camera (no `features:[camera]` = no reload crash, fully
+  MCP-drivable for fixed studio framing). The warp toolkit (`domainDistort` + Lipschitz factor,
+  ported from `dada_render`) is wired in per-plate so each plate melts/twists by a different amount
+  and kind. · *compose-with:* `plate_comp`, `sdf_blob`, `signal`, `strata_control`.
+- **Glossy-gradient blob vocabulary** — *HLSL include* · `_shared/sdf/sdf_blob.hlsli` · biomorphic
+  inflated forms (sphere/tube/torus/scoop/rbox/lens/bean/horn) for `op_smin`-blended intertwined
+  masses, with `blob_albedo()` materials: 2-stop palette **gradient gloss** (mapped along a form
+  axis), chrome swirl (+env reflection flag), 3-colour checker cube, matte. Include after
+  `sdf_ops` + `palette`. The plastic/ceramic "melted ribbon" look. · *compose-with:* `blob_layout`
+  (placement buffer), `blob_render`.
+- **Shared palette header** — *HLSL include* · `_shared/palette.hlsli` · one `str_palette(i)` +
+  `str_grad(a,b,t)` + `str_studio(uv)` (neutral studio void + vignette) + `str_envColor(rd)`, so
+  EVERY plate draws from the same 10 colours → thousands of seeds all read as one artist. The
+  cohesion backbone for a plate system; clone + recolour per project. · *compose-with:* every plate.
+- **Multi-plate premultiplied-alpha compositor** ⭐ — *N textures → texture* · `plate_comp` (project
+  `strata`) · stacks premultiplied plate textures bottom→top over an opaque base, each with gain +
+  blend mode (Over/Add/Screen). Injected `_Tex0.._TexN` + `LinearSampler` from an `inputs:` list;
+  `mode: generator` with fixed resolution. The reusable "composite independently-distorted plates"
+  node; a specific input ordering is project glue, the premult-over machinery is the technique. ·
+  *compose-with:* any matte-aware plate, `post`.
+- **Domain-warped fbm marble card** — *generator → premultiplied RGBA* · `marble_panel` (project
+  `strata`) · a rectangular panel of self-animating domain-warped value-noise marble (two-level
+  warp) ramped through the palette with a fake-normal metallic sheen; the "melted flat element."
+  Distortion IS the look (warp/veins/flow params). · *compose-with:* `plate_comp`, `str_palette`.
+- **2D line-art plate** — *generator → premultiplied RGBA* · `wire_render` (project `strata`) · thin
+  bright lines on transparent: seeded ellipse **rings**, loose quadratic-bezier **strands**, and a
+  cross-linked **triangulated cage**, aspect-corrected isotropic. The sharp linework that frames a
+  mass (ref-#7 circles / ref-#8 chrome cage). · *compose-with:* `plate_comp`.
+- **Graphic-marks framing plate** — *generator → premultiplied RGBA* · `marks` (project `strata`) ·
+  the hard 2D overlay: red rule lines, solid red squares, rivet/screw dots, a thin **registration
+  frame + corner L-ticks**; table-driven + seedable. Reads as "technical framing" over any scene. ·
+  *compose-with:* `plate_comp`, `hud_*` chrome.
+- **Studio-void backdrop** — *generator → opaque* · `strata_bg` (project `strata`) · neutral cool-gray
+  gradient void + subtle vertical framing panels + vignette + anti-band grain. The photographic
+  seamless behind a floating subject. · *compose-with:* `plate_comp` (base), `str_studio`.
+- **Master-seed variation control** — *compute → control outputs* · `strata_control` (project
+  `strata`) · publishes one **master seed** + distortion macros (melt/twist/marble-warp/spread) as
+  control outputs; `ref()` expressions drive EVERY plate's seed + warp from it, so one knob
+  reshuffles the whole composition while palette + framing stay fixed. The "infinitely variable
+  system" pattern (the seed-bus cousin of the `signal` LFO bus). · *compose-with:* every plate via
+  `sentinel_expression`, `signal`.
+
 ## Control & reactivity
 
 - **Control-output signal bus** — *compute → control outputs* · `signal` · one tiny module runs N

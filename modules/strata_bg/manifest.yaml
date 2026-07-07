@@ -1,0 +1,20 @@
+name: "Strata BG"
+version: "0.1"
+mode: generator
+resolution: [720, 1080]
+
+# strata plate 0 — neutral studio backdrop with subtle framing panels + vignette. Opaque.
+
+parameters:
+  - { name: bg_bright,  display: "Brightness",     type: float, min: 0.4, max: 1.4, default: 1.0, group: "BG" }
+  - { name: panel_amt,  display: "Panels",         type: float, min: 0.0, max: 1.0, default: 0.6, group: "BG" }
+  - { name: panel_seed, display: "Panel Seed",     type: float, min: 0.0, max: 50.0, default: 2.0, group: "BG" }
+  - { name: panel_step, display: "Panel Step Y",   type: float, min: 0.0, max: 1.0, default: 0.4, group: "BG" }
+
+passes:
+  - name: bg
+    shader: bg.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "BG", pass: bg }

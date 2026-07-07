@@ -1,0 +1,29 @@
+name: "Marble Panel"
+version: "0.1"
+mode: generator
+resolution: [720, 1080]
+
+# strata melt-panel plate (ref #8) — a rectangular card of domain-warped fbm marble in the
+# strata palette. Premultiplied-alpha RGBA, self-animating fluid distortion, seedable.
+
+parameters:
+  - { name: marble_seed,    display: "Seed",      type: float, min: 0.0, max: 50.0, default: 6.0, group: "Marble" }
+  - { name: marble_scale,   display: "Scale",     type: float, min: 0.5, max: 6.0,  default: 2.2, group: "Marble" }
+  - { name: warp_amt,       display: "Warp",      type: float, min: 0.0, max: 2.5,  default: 1.0, group: "Marble" }
+  - { name: warp_freq,      display: "Warp Freq", type: float, min: 0.3, max: 4.0,  default: 1.2, group: "Marble" }
+  - { name: flow_speed,     display: "Flow Speed", type: float, min: 0.0, max: 2.0, default: 0.25, group: "Marble" }
+  - { name: vein_count,     display: "Veins",     type: float, min: 1.0, max: 8.0,  default: 3.5, group: "Marble" }
+  - { name: sheen,          display: "Sheen",     type: float, min: 0.0, max: 1.5,  default: 0.6, group: "Marble" }
+  - { name: marble_opacity, display: "Opacity",   type: float, min: 0.0, max: 1.0,  default: 1.0, group: "Marble" }
+  - { name: panel_cx, display: "Center X",  type: float, min: 0.0, max: 1.0, default: 0.5,  group: "Panel" }
+  - { name: panel_cy, display: "Center Y",  type: float, min: 0.0, max: 1.0, default: 0.5,  group: "Panel" }
+  - { name: panel_w,  display: "Half Width", type: float, min: 0.05, max: 0.5, default: 0.26, group: "Panel" }
+  - { name: panel_h,  display: "Half Height", type: float, min: 0.05, max: 0.5, default: 0.30, group: "Panel" }
+
+passes:
+  - name: marble
+    shader: marble.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "Marble", pass: marble }

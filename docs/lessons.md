@@ -1,12 +1,61 @@
 ---
 type: lessons
-updated: 2026-07-05
+updated: 2026-07-06
 ---
 
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-06 - `line` is a reserved HLSL keyword
+
+**Symptoms**: A Module shader failed to compile with `error X3003: unexpected token 'line'`
+on a plain local declaration `float line = smoothstep(...)`. The line looked completely valid.
+
+**Cause**: `line` (also `point`, `triangle`, `lineadj`, `triangleadj`) is a reserved
+geometry-shader primitive keyword in HLSL — you can't use it as an identifier even in a
+compute shader. (`projects/strata/modules/marks/marks.hlsl`, `wire_render/wire.hlsl`.)
+
+**Fix**: Rename the variable (`line` → `strk`). Watch for `point`/`triangle` too.
+
+**Frequency**: recurring (any time you name a stroke/line variable the obvious thing)
+
+**Discovered**: 2026-07-06
+
+## 2026-07-06 - Never declare the engine-injected buffers (`_Data0`, `_Tex0`, `LinearSampler`)
+
+**Symptoms**: `error X3003: redefinition of '_Data0'` (and would be the same for `_Tex0`)
+when a Module shader declared its own `StructuredBuffer<T> _Data0 : register(t0)` /
+`Texture2D _Tex0` / `SamplerState`.
+
+**Cause**: The Module injection preamble already declares the data-input buffer as `_Data0`
+(+`_Data0_Count`) for each `data:N`, and the video-input texture as `_Tex0..N` + a
+`LinearSampler` for each `inputs:N`. Declaring them again collides. (Confirmed by the working
+`dada_render`/`post` shaders, which declare neither — only the record `struct`.)
+
+**Fix**: Declare ONLY the record `struct` (whose fields match the schema) and use `_Data0[i]`
+/ `_Tex0.SampleLevel(LinearSampler, uv, 0)` directly. Do not declare the buffer/texture/sampler.
+
+**Frequency**: always (every data/video-input Module)
+
+**Discovered**: 2026-07-06
+
+## 2026-07-06 - `sentinel_state set_many` values field doesn't transmit via this MCP client
+
+**Symptoms**: `sentinel_state action=set_many` always returned `Missing 'values': {path:
+value, ...}` regardless of whether `values` was passed as an object or an array-of-`{path,value}`,
+strings or numbers.
+
+**Cause**: The current MCP client drops the `values` object/array parameter before it reaches
+the server (client-side serialization, not a schema error).
+
+**Fix**: Use individual `sentinel_state action=set` calls (batch them in parallel in one
+message). Works fine.
+
+**Frequency**: recurring (until the client is fixed)
+
+**Discovered**: 2026-07-06
 
 ## 2026-07-05 - Engraving a groove into an SDF needs a `+eps` surface bridge
 
