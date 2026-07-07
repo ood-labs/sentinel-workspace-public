@@ -43,3 +43,15 @@ After creating or changing StreamDiff, verify:
 - captures are nonblank.
 
 Do not treat a successful create call as proof that engines loaded.
+
+## Hold And Single-Frame Render
+
+- `hold` (bool parameter): freezes diffusion while the node stays live. Input mapping, pre-image processors, and control/style inputs keep flowing; the last generated frame republishes. Finer than the `/enabled` bypass, which stops the node cooking entirely.
+- `render_one` (momentary action at `/sentinel/pipelines/<id>/actions/render_one`): fires exactly `render_count` diffusions then re-holds.
+- `render_count` (int, default 1): render-N-then-hold.
+
+All three are StateTree parameters, so OSC, expressions, MCP, and scene-group presets reach them. Use hold plus `render_one` for one-clean-still-at-a-time workflows such as filling an `atlas` node.
+
+## Multiple Variants, Shared Engines, Mux
+
+Several StreamDiff variants using the same engine files share loaded TensorRT engines through a ref-counted pool, so N variants cost one engine load (execution is one at a time). Switch between variants live with a `mux` node (`selected` picks 1-of-8 inputs); enable the mux's `solo_upstream` so the non-selected variants auto-hold and only the visible one diffuses. See `knowledge/scene-system.md`.

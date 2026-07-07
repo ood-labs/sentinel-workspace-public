@@ -197,6 +197,18 @@ Author Modules so the manifest resolution is a default target, not a hidden layo
 - For multi-pass Modules, every pass, buffer, and history ring must be scaled intentionally. If a structured history buffer would exceed runtime limits at the new size, split it into banks instead of quietly reducing behavior.
 - When porting legacy fixed-resolution Modules, preserve the old look by mapping `_Resolution` into the old logical canvas; do not leave the old resolution in manifest/project params.
 
+## Motion Vocabulary (anim.hlsli)
+
+For authored motion, include the shared library instead of hand-rolling easing or spring equations:
+
+```hlsl
+#include "../_shared/anim/anim.hlsli"
+```
+
+Use `an_spring`, `an_spring_v` (resume from stamped value + velocity), `an_stagger_index`, `an_stagger_radial`, `an_stagger_wave`, `an_stagger_noise`, `an_anticipate`, `an_squash`, and `an_loop_noise`, with spring presets `AN_BOUNCY`, `AN_SNAPPY`, `AN_SMOOTH`, `AN_HEAVY`. The same equations are registered in ExprTk as `spring`, `spring_v`, `stagger`, `anticipate`, and `loop_noise`, so shader motion and parameter expressions share one reference.
+
+Continuity rules: rate-class changes (variable speed, tempo) must integrate phase (`phase += rate * dt` in a persistent buffer) rather than computing `absolute_time * live_rate`; target-class changes stamp value + velocity and continue with `an_spring_v`. Loops are seamless when built from integer-harmonic frequencies or `an_loop_noise`. See `knowledge/motion-choreography.md` for the Conductor, cue sheets, and the `timeline_hud`/`choreo_cascade` reference modules.
+
 ## Module Shader Gotchas
 
 - **Always output alpha = 1.0** in color passes. The display pipeline blends with alpha — near-zero alpha makes output invisible. GPU texture capture reads raw data and ignores alpha, masking the bug.

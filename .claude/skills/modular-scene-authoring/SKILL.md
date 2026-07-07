@@ -112,6 +112,18 @@ A single scene usually combines several of these. Pick per element; name each ch
 
 ---
 
+## Precise construction blueprints
+
+When a scene is mostly objects with real dimensions, anchors, clearances, and repeated instances, use the blueprint compiler before writing custom generator shaders (details in the `procedural-geometry-authoring` skill and `knowledge/precise-construction.md`). Blueprints compile to generated Module producers publishing fixed 48-byte `PNodes`; wire those into `sdf_scene_render`, then prove with `sentinel_blueprint validate` / `solve_report` / `audit`, plus a renderer capture and `vision_eval`. Author relations first, dimensions second.
+
+---
+
+## Choreographed motion
+
+For staggered entrances, beat-locked pulses, and cue-driven scene hand-offs, use a `conductor` node plus a cue sheet (`sentinel_conductor load_sheet`) instead of ad-hoc LFO wiring, and the shared motion vocabulary in `modules/_shared/anim/anim.hlsli` inside modules. The `timeline_hud` module gives a live arrangement view during rehearsal. See `knowledge/motion-choreography.md`.
+
+---
+
 ## Dense & instanced scenes: the Layout Kit (data-driven cloners)
 
 **This is the default architecture for a dense field of many small addressable widgets** — a FUI/HUD dashboard, a control panel, a schematic, a reticle field. It is what separates a shallow first attempt (a handful of hand-placed elements in one shader) from a scene that reads like the reference. Two anti-patterns to avoid: **do not hand-place widgets in shader code** (opaque, uneditable, doesn't scale past ~15 things), and **do not render them all in one merged pass** (correct pixels, but every source node previews as a blank placeholder and you edit blind). Instead build from a **reusable placement kit you stamp down many times**, separating *where things go* from *what gets drawn*.

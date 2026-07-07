@@ -39,7 +39,7 @@ Use `sentinel_pipeline set_input` for video inputs. Use `sentinel_graph add_link
 
 AI generation:
 
-- `streamdiff`: real-time SDXL image-to-image generation with IP-Adapter and optional ControlNet engines.
+- `streamdiff`: real-time SDXL image-to-image generation with IP-Adapter and optional ControlNet engines. Supports `hold` (freeze diffusion while live) and `render_one` single-still triggers; variants sharing engine files share loaded engines.
 
 Tracking and analysis:
 
@@ -55,9 +55,24 @@ Tracking and analysis:
 
 Shading and generative tools:
 
-- `module`: authored multi-pass shader projects with parameters, typed data ports, control outputs, and optional 3D/raster passes.
+- `conductor`:
+
+- Control outputs: `bpm`, `total_beats`, `beat`, `bar`, `beat_phase`, `bar_phase`, `is_downbeat`, `quantum`, `loop_phase`, per-cue `cue_phase`/`enter_phase`/`exit_phase`, macros `energy`/`tightness`/`spread`, and timecode outputs.
+- Data port: `Cue Records` for the `timeline_hud` module.
+
+`atlas`:
+
+- Data port: `Slot Occupancy` records for scene-spawner modules; readbacks report `occupied_count`, per-slot sequences, and cycle state.
+
+`module`: authored multi-pass shader projects with parameters, typed data ports, control outputs, and optional 3D/raster passes.
 - `hlslshader`: single HLSL post-process shader.
 - `shaderproject`: hidden compatibility alias for module-style shader projects.
+
+Scene system and sequencing:
+
+- `conductor`: musical and timecode clocks, cues, macros, and quantized triggers published as control outputs. Loads cue sheets through `sentinel_conductor`. See `motion-choreography.md`.
+- `mux`: real-time select-1-of-N video switch (`selected`), with `solo_upstream` auto-holding non-selected StreamDiff variants. See `scene-system.md`.
+- `atlas`: multi-pass still bank collecting aligned color/segmentation/depth/data columns per captured still, with a self-timing capture cycle and a `Slot Occupancy` data pin. See `scene-system.md`.
 
 Utility and output:
 
@@ -128,4 +143,7 @@ The shipped example `examples/tracking_ripple.sentinel` uses the same driver pat
 - [Module Pipeline](module-pipeline.md)
 - [Video Source](video-source.md)
 - [StreamDiff](streamdiff.md)
+- [Scene System: Hold, Atlas, Mux, Group Presets](scene-system.md)
+- [Motion Choreography And Sequencing](motion-choreography.md)
+- [Precise Construction: Blueprints And SDF Audit](precise-construction.md)
 - [First-Run Engines](first-run-engines.md)

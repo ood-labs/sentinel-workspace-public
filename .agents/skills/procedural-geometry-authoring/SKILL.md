@@ -1,6 +1,6 @@
 ---
 name: procedural-geometry-authoring
-description: Author real-time 3D geometry in Sentinel as raymarched SDF Module nodes — parametric objects with exact dimensions (furniture, machine parts, architecture, props) and instanced 3D scenes (rooms, plazas, cities) driven by the PNode layout kit. Use when a scene needs actual 3D objects rather than flat atlas stamps, when building a single hero object from a text spec with precise dimensions, when populating a ground plane with many placed/cloned/arranged objects via pl_grid/pl_spawn/pl_path chains feeding sdf_scene_render, or when extending the shared object vocabulary in modules/_shared/sdf/. Covers the sceneMap contract, exact-fillet CSG ops, per-pixel ray-sphere shortlist culling, kind/scale/rot mapping modes, the compile_check→create→capture→vision_eval verification loop, and camera rigs (deterministic orbit + fly cam).
+description: Author real-time 3D geometry in Sentinel as raymarched SDF Module nodes, from hand-built parametric hero objects (furniture, machine parts, architecture) to instanced 3D scenes (rooms, plazas, cities) driven by the PNode layout kit, and precise relational scenes compiled from semantic YAML blueprints via sentinel_blueprint (kind registry, relations like tucked/supported_by/flush, warm-start relaxation, SDF dimension audits). Use when a scene needs actual 3D objects, exact dimensions, object relationships with clearances, or measured geometry proof. Covers the sceneMap contract, exact-fillet CSG ops, shortlist culling, kind/scale/rot mapping, the blueprint validate to compile to audit loop, the compile_check to create to capture to vision_eval loop, and camera rigs.
 distribution: true
 ---
 
@@ -20,6 +20,19 @@ edits are instant (no rebuild), and booleans/fillets are one-liners. Two pattern
 
 For manifest/HLSL mechanics use `module-authoring`; for graph decomposition and the
 design-first workflow use `modular-scene-authoring`. This skill covers the geometry lane.
+
+## Blueprint lane (relations, solver, audit)
+
+Use the precise-construction blueprint path when a scene needs real dimensions, named anchors, clearances, repeatable layout, or audit evidence. Reserve hand-authored placement for scenes that cannot be described as objects plus relations.
+
+1. Write a YAML blueprint (nodes, groups, anchors, clearances). Kinds and their real dimensions, footprints, and anchors come from the registry `modules/_shared/sdf/sdf_kinds.yaml`.
+2. Author in two passes: relations only with registry-default dimensions first, then add dimension overrides where needed (overrides must preserve the kind's aspect; records carry one uniform scale).
+3. Prefer relations over raw coordinates: `supported_by` for objects on surfaces; `tucked`, `flush`, `adjacent`, `clear_of` for side relationships; `facing` for direction; `centered_between` for midpoints. Group instances are relation targets as `<group_id>_<index>`.
+4. `sentinel_blueprint validate` until clean (structured errors name the node and rule: unknown kind, cycles, budget, clearance, support overhang, aspect drift).
+5. `sentinel_blueprint compile` with `create: true` emits and creates the generated producer Module publishing `PNodes` (48 bytes: position, scale, kind id, seed, yaw, height, width, depth, dir). Wire it to `sdf_scene_render` and run `sentinel_graph auto_layout`. Under-constrained groups relax with warm-start stability (recompiles keep the layout put; `.solved.json` sidecar).
+6. Prove: capture + `vision_eval` with the blueprint's counts and relations as the checklist; `sentinel_blueprint audit` against a `<stem>.audit.yaml` sidecar for measured dimensions and forbidden overlaps (always pass explicit `max_elements`); `solve_report` for hashes, topology, and displacement histograms.
+
+`modules/_shared/sdf/sdf_audit.hlsli` provides the bisection/bounds/overlap measurement helpers for hand-authored hero modules that want their own audit pass. Full IR and sidecar schema: `knowledge/precise-construction.md`.
 
 ## Shared library (modules/_shared/sdf/)
 
@@ -87,11 +100,39 @@ set_size 4, kinds [4, 4, 6, 7]` (towers weighted double, trees, lamps),
 
 ## Camera
 
-Modules ship both rigs behind `use_fly_cam`: the `camera` feature (WASD + right-drag
-in the viewport; also drivable via `camera_pos_x/y/z`, `camera_yaw/pitch/fov` in
-StateTree) and a deterministic orbit rig (`cam_orbit/elevation/distance/target_y`,
-`rotate_speed` turntable). Use orbit for captures and A/B comparisons so framing is
-reproducible; expressions can drive `cam_orbit` from a `signal` LFO.
+Modules ship two rigs, chosen by a `cam_mode` enum button-grid `[Fly, Orbit]`,
+**default Fly**. Never default to Orbit and never gate the mode behind a `bool` toggle —
+see the two hard-won rules at the end of this section.
+
+- **Fly** (default): the `camera` feature — WASD + right-drag in the viewport. Generate
+  the ray by UNPROJECTING NDC through `_InvViewProjMatrix` (below), NOT the
+  `_RayDirection(uv)` helper, which does not reliably track the live view. The fly camera
+  is driven ONLY by live viewport input: the `camera_pos_x/y/z`, `camera_yaw/pitch`
+  StateTree params do NOT move it (setting them via MCP is a proven no-op), so you cannot
+  frame or capture the fly camera from automation — switch to Orbit for that.
+- **Orbit**: deterministic rig (`cam_orbit/elevation/distance/target_y`, `cam_focal`,
+  `rotate_speed` turntable). Fully drivable from StateTree/MCP, so use it for captures and
+  A/B comparisons; expressions can drive `cam_orbit` from a `signal` LFO.
+
+Fly ray-gen (canonical — matrix path, Y-flipped for DX clip space):
+```hlsl
+if (cam_mode == 0) {                                  // Fly
+    float2 ndcv = float2(uv.x*2-1, 1 - uv.y*2);
+    float4 nW = mul(_InvViewProjMatrix, float4(ndcv,0,1));
+    float4 fW = mul(_InvViewProjMatrix, float4(ndcv,1,1));
+    nW/=nW.w; fW/=fW.w;
+    ro = _CameraPos; rd = normalize(fW.xyz - nW.xyz);
+} else {                                              // Orbit
+    sdf_orbitRay(cam_orbit + rotate_speed*_Time*30.0, cam_elevation, cam_distance,
+                 float3(0, cam_target_y, 0), ndc, cam_focal, ro, rd);
+}
+```
+
+Two rules learned the hard way (industrial_lattice, working example modules/steel_lattice):
+1. **Default to Fly, not Orbit.** A forced orbit branch silently discards the viewport
+   camera every frame, so right-drag/WASD look completely dead ("locked to orbit").
+2. **Use an enum button-grid for the mode switch, not a `bool`+`flags: button`** — the
+   bool checkbox did not latch reliably in the panel, so the mode never actually flipped.
 
 ## Verification loop
 

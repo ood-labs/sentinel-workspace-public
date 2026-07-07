@@ -56,6 +56,31 @@ ref("features_0/control_outputs/blob_count")
 ref("module_lfo/control_outputs/speed")
 ```
 
+## Motion Functions
+
+The expression engine registers a shared motion vocabulary matching the Module shader header `modules/_shared/anim/anim.hlsli`:
+
+- `spring(t, m, k, c)`: closed-form spring progress 0 to 1.
+- `spring_v(t, x0, v0, m, k, c)`: spring from a stamped initial value and velocity.
+- `stagger(index, count, span, style)`: per-instance delay.
+- `anticipate(t, bias)`: back-ease anticipation.
+- `loop_noise(t, period, radius, seed)`: seamless looping noise.
+
+Use these instead of hand-written spring or easing math so expressions, shaders, and tests share one set of equations. For rate-driven motion, integrate phase (`phase += rate * dt` semantics) rather than multiplying a live rate by absolute time; see `knowledge/motion-choreography.md`.
+
+## Conductor References
+
+A `conductor` node publishes clocks, cue envelopes, and macros as control outputs that expressions can read:
+
+```text
+ref("Conductor/control_outputs/beat_phase")
+ref("Conductor/control_outputs/total_beats")
+ref("Conductor/control_outputs/enter_phase")
+ref("Conductor/control_outputs/tightness")
+```
+
+Cue sheets loaded with `sentinel_conductor action=load_sheet` generate these expressions automatically and register live-tweakable sheet parameters; see `knowledge/motion-choreography.md`.
+
 ## Rename Safety
 
 Use real rename operations, not delete-and-recreate, when changing node names. Sentinel rewrites stored expressions during true renames so references keep working.

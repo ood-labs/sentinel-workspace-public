@@ -58,6 +58,9 @@ Call `list_types` for the exact current list. A normal DIST build includes:
 | `shaderproject` | hidden | Compatibility alias for shader project/module workflows. |
 | `opticalflow` | yes | NVIDIA hardware optical flow. |
 | `vsr` | yes | RTX Video Super Resolution. |
+| `conductor` | yes | Musical/timecode clocks, cues, macros, quantized triggers as control outputs. Cue sheets load via `sentinel_conductor`. |
+| `mux` | yes | Real-time select-1-of-N video switch; `solo_upstream` auto-holds non-selected StreamDiff variants. |
+| `atlas` | yes | Multi-pass still bank (color/segmentation/depth/data columns per captured still) with a self-timing capture cycle. |
 
 Dev builds may expose extra experimental or maintainer-only types. DIST builds intentionally omit them.
 
@@ -94,6 +97,8 @@ Use `sentinel_capture action=capture_at` for still review with temporary paramet
 Use `sentinel_capture action=proof_bundle` for user-facing creative proof. It writes a folder with graph JSON, link summary, graph profile, pipeline health, active expressions, output capture, a full Sentinel window screenshot, and an optional before/after image-diff percentage.
 
 Use `sentinel_capture action=sweep_record` when you need a short motion proof across a parameter range. For normal stills or recordings, prefer the capture/record actions exposed by `sentinel_app action=capabilities`.
+
+Use `sentinel_state action=snapshot` / `action=restore` to bracket experiments that mutate many parameters, and `sentinel_capture action=checkpoint` to bundle a capture with the state snapshot so a look can be recovered exactly.
 
 For local diagnostics or support handoff, use `sentinel_app action=bug_report`. Use `sentinel_app action=submit_bug_report` only when the user explicitly wants to submit the report.
 
@@ -133,9 +138,21 @@ For a data-driven custom visual, prefer `sentinel_module action=scaffold_from_po
 
 Use `sentinel_pipeline action=get_data_schemas` before wiring data. The response includes the graph pin name and slot when available, so use that pin name with `sentinel_graph action=add_link`.
 
+## Choreography And Sequencing
+
+For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary in `modules/_shared/anim/anim.hlsli` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, and integrate phase for anything rate-driven. The `timeline_hud` module visualizes the arrangement from the Conductor's `Cue Records` port. See `knowledge/motion-choreography.md`.
+
+StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` node switches variants live and its `solo_upstream` keeps only the visible variant diffusing; an `atlas` node banks aligned stills for 3D scene spawning. See `knowledge/scene-system.md`.
+
+## Precise 3D Construction
+
+When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against the kind registry `modules/_shared/sdf/sdf_kinds.yaml`, relax under-constrained layouts with warm-start stability, and compile to a generated Module publishing `PNodes` records for `sdf_scene_render`. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
+
 ## Scene Groups
 
 Scene Groups organize graph regions and expose selected controls without flattening the graph. Use `sentinel_graph` Scene Group actions when available in `capabilities`; inspect the live command schema before calling them.
+
+Group presets snapshot every parameter of every contained pipeline plus per-node bypass state automatically, with innermost-wins nested membership and preset-of-presets recall (an outer preset can pick each inner group's preset then apply overrides). Use them as the scene-state layer under live switching.
 
 Scene Groups are for control and organization. They do not replace video/data wiring, and they should not be used to hide whether a graph is healthy.
 
@@ -168,10 +185,14 @@ Start with:
 - `knowledge/technique-catalogue.md`
 - `knowledge/video-source.md`
 - `knowledge/streamdiff.md`
+- `knowledge/scene-system.md`
+- `knowledge/motion-choreography.md`
+- `knowledge/precise-construction.md`
 
 Use skills for authoring details:
 
 - `modular-scene-authoring`
+- `procedural-geometry-authoring`
 - `module-authoring`
 - `shader-authoring`
 - `mcp-automation`

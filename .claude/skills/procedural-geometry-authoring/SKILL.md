@@ -1,6 +1,6 @@
 ---
 name: procedural-geometry-authoring
-description: Author real-time 3D geometry in Sentinel as raymarched SDF Module nodes — parametric objects with exact dimensions (furniture, machine parts, architecture, props) and instanced 3D scenes (rooms, plazas, cities) driven by the PNode layout kit. Use when a scene needs actual 3D objects rather than flat atlas stamps, when building a single hero object from a text spec with precise dimensions, when populating a ground plane with many placed/cloned/arranged objects via pl_grid/pl_spawn/pl_path chains feeding sdf_scene_render, or when extending the shared object vocabulary in modules/_shared/sdf/. Covers the sceneMap contract, exact-fillet CSG ops, per-pixel ray-sphere shortlist culling, kind/scale/rot mapping modes, the compile_check→create→capture→vision_eval verification loop, and camera rigs (deterministic orbit + fly cam).
+description: Author real-time 3D geometry in Sentinel as raymarched SDF Module nodes, from hand-built parametric hero objects (furniture, machine parts, architecture) to instanced 3D scenes (rooms, plazas, cities) driven by the PNode layout kit, and precise relational scenes compiled from semantic YAML blueprints via sentinel_blueprint (kind registry, relations like tucked/supported_by/flush, warm-start relaxation, SDF dimension audits). Use when a scene needs actual 3D objects, exact dimensions, object relationships with clearances, or measured geometry proof. Covers the sceneMap contract, exact-fillet CSG ops, shortlist culling, kind/scale/rot mapping, the blueprint validate to compile to audit loop, the compile_check to create to capture to vision_eval loop, and camera rigs.
 distribution: true
 ---
 
@@ -20,6 +20,19 @@ edits are instant (no rebuild), and booleans/fillets are one-liners. Two pattern
 
 For manifest/HLSL mechanics use `module-authoring`; for graph decomposition and the
 design-first workflow use `modular-scene-authoring`. This skill covers the geometry lane.
+
+## Blueprint lane (relations, solver, audit)
+
+Use the precise-construction blueprint path when a scene needs real dimensions, named anchors, clearances, repeatable layout, or audit evidence. Reserve hand-authored placement for scenes that cannot be described as objects plus relations.
+
+1. Write a YAML blueprint (nodes, groups, anchors, clearances). Kinds and their real dimensions, footprints, and anchors come from the registry `modules/_shared/sdf/sdf_kinds.yaml`.
+2. Author in two passes: relations only with registry-default dimensions first, then add dimension overrides where needed (overrides must preserve the kind's aspect; records carry one uniform scale).
+3. Prefer relations over raw coordinates: `supported_by` for objects on surfaces; `tucked`, `flush`, `adjacent`, `clear_of` for side relationships; `facing` for direction; `centered_between` for midpoints. Group instances are relation targets as `<group_id>_<index>`.
+4. `sentinel_blueprint validate` until clean (structured errors name the node and rule: unknown kind, cycles, budget, clearance, support overhang, aspect drift).
+5. `sentinel_blueprint compile` with `create: true` emits and creates the generated producer Module publishing `PNodes` (48 bytes: position, scale, kind id, seed, yaw, height, width, depth, dir). Wire it to `sdf_scene_render` and run `sentinel_graph auto_layout`. Under-constrained groups relax with warm-start stability (recompiles keep the layout put; `.solved.json` sidecar).
+6. Prove: capture + `vision_eval` with the blueprint's counts and relations as the checklist; `sentinel_blueprint audit` against a `<stem>.audit.yaml` sidecar for measured dimensions and forbidden overlaps (always pass explicit `max_elements`); `solve_report` for hashes, topology, and displacement histograms.
+
+`modules/_shared/sdf/sdf_audit.hlsli` provides the bisection/bounds/overlap measurement helpers for hand-authored hero modules that want their own audit pass. Full IR and sidecar schema: `knowledge/precise-construction.md`.
 
 ## Shared library (modules/_shared/sdf/)
 

@@ -390,3 +390,18 @@ layer stack through a compositor. Seeded from the `fui_dashboard` build.
   textures with per-layer gains + optional viewport-mask clip. The *pattern* is reusable; a specific
   instance (which layers, what order) is usually project glue — rebuild per scene rather than
   harvesting. Promote only if a genuinely general compositor emerges.
+
+## Choreography & timeline
+
+Time-structured motion over instance records and cue-driven shows, built on the shared motion
+vocabulary in `modules/_shared/anim/anim.hlsli` (closed-form springs incl. resumable `an_spring_v`,
+stagger family, anticipation, squash, seamless loop noise; same equations in ExprTk).
+
+- **Staggered spring cascade** — *reads PNode records* · `choreo_cascade` · radial/index/wave/noise
+  staggers delay per-instance closed-form springs (`AN_BOUNCY`..`AN_HEAVY` presets); `ghost_mode`
+  renders past/future evaluations as onion-skin ghosts (pure-function motion makes the future
+  previewable). · *compose-with:* `pl_grid` (records), `conductor` (cue envelopes via expressions).
+- **Timeline HUD** — *reads `Cue Records` data port* · `timeline_hud` · DAW-style lanes, cue blocks,
+  beat grid, and live playhead rendered from the conductor's sheet-derived records; drive
+  `playhead_seconds` from `ref("Conductor/control_outputs/...")`. · *compose-with:* `conductor`,
+  any show graph as a rehearsal overlay.
