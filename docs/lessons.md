@@ -1,12 +1,24 @@
 ---
 type: lessons
-updated: 2026-07-06
+updated: 2026-07-07
 ---
 
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-07 - Screenshot window title matching is substring-based
+
+**Symptoms**: A Sentinel screenshot request with `window_title: "Sentinel"` captured the terminal window instead of the app, because the terminal title also contained the word `sentinel`. An element screenshot for `Node Graph` also failed because that was not the registered element name.
+
+**Cause**: `sentinel_screenshot window` matches by window-title substring. Broad title filters can hit unrelated windows such as terminals, browsers, or editors.
+
+**Fix**: Use the exact Sentinel app title from `Get-Process sentinel | Select MainWindowTitle`, for example `Sentinel - Untitled`, before capturing proof screenshots. For graph layout proof, also keep `sentinel_graph get summary=true` as the authoritative coordinate/link record.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-07
 
 ## 2026-07-06 - `line` is a reserved HLSL keyword
 
