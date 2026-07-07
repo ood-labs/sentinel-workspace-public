@@ -52,6 +52,17 @@ Do not treat a successful create call as proof that engines loaded.
 
 All three are StateTree parameters, so OSC, expressions, MCP, and scene-group presets reach them. Use hold plus `render_one` for one-clean-still-at-a-time workflows such as filling an `atlas` node.
 
+## Prompt Bank (Multi-Prompt By Line)
+
+The prompt box doubles as a prompt bank for rapid prompt cycling and blending:
+
+- `prompt_bank_enabled` (bool): treat each LINE of the prompt as a separate prompt. The Properties panel switches to numbered per-line rows with add/remove buttons; the active row is highlighted.
+- `prompt_position` (float 0-63): the whole part selects a line (wrapping past the last), the fractional part BLENDS the CLIP embeddings toward the next line. `3.0` is exactly line 3; `4.5` is a semantic halfway point between lines 4 and 5 (blends generate coherent hybrids, not double exposures).
+
+Every line is encoded once when the bank is enabled or edited, and the embeddings are cached on the GPU. Position changes cost no text-encoder work, so `prompt_position` can change every frame. It is a normal float parameter: drive it from an expression (for example `ref("<lfo_module>/control_outputs/lfo1") * <line_count>`), OSC, or Conductor cues to cycle prompts continuously. Combined with atlas `interval_enabled`, a swept position fills an atlas with a different subject per captured frame.
+
+Editing the bank re-encodes all lines (roughly tens of ms per line, once per edit). Disabling the toggle returns to whole-text prompting.
+
 ## Multiple Variants, Shared Engines, Mux
 
 Several StreamDiff variants using the same engine files share loaded TensorRT engines through a ref-counted pool, so N variants cost one engine load (execution is one at a time). Switch between variants live with a `mux` node (`selected` picks 1-of-8 inputs); enable the mux's `solo_upstream` so the non-selected variants auto-hold and only the visible one diffuses. See `knowledge/scene-system.md`.

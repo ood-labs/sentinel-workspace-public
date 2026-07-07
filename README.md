@@ -41,6 +41,12 @@ committed.
   compositor → post), with a control-output "signal bus" driving reactive parameters. See its
   `DEBRIEF.md` for the build write-up.
 
+- **`projects/fruit_atlas_scatter/`** — a generative 3D scatter scene: StreamDiff fruit stills
+  cut out by Background Removal and depth-mapped, banked into a 9-slot atlas (color / matte /
+  depth columns), and spawned as depth-scaled cutout cards with orbit parallax. Demonstrates the
+  continuous atlas fill (one interval toggle refreshes the whole scene) and the StreamDiff
+  prompt bank cycled per frame by an LFO expression. See its `DEBRIEF.md`.
+
 ## Getting started (for an agent)
 
 Read `CLAUDE.md`. In short: the live MCP surface is the source of truth for a given build —
