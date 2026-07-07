@@ -1,0 +1,25 @@
+name: "KidPix Trail"
+version: "0.1"
+mode: generator
+resolution: [1200, 960]
+
+# Writhing green palm-tree stamp trail (lower-left). Catmull-Rom loop with writhing control points,
+# palm glyph stamped along arc-length. Premultiplied RGBA, seamless 6s loop.
+
+parameters:
+  - { name: trail_cx,     display: "Trail X",    type: float, min: 0.0, max: 1.0, default: 0.22, group: "Place" }
+  - { name: trail_cy,     display: "Trail Y",    type: float, min: 0.0, max: 1.0, default: 0.70, group: "Place" }
+  - { name: trail_scale,  display: "Trail Scale", type: float, min: 0.3, max: 2.0, default: 1.15, group: "Place" }
+  - { name: palm_count,   display: "Palms",      type: int,   min: 1,   max: 80,  default: 46,   group: "Look" }
+  - { name: palm_size,    display: "Palm Size",  type: float, min: 0.01, max: 0.12, default: 0.045, group: "Look" }
+  - { name: writhe_amt,   display: "Writhe",     type: float, min: 0.0, max: 0.3, default: 0.09, group: "Motion" }
+  - { name: intensity,    display: "Intensity",  type: float, min: 0.0, max: 1.5, default: 1.0,  group: "Look" }
+  - { name: loop_seconds, display: "Loop (s)",   type: float, min: 1.0, max: 12.0, default: 6.0, group: "Motion" }
+
+passes:
+  - name: trail
+    shader: trail.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "Trail", pass: trail }

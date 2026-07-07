@@ -400,6 +400,43 @@ layer stack through a compositor. Seeded from the `fui_dashboard` build.
   instance (which layers, what order) is usually project glue — rebuild per scene rather than
   harvesting. Promote only if a genuinely general compositor emerges.
 
+## Paint-canvas & 2D stamp motion (kidpix_canvas)
+
+Flat hard-edged 2D "paint program" plates — each a premultiplied-alpha generator composited over a
+white canvas base (no bloom/grade). Seeded from the `kidpix_canvas` build (Kid Pix reference
+recreation). Every plate self-animates on a seamless loop via `frac(_Time/loop)` phases + shared
+`an_loop_noise`. Pair with a premult over-compositor (the `plate_comp` pattern).
+
+- **Arc-length stamp-along-spline** — *generator → premult RGBA* · `kidpix_trail` · a Catmull-Rom
+  loop whose control points writhe on a seamless loop; a procedural glyph is stamped upright at N
+  evenly spaced arc positions along it (a cloner along a path, per-pixel bbox-rejected). The
+  writhing-sprite-trail transport (palm-tree snake). Swap the glyph fn for any repeated stamp on a
+  living path. · *compose-with:* premult compositor, `an_loop_noise`.
+- **Draw-on brush reveal** — *generator → premult RGBA* · `kidpix_stroke` · a thick round-brush SDF
+  swept along an authored multi-bezier path, revealed by an **arc-length trim** (`prog = frac(t/loop)
+  / draw_frac`) so the stroke GROWS from the leading tip and redraws each loop — the progressive
+  "paint-on" look (not a moving rigid shape, not edge-jitter). · *compose-with:* any authored path;
+  cousin of `link_render` draw-on progress.
+- **Hard-edged multicolor paint roil** — *generator → premult RGBA* · `kidpix_roil` · nearest-of-N
+  orbiting **elongated** color lobes (domain-warped sample point) → a Voronoi-ish hard-edged
+  multicolor smear that reads as overlapping wet strokes; lobes marched evenly across a band for
+  even palette spread, orbit on a seamless loop. The "wacky brush" mass. · *compose-with:* premult
+  compositor.
+- **Procedural icon atlas + jitter cloner** — *compute atlas + StructuredBuffer\<PNode\> → premult
+  RGBA* · `kidpix_stamp_atlas` (bakes a 4×4 grid of flat SDF icons, `rgb`=color `a`=coverage) +
+  `kidpix_swarm` (stamps atlas cells at each PNode with per-instance **loop-synced stepped jitter** —
+  the buzzing rubber-stamp look). Consumes reused `pl_grid`(Scatter) → `pl_spawn`(Jitter) placement.
+  A multicolor-icon variant of the atlas-instance cloner (cf. `prim_atlas`/`pl_render`). · *compose
+  -with:* `pl_grid`/`pl_spawn`, premult compositor.
+- **Flat pattern-face cube** — *generator → premult RGBA* · `kidpix_cube` · ray-box (slab) hit →
+  face id + face UV → flat **unlit** nearest-neighbour pattern (checker/solid/halftone) with a
+  pattern-cycle timer synced to the tumble; premult on ray miss so it composites as a plate. The
+  "3D object as a flat graphic" transport. · *compose-with:* premult compositor.
+
+> Loop-sync note: for a seamless N-second loop, drive rotation as `frac(_Time/loop)*TAU*turns` and
+> stepped jitter as `floor(frac(_Time/loop)*steps)` — both repeat exactly at the seam. Absolute-time
+> `_Time*rate` pops at the loop boundary unless `rate*loop` is an integer multiple of the period.
+
 ## Choreography & timeline
 
 Time-structured motion over instance records and cue-driven shows, built on the shared motion

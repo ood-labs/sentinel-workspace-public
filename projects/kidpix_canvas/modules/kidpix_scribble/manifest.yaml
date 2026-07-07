@@ -1,0 +1,28 @@
+name: "KidPix Scribble"
+version: "0.1"
+mode: generator
+resolution: [1200, 960]
+
+# Thin pink & black spiky star-burst clusters (lower-right). Radiating spikes, slow rotate + tip
+# jitter. Premultiplied RGBA.
+
+parameters:
+  - { name: cluster_cx,    display: "Cluster X",   type: float, min: 0.0, max: 1.2, default: 0.62, group: "Place" }
+  - { name: cluster_cy,    display: "Cluster Y",   type: float, min: 0.0, max: 1.0, default: 0.70, group: "Place" }
+  - { name: spread,        display: "Spread",      type: float, min: 0.0, max: 2.0, default: 1.0,  group: "Place" }
+  - { name: cluster_count, display: "Clusters",    type: int,   min: 1,   max: 10,  default: 5,    group: "Look" }
+  - { name: cluster_size,  display: "Cluster Size", type: float, min: 0.3, max: 2.5, default: 1.1, group: "Look" }
+  - { name: spikes,        display: "Spikes",      type: int,   min: 3,   max: 18,  default: 11,   group: "Look" }
+  - { name: line_width,    display: "Line Width",  type: float, min: 0.0005, max: 0.004, default: 0.0013, group: "Look" }
+  - { name: intensity,     display: "Intensity",   type: float, min: 0.0, max: 1.5, default: 1.0,  group: "Look" }
+  - { name: spin_turns,    display: "Spin Turns",  type: float, min: 0.0, max: 4.0, default: 1.0,  group: "Motion" }
+  - { name: jit_steps,     display: "Jitter Steps", type: float, min: 6.0, max: 120.0, default: 72.0, group: "Motion" }
+  - { name: loop_seconds,  display: "Loop (s)",    type: float, min: 1.0, max: 12.0, default: 6.0, group: "Motion" }
+
+passes:
+  - name: scribble
+    shader: scribble.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "Scribble", pass: scribble }
