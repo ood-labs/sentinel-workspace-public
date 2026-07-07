@@ -46,6 +46,15 @@ once, derive many.
   `field_gen` (placement), `link_gen` / `label_gen` (consumers).
 - **Point-buffer glow renderer** — *StructuredBuffer\<NodeRecord\> → texture* · `node_render` ·
   bloom-bright cores + optional star rays from a point buffer. · *compose-with:* any point producer.
+- **Organic family plan + renderer branch** — *compute → StructuredBuffer\<FlowerElement\> → texture* ·
+  `garden_flower_plan` + `garden_flower_render` (four-flower garden proof) · one reusable pattern for
+  families of related organic instances: each branch has a plan node that emits self-describing records
+  (`center`, `radius`, `angle`, `species`, `part_type`, `layer`, `id`, `color`, `width`, `length`,
+  `phase`, `bend`, `active`) and a matching renderer that consumes only that branch. Duplicate the same
+  plan/render pair per species or variant, set species/seed/layout params per branch, then feed a named
+  compositor whose inlet order matches the branch order. The graph stays clean because every family is
+  independently inspectable with `capture_data_port` and a renderer preview. · *compose-with:* background
+  texture generator, ordered compositor, post grade, manual `set_node_geometry` layout.
 
 ## Spline / segment geometry
 

@@ -45,13 +45,34 @@ Do not wire control outputs with `set_input`. Use `sentinel_expression action=se
 
 ## Auto Layout
 
-After creating and wiring nodes, call:
+After creating and wiring brand-new nodes, call:
 
 ```text
 sentinel_graph action=auto_layout
 ```
 
-For large hand-arranged graphs, use `layout_neighborhood` instead of rearranging the whole graph.
+Use this mainly to unstack nodes that spawned at the same coordinate. For authored modular scenes, follow it with explicit positions:
+
+```text
+sentinel_graph action=set_node_geometry entity_id=<node> x=<graph_x> y=<graph_y>
+```
+
+Readable graph layout is part of the scene contract:
+
+- Columns should reflect responsibility: generators/plans, renderers/expanders, compositors, post/output.
+- Repeated branches should keep the same vertical order through every column.
+- Compositor inlet order should match the visible branch order. If slot 0 is `Background` and slots 1-4 are `Sunflower`, `Poppy`, `Lotus`, `Iris`, lay out those producers and renderers top-to-bottom in that same order.
+- Use pin names for `add_link` when possible, then confirm the numeric slot order with `sentinel_graph action=get summary=true`.
+- For large hand-arranged graphs, use `layout_neighborhood dry_run=true` first. If the dry run would disturb a clean semantic layout, use manual `set_node_geometry`.
+- Add annotations manually with explicit bounds after node sizes are available. Group-wrap annotation helpers are convenient, but explicit `x/y/width/height` produces cleaner boxes for polished graphs.
+
+Proof checklist for graph layout:
+
+1. `sentinel_graph action=get summary=true` shows the intended links and coordinates.
+2. `sentinel_pipeline action=get_data_schemas` shows structured producers expose the expected ports.
+3. `sentinel_pipeline action=capture_data_port` returns active records for each data branch.
+4. Capture the final pipeline output.
+5. Screenshot the real Sentinel window using the exact window title when possible, for example `Sentinel - Untitled`.
 
 ## Health Checks
 

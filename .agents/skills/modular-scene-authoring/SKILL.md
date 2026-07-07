@@ -92,10 +92,34 @@ Minimum standards:
 - Each generator stays independently inspectable with a cheap preview and a `capture_data_port` proof. If you cannot prove a node's output on its own, it is doing too much.
 - Save the project before any major graph or buffer-contract change. Keep a snapshot of the last working state so a failed contract change is one reload away from recovery.
 - Judge the actual image, not the shader idea. Capture the output early and often and let the picture drive the next edit.
+- Treat the graph layout as part of the authored scene. A finished modular graph must be readable from left to right, with data producers, renderers, compositors, and post nodes in stable semantic columns.
 
 ### Granularity — split vs fuse
 
 Split a responsibility into its own node when its output is **independently provable**, **reusable** elsewhere, or **swappable** (a renderer you'd replace without touching the generator). Fuse when a split would only produce a node that is never inspected or reused on its own. Max modularity is a means, not the goal — the goal is a graph a human can read and a next agent can extend. Expressiveness comes from typed params + mode enums + derivations, not from node count.
+
+---
+
+## Graph layout contract
+
+For multi-branch scenes, layout is not cleanup after the fact. Design it with the graph:
+
+- Put **plan/generator nodes** in the left column, **render/expansion nodes** in the next column, **compositor nodes** to the right, and **post/output nodes** at the far right.
+- Keep repeated branches in the same vertical order everywhere. If the compositor inputs are `Background`, `Sunflower`, `Poppy`, `Lotus`, `Iris`, the visible node order should match those inlet rows.
+- Create nodes with approximate `x`/`y`, wire by pin names, then use `sentinel_graph set_node_geometry` for the final authored coordinates. Use `auto_layout` only as a first pass for stacked newborn nodes; do not trust it to preserve a deliberate composition.
+- Use `layout_neighborhood dry_run=true` before applying any local cleanup to an existing hand-authored graph. If it reports meaningful moves against already good bands, prefer manual `set_node_geometry`.
+- Add annotation boxes manually with explicit `x/y/width/height` after node bounds are known. Avoid group-wrap helpers when the box needs to look polished.
+- Verify with `sentinel_graph get summary=true`, a real Sentinel window screenshot, and the final output capture. A successful link command is not enough.
+
+Reusable branch pattern:
+
+```text
+Species_Plan --data:Flower Elements--> Species_Render --texture--> Compositor slot N
+Background -----------------------------------------------> Compositor slot 0
+Compositor -----------------------------------------------> Post
+```
+
+This pattern was proven by the four-flower garden graph: four independently inspectable structured-buffer generators, four matching renderers, one compositor whose inlet order matched the vertical branch order, and a final post node.
 
 ---
 
@@ -223,7 +247,7 @@ The tight loop for multi-node contract work:
 9. Profile with `sentinel_graph profile summary=true` to catch a node that dominates frame time.
 10. **Checkpoint the working state.** `sentinel_capture action=checkpoint pipeline_id=<id>` saves a bundled `.sentinel`, captures the output image, and records the graph profile in one call. Use it whenever a look is worth keeping.
 
-After creating pipelines and wiring links, always run `sentinel_graph auto_layout` (nodes spawn at 0,0 and stack otherwise), and re-run it periodically so the graph stays human-readable; on a hand-arranged graph prefer `layout_neighborhood`.
+After creating pipelines and wiring links, run `sentinel_graph auto_layout` only to unstack newborn nodes, then immediately set the final authored positions with `sentinel_graph set_node_geometry`. On an existing hand-arranged graph prefer `layout_neighborhood dry_run=true` or manual geometry edits; global layout can destroy semantic bands.
 
 Note: `save_project bundle_modules=true` copies referenced Module folders but **not** `modules/_shared/`. If your modules `#include` from `_shared`, copy it into the bundle (`projects/<show>/modules/_shared/`) or the bundled show won't compile standalone.
 
