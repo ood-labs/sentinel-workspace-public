@@ -301,6 +301,42 @@ blob mass + melted marble + graphic framing, one palette, infinitely variable).
   system" pattern (the seed-bus cousin of the `signal` LFO bus). · *compose-with:* every plate via
   `sentinel_expression`, `signal`.
 
+## Image-analysis feedback (features → geometry)
+
+**Close the loop: analyze the rendered image, then derive new geometry from what was detected.**
+A `features` pipeline (model-free corner / line / blob extraction) runs on a composited frame and
+publishes structured buffers; a renderer threads splines / stamps marks / annotates *through the
+detected features*. The graphic layer stops being authored blind and becomes **reactive to the
+actual content** — so it always "fits" whatever the generative side produces, at any seed. This is
+the single highest-leverage integration found on `strata`: it made the piece dramatically better
+for ~one module of work.
+
+- **Feature-reactive spline overlay** ⭐ — *video + features buffer → texture* · `corner_thread`
+  (project `strata`) · takes the final image (`_Tex0`) + a `features` **Corners** buffer
+  (`{x, y, response, pad}`, x/y in **pixels**, top-left origin) and threads a Catmull-Rom spline
+  **through** the corner points, drawn over the picture with glow, per-corner ring markers, and a
+  flowing dash. Two orderings: **Loop** (sort corners by angle around their centroid → a closed
+  lasso woven through everything) and **Chain** (buffer/response order → an open path). **Arc-length
+  trim** (`chain_length` + `chain_offset`) draws only a window of the path — set a short length and
+  animate the offset (drive from `signal/control_outputs/sweep`) for a bright segment crawling the
+  thread. · *compose-with:* any `features` node, `signal`, `post`.
+- **Wiring it feedback-free** — put the analysis + overlay **downstream** of the composite:
+  `plate_comp → features → thread`, and thread over `post` (or over `plate_comp`, then `→ post`, if
+  you want the line to bloom). Because nothing feeds back into the composite there is **no graph
+  cycle**. It re-detects every frame, so in motion the linework is alive (slightly jittery as
+  corners pop in/out — smooth by lerping corner positions frame-to-frame or accumulating a trail
+  buffer if you want it to glide). The `features` node exposes a **max-corners** cap (~15 reads
+  cleanest); fewer, stronger corners → a calmer thread.
+- **The other two feature channels are the same pattern** — `features` also emits **Lines**
+  (`{x1,y1,x2,y2,angle,length}`) and **Blobs** (`{centroid, bbox, colorRGB, area}`). Stroke/extend
+  the detected line segments, or place labels / reticles / connectors on blob centroids — reuse the
+  `corner_thread` scaffold (swap the buffer schema + how you consume it). Corner→spline is just the
+  first of a family: *detect structure in the render, then draw new structure from it.*
+- **Why it lands with generative content** — warped/organic passes (blobs, marble, SDF melt) have no
+  authored vector geometry, but a corner/line detector *finds* their salient structure every frame,
+  so a crisp derived overlay tracks the melt for free. Sharp-line-framing that follows the content
+  instead of floating over it. Pairs naturally with the `strata` plate system.
+
 ## Control & reactivity
 
 - **Control-output signal bus** — *compute → control outputs* · `signal` · one tiny module runs N

@@ -1,16 +1,11 @@
 {
   "graph": {
-    "canvasZoom": 0.658221423625946,
+    "canvasZoom": 0.8015761971473694,
     "links": [
       {
         "endPinId": 4,
         "id": 1,
         "startPinId": 3
-      },
-      {
-        "endPinId": 34,
-        "id": 17,
-        "startPinId": 13
       },
       {
         "endPinId": 12,
@@ -36,18 +31,38 @@
         "endPinId": 17,
         "id": 16,
         "startPinId": 11
+      },
+      {
+        "endPinId": 36,
+        "id": 18,
+        "startPinId": 13
+      },
+      {
+        "endPinId": 44,
+        "id": 20,
+        "startPinId": 40
+      },
+      {
+        "endPinId": 42,
+        "id": 21,
+        "startPinId": 13
+      },
+      {
+        "endPinId": 34,
+        "id": 22,
+        "startPinId": 43
       }
     ],
-    "nextLinkId": 18,
-    "nextNodeId": 11,
-    "nextPinId": 36,
+    "nextLinkId": 23,
+    "nextNodeId": 13,
+    "nextPinId": 45,
     "nodes": [
       {
         "displayName": "blob_layout",
         "entityId": "blob_layout",
         "id": 1,
         "posX": 43.105865478515625,
-        "posY": -157.80194091796875,
+        "posY": -156.79469299316406,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -76,8 +91,8 @@
         "displayName": "wire_render",
         "entityId": "wire_render",
         "id": 4,
-        "posX": 32.094085693359375,
-        "posY": 891.8587646484375,
+        "posX": 37.084259033203125,
+        "posY": 874.142333984375,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -97,7 +112,7 @@
         "entityId": "plate_comp",
         "id": 6,
         "posX": 547.7176513671875,
-        "posY": 330.96453857421875,
+        "posY": 330.20367431640625,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -116,18 +131,8 @@
         "displayName": "strata_control",
         "entityId": "strata_control",
         "id": 8,
-        "posX": -217.87274169921875,
+        "posX": -216.6251983642578,
         "posY": 396.98486328125,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "signal",
-        "entityId": "signal",
-        "id": 9,
-        "posX": -449.7013854980469,
-        "posY": 421.07330322265625,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -136,8 +141,28 @@
         "displayName": "post",
         "entityId": "post",
         "id": 10,
-        "posX": 734.0352783203125,
-        "posY": 343.64691162109375,
+        "posX": 1362.2633056640625,
+        "posY": 304.29608154296875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Features #0",
+        "entityId": "features_0",
+        "id": 11,
+        "posX": 839.8902587890625,
+        "posY": 473.54534912109375,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "corner_thread",
+        "entityId": "corner_thread",
+        "id": 12,
+        "posX": 1109.794189453125,
+        "posY": 319.4952392578125,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -313,46 +338,6 @@
         "type": 7
       },
       {
-        "id": 29,
-        "kind": 1,
-        "name": "Signal",
-        "nodeId": 9,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 30,
-        "kind": 1,
-        "name": "pulse",
-        "nodeId": 9,
-        "slotIndex": 1,
-        "type": 7
-      },
-      {
-        "id": 31,
-        "kind": 1,
-        "name": "sweep",
-        "nodeId": 9,
-        "slotIndex": 2,
-        "type": 7
-      },
-      {
-        "id": 32,
-        "kind": 1,
-        "name": "beat",
-        "nodeId": 9,
-        "slotIndex": 3,
-        "type": 7
-      },
-      {
-        "id": 33,
-        "kind": 1,
-        "name": "slow",
-        "nodeId": 9,
-        "slotIndex": 4,
-        "type": 7
-      },
-      {
         "id": 34,
         "kind": 0,
         "name": "Scene",
@@ -367,6 +352,78 @@
         "nodeId": 10,
         "slotIndex": 0,
         "type": 0
+      },
+      {
+        "id": 36,
+        "kind": 0,
+        "name": "Video Input",
+        "nodeId": 11,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 37,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 11,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 38,
+        "kind": 1,
+        "name": "Edge Map",
+        "nodeId": 11,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 39,
+        "kind": 1,
+        "name": "Blobs",
+        "nodeId": 11,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 40,
+        "kind": 1,
+        "name": "Corners",
+        "nodeId": 11,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 41,
+        "kind": 1,
+        "name": "Lines",
+        "nodeId": 11,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 42,
+        "kind": 0,
+        "name": "Base",
+        "nodeId": 12,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 43,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 12,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 44,
+        "kind": 0,
+        "name": "Corners",
+        "nodeId": 12,
+        "slotIndex": 1,
+        "type": 6
       }
     ]
   },
@@ -390,8 +447,7 @@
       "displayName": "blob_layout",
       "enabled": true,
       "expressions": {
-        "seed": "ref(\"strata_control/control_outputs/seed\")",
-        "spread": "ref(\"strata_control/control_outputs/spread\")"
+        "seed": "ref(\"strata_control/control_outputs/seed\")"
       },
       "fitMode": 1,
       "id": "blob_layout",
@@ -399,7 +455,7 @@
       "outputFitMode": 1,
       "outputSinkId": "",
       "parameters": {
-        "jitter": "0.000000",
+        "jitter": "1.377000",
         "lift": "0.000000",
         "project_dir": "modules/blob_layout",
         "resolution_height": "720",
@@ -430,7 +486,7 @@
         "resolution_height": "1080",
         "resolution_width": "720",
         "ring_count": "3.000000",
-        "strand_count": "3.000000",
+        "strand_count": "6.000000",
         "wire_bright": "1.000000",
         "wire_opacity": "0.720000",
         "wire_scale": "0.820000",
@@ -456,7 +512,7 @@
       "parameters": {
         "flow_speed": "0.250000",
         "marble_opacity": "1.000000",
-        "marble_scale": "2.200000",
+        "marble_scale": "0.890000",
         "marble_seed": "25.400002",
         "panel_cx": "0.500000",
         "panel_cy": "0.500000",
@@ -517,8 +573,8 @@
         "sun_elevation": "55.000000",
         "swirl_amt": "0.150000",
         "twist_amt": "0.240000",
-        "w1_amt": "0.550000",
-        "w1_freq": "0.900000",
+        "w1_amt": "0.405000",
+        "w1_freq": "0.799000",
         "w1_mode": "0.000000",
         "w1_ox": "0.000000",
         "w1_oy": "0.000000",
@@ -526,15 +582,15 @@
         "w1_pitch": "0.000000",
         "w1_speed": "0.600000",
         "w1_yaw": "0.000000",
-        "w2_amt": "0.000000",
-        "w2_freq": "1.800000",
-        "w2_mode": "2.000000",
-        "w2_ox": "0.000000",
-        "w2_oy": "0.000000",
+        "w2_amt": "1.905000",
+        "w2_freq": "1.115000",
+        "w2_mode": "1.000000",
+        "w2_ox": "-3.468000",
+        "w2_oy": "0.541000",
         "w2_oz": "0.000000",
-        "w2_pitch": "0.000000",
-        "w2_speed": "0.900000",
-        "w2_yaw": "1.570000",
+        "w2_pitch": "-0.284000",
+        "w2_speed": "0.697000",
+        "w2_yaw": "-0.624000",
         "warp_speed": "0.600000",
         "wave_amt": "0.000000",
         "wave_freq": "2.000000"
@@ -564,12 +620,12 @@
         "blob_mode": "0.000000",
         "marble_gain": "1.000000",
         "marble_mode": "0.000000",
-        "marks_gain": "1.000000",
+        "marks_gain": "0.584000",
         "marks_mode": "0.000000",
         "project_dir": "modules/plate_comp",
         "resolution_height": "1080",
         "resolution_width": "720",
-        "wire_gain": "1.000000",
+        "wire_gain": "0.000000",
         "wire_mode": "0.000000"
       },
       "running": true,
@@ -650,36 +706,13 @@
       "type": "module"
     },
     {
-      "displayName": "signal",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "signal",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "beat_rate": "2.000000",
-        "beat_sharp": "3.000000",
-        "project_dir": "modules/signal",
-        "pulse_rate": "0.800000",
-        "resolution_height": "64",
-        "resolution_width": "256",
-        "slow_rate": "0.050000",
-        "sweep_rate": "0.100000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
       "displayName": "post",
       "enabled": true,
       "expressions": null,
       "fitMode": 1,
       "id": "post",
       "inputSlotSourceIds": [
-        "plate_comp"
+        "corner_thread"
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
@@ -705,9 +738,90 @@
       "running": true,
       "secondaryInputFilePaths": null,
       "type": "module"
+    },
+    {
+      "displayName": "Features #0",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "features_0",
+      "inputSlotSourceIds": [
+        "plate_comp"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "blob_enabled": "0",
+        "blob_invert": "0",
+        "blob_max_count": "32",
+        "blob_min_area": "32.000000",
+        "blob_threshold": "0.500000",
+        "corner_enabled": "1",
+        "corner_max_count": "15",
+        "corner_min_distance": "32.500000",
+        "corner_mode": "0",
+        "corner_quality": "0.081000",
+        "edge_blur": "0",
+        "edge_enabled": "0",
+        "edge_high_threshold": "0.318000",
+        "edge_low_threshold": "0.282000",
+        "edge_mode": "0",
+        "edge_threshold": "0.295000",
+        "line_anchor_threshold": "0.750000",
+        "line_detect_scale": "1",
+        "line_edge_threshold": "0.500000",
+        "line_enabled": "0",
+        "line_jump_distance": "3",
+        "line_max_count": "16",
+        "line_min_length": "32.000000",
+        "line_nms_angle_tol": "5.000000",
+        "line_nms_dist_tol": "4.000000",
+        "line_orientation_tol": "22.500000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "features"
+    },
+    {
+      "displayName": "corner_thread",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "corner_thread",
+      "inputSlotSourceIds": [
+        "plate_comp",
+        "features_0"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "base_gain": "0.900000",
+        "chain_length": "0.492000",
+        "chain_offset": "0.000000",
+        "dash_amt": "0.600000",
+        "dash_count": "24.000000",
+        "flow_speed": "0.400000",
+        "glow": "0.095000",
+        "glow_radius": "3.987000",
+        "intensity": "0.688000",
+        "line_width": "0.500000",
+        "marker_on": "1.000000",
+        "marker_size": "7.000000",
+        "project_dir": "modules/corner_thread",
+        "resolution_height": "1080",
+        "resolution_width": "720",
+        "samples": "13.000000",
+        "thread_color_b": "0.754464",
+        "thread_color_g": "0.752660",
+        "thread_color_r": "0.687101",
+        "thread_mode": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
     }
   ],
-  "saved_at_ms": 1783396340305,
+  "saved_at_ms": 1783398716286,
   "sources": [],
   "version": 5
 }
