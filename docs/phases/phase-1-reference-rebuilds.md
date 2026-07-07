@@ -29,7 +29,7 @@ refine the biggest gaps in whole-scene passes.** No per-element gating or vision
 ## Deliverables (one per clip)
 | ID | Clip (stem) | Working title | Dominant technique lane(s) | Status |
 | --- | --- | --- | --- | --- |
-| C1 | `tg6SMjlAs3yrFGLN` | Pulsating Metallic Polyhedron | hero SDF + gradient bg + comp (CALIBRATION) | planned |
+| C1 | `tg6SMjlAs3yrFGLN` | Pulsating Metallic Polyhedron | hero SDF + gradient bg + comp (CALIBRATION) | DONE |
 | C2 | `twitter_2061154961690431835` | Blueprint Circuit Board Data Flow | 2D field/line + post | planned |
 | C3 | `twitter_2060419545714585879` | Glitchy Coordinate Network | 2D cloner + creative-coding | planned |
 | C4 | `x8X82M4fonC5rKXl` | Psychedelic Botanical Vector | 3D NPR / SDF + post | planned |
