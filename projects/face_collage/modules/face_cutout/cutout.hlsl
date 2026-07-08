@@ -1,22 +1,18 @@
-// face_cutout — cuts an elliptical patch of the LIVE face (_Tex0 = Face_DS) around each tracked
-// eye/mouth anchor and stamps it at a stepped-jittered position, output as a straight-alpha layer
-// for the Accum feedback canvas to bake. Every `stamp_rate` seconds the jitter steps to a new
-// spot near the feature, so imprints scatter and pile up instead of stacking in place.
-// _Tex0 = face; _Data0 = Face_Stitch anchors. Draw pass, one quad per anchor.
+// face_cutout draw — one quad per Clone. With history_on, copies >=1 sample the face DELAY LINE:
+// the frame from `copyIdx*delay_time` seconds ago (interpolated between captured frames) at the
+// clone's already-delayed UV — so image and crop are delayed in tandem. Copy 0 stays current/sharp.
+// _Tex0 = face, ClonesIn = clones, HistoryIn = face ring.
+#include "cutout_common.hlsli"
 
-static const uint MAX_NODES = 16;
-
-struct PNode {
-    float2 pos; float2 dir;
-    float depth; float u; float v; float weight;
-    float group; float kind; float seed; float active;
-};
+StructuredBuffer<Clone>    ClonesIn  : register(t1);   // t0 = _Tex0 (face)
+StructuredBuffer<float4>   HistoryIn : register(t2);
 
 struct VS_OUT {
     float4 Position : SV_POSITION;
     float2 SampleUV : TEXCOORD0;
     float2 LocalUV  : TEXCOORD1;
     float  Valid    : TEXCOORD2;
+    float  Htf      : TEXCOORD3;   // ring time to sample, or <0 for current _Tex0
 };
 
 static const float2 QUAD_OFFSETS[6] = {
@@ -28,42 +24,48 @@ static const float2 QUAD_UVS[6] = {
     float2(0,0), float2(1,1), float2(0,1)
 };
 
-float2 hash2(float2 p){
-    p = float2(dot(p, float2(127.1, 311.7)), dot(p, float2(269.5, 183.3)));
-    return frac(sin(p) * 43758.5453);
+float3 fetchH(uint slot, int2 q)
+{
+    q = clamp(q, int2(0, 0), int2((int)HW - 1, (int)HH - 1));
+    return HistoryIn[slot * HW * HH + (uint)q.y * HW + (uint)q.x].rgb;
+}
+float3 slotBil(uint slot, float2 uv)
+{
+    uv = saturate(uv);
+    float2 fp = uv * float2((float)HW, (float)HH) - 0.5;
+    int2 ip = (int2)floor(fp); float2 f = frac(fp);
+    float3 a = lerp(fetchH(slot, ip + int2(0, 0)), fetchH(slot, ip + int2(1, 0)), f.x);
+    float3 b = lerp(fetchH(slot, ip + int2(0, 1)), fetchH(slot, ip + int2(1, 1)), f.x);
+    return lerp(a, b, f.y);
+}
+float3 sampleFaceRing(float htf, float2 uv)          // bilinear in space + linear in time
+{
+    float s0 = floor(htf); float fr = htf - s0;
+    uint sA = ((uint)max(s0, 0.0)) % HF;
+    uint sB = ((uint)max(s0, 0.0) + 1u) % HF;
+    return lerp(slotBil(sA, uv), slotBil(sB, uv), fr);
 }
 
 VS_OUT VSMain(uint vid : SV_VertexID)
 {
     VS_OUT o;
-    uint rec = vid / 6u;
+    uint inst = vid / 6u;
     uint corner = vid % 6u;
 
-    PNode n = _Data0[min(rec, MAX_NODES - 1u)];
-    if (rec >= MAX_NODES || rec >= (uint)_Data0_Count || n.active < 0.5)
+    Clone c = ClonesIn[min(inst, MAX_NODES * MAX_COPIES - 1u)];
+    if (inst >= MAX_NODES * MAX_COPIES || c.active < 0.5)
     {
         o.Position = float4(0, 0, -999, 1);
-        o.SampleUV = 0; o.LocalUV = 0; o.Valid = 0;
+        o.SampleUV = 0; o.LocalUV = 0; o.Valid = 0; o.Htf = -1;
         return o;
     }
 
-    float outAspect = _Resolution.x / max(1.0, _Resolution.y);
-    float2 aspect = float2(1.0 / outAspect, 1.0);
-    float hw = max(0.03, n.weight) * stamp_scale;
+    uint copyIdx = inst / MAX_NODES;
+    o.Htf = (history_on != 0 && copyIdx >= 1u) ? ringTimeFor(copyIdx) : -1.0;
 
-    // stepped jitter: a new scatter position every 1/stamp_rate seconds
-    float step = floor(_Time * stamp_rate);
-    float2 j = (hash2(float2(step, n.seed * 3.7 + 1.0)) - 0.5) * spread;
-
-    float2 drawCenter = n.pos + j;
-    float2 local = QUAD_OFFSETS[corner] * aspect * hw;
-    float2 ndc = drawCenter + local;
-
-    // sample the face at the feature's REAL location (image uv, y-down)
-    float2 featUV = float2(n.pos.x * 0.5 + 0.5, 0.5 - n.pos.y * 0.5);
-    float2 win = float2(hw * aspect.x, hw) * sample_scale;
-    o.SampleUV = featUV + (QUAD_UVS[corner] - 0.5) * win * float2(1.0, -1.0);
-
+    float2 local = QUAD_OFFSETS[corner] * c.ext;
+    float2 ndc = c.pos + local;
+    o.SampleUV = c.uv + (QUAD_UVS[corner] - 0.5) * c.win * float2(1.0, -1.0);
     o.Position = float4(ndc, 0.0, 1.0);
     o.LocalUV = QUAD_UVS[corner];
     o.Valid = 1.0;
@@ -73,9 +75,25 @@ VS_OUT VSMain(uint vid : SV_VertexID)
 float4 PSMain(VS_OUT i) : SV_TARGET
 {
     if (i.Valid < 0.5) discard;
-    float2 d = (i.LocalUV - 0.5) * 2.0;
-    float mask = smoothstep(1.0, 1.0 - edge_soft, length(d));   // soft ellipse
+    float2 p = (i.LocalUV - 0.5) * 2.0;
+    int shape = (int)edge_mode;
+
+    float nd;
+    if (shape == 1)       nd = max(abs(p.x), abs(p.y));
+    else if (shape == 2)  nd = pow(pow(abs(p.x), 4.0) + pow(abs(p.y), 4.0), 0.25);
+    else                  nd = length(p);
+
+    float mask = smoothstep(1.0, 1.0 - edge_soft, nd);
     if (mask <= 0.01) discard;
-    float3 col = _Tex0.SampleLevel(LinearSampler, saturate(i.SampleUV), 0).rgb;
+
+    float3 col;
+    if (i.Htf < 0.0) col = _Tex0.SampleLevel(LinearSampler, saturate(i.SampleUV), 0).rgb;
+    else             col = sampleFaceRing(i.Htf, i.SampleUV);
+
+    if (border_on != 0)
+    {
+        float be = smoothstep(1.0 - border_width - edge_soft, 1.0 - border_width, nd);
+        col = lerp(col, border_color, be * border_alpha);
+    }
     return float4(col, mask);
 }

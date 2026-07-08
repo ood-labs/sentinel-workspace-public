@@ -1,12 +1,53 @@
 ---
 type: lessons
-updated: 2026-07-07
+updated: 2026-07-08
 ---
 
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-08 - `force_reload` drops data-port links, expression drivers, and resets params
+
+**Symptoms**: After every `force_reload` (or manifest hot-reload) of a module, downstream stopped
+working: a `data_input`/`data_output` link (e.g. `Face_Stitch → Face_Cutout` Anchors,
+`Face_Cutout → Clone_Overlay` Clones) was gone, a `ref()` expression driver on a param had been
+cleared, and the node's parameters had snapped back to manifest defaults.
+
+**Cause**: `force_reload` re-registers the node from scratch. **Video (`set_input`) links survive**,
+but **typed data-port links (`add_link`) do not**, expression drivers on that node's params are
+dropped, and param values reset to manifest `default:`. Recurs on every reload of a data-producing
+or -consuming module.
+
+**Fix**: After any `force_reload`, immediately: (1) re-add every `sentinel_graph add_link` into/out of
+the node, (2) re-`sentinel_expression set` any drivers on its params, (3) restore non-default param
+values. `add_link` is idempotent (`created:false` if it already exists), so re-adding is safe.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-08
+
+## 2026-07-08 - Cross-frame accumulation needs a persistent buffer, not a graph self-loop
+
+**Symptoms**: Wiring a module's own output back into its input to build an accumulation canvas
+(feedback) produced only the *current* frame's content — imprints never piled up, no matter the
+decay. Expected an ever-growing accumulation; got a single frame.
+
+**Cause**: A naive graph cycle (`Node.Out → Node.In`) provides at most one frame of history and does
+not chain into a persistent canvas. `docs/module-pipeline.md` distinguishes "persistent **buffers**"
+(cross-frame) from "multi-pass **feedback**" (within a frame) — cross-frame texture persistence is the
+former, not a self-loop.
+
+**Fix**: Accumulate into a **persistent structured buffer** (they survive frames and aren't cleared):
+a compute pass reads the incoming layer + the buffer and writes the buffer back (ping-pong via a
+scratch buffer to avoid in-pass read/write races when transforming). See
+`projects/face_collage/modules/accum/` (`paint.hlsl`/`transform.hlsl`/`present.hlsl`); same pattern as
+`strata_control`'s phase accumulation.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-08
 
 ## 2026-07-07 - Screenshot window title matching is substring-based
 

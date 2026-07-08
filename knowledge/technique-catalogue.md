@@ -451,3 +451,49 @@ stagger family, anticipation, squash, seamless loop noise; same equations in Exp
   beat grid, and live playhead rendered from the conductor's sheet-derived records; drive
   `playhead_seconds` from `ref("Conductor/control_outputs/...")`. · *compose-with:* `conductor`,
   any show graph as a rehearsal overlay.
+
+## Generative feed collage (face_collage)
+
+Live-video / generative-feed techniques from `projects/face_collage/` — a self-animating collage that
+cuts features from a StreamDiff-morphed, MediaPipe-tracked face and accumulates them forever with a
+vector overlay. Project-local exemplars (harvest into `modules/` if a second scene wants them);
+`resample` and `lfo` are already extracted to the library.
+
+- **Resolution converter** — *generator, `input:0` → out at own resolution* · `modules/resample` ·
+  samples `input:0` and emits it at this module's `resolution_width/height` (+ mild sharpen); use to
+  bring StreamDiff's 2× output down to a sane size before matte/depth/tracking/atlas consume it.
+- **LFO / signal source** — *generator → control outputs* · `modules/lfo` · self-animating Saw/Tri/
+  Sine/Square on `_Time` publishing `position` (=value·range, drives a prompt-bank position or any
+  ranged param), `value`, `phase`; drive params with `ref("<id>/control_outputs/position")`. Stamp
+  down several instances for independent motion. · *compose-with:* `sentinel_expression`, prompt banks.
+- **Landmarks → PNode bridge** — *data:Face Landmarks → data:PNode* · `face_stitch` · reads MediaPipe
+  468-landmark buffer, averages canonical eye/mouth/nose/brow index groups → anchor `PNode`s (pos in
+  NDC, dir from a landmark pair, weight from feature width, kind/group), with a dots-on-face preview.
+  The one coordinate transform (image→NDC) lives here. · *compose-with:* `mediapipe`, any PNode renderer.
+- **Atlas-instance cloner with temporal delay line** — *video + data:anchors → straight-alpha stamps +
+  data:Clones* · `face_cutout` · cuts feature patches from the live face and stamps N independently
+  drifting/scaling **duplicates** per anchor (Orbit/Noise/Spiral/Wave/Static motion, Pulse/Noise scale
+  indep X/Y, shape Circle/Square/Rounded, frame-locked border). A **compute pass writes a `Clones`
+  structured buffer**; the **draw pass renders from that same buffer** so published data == pixels.
+  A **ring-buffer delay line** (persistent HW·HH·HF face-frame ring + a parallel anchor-UV ring) lets
+  copies sample progressively OLDER frames at a per-copy delay in seconds, interpolated, with the crop
+  UV delayed in tandem. · *compose-with:* `face_stitch`, `accum`, `clone_overlay`.
+- **Persistent feedback canvas (accumulator)** — *video → persistent buffer* · `accum` · a compute-
+  composited persistent structured-buffer canvas (float4 720×1280 + ping-pong scratch) that bakes an
+  incoming straight-alpha layer forever (Decay 1 = keep, <1 = fading trails; Clear wipes), with
+  StreamDiff-style per-frame pan/zoom steer via a bilinear resample of the canvas. THE way to
+  accumulate across frames (a graph self-loop only carries one frame — see lessons). · *compose-with:*
+  any stamp layer, `overlay_comp`.
+- **Data-driven vector overlay** — *data:PNode/Clones → premult RGBA* · `clone_overlay` · reads a clone
+  buffer and draws dots + connections: **Cage** (each point→next K), **Proximity** (all pairs within
+  radius), **Nearest**, **Chain**, and continuous **Catmull-Rom Spline/Loop** threaded through all
+  points (angle-sorted lasso), with bezier bow, arc-length **chase** window + moving dashes, and
+  **painter-occluded** corner/full boxes (only the topmost clone's border shows per pixel). Gathers
+  active points into a compact per-pixel list; subset by hashed seed; `lead` shifts along stored
+  velocity to correct data-vs-texture latency. Linework vocabulary from strata `wire_render`/
+  `corner_thread`. · *compose-with:* `face_cutout` Clones, `overlay_comp`.
+- **Layered alpha compositor** — *N inputs → RGBA* · `overlay_comp` · stacks accumulation (base) +
+  current cutout crisply on top (straight-alpha, `fresh_amt`) + vector overlay (premultiplied),
+  **preserving combined coverage as output alpha** so a downstream grid/finish shows through gaps.
+  Fresh-on-top gives a crisp current layer (frame-locked to its borders) over the smeared history. ·
+  *compose-with:* `accum`, `clone_overlay`, a grid/glitch finish.
