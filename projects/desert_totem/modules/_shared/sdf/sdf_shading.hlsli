@@ -11,20 +11,26 @@ float2 sceneMap(float3 p);
 
 float3 sdf_calcNormal(float3 p)
 {
+    // tetrahedron taps, LOOPED so sceneMap is inlined ONCE (not 4x) — critical for
+    // compile time when sceneMap is large (heavy instanced/data-driven fields).
     const float e = 0.0009;
-    float2 k = float2(1.0, -1.0);
-    return normalize(
-        k.xyy * sceneMap(p + k.xyy * e).x +
-        k.yyx * sceneMap(p + k.yyx * e).x +
-        k.yxy * sceneMap(p + k.yxy * e).x +
-        k.xxx * sceneMap(p + k.xxx * e).x);
+    float3 n = float3(0.0, 0.0, 0.0);
+    [loop] for (int i = 0; i < 4; i++)
+    {
+        float3 k = (i == 0) ? float3(1.0, -1.0, -1.0)
+                 : (i == 1) ? float3(-1.0, -1.0, 1.0)
+                 : (i == 2) ? float3(-1.0, 1.0, -1.0)
+                 :            float3(1.0, 1.0, 1.0);
+        n += k * sceneMap(p + k * e).x;
+    }
+    return normalize(n);
 }
 
 float sdf_calcAO(float3 p, float3 n)
 {
     float occ = 0.0;
     float sca = 1.0;
-    for (int i = 1; i <= 5; i++)
+    [loop] for (int i = 1; i <= 5; i++)
     {
         float h = 0.02 + 0.06 * (float)i;
         occ += (h - sceneMap(p + n * h).x) * sca;
@@ -38,7 +44,7 @@ float sdf_softShadow(float3 ro, float3 rd, float k, float maxT)
 {
     float res = 1.0;
     float t = 0.02;
-    for (int i = 0; i < 48; i++)
+    [loop] for (int i = 0; i < 48; i++)
     {
         float h = sceneMap(ro + rd * t).x;
         if (h < 0.0004) return 0.0;
@@ -54,7 +60,7 @@ float sdf_march(float3 ro, float3 rd, float maxT, int maxSteps, out float outMat
 {
     outMat = -1.0;
     float t = 0.0;
-    for (int i = 0; i < 256; i++)
+    [loop] for (int i = 0; i < 256; i++)
     {
         if (i >= maxSteps) break;
         float3 pos = ro + rd * t;
