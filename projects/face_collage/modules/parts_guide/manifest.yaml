@@ -1,0 +1,44 @@
+name: "Parts Guide"
+version: "0.2"
+mode: generator
+resolution: [512, 896]
+
+# Mode-driven single-element structure plate on black for SD_Parts img2img.
+# `shape` selects a crude element (Eye/Lips/Brow/Nose/Ear/Skin) that ControlNet locks to;
+# set it to match SD_Parts prompt_position before each render_one. No data ports. Output: Guide.
+
+parameters:
+  - name: shape_id
+    display: "Shape"
+    type: enum
+    options: [Eye, Lips, Brow, Nose, Ear, Skin]
+    default: 0
+    flags: button_grid
+    group: "Shape"
+
+  - { name: blob_x,     display: "Center X", type: float, min: 0.2, max: 0.8, default: 0.5,  group: "Shape" }
+  - { name: blob_y,     display: "Center Y", type: float, min: 0.2, max: 0.8, default: 0.5,  group: "Shape" }
+  - { name: blob_scale, display: "Scale",    type: float, min: 0.4, max: 2.0, default: 1.0,  group: "Shape" }
+
+  - { name: blob_r, display: "Skin R", type: float, min: 0.0, max: 1.0, default: 0.74, group: "Color" }
+  - { name: blob_g, display: "Skin G", type: float, min: 0.0, max: 1.0, default: 0.58, group: "Color" }
+  - { name: blob_b, display: "Skin B", type: float, min: 0.0, max: 1.0, default: 0.52, group: "Color" }
+
+  - { name: iris_r, display: "Iris R", type: float, min: 0.0, max: 1.0, default: 0.28, group: "Color" }
+  - { name: iris_g, display: "Iris G", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Color" }
+  - { name: iris_b, display: "Iris B", type: float, min: 0.0, max: 1.0, default: 0.42, group: "Color" }
+
+  - { name: lip_r, display: "Lip R", type: float, min: 0.0, max: 1.0, default: 0.66, group: "Color" }
+  - { name: lip_g, display: "Lip G", type: float, min: 0.0, max: 1.0, default: 0.28, group: "Color" }
+  - { name: lip_b, display: "Lip B", type: float, min: 0.0, max: 1.0, default: 0.28, group: "Color" }
+
+passes:
+  - name: blob
+    shader: guide.hlsl
+    target: ps_5_0
+    format: RGBA8
+    output: output
+
+outputs:
+  - name: "Guide"
+    pass: blob
