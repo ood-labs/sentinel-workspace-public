@@ -1,0 +1,65 @@
+name: "Living Room SDF Render"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+features: [camera]
+
+data_inputs:
+  - name: "Architecture PNodes"
+    slot: 0
+    element_size: 48
+    element_count: 96
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: scale, type: float }
+      - { name: kind_id, type: float }
+      - { name: seed, type: float }
+      - { name: yaw, type: float }
+      - { name: height, type: float }
+      - { name: width, type: float }
+      - { name: depth, type: float }
+      - { name: dir, type: float, count: 2 }
+  - name: "Furnishings PNodes"
+    slot: 1
+    element_size: 48
+    element_count: 96
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: scale, type: float }
+      - { name: kind_id, type: float }
+      - { name: seed, type: float }
+      - { name: yaw, type: float }
+      - { name: height, type: float }
+      - { name: width, type: float }
+      - { name: depth, type: float }
+      - { name: dir, type: float, count: 2 }
+parameters:
+  - { name: cam_mode, display: "Camera Mode", type: enum, options: [Fly, Orbit], default: 0, flags: button_grid, group: "Camera" }
+  - { name: orbit_phase, display: "Orbit Phase", type: float, min: 0.0, max: 1.0, default: 0.000000, group: "Camera" }
+  - { name: orbit_azimuth, display: "Azimuth", type: float, min: -3.1416, max: 3.1416, default: 0.22, group: "Camera" }
+  - { name: orbit_elevation, display: "Elevation", type: float, min: -0.2, max: 1.2, default: 0.17, group: "Camera" }
+  - { name: orbit_distance, display: "Distance", type: float, min: 2.0, max: 14.0, default: 6.8, group: "Camera" }
+  - { name: orbit_focal, display: "Focal", type: float, min: 0.25, max: 1.5, default: 0.78, group: "Camera" }
+  - { name: orbit_target_x, display: "Target X", type: float, min: -4.0, max: 4.0, default: -0.25, group: "Camera/Target" }
+  - { name: orbit_target_y, display: "Target Y", type: float, min: 0.0, max: 3.0, default: 1.05, group: "Camera/Target" }
+  - { name: orbit_target_z, display: "Target Z", type: float, min: -4.0, max: 4.0, default: 0.0, group: "Camera/Target" }
+  - { name: max_steps, display: "Ray Steps", type: int, min: 32, max: 96, default: 68, group: "Quality" }
+  - { name: daylight, display: "Window Light", type: float, min: 0.0, max: 2.5, default: 1.25, group: "Lighting" }
+  - { name: warm_light, display: "Warm Lamps", type: float, min: 0.0, max: 2.5, default: 1.15, group: "Lighting" }
+  - { name: fog_amount, display: "Atmosphere", type: float, min: 0.0, max: 2.0, default: 0.18, group: "Lighting" }
+  - { name: sofa_color, display: "Sofa", type: color, default: [0.12, 0.30, 0.34], group: "Palette" }
+  - { name: chair_color, display: "Chairs", type: color, default: [0.55, 0.22, 0.10], group: "Palette" }
+  - { name: wood_color, display: "Walnut", type: color, default: [0.30, 0.12, 0.045], group: "Palette" }
+  - { name: rug_color, display: "Rug", type: color, default: [0.52, 0.22, 0.10], group: "Palette" }
+  - { name: accent_color, display: "Cushions", type: color, default: [0.86, 0.55, 0.14], group: "Palette" }
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+
+outputs:
+  - { name: "Scene", pass: render }

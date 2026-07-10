@@ -1,0 +1,30 @@
+name: "Living Room Cinematic Grade"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+
+inputs:
+  - { name: "Scene", slot: 0, required: true }
+
+parameters:
+  - { name: exposure, display: "Exposure", type: float, min: 0.2, max: 3.0, default: 1.15, group: "Tone" }
+  - { name: contrast, display: "Contrast", type: float, min: 0.5, max: 2.0, default: 1.08, group: "Tone" }
+  - { name: saturation, display: "Saturation", type: float, min: 0.0, max: 2.0, default: 1.10, group: "Tone" }
+  - { name: split_tone, display: "Split Tone", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Tone" }
+  - { name: bloom_threshold, display: "Threshold", type: float, min: 0.0, max: 1.5, default: 0.62, group: "Bloom" }
+  - { name: bloom_intensity, display: "Intensity", type: float, min: 0.0, max: 2.0, default: 0.55, group: "Bloom" }
+  - { name: bloom_radius, display: "Radius", type: float, min: 0.001, max: 0.06, default: 0.012, group: "Bloom" }
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 2.0, default: 0.75, group: "Lens" }
+  - { name: grain_amount, display: "Film Grain", type: float, min: 0.0, max: 0.12, default: 0.018, group: "Lens" }
+  - { name: shadow_tint, display: "Shadow Tint", type: color, default: [0.35, 0.55, 0.68], group: "Palette" }
+  - { name: highlight_tint, display: "Highlight Tint", type: color, default: [1.0, 0.72, 0.48], group: "Palette" }
+
+passes:
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+
+outputs:
+  - { name: "Final", pass: grade }

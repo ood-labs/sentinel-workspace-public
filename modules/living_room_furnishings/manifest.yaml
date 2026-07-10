@@ -1,0 +1,55 @@
+name: "Living Room Furnishings Controls"
+version: "1.0"
+mode: generator
+resolution: [480, 270]
+
+parameters:
+  - { name: layout_offset, display: "All Furniture X/Z", type: point2D, min: [-2.5, -2.5], max: [2.5, 2.5], default: [0.0, 0.0], group: "Layout" }
+  - { name: seating_spread, display: "Conversation Spread", type: float, min: 0.55, max: 1.55, default: 1.0, group: "Layout" }
+  - { name: sofa_offset, display: "Sofa X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Seating/Sofa" }
+  - { name: left_chair_offset, display: "Left Chair X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Seating/Chairs" }
+  - { name: left_chair_yaw, display: "Left Chair Heading", type: float, min: -3.1416, max: 3.1416, default: 1.75, group: "Seating/Chairs" }
+  - { name: right_chair_offset, display: "Right Chair X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Seating/Chairs" }
+  - { name: right_chair_yaw, display: "Right Chair Heading", type: float, min: -3.1416, max: 3.1416, default: -2.05, group: "Seating/Chairs" }
+  - { name: coffee_table_offset, display: "Coffee Table X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Tables" }
+  - { name: coffee_table_yaw, display: "Coffee Table Heading", type: float, min: -3.1416, max: 3.1416, default: -0.06, group: "Tables" }
+  - { name: media_wall_offset, display: "Media Wall X/Z", type: point2D, min: [-2.0, -1.0], max: [2.0, 1.0], default: [0.0, 0.0], group: "Media Wall" }
+  - { name: plant_spread, display: "Plant Spread", type: float, min: 0.5, max: 1.45, default: 1.0, group: "Plants" }
+  - { name: plant_depth_offset, display: "Plant Depth", type: float, min: -1.5, max: 1.5, default: 0.0, group: "Plants" }
+
+buffers:
+  - name: pnodes
+    structured: true
+    element_size: 48
+    element_count: 23
+
+passes:
+  - name: emit
+    shader: emit_records.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:pnodes"
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:pnodes" }
+
+outputs:
+  - { name: "Furnishings Preview", pass: preview }
+
+data_outputs:
+  - name: PNodes
+    buffer: pnodes
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: scale, type: float, count: 1 }
+      - { name: kind_id, type: float, count: 1 }
+      - { name: seed, type: float, count: 1 }
+      - { name: yaw, type: float, count: 1 }
+      - { name: height, type: float, count: 1 }
+      - { name: width, type: float, count: 1 }
+      - { name: depth, type: float, count: 1 }
+      - { name: dir, type: float, count: 2 }
