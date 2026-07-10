@@ -22,7 +22,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     {
         StructPart p = PreviewParts[i];
         if (p.active < 0.5) continue;
-        float2 pp = p.center.xz * preview_scale + preview_offset;
+        float2 pp = p.center.xz * preview_scale + float2(preview_offset.x, -preview_offset.y);
         float d = length((q - pp) * float2(aspect, 1.0));
         float a = 1.0 - smoothstep(0.0, 0.006 + p.radius * preview_scale * 0.02, d);
         col += lerp(float3(0.25,0.35,0.5), float3(0.9,0.8,0.55), p.material / 5.0) * a;

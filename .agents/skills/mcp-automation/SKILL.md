@@ -200,6 +200,11 @@ NOT display names like "Color Correction" — those won't work.
 | `place_relative` | Place a node next to an anchor with spacing + collision avoidance (`relative_to`, `direction`, `gap`, `within`) |
 | `move_nodes` | Move a node set as one rigid unit (`entity_ids[]` + `dx`/`dy` or `x`/`y` or `relative_to`) |
 | `add_annotation` / `update_annotation` / `delete_annotation` | Annotation boxes (`title`, `body`, `color`, geometry) |
+| `convert_to_scene_group` / `scene_group_info` / `list_scene_groups` | Convert annotations into control-level Scene Groups and inspect their membership/control surface |
+| `expose_scene_group_parameter` / `remove_scene_group_parameter` | Curate artist-facing float/int/bool controls without flattening the graph |
+| `save_scene_group_preset` / `recall_scene_group_preset` | Capture or recall every contained pipeline parameter and bypass state |
+
+Annotation `color` uses `#RRGGBBAA`. Default routine annotations and Scene Groups to alpha 6/25, approximately `3D` (for example `#D9481F3D`). A six-digit color becomes fully opaque, so use it only when full alpha is deliberate. Inspect the stored `annotation_color` after creation. For reusable authored scenes, convert the enclosing annotation to a Scene Group, expose transport/detail/layer/grade controls, and save live-safe Performance plus denser Fidelity presets.
 
 ### `sentinel_capture` — GPU texture readback & recording
 | Action | Description |

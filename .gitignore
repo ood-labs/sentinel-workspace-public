@@ -13,6 +13,7 @@
 # ── Generated / local artifacts ──────────────────────────────
 captures/
 **/captures/
+refs/
 *.previous
 projects/recovery_*.sentinel
 *.log

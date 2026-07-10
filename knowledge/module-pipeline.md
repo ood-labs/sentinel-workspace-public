@@ -38,6 +38,17 @@ Supported parameter types include:
 - vec3
 - vec4
 
+### point2D coordinate convention
+
+The `point2D` pad is Cartesian: positive X moves right and positive Y moves up. HLSL receives the raw value; Sentinel does not automatically convert it for the shader's destination coordinate space.
+
+- When a centered `point2D` offset or direction enters texture UV/pixel space (positive Y down), convert it once with `float2(v.x, -v.y)`.
+- When an absolute normalized 0..1 `point2D` enters texture UV/pixel space, convert it once with `float2(v.x, 1.0 - v.y)`.
+- When the value stays in Cartesian/world/NDC space (positive Y up), use it unchanged.
+- `_Mouse.xy` is already texture-oriented normalized input and is not a `point2D` parameter; do not apply this conversion to mouse coordinates.
+
+Apply the conversion at the generator or coordinate-system boundary, not again in downstream renderers. As a smoke test, dragging the pad upward must move the rendered subject upward.
+
 ## Data Ports
 
 Modules can declare `data_inputs` and `data_outputs`. These are structured buffers, wired through `sentinel_graph add_link`.
@@ -64,7 +75,7 @@ ref("module_lfo/control_outputs/rate")
 
 For authored motion, include `#include "../_shared/anim/anim.hlsli"` and use `an_spring`, `an_spring_v`, the `an_stagger_*` family, `an_anticipate`, `an_squash`, and `an_loop_noise` instead of hand-rolled easing. The same equations exist in expressions (`spring`, `stagger`, ...). Rate-driven values integrate phase; never multiply a live rate by absolute time. See `knowledge/motion-choreography.md`.
 
-For measured geometry assertions on SDF modules, `modules/_shared/sdf/sdf_audit.hlsli` provides bisection dimension measurement, bounds clearance, and overlap sampling; results publish through a structured data output that `sentinel_blueprint action=audit` reads. See `knowledge/precise-construction.md`.
+For measured geometry assertions on SDF modules, `shaders/projects/_shared/sdf/sdf_audit.hlsli` provides bisection dimension measurement, bounds clearance, and overlap sampling; results publish through a structured data output that `sentinel_blueprint action=audit` reads. See `knowledge/precise-construction.md`.
 
 ## Compile And Reload
 

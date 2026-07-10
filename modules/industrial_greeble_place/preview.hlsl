@@ -24,7 +24,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     {
         GreeblePart g = PreviewGreebles[i];
         if (g.active < 0.5) continue;
-        float2 p = g.anchor.xz * preview_scale + preview_offset;
+        float2 p = g.anchor.xz * preview_scale + float2(preview_offset.x, -preview_offset.y);
         float d = length((q - p) * float2(aspect, 1.0));
         float a = 1.0 - smoothstep(0.0, 0.004 + max(g.size.x, g.size.y) * preview_scale, d);
         float3 tint = (g.kind == 10.0) ? float3(0.24,0.18,0.13) : float3(0.72,0.78,0.84);

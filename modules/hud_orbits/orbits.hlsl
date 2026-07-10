@@ -32,7 +32,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     // ========================= ORBITAL RINGS (top-centre) =====================
     {
-        float2 c = orbit;
+        float2 c = float2(orbit.x, 1.0 - orbit.y);
         float2 q = (uv - c) * float2(asp, 1.0);
         float t = _Time * orbit_speed;
         float R = orbit_radius;
@@ -55,7 +55,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     // ============================ WIREFRAME GLOBE (top-left) ==================
     {
-        float2 c = globe;
+        float2 c = float2(globe.x, 1.0 - globe.y);
         float2 q = (uv - c) * float2(asp, 1.0);
         float R = globe_radius;
         float rr = length(q);

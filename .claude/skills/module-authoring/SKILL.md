@@ -97,6 +97,30 @@ Pass inputs reference data with `source: "data:0"` (data input slot 0). The comp
 
 These are the compiler-injected names. Do NOT redeclare them or you get "redefinition" errors.
 
+### Motion vocabulary
+
+For authored motion, include the shared Phase 75 library instead of hand-rolling easing or spring equations:
+
+```hlsl
+#include "../_shared/anim/anim.hlsli"
+```
+
+Use `an_spring`, `an_spring_v`, `an_stagger_index`, `an_stagger_radial`, `an_stagger_wave`, `an_stagger_noise`, `an_anticipate`, `an_squash`, and `an_loop_noise`. The same equations are registered in ExprTk as `spring`, `spring_v`, `stagger`, `anticipate`, and `loop_noise`, so Module shaders and parameter expressions can be checked against one reference.
+
+Rate-class changes must use a phase accumulator (`phase += rate * dt`) instead of `absolute_time * live_rate`. Target-class changes should stamp current value and velocity, then continue with `an_spring_v`. See `docs/knowledge/motion-choreography.md`.
+
+### Motion vocabulary
+
+For authored motion, include the shared Phase 75 library instead of hand-rolling easing or spring equations:
+
+```hlsl
+#include "../_shared/anim/anim.hlsli"
+```
+
+Use `an_spring`, `an_spring_v`, `an_stagger_index`, `an_stagger_radial`, `an_stagger_wave`, `an_stagger_noise`, `an_anticipate`, `an_squash`, and `an_loop_noise`. The same equations are registered in ExprTk as `spring`, `spring_v`, `stagger`, `anticipate`, and `loop_noise`, so Module shaders and parameter expressions can be checked against one reference.
+
+Rate-class changes must use a phase accumulator (`phase += rate * dt`) instead of `absolute_time * live_rate`. Target-class changes should stamp current value and velocity, then continue with `an_spring_v`. See `docs/knowledge/motion-choreography.md`.
+
 ### Auto-injected globals (always available):
 - `_Time` (float) — elapsed time in seconds
 - `_Resolution` (float2) — output resolution `.x` `.y`
@@ -132,6 +156,17 @@ parameters:
   each independently OSC-mappable; the UI folds them into one color picker / XY pad.
 - A `group: "Parent/Child"` label nests a collapsible sub-tree in the Properties panel.
 - Reference module exercising every control: `shaders/projects/param_showcase/`.
+
+### `point2D` Y-axis contract (do not skip)
+
+The UI pad is Cartesian (`+X` right, `+Y` up), and HLSL receives that raw value. Texture UV/pixel coordinates are top-down (`+Y` down), so convert exactly once when crossing into that space:
+
+```hlsl
+float2 uiOffsetToUv(float2 v) { return float2(v.x, -v.y); }       // centered offset/direction
+float2 uiPoint01ToUv(float2 v) { return float2(v.x, 1.0 - v.y); } // absolute normalized point
+```
+
+Do not flip values that remain in world/Cartesian/NDC space. Do not flip `_Mouse.xy`, which is already texture-oriented normalized input. Put the conversion at the coordinate-system boundary (normally the generator), and verify that dragging upward moves the rendered subject upward.
 
 ### Entry point is `main`, NOT `CSMain`:
 ```hlsl
@@ -196,18 +231,6 @@ Author Modules so the manifest resolution is a default target, not a hidden layo
 - Do not hard-code panel splits such as `448`, `896`, `1024`, or `384` unless the Module is explicitly a processor/atlas mapper. Prefer named constants (`PANEL_W`, `ROW_H`, `DESIGN_SIZE`) so a future resolution pass has one obvious contract to update.
 - For multi-pass Modules, every pass, buffer, and history ring must be scaled intentionally. If a structured history buffer would exceed runtime limits at the new size, split it into banks instead of quietly reducing behavior.
 - When porting legacy fixed-resolution Modules, preserve the old look by mapping `_Resolution` into the old logical canvas; do not leave the old resolution in manifest/project params.
-
-## Motion Vocabulary (anim.hlsli)
-
-For authored motion, include the shared library instead of hand-rolling easing or spring equations:
-
-```hlsl
-#include "../_shared/anim/anim.hlsli"
-```
-
-Use `an_spring`, `an_spring_v` (resume from stamped value + velocity), `an_stagger_index`, `an_stagger_radial`, `an_stagger_wave`, `an_stagger_noise`, `an_anticipate`, `an_squash`, and `an_loop_noise`, with spring presets `AN_BOUNCY`, `AN_SNAPPY`, `AN_SMOOTH`, `AN_HEAVY`. The same equations are registered in ExprTk as `spring`, `spring_v`, `stagger`, `anticipate`, and `loop_noise`, so shader motion and parameter expressions share one reference.
-
-Continuity rules: rate-class changes (variable speed, tempo) must integrate phase (`phase += rate * dt` in a persistent buffer) rather than computing `absolute_time * live_rate`; target-class changes stamp value + velocity and continue with `an_spring_v`. Loops are seamless when built from integer-harmonic frequencies or `an_loop_noise`. See `knowledge/motion-choreography.md` for the Conductor, cue sheets, and the `timeline_hud`/`choreo_cascade` reference modules.
 
 ## Module Shader Gotchas
 
@@ -400,14 +423,6 @@ features: [math3d, noise, camera]
 ```
 
 Provides in cbuffer: `_ViewMatrix`, `_ProjMatrix`, `_ViewProjMatrix`, `_InvViewProjMatrix`, `_CameraPos`, `_CameraNear`, `_CameraFar`, `_CameraFOV`.
-
-**Fly-cam rules (learned the hard way):** for raymarched scenes build the ray by
-unprojecting through `_InvViewProjMatrix` (below) — the `_RayDirection(uv)` helper does
-NOT reliably track right-drag/WASD. If you expose a camera-mode switch, **default it to
-Fly, never Orbit** (a forced orbit branch silently discards the viewport camera, so the
-fly cam looks dead), and use an **enum button-grid**, not a `bool`+`flags: button` (the
-bool did not latch in the panel). Note the live fly camera is driven only by viewport
-input — the `camera_pos_x/y/z` StateTree params do not move it.
 
 For ray-marched scenes, generate rays from camera. **Must Y-flip for DX NDC**:
 ```hlsl

@@ -65,7 +65,9 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float sc = max(round(PS[n] * text_scale), 1.0);
         // label 0 (the % readout) is anchored to the driven pct_pos so it can
         // track the hero focal point; the rest use the fixed placement table.
-        float2 base = (n == 0) ? pct_pos : float2(PX[n], PY[n]);
+        // Absolute point2D 0..1 is Cartesian; absolute texture UV is top-down.
+        float2 uiPctUv = float2(pct_pos.x, 1.0 - pct_pos.y);
+        float2 base = (n == 0) ? uiPctUv : float2(PX[n], PY[n]);
         float2 anchor = base * _Resolution.xy;
 
         float cov = 0.0;

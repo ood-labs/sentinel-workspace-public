@@ -32,6 +32,31 @@ Slot 0 is the main generated output. Some configurations expose additional outpu
 
 StreamDiff is heavy. A healthy node can still take several seconds to load engines or reinitialize after engine/profile changes.
 
+## Hold And Render One
+
+`hold` is a persistent bool parameter that keeps the node live while suppressing new diffusion. Use it to freeze a generated still without bypassing the whole node.
+
+`render_count` is a persistent int, default 1. `render_one` is a momentary button/action at `/sentinel/pipelines/<id>/actions/render_one` and `/sentinel/pipelines/<id>/parameters/render_one`; it queues `render_count` diffusion frames, then returns to hold.
+
+## Atlas Still Capture Tuning
+
+For atlas still capture and single-image generation, use a separate tuning bundle from the smooth live-video defaults:
+
+| Parameter | Value |
+|-----------|-------|
+| `seed_travel_enabled` | `false` |
+| `seed_locked` | `false` |
+| `frame_skip` | `1` |
+| `denoise` | `0.972` |
+| `feedback` | `1.0` |
+| `ipadapter_enable` | `false` |
+| `zoom` | `0.0` |
+| `image_noise_strength` | `0.0` |
+| `sharpen` | `0.0` |
+| `render_count` | `1` |
+
+This was captured from the live `Atlas Still Capture` preset on 2026-07-05. Treat prompt text as user content, not as part of the generic atlas default. An atlas capture controller should apply this behavior bundle, set `hold=true` while it owns capture, and invoke `render_one` once per cell.
+
 ## Good Automation Checks
 
 After creating or changing StreamDiff, verify:
@@ -51,17 +76,6 @@ Do not treat a successful create call as proof that engines loaded.
 - `render_count` (int, default 1): render-N-then-hold.
 
 All three are StateTree parameters, so OSC, expressions, MCP, and scene-group presets reach them. Use hold plus `render_one` for one-clean-still-at-a-time workflows such as filling an `atlas` node.
-
-## Prompt Bank (Multi-Prompt By Line)
-
-The prompt box doubles as a prompt bank for rapid prompt cycling and blending:
-
-- `prompt_bank_enabled` (bool): treat each LINE of the prompt as a separate prompt. The Properties panel switches to numbered per-line rows with add/remove buttons; the active row is highlighted.
-- `prompt_position` (float 0-63): the whole part selects a line (wrapping past the last), the fractional part BLENDS the CLIP embeddings toward the next line. `3.0` is exactly line 3; `4.5` is a semantic halfway point between lines 4 and 5 (blends generate coherent hybrids, not double exposures).
-
-Every line is encoded once when the bank is enabled or edited, and the embeddings are cached on the GPU. Position changes cost no text-encoder work, so `prompt_position` can change every frame. It is a normal float parameter: drive it from an expression (for example `ref("<lfo_module>/control_outputs/lfo1") * <line_count>`), OSC, or Conductor cues to cycle prompts continuously. Combined with atlas `interval_enabled`, a swept position fills an atlas with a different subject per captured frame.
-
-Editing the bank re-encodes all lines (roughly tens of ms per line, once per edit). Disabling the toggle returns to whole-text prompting.
 
 ## Multiple Variants, Shared Engines, Mux
 

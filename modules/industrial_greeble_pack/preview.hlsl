@@ -21,7 +21,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     {
         GreeblePart g = PreviewGreebles[i];
         if (g.active < 0.5) continue;
-        float2 pp = g.anchor.xz * preview_scale + preview_offset;
+        float2 pp = g.anchor.xz * preview_scale + float2(preview_offset.x, -preview_offset.y);
         float d = length((q - pp) * float2(aspect, 1.0));
         float a = 1.0 - smoothstep(0.0, 0.0035 + max(g.size.x, g.size.y) * preview_scale, d);
         col += float3(0.74,0.78,0.82) * a;

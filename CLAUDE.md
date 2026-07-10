@@ -100,6 +100,8 @@ Use `sentinel_capture action=sweep_record` when you need a short motion proof ac
 
 Use `sentinel_state action=snapshot` / `action=restore` to bracket experiments that mutate many parameters, and `sentinel_capture action=checkpoint` to bundle a capture with the state snapshot so a look can be recovered exactly.
 
+Use `sentinel_vision action=eval_pipeline pipeline_id=<id> preset=render_quality` for one-call AI visual review of a live pipeline. It captures `<workspace>/captures/vision_<timestamp>/output.png`, evaluates it through the configured OpenAI-compatible provider, and returns `_meta.captured_png`. For first-time setup, run `sentinel_vision action=status`, open the returned `config_path`, paste the provider key into the selected provider profile's `api_key` field, then rerun `status` until `key_present` and `key_ok` are true. Environment setup is also supported with `SENTINEL_VISION_API_KEY` or `OPENROUTER_API_KEY` set before launching Codex/MCP. Never ask the user to paste API keys into chat or pass them as tool arguments; `sentinel_vision action=configure` only edits provider metadata. See `knowledge/vision-eval.md` for the full setup flow.
+
 For local diagnostics or support handoff, use `sentinel_app action=bug_report`. Use `sentinel_app action=submit_bug_report` only when the user explicitly wants to submit the report.
 
 ## Async Compile
@@ -140,13 +142,13 @@ Use `sentinel_pipeline action=get_data_schemas` before wiring data. The response
 
 ## Choreography And Sequencing
 
-For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary in `modules/_shared/anim/anim.hlsli` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, and integrate phase for anything rate-driven. The `timeline_hud` module visualizes the arrangement from the Conductor's `Cue Records` port. See `knowledge/motion-choreography.md`.
+For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary in `shaders/projects/_shared/anim/anim.hlsli` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, and integrate phase for anything rate-driven. The shipped `timeline_hud` module visualizes the arrangement from the Conductor's `Cue Records` port, and `choreo_cascade` is the reference stagger/spring consumer. Example cue sheets: `examples/phase75/`. See `knowledge/motion-choreography.md`.
 
 StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` node switches variants live and its `solo_upstream` keeps only the visible variant diffusing; an `atlas` node banks aligned stills for 3D scene spawning. See `knowledge/scene-system.md`.
 
 ## Precise 3D Construction
 
-When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against the kind registry `modules/_shared/sdf/sdf_kinds.yaml`, relax under-constrained layouts with warm-start stability, and compile to a generated Module publishing `PNodes` records for `sdf_scene_render`. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
+When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against the kind registry `shaders/projects/_shared/sdf/sdf_kinds.yaml`, relax under-constrained layouts with warm-start stability, and compile to a generated Module publishing `PNodes` records for the shipped `sdf_scene_render` project. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints: `examples/blueprints/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
 
 ## Scene Groups
 
@@ -162,16 +164,6 @@ Create Spout or NDI outputs with `sentinel_pipeline action=create_output`, then 
 
 OSC receive configuration is available through StateTree. Read or set `/sentinel/osc/receive_port`, then verify the OSC section in `sentinel_app action=diagnostic` or by sending a real OSC message.
 
-## Workspace Structure & Technique Library
-
-Three homes, kept distinct:
-
-- `scratch/` — throwaway experiments and tinkering. Never committed, never catalogued.
-- `projects/<name>/` — structured scene builds (bundled `.sentinel` shows). The workbench; creative work happens here.
-- `modules/` — the curated technique library: only harvested, reusable techniques, each documented in `knowledge/technique-catalogue.md`. `modules/_shared/` holds common includes (fonts, os_text).
-
-When recreating a reference or building a complex scene, use the `modular-scene-authoring` skill. It mandates a design-first plan — decide 2D-vs-3D, composite-vs-single-scene, and the right transport per element up front — then builds autonomously. Consult `knowledge/technique-catalogue.md` while planning to reuse what already exists; at session close (`/wrap` or `/end-session`), harvest any novel, reusable technique back into `modules/` and the catalogue so the toolkit compounds over time.
-
 ## Reference Docs
 
 Start with:
@@ -182,7 +174,6 @@ Start with:
 - `knowledge/expressions-and-drivers.md`
 - `knowledge/tracking-suite.md`
 - `knowledge/module-pipeline.md`
-- `knowledge/technique-catalogue.md`
 - `knowledge/video-source.md`
 - `knowledge/streamdiff.md`
 - `knowledge/scene-system.md`
@@ -191,9 +182,9 @@ Start with:
 
 Use skills for authoring details:
 
+- `module-authoring`
 - `modular-scene-authoring`
 - `procedural-geometry-authoring`
-- `module-authoring`
 - `shader-authoring`
 - `mcp-automation`
 - `motion-eval`

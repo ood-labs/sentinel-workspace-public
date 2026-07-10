@@ -24,7 +24,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     {
         SurfacePoint s = PreviewSamples[i];
         if (s.active < 0.5) continue;
-        float2 p = s.anchor.xz * preview_scale + preview_offset;
+        float2 p = s.anchor.xz * preview_scale + float2(preview_offset.x, -preview_offset.y);
         float d = length((q - p) * float2(aspect, 1.0));
         float a = 1.0 - smoothstep(0.0, 0.005, d);
         col += lerp(float3(0.2,0.45,0.9), float3(0.9,0.85,0.6), s.weight) * a;

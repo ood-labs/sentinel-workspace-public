@@ -58,7 +58,7 @@ ref("module_lfo/control_outputs/speed")
 
 ## Motion Functions
 
-The expression engine registers a shared motion vocabulary matching the Module shader header `modules/_shared/anim/anim.hlsli`:
+The expression engine registers a shared motion vocabulary matching the Module shader header `shaders/projects/_shared/anim/anim.hlsli`:
 
 - `spring(t, m, k, c)`: closed-form spring progress 0 to 1.
 - `spring_v(t, x0, v0, m, k, c)`: spring from a stamped initial value and velocity.
