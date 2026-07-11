@@ -1,10 +1,10 @@
 ---
 name: motion-eval
-description: Record a deterministic parameter sweep of a Sentinel pipeline to MP4 and evaluate the motion with vision_eval. Use when you need to see how an animation looks in motion (not from stills), check whether a Module's phase loop is seamless, or discover what a numeric parameter does across its range. Covers sentinel_capture action="sweep_record" plus the vision_eval hand-off.
+description: Record a deterministic parameter sweep of a Sentinel pipeline to MP4 and evaluate the motion with sentinel_vision. Use when you need to see how an animation looks in motion (not from stills), check whether a Module's phase loop is seamless, or discover what a numeric parameter does across its range. Covers sentinel_capture action="sweep_record" plus the sentinel_vision hand-off.
 distribution: true
 ---
 
-# Motion Eval (sweep-record → vision_eval)
+# Motion Eval (sweep-record → sentinel_vision)
 
 To understand how a pipeline animates, do not step a parameter and screenshot each
 value. Record a deterministic sweep to a video and let a vision model watch it move.
@@ -15,7 +15,7 @@ set on the render thread before that frame renders) while recording the pipeline
 output, plays the pass `loops` times back-to-back into one clip, auto-stops on an
 exact frame count, and returns the finished `.mp4` path in a single blocking call.
 The clip uses no B-frames, so it is frame-exact and seek-clean. Feed the path to
-`vision_eval`.
+`sentinel_vision action="eval"`.
 
 ## Two recipes
 
@@ -34,7 +34,7 @@ Then evaluate, and **tell the model the clip plays the loop twice** so it knows 
 watch the seam:
 
 ```
-vision_eval file="<output_path>" preset="animation_quality"
+sentinel_vision action="eval" path="<output_path>" preset="animation_quality"
   prompt="This clip plays the phase animation 0->1 twice back-to-back. Describe the
           motion (what moves, which direction). Then judge whether it reads as a
           seamless loop -- watch the reset from end back to start (it happens twice):
@@ -51,7 +51,7 @@ sentinel_capture action="sweep_record" pipeline_id="module_0"
 ```
 
 ```
-vision_eval file="<output_path>"
+sentinel_vision action="eval" path="<output_path>"
   prompt="This clip sweeps a parameter named 'hue' from 0 to 1; the rest of the scene
           is static. Describe concretely what visually changes from start to end --
           which property does this parameter control, and how does it progress?"
@@ -77,6 +77,19 @@ ColorCorrect brightness, a shader uniform, etc.).
 
 The call returns `output_path`, `frames_written` (== `frames * loops`),
 `stop_reason` (`frame_limit` on success), and the sweep settings.
+
+## If sentinel_vision is not set up
+
+An `eval` call that fails with a missing or rejected key means the provider key was never configured. Walk the user through setup; the key never goes through chat or tool arguments:
+
+1. Run `sentinel_vision action="status"` and read the returned `config_path` (the workspace `vision.json`).
+2. Tell the user to open that file and replace the selected provider profile's `api_key` placeholder (`PASTE-YOUR-KEY-HERE`) with their key. The default profile is OpenRouter; any OpenAI-compatible provider profile works the same way.
+3. Rerun `sentinel_vision action="status"` until it reports `key_present: true` and `key_ok: true`.
+4. Environment variables also work: `SENTINEL_VISION_API_KEY` (or `OPENROUTER_API_KEY` for the openrouter profile) set before launching the MCP client, then reconnect.
+
+## Video size and provider limits
+
+Inline video eval needs a video-capable provider (the default OpenRouter Gemini model qualifies) and a raw file at or below 14 MiB; the default `pixel_budget="1080p"` at 20 Mbps stays under that for short sweeps, and `720p` gives extra headroom. If the clip is too large or the provider lacks video support, rerun the sweep with `mode="png_sequence"` and pass the recording directory to `sentinel_vision action="eval" max_frames=16`, which samples labeled frames from the manifest.
 
 ## Setup and gotchas
 

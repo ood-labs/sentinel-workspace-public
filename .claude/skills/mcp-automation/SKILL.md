@@ -1,6 +1,6 @@
 ---
 name: mcp-automation
-description: Control Sentinel via MCP automation and IPC. Use when testing UI, automating pipelines, configuring Sentinel Vision providers, validating visual-evaluation keys/models, writing automation scripts, debugging IPC communication, setting up test environments, or working with the ZMQ automation bridge.
+description: Control Sentinel via MCP automation and IPC. Use when testing UI, automating pipelines, writing automation scripts, debugging IPC communication, setting up test environments, or working with the ZMQ automation bridge.
 distribution: true
 ---
 
@@ -52,7 +52,7 @@ start "" "<repo_root>/build/bin/Release/sentinel.exe"
 
 Wait 3-5 seconds for the app to initialize before sending IPC commands.
 
-## MCP Tools (7 multi-action tools)
+## MCP Tools (12 multi-action tools)
 
 All tools use an `action` parameter. Examples:
 
@@ -64,20 +64,20 @@ sentinel_app action="ping"
 sentinel_state action="tree" path="/sentinel"
 
 # Read/write state values
-sentinel_state action="get" path="/sentinel/pipelines/colorcorrect_0/parameters/brightness"
-sentinel_state action="set" path="/sentinel/pipelines/colorcorrect_0/parameters/brightness" value=0.5
+sentinel_state action="get" path="/sentinel/pipelines/hlslshader_0/parameters/amount"
+sentinel_state action="set" path="/sentinel/pipelines/hlslshader_0/parameters/amount" value=0.5
 
 # Invoke actions
 sentinel_state action="invoke" path="/sentinel/pipelines/streamdiff_0/actions/relaunch"
 
 # Create pipeline and source
-sentinel_pipeline action="create_source" type="pattern"
-sentinel_pipeline action="create" type="colorcorrect"
-sentinel_pipeline action="set_input" pipeline_id="colorcorrect_0" source_id="source_0"
+sentinel_pipeline action="create_source" source_type="pattern"
+sentinel_pipeline action="create" type="hlslshader"
+sentinel_pipeline action="set_input" pipeline_id="hlslshader_0" source_id="source_0"
 
 # Query pipelines
 sentinel_pipeline action="list"
-sentinel_pipeline action="info" pipeline_id="colorcorrect_0"
+sentinel_pipeline action="info" pipeline_id="hlslshader_0"
 ```
 
 ## Core Agent Workflow Patterns
@@ -91,50 +91,32 @@ sentinel_pipeline action="info" pipeline_id="colorcorrect_0"
 - **Runtime proof**: `sentinel_graph profile` reports frame buckets, per-node wall time, graph link counts, PipelineStats, and hotspot reasons. `sentinel_capture proof_bundle` includes `graph_profile.json` plus a Performance section.
 - **Project safety**: `load_project`/`new_project` refuse over unsaved changes unless `confirm: true`; `import_project` merges another .sentinel into the live project with id remap.
 
-## Sentinel Vision setup
-
-Run `sentinel_vision action=status` and open the exact `config_path` it returns.
-The file has a top-level `providers` array; every provider needs its own object and
-its own `api_key`. Never ask for keys in chat, pass them as tool arguments, or print
-configured keys while inspecting the file.
-
-- OpenRouter: `https://openrouter.ai/api/v1`, model ids such as
-  `google/gemini-3.5-flash`, key in the `openrouter` profile.
-- Direct Gemini: `https://generativelanguage.googleapis.com/v1beta/openai/`, model
-  ids such as `gemini-3-flash-preview`, key in a separate `gemini` profile.
-
-Validate each profile explicitly with `status provider=<name>` and require
-`key_present=true`, `key_ok=true`, and a nonzero `model_count`. Then run one real
-image evaluation with a small explicit schema; `/models` success alone does not
-prove structured multimodal evaluation. If `vision/bad_json` occurs, try another
-live model before diagnosing the key or endpoint. Keep `vision.json` local and
-ignored by Git. Read `knowledge/vision-eval.md` for the complete provider blocks,
-verification flow, and troubleshooting.
-
 ## Python IPC Client (dev only)
 
 For Python automation scripts in the dev repo, use the IPCClient at `src/ipc/client.py`. Distribution users should drive Sentinel via the MCP tools above (no Python source ships in the installer).
 
 ## Pipeline Type IDs
 
-Use these exact strings with `sentinel_pipeline action="create"`:
-- `"colorcorrect"` — Color Correction
+Use these exact strings with `sentinel_pipeline action="create"`. Run `sentinel_pipeline action="list_types"` first: it is the authoritative catalog for the current build, including engine-pack requirements and hidden aliases.
 - `"streamdiff"` — StreamDiffusion
-- `"facemesh"` — Face Mesh (468 landmarks, includes face detection)
-- `"depthestimation"` — Depth Anything V2 depth estimation
-- `"matting"` — RobustVideoMatting background removal
-- `"pose"` — Pose Estimation (YOLO11-Pose → OpenPose-18)
-- `"module"` — Module pipeline (multi-pass YAML projects, compute-first 3D)
-- `"hlslshader"` — HLSL Shader (Notch HLSL post-processing)
-- `"torchv2v"` — Torch V2V
 - `"fluxklein"` — FLUX.2 Klein V2V
+- `"mediapipe"` — MediaPipe composable tracking (face, hands, gestures)
+- `"pose"` — Pose Estimation (YOLO11-Pose → OpenPose-18)
 - `"detection"` — Detection (ONNX Runtime YOLOX)
 - `"personseg"` — Person Segmentation (RF-DETR-Seg)
-- `"opticalflow"` — Optical Flow (NVOF hardware accelerator)
-- `"vsr"` — RTX Video Super Resolution
+- `"matting"` — Background Removal (BiRefNet / RVM)
 - `"samtrack"` — SAMTrack (experimental)
+- `"depthestimation"` — Depth Anything V2 depth estimation
+- `"opticalflow"` — Optical Flow (NVOF hardware accelerator)
+- `"features"` — Geometric Features (model-free classic CV)
+- `"mux"` — Mux (N-way input switcher, solo variant switching)
+- `"atlas"` — Atlas (multi-slot still atlas with texture and data columns)
+- `"conductor"` — Conductor (beat/timecode transport, cues; no pixel output)
+- `"module"` — Module pipeline (multi-pass YAML projects, compute-first 3D)
+- `"hlslshader"` — HLSL Shader (Notch HLSL post-processing)
+- `"vsr"` — RTX Video Super Resolution
 
-NOT display names like "Color Correction" — those won't work.
+NOT display names like "Background Removal" — those won't work.
 
 ## Source Types
 
@@ -158,8 +140,10 @@ NOT display names like "Color Correction" — those won't work.
 | `save_project` | Save project |
 | `new_project` | Blank project (clears pipelines/sources/outputs; same dirty-state `confirm` guard) |
 | `import_project` | Merge a foreign .sentinel into the live project (`path`, optional `x_offset`/`y_offset`; collision ids remap, response carries `id_map`) |
+| `list_recovery` / `restore_recovery` / `discard_recovery` | Recovery autosave snapshots (list, restore with `confirm`, delete) |
 | `diagnostic` | System/GPU/engine report |
 | `engine_status` | Engine pack download status |
+| `download_pack` / `install_pack` | Queue an official engine pack download (`pack_id`); poll `engine_status` |
 | `bug_report` | Bundle logs/crashes/diagnostic into a local zip |
 | `submit_bug_report` | Package and submit a bug/crash report (`title` + `narrative` required) |
 | `workspace` | Workspace dir, install dir, launch command |
@@ -175,11 +159,14 @@ NOT display names like "Color Correction" — those won't work.
 | `list_values` | List value paths |
 | `list_actions` | List action paths |
 | `invoke` | Call an action |
+| `snapshot` | Capture a pipeline's writable params as a typed bundle (`pipeline_id`, optional `bundle_path`); use before throwaway experiments |
+| `restore` | Replay a snapshot bundle via set_many (`values` inline or `bundle_path`); per-path results, partial restore is safe |
 
 ### `sentinel_pipeline` — Pipeline & source management
 | Action | Description |
 |--------|-------------|
 | `list` | List active pipelines (honest `healthy` + `health_reasons[]`, live `statusMessage`) |
+| `list_types` | Build-derived pipeline type catalog (aliases, engine-pack requirements, categories) |
 | `info` | Pipeline params/stats + data/control output summaries |
 | `get_param` | Read-only computed value (`pipeline_id`, `param_name`) |
 | `create` | Create pipeline (sanitized `name` becomes the instance id; for modules pass `project_dir` for an atomic create whose response carries `compile_ok`/`compile_error` + registered params; optional `enabled`, `x`/`y`) |
@@ -220,11 +207,7 @@ NOT display names like "Color Correction" — those won't work.
 | `place_relative` | Place a node next to an anchor with spacing + collision avoidance (`relative_to`, `direction`, `gap`, `within`) |
 | `move_nodes` | Move a node set as one rigid unit (`entity_ids[]` + `dx`/`dy` or `x`/`y` or `relative_to`) |
 | `add_annotation` / `update_annotation` / `delete_annotation` | Annotation boxes (`title`, `body`, `color`, geometry) |
-| `convert_to_scene_group` / `scene_group_info` / `list_scene_groups` | Convert annotations into control-level Scene Groups and inspect their membership/control surface |
-| `expose_scene_group_parameter` / `remove_scene_group_parameter` | Curate artist-facing float/int/bool controls without flattening the graph |
-| `save_scene_group_preset` / `recall_scene_group_preset` | Capture or recall every contained pipeline parameter and bypass state |
-
-Annotation `color` uses `#RRGGBBAA`. Default routine annotations and Scene Groups to alpha 6/25, approximately `3D` (for example `#D9481F3D`). A six-digit color becomes fully opaque, so use it only when full alpha is deliberate. Inspect the stored `annotation_color` after creation. For reusable authored scenes, convert the enclosing annotation to a Scene Group, expose transport/detail/layer/grade controls, and save live-safe Performance plus denser Fidelity presets.
+| Scene Groups | `list_scene_groups`, `scene_group_info`, `convert_to_scene_group`, `set_scene_group_enabled`, `expose_scene_group_parameter`, `remove_scene_group_parameter`, `save_scene_group_preset`, `recall_scene_group_preset` (control-only groups; `entity_id` of the group annotation) |
 
 ### `sentinel_capture` — GPU texture readback & recording
 | Action | Description |
@@ -233,11 +216,15 @@ Annotation `color` uses `#RRGGBBAA`. Default routine annotations and Scene Group
 | `pipeline` | Capture pipeline output to PNG (`slot` for multi-output nodes) |
 | `capture_at` | One-call review still(s): apply `overrides` `{param: value or [values]}`, wait for in-flight compile, settle, capture, restore. Lists zip; `combo_mode: "cartesian"` for the product (cap 64). Optional `slot`, `region` `{x,y,w,h}`, `max_width` |
 | `proof_bundle` | User-facing proof folder: graph, links, graph profile, pipeline health, expressions, output capture, window screenshot, optional image diff |
-| `record_pipeline` | Record pipeline output: `mode` video (NVENC MP4) or png_sequence; optional WASAPI loopback audio via `capture_audio` |
+| `checkpoint` | One call: save project (bundling Module folders), capture pipeline output, record graph profile into a timestamped folder |
+| `record_pipeline` | Record pipeline output: `mode` video (NVENC MP4) or png_sequence; optional WASAPI audio via `capture_audio` + `audio_source` (loopback/microphone) + `audio_endpoint` |
 | `record_pipeline_input` | Record the texture going INTO a pipeline at slot N |
 | `record_source` | Record a source texture |
+| `record_window` | Record the rendered Sentinel client area to MP4 |
 | `stop_recording` | Finalize; returns frames written/dropped, output path |
 | `list_recordings` | Active + recently finalized recordings |
+| `list_audio_devices` | Active render-loopback and microphone endpoints with IDs and default flags |
+| `session_start` / `session_stop` / `session_marker` / `session_status` | Capture Session: frame-aligned window recording with input/event JSONL, layout control, `chroma_format` |
 | `sweep_record` | Frame-locked parameter sweep recorded to MP4, blocking; for motion eval (see `motion-eval` skill). `loop_mode`: trim_wrap (default when loops > 1) / pingpong / none; `restore_baseline` (default true) |
 
 ### `sentinel_screenshot` — Screen capture (inline image)
@@ -256,6 +243,21 @@ Annotation `color` uses `#RRGGBBAA`. Default routine annotations and Scene Group
 | `send_key` | Keyboard shortcut |
 | `get_panels` | List all panels and visibility |
 | `set_panel` | Show/hide a panel |
+
+### `sentinel_expression` — Typed ref() parameter drivers
+`set` / `get` / `clear` / `list`. Always use this for expression drivers; `sentinel_state set` with a literal `=ref(...)` string writes a value without registering the expression engine binding.
+
+### `sentinel_conductor` — Cue sheets and transport
+`load_sheet` / `bake_sheet` / `status` / `fire` / `jump` / `set_tempo` / `transport`. Compiles cue-sheet YAML into sheet params and generated expressions on a Conductor node.
+
+### `sentinel_blueprint` — Precise construction compiler
+`validate` / `solve_report` / `compile` / `audit`. Registry-backed relational blueprints compiled into PNode-record Modules. See the `procedural-geometry-authoring` skill.
+
+### `sentinel_module` — Module authoring helpers
+`scaffold_from_ports` / `bundle` / `extract` / `import` / `bake_defaults`. Scaffold a module from an upstream data-port schema, bundle or move modules between shows, and write live values back into manifest defaults.
+
+### `sentinel_vision` — AI visual review
+`status` / `configure` / `models` / `eval` / `compare` / `eval_pipeline`. Evaluates captures through OpenAI-compatible vision providers; `eval_pipeline` captures and evaluates one pipeline output in a single call. First-time key setup edits the workspace `vision.json` (never pass API keys in chat or tool args).
 
 ## Crash Detection
 

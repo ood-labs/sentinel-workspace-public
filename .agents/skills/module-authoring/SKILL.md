@@ -157,17 +157,6 @@ parameters:
 - A `group: "Parent/Child"` label nests a collapsible sub-tree in the Properties panel.
 - Reference module exercising every control: `shaders/projects/param_showcase/`.
 
-### `point2D` Y-axis contract (do not skip)
-
-The UI pad is Cartesian (`+X` right, `+Y` up), and HLSL receives that raw value. Texture UV/pixel coordinates are top-down (`+Y` down), so convert exactly once when crossing into that space:
-
-```hlsl
-float2 uiOffsetToUv(float2 v) { return float2(v.x, -v.y); }       // centered offset/direction
-float2 uiPoint01ToUv(float2 v) { return float2(v.x, 1.0 - v.y); } // absolute normalized point
-```
-
-Do not flip values that remain in world/Cartesian/NDC space. Do not flip `_Mouse.xy`, which is already texture-oriented normalized input. Put the conversion at the coordinate-system boundary (normally the generator), and verify that dragging upward moves the rendered subject upward.
-
 ### Entry point is `main`, NOT `CSMain`:
 ```hlsl
 // CORRECT:

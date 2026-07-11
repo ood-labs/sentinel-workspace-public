@@ -56,7 +56,7 @@ An audit measures the live distance field, so a wrong offset fails mechanically 
 
 1. `sentinel_blueprint validate` until clean (the cafe example returns `ok: true` with node/instance counts versus budget).
 2. `compile` with `create: true`; wire `PNodes` to `sdf_scene_render`; `auto_layout`.
-3. Capture and `vision_eval` with the blueprint's counts and relations as the checklist.
+3. Capture and evaluate with `sentinel_vision action=eval` (or one-call `action=eval_pipeline`), using the blueprint's counts and relations as the checklist. If the key is missing, follow the setup flow in `knowledge/vision-eval.md`.
 4. `audit` for measured dimensions and forbidden overlaps.
 
 Reference blueprints ship under `examples/blueprints/` (`cafe.yaml`, `cafe_grid.yaml`, `city_block.yaml`, `industrial_pipe_canyon.yaml`) with audit and solved sidecars.

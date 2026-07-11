@@ -24,7 +24,7 @@ Blueprint producers compile to generated Module projects that publish fixed 48-b
 - `sentinel_blueprint solve_report` for record hashes, topology, solver stats, and warm-start stability.
 - `sentinel_blueprint audit` when a `<blueprint-stem>.audit.yaml` sidecar exists.
 - `tools/blueprint_spotcheck.py` and `tools/check_overlaps.py` for independent record-level checks.
-- A renderer capture plus `vision_eval` for visible scene claims.
+- A renderer capture plus `sentinel_vision action="eval"` for visible scene claims. If it reports a missing or rejected key, run `sentinel_vision action="status"` and have the user paste their provider key (OpenRouter or another OpenAI-compatible provider) into the returned workspace `vision.json` `api_key` field, then rerun `status` until `key_present` and `key_ok` are true. Never take keys through chat or tool arguments.
 
 The canonical smoke scene is `examples/blueprints/cafe.yaml`. From skill text alone, validating it should return `ok: true`, `node_count: 14`, `group_instance_count: 6`, `resolved_instance_count: 20`, and `instance_budget: 96`.
 
@@ -78,8 +78,6 @@ For graphic-design references with obvious angle systems:
 
 Apply the layout transform (global offset, scale, aspect correction) exactly once, where the coordinate system is generated. Downstream renderers consume that same coordinate system and must not re-apply global transforms. Repeating a global transform in a consumer node double-applies it and produces drift that is painful to debug because each node looks locally correct.
 
-This boundary also owns `point2D` Y conversion. The UI pad is Cartesian (`+Y` up): negate Y for centered offsets/directions entering top-down texture UV, or use `1-y` for absolute normalized points. Leave world/Cartesian values unchanged. The acceptance check is literal: dragging upward in the pad moves the rendered layout upward.
-
 ---
 
 ## Continuous group rendering: routes vs segments
@@ -131,26 +129,6 @@ After creating pipelines and wiring links, always run `sentinel_graph auto_layou
 ## Keep the graph, don't collapse it
 
 A finished modular scene is more valuable as an editable show project (a bundled `.sentinel` with `modules/<id>/` folders) than as one collapsed Module. The graph is the thing the artist tunes and the next agent inherits. Save with `save_project bundle_modules=true` (or the checkpoint action) so the show travels with its real Module files.
-
-## Production scene packaging (default for reusable examples)
-
-Treat a reusable example as a small live-performance scene, not merely a graph that renders. Unless the user asks for a throwaway study, finish it with this structure:
-
-1. **Master transport:** one clock/control node owns normalized `phase`, `animation_speed`, `loop_seconds`, pause/scrub, and any shared pulses or drift. Publish shared timing as a typed data record so every branch evaluates the same frame.
-2. **Semantic branches:** keep each plan/generator, optional expansion stage, renderer, and final compositor separately inspectable. Give generators cheap previews and prove structured records with `capture_data_port`.
-3. **Deterministic motion:** use `frac(phase + _Time * animation_speed / loop_seconds)` at the master only. Downstream nodes consume the shared phase and must not introduce unrelated raw `_Time` motion. Set speed to zero for phase sweeps; phase 0 and phase 1 should match for a seamless loop.
-4. **Named wiring and layout:** connect data pins by their reported names, connect renderer textures into the compositor, then run `auto_layout` (or a local layout action on an existing hand-arranged graph).
-5. **Scene Group:** add one annotation around the complete scene after layout, convert it to a Scene Group, and expose only artist-facing transport, structure/detail, layer-gain, and grade controls. Group exposure currently accepts float/int/bool; use a bounded int such as 0/1/2 when a Low/Medium/High control must be exposed.
-6. **Presets from the start:** save at least a live-safe `Performance` preset and a denser `Fidelity` preset, then recall the live-safe preset as the default. Remember that group presets capture every contained pipeline parameter and bypass state even when a parameter is not exposed.
-7. **Proof and handoff:** verify compile status, health, advancing frames, schemas, data records, graph profile, intermediate captures, final capture, and deterministic motion. Finish with a bundled `.sentinel`, proof bundle, and loop recording.
-
-### Annotation opacity and hierarchy
-
-Annotation colors use `#RRGGBBAA`. The default for scene/group annotations is low-opacity alpha **6/25**, approximately 24% or hex `3D` (for example `#D9481F3D`). This keeps the graph readable instead of laying an opaque color slab behind it.
-
-Increase alpha only with intent: a selected/current-focus region may be moderately stronger; full `FF` alpha is reserved for genuinely critical emphasis or a deliberate presentation treatment. Never create a routine annotation with an implicit six-digit color, because Sentinel expands it to full alpha. After creation, inspect the graph and confirm the stored color includes the intended alpha.
-
-The living-tableau reference implementation follows this pattern: master clock -> four typed plan/render branches -> compositor, enclosed by one low-alpha Scene Group with transport/detail/layer controls and Performance/Fidelity presets.
 
 ## Motion vocabulary
 

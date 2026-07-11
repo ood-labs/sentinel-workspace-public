@@ -147,4 +147,3 @@ The shipped example `examples/tracking_ripple.sentinel` uses the same driver pat
 - [Motion Choreography And Sequencing](motion-choreography.md)
 - [Precise Construction: Blueprints And SDF Audit](precise-construction.md)
 - [First-Run Engines](first-run-engines.md)
-- [Vision Evaluation Setup](vision-eval.md)

@@ -60,6 +60,6 @@ Run `sentinel_blueprint audit` against the generated producer's `Audit Results` 
 
 - `tools/blueprint_spotcheck.py` independently checks one named relation target.
 - `tools/check_overlaps.py` checks captured `PNodes` against registry footprints and blueprint clearances.
-- Use `vision_eval` on the renderer capture for visible scene claims.
+- Use `sentinel_vision action="eval"` on the renderer capture for visible scene claims. If it reports a missing or rejected key, run `sentinel_vision action="status"` and have the user paste their provider key into the returned workspace `vision.json` `api_key` field, then rerun `status` until `key_present` and `key_ok` are true. Never take keys through chat or tool arguments.
 
 For detailed schema notes, read `docs/knowledge/precise-construction.md`.

@@ -35,19 +35,6 @@ Scene Groups snapshot everything inside them: a group preset auto-captures every
 
 Use group presets as the scene-state layer under live switching: preset recall sets the look, the mux or Conductor decides what is visible and when.
 
-## Production-Ready Authored Scene Pattern
-
-Reusable example scenes should ship as editable performance surfaces:
-
-- One master transport node owns phase, speed, loop duration, pause/scrub, and shared motion signals.
-- Semantic generator/plan branches publish typed records into independently inspectable renderers, which feed one final compositor.
-- The complete graph is enclosed by a low-alpha annotation converted to a Scene Group. Annotation colors are `#RRGGBBAA`; default alpha is 6/25 (approximately `3D`), with stronger opacity used only for deliberate hierarchy.
-- Expose a compact artist surface: transport, structural/detail controls, layer gains/visibility, and final grade. Keep implementation parameters inside the graph.
-- Save a live-safe Performance preset and a denser Fidelity preset; recall Performance as the default.
-- Prove schemas and records, node health, frame progression, profile, final image, and deterministic loop behavior, then save a bundled project and proof bundle.
-
-The reference shape is: `master clock -> N typed plan/render branches -> compositor`, enclosed by one Scene Group. Downstream animation must use the shared phase rather than unrelated raw time so deterministic sweeps and phase 0/1 seam checks represent the whole scene.
-
 ## Snapshot, Restore, Checkpoint
 
 For agent workflows that mutate many parameters:
