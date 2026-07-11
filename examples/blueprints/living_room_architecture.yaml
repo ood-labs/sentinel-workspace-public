@@ -16,10 +16,11 @@ nodes:
   - { id: plaster_left, kind: wall_side, position: [-4.32, 0.0, 0.0] }
   - { id: plaster_right, kind: wall_side, position: [4.32, 0.0, 0.0] }
   - { id: ceiling_plane, kind: ceiling, position: [0.001, 3.56, 0.0] }
-  - { id: picture_window, kind: window, position: [-1.25, 0.78, -3.39] }
-  - { id: entry_door, kind: doorway, position: [3.35, 0.0, -3.62] }
-  - { id: main_rug, kind: rug, position: [-0.20, 0.125, 0.20], rotation_y: -0.035 }
-  - { id: pendant_a, kind: ceiling_light, position: [-1.25, 2.95, 0.15] }
-  - { id: pendant_b, kind: ceiling_light, position: [1.15, 2.95, 0.15] }
-  - { id: art_left, kind: art_frame, position: [-2.75, 1.45, -3.38], rotation_y: 0.0 }
-  - { id: art_right, kind: art_frame, position: [2.00, 1.45, -3.38], rotation_y: 0.0 }
+  - { id: picture_window, kind: window, position: [-2.45, 0.72, -3.39] }
+  - { id: entry_door, kind: doorway, position: [4.21, 0.0, 1.85], rotation_y: -1.5708 }
+  - { id: main_rug, kind: rug, position: [-0.30, 0.125, 0.45], rotation_y: -0.035 }
+  - { id: pendant_a, kind: ceiling_light, position: [-1.20, 2.82, 0.35] }
+  - { id: pendant_b, kind: ceiling_light, position: [1.20, 2.82, 0.35] }
+  - { id: art_left, kind: art_frame, position: [-4.20, 1.32, -1.175], rotation_y: 1.5708 }
+  - { id: art_right, kind: art_frame, position: [-4.20, 1.32, 0.875], rotation_y: 1.5708 }
+  - { id: accent_front, kind: wall_back, position: [0.0, 0.0, 3.52], rotation_y: 3.14159 }
