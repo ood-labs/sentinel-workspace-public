@@ -51,7 +51,7 @@
         "entityId": "LR_Architecture",
         "id": 1,
         "posX": 100.0,
-        "posY": 100.0,
+        "posY": 98.74028778076172,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -61,7 +61,7 @@
         "entityId": "LR_Furnishings",
         "id": 2,
         "posX": 100.0,
-        "posY": 358.0,
+        "posY": 356.74029541015625,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -71,7 +71,7 @@
         "entityId": "LR_Materials",
         "id": 3,
         "posX": 100.0,
-        "posY": 615.5,
+        "posY": 614.2404174804688,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -81,7 +81,7 @@
         "entityId": "LR_Lighting",
         "id": 4,
         "posX": 396.0,
-        "posY": 357.5,
+        "posY": 356.24041748046875,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -91,7 +91,7 @@
         "entityId": "LR_SDF_Renderer",
         "id": 5,
         "posX": 770.0,
-        "posY": 336.5,
+        "posY": 335.240234375,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -101,7 +101,7 @@
         "entityId": "LR_Cinematic_Grade",
         "id": 6,
         "posX": 1111.0,
-        "posY": 368.0,
+        "posY": 366.7403259277344,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -114,8 +114,8 @@
         "entityId": "annotation_7",
         "height": 850.0,
         "id": 7,
-        "posX": 50.0,
-        "posY": 40.0,
+        "posX": 49.999942779541016,
+        "posY": 38.74034118652344,
         "positionSet": true,
         "previewVisible": false,
         "sceneGroup": true,
@@ -724,7 +724,7 @@
         "pendant_drop": "0.780000",
         "pendant_spread": "2.400000",
         "pendant_z": "0.350000",
-        "project_dir": "modules/LR_Architecture_4",
+        "project_dir": "modules/LR_Architecture_5",
         "resolution_height": "270",
         "resolution_width": "480",
         "room_depth": "7.200000",
@@ -783,7 +783,7 @@
         "orbit_target_x": "-0.250000",
         "orbit_target_y": "1.050000",
         "orbit_target_z": "0.000000",
-        "project_dir": "modules/LR_SDF_Renderer_4",
+        "project_dir": "modules/LR_SDF_Renderer_5",
         "quality_mode": "0.000000",
         "resolution_height": "360",
         "resolution_width": "640"
@@ -871,7 +871,7 @@
         "plaster_color_b": "0.460000",
         "plaster_color_g": "0.510000",
         "plaster_color_r": "0.540000",
-        "project_dir": "modules/LR_Materials_3",
+        "project_dir": "modules/LR_Materials_4",
         "resolution_height": "270",
         "resolution_width": "480",
         "rug_color_b": "0.120000",
@@ -907,7 +907,7 @@
         "ambient_fill": "0.420000",
         "daylight_intensity": "1.400000",
         "practical_intensity": "1.400000",
-        "project_dir": "modules/LR_Lighting_3",
+        "project_dir": "modules/LR_Lighting_4",
         "resolution_height": "270",
         "resolution_width": "480",
         "shadow_softness": "0.320000"
@@ -941,7 +941,7 @@
         "highlight_tint_b": "0.560000",
         "highlight_tint_g": "0.780000",
         "highlight_tint_r": "1.000000",
-        "project_dir": "modules/LR_Cinematic_Grade_4",
+        "project_dir": "modules/LR_Cinematic_Grade_5",
         "saturation": "0.940000",
         "shadow_tint_b": "0.620000",
         "shadow_tint_g": "0.500000",
@@ -954,7 +954,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1783735585580,
+  "saved_at_ms": 1783736826554,
   "sources": [],
   "version": 5
 }
