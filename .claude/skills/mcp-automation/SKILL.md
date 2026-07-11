@@ -1,6 +1,6 @@
 ---
 name: mcp-automation
-description: Control Sentinel via MCP automation and IPC. Use when testing UI, automating pipelines, writing automation scripts, debugging IPC communication, setting up test environments, or working with the ZMQ automation bridge.
+description: Control Sentinel via MCP automation and IPC. Use when testing UI, automating pipelines, configuring Sentinel Vision providers, validating visual-evaluation keys/models, writing automation scripts, debugging IPC communication, setting up test environments, or working with the ZMQ automation bridge.
 distribution: true
 ---
 
@@ -90,6 +90,26 @@ sentinel_pipeline action="info" pipeline_id="colorcorrect_0"
 - **One-call review stills**: `sentinel_capture capture_at` applies overrides, waits for compiles, settles, captures, and restores. Use it instead of hand-rolling set / sleep / capture / set-back chains.
 - **Runtime proof**: `sentinel_graph profile` reports frame buckets, per-node wall time, graph link counts, PipelineStats, and hotspot reasons. `sentinel_capture proof_bundle` includes `graph_profile.json` plus a Performance section.
 - **Project safety**: `load_project`/`new_project` refuse over unsaved changes unless `confirm: true`; `import_project` merges another .sentinel into the live project with id remap.
+
+## Sentinel Vision setup
+
+Run `sentinel_vision action=status` and open the exact `config_path` it returns.
+The file has a top-level `providers` array; every provider needs its own object and
+its own `api_key`. Never ask for keys in chat, pass them as tool arguments, or print
+configured keys while inspecting the file.
+
+- OpenRouter: `https://openrouter.ai/api/v1`, model ids such as
+  `google/gemini-3.5-flash`, key in the `openrouter` profile.
+- Direct Gemini: `https://generativelanguage.googleapis.com/v1beta/openai/`, model
+  ids such as `gemini-3-flash-preview`, key in a separate `gemini` profile.
+
+Validate each profile explicitly with `status provider=<name>` and require
+`key_present=true`, `key_ok=true`, and a nonzero `model_count`. Then run one real
+image evaluation with a small explicit schema; `/models` success alone does not
+prove structured multimodal evaluation. If `vision/bad_json` occurs, try another
+live model before diagnosing the key or endpoint. Keep `vision.json` local and
+ignored by Git. Read `knowledge/vision-eval.md` for the complete provider blocks,
+verification flow, and troubleshooting.
 
 ## Python IPC Client (dev only)
 
