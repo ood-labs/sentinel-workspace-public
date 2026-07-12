@@ -165,11 +165,15 @@ Group presets snapshot every parameter of every contained pipeline plus per-node
 
 Scene Groups can also expose selected member parameters as first-class group controls. Exposed parameters keep their authored defaults, enums, and source sections, render as normal full-width Properties rows with reset, OSC, expressions, range editing, and undo, and authored color and XY compounds expose as one complete swatch or pad unit.
 
+Over MCP, use `sentinel_graph expose_scene_group_parameter` with the group's annotation `entity_id`, the member `pipeline_id`, and a `param_name`. Compound parameters live in StateTree as flattened components (`main_color_r/_g/_b`, `center_x/_y`); pass a COMPONENT name (the compound base name errors with parameter-not-found) and the whole compound promotes at once, returning every exposed path under `/sentinel/groups/<id>/parameters/`. Writes to a group path flow to the member parameter and back.
+
 Scene Groups are for control and organization. They do not replace video/data wiring, and they should not be used to hide whether a graph is healthy.
 
 ## Node Presets
 
 The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`) provides identity-aware per-node presets in library, project, or bundled scope, with grouped compound-safe parameter selection and strict or loose Recall Onto compatible nodes. Installs at 0.5.29 or newer carry it; if the tool is absent from the live tools list, presets remain available through the Properties preset strip in the UI.
+
+`save` requires an explicit `params` array and/or `groups` selection; there is no save-everything default. Identity derives from the node type and module project (for example `module:click_ripples`), so presets follow the module across instances and projects. `recall` returns `applied[]` and `skipped[]` and fails loudly when nothing applies. See `knowledge/FEATURE-MAP.md` for verified call shapes.
 
 ## Outputs
 

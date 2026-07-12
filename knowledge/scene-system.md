@@ -34,11 +34,21 @@ Setting a Mux's `source_mode` to Groups turns it into a Scene Switcher that coll
 
 Non-selected groups fully freeze (members skip processing and republish their last frame) while the switcher owns their enable state; preset recalls and enable writes on frozen groups defer until the group is selected or ownership ends. A group with zero or multiple Group Outputs shows as a warning tile and cannot be selected.
 
+Verified MCP authoring sequence for a two-look switcher:
+
+1. Build each look and end it in a `groupoutput` (`sentinel_pipeline create type=groupoutput`, then `set_input` from the look's final node; a source can feed it directly).
+2. Place the look's nodes together, then `sentinel_graph add_annotation` with explicit `x`/`y`/`width`/`height` covering them, and `sentinel_graph convert_to_scene_group entity_id=<annotation_id>`. The response returns the group's `/sentinel/groups/<id>` path.
+3. Create a `mux` and set `/parameters/source_mode` to `1` (enum: 0 = Wired, 1 = Groups).
+4. Collection is immediate: one `select/<slug>` Button parameter appears per group, slugged from the annotation title ("Look A" becomes `select/look_a`), and `selected_group` holds the selected group's entity id (an `annotation_N` value). Write `1` to a trigger or write the entity id to `selected_group`; both work from OSC, expressions, and MCP.
+5. Prove the cut by capturing the mux output per look. The mux output resolution comes from its own `width`/`height` parameters (default 1920x1080), with each look fitted per its Group Output settings.
+
 ## Cameras And Camera Switching
 
 The `camera` node is a control node owning a shared fly/orbit rig (`camera_mode`, position/target, yaw/pitch, fov, near/far; the `Tab` hotkey toggles fly/orbit in an active preview with a gizmo flash, and an axis gizmo shows the mode). Camera-capable modules bind to it through a `camera_ref` parameter, or automatically through their Scene Group when the group contains exactly one camera node; explicit `camera_ref` wins, then the group camera, then the module's internal camera. Renaming a camera updates every consumer's `camera_ref`.
 
-The `camswitch` node cuts or blends between camera nodes for show control: `cameras` filters the collection, `selected_camera` picks the live rig, `blend_time` 0 cuts while positive values blend position, orientation, and fov smoothly, and per-camera `select/<slug>` triggers respond to OSC and Conductor cues. Retargeting mid-blend continues from the current pose.
+The `camswitch` node cuts or blends between camera nodes for show control: `cameras` filters the collection, `selected_camera` picks the live rig (write the camera's entity id, e.g. `Cam_B`), `blend_time` 0 cuts while positive values blend position, orientation, and fov smoothly, and per-camera triggers respond to OSC and Conductor cues. Retargeting mid-blend continues from the current pose.
+
+Verified MCP facts: `camera_ref` takes an entity id, and pointing a module's `camera_ref` at a `camswitch` makes it follow whichever camera the switcher selects. While bound, writes to the module's own `camera_*` parameters produce no output change (proven by pixel diff: a bound-module local fov write changed 0.0% of pixels while the same write on the referenced rig changed the render); clear `camera_ref` to regain local control. Driving the rig over MCP is just `sentinel_state set` on the camera node's `camera_pos_*` / `camera_yaw` / `camera_pitch` / `camera_fov` values.
 
 ## Atlas (Multi-Pass Still Bank)
 
