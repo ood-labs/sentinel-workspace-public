@@ -59,8 +59,11 @@ Call `list_types` for the exact current list. A normal DIST build includes:
 | `opticalflow` | yes | NVIDIA hardware optical flow. |
 | `vsr` | yes | RTX Video Super Resolution. |
 | `conductor` | yes | Musical/timecode clocks, cues, macros, quantized triggers as control outputs. Cue sheets load via `sentinel_conductor`. |
-| `mux` | yes | Real-time select-1-of-N video switch; `solo_upstream` auto-holds non-selected StreamDiff variants. |
+| `mux` | yes | Real-time select-1-of-N video switch; `solo_upstream` auto-holds non-selected StreamDiff variants. In `source_mode=Groups` it becomes the Scene Switcher, collecting Scene Groups wirelessly. |
+| `groupoutput` | yes | Scene Group output endpoint: marks a group's final texture, resolution, and fit mode for Scene Switcher collection. |
 | `atlas` | yes | Multi-pass still bank (color/segmentation/depth/data columns per captured still) with a self-timing capture cycle. |
+| `camera` | yes | Wireless fly/orbit camera rig (control node, no pixel output). Camera-capable modules bind via `camera_ref` or through their Scene Group. |
+| `camswitch` | yes | Camera Switcher: cut or quaternion-blend between camera nodes, with per-camera OSC triggers (control node). |
 
 Dev builds may expose extra experimental or maintainer-only types. DIST builds intentionally omit them.
 
@@ -146,6 +149,8 @@ For staggered entrances, beat-locked motion, cue-driven shows, and timecoded seq
 
 StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` node switches variants live and its `solo_upstream` keeps only the visible variant diffusing; an `atlas` node banks aligned stills for 3D scene spawning. See `knowledge/scene-system.md`.
 
+To mix whole looks instead of single streams, author each look as a Scene Group containing exactly one `groupoutput` node and set a Mux to `source_mode=Groups`. The switcher collects the groups wirelessly, fully freezes non-selected looks, and offers hard cuts or `fade_time` crossfades plus one `select/<slug>` OSC trigger per look; `allowed_groups` filters the collection and accepts a string `ref()` expression. For 3D shows, `camera` nodes own a shared fly/orbit rig that camera-capable modules bind to through `camera_ref` (or automatically through their containing Scene Group), and a `camswitch` node cuts or blends between cameras with the same trigger pattern. See `knowledge/scene-system.md`.
+
 ## Precise 3D Construction
 
 When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against the kind registry `shaders/projects/_shared/sdf/sdf_kinds.yaml`, relax under-constrained layouts with warm-start stability, and compile to a generated Module publishing `PNodes` records for the shipped `sdf_scene_render` project. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints: `examples/blueprints/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
@@ -156,7 +161,13 @@ Scene Groups organize graph regions and expose selected controls without flatten
 
 Group presets snapshot every parameter of every contained pipeline plus per-node bypass state automatically, with innermost-wins nested membership and preset-of-presets recall (an outer preset can pick each inner group's preset then apply overrides). Use them as the scene-state layer under live switching.
 
+Scene Groups can also expose selected member parameters as first-class group controls. Exposed parameters keep their authored defaults, enums, and source sections, render as normal full-width Properties rows with reset, OSC, expressions, range editing, and undo, and authored color and XY compounds expose as one complete swatch or pad unit.
+
 Scene Groups are for control and organization. They do not replace video/data wiring, and they should not be used to hide whether a graph is healthy.
+
+## Node Presets
+
+Builds newer than 0.5.28 add the `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`): identity-aware per-node presets in library, project, or bundled scope, with grouped compound-safe parameter selection and strict or loose Recall Onto compatible nodes. Check the live tools list first; when `sentinel_preset` is absent on this install, presets are available through the Properties preset strip in the UI.
 
 ## Outputs
 

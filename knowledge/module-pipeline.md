@@ -66,6 +66,10 @@ For authored motion, include `#include "../_shared/anim/anim.hlsli"` and use `an
 
 For measured geometry assertions on SDF modules, `shaders/projects/_shared/sdf/sdf_audit.hlsli` provides bisection dimension measurement, bounds clearance, and overlap sampling; results publish through a structured data output that `sentinel_blueprint action=audit` reads. See `knowledge/precise-construction.md`.
 
+## Viewport Interactions And Cameras
+
+A manifest can declare an optional `viewport:` block with a `hint` string and an `interactions` list drawn from `mouse`, `pan_zoom`, and `camera`. The preview shows the hint and only forwards the declared interactions, and the values publish at `/sentinel/pipelines/<id>/viewport/hint` and `/viewport/interactions`. Camera-feature modules (`features: [camera]`) get a shared fly/orbit rig plus a `camera_ref` parameter for binding to a `camera` node; see `knowledge/scene-system.md` for the camera and camera-switcher system.
+
 ## Compile And Reload
 
 Module creation with `project_dir` is atomic. The response reports whether manifest parsing started cleanly. Shader compilation is async, so poll:

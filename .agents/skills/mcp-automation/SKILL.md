@@ -52,7 +52,7 @@ start "" "<repo_root>/build/bin/Release/sentinel.exe"
 
 Wait 3-5 seconds for the app to initialize before sending IPC commands.
 
-## MCP Tools (12 multi-action tools)
+## MCP Tools (13 multi-action tools)
 
 All tools use an `action` parameter. Examples:
 
@@ -109,9 +109,12 @@ Use these exact strings with `sentinel_pipeline action="create"`. Run `sentinel_
 - `"depthestimation"` — Depth Anything V2 depth estimation
 - `"opticalflow"` — Optical Flow (NVOF hardware accelerator)
 - `"features"` — Geometric Features (model-free classic CV)
-- `"mux"` — Mux (N-way input switcher, solo variant switching)
+- `"mux"` — Mux (N-way wired input switcher or wireless Scene Group collector; solo variant switching)
+- `"groupoutput"` — Group Output (Scene Group endpoint for the Scene Switcher)
 - `"atlas"` — Atlas (multi-slot still atlas with texture and data columns)
 - `"conductor"` — Conductor (beat/timecode transport, cues; no pixel output)
+- `"camera"` — Camera (wireless fly/orbit rig; no pixel output)
+- `"camswitch"` — Camera Switcher (cut/blend between Camera nodes; no pixel output)
 - `"module"` — Module pipeline (multi-pass YAML projects, compute-first 3D)
 - `"hlslshader"` — HLSL Shader (Notch HLSL post-processing)
 - `"vsr"` — RTX Video Super Resolution
@@ -243,6 +246,10 @@ NOT display names like "Background Removal" — those won't work.
 | `send_key` | Keyboard shortcut |
 | `get_panels` | List all panels and visibility |
 | `set_panel` | Show/hide a panel |
+| `terminal_read` | Read embedded-terminal grid lines, cursor, and child status without injecting input |
+
+### `sentinel_preset` — Identity-aware node presets
+`list` / `save` / `recall` / `update` / `delete` / `rename` / `bundle` / `copy_to_library`. Presets are keyed by node identity, discoverable by pipeline or identity, saved to library or project scope (plus a bundled scope for presets that travel with a show), and support grouped compound-safe param selection, `include_engine_params`, and strict or loose recall onto compatible nodes.
 
 ### `sentinel_expression` — Typed ref() parameter drivers
 `set` / `get` / `clear` / `list`. Always use this for expression drivers; `sentinel_state set` with a literal `=ref(...)` string writes a value without registering the expression engine binding.

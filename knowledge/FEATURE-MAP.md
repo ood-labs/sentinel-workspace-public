@@ -71,8 +71,11 @@ Shading and generative tools:
 Scene system and sequencing:
 
 - `conductor`: musical and timecode clocks, cues, macros, and quantized triggers published as control outputs. Loads cue sheets through `sentinel_conductor`. See `motion-choreography.md`.
-- `mux`: real-time select-1-of-N video switch (`selected`), with `solo_upstream` auto-holding non-selected StreamDiff variants. See `scene-system.md`.
+- `mux`: real-time select-1-of-N video switch (`selected`), with `solo_upstream` auto-holding non-selected StreamDiff variants. In `source_mode=Groups` it becomes the Scene Switcher, collecting Scene Groups wirelessly with cuts, crossfades, and OSC look triggers. See `scene-system.md`.
+- `groupoutput`: Scene Group endpoint node that marks a group's final texture and resolution/fit for Scene Switcher collection. See `scene-system.md`.
 - `atlas`: multi-pass still bank collecting aligned color/segmentation/depth/data columns per captured still, with a self-timing capture cycle and a `Slot Occupancy` data pin. See `scene-system.md`.
+- `camera`: wireless fly/orbit camera rig (control node). Camera-capable modules bind via `camera_ref` or through their Scene Group. See `scene-system.md`.
+- `camswitch`: Camera Switcher cutting or blending between camera nodes, with per-camera OSC triggers. See `scene-system.md`.
 
 Utility and output:
 
