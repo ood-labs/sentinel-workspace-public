@@ -1,0 +1,67 @@
+name: "Click Ripples"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+
+viewport:
+  hint: "Click/drag=paint, wheel=brush, C=palette, X=clear"
+  interactions: [events]
+  input:
+    pointer: [left, wheel]
+    keyboard: [c, x]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: paint, label: "Paint" }
+    - { gesture: left_drag, action: paint_trail, label: "Paint Trail" }
+    - { key: c, action: next_palette, label: "Next Palette" }
+    - { key: x, action: clear, label: "Clear" }
+
+parameters:
+  - name: decay
+    type: float
+    default: 0.99
+    min: 0.85
+    max: 0.999
+  - name: splat_gain
+    type: float
+    default: 1.0
+    min: 0.1
+    max: 4.0
+
+buffers:
+  - name: state
+    format: RGBA32F
+    persistent: true
+  - name: field
+    format: RGBA16F
+    persistent: true
+
+passes:
+  - name: events
+    shader: events.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:state"
+
+  - name: field_update
+    shader: field.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:field" }
+      - { slot: 1, source: "buffer:state" }
+    output: "buffer:field"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:field" }
+      - { slot: 1, source: "buffer:state" }
+    output: output
+
+outputs:
+  - { name: "Canvas", pass: render }

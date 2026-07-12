@@ -72,26 +72,75 @@ A manifest can declare an optional `viewport:` block with a `hint` string and an
 
 ## Authored Viewport Events
 
-Modules that need ordered pointer, gesture, or keyboard edges in their shaders add `events` to `viewport.interactions` (available on installs at 0.5.30 or newer).
+Modules that need ordered pointer, gesture, or keyboard edges in their shaders add `events` to `viewport.interactions` (available on installs at 0.5.30 or newer). The workspace module `modules/click_ripples/` is a complete working example: an interactive paint canvas using clicks, drags, wheel brush sizing, and key commands. Read its manifest and three shaders alongside this section.
+
+### Manifest
 
 ```yaml
 viewport:
-  hint: "Click or press K"
+  hint: "Click/drag=paint, wheel=brush, C=palette, X=clear"
   interactions: [events]
   input:
-    pointer: [left, wheel]       # left | right | middle | wheel
-    keyboard: [escape, k]
-    gestures: [click, drag]      # click | double_click | drag
+    pointer: [left, wheel]
+    keyboard: [c, x]
+    gestures: [click, drag]
   bindings:
-    - { gesture: left_click, action: select, label: "Select" }
-    - { key: k, action: pulse, label: "Pulse" }
+    - { gesture: left_click, action: paint, label: "Paint" }
+    - { gesture: left_drag, action: paint_trail, label: "Paint Trail" }
+    - { key: c, action: next_palette, label: "Next Palette" }
 ```
 
-Invalid tokens fail compile with a field-qualified message. Bindings are help and conflict intent: each has one `key` or `gesture`, an `action`, and a `label`, published at `/sentinel/pipelines/<id>/viewport/bindings` and rendered beside the preview OUTPUT controls.
+Token vocabularies (invalid tokens fail compile with a field-qualified message such as `viewport.bindings[1].gesture`):
 
-For an events module the compiler injects `_ViewportEventCount` (max 64 per frame), ordered `_ViewportEvents[i]` records (`type`, `phase`, `code`, `modifiers`, `position`, `delta`, `value`, `sequence`, `flags`, `device`), plus `_ViewportPointerPosition` / `_ViewportPointerDelta` / `_ViewportWheelDelta` / `_ViewportButtons` / `_ViewportModifiers` / `_ViewportKeyBits` state. Test a key code `k` with `(_ViewportKeyBits[k / 32] & (1u << (k % 32))) != 0`.
+- `input.pointer`: `left`, `right`, `middle`, `wheel`
+- `input.keyboard`: single characters `a`-`z` and `0`-`9`, plus `escape`, `tab`, `enter`, `space`, `backspace`, `left`, `right`, `up`, `down`, `shift`, `control`, `alt`
+- `input.gestures`: `click`, `double_click`, `drag`
+- `bindings[].gesture` uses a DIFFERENT vocabulary than `input.gestures`: `left_click`, `right_click`, `middle_click`, `shift_left_click`, `shift_right_click`, `shift_middle_click`, `left_double_click`, `right_double_click`, `middle_double_click`, `left_drag`, `right_drag`, `middle_drag`, `wheel`
 
-The host router owns focus and capture: modal and text/terminal input win first, then pointer capture, then focused authored bindings, then global shortcuts. Escape cancels active pointer capture before delivery, and capture also cancels on hot reload, disable, project load, and preview close, so a follow-up interaction starts from released state. `_Mouse` keeps working for existing modules.
+Bindings are user-facing help and conflict intent: each has one `key` or `gesture`, an `action`, and a `label`. They publish at `/sentinel/pipelines/<id>/viewport/bindings` and render as a Controls affordance beside the preview OUTPUT row.
+
+### Injected shader API
+
+Every pass of an events module gets a cbuffer snapshot and an event array:
+
+- Snapshot (safe to read in any pass, any thread): `_ViewportEventCount`, `_ViewportPointerPosition` (float2), `_ViewportPointerDelta`, `_ViewportWheelDelta` (frame-summed scroll notches), `_ViewportButtons`, `_ViewportModifiers`, `_ViewportCaptureFlags`, `_ViewportKeyBits` (uint4), `_ViewportAbiVersion`, `_ViewportFrameSequence`, `_ViewportOverflowCount`.
+- `StructuredBuffer<ViewportEvent> _ViewportEvents` at `t127`, `_ViewportEventCount` valid entries (max 64), fields `type`, `phase`, `code`, `modifiers`, `position` (float2), `delta` (float2), `value`, `sequence`, `flags`, `device`.
+- Helper functions: `ViewportKeyDown(key)`, `ViewportButtonDown(button)`, `ViewportModifierDown(modifier)`; constants `VIEWPORT_EVENT_FLAG_REPEAT/SYNTHETIC/HOST_CONSUMED/CAPTURE_CANCEL` and `VIEWPORT_MODIFIER_SHIFT/CONTROL/ALT/SUPER`.
+
+Event vocabulary (frozen v1 ABI): `type` none 0, pointer move 1, pointer button 2, wheel 3, key 4, gesture 5, capture 6. `phase` press 1, repeat 2, release 3, double-click 4, begin 5, update 6, end 7, cancel 8. Pointer `code`: left 0, right 1, middle 2. Gesture `code`: click 1, double-click 2, drag 3. Key `code`: A-Z are 1-26 (so C is 3, X is 24), digits 0-9 are 32-41, Escape 48, Tab 49, Enter 50, Space 51, Backspace 52, arrows 53-56, Shift 57, Control 58, Alt 59.
+
+Verified conventions:
+
+- `event.position` and `_ViewportPointerPosition` are normalized preview coordinates in exactly the same space as a full-resolution pass's `uv`. A click in the preview center arrives as position (0.5, 0.5).
+- A completed click gesture arrives as ONE event: type 5, code 1, phase 7 (end). Drags stream type 5, code 3 with phase 5 begin, 6 update per movement, 7 end (8 on cancel), each carrying the current position. Raw pointer presses (type 2, phase 1) also arrive when `pointer` interests include the button.
+- Key presses are type 4, phase 1 edges; held keys are also visible any frame through `ViewportKeyDown()`.
+
+### The `_DeltaTime` rule (critical)
+
+Modules cook at a rate decoupled from the display, often hundreds or thousands of cooks per second on a fast GPU (check `stats.fps` in `sentinel_pipeline info`). Any per-cook constant decay or accumulation is therefore wrong: `energy *= 0.975` fades to nothing within milliseconds at 2000 cooks per second, which reads as "my event visuals never appear" even though every event was delivered and every splat was written. Scale all rates by `_DeltaTime`:
+
+```hlsl
+// behaves like 0.99/frame at 60 FPS regardless of the actual cook rate
+energy *= pow(saturate(decay), _DeltaTime * 60.0);
+```
+
+This is the same family as the expression rule "integrate phase, never multiply a live rate by absolute time".
+
+### Recommended architecture: reduce once, fan out through a buffer
+
+The proven pattern (used by both `modules/click_ripples/` and the engine's own replay fixture) is a small explicit-dispatch pass that reduces the event array into a persistent state buffer, with full-resolution passes consuming derived state:
+
+1. A `dispatch: [1, 1, 1]` events pass reads `_ViewportEvents`, updates control values (palette, brush size, toggles), writes a bounded splat queue (position + strength entries), and bumps a generation counter whenever it queued work.
+2. The full-resolution pass compares the generation against the last one it consumed (remembered in its own buffer) and applies queued splats exactly once, no matter how many cooks share one input frame.
+3. Render passes read only derived state plus the cosmetic snapshot values (`_ViewportPointerPosition`, `ViewportButtonDown`) for cursor rings and hints.
+
+This keeps event handling single-threaded and testable, dedupes work across cooks, and keeps heavy passes free of event logic.
+
+### Focus, lifecycle, and testing
+
+Events deliver only while the module's preview is focused; a click on the preview focuses it. Hot reload cancels focus and capture, so after editing shaders the first click refocuses. The router priority is modal and text/terminal input, then pointer capture, then focused authored bindings, then global shortcuts; Escape cancels active pointer capture before delivery. Capture also cancels on disable, project load, and preview close. `_Mouse` keeps working for existing modules.
+
+To verify an events module end to end, read the live diagnostics under `/sentinel/pipelines/<id>/viewport/`: `focused`, `delivered_boundary_count` (grows by 3 per click: press, release, click gesture), `bindings`, `event_overflow_count`, and `capture_owner`. Real input can be injected with `tools/capture_verify/inject_mouse.ps1` (modes: `move`, `path`, `click`, `double_click`, `drag`, `wheel`, `tap`, `tap_series`, `key_hold`; coordinates are Sentinel client-area pixels), and captures of the output confirm the visual result. State writes never exercise this path; only real or injected input does.
 
 ## Compile And Reload
 
