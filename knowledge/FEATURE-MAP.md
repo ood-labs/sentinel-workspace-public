@@ -77,6 +77,8 @@ Scene system and sequencing:
 - `camera`: wireless fly/orbit camera rig (control node). Camera-capable modules bind via `camera_ref` or through their Scene Group. See `scene-system.md`.
 - `camswitch`: Camera Switcher cutting or blending between camera nodes, with per-camera OSC triggers. See `scene-system.md`.
 
+Presets: the `sentinel_preset` tool (0.5.29+) saves, recalls, and manages identity-aware per-node presets in library, project, or bundled scope, including recall onto a different compatible node.
+
 Utility and output:
 
 - Video File sources: `.mp4` and `.mov` clips decoded to BGRA8 when the codec is supported. Current supported lanes are NVDEC H.264/H.265 plus native HAP/HAP Alpha. AV1, audio, HDR/float output, trim/cue, and reverse playback are not supported in this release.

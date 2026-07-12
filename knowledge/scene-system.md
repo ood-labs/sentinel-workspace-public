@@ -36,7 +36,7 @@ Non-selected groups fully freeze (members skip processing and republish their la
 
 ## Cameras And Camera Switching
 
-The `camera` node is a control node owning a shared fly/orbit rig (`camera_mode`, position/target, yaw/pitch, fov, near/far; the `C` hotkey toggles fly/orbit in an active preview, and an axis gizmo shows the mode). Camera-capable modules bind to it through a `camera_ref` parameter, or automatically through their Scene Group when the group contains exactly one camera node; explicit `camera_ref` wins, then the group camera, then the module's internal camera. Renaming a camera updates every consumer's `camera_ref`.
+The `camera` node is a control node owning a shared fly/orbit rig (`camera_mode`, position/target, yaw/pitch, fov, near/far; the `Tab` hotkey toggles fly/orbit in an active preview with a gizmo flash, and an axis gizmo shows the mode). Camera-capable modules bind to it through a `camera_ref` parameter, or automatically through their Scene Group when the group contains exactly one camera node; explicit `camera_ref` wins, then the group camera, then the module's internal camera. Renaming a camera updates every consumer's `camera_ref`.
 
 The `camswitch` node cuts or blends between camera nodes for show control: `cameras` filters the collection, `selected_camera` picks the live rig, `blend_time` 0 cuts while positive values blend position, orientation, and fov smoothly, and per-camera `select/<slug>` triggers respond to OSC and Conductor cues. Retargeting mid-blend continues from the current pose.
 

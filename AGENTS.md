@@ -143,6 +143,8 @@ For a data-driven custom visual, prefer `sentinel_module action=scaffold_from_po
 
 Use `sentinel_pipeline action=get_data_schemas` before wiring data. The response includes the graph pin name and slot when available, so use that pin name with `sentinel_graph action=add_link`.
 
+Modules can declare viewport behavior in a manifest `viewport:` block: a `hint` string plus `interactions` from `mouse`, `pan_zoom`, and `camera`. Builds newer than 0.5.29 also accept `events` with a `viewport.input` interest list and `bindings` help entries, delivering ordered pointer/keyboard/gesture events to shaders; check `knowledge/module-pipeline.md` and the live build before authoring against it.
+
 ## Choreography And Sequencing
 
 For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary in `shaders/projects/_shared/anim/anim.hlsli` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, and integrate phase for anything rate-driven. The shipped `timeline_hud` module visualizes the arrangement from the Conductor's `Cue Records` port, and `choreo_cascade` is the reference stagger/spring consumer. Example cue sheets: `examples/phase75/`. See `knowledge/motion-choreography.md`.
@@ -167,7 +169,7 @@ Scene Groups are for control and organization. They do not replace video/data wi
 
 ## Node Presets
 
-Builds newer than 0.5.28 add the `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`): identity-aware per-node presets in library, project, or bundled scope, with grouped compound-safe parameter selection and strict or loose Recall Onto compatible nodes. Check the live tools list first; when `sentinel_preset` is absent on this install, presets are available through the Properties preset strip in the UI.
+The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`) provides identity-aware per-node presets in library, project, or bundled scope, with grouped compound-safe parameter selection and strict or loose Recall Onto compatible nodes. Installs at 0.5.29 or newer carry it; if the tool is absent from the live tools list, presets remain available through the Properties preset strip in the UI.
 
 ## Outputs
 

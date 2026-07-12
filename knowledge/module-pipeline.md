@@ -70,6 +70,29 @@ For measured geometry assertions on SDF modules, `shaders/projects/_shared/sdf/s
 
 A manifest can declare an optional `viewport:` block with a `hint` string and an `interactions` list drawn from `mouse`, `pan_zoom`, and `camera`. The preview shows the hint and only forwards the declared interactions, and the values publish at `/sentinel/pipelines/<id>/viewport/hint` and `/viewport/interactions`. Camera-feature modules (`features: [camera]`) get a shared fly/orbit rig plus a `camera_ref` parameter for binding to a `camera` node; see `knowledge/scene-system.md` for the camera and camera-switcher system.
 
+## Authored Viewport Events
+
+Builds newer than 0.5.29 accept `events` in `viewport.interactions` for modules that need ordered pointer, gesture, or keyboard edges in their shaders. Confirm availability on the live build before authoring against this.
+
+```yaml
+viewport:
+  hint: "Click or press K"
+  interactions: [events]
+  input:
+    pointer: [left, wheel]       # left | right | middle | wheel
+    keyboard: [escape, k]
+    gestures: [click, drag]      # click | double_click | drag
+  bindings:
+    - { gesture: left_click, action: select, label: "Select" }
+    - { key: k, action: pulse, label: "Pulse" }
+```
+
+Invalid tokens fail compile with a field-qualified message. Bindings are help and conflict intent: each has one `key` or `gesture`, an `action`, and a `label`, published at `/sentinel/pipelines/<id>/viewport/bindings` and rendered beside the preview OUTPUT controls.
+
+For an events module the compiler injects `_ViewportEventCount` (max 64 per frame), ordered `_ViewportEvents[i]` records (`type`, `phase`, `code`, `modifiers`, `position`, `delta`, `value`, `sequence`, `flags`, `device`), plus `_ViewportPointerPosition` / `_ViewportPointerDelta` / `_ViewportWheelDelta` / `_ViewportButtons` / `_ViewportModifiers` / `_ViewportKeyBits` state. Test a key code `k` with `(_ViewportKeyBits[k / 32] & (1u << (k % 32))) != 0`.
+
+The host router owns focus and capture: modal and text/terminal input win first, then pointer capture, then focused authored bindings, then global shortcuts. Escape cancels active pointer capture before delivery, and capture also cancels on hot reload, disable, project load, and preview close, so a follow-up interaction starts from released state. `_Mouse` keeps working for existing modules.
+
 ## Compile And Reload
 
 Module creation with `project_dir` is atomic. The response reports whether manifest parsing started cleanly. Shader compilation is async, so poll:
