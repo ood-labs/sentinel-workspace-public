@@ -1,6 +1,6 @@
 {
   "graph": {
-    "canvasZoom": 1.0,
+    "canvasZoom": 0.6641656756401062,
     "links": [
       {
         "endPinId": 3,
@@ -111,8 +111,8 @@
         "displayName": "field_gen",
         "entityId": "field_gen",
         "id": 1,
-        "posX": 100.0,
-        "posY": 484.0,
+        "posX": -15.934928894042969,
+        "posY": 101.5653076171875,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -121,8 +121,8 @@
         "displayName": "contour_blue",
         "entityId": "contour_blue",
         "id": 2,
-        "posX": 300.0,
-        "posY": 388.0,
+        "posX": 762.234130859375,
+        "posY": 311.2119445800781,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -131,8 +131,8 @@
         "displayName": "contour_accent",
         "entityId": "contour_accent",
         "id": 3,
-        "posX": 300.0,
-        "posY": 196.0,
+        "posX": 759.222900390625,
+        "posY": 515.1974487304688,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -141,8 +141,8 @@
         "displayName": "grid_warp",
         "entityId": "grid_warp",
         "id": 4,
-        "posX": 300.0,
-        "posY": 580.0,
+        "posX": 760.728515625,
+        "posY": 107.22640991210938,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -151,8 +151,8 @@
         "displayName": "node_gen",
         "entityId": "node_gen",
         "id": 5,
-        "posX": 300.0,
-        "posY": 772.0,
+        "posX": 337.6412353515625,
+        "posY": 1009.892333984375,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -161,8 +161,8 @@
         "displayName": "node_render",
         "entityId": "node_render",
         "id": 6,
-        "posX": 500.0,
-        "posY": 484.0,
+        "posX": 602.3841552734375,
+        "posY": 1038.0784912109375,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -171,8 +171,8 @@
         "displayName": "link_gen",
         "entityId": "link_gen",
         "id": 7,
-        "posX": 500.0,
-        "posY": 676.0,
+        "posX": 602.3841552734375,
+        "posY": 791.9349975585938,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -181,8 +181,8 @@
         "displayName": "link_render",
         "entityId": "link_render",
         "id": 8,
-        "posX": 700.0,
-        "posY": 580.0,
+        "posX": 790.3389892578125,
+        "posY": 805.8473510742188,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -191,8 +191,8 @@
         "displayName": "label_gen",
         "entityId": "label_gen",
         "id": 9,
-        "posX": 500.0,
-        "posY": 292.0,
+        "posX": 597.8672485351563,
+        "posY": 1273.6827392578125,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -201,8 +201,8 @@
         "displayName": "label_render",
         "entityId": "label_render",
         "id": 10,
-        "posX": 700.0,
-        "posY": 388.0,
+        "posX": 794.8558959960938,
+        "posY": 1279.3438720703125,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -211,8 +211,8 @@
         "displayName": "frame_hud",
         "entityId": "frame_hud",
         "id": 11,
-        "posX": 100.0,
-        "posY": 292.0,
+        "posX": 15.330657958984375,
+        "posY": 493.70367431640625,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -221,8 +221,8 @@
         "displayName": "atmosphere",
         "entityId": "atmosphere",
         "id": 12,
-        "posX": 100.0,
-        "posY": 100.0,
+        "posX": 756.3723754882813,
+        "posY": -185.18707275390625,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -231,8 +231,8 @@
         "displayName": "compositor",
         "entityId": "compositor",
         "id": 13,
-        "posX": 900.0,
-        "posY": 484.0,
+        "posX": 1329.109619140625,
+        "posY": 393.6611022949219,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -241,8 +241,8 @@
         "displayName": "post",
         "entityId": "post",
         "id": 14,
-        "posX": 1100.0,
-        "posY": 484.0,
+        "posX": 1556.21142578125,
+        "posY": 386.1328430175781,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -251,34 +251,18 @@
         "displayName": "signal",
         "entityId": "signal",
         "id": 15,
-        "posX": 100.0,
-        "posY": 868.0,
+        "posX": -401.62713623046875,
+        "posY": 366.96270751953125,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
       },
       {
-        "annotationBody": "field_gen publishes an RGBA16F height field → contour_blue / contour_accent / grid_warp / node_gen all derive from it. node_gen → link_gen + label_gen (structured-buffer data lanes) → renderers. atmosphere + frame_hud (porthole + viewport mask). compositor stacks all layers → post (bloom/vignette/teal grade). signal drives node pulse / field warp / accent beat / ring spin via expressions.",
-        "annotationColor": "#0a2a3aff",
-        "annotationTitle": "TOPOGRAPHIC HUD — modular scene",
-        "displayName": "TOPOGRAPHIC HUD — modular scene",
-        "entityId": "annotation_16",
-        "height": 100.0,
-        "id": 16,
-        "posX": 100.0,
-        "posY": 676.0,
-        "positionSet": true,
-        "previewVisible": false,
-        "sceneGroup": false,
-        "type": 4,
-        "width": 1000.0
-      },
-      {
         "displayName": "TOPO_HUD",
         "entityId": "TOPO_HUD",
         "id": 17,
-        "posX": 1300.0,
-        "posY": 484.0,
+        "posX": 1763.7396240234375,
+        "posY": 396.67236328125,
         "positionSet": true,
         "previewVisible": true,
         "type": 2
@@ -675,7 +659,7 @@
         "core_size": "0.320000",
         "glow_falloff": "0.350000",
         "glow_radius": "0.500000",
-        "intensity": "0.690635",
+        "intensity": "0.544421",
         "orange_color_b": "0.200000",
         "orange_color_g": "0.550000",
         "orange_color_r": "1.000000",
@@ -759,7 +743,7 @@
         "resolution_height": "1080",
         "resolution_width": "1920",
         "seed": "3.000000",
-        "warp_amount": "0.802636"
+        "warp_amount": "0.911966"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -817,7 +801,7 @@
         "accent_level": "0.600000",
         "accent_mode": "0.000000",
         "band_width": "0.090000",
-        "glow": "1.649922",
+        "glow": "2.013990",
         "index_ticks": "0.000000",
         "intensity": "1.400000",
         "line_count": "52.000000",
@@ -863,6 +847,35 @@
       "type": "module"
     },
     {
+      "displayName": "grid_warp",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "grid_warp",
+      "inputSlotSourceIds": [
+        "field_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "drift_speed": "0.015000",
+        "fade_center": "0.250000",
+        "fade_edges": "0.700000",
+        "grid_color_b": "0.720000",
+        "grid_color_g": "0.550000",
+        "grid_color_r": "0.350000",
+        "grid_density": "30.000000",
+        "intensity": "0.550000",
+        "line_width": "0.030000",
+        "perspective": "0.500000",
+        "project_dir": "modules/grid_warp",
+        "warp_amount": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
       "displayName": "compositor",
       "enabled": true,
       "expressions": null,
@@ -897,35 +910,6 @@
         "nodes_gain": "0.500000",
         "project_dir": "modules/compositor",
         "viewport_clip": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "grid_warp",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "grid_warp",
-      "inputSlotSourceIds": [
-        "field_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "drift_speed": "0.015000",
-        "fade_center": "0.250000",
-        "fade_edges": "0.700000",
-        "grid_color_b": "0.720000",
-        "grid_color_g": "0.550000",
-        "grid_color_r": "0.350000",
-        "grid_density": "30.000000",
-        "intensity": "0.550000",
-        "line_width": "0.030000",
-        "perspective": "0.500000",
-        "project_dir": "modules/grid_warp",
-        "warp_amount": "1.000000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -1048,7 +1032,7 @@
         "ring_color_g": "0.550000",
         "ring_color_r": "0.350000",
         "ring_count": "20.000000",
-        "rot_speed_a": "0.015377",
+        "rot_speed_a": "0.030995",
         "rot_speed_b": "-0.030000",
         "segment_gaps": "4.000000",
         "tick_density": "190.000000",
@@ -1145,7 +1129,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1783239332033,
+  "saved_at_ms": 1783448902781,
   "sources": [],
   "version": 5
 }
