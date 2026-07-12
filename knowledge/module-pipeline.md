@@ -72,7 +72,7 @@ A manifest can declare an optional `viewport:` block with a `hint` string and an
 
 ## Authored Viewport Events
 
-Builds newer than 0.5.29 accept `events` in `viewport.interactions` for modules that need ordered pointer, gesture, or keyboard edges in their shaders. Confirm availability on the live build before authoring against this.
+Modules that need ordered pointer, gesture, or keyboard edges in their shaders add `events` to `viewport.interactions` (available on installs at 0.5.30 or newer).
 
 ```yaml
 viewport:

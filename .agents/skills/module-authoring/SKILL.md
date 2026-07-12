@@ -425,7 +425,7 @@ viewport:
 
 Pan/zoom mouse handling and the hint row follow the declared interactions, so a module without `pan_zoom` never receives blind `pan_x`/`pan_y`/`zoom` writes. Values publish at `/sentinel/pipelines/<id>/viewport/hint` and `/viewport/interactions`.
 
-For ordered pointer/keyboard/gesture events in shaders (clicks, key pulses, drags with capture semantics), add `events` to `interactions` and declare interests under `viewport.input` plus help `bindings`; the compiler then injects `_ViewportEventCount`, `_ViewportEvents[]`, and pointer/key state globals. Full token lists, the frozen v1 event ABI, and router priority live in `docs/knowledge/module-pipeline.md` (Authored Viewport Events). Requires a build newer than 0.5.29; `_Mouse` remains the simple fallback.
+For ordered pointer/keyboard/gesture events in shaders (clicks, key pulses, drags with capture semantics), add `events` to `interactions` and declare interests under `viewport.input` plus help `bindings`; the compiler then injects `_ViewportEventCount`, `_ViewportEvents[]`, and pointer/key state globals. Full token lists, the frozen v1 event ABI, and router priority live in `docs/knowledge/module-pipeline.md` (Authored Viewport Events). Available on builds 0.5.30 and newer; `_Mouse` remains the simple fallback.
 
 For ray-marched scenes, generate rays from camera. **Must Y-flip for DX NDC**:
 ```hlsl
