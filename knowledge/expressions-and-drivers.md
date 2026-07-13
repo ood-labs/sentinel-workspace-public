@@ -56,8 +56,6 @@ ref("features_0/control_outputs/blob_count")
 ref("module_lfo/control_outputs/speed")
 ```
 
-Expressions can also target bool parameters (nonzero drives true, e.g. StreamDiff `hold`), and string filter parameters such as Mux `allowed_groups` accept a pure string `ref()` expression.
-
 ## Motion Functions
 
 The expression engine registers a shared motion vocabulary matching the Module shader header `shaders/projects/_shared/anim/anim.hlsli`:

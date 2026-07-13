@@ -143,7 +143,7 @@ For a data-driven custom visual, prefer `sentinel_module action=scaffold_from_po
 
 Use `sentinel_pipeline action=get_data_schemas` before wiring data. The response includes the graph pin name and slot when available, so use that pin name with `sentinel_graph action=add_link`.
 
-Modules can declare viewport behavior in a manifest `viewport:` block: a `hint` string plus `interactions` from `mouse`, `pan_zoom`, `camera`, and `events`. Declaring `events` with a `viewport.input` interest list and `bindings` help entries delivers ordered pointer/keyboard/gesture events to the module's shaders (installs at 0.5.30 or newer). See `knowledge/module-pipeline.md` for the interest tokens, injected shader globals, and capture semantics.
+Modules can declare viewport behavior in a manifest `viewport:` block: a `hint` string plus `interactions` from `mouse`, `pan_zoom`, `camera`, `events`, and `selection`. Declaring `events` with a `viewport.input` interest list and `bindings` help entries delivers ordered pointer/keyboard/gesture events to the module's shaders (installs at 0.5.30 or newer). Installs at 0.5.31 or newer also support `param_gestures` (drag-to-move/rotate bound to hidden parameters), `controls` (shader-rendered sliders, buttons, toggles, and XY pads bound to parameters), `state_buffers` (GPU state that survives saves, presets, and undo), and host-owned object `selection` with picking, all drivable through the `sentinel_viewport` tool (`info`, `objects`, `selection`, `pick`, `edit`, `state`). See `knowledge/module-pipeline.md` for the full authoring syntax and MCP recipes.
 
 ## Choreography And Sequencing
 
