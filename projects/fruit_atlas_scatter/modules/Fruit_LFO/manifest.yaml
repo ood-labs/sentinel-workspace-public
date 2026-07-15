@@ -1,0 +1,143 @@
+name: "LFO Panel"
+version: "1.0"
+mode: generator
+resolution: [800, 400]
+
+parameters:
+  # LFO 1
+  - name: lfo1_speed
+    display: "Speed"
+    type: float
+    min: 0.05
+    max: 10.0
+    default: 0.5
+    group: "LFO 1"
+  - name: lfo1_amp
+    display: "Amplitude"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 1.0
+    group: "LFO 1"
+  - name: lfo1_shape
+    display: "Shape"
+    type: float
+    min: 0.0
+    max: 3.0
+    default: 0.0
+    group: "LFO 1"
+
+  # LFO 2
+  - name: lfo2_speed
+    display: "Speed"
+    type: float
+    min: 0.05
+    max: 10.0
+    default: 0.3
+    group: "LFO 2"
+  - name: lfo2_amp
+    display: "Amplitude"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.8
+    group: "LFO 2"
+  - name: lfo2_shape
+    display: "Shape"
+    type: float
+    min: 0.0
+    max: 3.0
+    default: 1.0
+    group: "LFO 2"
+
+  # LFO 3
+  - name: lfo3_speed
+    display: "Speed"
+    type: float
+    min: 0.05
+    max: 10.0
+    default: 0.15
+    group: "LFO 3"
+  - name: lfo3_amp
+    display: "Amplitude"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.6
+    group: "LFO 3"
+  - name: lfo3_shape
+    display: "Shape"
+    type: float
+    min: 0.0
+    max: 3.0
+    default: 2.0
+    group: "LFO 3"
+
+  # LFO 4
+  - name: lfo4_speed
+    display: "Speed"
+    type: float
+    min: 0.05
+    max: 10.0
+    default: 1.0
+    group: "LFO 4"
+  - name: lfo4_amp
+    display: "Amplitude"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.5
+    group: "LFO 4"
+  - name: lfo4_shape
+    display: "Shape"
+    type: float
+    min: 0.0
+    max: 3.0
+    default: 3.0
+    group: "LFO 4"
+
+buffers:
+  - name: lfo_buf
+    structured: true
+    element_size: 16
+    element_count: 1
+
+passes:
+  - name: compute
+    shader: lfo_compute.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:lfo_buf"
+
+  - name: display
+    shader: lfo_display.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:lfo_buf" }
+
+outputs:
+  - display
+
+control_outputs:
+  - name: lfo1
+    buffer: lfo_buf
+    element: 0
+    field_offset: 0
+    description: "LFO 1 output (0-1)"
+  - name: lfo2
+    buffer: lfo_buf
+    element: 0
+    field_offset: 4
+    description: "LFO 2 output (0-1)"
+  - name: lfo3
+    buffer: lfo_buf
+    element: 0
+    field_offset: 8
+    description: "LFO 3 output (0-1)"
+  - name: lfo4
+    buffer: lfo_buf
+    element: 0
+    field_offset: 12
+    description: "LFO 4 output (0-1)"

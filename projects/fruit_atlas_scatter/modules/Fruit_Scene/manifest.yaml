@@ -1,0 +1,172 @@
+name: "Fruit Scatter Spawner"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+
+inputs:
+  - name: "Atlas"
+    slot: 0
+    required: true
+
+data_inputs:
+  - name: "Slot Occupancy"
+    slot: 0
+    schema:
+      - { name: slot_index, type: float }
+      - { name: sequence, type: float }
+      - { name: age_rank, type: float }
+      - { name: occupied, type: float }
+
+parameters:
+  - name: tile_width
+    display: "Tile Width"
+    type: float
+    min: 16.0
+    max: 512.0
+    default: 128.0
+    group: "Atlas"
+
+  - name: tile_height
+    display: "Tile Height"
+    type: float
+    min: 16.0
+    max: 512.0
+    default: 224.0
+    group: "Atlas"
+
+  - name: slot_count
+    display: "Slot Count"
+    type: int
+    min: 1
+    max: 64
+    default: 7
+    group: "Atlas"
+
+  - name: occupied_count
+    display: "Occupied Count"
+    type: int
+    min: 0
+    max: 64
+    default: 7
+    group: "Atlas"
+
+  - name: column_count
+    display: "Column Count"
+    type: int
+    min: 1
+    max: 8
+    default: 3
+    group: "Atlas"
+
+  - name: depth_column
+    display: "Depth Column"
+    type: int
+    min: 0
+    max: 7
+    default: 2
+    group: "Atlas"
+
+  - name: segmentation_column
+    display: "Segmentation Column"
+    type: int
+    min: 0
+    max: 7
+    default: 1
+    group: "Atlas"
+
+  - name: segmentation_enabled
+    display: "Use Segmentation Mask"
+    type: bool
+    default: true
+    group: "Atlas"
+
+  - name: orbit
+    display: "Orbit"
+    type: float
+    min: -1.0
+    max: 1.0
+    default: 0.0
+    group: "Scene"
+
+  - name: card_scale
+    display: "Card Scale"
+    type: float
+    min: 0.1
+    max: 1.2
+    default: 0.5
+    group: "Scene"
+
+  - name: depth_scale
+    display: "Depth Scale"
+    type: float
+    min: 0.0
+    max: 1.5
+    default: 0.75
+    group: "Scene"
+
+  - name: spread_x
+    display: "Scatter Spread X"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.72
+    group: "Scatter"
+
+  - name: spread_y
+    display: "Scatter Spread Y"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.5
+    group: "Scatter"
+
+  - name: scatter_seed
+    display: "Scatter Seed"
+    type: float
+    min: 0.0
+    max: 100.0
+    default: 7.0
+    group: "Scatter"
+
+  - name: phase
+    display: "Phase"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.0
+    group: "Motion"
+
+  - name: bob_amount
+    display: "Bob Amount"
+    type: float
+    min: 0.0
+    max: 0.2
+    default: 0.03
+    group: "Motion"
+
+passes:
+  - name: scene_cards
+    shader: scene_cards.hlsl
+    target: draw
+    vertex_count: 384
+    topology: trianglelist
+    depth: true
+    cull: none
+    vs_entry: VSMain
+    ps_entry: PSMain
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+
+  - name: present
+    shader: present.hlsl
+    target: ps_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "pass:scene_cards" }
+    output: output
+
+outputs:
+  - name: "Scene"
+    pass: present

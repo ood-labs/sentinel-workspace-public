@@ -1,0 +1,483 @@
+{
+  "graph": {
+    "canvasZoom": 1.0175881385803223,
+    "links": [
+      {
+        "endPinId": 27,
+        "id": 7,
+        "startPinId": 3
+      },
+      {
+        "endPinId": 29,
+        "id": 8,
+        "startPinId": 6
+      },
+      {
+        "endPinId": 19,
+        "id": 9,
+        "startPinId": 28
+      }
+    ],
+    "nextLinkId": 10,
+    "nextNodeId": 9,
+    "nextPinId": 30,
+    "nodes": [
+      {
+        "displayName": "dada_layout",
+        "entityId": "dada_layout",
+        "id": 1,
+        "posX": 540.2144165039063,
+        "posY": 280.5276794433594,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "dada_scatter",
+        "entityId": "dada_scatter",
+        "id": 2,
+        "posX": 725.7006225585938,
+        "posY": 426.1196594238281,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "dada_control",
+        "entityId": "dada_control",
+        "id": 3,
+        "posX": 251.4580078125,
+        "posY": 542.607666015625,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "signal",
+        "entityId": "signal",
+        "id": 4,
+        "posX": 417.1359558105469,
+        "posY": 680.8325805664063,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "post",
+        "entityId": "post",
+        "id": 5,
+        "posX": 1166.2283935546875,
+        "posY": 324.8908386230469,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "dada_render",
+        "entityId": "dada_render",
+        "id": 8,
+        "posX": 938.0548095703125,
+        "posY": 331.33892822265625,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 10,
+        "kind": 1,
+        "name": "Control",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "kind": 1,
+        "name": "Parts",
+        "nodeId": 1,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 11,
+        "kind": 1,
+        "name": "melt",
+        "nodeId": 3,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 5,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "Parts",
+        "nodeId": 2,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "sag",
+        "nodeId": 3,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 9,
+        "kind": 1,
+        "name": "spread",
+        "nodeId": 3,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 12,
+        "kind": 1,
+        "name": "explode",
+        "nodeId": 3,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 14,
+        "kind": 1,
+        "name": "Signal",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 15,
+        "kind": 1,
+        "name": "pulse",
+        "nodeId": 4,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 16,
+        "kind": 1,
+        "name": "sweep",
+        "nodeId": 4,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 17,
+        "kind": 1,
+        "name": "beat",
+        "nodeId": 4,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 18,
+        "kind": 1,
+        "name": "slow",
+        "nodeId": 4,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 19,
+        "kind": 0,
+        "name": "Scene",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 20,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 27,
+        "kind": 0,
+        "name": "Parts",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 28,
+        "kind": 1,
+        "name": "Render",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 29,
+        "kind": 0,
+        "name": "Scatter",
+        "nodeId": 8,
+        "slotIndex": 1,
+        "type": 6
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "",
+  "name": "desert_totem",
+  "osc": {
+    "enabled": true,
+    "receivePort": 9000,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9001,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "dada_layout",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "dada_layout",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "explode": "0.000000",
+        "jitter": "0.163000",
+        "lift": "-0.330000",
+        "project_dir": "modules/dada_layout",
+        "resolution_height": "640",
+        "resolution_width": "420",
+        "seed": "0.000000",
+        "size_mul": "1.490000",
+        "spread": "1.264000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "dada_scatter",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "dada_scatter",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "project_dir": "modules/dada_scatter",
+        "resolution_height": "640",
+        "resolution_width": "420",
+        "scatter_count": "41.000000",
+        "scatter_seed": "3.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "dada_control",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "dada_control",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "explode_macro": "0.000000",
+        "melt_macro": "0.080000",
+        "project_dir": "modules/dada_control",
+        "resolution_height": "128",
+        "resolution_width": "256",
+        "sag_macro": "0.180000",
+        "spread_macro": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "signal",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "signal",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "beat_rate": "2.000000",
+        "beat_sharp": "3.000000",
+        "project_dir": "modules/signal",
+        "pulse_rate": "0.800000",
+        "resolution_height": "64",
+        "resolution_width": "256",
+        "slow_rate": "0.050000",
+        "sweep_rate": "0.100000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "post",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "post",
+      "inputSlotSourceIds": [
+        "dada_render"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bloom_intensity": "0.500000",
+        "bloom_radius": "0.032000",
+        "bloom_threshold": "0.900000",
+        "chroma": "0.400000",
+        "contrast": "1.080000",
+        "exposure": "1.050000",
+        "grain_amt": "0.035000",
+        "highlight_tint_b": "0.250000",
+        "highlight_tint_g": "0.600000",
+        "highlight_tint_r": "1.000000",
+        "project_dir": "modules/post",
+        "saturation": "1.200000",
+        "shadow_tint_b": "0.220000",
+        "shadow_tint_g": "0.140000",
+        "shadow_tint_r": "0.000000",
+        "split_balance": "0.220000",
+        "vignette": "0.600000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "dada_render",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "dada_render",
+      "inputSlotSourceIds": [
+        "dada_layout",
+        "dada_scatter"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "parameters": {
+        "bend_amt": "0.000000",
+        "board_yaw": "0.140000",
+        "cam_distance": "15.000000",
+        "cam_elevation": "4.000000",
+        "cam_focal": "2.600000",
+        "cam_mode": "0.000000",
+        "cam_orbit": "87.000000",
+        "cam_target_y": "4.900000",
+        "camera_far": "100.000000",
+        "camera_fov": "60.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_move_speed": "3.288661",
+        "camera_near": "0.100000",
+        "camera_pitch": "0.263101",
+        "camera_pos_x": "-2.795339",
+        "camera_pos_y": "1.815673",
+        "camera_pos_z": "14.249688",
+        "camera_yaw": "9.194325",
+        "dist_cx": "0.000000",
+        "dist_cy": "4.500000",
+        "dist_cz": "0.300000",
+        "exposure": "1.050000",
+        "facet_amt": "0.000000",
+        "fog_density": "1.000000",
+        "heat_amt": "0.350000",
+        "hue_shift": "0.000000",
+        "march_dist": "120.000000",
+        "melt_amt": "3.000000",
+        "mirror_count": "0.000000",
+        "mirror_mode": "0.000000",
+        "painterly_amt": "0.370000",
+        "painterly_scale": "5.240000",
+        "pinch_amt": "0.000000",
+        "project_dir": "modules/dada_render",
+        "resolution_height": "1140",
+        "resolution_width": "760",
+        "rotate_speed": "0.000000",
+        "sag_amt": "0.000000",
+        "shadows": "1.000000",
+        "sky_horizon_b": "0.750000",
+        "sky_horizon_g": "0.830000",
+        "sky_horizon_r": "0.860000",
+        "sky_zenith_b": "0.740000",
+        "sky_zenith_g": "0.640000",
+        "sky_zenith_r": "0.500000",
+        "spine_height": "3.550000",
+        "sun_azimuth": "62.000000",
+        "sun_elevation": "48.000000",
+        "swirl_amt": "0.000000",
+        "twist_amt": "0.000000",
+        "w1_amt": "0.540000",
+        "w1_freq": "0.979000",
+        "w1_mode": "3.000000",
+        "w1_ox": "0.000000",
+        "w1_oy": "0.000000",
+        "w1_oz": "0.000000",
+        "w1_pitch": "1.701000",
+        "w1_speed": "0.600000",
+        "w1_yaw": "-1.134000",
+        "w2_amt": "0.000000",
+        "w2_freq": "1.800000",
+        "w2_mode": "1.000000",
+        "w2_ox": "0.000000",
+        "w2_oy": "0.000000",
+        "w2_oz": "0.000000",
+        "w2_pitch": "0.000000",
+        "w2_speed": "0.900000",
+        "w2_yaw": "1.570000",
+        "w3_amt": "0.000000",
+        "w3_freq": "2.600000",
+        "w3_mode": "3.000000",
+        "w3_ox": "0.000000",
+        "w3_oy": "0.000000",
+        "w3_oz": "0.000000",
+        "w3_pitch": "1.570000",
+        "w3_speed": "1.300000",
+        "w3_yaw": "0.000000",
+        "warp_speed": "0.000000",
+        "wave_amt": "0.000000",
+        "wave_freq": "2.000000",
+        "wobble_amt": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1783490422339,
+  "sources": [],
+  "version": 5
+}

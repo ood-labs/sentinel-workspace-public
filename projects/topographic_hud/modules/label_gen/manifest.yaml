@@ -1,0 +1,66 @@
+name: "Label Gen"
+version: "1.0"
+mode: generator
+resolution: [1920, 1080]
+working_format: RGBA16F
+
+data_inputs:
+  - name: "Nodes"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: radius, type: float }
+      - { name: intensity, type: float }
+      - { name: color_mix, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: active, type: float }
+
+buffers:
+  - name: labels
+    structured: true
+    element_size: 32
+    element_count: 48
+
+parameters:
+  - name: attach_mode
+    display: "Attach Mode"
+    type: enum
+    options: [Nodes, Ring, Grid]
+    default: 0
+    flags: button_grid
+    group: "Labels"
+  - { name: label_count, display: "Label Count", type: int, min: 0, max: 48, default: 18, group: "Labels" }
+  - { name: scale, display: "Scale", type: float, min: 0.5, max: 2.0, default: 1.0, group: "Labels" }
+  - { name: jitter, display: "Jitter", type: float, min: 0.0, max: 0.2, default: 0.02, group: "Labels" }
+  - { name: color_mix, display: "Color Mix", type: float, min: 0.0, max: 1.0, default: 0.3, group: "Labels" }
+  - { name: ring_radius, display: "Ring Radius", type: float, min: 0.1, max: 0.6, default: 0.46, group: "Labels" }
+  - { name: rotation, display: "Rotation", type: float, min: -0.5, max: 0.5, default: 0.0, group: "Labels" }
+  - { name: seed, display: "Seed", type: int, min: 0, max: 63, default: 2, group: "Labels" }
+
+passes:
+  - name: place
+    shader: place_labels.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 48
+    thread_group_y: 1
+    output: "buffer:labels"
+    inputs:
+      - { slot: 0, source: "data:0" }
+  - { name: preview, shader: preview_labels.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:labels" } ] }
+
+outputs:
+  - { name: "Preview", pass: preview }
+
+data_outputs:
+  - name: "Labels"
+    buffer: "labels"
+    schema:
+      - { name: pos, type: float2 }
+      - { name: scale, type: float }
+      - { name: label_id, type: float }
+      - { name: color_mix, type: float }
+      - { name: rotation, type: float }
+      - { name: active, type: float }
+      - { name: pad0, type: float }

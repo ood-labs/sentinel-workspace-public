@@ -2,7 +2,7 @@
 
 An open authoring workspace for building interactive visuals, tools, and control surfaces with Sentinel.
 
-This repository contains ready-to-use Module projects, shared HLSL libraries, agent skills, product knowledge, and a portable Interaction Lab example. It is a focused public snapshot rather than a copy of Sentinel's private development workspace.
+This repository contains ready-to-use Module projects, shared HLSL libraries, agent skills, product knowledge, and portable example shows. It is a focused public snapshot rather than a copy of Sentinel's private development workspace.
 
 ## Requirements
 
@@ -44,7 +44,7 @@ The live MCP catalog is authoritative for the installed Sentinel build. Start wi
 | `.agents/skills/`, `.claude/skills/` | Mirrored Sentinel authoring and automation skills |
 | `knowledge/` | Focused product and workflow reference documentation |
 | `modules/` | Curated Module library and shared HLSL includes |
-| `projects/interaction_lab/` | Portable flagship example with bundled dependencies |
+| `projects/` | Portable saved shows, including Interaction Lab and six authored visual examples |
 | `examples/` | Small blueprint examples for procedural construction |
 | `tools/` | Local authoring and validation helpers |
 
@@ -59,6 +59,20 @@ Interaction Lab is a Module-only example containing:
 - Full-frame Canvas panels whose render resolution follows the panel size.
 
 See the [Interaction Lab guide](projects/interaction_lab/README.md) and the [UI authoring guide](knowledge/ui-authoring.md).
+
+## Example projects
+
+Open any project by loading its `.sentinel` file in Sentinel:
+
+| Project | What it demonstrates |
+| --- | --- |
+| [`interaction_lab`](projects/interaction_lab/) | Scientific UI controls, responsive Canvas panels, spline editing, selection, and transform gizmos |
+| [`living_room_sdf`](projects/living_room_sdf/) | A bundled, data-driven SDF interior assembled from architecture, furnishing, material, lighting, render, and grade modules |
+| [`topographic_hud`](projects/topographic_hud/) | A 15-module topographic interface using texture lanes, structured records, and a control-output signal bus |
+| [`desert_totem`](projects/desert_totem/) | A procedural Dada totem with structured layout records and layered SDF domain warping |
+| [`fruit_atlas_scatter`](projects/fruit_atlas_scatter/) | A StreamDiff, matting, depth, atlas, and 3D card-scatter workflow; its AI nodes require the corresponding Sentinel engine packs |
+| [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
+| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene using the shared root-level `steel_lattice` and `industrial_mono_post` modules |
 
 ## Creating a UI Module
 
