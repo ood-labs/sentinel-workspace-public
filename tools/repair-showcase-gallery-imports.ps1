@@ -11,14 +11,19 @@ function Read-Utf8Json([string]$Path) {
 }
 
 function Write-Utf8JsonAtomically([string]$Path, [object]$Value) {
-    $temporary = "$Path.$([guid]::NewGuid().ToString('N')).tmp"
+    $token = [guid]::NewGuid().ToString('N')
+    $temporary = "$Path.$token.tmp"
+    $backup = "$Path.$token.bak"
     try {
         $json = $Value | ConvertTo-Json -Depth 100
         [System.IO.File]::WriteAllText($temporary, $json + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
-        [System.IO.File]::Replace($temporary, $Path, $null)
+        [System.IO.File]::Replace($temporary, $Path, $backup)
     } finally {
         if (Test-Path -LiteralPath $temporary) {
             Remove-Item -LiteralPath $temporary -Force
+        }
+        if (Test-Path -LiteralPath $backup) {
+            Remove-Item -LiteralPath $backup -Force
         }
     }
 }
