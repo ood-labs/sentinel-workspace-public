@@ -1,0 +1,36 @@
+metadata:
+  name: living_room_furnishings
+  bounds: { min: [-4.2, 0.0, -3.4], max: [4.2, 3.4, 3.4] }
+  instance_budget: 96
+anchors:
+  - id: room_center
+    position: [0.0, 0.0, 0.0]
+    normal: [0.0, 1.0, 0.0]
+clearances:
+  - id: entry_path
+    min: [2.75, 0.0, 0.40]
+    max: [4.10, 2.4, 3.35]
+nodes:
+  - { id: hero_sofa, kind: sofa, position: [-0.65, 0.12, 2.35], rotation_y: 3.14159 }
+  - { id: lounge_left, kind: armchair, position: [-2.55, 0.12, 0.70], rotation_y: -1.30 }
+  - { id: lounge_right, kind: armchair, position: [1.55, 0.12, 1.45], rotation_y: 1.95 }
+  - { id: walnut_coffee, kind: coffee_table, position: [-0.35, 0.15, 0.50], rotation_y: -0.08 }
+  - { id: ottoman_right, kind: ottoman, position: [1.65, 0.15, 0.10], rotation_y: -0.18 }
+  - { id: side_left, kind: side_table, position: [-2.85, 0.12, 2.05] }
+  - { id: side_right, kind: side_table, position: [1.85, 0.12, 2.50] }
+  - { id: media_unit, kind: media_console, position: [0.95, 0.12, -3.12] }
+  - { id: oled_screen, kind: television, position: [0.95, 1.22, -3.38] }
+  - { id: shelf_left, kind: bookshelf, position: [3.45, 0.12, -2.40] }
+  - { id: speaker_left, kind: speaker, position: [-0.75, 0.12, -3.12] }
+  - { id: speaker_right, kind: speaker, position: [2.65, 0.12, -3.12] }
+  - { id: arc_lamp, kind: floor_lamp, position: [-3.35, 0.12, 2.45] }
+  - { id: ceramic_lamp, kind: table_lamp, position: [1.85, 0.72, 2.50] }
+  - { id: ficus_left, kind: plant, position: [-3.55, 0.12, -2.20], rotation_y: 0.4 }
+  - { id: monstera_right, kind: plant, position: [2.75, 0.12, -2.55], rotation_y: -0.7 }
+  - { id: sofa_cushion_a, kind: cushion, position: [-2.05, 0.72, 2.05], rotation_y: 0.18 }
+  - { id: sofa_cushion_b, kind: cushion, position: [-0.90, 0.72, 2.06], rotation_y: -0.12 }
+  - { id: sofa_cushion_c, kind: cushion, position: [0.22, 0.72, 2.05], rotation_y: 0.08 }
+  - { id: coffee_vase, kind: decor, position: [-0.95, 0.58, 0.25] }
+  - { id: console_vase, kind: decor, position: [0.45, 0.70, -3.10] }
+  - { id: shelf_decor_a, kind: decor, position: [-3.72, 1.15, -2.95] }
+  - { id: shelf_decor_b, kind: decor, position: [-3.22, 1.82, -2.95] }

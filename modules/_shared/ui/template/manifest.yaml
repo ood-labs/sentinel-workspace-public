@@ -1,0 +1,26 @@
+name: "{{NAME}}"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+
+panel:
+  mode: canvas
+  output: UI
+  resolution: follow_panel
+
+parameters:
+  - { name: amount, display: "Amount", type: float, min: 0.0, max: 1.0, default: 0.5, group: "UI" }
+  - { name: apply, display: "Apply", type: button, group: "UI" }
+
+viewport:
+  hint: "Starter Module using the shared scientific UI foundation."
+  # ui-label: title = SCIENTIFIC MODULE
+  controls:
+    - { id: amount, kind: slider, param: amount, rect: [0.08, 0.28, 0.62, 0.36], label: "Amount" }
+    - { id: apply, kind: button, param: apply, rect: [0.68, 0.28, 0.90, 0.36], label: "Apply" }
+
+passes:
+  - { name: render, shader: render.hlsl, target: cs_5_0, output: output }
+
+outputs:
+  - { name: "UI", pass: render }

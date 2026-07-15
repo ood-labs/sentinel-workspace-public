@@ -1,0 +1,238 @@
+{
+  "version": 1,
+  "scene": "living_room_furnishings",
+  "record_hash": "6e6470fa854d43da",
+  "topology_hash": "00991d753babce94",
+  "records": [
+    {
+      "id": "hero_sofa",
+      "kind": "sofa",
+      "seed": 520709845,
+      "position": [
+        -1.1,
+        0.12,
+        2.15
+      ]
+    },
+    {
+      "id": "lounge_left",
+      "kind": "armchair",
+      "seed": 2159804473,
+      "position": [
+        -3.05,
+        0.12,
+        0.45
+      ]
+    },
+    {
+      "id": "lounge_right",
+      "kind": "armchair",
+      "seed": 2325006490,
+      "position": [
+        1.65,
+        0.12,
+        1.55
+      ]
+    },
+    {
+      "id": "walnut_coffee",
+      "kind": "coffee_table",
+      "seed": 4266785727,
+      "position": [
+        -0.65,
+        0.15,
+        0.35
+      ]
+    },
+    {
+      "id": "ottoman_right",
+      "kind": "ottoman",
+      "seed": 51662876,
+      "position": [
+        1.45,
+        0.15,
+        0.2
+      ]
+    },
+    {
+      "id": "side_left",
+      "kind": "side_table",
+      "seed": 1448165610,
+      "position": [
+        -3.15,
+        0.12,
+        1.85
+      ]
+    },
+    {
+      "id": "side_right",
+      "kind": "side_table",
+      "seed": 441855159,
+      "position": [
+        1.25,
+        0.12,
+        2.55
+      ]
+    },
+    {
+      "id": "media_unit",
+      "kind": "media_console",
+      "seed": 3741216410,
+      "position": [
+        -0.55,
+        0.12,
+        -3.12
+      ]
+    },
+    {
+      "id": "oled_screen",
+      "kind": "television",
+      "seed": 1351758156,
+      "position": [
+        -0.55,
+        1.18,
+        -3.38
+      ]
+    },
+    {
+      "id": "shelf_left",
+      "kind": "bookshelf",
+      "seed": 471903125,
+      "position": [
+        -3.48,
+        0.12,
+        -3.15
+      ]
+    },
+    {
+      "id": "speaker_left",
+      "kind": "speaker",
+      "seed": 577790990,
+      "position": [
+        -2.15,
+        0.12,
+        -3.15
+      ]
+    },
+    {
+      "id": "speaker_right",
+      "kind": "speaker",
+      "seed": 3898538083,
+      "position": [
+        1.08,
+        0.12,
+        -3.15
+      ]
+    },
+    {
+      "id": "arc_lamp",
+      "kind": "floor_lamp",
+      "seed": 3211099422,
+      "position": [
+        -3.55,
+        0.12,
+        2.58
+      ]
+    },
+    {
+      "id": "ceramic_lamp",
+      "kind": "table_lamp",
+      "seed": 2202852426,
+      "position": [
+        1.251,
+        0.7,
+        2.55
+      ]
+    },
+    {
+      "id": "ficus_left",
+      "kind": "plant",
+      "seed": 2536314107,
+      "position": [
+        -3.55,
+        0.12,
+        -2.2
+      ]
+    },
+    {
+      "id": "monstera_right",
+      "kind": "plant",
+      "seed": 1023553261,
+      "position": [
+        2.75,
+        0.12,
+        -2.55
+      ]
+    },
+    {
+      "id": "sofa_cushion_a",
+      "kind": "cushion",
+      "seed": 2438612362,
+      "position": [
+        -2.05,
+        0.72,
+        2.05
+      ]
+    },
+    {
+      "id": "sofa_cushion_b",
+      "kind": "cushion",
+      "seed": 2421834743,
+      "position": [
+        -0.9,
+        0.72,
+        2.06
+      ]
+    },
+    {
+      "id": "sofa_cushion_c",
+      "kind": "cushion",
+      "seed": 2405057124,
+      "position": [
+        0.22,
+        0.72,
+        2.05
+      ]
+    },
+    {
+      "id": "coffee_vase",
+      "kind": "decor",
+      "seed": 1458404179,
+      "position": [
+        -0.95,
+        0.58,
+        0.25
+      ]
+    },
+    {
+      "id": "console_vase",
+      "kind": "decor",
+      "seed": 1978570758,
+      "position": [
+        0.45,
+        0.7,
+        -3.1
+      ]
+    },
+    {
+      "id": "shelf_decor_a",
+      "kind": "decor",
+      "seed": 4276021801,
+      "position": [
+        -3.72,
+        1.15,
+        -2.95
+      ]
+    },
+    {
+      "id": "shelf_decor_b",
+      "kind": "decor",
+      "seed": 4225688944,
+      "position": [
+        -3.22,
+        1.82,
+        -2.95
+      ]
+    }
+  ]
+}

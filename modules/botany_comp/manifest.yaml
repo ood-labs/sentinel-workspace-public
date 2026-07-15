@@ -1,0 +1,28 @@
+name: "Botany Comp"
+version: "0.1"
+mode: generator
+resolution: [720, 1104]
+
+# Bouquet compositor: opaque violet bg + drifting crop-frame + bouquet render (premult), Over.
+# Inlet order: 0 bg, 1 frame, 2 render.
+
+inputs:
+  - { name: "BG",     slot: 0, required: false }
+  - { name: "Frame",  slot: 1, required: false }
+  - { name: "Render", slot: 2, required: false }
+
+parameters:
+  - { name: frame_gain,  display: "Frame",  type: float, min: 0.0, max: 1.5, default: 1.0, group: "Comp" }
+  - { name: render_gain, display: "Render", type: float, min: 0.0, max: 1.5, default: 1.0, group: "Comp" }
+
+passes:
+  - name: comp
+    shader: comp.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "input:2" }
+
+outputs:
+  - { name: "Comp", pass: comp }

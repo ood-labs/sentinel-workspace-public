@@ -1,0 +1,27 @@
+name: "UV Remap Bit Depth Test"
+version: "1.0"
+description: "Phase 46 high-bit-depth test. Takes a UV map on slot 0 (feed it a 16/32-bit float Spout sender from TouchDesigner: R = x in [0,1], G = y in [0,1]), stores the coordinates through a 32-bit-float intermediate render target, then samples a very high-frequency procedural pattern through those coordinates and outputs 8-bit. At full precision the pattern is smooth; if the UV is quantized to 8-bit anywhere upstream it stair-steps visibly. working_format pins the intermediate pass to RGBA32F; the output pass is RGBA8."
+mode: filter
+
+# Whole module defaults to 32-bit float; the output pass overrides back to 8-bit.
+working_format: RGBA32F
+
+inputs:
+  - { name: "UV Map", slot: 0, required: true }
+
+passes:
+  # Pass 1: read the float UV input and store it through a 32-bit float RT.
+  # If this RT were 8-bit, the UV coordinates would quantize to 256 levels here.
+  - name: store_uv
+    shader: store_uv.hlsl
+    inputs:
+      - { slot: 0, source: input }
+
+  # Pass 2: read the stored float coordinates and sample a fine pattern through
+  # them, then output 8-bit for normal downstream use.
+  - name: present
+    shader: present.hlsl
+    format: RGBA8
+    output: output
+    inputs:
+      - { slot: 0, source: "pass:store_uv" }

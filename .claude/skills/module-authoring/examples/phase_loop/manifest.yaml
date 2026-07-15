@@ -1,0 +1,17 @@
+name: "Phase Loop Demo"
+version: "1.0"
+description: "1280x720 geometric loop test for phase scrubbing and free-run playback. A progress arc, an orbiting lead dot with a center hand, and three satellite dots all advance with a normalized phase (0..1) that wraps seamlessly. Leave animation_speed at 0 and sweep phase 0->1 to scrub the loop deterministically (one revolution per unit); raise animation_speed to free-run on _Time."
+mode: generator
+resolution: [1280, 720]
+
+parameters:
+  - { name: phase,           display: "Phase",           type: float, default: 0.0,  min: 0.0, max: 1.0, group: "Animation" }
+  - { name: animation_speed, display: "Animation Speed", type: float, default: 0.0,  min: 0.0, max: 6.0, group: "Animation" }
+  - { name: hue,             display: "Hue",             type: float, default: 0.55, min: 0.0, max: 1.0, group: "Style" }
+  - { name: brightness,      display: "Brightness",      type: float, default: 1.0,  min: 0.0, max: 2.0, group: "Style" }
+
+passes:
+  - name: render
+    shader: phase_loop.hlsl
+    target: cs_5_0
+    output: output

@@ -1,0 +1,49 @@
+name: "Fractal Seed Core"
+version: "1.0"
+mode: generator
+resolution: [640, 360]
+working_format: RGBA8
+
+buffers:
+  - name: seeds
+    structured: true
+    element_size: 64
+    element_count: 64
+
+parameters:
+  - { name: designer_mode, display: "Designer Mode", type: enum, default: 2, options: [Helix, Crystal, Storm, Bloom, Machine], flags: button_grid, group: "Structure" }
+  - { name: seed_count, display: "Seed Count", type: int, min: 8, max: 64, default: 32, group: "Structure" }
+  - { name: seed, display: "Seed", type: float, min: 0.0, max: 99.0, default: 13.0, group: "Structure" }
+  - { name: fold_bias, display: "Fold Bias", type: float, min: 0.0, max: 4.0, default: 1.45, group: "Structure" }
+  - { name: burst, display: "Burst", type: float, min: 0.0, max: 2.5, default: 0.85, group: "Animation" }
+  - { name: spin_rate, display: "Spin Rate", type: float, min: 0.0, max: 3.0, default: 0.55, group: "Animation" }
+  - { name: turbulence, display: "Turbulence", type: float, min: 0.0, max: 2.0, default: 0.85, group: "Animation" }
+  - { name: palette_a, display: "Palette A", type: color, default: [0.05, 0.85, 1.00], group: "Palette" }
+  - { name: palette_b, display: "Palette B", type: color, default: [1.00, 0.12, 0.82], group: "Palette" }
+  - { name: palette_c, display: "Palette C", type: color, default: [1.00, 0.86, 0.18], group: "Palette" }
+
+passes:
+  - name: compute
+    shader: seed_compute.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:seeds"
+  - name: preview
+    shader: seed_preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:seeds" }
+
+data_outputs:
+  - name: "Seeds"
+    buffer: "seeds"
+    schema:
+      - { name: orbit, type: float4 }
+      - { name: color, type: float4 }
+      - { name: rule, type: float4 }
+      - { name: warp, type: float4 }
+
+outputs:
+  - { name: "Seed Preview", pass: preview }

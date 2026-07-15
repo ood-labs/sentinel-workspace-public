@@ -1,0 +1,25 @@
+name: "KidPix Cube"
+version: "0.1"
+mode: generator
+resolution: [1200, 960]
+
+# Tumbling 3D cube with flat unlit Kid Pix pattern faces (checker / solid / halftone), pattern
+# assignment cycling on the rotation timer. Ray-box, premultiplied plate (transparent on miss).
+# 2 turns per 6s seamless loop.
+
+parameters:
+  - { name: cube_x,       display: "Cube X",     type: float, min: 0.0, max: 1.0, default: 0.44, group: "Place" }
+  - { name: cube_y,       display: "Cube Y",     type: float, min: 0.0, max: 1.0, default: 0.46, group: "Place" }
+  - { name: cube_half,    display: "Cube Size",  type: float, min: 0.3, max: 1.5, default: 0.85, group: "Place" }
+  - { name: cam_dist,     display: "Cam Dist",   type: float, min: 2.0, max: 8.0, default: 4.0,  group: "Camera" }
+  - { name: focal,        display: "Focal",      type: float, min: 0.4, max: 2.0, default: 0.62, group: "Camera" }
+  - { name: intensity,    display: "Intensity",  type: float, min: 0.0, max: 1.5, default: 1.0,  group: "Look" }
+  - { name: loop_seconds, display: "Loop (s)",   type: float, min: 1.0, max: 12.0, default: 6.0, group: "Motion" }
+
+passes:
+  - name: cube
+    shader: cube.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "Cube", pass: cube }

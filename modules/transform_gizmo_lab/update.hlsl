@@ -1,0 +1,100 @@
+#include "types.hlsli"
+StructuredBuffer<GizmoState> _Tex0 : register(t0);
+StructuredBuffer<SceneObject> _Tex1 : register(t1);
+RWStructuredBuffer<SceneObject> OutputBuffer : register(u0);
+
+float hashLab(float v) { return frac(sin(v * 91.713) * 43758.5453); }
+
+void initialize() {
+    for (uint index = 0u; index < 16u; ++index) {
+        SceneObject o = (SceneObject)0;
+        o.object_id = index < 12u ? index + 1u : 0u;
+        o.kind = index % 4u;
+        o.position = float3(((float)(index % 4u) - 1.5) * 1.45,
+                            ((float)(index / 4u) - 1.0) * 1.25,
+                            hashLab((float)index) * 0.4 - 0.2);
+        o.rotation = float3(hashLab(index + 13u) * 35.0,
+                            hashLab(index + 31u) * 55.0,
+                            hashLab(index + 77u) * 25.0);
+        o.scale = (0.72 + hashLab(index + 91u) * 0.32).xxx;
+        o.flags = 7u;
+        o.marker = index == 0u ? 8931.0 : 0.0;
+        OutputBuffer[index] = o;
+    }
+}
+
+float3 rotateAround(float3 v, float3 axis, float angle) {
+    return v * cos(angle) + cross(axis, v) * sin(angle) +
+           axis * dot(axis, v) * (1.0 - cos(angle));
+}
+
+[numthreads(1, 1, 1)]
+void main(uint3 tid : SV_DispatchThreadID) {
+    if (abs(OutputBuffer[0].marker - 8931.0) > 0.5) initialize();
+    GizmoState st = _Tex0[0];
+    uint cmd = (uint)round(st.command);
+    if (cmd == 5u) cmd = 3u;
+    if (cmd == 6u) cmd = 2u;
+    if (cmd < 2u || cmd > 4u) return;
+    uint handle = (uint)round(st.active_handle);
+    float2 deltaPx = (st.pointer - st.drag_start) * labViewportSize();
+
+    float3 activeRot = 0.0;
+    for (uint scan = 0u; scan < 16u; ++scan)
+        if (_Tex1[scan].object_id == (uint)round(st.active_id)) activeRot = _Tex1[scan].rotation;
+    uint rotationAxis = handle > 0u ? min(handle - 1u, 2u) : 0u;
+    float ringRadius = 42.0 + 12.0 * (float)rotationAxis;
+    float pointerAngle = labRotationPointerAngle(st.pointer, st.pivot, rotationAxis, st.local_space > 0.5, activeRot, ringRadius);
+    float angle = atan2(sin(pointerAngle - st.start_angle), cos(pointerAngle - st.start_angle));
+    float uniformScale = max(0.05, 1.0 + (deltaPx.x - deltaPx.y) / 120.0);
+
+    for (uint objectIndex = 0u; objectIndex < 16u; ++objectIndex) {
+        uint objectId=_Tex1[objectIndex].object_id;uint mask=(uint)round(st.selection_mask);
+        if (objectId == 0u || objectId>24u || (mask&(1u<<(objectId-1u)))==0u) continue;
+        SceneObject base = _Tex1[objectIndex];
+        SceneObject o = base;
+        if (cmd == 4u) { OutputBuffer[objectIndex] = base; continue; }
+
+        if ((uint)round(st.mode) == 0u) {
+            float3 move = 0.0;
+            if (handle <= 3u) {
+                float3 axis = labAxisWorld(handle-1u, st.local_space>0.5, activeRot);
+                float2 screen = labAxisScreenVector(st.pivot, handle-1u, st.local_space>0.5, activeRot);
+                // The rendered handle has a fixed screen length, so use a
+                // fixed pixel-to-world sensitivity as well. Dividing by the
+                // projection of one world unit becomes singular for an axis
+                // aimed toward the camera and causes enormous jumps.
+                move = axis * dot(deltaPx, normalize(screen)) / 90.0;
+            } else {
+                uint axisA = handle == 4u ? 0u : (handle == 5u ? 1u : 2u);
+                uint axisB = handle == 4u ? 1u : (handle == 5u ? 2u : 0u);
+                float3 worldA=labAxisWorld(axisA,st.local_space>0.5,activeRot),worldB=labAxisWorld(axisB,st.local_space>0.5,activeRot);
+                float2 screenA=labAxisScreenVector(st.pivot,axisA,st.local_space>0.5,activeRot),screenB=labAxisScreenVector(st.pivot,axisB,st.local_space>0.5,activeRot);
+                float2 dirA=normalize(screenA),dirB=normalize(screenB);float det=dirA.x*dirB.y-dirA.y*dirB.x;
+                if(abs(det)>0.08){float a=(deltaPx.x*dirB.y-deltaPx.y*dirB.x)/det/90.0;float b=(dirA.x*deltaPx.y-dirA.y*deltaPx.x)/det/90.0;move=worldA*a+worldB*b;}
+            }
+            o.position = base.position + move;
+        } else if ((uint)round(st.mode) == 1u && handle <= 3u) {
+            float3 axis = labAxisWorld(handle-1u, st.local_space>0.5, activeRot);
+            o.position = st.pivot + rotateAround(base.position - st.pivot, axis, angle);
+            if (handle == 1u) o.rotation.x = base.rotation.x + degrees(angle);
+            if (handle == 2u) o.rotation.y = base.rotation.y + degrees(angle);
+            if (handle == 3u) o.rotation.z = base.rotation.z + degrees(angle);
+        } else if ((uint)round(st.mode) == 2u) {
+            if (handle == 7u) {
+                o.scale = base.scale * uniformScale;
+                o.position = st.pivot + (base.position - st.pivot) * uniformScale;
+            } else if (handle <= 3u) {
+                float3 axis = labAxisWorld(handle-1u, st.local_space>0.5, activeRot);
+                float2 screen=labAxisScreenVector(st.pivot,handle-1u,st.local_space>0.5,activeRot);
+                float scaleFactor=max(0.05,1.0+dot(deltaPx,normalize(screen))/90.0);
+                float3 rel = base.position - st.pivot;
+                o.position = st.pivot + rel + axis * dot(rel, axis) * (scaleFactor - 1.0);
+                if (handle == 1u) o.scale.x = base.scale.x * scaleFactor;
+                if (handle == 2u) o.scale.y = base.scale.y * scaleFactor;
+                if (handle == 3u) o.scale.z = base.scale.z * scaleFactor;
+            }
+        }
+        OutputBuffer[objectIndex] = o;
+    }
+}

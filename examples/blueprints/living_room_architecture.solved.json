@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "scene": "living_room_architecture",
+  "record_hash": "f3f6b193fee1c905",
+  "topology_hash": "bd280e1298e16c45",
+  "records": [
+    {
+      "id": "oak_floor",
+      "kind": "floor",
+      "seed": 3505864267,
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "plaster_back",
+      "kind": "wall_back",
+      "seed": 1542489934,
+      "position": [
+        0.0,
+        0.0,
+        -3.52
+      ]
+    },
+    {
+      "id": "plaster_left",
+      "kind": "wall_side",
+      "seed": 1692200012,
+      "position": [
+        -4.32,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "plaster_right",
+      "kind": "wall_side",
+      "seed": 4285397465,
+      "position": [
+        4.32,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "ceiling_plane",
+      "kind": "ceiling",
+      "seed": 1465455629,
+      "position": [
+        0.001,
+        3.56,
+        0.0
+      ]
+    },
+    {
+      "id": "picture_window",
+      "kind": "window",
+      "seed": 1322666062,
+      "position": [
+        -1.25,
+        0.78,
+        -3.39
+      ]
+    },
+    {
+      "id": "entry_door",
+      "kind": "doorway",
+      "seed": 3566631340,
+      "position": [
+        3.35,
+        0.0,
+        -3.62
+      ]
+    },
+    {
+      "id": "main_rug",
+      "kind": "rug",
+      "seed": 355363093,
+      "position": [
+        -0.2,
+        0.125,
+        0.2
+      ]
+    },
+    {
+      "id": "pendant_a",
+      "kind": "ceiling_light",
+      "seed": 3150410901,
+      "position": [
+        -1.25,
+        2.95,
+        0.15
+      ]
+    },
+    {
+      "id": "pendant_b",
+      "kind": "ceiling_light",
+      "seed": 3100078044,
+      "position": [
+        1.15,
+        2.95,
+        0.15
+      ]
+    },
+    {
+      "id": "art_left",
+      "kind": "art_frame",
+      "seed": 1436880710,
+      "position": [
+        -2.75,
+        1.45,
+        -3.38
+      ]
+    },
+    {
+      "id": "art_right",
+      "kind": "art_frame",
+      "seed": 3568190715,
+      "position": [
+        2.0,
+        1.45,
+        -3.38
+      ]
+    }
+  ]
+}

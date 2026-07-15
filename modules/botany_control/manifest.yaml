@@ -1,0 +1,48 @@
+name: "Botany Control"
+version: "0.1"
+mode: generator
+resolution: [320, 128]
+
+# Master macro node — drive the whole bouquet from one place. Wire control outputs to
+# botany_layout (seed/spread), botany_render (warp/twist/hue_speed), botany_frame (drift) via ref().
+
+buffers:
+  - name: ctrl
+    structured: true
+    element_size: 32
+    element_count: 1
+
+parameters:
+  - { name: master_seed,       display: "Master Seed", type: float, min: 0.0, max: 50.0, default: 3.0, group: "Macros" }
+  - { name: warp_macro,        display: "Warp",        type: float, min: 0.0, max: 1.0,  default: 0.0, group: "Macros" }
+  - { name: twist_macro,       display: "Twist",       type: float, min: 0.0, max: 1.0,  default: 0.0, group: "Macros" }
+  - { name: spread_macro,      display: "Spread",      type: float, min: 0.4, max: 2.0,  default: 1.0, group: "Macros" }
+  - { name: hue_speed_macro,   display: "Hue Speed",   type: float, min: 0.0, max: 1.0,  default: 0.5, group: "Macros" }
+  - { name: frame_drift_macro, display: "Frame Drift", type: float, min: 0.0, max: 1.0,  default: 0.5, group: "Macros" }
+  - { name: bloom_macro,       display: "Bloom",       type: float, min: 0.0, max: 1.0,  default: 0.0, group: "Macros" }
+
+passes:
+  - name: compute
+    shader: compute.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ctrl"
+  - name: display
+    shader: display.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:ctrl" }
+
+control_outputs:
+  - { name: seed,        buffer: ctrl, element: 0, field_offset: 0,  description: "Master seed 0-50" }
+  - { name: warp,        buffer: ctrl, element: 0, field_offset: 4,  description: "Warp/melt macro 0-1" }
+  - { name: twist,       buffer: ctrl, element: 0, field_offset: 8,  description: "Twist macro 0-1" }
+  - { name: spread,      buffer: ctrl, element: 0, field_offset: 12, description: "Spread 0.4-2.0" }
+  - { name: hue_speed,   buffer: ctrl, element: 0, field_offset: 16, description: "Hue cycle speed 0-1" }
+  - { name: frame_drift, buffer: ctrl, element: 0, field_offset: 20, description: "Frame drift 0-1" }
+  - { name: bloom,       buffer: ctrl, element: 0, field_offset: 24, description: "Bloom/open macro 0-1" }
+
+outputs:
+  - { name: "Control", pass: display }

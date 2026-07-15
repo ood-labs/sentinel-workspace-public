@@ -1,0 +1,186 @@
+version: 1
+kinds:
+  floor:
+    id: 0
+    display: "Oak Floor"
+    dimensions: { width: 8.80, height: 0.12, depth: 7.20 }
+    footprint_radius: 0.0001001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.12, 0.0], normal: [0.0, 1.0, 0.0] }
+  wall_back:
+    id: 1
+    display: "Back Wall"
+    dimensions: { width: 8.80, height: 3.60, depth: 0.16 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 3.60, 0.0], normal: [0.0, 1.0, 0.0] }
+  wall_side:
+    id: 2
+    display: "Side Wall"
+    dimensions: { width: 0.16, height: 3.60, depth: 7.20 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 3.60, 0.0], normal: [0.0, 1.0, 0.0] }
+  ceiling:
+    id: 3
+    display: "Ceiling"
+    dimensions: { width: 8.80, height: 0.10, depth: 7.20 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.10, 0.0], normal: [0.0, 1.0, 0.0] }
+  window:
+    id: 4
+    display: "Window"
+    dimensions: { width: 3.20, height: 2.15, depth: 0.10 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 2.15, 0.0], normal: [0.0, 1.0, 0.0] }
+  doorway:
+    id: 5
+    display: "Doorway"
+    dimensions: { width: 1.15, height: 2.45, depth: 0.18 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 2.45, 0.0], normal: [0.0, 1.0, 0.0] }
+  sofa:
+    id: 6
+    display: "Deep Sofa"
+    dimensions: { width: 3.15, height: 1.05, depth: 1.05 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 1.05, 0.0], normal: [0.0, 1.0, 0.0] }
+  armchair:
+    id: 7
+    display: "Lounge Chair"
+    dimensions: { width: 1.10, height: 1.05, depth: 1.12 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 1.05, 0.0], normal: [0.0, 1.0, 0.0] }
+  coffee_table:
+    id: 8
+    display: "Coffee Table"
+    dimensions: { width: 1.75, height: 0.43, depth: 0.88 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.43, 0.0], normal: [0.0, 1.0, 0.0] }
+  side_table:
+    id: 9
+    display: "Side Table"
+    dimensions: { width: 0.56, height: 0.58, depth: 0.56 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.58, 0.0], normal: [0.0, 1.0, 0.0] }
+  media_console:
+    id: 10
+    display: "Media Console"
+    dimensions: { width: 2.65, height: 0.58, depth: 0.48 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.58, 0.0], normal: [0.0, 1.0, 0.0] }
+  television:
+    id: 11
+    display: "Television"
+    dimensions: { width: 2.25, height: 1.28, depth: 0.10 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 1.28, 0.0], normal: [0.0, 1.0, 0.0] }
+  bookshelf:
+    id: 12
+    display: "Bookshelf"
+    dimensions: { width: 1.35, height: 2.35, depth: 0.38 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 2.35, 0.0], normal: [0.0, 1.0, 0.0] }
+  rug:
+    id: 13
+    display: "Woven Rug"
+    dimensions: { width: 4.70, height: 0.035, depth: 3.20 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.035, 0.0], normal: [0.0, 1.0, 0.0] }
+  floor_lamp:
+    id: 14
+    display: "Floor Lamp"
+    dimensions: { width: 0.55, height: 1.85, depth: 0.55 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      light_center: { position: [0.0, 1.62, 0.0], normal: [0.0, 0.0, 1.0] }
+  table_lamp:
+    id: 15
+    display: "Table Lamp"
+    dimensions: { width: 0.38, height: 0.62, depth: 0.38 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      light_center: { position: [0.0, 0.48, 0.0], normal: [0.0, 0.0, 1.0] }
+  plant:
+    id: 16
+    display: "Leafy Plant"
+    dimensions: { width: 0.85, height: 1.45, depth: 0.85 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      crown_center: { position: [0.0, 1.05, 0.0], normal: [0.0, 1.0, 0.0] }
+  art_frame:
+    id: 17
+    display: "Art Frame"
+    dimensions: { width: 1.05, height: 1.35, depth: 0.08 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 1.35, 0.0], normal: [0.0, 1.0, 0.0] }
+  speaker:
+    id: 18
+    display: "Tower Speaker"
+    dimensions: { width: 0.32, height: 1.05, depth: 0.34 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 1.05, 0.0], normal: [0.0, 1.0, 0.0] }
+  ottoman:
+    id: 19
+    display: "Ottoman"
+    dimensions: { width: 0.92, height: 0.42, depth: 0.72 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.42, 0.0], normal: [0.0, 1.0, 0.0] }
+  cushion:
+    id: 20
+    display: "Cushion"
+    dimensions: { width: 0.52, height: 0.18, depth: 0.52 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.18, 0.0], normal: [0.0, 1.0, 0.0] }
+  decor:
+    id: 21
+    display: "Decor Object"
+    dimensions: { width: 0.24, height: 0.42, depth: 0.24 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.42, 0.0], normal: [0.0, 1.0, 0.0] }
+  ceiling_light:
+    id: 22
+    display: "Pendant Light"
+    dimensions: { width: 0.72, height: 0.55, depth: 0.72 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      light_center: { position: [0.0, 0.38, 0.0], normal: [0.0, -1.0, 0.0] }

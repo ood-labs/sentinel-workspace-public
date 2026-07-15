@@ -1,0 +1,17 @@
+name: "Botany BG"
+version: "0.1"
+mode: generator
+resolution: [720, 1104]
+
+# Flat violet ground plate (opaque).
+
+parameters:
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 1.0, default: 0.3, group: "Look" }
+
+passes:
+  - name: bg
+    shader: bg.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "BG", pass: bg }

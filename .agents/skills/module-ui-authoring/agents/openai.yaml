@@ -1,0 +1,4 @@
+interface:
+  display_name: "Module UI Authoring"
+  short_description: "Build scientific interactive Module interfaces"
+  default_prompt: "Use $module-ui-authoring to build a responsive interactive UI inside a Sentinel Module."

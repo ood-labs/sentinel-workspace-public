@@ -1,0 +1,28 @@
+name: "Living Tableau Compositor"
+version: "1.0"
+mode: generator
+resolution: [1080,1080]
+inputs:
+  - { name: "Neural", slot: 0, required: true }
+  - { name: "Lattice", slot: 1, required: true }
+  - { name: "Signal", slot: 2, required: true }
+  - { name: "Orbit", slot: 3, required: true }
+parameters:
+  - { name: phase, display: "Master Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Transport" }
+  - { name: neural_gain, type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layers" }
+  - { name: lattice_gain, type: float, min: 0.0, max: 2.0, default: 0.9, group: "Layers" }
+  - { name: signal_gain, type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layers" }
+  - { name: orbit_gain, type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layers" }
+  - { name: show_neural, type: bool, default: true, flags: button, group: "Layers" }
+  - { name: show_lattice, type: bool, default: true, flags: button, group: "Layers" }
+  - { name: show_signal, type: bool, default: true, flags: button, group: "Layers" }
+  - { name: show_orbit, type: bool, default: true, flags: button, group: "Layers" }
+  - { name: background_color, type: color, default: [0.002,0.004,0.007], group: "Grade" }
+  - { name: exposure, type: float, min: 0.2, max: 3.0, default: 1.25, group: "Grade" }
+  - { name: gamma, type: float, min: 0.5, max: 2.2, default: 1.0, group: "Grade" }
+passes:
+  - name: comp
+    shader: comp.hlsl
+    target: cs_5_0
+    inputs: [ { slot: 0, source: "input:0" }, { slot: 1, source: "input:1" }, { slot: 2, source: "input:2" }, { slot: 3, source: "input:3" } ]
+outputs: [ { name: "Living Tableau", pass: comp } ]

@@ -1,0 +1,18 @@
+name: "KidPix Stamp Atlas"
+version: "0.1"
+mode: generator
+resolution: [1024, 1024]
+working_format: RGBA8
+output_format: RGBA8
+
+# Bakes a 4x4 grid of Kid Pix rubber-stamp icons (heart/star/ghost/lightbulb/sun/fish/flower/
+# smiley/diamond/moon/cloud/tree/arrow/house/drop/spiral). rgb = icon color, a = coverage.
+# Consumed by kidpix_swarm as a stamp atlas. Static.
+
+passes:
+  - name: atlas
+    shader: atlas.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "Atlas", pass: atlas }

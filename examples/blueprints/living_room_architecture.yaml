@@ -1,0 +1,26 @@
+metadata:
+  name: living_room_architecture
+  bounds: { min: [-4.6, 0.0, -3.8], max: [4.6, 3.8, 3.8] }
+  instance_budget: 96
+anchors:
+  - id: room_origin
+    position: [0.0, 0.0, 0.0]
+    normal: [0.0, 1.0, 0.0]
+clearances:
+  - id: entry_path
+    min: [2.75, 0.0, 0.40]
+    max: [4.10, 2.4, 3.35]
+nodes:
+  - { id: oak_floor, kind: floor, position: [0.0, 0.0, 0.0] }
+  - { id: plaster_back, kind: wall_back, position: [0.0, 0.0, -3.52] }
+  - { id: plaster_left, kind: wall_side, position: [-4.32, 0.0, 0.0] }
+  - { id: plaster_right, kind: wall_side, position: [4.32, 0.0, 0.0] }
+  - { id: ceiling_plane, kind: ceiling, position: [0.001, 3.56, 0.0] }
+  - { id: picture_window, kind: window, position: [-2.45, 0.72, -3.39] }
+  - { id: entry_door, kind: doorway, position: [4.21, 0.0, 1.85], rotation_y: -1.5708 }
+  - { id: main_rug, kind: rug, position: [-0.30, 0.125, 0.45], rotation_y: -0.035 }
+  - { id: pendant_a, kind: ceiling_light, position: [-1.20, 2.82, 0.35] }
+  - { id: pendant_b, kind: ceiling_light, position: [1.20, 2.82, 0.35] }
+  - { id: art_left, kind: art_frame, position: [-1.60, 1.32, 3.38], rotation_y: 3.14159 }
+  - { id: art_right, kind: art_frame, position: [1.10, 1.32, 3.38], rotation_y: 3.14159 }
+  - { id: accent_front, kind: wall_back, position: [0.0, 0.0, 3.52], rotation_y: 3.14159 }

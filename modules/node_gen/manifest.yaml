@@ -1,0 +1,60 @@
+name: "Node Gen"
+version: "1.0"
+mode: generator
+resolution: [1920, 1080]
+working_format: RGBA16F
+
+inputs:
+  - { name: "Field", slot: 0, required: true }
+
+buffers:
+  - name: nodes
+    structured: true
+    element_size: 32
+    element_count: 128
+
+parameters:
+  - name: placement_mode
+    display: "Placement"
+    type: enum
+    options: [Random, Peaks, Pits, Ring, Hybrid]
+    default: 4
+    flags: button_grid
+    group: "Placement"
+  - { name: node_count, display: "Node Count", type: int, min: 0, max: 128, default: 60, group: "Placement" }
+  - { name: seed, display: "Seed", type: int, min: 0, max: 63, default: 5, group: "Placement" }
+  - { name: ring_radius, display: "Ring Radius", type: float, min: 0.05, max: 0.5, default: 0.34, group: "Placement" }
+  - { name: jitter, display: "Jitter", type: float, min: 0.0, max: 0.3, default: 0.04, group: "Placement" }
+  - { name: ascent_steps, display: "Ascent Steps", type: int, min: 0, max: 16, default: 7, group: "Peaks" }
+  - { name: ascent_rate, display: "Ascent Rate", type: float, min: 0.0, max: 0.2, default: 0.05, group: "Peaks" }
+  - { name: size_min, display: "Size Min", type: float, min: 0.005, max: 0.1, default: 0.012, group: "Style" }
+  - { name: size_max, display: "Size Max", type: float, min: 0.01, max: 0.2, default: 0.05, group: "Style" }
+  - { name: intensity, display: "Intensity", type: float, min: 0.0, max: 3.0, default: 1.0, group: "Style" }
+  - { name: color_mix, display: "Color Mix", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Style" }
+
+passes:
+  - name: compute_nodes
+    shader: compute_nodes.hlsl
+    target: cs_5_0
+    dispatch: [2, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:nodes"
+    inputs:
+      - { slot: 0, source: "input:0" }
+  - { name: preview, shader: preview_nodes.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:nodes" } ] }
+
+outputs:
+  - { name: "Preview", pass: preview }
+
+data_outputs:
+  - name: "Nodes"
+    buffer: "nodes"
+    schema:
+      - { name: pos, type: float2 }
+      - { name: radius, type: float }
+      - { name: intensity, type: float }
+      - { name: color_mix, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: active, type: float }

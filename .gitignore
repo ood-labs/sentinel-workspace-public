@@ -1,0 +1,20 @@
+# Machine-local Sentinel state
+captures/
+**/captures/
+**/.sentinel/
+**/shader_cache/
+projects/recovery_*.sentinel
+*.log
+*.previous
+
+# Local provider and reference data
+vision.json
+refs/
+scratch/
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.claude/settings.local.json

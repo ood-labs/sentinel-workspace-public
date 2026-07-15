@@ -1,0 +1,76 @@
+name: "Industrial Surface Sampler"
+version: "1.0"
+mode: generator
+resolution: [512, 256]
+working_format: RGBA8
+
+data_inputs:
+  - name: "StructParts"
+    slot: 0
+    schema:
+      - { name: center, type: float3 }
+      - { name: axis, type: float3 }
+      - { name: up, type: float3 }
+      - { name: half_extents, type: float3 }
+      - { name: length, type: float }
+      - { name: radius, type: float }
+      - { name: kind, type: float }
+      - { name: material, type: float }
+      - { name: seed, type: float }
+      - { name: group, type: float }
+      - { name: active, type: float }
+      - { name: spare, type: float }
+
+buffers:
+  - name: samples
+    structured: true
+    element_size: 64
+    element_count: 2048
+
+parameters:
+  - { name: max_parent_parts, display: "Max Parent Parts", type: int, min: 1, max: 1024, default: 160, group: "Sampling" }
+  - { name: sample_density, display: "Sample Density", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Sampling" }
+  - { name: edge_bias, display: "Edge Bias", type: float, min: 0.0, max: 2.0, default: 1.15, group: "Sampling" }
+  - { name: joint_bias, display: "Joint Bias", type: float, min: 0.0, max: 1.0, default: 0.58, group: "Sampling" }
+  - { name: underside_bias, display: "Underside Bias", type: float, min: 0.0, max: 1.0, default: 0.38, group: "Sampling" }
+  - { name: include_columns, display: "Columns", type: bool, default: true, flags: button, group: "Include" }
+  - { name: include_beams, display: "Beams", type: bool, default: true, flags: button, group: "Include" }
+  - { name: include_decks, display: "Decks", type: bool, default: true, flags: button, group: "Include" }
+  - { name: include_braces, display: "Braces", type: bool, default: true, flags: button, group: "Include" }
+  - { name: include_pipes, display: "Pipes", type: bool, default: false, flags: button, group: "Include" }
+  - { name: seed, display: "Seed", type: int, min: 0, max: 999, default: 23, group: "Sampling" }
+  - { name: preview_scale, display: "Preview Scale", type: float, min: 0.01, max: 0.25, default: 0.06, group: "Preview" }
+  - { name: preview_offset, display: "Preview Offset", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [0.0, 0.0], group: "Preview" }
+
+passes:
+  - name: compute
+    shader: surface.hlsl
+    target: cs_5_0
+    dispatch: [32, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:samples"
+    inputs:
+      - { slot: 0, source: "data:0" }
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:samples" }
+
+outputs:
+  - { name: "Preview", pass: preview }
+
+data_outputs:
+  - name: "SurfacePoints"
+    buffer: "samples"
+    schema:
+      - { name: anchor, type: float3 }
+      - { name: normal, type: float3 }
+      - { name: tangent, type: float3 }
+      - { name: uv, type: float2 }
+      - { name: parent_kind, type: float }
+      - { name: parent_id, type: float }
+      - { name: seed, type: float }
+      - { name: weight, type: float }
+      - { name: active, type: float }

@@ -1,0 +1,17 @@
+* text=auto
+
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.sentinel text eol=lf
+*.hlsl text eol=lf
+*.hlsli text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.mp4 binary

@@ -1,0 +1,25 @@
+name: "Botany Frame"
+version: "0.1"
+mode: generator
+resolution: [720, 1104]
+
+# Translucent crop box that drifts across the frame. Premultiplied-alpha plate; drift driveable.
+
+parameters:
+  - { name: loop_period, display: "Loop Period", type: float, min: 3.0, max: 30.0, default: 8.0, group: "Motion" }
+  - { name: frame_drift, display: "Frame Drift", type: float, min: 0.0, max: 1.0,  default: 0.5, group: "Motion" }
+  - { name: drift_amp,   display: "Drift Amp",   type: float, min: 0.0, max: 0.4,  default: 0.16, group: "Motion" }
+
+  - { name: frame_x0,   display: "Frame X0",   type: float, min: 0.0, max: 1.0, default: 0.12, group: "Frame" }
+  - { name: frame_x1,   display: "Frame X1",   type: float, min: 0.0, max: 1.0, default: 0.66, group: "Frame" }
+  - { name: frame_y0,   display: "Frame Y0",   type: float, min: 0.0, max: 1.0, default: 0.12, group: "Frame" }
+  - { name: frame_y1,   display: "Frame Y1",   type: float, min: 0.0, max: 1.0, default: 0.60, group: "Frame" }
+  - { name: frame_fill, display: "Frame Fill", type: float, min: 0.0, max: 1.0, default: 0.40, group: "Frame" }
+
+passes:
+  - name: frame
+    shader: frame.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "Frame", pass: frame }
