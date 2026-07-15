@@ -10,6 +10,14 @@ This workspace is the user-writable Sentinel agent workspace. It is seeded by Se
 
 Sentinel is a GPU-accelerated live video application for performance and interactive visuals. It combines Spout/NDI/camera/image/pattern/video sources, real-time AI generation, tracking, depth, segmentation, object detection, shader modules, and Spout/NDI output.
 
+## Current Status
+
+- Active phase: Phase 1 - Official Examples Modernization (`docs/phases/phase-1-official-examples-modernization.md`).
+- Status: planned; implementation has not started.
+- Next step: run `/plan-audit`, review its findings, then generate the autonomous completion condition with `/slash-goal`.
+- Author and prove changes in this private workspace, then promote verified portable content to the sibling public repository. Do not push without separate authorization.
+- Preserve the existing local Module and project work in progress while executing the phase.
+
 ## First Rule: Discover Live
 
 Do not guess what this install can create. Ask Sentinel.
