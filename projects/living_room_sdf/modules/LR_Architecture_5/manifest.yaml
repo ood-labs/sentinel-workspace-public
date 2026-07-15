@@ -1,7 +1,12 @@
 name: "Living Room Architecture Controls"
-version: "1.0"
+version: "2.0"
 mode: generator
-resolution: [480, 270]
+resolution: [960, 540]
+
+panel:
+  mode: canvas
+  output: "Architecture Plan"
+  resolution: follow_panel
 
 parameters:
   - { name: room_offset, display: "Room Offset X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Room" }
@@ -21,13 +26,38 @@ parameters:
   - { name: art_spread, display: "Art Spread", type: float, min: 0.8, max: 4.5, default: 2.70, group: "Front Wall/Art" }
   - { name: art_height, display: "Art Height", type: float, min: 0.4, max: 2.4, default: 1.32, group: "Front Wall/Art" }
 
+viewport:
+  hint: "Architecture stays a separate data producer. Middle-drag pans the aspect-correct plan; wheel zooms around the pointer. Edit authored dimensions in Properties."
+  interactions: [events]
+  input:
+    pointer: [middle, wheel]
+    gestures: [drag]
+  bindings:
+    - { gesture: middle_drag, action: pan_plan, label: "Pan Architecture Plan" }
+    - { gesture: wheel, action: zoom_plan, label: "Zoom Architecture Plan" }
+  # ui-label: title = ARCHITECTURE PLAN
+  # ui-label: shell = SHELL
+  # ui-label: entry = ENTRY
+  # ui-label: floor = FLOOR
+  # ui-label: art = ART
+  # ui-label: lights = LIGHTS
+  # ui-label: nav = MIDDLE PAN / WHEEL ZOOM
+
 buffers:
+  - { name: editor_state, structured: true, element_size: 32, element_count: 1, persistent: true }
   - name: pnodes
     structured: true
     element_size: 48
     element_count: 13
 
 passes:
+  - name: interaction
+    shader: interaction.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:editor_state"
   - name: emit
     shader: emit_records.hlsl
     target: cs_5_0
@@ -40,9 +70,10 @@ passes:
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:pnodes" }
+      - { slot: 1, source: "buffer:editor_state" }
 
 outputs:
-  - { name: "Architecture Preview", pass: preview }
+  - { name: "Architecture Plan", pass: preview }
 
 data_outputs:
   - name: PNodes
