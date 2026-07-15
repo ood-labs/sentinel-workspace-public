@@ -4,6 +4,24 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$utf8Strict = [System.Text.UTF8Encoding]::new($false, $true)
+
+function Read-Utf8Json([string]$Path) {
+    return [System.IO.File]::ReadAllText($Path, $utf8Strict) | ConvertFrom-Json
+}
+
+function Write-Utf8JsonAtomically([string]$Path, [object]$Value) {
+    $temporary = "$Path.$([guid]::NewGuid().ToString('N')).tmp"
+    try {
+        $json = $Value | ConvertTo-Json -Depth 100
+        [System.IO.File]::WriteAllText($temporary, $json + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
+        [System.IO.File]::Replace($temporary, $Path, $null)
+    } finally {
+        if (Test-Path -LiteralPath $temporary) {
+            Remove-Item -LiteralPath $temporary -Force
+        }
+    }
+}
 
 $galleryFile = Join-Path $WorkspaceRoot $GalleryPath
 if (-not (Test-Path -LiteralPath $galleryFile)) {
@@ -20,12 +38,12 @@ $imports = @(
     @{ Slug = "industrial_lattice";   Project = "projects/industrial_lattice/industrial_lattice.sentinel";   IdMap = @{ post = "post_3" } }
 )
 
-$gallery = Get-Content -Raw -LiteralPath $galleryFile | ConvertFrom-Json
+$gallery = Read-Utf8Json $galleryFile
 $report = @()
 
 foreach ($import in $imports) {
     $sourceFile = Join-Path $WorkspaceRoot $import.Project
-    $source = Get-Content -Raw -LiteralPath $sourceFile | ConvertFrom-Json
+    $source = Read-Utf8Json $sourceFile
     $groups = @($source.graph.nodes | Where-Object { $_.sceneGroup -eq $true })
     if ($groups.Count -ne 1) {
         throw "$($import.Slug) must have exactly one flat Scene Group; found $($groups.Count)"
@@ -41,6 +59,7 @@ foreach ($import in $imports) {
     $pipelineCount = 0
     $parameterCount = 0
     $expressionCount = 0
+    $bypassCount = 0
 
     foreach ($sourcePipelineProperty in $preset[0].pipelineValues.PSObject.Properties) {
         $sourceId = $sourcePipelineProperty.Name
@@ -81,17 +100,27 @@ foreach ($import in $imports) {
         }
     }
 
+    foreach ($sourceBypassProperty in $preset[0].pipelineBypass.PSObject.Properties) {
+        $sourceId = $sourceBypassProperty.Name
+        $galleryId = if ($import.IdMap.ContainsKey($sourceId)) { $import.IdMap[$sourceId] } else { $sourceId }
+        $target = @($gallery.pipelines | Where-Object { $_.id -eq $galleryId })
+        if ($target.Count -ne 1) {
+            throw "$($import.Slug) bypass pipeline '$sourceId' maps to '$galleryId', found $($target.Count) gallery matches"
+        }
+        $target[0].enabled = [bool]$sourceBypassProperty.Value
+        $bypassCount++
+    }
+
     $report += [pscustomobject]@{
         project = $import.Slug
         active_preset = $activePreset
         pipelines_baked = $pipelineCount
         parameters_baked = $parameterCount
         stale_group_expressions_removed = $expressionCount
+        bypass_states_baked = $bypassCount
     }
 }
 
-$json = $gallery | ConvertTo-Json -Depth 100
-[System.IO.File]::WriteAllText($galleryFile, $json + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
+Write-Utf8JsonAtomically $galleryFile $gallery
 
 $report | ConvertTo-Json -Depth 4
-

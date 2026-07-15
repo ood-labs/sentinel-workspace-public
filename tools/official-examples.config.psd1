@@ -79,6 +79,8 @@
             SharedModules = @()
             MinimumSceneGroups = 7
             RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 7
+            RequiresGroupsMux = $true
             MinimumGroupPresets = 0
             MinimumNodePresets = 0
             Exemptions = @('gallery-final-mux', 'scene-group-controls', 'scene-group-presets', 'object-picking')
@@ -101,4 +103,3 @@
         '.txt', '.yaml', '.yml'
     )
 }
-
