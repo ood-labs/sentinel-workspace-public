@@ -142,13 +142,13 @@ Events deliver only while the module's preview is focused; a click on the previe
 
 To verify an events module end to end, read the live diagnostics under `/sentinel/pipelines/<id>/viewport/`: `focused`, `delivered_boundary_count` (grows by 3 per click: press, release, click gesture), `bindings`, `event_overflow_count`, and `capture_owner`. Real input can be injected with `tools/capture_verify/inject_mouse.ps1` (modes: `move`, `path`, `click`, `double_click`, `drag`, `wheel`, `tap`, `tap_series`, `key_hold`; coordinates are Sentinel client-area pixels), and captures of the output confirm the visual result. State writes never exercise this path; only real or injected input does.
 
-## Viewport Persistence, Controls, and Selection
+## Viewport Persistence, Controls, And Selection
 
-Installs at 0.5.31 or newer add four higher-level authoring surfaces on top of raw events, plus the `sentinel_viewport` MCP tool (`info`, `objects`, `selection`, `pick`, `edit`, `state`; every action takes `pipeline`).
+Installs at 0.5.31 or newer add higher-level authoring surfaces on top of raw events, plus the `sentinel_viewport` MCP tool (`info`, `objects`, `selection`, `pick`, `edit`, `state`; every action takes `pipeline`).
 
-### Param gestures: direct manipulation with zero shader code
+### Param gestures
 
-`viewport.param_gestures` binds drags to ordinary parameters: left-drag within `radius` (normalized, in (0, 0.5]) of `position_param`'s current value moves it; right-drag adjusts the optional `rotation_param`. Fields: `id`, `position_param` (`vec2`/`point2D`, required), `rotation_param` (float, optional), `radius` (required), `rotation_scale` (optional). Requires `drag` in `viewport.input.gestures`. Edits preview live and commit once on release as one undo entry. Declare the target parameters `hidden: true` to keep them out of Properties while staying StateTree-addressable for MCP and expressions.
+`viewport.param_gestures` binds drags to ordinary parameters. Left-drag within `radius` of `position_param` moves it; right-drag adjusts the optional `rotation_param`. Declare the target parameters `hidden: true` when the viewport should be their only visible editor. Edits preview live and commit once on release as one undo entry.
 
 ```yaml
 parameters:
@@ -162,9 +162,9 @@ viewport:
     - { id: obj, position_param: obj_pos, rotation_param: obj_rot, radius: 0.075 }
 ```
 
-### Authored controls: shader-rendered UI bound to parameters
+### Authored controls
 
-`viewport.controls` defines hit regions bound to parameters; the host handles the pointer, previews the value through the viewport cbuffer, and commits once on release. Kinds and required parameter types (compile-checked): `slider` (float or int), `button` (`type: button` momentary parameter), `toggle` (bool), `xypad` (`vec2`/`point2D`). `rect` is normalized image coordinates `[x0, y0, x1, y1]`; controls inherit the parameter's range unless they declare their own. Fixture: `tests/fixtures/modules/phase89_controls`.
+`viewport.controls` defines normalized hit regions bound to parameters. The host owns capture, parameter preview, and commit; the Module draws the entire control. Kinds and required types are `slider` (float/int), `button` (button), `toggle` (bool), and `xypad` (`vec2`/`point2D`).
 
 ```yaml
 viewport:
@@ -172,9 +172,11 @@ viewport:
     - { id: mix_slider, kind: slider, param: mix, rect: [0.10, 0.82, 0.48, 0.90], label: "Mix" }
 ```
 
-### Durable state buffers: GPU state that survives save, presets, and undo
+Use `tools/module-ui.ps1` and `knowledge/ui-authoring.md` for the shared scientific UI foundation, generated labels and rectangles, responsive layout, and proof workflow.
 
-`state_buffers` names persistent structured buffers whose declared element range serializes into the project, node presets, and undo payloads, restored through the upload path before processing resumes. `sentinel_viewport action=state pipeline=<id>` reports declared buffers and captured byte counts. Fixture: `tests/fixtures/modules/phase89_scene_big`.
+### Durable state buffers
+
+`state_buffers` names persistent structured buffers whose declared element range serializes into the project, node presets, and undo payloads. Restore happens through the upload path before processing resumes. `sentinel_viewport action=state` reports declared buffers and captured byte counts.
 
 ```yaml
 buffers:
@@ -188,18 +190,37 @@ state_buffers:
       - { name: id, type: uint }
 ```
 
-### Selection and picking: host-owned object selection
+### Selection and picking
 
-Add `selection` to `viewport.interactions` and declare a `selection:` block: `mode` (`single`/`multiple`), `provider` (`ray_query` for descriptor-only picking, `id_buffer` when the scene renders stable object IDs, plus `id_buffer_pass`), `object_buffer` (a structured buffer of descriptors the module fills: `object_id`, transform, bounds, pivot, flags, visibility, selectability), and `result_buffer`. Shaders read selected IDs from `_ViewportSelectionIds` and `_ViewportSelectionMeta` to draw highlights. Fixtures: `phase89_scene_small` (ray query), `phase89_scene_big` (ID buffer).
+Add `selection` to `viewport.interactions` and declare a `selection:` block. `ray_query` uses descriptor-only picking; `id_buffer` uses a stable rendered object-id pass. The object buffer publishes ids, transforms, bounds, pivots, visibility, selectability, and capability flags. Shaders read `_ViewportSelectionIds` and `_ViewportSelectionMeta` to draw highlights.
 
 ### Driving it over MCP
 
-- `sentinel_viewport action=info pipeline=<id>`: interaction surface, controls, selection config, `edit_transaction_active`.
-- `action=objects`: the published descriptors (`max_elements` caps the read).
-- `action=selection` with `selection_action` `get`/`set`/`clear` (`set` requires `ids`).
-- `action=pick x=<nx> y=<ny>`: async pick at normalized coordinates; the tool polls the result and returns the hit.
-- `action=edit object_id=<id> x=<nx> y=<ny>`: a full move transaction (begin at the object's pivot, preview, commit, auto-cancel on failure); pass `phase` explicitly for manual begin/preview/commit/cancel control.
+- `sentinel_viewport action=info`: interaction surface, controls, selection config, and edit transaction state.
+- `action=objects`: published object descriptors.
+- `action=selection` with `selection_action=get|set|clear`.
+- `action=pick x=<nx> y=<ny>`: asynchronous normalized-coordinate pick.
+- `action=edit`: a full begin/preview/commit move transaction, or an explicit four-phase edit.
 - `action=state`: durable state-buffer inventory and captured byte counts.
+
+## Authored Canvas Panels
+
+Installs at 0.5.32 or newer support Phase 89.2 panel presentation:
+
+```yaml
+panel:
+  mode: canvas
+  output: UI
+  resolution: follow_panel
+```
+
+`mode` is `standard` or `canvas`; `resolution` is independently `pipeline` or `follow_panel`. Canvas retains the dock tab but gives every pixel below it to the named authored texture, with no host header, input strip, output tabs, hints, padding, border, scrollbars, or letterboxing. A single-output Canvas may omit `output`; a multi-output Canvas must name it.
+
+`follow_panel` continuously makes the Module's real output extent match the non-zero panel content extent. Each dimension clamps to 64 through 16384. The selected output pass must inherit the root resolution; conflicting per-pass resolution settings fail manifest loading. Hidden/inactive panels retain the last valid extent.
+
+`sentinel_pipeline info` reports `panel.declared_mode`, `effective_mode`, `output`, `resolution_mode`, `content_size`, `render_size`, and resize diagnostics. Users can recover through `Panel Presentation > Follow Module | Standard | Canvas`; project workspaces persist docking, visibility, sizes, anchors, and per-node overrides.
+
+See `knowledge/ui-authoring.md` for the complete shader UI workflow and the Interaction Lab examples.
 
 ## Compile And Reload
 

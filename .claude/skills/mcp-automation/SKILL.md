@@ -52,7 +52,7 @@ start "" "<repo_root>/build/bin/Release/sentinel.exe"
 
 Wait 3-5 seconds for the app to initialize before sending IPC commands.
 
-## MCP Tools (14 multi-action tools)
+## MCP Tools (13 multi-action tools)
 
 All tools use an `action` parameter. Examples:
 
@@ -88,6 +88,7 @@ sentinel_pipeline action="info" pipeline_id="hlslshader_0"
 - **Async compiles**: module shaders compile on a worker thread. Poll `compile_status` for progress and structured errors; `sentinel_app status` shows `busy` + `compiling[]` after a project load; `force_reload` recovers from a compile-error state; `compile_check` validates a project dir without creating a node.
 - **Batch writes**: `sentinel_state set_many` applies many parameter writes in one call with per-path results.
 - **One-call review stills**: `sentinel_capture capture_at` applies overrides, waits for compiles, settles, captures, and restores. Use it instead of hand-rolling set / sleep / capture / set-back chains.
+- **Authored panel proof**: for a Module UI, read `sentinel_pipeline info.panel` and verify declared/effective mode, named output, resolution mode, content size, render size, recreation counts, and deferred-resource count. Canvas/follow-panel behavior ships in 0.5.32+. An immediate capture concurrent with a parameter write is not sufficient proof; require a settled frame plus live interaction/readback.
 - **Runtime proof**: `sentinel_graph profile` reports frame buckets, per-node wall time, graph link counts, PipelineStats, and hotspot reasons. `sentinel_capture proof_bundle` includes `graph_profile.json` plus a Performance section.
 - **Project safety**: `load_project`/`new_project` refuse over unsaved changes unless `confirm: true`; `import_project` merges another .sentinel into the live project with id remap.
 
@@ -250,9 +251,6 @@ NOT display names like "Background Removal" — those won't work.
 
 ### `sentinel_preset` — Identity-aware node presets
 `list` / `save` / `recall` / `update` / `delete` / `rename` / `bundle` / `copy_to_library`. Presets are keyed by node identity, discoverable by pipeline or identity, saved to library or project scope (plus a bundled scope for presets that travel with a show), and support grouped compound-safe param selection, `include_engine_params`, and strict or loose recall onto compatible nodes.
-
-### `sentinel_viewport` — Authored viewport inspection and transactions
-`info` / `objects` / `selection` (with `selection_action` get/set/clear, `set` needs `ids`) / `pick` (`x`/`y` normalized, async result polled for you) / `edit` (`object_id` + target `x`/`y` runs a begin/preview/commit move transaction with auto-cancel; pass `phase` for manual control) / `state` (durable state-buffer inventory). Every action takes `pipeline`. Verified end to end: pick returns the hit `object_id` at 1-frame latency, and an `edit` commit lands in the module's bound parameters (including `hidden: true` gesture params). Requires builds at 0.5.31 or newer.
 
 ### `sentinel_expression` — Typed ref() parameter drivers
 `set` / `get` / `clear` / `list`. Always use this for expression drivers; `sentinel_state set` with a literal `=ref(...)` string writes a value without registering the expression engine binding.

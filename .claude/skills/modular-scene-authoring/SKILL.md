@@ -10,6 +10,8 @@ Build a scene as a graph of small, semantic Module nodes that pass typed data an
 
 For manifest syntax, HLSL compiler name mappings, structured buffer I/O, and hot-reload mechanics, use the `module-authoring` skill and `docs/knowledge/module-pipeline.md`. This skill is about the workflow and graph decomposition on top of those mechanics.
 
+If one node is meant to be a complete control surface, editor, HUD, or dashboard, use the `module-ui-authoring` skill for that node. A UI Module can declare a full-bleed Canvas and `follow_panel` resolution while remaining one semantic node in the larger scene graph.
+
 In-repo modular graphs worth reading before starting: `shaders/projects/mux_demo/`, `projects/switcher_demo.sentinel`, `shaders/projects/hstack_3/`, `shaders/projects/compositor/`.
 
 ---

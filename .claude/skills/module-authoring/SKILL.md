@@ -403,6 +403,23 @@ passes:
 
 ## Camera Feature Integration
 
+## Authored UI And Canvas Panels
+
+When a Module is an interface, editor, dashboard, spline tool, or gizmo rather than only an effect, use the `module-ui-authoring` skill and read `knowledge/ui-authoring.md`. The shared `modules/_shared/ui/sui_v2.hlsli` foundation provides normalized layout, Scientifica typography, monochrome controls, and generated manifest-aligned hit rectangles through `tools/module-ui.ps1`.
+
+Sentinel 0.5.32 and newer add the independent panel presentation contract:
+
+```yaml
+panel:
+  mode: canvas
+  output: UI
+  resolution: follow_panel
+```
+
+Canvas removes all host chrome below the dock tab. `follow_panel` changes the Module's real output size to the current panel content extent. A multi-output Canvas must name `output`, and that output pass must inherit root resolution. Inspect `sentinel_pipeline info` and require `panel.content_size` and `panel.render_size` to converge before calling the result responsive.
+
+Keep authored UI Module-only unless a new host capability is explicitly requested. Do not add native widgets just to reproduce a shader-authored visual treatment.
+
 Add `camera` to features for fly camera (WASD + right-click drag in viewport):
 
 ```yaml
@@ -412,6 +429,22 @@ features: [math3d, noise, camera]
 ```
 
 Provides in cbuffer: `_ViewMatrix`, `_ProjMatrix`, `_ViewProjMatrix`, `_InvViewProjMatrix`, `_CameraPos`, `_CameraNear`, `_CameraFar`, `_CameraFOV`.
+
+The rig supports fly and orbit modes (`camera_mode` parameter; `Tab` toggles while the preview interaction is active). Camera-feature modules also expose a `camera_ref` parameter: point it at a `camera` node to drive this module from a shared wireless rig (local camera rows lock while bound; a group's single contained `camera` node binds members automatically). A `camswitch` node cuts or blends between camera nodes for show control.
+
+Declare viewport behavior in the manifest with an optional `viewport:` block:
+
+```yaml
+viewport:
+  hint: "RMB=look, WASD=move"      # shown in the preview OUTPUT row
+  interactions: [camera]            # validated: mouse | pan_zoom | camera
+```
+
+Pan/zoom mouse handling and the hint row follow the declared interactions, so a module without `pan_zoom` never receives blind `pan_x`/`pan_y`/`zoom` writes. Values publish at `/sentinel/pipelines/<id>/viewport/hint` and `/viewport/interactions`.
+
+For ordered pointer/keyboard/gesture events in shaders (clicks, key pulses, drags with capture semantics), add `events` to `interactions` and declare interests under `viewport.input` plus help `bindings`; the compiler then injects `_ViewportEventCount`, `_ViewportEvents[]`, pointer/key state globals, and the `ViewportKeyDown`/`ViewportButtonDown`/`ViewportModifierDown` helpers. Available on builds 0.5.30 and newer; `_Mouse` remains the simple fallback.
+
+Three verified gotchas: `bindings[].gesture` tokens differ from `input.gestures` tokens (`left_click`/`left_drag`/..., not `click`/`drag`); event positions are normalized preview coordinates matching your pass `uv`; and modules cook at an uncapped rate far above the display rate, so decay/accumulation MUST scale by `_DeltaTime` (`energy *= pow(k, _DeltaTime * 60.0)`), otherwise event visuals vanish within milliseconds and events appear "not to arrive". The proven pass structure is a `dispatch: [1,1,1]` event-reduction pass writing a persistent state buffer plus generation counter, with full-res passes consuming derived state. Full token lists, the frozen v1 event ABI, event type/phase/code tables, and router priority live in `docs/knowledge/module-pipeline.md` (Authored Viewport Events); the workspace module `modules/click_ripples/` is a complete worked example.
 
 For ray-marched scenes, generate rays from camera. **Must Y-flip for DX NDC**:
 ```hlsl

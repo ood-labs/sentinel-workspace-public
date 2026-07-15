@@ -1,0 +1,120 @@
+{
+  "data": {
+    "frame": {
+      "frame_index": 17479596,
+      "input_ms": 0.8909000158309937,
+      "output_ms": 0.23469999432563785,
+      "pipeline_ms": 0.13120000064373016,
+      "present_ms": 0.0,
+      "total_ms": 16.658999755978584,
+      "ui_present_ms": 15.402199745178224
+    },
+    "hotspots": [],
+    "node_count": 4,
+    "nodes": [
+      {
+        "avg_frame_ms": 0.0,
+        "enabled": true,
+        "entity_id": "Gizmo_Lab",
+        "fps": 59.96138381958008,
+        "frame_index": 17479596,
+        "frame_time_ms": 0.0,
+        "frames_processed": 10392,
+        "healthy": true,
+        "hotspot_reasons": [],
+        "link_counts": {
+          "data_incoming": 0,
+          "data_outgoing": 0,
+          "incoming": 0,
+          "outgoing": 0
+        },
+        "name": "Gizmo_Lab",
+        "output_freshness_counter": 10392,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "module",
+        "wall_time_ms": 0.0241
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "enabled": true,
+        "entity_id": "UI_Kit",
+        "fps": 59.96138381958008,
+        "frame_index": 17479596,
+        "frame_time_ms": 0.0,
+        "frames_processed": 10393,
+        "healthy": true,
+        "hotspot_reasons": [],
+        "link_counts": {
+          "data_incoming": 0,
+          "data_outgoing": 0,
+          "incoming": 0,
+          "outgoing": 0
+        },
+        "name": "UI_Kit",
+        "output_freshness_counter": 10393,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "module",
+        "wall_time_ms": 0.0191
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "enabled": true,
+        "entity_id": "Spline_Editor",
+        "fps": 59.96138381958008,
+        "frame_index": 17479596,
+        "frame_time_ms": 0.0,
+        "frames_processed": 10392,
+        "healthy": true,
+        "hotspot_reasons": [],
+        "link_counts": {
+          "data_incoming": 0,
+          "data_outgoing": 1,
+          "incoming": 0,
+          "outgoing": 1
+        },
+        "name": "Spline_Editor",
+        "output_freshness_counter": 10392,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "module",
+        "wall_time_ms": 0.0182
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "enabled": true,
+        "entity_id": "Spline_Output",
+        "fps": 59.96138381958008,
+        "frame_index": 17479596,
+        "frame_time_ms": 0.0,
+        "frames_processed": 10393,
+        "healthy": true,
+        "hotspot_reasons": [],
+        "link_counts": {
+          "data_incoming": 1,
+          "data_outgoing": 0,
+          "incoming": 1,
+          "outgoing": 0
+        },
+        "name": "Spline_Output",
+        "output_freshness_counter": 10393,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "module",
+        "wall_time_ms": 0.0069
+      }
+    ],
+    "notes": [
+      "v1 profiler uses CPU wall-clock timings around graph node process() calls.",
+      "GPU kernel, CPU readback, inference, queue wait, and synchronization buckets are not separated yet."
+    ],
+    "sort_by": "wall_time_ms",
+    "summary": true
+  },
+  "status": "ok"
+}

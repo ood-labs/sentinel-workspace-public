@@ -71,8 +71,17 @@ Shading and generative tools:
 Scene system and sequencing:
 
 - `conductor`: musical and timecode clocks, cues, macros, and quantized triggers published as control outputs. Loads cue sheets through `sentinel_conductor`. See `motion-choreography.md`.
-- `mux`: real-time select-1-of-N video switch (`selected`), with `solo_upstream` auto-holding non-selected StreamDiff variants. See `scene-system.md`.
+- `mux`: real-time select-1-of-N video switch (`selected`), with `solo_upstream` auto-holding non-selected StreamDiff variants. In `source_mode=Groups` it becomes the Scene Switcher, collecting Scene Groups wirelessly with cuts, crossfades, and OSC look triggers. See `scene-system.md`.
+- `groupoutput`: Scene Group endpoint node that marks a group's final texture and resolution/fit for Scene Switcher collection. See `scene-system.md`.
 - `atlas`: multi-pass still bank collecting aligned color/segmentation/depth/data columns per captured still, with a self-timing capture cycle and a `Slot Occupancy` data pin. See `scene-system.md`.
+- `camera`: wireless fly/orbit camera rig (control node). Camera-capable modules bind via `camera_ref` or through their Scene Group. See `scene-system.md`.
+- `camswitch`: Camera Switcher cutting or blending between camera nodes, with per-camera OSC triggers. See `scene-system.md`.
+
+Presets: the `sentinel_preset` tool (0.5.29+) saves, recalls, and manages identity-aware per-node presets in library, project, or bundled scope. Verified call shapes:
+
+- `save` REQUIRES an explicit selection: `{"action":"save","pipeline":"<id>","name":"<name>","scope":"library","params":["decay","splat_gain"]}` (params and/or groups; there is no save-everything default).
+- Preset identity derives from the node type and module project (`module:click_ripples`), so presets follow the module, not the instance. `list` filters by `pipeline` or `identity`.
+- `recall` takes the preset name or id plus the target `pipeline` and returns `applied[]` and `skipped[]`. `loose: true` recalls onto a different node by matching parameter names, and errors loudly (`no preset parameters applied`) when nothing matches.
 
 Utility and output:
 
@@ -105,6 +114,8 @@ Use `list_types` for the authoritative list in the current build.
 `module`:
 
 - User-authored data inputs, data outputs, texture outputs, and control outputs declared by the module manifest.
+- Authored viewport controls, events, persistent state, object selection, spline editors, and transform gizmos.
+- Sentinel 0.5.32+ full-bleed Canvas panels and optional `follow_panel` render resolution. See [Authored Module UI](ui-authoring.md).
 
 ## Driving A Parameter From A Hand Pinch
 
@@ -141,6 +152,7 @@ The shipped example `examples/tracking_ripple.sentinel` uses the same driver pat
 - [Expressions And Drivers](expressions-and-drivers.md)
 - [Tracking Suite](tracking-suite.md)
 - [Module Pipeline](module-pipeline.md)
+- [Authored Module UI](ui-authoring.md)
 - [Video Source](video-source.md)
 - [StreamDiff](streamdiff.md)
 - [Scene System: Hold, Atlas, Mux, Group Presets](scene-system.md)

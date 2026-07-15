@@ -1,0 +1,469 @@
+{
+  "display": {
+    "fpsLimit": 0.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 0.809999942779541,
+    "links": [
+      {
+        "endPinId": 9,
+        "id": 2,
+        "startPinId": 7
+      }
+    ],
+    "nextLinkId": 3,
+    "nextNodeId": 11,
+    "nextPinId": 22,
+    "nodes": [
+      {
+        "displayName": "UI_Kit",
+        "entityId": "UI_Kit",
+        "id": 1,
+        "posX": 80.0,
+        "posY": 80.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Spline_Editor",
+        "entityId": "Spline_Editor",
+        "id": 2,
+        "posX": 80.0,
+        "posY": 360.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Spline_Output",
+        "entityId": "Spline_Output",
+        "id": 3,
+        "posX": 520.0,
+        "posY": 360.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Gizmo_Lab",
+        "entityId": "Gizmo_Lab",
+        "id": 4,
+        "posX": 80.0,
+        "posY": 700.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Font_Sampler",
+        "entityId": "Font_Sampler",
+        "id": 8,
+        "posX": 420.0,
+        "posY": 80.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "Monochrome controls plus regular-face typography and synthetic edge-weight comparisons.",
+        "annotationColor": "#303036",
+        "annotationTitle": "01 · SCIENTIFIC UI + TYPE SYSTEM",
+        "displayName": "01 · SCIENTIFIC UI + TYPE SYSTEM",
+        "entityId": "annotation_5",
+        "height": 300.0,
+        "id": 5,
+        "posX": 40.0,
+        "posY": 40.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": false,
+        "type": 4,
+        "width": 740.0
+      },
+      {
+        "annotationBody": "Durable cubic controls → exact data ports → sampled path renderer.",
+        "annotationColor": "#303036",
+        "annotationTitle": "02 · SPLINE EDITOR + PNODE OUTPUT",
+        "displayName": "02 · SPLINE EDITOR + PNODE OUTPUT",
+        "entityId": "annotation_6",
+        "height": 320.0,
+        "id": 6,
+        "posX": 40.0,
+        "posY": 320.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": false,
+        "type": 4,
+        "width": 740.0
+      },
+      {
+        "annotationBody": "Host multi-selection with a Module-rendered TRS gizmo.",
+        "annotationColor": "#303036",
+        "annotationTitle": "03 · 3D TRANSFORM GIZMO",
+        "displayName": "03 · 3D TRANSFORM GIZMO",
+        "entityId": "annotation_7",
+        "height": 300.0,
+        "id": 7,
+        "posX": 40.0,
+        "posY": 660.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": false,
+        "type": 4,
+        "width": 300.0
+      },
+      {
+        "displayName": "UI_Style_Tuner",
+        "entityId": "UI_Style_Tuner",
+        "id": 9,
+        "posX": 80.0,
+        "posY": 1037.3826904296875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "UI Kit",
+        "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 10,
+        "kind": 1,
+        "name": "Splines",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 4,
+        "kind": 1,
+        "name": "Spline Editor",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 5,
+        "kind": 1,
+        "name": "Spline Headers",
+        "nodeId": 2,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "Spline Knots",
+        "nodeId": 2,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 7,
+        "kind": 1,
+        "name": "Sampled Path",
+        "nodeId": 2,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "Editor Selection",
+        "nodeId": 2,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 9,
+        "kind": 0,
+        "name": "Nodes",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 12,
+        "kind": 1,
+        "name": "Gizmo Lab",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 13,
+        "kind": 1,
+        "name": "Gizmo State",
+        "nodeId": 4,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 14,
+        "kind": 1,
+        "name": "Scene Objects",
+        "nodeId": 4,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 15,
+        "kind": 1,
+        "name": "Viewport Objects",
+        "nodeId": 4,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 16,
+        "kind": 1,
+        "name": "Viewport Pick Result",
+        "nodeId": 4,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 17,
+        "kind": 1,
+        "name": "Font Sampler",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 19,
+        "kind": 1,
+        "name": "Style Tuner",
+        "nodeId": 9,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Terminal]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Sources]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Outputs]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Stats]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Log]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Properties]\nPos=1224,25\nSize=376,875\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=611,127\nSize=611,773\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=1600,875\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][GridInner]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][GridOuter]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Save Group Preset##group_preset_save]\nPos=638,324\nSize=324,855\nCollapsed=0\n\n[Window][Delete Group Preset##group_preset_delete]\nPos=664,389\nSize=272,122\nCollapsed=0\n\n[Window][Phase79_A1_Color]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Settings]\nPos=590,200\nSize=420,500\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][GroupSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][GroupRangeEdit]\nPos=653,382\nSize=294,136\nCollapsed=0\n\n[Window][Phase83_Wired_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Show_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][streamdiff_1]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][Group_Output_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][Phase84BaselineCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase84PostFixCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase84StreamDiff]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase84OutlineTarget]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Phase84Ripple]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase84Different]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Phase84NoViewport]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][Phase84DeclaredGate]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,4\n\n[Window][Phase84CameraAuto]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][OrbitProof]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][NonCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][BoundSphere]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][View_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Camera_Mux]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Switched_View]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase85Compound]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][GroupCompoundSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][Phase85LegacyFlat]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase85DistCompound]\nPos=0,25\nSize=1571,448\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Legacy_Stream_Target]\nPos=0,25\nSize=1222,252\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Presets]\nPos=60,60\nSize=350,500\nCollapsed=0\n\n[Window][Save Preset]\nPos=600,164\nSize=400,572\nCollapsed=0\n\n[Window][Edit Preset Stack]\nPos=590,244\nSize=420,411\nCollapsed=0\n\n[Window][Rename Node Preset]\nPos=668,397\nSize=264,105\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=730,402\nSize=140,95\nCollapsed=0\n\n[Window][Save Group Preset]\nPos=570,70\nSize=460,760\nCollapsed=0\n\n[Window][Save Node Preset]\nPos=700,233\nSize=420,515\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][grid_warp]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][atmosphere]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][field_gen]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][link_render]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_srv_spike]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_keyboard]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_keyboard_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_keyboard_series]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_keyboard_hold]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_control]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_double]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_drag]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_wheel]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_storm]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_idle]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_srv_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][mouse_compat_active]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][surface_split_smoke]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][final_surface_smoke]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_bindings_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_bindings_focus_reload]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_arbitration_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase_88_Arbitration]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase88_Mouse_Compat]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Viewport_Ripple]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase88_Replay]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Click_Ripples]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Controls89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Scene89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Big89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][Gizmo_Lab]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][Spline_Editor]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][Spline_Output]\nPos=0,25\nSize=2182,1057\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][UI_Kit]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Font_Sampler]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][UI_Kit_V2_Test]\nPos=0,25\nSize=1087,587\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][UI_Style_Tuner]\nPos=134,25\nSize=1088,100\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Spline_V2_Test]\nPos=0,614\nSize=1087,590\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Gizmo_V2_Test]\nPos=1089,25\nSize=1093,1179\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][VP_Controls]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][VP_Ripple]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][VP_Pointer]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][Ripple_Storm]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][HR_Precision]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,4\n\n[Window][UI_Skill_Smoke]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x0000000F,4\n\n[Docking][Data]\nDockSpace           ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=1600,875 Split=X\n  DockNode          ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1222,900 Split=Y\n    DockNode        ID=0x00000003 Parent=0x00000001 SizeRef=1222,700 Split=X Selected=0x60D1231E\n      DockNode      ID=0x00000007 Parent=0x00000003 SizeRef=878,760 Split=Y Selected=0x3B5B8D41\n        DockNode    ID=0x00000009 Parent=0x00000007 SizeRef=878,525 Selected=0x3B5B8D41\n        DockNode    ID=0x0000000A Parent=0x00000007 SizeRef=878,463 Selected=0x37544B19\n      DockNode      ID=0x00000008 Parent=0x00000003 SizeRef=1302,760 Split=X Selected=0x5A80C6E1\n        DockNode    ID=0x0000000B Parent=0x00000008 SizeRef=1087,990 Split=Y Selected=0x3B5B8D41\n          DockNode  ID=0x0000000D Parent=0x0000000B SizeRef=1087,587 Selected=0x3B5B8D41\n          DockNode  ID=0x0000000E Parent=0x0000000B SizeRef=1087,590 Selected=0x37544B19\n        DockNode    ID=0x0000000C Parent=0x00000008 SizeRef=1093,990 Split=X Selected=0x4FC197DD\n          DockNode  ID=0x0000000F Parent=0x0000000C SizeRef=1092,700 CentralNode=1 Selected=0x4FBEC174\n          DockNode  ID=0x00000010 Parent=0x0000000C SizeRef=1088,700 Selected=0x60D1231E\n    DockNode        ID=0x00000004 Parent=0x00000001 SizeRef=1222,802 Split=X\n      DockNode      ID=0x00000005 Parent=0x00000004 SizeRef=827,360 Selected=0x0E1F77DA\n      DockNode      ID=0x00000006 Parent=0x00000004 SizeRef=831,360 Selected=0xF12F3499\n  DockNode          ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
+  "name": "interaction_lab",
+  "nodePresets": [],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9000,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9001,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "Spline_Output",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Spline_Output",
+      "inputSlotSourceIds": [
+        "Spline_Editor"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Spline_Output",
+      "panelOpen": false,
+      "parameters": {
+        "dash": "1.000000",
+        "dash_count": "48.000000",
+        "intensity": "1.000000",
+        "line_color_b": "0.740000",
+        "line_color_g": "0.720000",
+        "line_color_r": "0.720000",
+        "node_color_b": "0.970000",
+        "node_color_g": "0.960000",
+        "node_color_r": "0.960000",
+        "project_dir": "modules/Spline_Output",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "width": "0.003500"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "UI_Kit",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "UI_Kit",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "UI_Kit",
+      "panelOpen": true,
+      "parameters": {
+        "pad_x": "0.380375",
+        "pad_y": "0.613914",
+        "project_dir": "modules/UI_Kit",
+        "pulse": "1.000000",
+        "resolution_height": "675",
+        "resolution_width": "1092",
+        "slider_value": "0.753960",
+        "toggle_value": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Font_Sampler",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Font_Sampler",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Font_Sampler",
+      "panelOpen": true,
+      "parameters": {
+        "custom_weight": "0.280000",
+        "project_dir": "modules/Font_Sampler",
+        "resolution_height": "675",
+        "resolution_width": "1092",
+        "selected_style": "2.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Spline_Editor",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Spline_Editor",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Spline_Editor",
+      "panelOpen": true,
+      "parameters": {
+        "close_path": "0.000000",
+        "delete_selected": "0.000000",
+        "pen_tool": "0.000000",
+        "project_dir": "modules/Spline_Editor",
+        "resolution_height": "75",
+        "resolution_width": "132",
+        "select_tool": "0.000000",
+        "tangent_cycle": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Gizmo_Lab",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Gizmo_Lab",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Gizmo_Lab",
+      "panelOpen": true,
+      "parameters": {
+        "camera_distance": "5.000000",
+        "camera_far": "100.000000",
+        "camera_fov": "60.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_mode": "0",
+        "camera_move_speed": "3.000000",
+        "camera_near": "0.100000",
+        "camera_pitch": "0.000000",
+        "camera_pos_x": "0.000000",
+        "camera_pos_y": "1.000000",
+        "camera_pos_z": "-5.000000",
+        "camera_target_x": "0.000000",
+        "camera_target_y": "1.000000",
+        "camera_target_z": "0.000000",
+        "camera_yaw": "0.000000",
+        "local_space": "0.000000",
+        "project_dir": "modules/Gizmo_Lab",
+        "resolution_height": "675",
+        "resolution_width": "1092",
+        "rotate_tool": "0.000000",
+        "scale_tool": "0.000000",
+        "transform_mode": "0.000000",
+        "translate_tool": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "UI_Style_Tuner",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "UI_Style_Tuner",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "UI_Style_Tuner",
+      "panelOpen": true,
+      "parameters": {
+        "body_scale": "1.500000",
+        "body_tracking": "-2.500000",
+        "body_weight": "0.000000",
+        "control_gap": "6.446163",
+        "control_height": "32.000000",
+        "outer_padding": "15.000000",
+        "project_dir": "modules/UI_Style_Tuner",
+        "resolution_height": "75",
+        "resolution_width": "1088",
+        "section_gap": "10.595863",
+        "section_scale": "1.750000",
+        "section_tracking": "-2.500000",
+        "section_weight": "0.000000",
+        "title_scale": "1.883553",
+        "title_tracking": "-2.500000",
+        "title_weight": "0.200000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1784083662542,
+  "sources": [],
+  "statePayloads": {
+    "Gizmo_Lab": {
+      "scene_state": {
+        "data": "34330bc00000a0bfcdcc4cbe0000000000308e41c0c0034200885b4100000000c3f5483fc3f5483fc3f5483f010000000000000007000000008c0b46000000009a9939bf0000a0bf0000903d000000000048b24100bc2c4200c49f4100000000e27a443fe27a443fe27a443f02000000010000000700000000000000000000009a99393f0000a0bfcdcc143e0000000000f8a2410000dc3f0070ad400000000090c2463f90c2463f90c2463f030000000200000007000000000000000000000034330b400000a0bf9a99993d0000000000390a42001849420020b240000000007b14803f7b14803f7b14803f040000000300000007000000000000000000000034330bc000000000cdcc1cbd00000000008886410000a54000c0414000000000b91e813fb91e813fb91e813f05000000000000000700000000000000000000009a9939bf00000000cdcc2d3e000000000070ee41004823410000483f000000005d8f423f5d8f423f5d8f423f06000000010000000700000000000000000000009a99393f000000006766d6bd0000000000501b4100ca0a420080093e0000000048e1843f48e1843f48e1843f070000000200000007000000000000000000000034330b40000000009a99393d0000000000884c4100c0e94100806d4000000000e27a6c3fe27a6c3fe27a6c3f080000000300000007000000000000000000000034330bc00000a03f333333bc000000000044cf40008c1b420050914100000000cdcc4c3fcdcc4c3fcdcc4c3f09000000000000000700000000000000000000009a9939bf0000a03f6766023e0000000000a20a4200c032410070ad4100000000cdcc543fcdcc543fcdcc543f0a000000010000000700000000000000000000009a99393f0000a03f9a9927be000000000038bd4100c032410080a24000000000ec51803fec51803fec51803f0b0000000200000007000000000000000000000034330b400000a03f676616be000000000070cb41001ed2418040694100000000d7a3503fd7a3503fd7a3503f0c0000000300000007000000000000000000000034330bc0000020403333b33c00000000002019400040ce4100007a41000000009a997d3f9a997d3f9a997d3f00000000000000000700000000000000000000009a9939bf00002040cdcc4c3b0000000000e91d410030364100806d410000000048e1683f48e1683f48e1683f00000000010000000700000000000000000000009a99393f000020400000603d0000000000b09f4100404e400080a2400000000090c2553f90c2553f90c2553f000000000200000007000000000000000000000034330b40000020406766063d0000000000801d4100828c4100806d4000000000c3f5583fc3f5583fc3f5583f0000000003000000070000000000000000000000",
+        "element_count": 16,
+        "element_size": 64,
+        "encoding": "hex",
+        "schema_signature": "13094422923074777944"
+      }
+    },
+    "Spline_Editor": {
+      "spline_knots": {
+        "data": "0ad7233e52b81e3f3d0ad73d52b81e3ff6285c3e52b81e3f010000000000000001000000000000000000803f00540e46ec51b83e9a99993ef6289c3e9a99993ee27ad43e9a99993e020000000000000001000000010000000000803f0000000052b81e3f7b142e3fd7a3103f7b142e3fcdcc2c3f7b142e3f030000000000000001000000000000000000803f000000003d0a573f3333b33ec2f5483f3333b33eb81e653f3333b33e040000000000000001000000000000000000803f000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000",
+        "element_count": 64,
+        "element_size": 48,
+        "encoding": "hex",
+        "schema_signature": "8817061768651235717"
+      }
+    }
+  },
+  "version": 5
+}

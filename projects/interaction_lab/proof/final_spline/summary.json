@@ -1,0 +1,51 @@
+{
+  "artifacts": {
+    "expressions": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_spline\\expressions.json",
+    "graph": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_spline\\graph.json",
+    "graph_profile": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_spline\\graph_profile.json",
+    "links": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_spline\\links.json",
+    "output_capture": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_spline\\output_capture.json",
+    "output_image": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_spline\\output.png",
+    "pipeline_info": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_spline\\pipeline_info.json",
+    "window_screenshot": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_spline\\window.jpg"
+  },
+  "graph_profile": {
+    "frame_index": 17479596,
+    "node_count": 4,
+    "pipeline_ms": 0.13120000064373016,
+    "top_nodes": [
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "Gizmo_Lab",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0241
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "UI_Kit",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0191
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "Spline_Editor",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0182
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "Spline_Output",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0069
+      }
+    ],
+    "total_ms": 16.658999755978584
+  },
+  "image_diff": null,
+  "pipeline_id": "Spline_Editor",
+  "proof_dir": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_spline"
+}

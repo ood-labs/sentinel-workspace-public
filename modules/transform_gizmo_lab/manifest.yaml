@@ -1,0 +1,108 @@
+name: "3D Transform Gizmo Lab"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+
+panel:
+  mode: canvas
+  output: "Gizmo Lab"
+  resolution: follow_panel
+features: [camera, math3d]
+
+parameters:
+  - { name: transform_mode, display: "Mode", type: enum, options: [Translate, Rotate, Scale], flags: button_grid, default: 0, group: "Transform" }
+  - { name: translate_tool, display: "Translate", type: button, hidden: true, group: "Transform" }
+  - { name: rotate_tool, display: "Rotate", type: button, hidden: true, group: "Transform" }
+  - { name: scale_tool, display: "Scale", type: button, hidden: true, group: "Transform" }
+  - { name: local_space, display: "Local Space", type: bool, default: false, group: "Transform" }
+
+viewport:
+  hint: "Click/Shift-click objects. Drag the custom gizmo. 1/2/3 translate/rotate/scale, 4 world/local, Escape cancel."
+  interactions: [events, selection]
+  selection: { mode: multiple, provider: ray_query, result_buffer: pick_result, object_buffer: viewport_objects }
+  input:
+    pointer: [left, right]
+    keyboard: ["1", "2", "3", "4", escape, shift]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: transform_selection, label: "Transform Selection" }
+    - { gesture: shift_left_click, action: add_selection, label: "Add Object" }
+    - { key: "1", action: translate_mode, label: "Translate" }
+    - { key: "2", action: rotate_mode, label: "Rotate" }
+    - { key: "3", action: scale_mode, label: "Scale" }
+  # ui-label: title = TRANSFORM LAB 3D
+  # ui-label: selected = SELECTED
+  # ui-label: move = MOVE
+  # ui-label: rotate = ROT
+  # ui-label: scale = SCALE
+  # ui-label: local = LOCAL
+  controls:
+    - { id: translate, kind: button, param: translate_tool, rect: [0.285, 0.024, 0.394, 0.094], label: "Translate Mode" }
+    - { id: rotate, kind: button, param: rotate_tool, rect: [0.406, 0.024, 0.502, 0.094], label: "Rotate Mode" }
+    - { id: scale, kind: button, param: scale_tool, rect: [0.515, 0.024, 0.602, 0.094], label: "Scale Mode" }
+    - { id: local, kind: toggle, param: local_space, rect: [0.617, 0.024, 0.731, 0.094], label: "World / Local" }
+
+buffers:
+  - { name: gizmo_state, structured: true, element_size: 80, element_count: 1, persistent: true }
+  - { name: drag_snapshot, structured: true, element_size: 64, element_count: 16, persistent: true }
+  - { name: scene_state, structured: true, element_size: 64, element_count: 16, persistent: true }
+  - { name: viewport_objects, structured: true, element_size: 120, element_count: 16, persistent: true }
+  - { name: pick_result, structured: true, element_size: 40, element_count: 1, persistent: true }
+
+state_buffers:
+  - name: scene_state
+    max_elements: 16
+    schema:
+      - { name: position, type: float3 }
+      - { name: pad0, type: float }
+      - { name: rotation, type: float3 }
+      - { name: pad1, type: float }
+      - { name: scale, type: float3 }
+      - { name: object_id, type: uint }
+      - { name: kind, type: uint }
+      - { name: flags, type: uint }
+      - { name: marker, type: float }
+      - { name: pad2, type: float }
+
+passes:
+  - { name: interaction, shader: interaction.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:scene_state" } ], output: "buffer:gizmo_state" }
+  - { name: snapshot, shader: snapshot.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:gizmo_state" }, { slot: 1, source: "buffer:scene_state" } ], output: "buffer:drag_snapshot" }
+  - { name: update, shader: update.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:gizmo_state" }, { slot: 1, source: "buffer:drag_snapshot" } ], output: "buffer:scene_state" }
+  - { name: descriptors, shader: descriptors.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 16, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:scene_state" } ], output: "buffer:viewport_objects" }
+  - { name: pick, shader: pick.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:scene_state" }, { slot: 1, source: "buffer:gizmo_state" } ], output: "buffer:pick_result" }
+  - { name: render, shader: render.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:scene_state" }, { slot: 1, source: "buffer:gizmo_state" } ], output: output }
+
+data_outputs:
+  - name: "Gizmo State"
+    buffer: gizmo_state
+    schema:
+      - { name: mode, type: float }
+      - { name: local_space, type: float }
+      - { name: active_handle, type: float }
+      - { name: command, type: float }
+      - { name: pointer, type: float2 }
+      - { name: drag_start, type: float2 }
+      - { name: pivot, type: float3 }
+      - { name: last_local_param, type: float }
+      - { name: active_id, type: float }
+      - { name: start_angle, type: float }
+      - { name: start_radius, type: float }
+      - { name: selection_mask, type: float }
+      - { name: dragging, type: float }
+      - { name: drag_pad, type: float3 }
+  - name: "Scene Objects"
+    buffer: scene_state
+    schema:
+      - { name: position, type: float3 }
+      - { name: pad0, type: float }
+      - { name: rotation, type: float3 }
+      - { name: pad1, type: float }
+      - { name: scale, type: float3 }
+      - { name: object_id, type: uint }
+      - { name: kind, type: uint }
+      - { name: flags, type: uint }
+      - { name: marker, type: float }
+      - { name: pad2, type: float }
+
+outputs:
+  - { name: "Gizmo Lab", pass: render }

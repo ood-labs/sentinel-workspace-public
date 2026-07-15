@@ -1,0 +1,36 @@
+name: "Scientific UI Kit Gallery"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+
+panel:
+  mode: canvas
+  output: "UI Kit"
+  resolution: follow_panel
+
+parameters:
+  - { name: slider_value, display: "Slider", type: float, min: 0.0, max: 1.0, default: 0.42, group: "Gallery" }
+  - { name: pulse, display: "Pulse", type: button, group: "Gallery" }
+  - { name: toggle_value, display: "Toggle", type: int, min: 0, max: 1, default: 1, group: "Gallery" }
+  - { name: pad, display: "XY Pad", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.68, 0.42], group: "Gallery" }
+
+viewport:
+  hint: "A reusable Scientifica UI kit: slider, button, toggle, XY pad, status and readout components."
+  # ui-label: title = SCIENTIFIC UI FOUNDATION
+  # ui-label: controls = CONTROLS
+  # ui-label: layout = LAYOUT AND READOUTS
+  # ui-label: idle = IDLE
+  # ui-label: active = ACTIVE
+  # ui-label: selected = SELECTED
+  # ui-label: disabled = DISABLED VISUAL
+  controls:
+    - { id: slider, kind: slider, param: slider_value, rect: [0.075, 0.237, 0.448, 0.319], label: "Scientific Slider" }
+    - { id: pulse, kind: button, param: pulse, rect: [0.542, 0.237, 0.702, 0.319], label: "Pulse Button" }
+    - { id: toggle, kind: slider, param: toggle_value, min: 0, max: 1, rect: [0.773, 0.237, 0.923, 0.319], label: "Enable Toggle" }
+    - { id: pad, kind: xypad, param: pad, rect: [0.167, 0.441, 0.833, 0.811], label: "Scientific XY Pad" }
+
+passes:
+  - { name: render, shader: render.hlsl, target: cs_5_0, time_dependent: true, output: output }
+
+outputs:
+  - { name: "UI Kit", pass: render }

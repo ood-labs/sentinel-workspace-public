@@ -1,0 +1,51 @@
+{
+  "artifacts": {
+    "expressions": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_gizmo\\expressions.json",
+    "graph": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_gizmo\\graph.json",
+    "graph_profile": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_gizmo\\graph_profile.json",
+    "links": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_gizmo\\links.json",
+    "output_capture": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_gizmo\\output_capture.json",
+    "output_image": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_gizmo\\output.png",
+    "pipeline_info": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_gizmo\\pipeline_info.json",
+    "window_screenshot": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_gizmo\\window.jpg"
+  },
+  "graph_profile": {
+    "frame_index": 17479270,
+    "node_count": 4,
+    "pipeline_ms": 0.12219999730587006,
+    "top_nodes": [
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "UI_Kit",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.023
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "Spline_Editor",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0197
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "Gizmo_Lab",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0142
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "Spline_Output",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0044
+      }
+    ],
+    "total_ms": 16.750600069761276
+  },
+  "image_diff": null,
+  "pipeline_id": "Gizmo_Lab",
+  "proof_dir": "C:\\Users\\bot\\Documents\\dev\\sentinel-workspace\\projects\\interaction_lab\\proof\\final_gizmo"
+}

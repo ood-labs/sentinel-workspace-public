@@ -6,6 +6,8 @@ distribution: true
 
 # HLSL Shader Authoring
 
+This skill covers single `.fx` post-process shaders. For shader-rendered Module panels, controls, editors, or gizmos, use `module-ui-authoring` plus `module-authoring`; those projects use `manifest.yaml`, compute/draw passes, viewport interaction contracts, and the shared scientific UI HLSL rather than Notch `.fx` boilerplate.
+
 Write `.fx` shaders in Notch HLSL format, hot-reload via MCP:
 ```
 sentinel_state action="set" path="/sentinel/pipelines/hlslshader_0/parameters/shader_file" value="path/to/shader.fx"
