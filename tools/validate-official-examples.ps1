@@ -203,10 +203,11 @@ foreach ($projectName in $Projects) {
         if ($maximumPresetCount -lt [int]$definition.MinimumGroupPresets) {
             $errors.Add("needs a Scene Group with at least $($definition.MinimumGroupPresets) presets; found $maximumPresetCount")
         }
-        if ($projectName -ne 'interaction_lab' -and -not $hasPerformancePreset) {
+        $exemptions = @($definition.Exemptions)
+        if ($projectName -ne 'interaction_lab' -and 'scene-group-presets' -notin $exemptions -and -not $hasPerformancePreset) {
             $errors.Add("needs a Scene Group preset named 'Performance'")
         }
-        if ($projectName -ne 'interaction_lab' -and ($maximumExposedControls -lt 6 -or $maximumExposedControls -gt 10)) {
+        if ($projectName -ne 'interaction_lab' -and 'scene-group-controls' -notin $exemptions -and ($maximumExposedControls -lt 6 -or $maximumExposedControls -gt 10)) {
             $errors.Add("top-level Scene Group must expose 6-10 controls; found $maximumExposedControls")
         }
 

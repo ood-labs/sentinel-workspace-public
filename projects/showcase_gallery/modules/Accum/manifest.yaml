@@ -1,0 +1,70 @@
+name: "Accum"
+version: "0.3"
+mode: generator
+resolution: [720, 1280]
+
+# Persistent-canvas accumulator with per-frame steer. Each frame: transform (scale/pan the canvas)
+# -> paint (composite new stamps) -> present. Structured buffers survive frames, so imprints pile up
+# forever. Steer like StreamDiff: acc_scale zooms, pan drifts L/R/U/D (per-frame velocity). decay<1
+# = fading trails. clear=1 wipes. Resolution FIXED to match the 720*1280 canvas buffers.
+
+inputs:
+  - { name: "New", slot: 0, required: true }
+
+buffers:
+  - name: canvas
+    structured: true
+    element_size: 16
+    element_count: 921600
+  - name: canvas_prev
+    structured: true
+    element_size: 16
+    element_count: 921600
+
+parameters:
+  - { name: decay, display: "Decay", type: float, min: 0.9, max: 1.0, default: 1.0, group: "Accum" }
+  - { name: paint, display: "Paint", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Accum" }
+  - { name: clear, display: "Clear", type: bool, default: false, flags: button, group: "Accum" }
+
+  - name: pan
+    display: "Pan"
+    type: point2D
+    default: [0.5, 0.5]
+    group: "Transform"
+  - { name: zoom,       display: "Zoom",       type: float, min: -1.0, max: 1.0,  default: 0.0,   group: "Transform" }
+  - { name: move_speed, display: "Move Speed", type: float, min: 0.0,  max: 0.03, default: 0.006, group: "Transform" }
+
+passes:
+  - name: transform
+    shader: transform.hlsl
+    target: cs_5_0
+    dispatch: [90, 160, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "buffer:canvas" }
+    output: "buffer:canvas_prev"
+
+  - name: paint
+    shader: paint.hlsl
+    target: cs_5_0
+    dispatch: [90, 160, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:canvas_prev" }
+    output: "buffer:canvas"
+
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    dispatch: [90, 160, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "buffer:canvas" }
+
+outputs:
+  - name: "Out"
+    pass: present

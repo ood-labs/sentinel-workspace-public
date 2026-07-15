@@ -1,0 +1,28 @@
+name: "Post"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA16F
+
+inputs:
+  - { name: "Scene", slot: 0, required: true }
+
+parameters:
+  - { name: bloom_threshold, display: "Bloom Threshold", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Bloom" }
+  - { name: bloom_intensity, display: "Bloom Intensity", type: float, min: 0.0, max: 3.0, default: 1.1, group: "Bloom" }
+  - { name: bloom_radius, display: "Bloom Radius", type: float, min: 0.005, max: 0.08, default: 0.032, group: "Bloom" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.2, max: 3.0, default: 1.05, group: "Grade" }
+  - { name: contrast, display: "Contrast", type: float, min: 0.5, max: 2.0, default: 1.08, group: "Grade" }
+  - { name: saturation, display: "Saturation", type: float, min: 0.0, max: 2.0, default: 1.12, group: "Grade" }
+  - { name: split_balance, display: "Split Tone", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Grade" }
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 2.0, default: 0.95, group: "Lens" }
+  - { name: chroma, display: "Chromatic Aberr", type: float, min: 0.0, max: 2.0, default: 0.4, group: "Lens" }
+  - { name: grain_amt, display: "Film Grain", type: float, min: 0.0, max: 0.2, default: 0.035, group: "Lens" }
+  - { name: shadow_tint, display: "Shadow Tint", type: color, default: [0.0, 0.14, 0.22], group: "Color" }
+  - { name: highlight_tint, display: "Highlight Tint", type: color, default: [1.0, 0.6, 0.25], group: "Color" }
+
+passes:
+  - { name: post, shader: post.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "input:0" } ] }
+
+outputs:
+  - { name: "Out", pass: post }

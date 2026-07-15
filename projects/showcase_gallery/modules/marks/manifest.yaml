@@ -1,0 +1,25 @@
+name: "Marks"
+version: "0.1"
+mode: generator
+resolution: [720, 1080]
+
+# strata top plate — sharp red rules / squares / rivets / registration frame that frame the
+# mass. Premultiplied-alpha RGBA, seedable. No distortion (stays razor sharp).
+
+parameters:
+  - { name: palette_variant, display: "Palette", type: int, min: 0, max: 4, default: 0, hidden: true, group: "Marks" }
+  - { name: mark_seed,    display: "Seed",        type: float, min: 0.0, max: 50.0, default: 3.0, group: "Marks" }
+  - { name: mark_scale,   display: "Scale",       type: float, min: 0.4, max: 3.0,  default: 1.0, group: "Marks" }
+  - { name: mark_opacity, display: "Opacity",     type: float, min: 0.0, max: 1.0,  default: 1.0, group: "Marks" }
+  - { name: frame_amt,    display: "Frame",       type: bool,  default: true, flags: button, group: "Marks" }
+  - { name: rule_count,   display: "Red Rules",   type: int, min: 0, max: 3,  default: 1, group: "Marks" }
+  - { name: square_count, display: "Red Squares", type: int, min: 0, max: 5,  default: 3, group: "Marks" }
+  - { name: rivet_count,  display: "Rivets",      type: int, min: 0, max: 12, default: 6, group: "Marks" }
+
+passes:
+  - name: marks
+    shader: marks.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "Marks", pass: marks }

@@ -1,0 +1,77 @@
+name: "Clone Overlay"
+version: "0.2"
+mode: generator
+resolution: [720, 1280]
+
+# Vector overlay driven by face_cutout's Clones buffer (data:0): dots, extent boxes, and connecting
+# lines with real web modes (Cage/Proximity/Nearest/Chain), bezier bow, and an arc-length chase +
+# dashes. Premultiplied-alpha, transparent — composite on top of the accumulation.
+
+data_inputs:
+  - name: "Clones"
+    slot: 0
+    schema:
+      - { name: pos,    type: float2 }
+      - { name: ext,    type: float2 }
+      - { name: uv,     type: float2 }
+      - { name: win,    type: float2 }
+      - { name: vel,    type: float2 }
+      - { name: group,  type: float }
+      - { name: kind,   type: float }
+      - { name: seed,   type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: color,     display: "Color",     type: color, default: [0.4, 0.95, 1.0], group: "Look" }
+  - { name: intensity, display: "Intensity", type: float, min: 0.0, max: 3.0, default: 1.0, group: "Look" }
+  - { name: opacity,   display: "Opacity",   type: float, min: 0.0, max: 1.0, default: 1.0, group: "Look" }
+  - { name: subset,    display: "Use Clones", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Look" }
+  - { name: lead,      display: "Lead (frames)", type: float, min: -3.0, max: 3.0, default: 1.0, group: "Look" }
+
+  - { name: line_on, display: "Lines", type: bool, default: true, flags: button, group: "Lines" }
+  - name: connect_mode
+    display: "Connect"
+    type: enum
+    options: [Chain, Cage, Proximity, Nearest, Spline, Loop]
+    default: 4
+    flags: button_grid
+    group: "Lines"
+  - { name: connections, display: "Cage Links",  type: int,   min: 1, max: 8,   default: 3, group: "Lines" }
+  - { name: radius,      display: "Prox Radius",  type: float, min: 0.05, max: 1.2, default: 0.4, group: "Lines" }
+  - { name: line_width,  display: "Line Width",   type: float, min: 0.5, max: 6.0, default: 1.4, group: "Lines" }
+  - { name: curve,       display: "Bezier Bow",   type: float, min: 0.0, max: 0.6, default: 0.0, group: "Lines" }
+  - { name: glow,        display: "Glow Radius",  type: float, min: 1.0, max: 24.0, default: 5.0, group: "Lines" }
+  - { name: glow_amt,    display: "Glow",         type: float, min: 0.0, max: 2.0, default: 0.35, group: "Lines" }
+
+  - { name: line_length, display: "Line Length",  type: float, min: 0.02, max: 1.0, default: 1.0, group: "Chase" }
+  - { name: line_offset, display: "Line Offset",  type: float, min: 0.0, max: 1.0, default: 0.0, group: "Chase" }
+  - { name: flow_speed,  display: "Flow Speed",   type: float, min: -3.0, max: 3.0, default: 0.0, group: "Chase" }
+  - { name: dash_amt,    display: "Dash",         type: float, min: 0.0, max: 1.0, default: 0.0, group: "Chase" }
+  - { name: dash_count,  display: "Dash Count",   type: float, min: 2.0, max: 60.0, default: 18.0, group: "Chase" }
+
+  - { name: dot_on,    display: "Dots",       type: bool,  default: true, flags: button, group: "Dots" }
+  - { name: dot_size,  display: "Dot Size",   type: float, min: 1.0, max: 30.0, default: 5.0, group: "Dots" }
+
+  - { name: box_on,    display: "Boxes",      type: bool,  default: false, flags: button, group: "Boxes" }
+  - name: box_mode
+    display: "Box Mode"
+    type: enum
+    options: [Full, Corners]
+    default: 1
+    flags: button_grid
+    group: "Boxes"
+  - { name: box_width, display: "Box Width",  type: float, min: 0.4, max: 4.0, default: 1.0, group: "Boxes" }
+  - { name: box_tick,  display: "Corner Len", type: float, min: 0.05, max: 0.6, default: 0.3, group: "Boxes" }
+  - { name: box_color, display: "Box Color",  type: color, default: [0.0, 0.0, 0.0], group: "Boxes" }
+  - { name: box_alpha, display: "Box Alpha",  type: float, min: 0.0, max: 1.0, default: 0.8, group: "Boxes" }
+
+passes:
+  - name: overlay
+    shader: overlay.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - name: "Overlay"
+    pass: overlay

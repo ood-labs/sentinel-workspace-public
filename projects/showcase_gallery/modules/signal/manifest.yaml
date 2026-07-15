@@ -1,0 +1,117 @@
+name: "Topographic Operations Console"
+version: "2.0"
+mode: generator
+resolution: [960, 540]
+working_format: RGBA8
+
+panel:
+  mode: canvas
+  output: "Operations Console"
+  resolution: follow_panel
+
+parameters:
+  - { name: authority, display: "Signal Authority (0 Manual / 1 Auto / 2 Conductor)", type: int, min: 0, max: 2, default: 1, group: "Authority" }
+  - { name: cue_mode, display: "Cue Mode (0 Survey / 1 Threat / 2 Night / 3 Minimal / 4 Performance)", type: int, min: 0, max: 4, default: 0, group: "Authority" }
+  - { name: terrain, display: "Terrain (0 Basins / 1 Ridges / 2 Islands / 3 Flow)", type: int, min: 0, max: 3, default: 2, group: "Map" }
+  - { name: node_density, display: "Node Density", type: int, min: 12, max: 112, default: 60, group: "Map" }
+  - { name: palette, display: "Palette (0 Survey / 1 Threat / 2 Night / 3 Monochrome)", type: int, min: 0, max: 3, default: 0, group: "Map" }
+
+  - { name: layer_blue, display: "Blue Contours", type: float, min: 0.0, max: 2.0, default: 0.90, group: "Layer Mix" }
+  - { name: layer_accent, display: "Accent Contours", type: float, min: 0.0, max: 2.0, default: 1.00, group: "Layer Mix" }
+  - { name: layer_nodes, display: "Nodes", type: float, min: 0.0, max: 2.0, default: 1.00, group: "Layer Mix" }
+  - { name: layer_labels, display: "Labels", type: float, min: 0.0, max: 2.0, default: 0.90, group: "Layer Mix" }
+  - { name: master_mix, display: "Master Mix", type: float, min: 0.25, max: 1.75, default: 1.00, group: "Layer Mix" }
+
+  - { name: manual_energy, display: "Manual Energy", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Signal" }
+  - { name: manual_sweep, display: "Manual Sweep", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Signal" }
+  - { name: pulse_rate, display: "Pulse Rate", type: float, min: 0.0, max: 4.0, default: 0.80, group: "Signal" }
+  - { name: sweep_rate, display: "Sweep Rate", type: float, min: 0.0, max: 2.0, default: 0.10, group: "Signal" }
+  - { name: beat_rate, display: "Beat Rate", type: float, min: 0.0, max: 8.0, default: 2.00, group: "Signal" }
+  - { name: beat_sharp, display: "Beat Sharpness", type: float, min: 0.1, max: 8.0, default: 3.00, group: "Signal" }
+  - { name: conductor_phase, display: "Conductor Phase", type: float, min: 0.0, max: 1.0, default: 0.0, hidden: true, group: "Conductor" }
+  - { name: conductor_energy, display: "Conductor Energy", type: float, min: 0.0, max: 1.0, default: 0.65, hidden: true, group: "Conductor" }
+
+viewport:
+  hint: "Cyan/orange operations console for terrain, density, layer balance, palette, and explicit Manual/Auto/Conductor signal authority."
+  # ui-label: title = TOPOGRAPHIC OPERATIONS
+  # ui-label: subtitle = TERRAIN / SIGNAL / CUE AUTHORITY
+  # ui-label: authority = AUTHORITY
+  # ui-label: cue = CUE MODE
+  # ui-label: terrain = TERRAIN
+  # ui-label: density = DENSITY
+  # ui-label: palette = PALETTE
+  # ui-label: layers = LAYER MIX
+  # ui-label: blue = BLUE
+  # ui-label: accent = ACCENT
+  # ui-label: nodes = NODES
+  # ui-label: labels = LABELS
+  # ui-label: master = MASTER
+  # ui-label: signal = SIGNAL BUS
+  # ui-label: pulse = PULSE
+  # ui-label: sweep = SWEEP
+  # ui-label: beat = BEAT
+  # ui-label: manual = MANUAL
+  # ui-label: auto = AUTO
+  # ui-label: conductor = CONDUCTOR
+  # ui-label: survey = SURVEY
+  # ui-label: threat = THREAT
+  # ui-label: night = NIGHT
+  # ui-label: minimal = MINIMAL
+  # ui-label: performance = PERF
+  controls:
+    - { id: authority, kind: slider, param: authority, rect: [0.055, 0.225, 0.470, 0.285], label: "Signal Authority" }
+    - { id: cue_mode, kind: slider, param: cue_mode, rect: [0.055, 0.365, 0.470, 0.425], label: "Cue Mode" }
+    - { id: terrain, kind: slider, param: terrain, rect: [0.055, 0.550, 0.270, 0.610], label: "Terrain" }
+    - { id: node_density, kind: slider, param: node_density, rect: [0.300, 0.550, 0.515, 0.610], label: "Node Density" }
+    - { id: palette, kind: slider, param: palette, rect: [0.055, 0.705, 0.515, 0.765], label: "Palette" }
+    - { id: layer_blue, kind: slider, param: layer_blue, rect: [0.585, 0.235, 0.930, 0.295], label: "Blue Contours" }
+    - { id: layer_accent, kind: slider, param: layer_accent, rect: [0.585, 0.335, 0.930, 0.395], label: "Accent Contours" }
+    - { id: layer_nodes, kind: slider, param: layer_nodes, rect: [0.585, 0.435, 0.930, 0.495], label: "Nodes" }
+    - { id: layer_labels, kind: slider, param: layer_labels, rect: [0.585, 0.535, 0.930, 0.595], label: "Labels" }
+    - { id: master_mix, kind: slider, param: master_mix, rect: [0.585, 0.655, 0.930, 0.715], label: "Master Mix" }
+    - { id: manual_energy, kind: slider, param: manual_energy, rect: [0.055, 0.850, 0.255, 0.915], label: "Manual Energy" }
+    - { id: manual_sweep, kind: slider, param: manual_sweep, rect: [0.275, 0.850, 0.475, 0.915], label: "Manual Sweep" }
+    - { id: pulse_rate, kind: slider, param: pulse_rate, rect: [0.520, 0.850, 0.620, 0.915], label: "Pulse Rate" }
+    - { id: sweep_rate, kind: slider, param: sweep_rate, rect: [0.640, 0.850, 0.740, 0.915], label: "Sweep Rate" }
+    - { id: beat_rate, kind: slider, param: beat_rate, rect: [0.760, 0.850, 0.860, 0.915], label: "Beat Rate" }
+    - { id: beat_sharp, kind: slider, param: beat_sharp, rect: [0.880, 0.850, 0.950, 0.915], label: "Beat Sharpness" }
+
+buffers:
+  - { name: sig, structured: true, element_size: 80, element_count: 1 }
+
+passes:
+  - name: compute
+    shader: signal_compute.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:sig"
+  - name: display
+    shader: signal_display.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:sig" }
+    output: output
+
+outputs:
+  - { name: "Operations Console", pass: display }
+
+control_outputs:
+  - { name: pulse, buffer: sig, element: 0, field_offset: 0, description: "Active pulse lane (0-1)" }
+  - { name: sweep, buffer: sig, element: 0, field_offset: 4, description: "Active sweep lane (0-1)" }
+  - { name: beat, buffer: sig, element: 0, field_offset: 8, description: "Active beat lane (0-1)" }
+  - { name: slow, buffer: sig, element: 0, field_offset: 12, description: "Slow modulation lane (0-1)" }
+  - { name: terrain, buffer: sig, element: 0, field_offset: 16, description: "Resolved terrain mode" }
+  - { name: density, buffer: sig, element: 0, field_offset: 20, description: "Resolved node density" }
+  - { name: blue_gain, buffer: sig, element: 0, field_offset: 24, description: "Blue contour layer gain" }
+  - { name: accent_gain, buffer: sig, element: 0, field_offset: 28, description: "Accent contour layer gain" }
+  - { name: nodes_gain, buffer: sig, element: 0, field_offset: 32, description: "Node layer gain" }
+  - { name: labels_gain, buffer: sig, element: 0, field_offset: 36, description: "Label layer gain" }
+  - { name: palette, buffer: sig, element: 0, field_offset: 40, description: "Resolved palette index" }
+  - { name: energy, buffer: sig, element: 0, field_offset: 44, description: "Resolved motion energy (0-1)" }
+  - { name: authority, buffer: sig, element: 0, field_offset: 48, description: "0 Manual, 1 Auto, 2 Conductor" }
+  - { name: cue_mode, buffer: sig, element: 0, field_offset: 52, description: "Active cue mode index" }
+  - { name: master_mix, buffer: sig, element: 0, field_offset: 56, description: "Resolved master layer mix" }
+  - { name: phase, buffer: sig, element: 0, field_offset: 60, description: "Resolved continuous phase" }

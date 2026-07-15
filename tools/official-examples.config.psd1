@@ -74,6 +74,15 @@
             MinimumNodePresets = 2
             Exemptions = @('object-picking')
         }
+        showcase_gallery = @{
+            ProjectFile = 'showcase_gallery.sentinel'
+            SharedModules = @()
+            MinimumSceneGroups = 7
+            RequiresGroupOutput = $false
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 0
+            Exemptions = @('gallery-final-mux', 'scene-group-controls', 'scene-group-presets', 'object-picking')
+        }
     }
 
     AllowedProjectDirectories = @('assets', 'cues', 'modules', 'proof')

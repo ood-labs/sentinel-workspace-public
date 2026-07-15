@@ -1,0 +1,85 @@
+name: "Face Stitch"
+version: "0.1"
+mode: generator
+resolution: [512, 896]
+
+# Landmarks -> PNode bridge. Consumes MediaPipe Face Landmarks (data:0), emits a PNode anchor
+# stream (data_output "Anchors") placing an atlas cell at each eye/mouth/nose/brow/cheek feature.
+# Video input 0 = the tracked face (for the anchor-overlay preview only).
+
+inputs:
+  - { name: "Face", slot: 0, required: false }
+
+data_inputs:
+  - name: "Face Landmarks"
+    slot: 0
+    schema:
+      - { name: x, type: float }
+      - { name: y, type: float }
+      - { name: depth, type: float }
+      - { name: confidence, type: float }
+
+buffers:
+  - name: nodes
+    structured: true
+    element_size: 48
+    element_count: 16
+
+parameters:
+  - { name: enable_eyes,   display: "Eyes",   type: bool, default: true,  flags: button, group: "Anchors" }
+  - { name: enable_mouth,  display: "Mouth",  type: bool, default: true,  flags: button, group: "Anchors" }
+  - { name: enable_nose,   display: "Nose",   type: bool, default: false, flags: button, group: "Anchors" }
+  - { name: enable_brows,  display: "Brows",  type: bool, default: false, flags: button, group: "Anchors" }
+  - { name: enable_cheeks, display: "Cheeks", type: bool, default: false, flags: button, group: "Anchors" }
+
+  - { name: right_eye_slot, display: "R Eye Slot",  type: int, min: 0, max: 8, default: 0, group: "Atlas Map" }
+  - { name: left_eye_slot,  display: "L Eye Slot",  type: int, min: 0, max: 8, default: 1, group: "Atlas Map" }
+  - { name: mouth_slot,     display: "Mouth Slot",  type: int, min: 0, max: 8, default: 2, group: "Atlas Map" }
+  - { name: nose_slot,      display: "Nose Slot",   type: int, min: 0, max: 8, default: 6, group: "Atlas Map" }
+  - { name: brow_slot,      display: "Brow Slot",   type: int, min: 0, max: 8, default: 4, group: "Atlas Map" }
+  - { name: patch_slot,     display: "Cheek Slot",  type: int, min: 0, max: 8, default: 8, group: "Atlas Map" }
+
+  - name: offset
+    display: "Offset"
+    type: point2D
+    default: [0.0, 0.0]
+    group: "Align"
+  - { name: face_scale, display: "Face Scale", type: float, min: 0.5, max: 1.5, default: 1.0, group: "Align" }
+  - { name: size_mul,   display: "Size",       type: float, min: 0.3, max: 3.0, default: 1.0, group: "Align" }
+
+passes:
+  - name: compute
+    shader: compute.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 16
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:nodes"
+
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:nodes" }
+
+data_outputs:
+  - name: "Anchors"
+    buffer: "nodes"
+    schema:
+      - { name: pos,    type: float2 }
+      - { name: dir,    type: float2 }
+      - { name: depth,  type: float }
+      - { name: u,      type: float }
+      - { name: v,      type: float }
+      - { name: weight, type: float }
+      - { name: group,  type: float }
+      - { name: kind,   type: float }
+      - { name: seed,   type: float }
+      - { name: active, type: float }
+
+outputs:
+  - name: "Preview"
+    pass: preview
