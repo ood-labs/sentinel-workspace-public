@@ -1,0 +1,36 @@
+{
+  "data": {
+    "count": 7,
+    "expressions": [
+      {
+        "expression": "ref(\"Prompt_LFO/control_outputs/position\")",
+        "path": "/sentinel/pipelines/SD_Face/parameters/prompt_position"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_31/parameters/Face_Cutout_copies\")",
+        "path": "/sentinel/pipelines/Face_Cutout/parameters/copies"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_31/parameters/Face_Cutout_stamp_scale\")",
+        "path": "/sentinel/pipelines/Face_Cutout/parameters/stamp_scale"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_31/parameters/Face_Cutout_motion_mode\")",
+        "path": "/sentinel/pipelines/Face_Cutout/parameters/motion_mode"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_31/parameters/Face_Cutout_history_on\")",
+        "path": "/sentinel/pipelines/Face_Cutout/parameters/history_on"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_31/parameters/Overlay_Comp_fresh_amt\")",
+        "path": "/sentinel/pipelines/Overlay_Comp/parameters/fresh_amt"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_31/parameters/Editorial_Post_glitch\")",
+        "path": "/sentinel/pipelines/Editorial_Post/parameters/glitch"
+      }
+    ]
+  },
+  "status": "ok"
+}
