@@ -25,6 +25,12 @@ The Scene Group contains exactly one Group Output, which is the sole final endpo
 
 All referenced Module folders are bundled under `modules/`. The final composition remains portrait-oriented at 720 × 1280.
 
+## Troubleshooting
+
+- If tracking or cutouts are empty, confirm the MediaPipe node has a live camera/video input and that one face is clearly visible. Inspect its health and face-record count before changing the authored Modules.
+- If StreamDiff reports a missing or incompatible engine, open Sentinel's engine status and install the registered StreamDiff pack for this GPU architecture. The node should report the missing pack explicitly; downstream nodes may hold or show black, but the project should remain responsive.
+- If the final output is black with both inputs ready, inspect `Face_Cutout`, `Accum`, and `Overlay_Comp` in that order, then confirm `Face Collage Group Output` is enabled. No extra Spout/output node is required.
+
 ## Proof
 
 The compact runtime proof is in `proof/`, including the final capture, graph, links, profile, pipeline health, and active-expression report.

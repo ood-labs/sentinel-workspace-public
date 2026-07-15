@@ -25,7 +25,11 @@ function Get-RelativePath([string]$BasePath, [string]$TargetPath) {
 }
 
 function Normalize-Relative([string]$Path) {
-    return $Path.Replace('\', '/').TrimStart('./').TrimEnd('/')
+    $normalized = $Path.Replace('\', '/').TrimEnd('/')
+    while ($normalized.StartsWith('./', [StringComparison]::Ordinal)) {
+        $normalized = $normalized.Substring(2)
+    }
+    return $normalized
 }
 
 function Test-IsUnder([string]$ParentPath, [string]$CandidatePath) {
@@ -119,6 +123,9 @@ foreach ($projectName in $Projects) {
             } else {
                 Get-FullPath (Join-Path $projectRoot $declared)
             }
+            if (-not (Test-IsUnder $rootFull $resolved)) {
+                $errors.Add("module pipeline '$($pipeline.id)' escapes workspace root: '$declared'")
+            }
             $workspaceRelative = Normalize-Relative (Get-RelativePath $rootFull $resolved)
             $projectModulePrefix = "projects/$projectName/modules/"
             $approvedShared = @($definition.SharedModules | ForEach-Object { Normalize-Relative ([string]$_) })
@@ -182,10 +189,65 @@ foreach ($projectName in $Projects) {
             }
         }
 
+        $groupOutputs = @($projectJson.pipelines | Where-Object { $_.type -eq 'groupoutput' })
         if ([bool]$definition.RequiresGroupOutput) {
-            $groupOutputs = @($projectJson.pipelines | Where-Object { $_.type -eq 'groupoutput' })
             if ($groupOutputs.Count -ne 1) {
                 $errors.Add("needs exactly one Group Output; found $($groupOutputs.Count)")
+            }
+        }
+
+        $expectedGroupOutputs = [int]$definition.ExpectedGroupOutputs
+        if ($expectedGroupOutputs -gt 0) {
+            if ($groupOutputs.Count -ne $expectedGroupOutputs) {
+                $errors.Add("needs exactly $expectedGroupOutputs Group Outputs; found $($groupOutputs.Count)")
+            }
+
+            $groupOutputIds = @($groupOutputs | ForEach-Object { [string]$_.id })
+            $groupOutputNodes = @($projectJson.graph.nodes | Where-Object { $_.entityId -in $groupOutputIds })
+            foreach ($group in $sceneGroups) {
+                $left = [double]$group.posX
+                $top = [double]$group.posY
+                $right = $left + [double]$group.width
+                $bottom = $top + [double]$group.height
+                $ownedOutputs = @($groupOutputNodes | Where-Object {
+                    $centerX = [double]$_.posX + 80.0
+                    $centerY = [double]$_.posY + 40.0
+                    $centerX -gt $left -and $centerX -lt $right -and $centerY -gt $top -and $centerY -lt $bottom
+                })
+                if ($ownedOutputs.Count -ne 1) {
+                    $errors.Add("Scene Group '$($group.entityId)' must contain exactly one Group Output; found $($ownedOutputs.Count)")
+                }
+            }
+
+            foreach ($outputNode in $groupOutputNodes) {
+                $inputPinIds = @($projectJson.graph.pins | Where-Object { $_.nodeId -eq $outputNode.id -and $_.kind -eq 0 } | ForEach-Object { $_.id })
+                $incomingLinks = @($projectJson.graph.links | Where-Object { $_.endPinId -in $inputPinIds })
+                if ($incomingLinks.Count -ne 1) {
+                    $errors.Add("Group Output '$($outputNode.entityId)' must have exactly one connected input; found $($incomingLinks.Count)")
+                }
+            }
+        }
+
+        if ([bool]$definition.RequiresGroupsMux) {
+            $muxes = @($projectJson.pipelines | Where-Object { $_.type -eq 'mux' })
+            if ($muxes.Count -ne 1) {
+                $errors.Add("gallery needs exactly one final Mux; found $($muxes.Count)")
+            } else {
+                $mux = $muxes[0]
+                if ([string]$mux.parameters.source_mode -ne '1') {
+                    $errors.Add("gallery Mux '$($mux.id)' must use Groups source mode")
+                }
+                if ([string]$mux.parameters.solo_upstream -notmatch '^(?i:true|1)$') {
+                    $errors.Add("gallery Mux '$($mux.id)' must enable solo_upstream")
+                }
+                $groupIds = @($sceneGroups | ForEach-Object { [string]$_.entityId } | Sort-Object -Unique)
+                $allowedGroups = @(([string]$mux.parameters.allowed_groups -split ',') | ForEach-Object { $_.Trim() } | Where-Object { $_ } | Sort-Object -Unique)
+                if (@(Compare-Object -ReferenceObject $groupIds -DifferenceObject $allowedGroups).Count -ne 0) {
+                    $errors.Add("gallery Mux '$($mux.id)' allowed_groups must exactly match the Scene Group inventory")
+                }
+                if ([string]$mux.parameters.selected_group -notin $groupIds) {
+                    $errors.Add("gallery Mux '$($mux.id)' selected_group is not in the Scene Group inventory")
+                }
             }
         }
 
@@ -218,6 +280,10 @@ foreach ($projectName in $Projects) {
     }
 
     if (Test-Path -LiteralPath $projectRoot -PathType Container) {
+        $rootProjectFiles = @(Get-ChildItem -LiteralPath $projectRoot -File -Filter '*.sentinel' -ErrorAction SilentlyContinue)
+        if ($rootProjectFiles.Count -ne 1) {
+            $errors.Add("project root needs exactly one .sentinel file; found $($rootProjectFiles.Count)")
+        }
         $readmes = @(Get-ChildItem -LiteralPath $projectRoot -File -Filter 'README*' -ErrorAction SilentlyContinue)
         if ($readmes.Count -eq 0) {
             Add-Unique $missingPaths "projects/$projectName/README.md"

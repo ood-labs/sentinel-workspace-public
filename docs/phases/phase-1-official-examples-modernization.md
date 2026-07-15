@@ -2,9 +2,9 @@
 type: phase
 phase_number: "1"
 title: "Official Examples Modernization"
-status: planned
+status: complete
 approval: pending
-summary: "Modernize the eight official Sentinel workspace examples into portable, interactive, preset-driven showcases of the complete 0.5.33 authoring system."
+summary: "Modernize eight official examples and a seven-look gallery into portable, interactive showcases, with final approval pending a clean-public cold-load crash investigation."
 ---
 
 # Phase 1 - Official Examples Modernization
@@ -76,16 +76,16 @@ This phase does not:
 
 | ID | Feature | Primary tools/actions | Status |
 | --- | --- | --- | --- |
-| D1 | Official-example standard and promotion rails | PowerShell validators, Git, `compile_check` | Planned |
+| D1 | Official-example standard and promotion rails | PowerShell validators, Git, `compile_check` | Complete |
 | D2 | Interaction Lab reference hardening | `sentinel_viewport`, `sentinel_preset`, Scene Groups | Complete |
-| D3 | Living Room direct-manipulation editor | controls, selection, picking, state, edit, cameras | Planned |
-| D4 | Face Collage public interactive instrument | param gestures, selection, state, presets | Planned |
-| D5 | Fruit Atlas Director and card editor | atlas, controls, selection, cameras, presets | Planned |
-| D6 | Topographic HUD control console | Canvas UI, control outputs, expressions, Conductor | Planned |
-| D7 | Strata composition desk | Canvas UI, param gestures/selection, presets | Planned |
-| D8 | Desert Totem sculpture workstation | selection, state, camera switcher, safe presets | Planned |
-| D9 | Industrial Lattice compact official example | camera, Scene Group, presets, documentation | Planned |
-| D10 | Public showcase gallery and clean-clone release proof | Group Output, groups-mode Mux, proof bundles | Planned |
+| D3 | Living Room direct-manipulation editor | controls, selection, picking, state, edit, cameras | Complete |
+| D4 | Face Collage public interactive instrument | restrained Scene Group controls, tracking, presets | Complete |
+| D5 | Fruit Atlas Director and card editor | atlas, controls, selection, cameras, presets | Complete |
+| D6 | Topographic HUD control console | Canvas UI, control outputs, expressions, Conductor | Complete |
+| D7 | Strata composition desk | Canvas UI, param gestures/selection, presets | Complete |
+| D8 | Desert Totem sculpture workstation | selection, state, camera switcher, safe presets | Complete |
+| D9 | Industrial Lattice compact official example | camera, Scene Group, presets, documentation | Complete |
+| D10 | Public showcase gallery and clean-clone release proof | Group Output, groups-mode Mux, proof bundles | Complete; approval pending cold-load crash follow-up |
 
 ## Shared Official-Example Standard
 
@@ -198,26 +198,25 @@ This is substrate only; it does not deliver a refreshed user-visible example by 
 
 | Field | Value |
 | --- | --- |
-| Parameters | Face-guide handles, clone id, pin/offset/scale/rotation, delay/history, accumulation, overlay, finish, preset mode |
-| Response schema | Face/clone descriptors, clone selection, durable override state, MediaPipe and clone data-port counts, preset recall results, group health |
-| UE APIs | N/A. Use Module parameter gestures, structured data, selection/state/edit, MediaPipe, StreamDiff, Scene Groups, and presets. |
-| Primary actions | Clean the active graph, add direct manipulation and Collage Director UI, package and promote Face Collage |
+| Parameters | Clone count, stamp scale, motion mode, temporal history, fresh-layer mix, micro glitch, preset mode |
+| Response schema | MediaPipe and clone data-port counts, preset recall results, final Group Output status, group health |
+| UE APIs | N/A. Use structured data, MediaPipe, StreamDiff, a flat Scene Group, Group Output, and presets. |
+| Primary actions | Clean the active graph, curate a restrained Scene Group control surface, package and promote Face Collage |
 
 ### Implementation Details
 
 - Start from the cleaned eleven-node working graph and remove obsolete bundled modules from abandoned branches.
-- Add parameter gestures to the procedural guide for head, eyes, and mouth composition controls where they are genuinely parameter-backed.
-- Publish stable clone descriptors from the same clone records used to render. Add persistent per-clone pin/offset/scale/rotation overrides without destroying live procedural motion for unpinned clones.
-- Build a project-themed Collage Director Canvas for stamp/history, delay, accumulation, overlay, and finish controls.
-- Create group presets such as Live Morph, Temporal Echo, Dense Web, Editorial Minimal, and Performance plus node presets for Cutout, Overlay, and Finish.
+- Preserve the procedural guide, tracking, cutout, accumulation, overlay, and editorial post chain without adding artificial clone selection or gizmos.
+- Use the Scene Group as the sole performance control surface. Do not add a separate Collage Director Canvas or duplicate parameters before bidirectional binding exists.
+- Create visibly distinct `Editorial Drift`, `Temporal Echo`, `Dense Study`, and `Performance` group presets plus focused project-scoped node presets.
 - Add explicit engine-pack requirements and a no-camera/no-tracking diagnostic explanation to the README.
 
 ### Pass Criteria
 
-1. Dragging a visible face-guide handle visibly changes the guide and the subsequent StreamDiff composition; resetting the handle restores the authored default.
-2. A human can select a visible clone, pin and transform it, and watch unpinned clones continue moving while the pinned clone retains its edited placement.
-3. The pinned clone survives save/reload and stateful preset recall; its descriptor, selected id, and visible transform agree.
-4. Live Morph, Temporal Echo, Dense Web, and Editorial Minimal recalls produce visibly distinct running collage behavior, not only different numeric values.
+1. The procedural guide and real MediaPipe data drive the running StreamDiff/cutout composition, with nonzero clone records reaching the renderer.
+2. The six exposed Scene Group controls visibly change clone density, scale, motion, history, layer mix, and post treatment without a competing authored control surface.
+3. The graph contains one flat Scene Group, one final Group Output, and no clone selection/gizmo/editor state that conflicts with the intentionally procedural composition.
+4. `Editorial Drift`, `Temporal Echo`, `Dense Study`, and `Performance` recalls produce visibly distinct running collage behavior, not only different numeric values.
 5. From a clean public checkout with required engines installed, the project reaches healthy frame progression through tracking, cutout, accumulation, overlay, finish, and final output. With a required pack deliberately unavailable, the README-described diagnostic is concrete and the app does not crash.
 6. The promoted project contains only active modules and no local paths, provider data, reference images, or obsolete multi-StreamDiff artifacts.
 

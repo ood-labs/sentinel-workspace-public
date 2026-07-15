@@ -13,9 +13,9 @@ Sentinel is a GPU-accelerated live video application for performance and interac
 ## Current Status
 
 - Active phase: Phase 1 - Official Examples Modernization (`docs/phases/phase-1-official-examples-modernization.md`).
-- Status: planned; implementation has not started.
-- Next step: run `/plan-audit`, review its findings, then generate the autonomous completion condition with `/slash-goal`.
-- Author and prove changes in this private workspace, then promote verified portable content to the sibling public repository. Do not push without separate authorization.
+- Status: implementation complete; approval remains pending after a clean-public cold-load sequence crashed Sentinel during the Topographic HUD sample. Both private and public static validators pass all nine projects.
+- Next step: investigate the recorded cold-load crash in the Sentinel application repository, then rerun the remaining clean-public runtime-load samples before final approval.
+- Verified portable content is locally committed in the sibling public repository through `d2ea3a0`. No network push is authorized.
 - Preserve the existing local Module and project work in progress while executing the phase.
 
 ## First Rule: Discover Live

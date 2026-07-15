@@ -1,12 +1,48 @@
 ---
 type: lessons
-updated: 2026-07-08
+updated: 2026-07-15
 ---
 
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-15 - Project import does not carry Scene Group authority
+
+**Symptoms**: Imported example graphs looked structurally correct, but parameters driven by `/sentinel/groups/annotation_*` expressions snapped toward zero and the imported Gallery looks diverged from their standalone active presets.
+
+**Cause**: Project import recreated pipelines and links but did not recreate source annotations, Scene Group presets, or their ids. Expressions retained references to the absent source group paths (`tools/repair-showcase-gallery-imports.ps1:87`).
+
+**Fix**: Bake each standalone group's active preset into the mapped Gallery pipelines, preserve the preset's enabled/bypass map, and remove only expressions that reference `/sentinel/groups/`. Keep internal LFO/control-output expressions intact.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-15
+
+## 2026-07-15 - Read UTF-8 project JSON explicitly in Windows PowerShell
+
+**Symptoms**: A Gallery repair pass changed every annotation separator from `·` to visible mojibake even though the JSON remained syntactically valid.
+
+**Cause**: `Get-Content -Raw` under Windows PowerShell can decode UTF-8-without-BOM using the active ANSI code page before the script rewrites the entire project as UTF-8 (`tools/repair-showcase-gallery-imports.ps1:8`).
+
+**Fix**: Read with a strict `UTF8Encoding`, write a same-directory temporary file without a BOM, and atomically replace the destination with a disposable backup. Verify all expected Unicode markers after a disposable regeneration.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-15
+
+## 2026-07-15 - Serialize contention-prone Gallery Module reloads
+
+**Symptoms**: A 51-Module Gallery cold load timed out `Fruit_LFO` and `dada_render`; a later sequence of clean-checkout project loads exited Sentinel during Topographic HUD startup.
+
+**Cause**: The two Module timeouts were compile contention rather than source errors because both compiled successfully alone. The exact cause of the later process exit remains unresolved and belongs in Sentinel application diagnostics.
+
+**Fix**: For Gallery recovery, wait for the compile queue to settle and force-reload the slow Modules one at a time. Treat a process exit as an application blocker, preserve the load sequence, relaunch without a kill action, and do not claim the interrupted runtime sweep passed.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-15
 
 ## 2026-07-08 - `force_reload` drops data-port links, expression drivers, and resets params
 

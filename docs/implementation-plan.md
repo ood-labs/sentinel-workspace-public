@@ -8,7 +8,7 @@ This plan governs work in the user-writable Sentinel workspace and its curated p
 
 | Phase | Title | Status | Detailed plan |
 | --- | --- | --- | --- |
-| 1 | Official Examples Modernization | Planned | [Phase 1](phases/phase-1-official-examples-modernization.md) |
+| 1 | Official Examples Modernization | Complete; approval pending | [Phase 1](phases/phase-1-official-examples-modernization.md) |
 
 ## Phase 1 - Official Examples Modernization
 
@@ -18,16 +18,16 @@ Modernize the seven existing public examples plus Face Collage into portable, in
 
 | Sub-phase | Outcome | Primary capability | Status |
 | --- | --- | --- | --- |
-| 1A | Foundation and promotion rails | validation, portability, private-to-public workflow | Planned |
+| 1A | Foundation and promotion rails | validation, portability, private-to-public workflow | Complete |
 | 1B | Interaction Lab reference hardening | Canvas UI, state, selection, presets, control-only groups | Complete |
-| 1C | Living Room direct-manipulation editor | logical selection, durable transforms, cameras, group presets | Planned |
-| 1D | Face Collage public instrument | param gestures, clone selection/state, themed control surface | Planned |
-| 1E | Fruit Atlas Director and card editor | atlas operations, selectable cards, cameras, live/curated modes | Planned |
-| 1F | Topographic HUD control console | Canvas control bus, editable nodes/labels, Conductor | Planned |
-| 1G | Strata composition desk | macro UI, plate manipulation, feature reactivity | Planned |
-| 1H | Desert Totem sculpture workstation | part editing, warp deck, cameras, safe presets | Planned |
-| 1I | Industrial Lattice compact example | beginner graph, shared camera, look/quality presets | Planned |
-| 1J | Showcase gallery and public release | Group Outputs, groups-mode Mux, clean-clone proof | Planned |
+| 1C | Living Room direct-manipulation editor | logical selection, durable transforms, cameras, group presets | Complete |
+| 1D | Face Collage public instrument | restrained Scene Group controls, tracking, presets | Complete |
+| 1E | Fruit Atlas Director and card editor | atlas operations, selectable cards, cameras, live/curated modes | Complete |
+| 1F | Topographic HUD control console | Canvas control bus, editable nodes/labels, Conductor | Complete |
+| 1G | Strata composition desk | macro UI, plate manipulation, feature reactivity | Complete |
+| 1H | Desert Totem sculpture workstation | part editing, warp deck, cameras, safe presets | Complete |
+| 1I | Industrial Lattice compact example | beginner graph, shared camera, look/quality presets | Complete |
+| 1J | Showcase gallery and public release | Group Outputs, groups-mode Mux, clean-clone proof | Complete; approval pending cold-load crash follow-up |
 
 ### MCP And Runtime Surfaces
 

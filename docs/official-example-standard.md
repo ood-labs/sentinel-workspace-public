@@ -8,12 +8,13 @@ This document is the release-readiness contract for the curated projects in the 
 | --- | --- | --- | --- |
 | Interaction Lab | Canonical authored UI, viewport, selection, state, and gizmo laboratory | Yes, at its spline and gizmo stations | No single final Group Output; uses three flat control-only Scene Groups instead |
 | Living Room SDF | Logical-object editing in a modular 3D scene | Furnishings | None |
-| Face Collage | Tracking-driven generative composition with durable clone edits | Guide handles and clone transforms | None |
+| Face Collage | Tracking-driven generative editorial composition | None | Deliberately procedural; no clone selection, transform gizmos, or separate Director Canvas |
 | Fruit Atlas Scatter | Generative still banking and editable 3D cards | Occupied atlas cards | None |
 | Topographic HUD | Modular 2D console, signal routing, and cue-ready motion | Important nodes and labels only | Generated contour samples are not individually editable |
 | Strata | Modular plate composition and feature-reactive design | Focal plate controls; bounded blobs only if stable | Procedural blobs without stable identity remain procedural |
 | Desert Totem | Procedural sculpture workstation | Logical totem parts | None |
 | Industrial Lattice | Compact beginner-facing 3D example | None | Infinite repetition has no meaningful unique object identity |
+| Showcase Gallery | Seven-look release gallery and Scene Switcher reference | None | Aggregator: seven flat aesthetic groups and one final groups-mode Mux |
 
 An exemption removes only the artificial feature named above. It does not relax health, portability, preset, documentation, or visual-proof requirements.
 
@@ -33,6 +34,8 @@ Every aesthetic project must ship with:
 10. only active project-local Module folders plus explicitly approved shared dependencies.
 
 Interaction Lab replaces items 2-5 with three independently switchable, flat control-only Scene Groups and stateful node presets. It remains subject to the same runtime, persistence, documentation, and portability bar.
+
+Showcase Gallery replaces items 2-6 with seven flat imported aesthetic Scene Groups, exactly one connected Group Output inside each group, and one final groups-mode Mux whose exact allow-list matches those seven groups and enables `solo_upstream`. It has no nested groups and does not duplicate the imported projects' control or preset authority.
 
 ## Interaction Selection Rules
 

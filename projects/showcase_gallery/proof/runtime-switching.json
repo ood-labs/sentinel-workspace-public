@@ -13,6 +13,22 @@
       { "at": "2500ms", "fading": false, "progress": 1.0 }
     ]
   },
+  "mid_fade_retarget": {
+    "fade_time_seconds": 0.75,
+    "sequence": ["annotation_93", "annotation_90", "annotation_88"],
+    "samples": [
+      { "at": "first_fade_250ms", "fading": true, "progress": 0.334607, "from_group": "annotation_93", "to_group": "annotation_90" },
+      { "at": "retarget_20ms", "fading": true, "progress": 0.000041, "from_group": "snapshot", "to_group": "annotation_88" },
+      { "at": "retarget_270ms", "fading": true, "progress": 0.403625, "from_group": "snapshot", "to_group": "annotation_88" },
+      { "at": "complete", "fading": false, "progress": 1.0, "from_group": "snapshot", "to_group": "annotation_88" }
+    ],
+    "continuity_evidence": "The retarget source becomes the switcher's current-image snapshot instead of the abandoned source group, so the second fade begins from the image already on screen.",
+    "motion_proof": {
+      "file": "retarget-crossfade.mp4",
+      "duration_seconds": 3.963922,
+      "sha256": "a380bf2d8afa6c714ca4b3be27b4940201b6076875d174cf9eec3ce0718d65cf"
+    }
+  },
   "freeze_test": {
     "duration_seconds": 2.5,
     "selected_group": "annotation_90",
