@@ -6,7 +6,7 @@ This document is the release-readiness contract for the curated projects in the 
 
 | Project | Teaching role | Required direct manipulation | Exceptions |
 | --- | --- | --- | --- |
-| Interaction Lab | Canonical authored UI, viewport, selection, state, and gizmo laboratory | Yes, at its spline and gizmo stations | No single final Group Output; uses three control-only/nested Scene Groups instead |
+| Interaction Lab | Canonical authored UI, viewport, selection, state, and gizmo laboratory | Yes, at its spline and gizmo stations | No single final Group Output; uses three flat control-only Scene Groups instead |
 | Living Room SDF | Logical-object editing in a modular 3D scene | Furnishings | None |
 | Face Collage | Tracking-driven generative composition with durable clone edits | Guide handles and clone transforms | None |
 | Fruit Atlas Scatter | Generative still banking and editable 3D cards | Occupied atlas cards | None |
@@ -32,7 +32,7 @@ Every aesthetic project must ship with:
 9. a compact `proof/` bundle containing representative final output and interaction evidence;
 10. only active project-local Module folders plus explicitly approved shared dependencies.
 
-Interaction Lab replaces items 2-5 with three independently switchable control-only/nested Scene Groups and stateful node presets. It remains subject to the same runtime, persistence, documentation, and portability bar.
+Interaction Lab replaces items 2-5 with three independently switchable, flat control-only Scene Groups and stateful node presets. It remains subject to the same runtime, persistence, documentation, and portability bar.
 
 ## Interaction Selection Rules
 
@@ -54,7 +54,7 @@ Authored Canvas controls must render from the same normalized rectangles declare
 - Look presets must produce visibly different running output, not just different parameter readback.
 - Stateful editors include at least one node preset that restores a visibly different durable arrangement.
 - Scene Group presets own whole-look state, including contained pipeline parameters and bypass state. Node presets remain portable remix building blocks.
-- Nested Scene Group preset recall follows Sentinel's innermost-wins behavior; do not duplicate child controls in an outer group without a deliberate override.
+- Scene Groups must remain flat. Do not place one Scene Group inside another until nested groups are explicitly supported and adopted as part of the product contract.
 
 ## Runtime Proof
 

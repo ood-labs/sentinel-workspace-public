@@ -152,6 +152,36 @@ foreach ($projectName in $Projects) {
             $errors.Add("needs at least $($definition.MinimumSceneGroups) Scene Group(s); found $($sceneGroups.Count)")
         }
 
+        # Official examples intentionally use a flat group model. Nested groups are
+        # not yet part of the supported example contract, whether expressed by graph
+        # geometry or by a preset that recalls child-group presets.
+        foreach ($outerGroup in $sceneGroups) {
+            $outerLeft = [double]$outerGroup.posX
+            $outerTop = [double]$outerGroup.posY
+            $outerRight = $outerLeft + [double]$outerGroup.width
+            $outerBottom = $outerTop + [double]$outerGroup.height
+
+            foreach ($innerGroup in $sceneGroups) {
+                if ($innerGroup.entityId -eq $outerGroup.entityId) { continue }
+                $innerCenterX = [double]$innerGroup.posX + ([double]$innerGroup.width / 2.0)
+                $innerCenterY = [double]$innerGroup.posY + ([double]$innerGroup.height / 2.0)
+                if ($innerCenterX -gt $outerLeft -and $innerCenterX -lt $outerRight -and
+                    $innerCenterY -gt $outerTop -and $innerCenterY -lt $outerBottom) {
+                    $errors.Add("Scene Group '$($outerGroup.entityId)' contains Scene Group '$($innerGroup.entityId)'; official examples require flat groups")
+                }
+            }
+
+            foreach ($groupPreset in @($outerGroup.sceneGroupPresets)) {
+                $childPresetCount = 0
+                if ($null -ne $groupPreset.childGroupPresets) {
+                    $childPresetCount = @($groupPreset.childGroupPresets.PSObject.Properties).Count
+                }
+                if ($childPresetCount -gt 0) {
+                    $errors.Add("Scene Group preset '$($groupPreset.name)' recalls $childPresetCount child group preset(s); official examples require flat groups")
+                }
+            }
+        }
+
         if ([bool]$definition.RequiresGroupOutput) {
             $groupOutputs = @($projectJson.pipelines | Where-Object { $_.type -eq 'groupoutput' })
             if ($groupOutputs.Count -ne 1) {

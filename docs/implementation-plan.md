@@ -19,7 +19,7 @@ Modernize the seven existing public examples plus Face Collage into portable, in
 | Sub-phase | Outcome | Primary capability | Status |
 | --- | --- | --- | --- |
 | 1A | Foundation and promotion rails | validation, portability, private-to-public workflow | Planned |
-| 1B | Interaction Lab reference hardening | Canvas UI, state, selection, presets, control-only groups | Planned |
+| 1B | Interaction Lab reference hardening | Canvas UI, state, selection, presets, control-only groups | Complete |
 | 1C | Living Room direct-manipulation editor | logical selection, durable transforms, cameras, group presets | Planned |
 | 1D | Face Collage public instrument | param gestures, clone selection/state, themed control surface | Planned |
 | 1E | Fruit Atlas Director and card editor | atlas operations, selectable cards, cameras, live/curated modes | Planned |

@@ -9,6 +9,7 @@ panel:
   resolution: follow_panel
 
 parameters:
+  - { name: path_weight, display: "Path Weight", type: float, default: 2.0, min: 1.0, max: 6.0, group: "Appearance" }
   - { name: select_tool, display: "Select Tool", type: button, group: "Spline Tools" }
   - { name: pen_tool, display: "Pen Tool", type: button, group: "Spline Tools" }
   - { name: tangent_cycle, display: "Cycle Tangent", type: button, group: "Spline Tools" }

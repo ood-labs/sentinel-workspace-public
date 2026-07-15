@@ -77,7 +77,7 @@ This phase does not:
 | ID | Feature | Primary tools/actions | Status |
 | --- | --- | --- | --- |
 | D1 | Official-example standard and promotion rails | PowerShell validators, Git, `compile_check` | Planned |
-| D2 | Interaction Lab reference hardening | `sentinel_viewport`, `sentinel_preset`, Scene Groups | Planned |
+| D2 | Interaction Lab reference hardening | `sentinel_viewport`, `sentinel_preset`, Scene Groups | Complete |
 | D3 | Living Room direct-manipulation editor | controls, selection, picking, state, edit, cameras | Planned |
 | D4 | Face Collage public interactive instrument | param gestures, selection, state, presets | Planned |
 | D5 | Fruit Atlas Director and card editor | atlas, controls, selection, cameras, presets | Planned |
@@ -102,7 +102,7 @@ Every aesthetic example (`living_room_sdf` through `industrial_lattice`, includi
 9. The saved project contains only active bundled modules and portable relative paths. No shader caches, recovery data, provider secrets, local capture sessions, or machine paths ship.
 10. Each project has a user-facing README, a compact proof bundle, current engine requirements, and a short remix guide.
 
-Interaction Lab is exempt from the single-final-output requirement because it is a multi-station feature laboratory, but it must demonstrate control-only/nested Scene Groups and portable node presets.
+Interaction Lab is exempt from the single-final-output requirement because it is a multi-station feature laboratory, but it must demonstrate flat control-only Scene Groups and portable node presets. No official example may nest Scene Groups.
 
 ## Sub-Phase 1A - Foundation And Promotion Rails
 
@@ -135,6 +135,8 @@ This is substrate only; it does not deliver a refreshed user-visible example by 
 
 ## Sub-Phase 1B - Interaction Lab Reference Hardening
 
+**Status:** Complete
+
 ### Contract
 
 | Field | Value |
@@ -158,7 +160,7 @@ This is substrate only; it does not deliver a refreshed user-visible example by 
 2. A real pointer drag visibly moves a spline knot, changes the downstream `Spline_Output`, and one undo restores both editor and downstream output.
 3. A synthetic MCP pick hits a visible Gizmo Lab object; an edit visibly moves it; `objects`, `selection`, and `state` agree on the selected id and durable transform.
 4. Recalling two different project-scoped stateful presets visibly produces two different spline or gizmo arrangements after save/reload, not merely different parameter readback.
-5. The three station Scene Groups can be independently enabled/disabled without corrupting the remaining stations, and nested/group preset behavior is documented with live proof.
+5. The three flat station Scene Groups can be independently enabled/disabled without corrupting the remaining stations, their group preset behavior is documented with live proof, and no group contains another group.
 
 ## Sub-Phase 1C - Living Room Direct-Manipulation Editor
 
