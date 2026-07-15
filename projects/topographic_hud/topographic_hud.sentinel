@@ -283,7 +283,7 @@
       },
       {
         "annotationBody": "Terrain generation / data lanes / rendered HUD / explicit cue authority",
-        "annotationColor": "#5A00FF3D",
+        "annotationColor": "#3E9FC43D",
         "annotationTitle": "TOPOGRAPHIC OPERATIONS",
         "displayName": "TOPOGRAPHIC OPERATIONS",
         "entityId": "annotation_20",
