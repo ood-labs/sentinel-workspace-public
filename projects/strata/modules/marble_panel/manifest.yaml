@@ -7,6 +7,13 @@ resolution: [720, 1080]
 # strata palette. Premultiplied-alpha RGBA, self-animating fluid distortion, seedable.
 
 parameters:
+  - name: palette_variant
+    display: "Palette"
+    type: enum
+    options: [Atelier, Chrome, Poster, Cage, Mono]
+    default: 0
+    flags: button_grid
+    group: "Marble"
   - { name: marble_seed,    display: "Seed",      type: float, min: 0.0, max: 50.0, default: 6.0, group: "Marble" }
   - { name: marble_scale,   display: "Scale",     type: float, min: 0.5, max: 6.0,  default: 2.2, group: "Marble" }
   - { name: warp_amt,       display: "Warp",      type: float, min: 0.0, max: 2.5,  default: 1.0, group: "Marble" }
@@ -15,10 +22,18 @@ parameters:
   - { name: vein_count,     display: "Veins",     type: float, min: 1.0, max: 8.0,  default: 3.5, group: "Marble" }
   - { name: sheen,          display: "Sheen",     type: float, min: 0.0, max: 1.5,  default: 0.6, group: "Marble" }
   - { name: marble_opacity, display: "Opacity",   type: float, min: 0.0, max: 1.0,  default: 1.0, group: "Marble" }
-  - { name: panel_cx, display: "Center X",  type: float, min: 0.0, max: 1.0, default: 0.5,  group: "Panel" }
-  - { name: panel_cy, display: "Center Y",  type: float, min: 0.0, max: 1.0, default: 0.5,  group: "Panel" }
+  - { name: panel_center, display: "Panel Center", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.5, 0.5], hidden: true, group: "Panel" }
   - { name: panel_w,  display: "Half Width", type: float, min: 0.05, max: 0.5, default: 0.26, group: "Panel" }
   - { name: panel_h,  display: "Half Height", type: float, min: 0.05, max: 0.5, default: 0.30, group: "Panel" }
+
+viewport:
+  hint: "Drag the visible marble plate to reposition the focal composition. The host owns the gesture and commits it as one undoable parameter edit."
+  interactions: [events]
+  input: { pointer: [left], gestures: [drag] }
+  param_gestures:
+    - { id: marble_focal, position_param: panel_center, radius: 0.34 }
+  bindings:
+    - { gesture: left_drag, action: move_marble_focal, label: "Move Marble Focal Plate" }
 
 passes:
   - name: marble

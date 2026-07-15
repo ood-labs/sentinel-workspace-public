@@ -14,6 +14,7 @@ inputs:
   - { name: "Marks",  slot: 4, required: false }
 
 parameters:
+  - { name: palette_variant, display: "Palette", type: int, min: 0, max: 4, default: 0, hidden: true, group: "Comp" }
   - { name: bg_gain,     display: "BG Gain",     type: float, min: 0.0, max: 2.0, default: 1.0, group: "Comp" }
   - { name: blob_gain,   display: "Blobs Gain",  type: float, min: 0.0, max: 2.0, default: 1.0, group: "Comp" }
   - name: blob_mode
