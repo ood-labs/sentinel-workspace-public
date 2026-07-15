@@ -6,13 +6,10 @@ struct NodeRecord
     float2 pos; float radius; float intensity;
     float color_mix; float kind; float seed; float active;
 };
-struct LabelRecord
-{
-    float2 pos; float scale; float label_id;
-    float color_mix; float rotation; float active; float pad0;
-};
+#include "label_edit_types.hlsli"
 
 RWStructuredBuffer<LabelRecord> LabelsOut : register(u0);
+StructuredBuffer<LabelOverride> _Tex1 : register(t1);
 
 float h11(float p)
 {
@@ -33,11 +30,21 @@ void main(uint3 DTid : SV_DispatchThreadID)
     L.color_mix = 0; L.rotation = 0; L.active = 0; L.pad0 = 0;
 
     uint nodeCount = min((uint)_Data0_Count, 128u);
+    uint activeNodeCount = 0u;
+    [loop] for (uint scan = 0u; scan < nodeCount; ++scan)
+        if (_Data0[scan].active > 0.5) activeNodeCount++;
     if (i < (uint)label_count)
     {
-        if (attach_mode == 0 && nodeCount > 0u) // Nodes
+        if (attach_mode == 0 && activeNodeCount > 0u) // Nodes
         {
-            uint ni = (uint)(h11((float)i * 3.1 + (float)seed * 7.0) * (float)nodeCount) % nodeCount;
+            uint desired = (uint)(h11((float)i * 3.1 + (float)seed * 7.0) * (float)activeNodeCount) % activeNodeCount;
+            uint ni = 0u;
+            uint rank = 0u;
+            [loop] for (uint scan = 0u; scan < nodeCount; ++scan) {
+                if (_Data0[scan].active < 0.5) continue;
+                if (rank == desired) { ni = scan; break; }
+                rank++;
+            }
             NodeRecord n = _Data0[ni];
             if (n.active > 0.5)
             {
@@ -63,6 +70,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
         L.label_id = floor(h11((float)i * 4.4 + (float)seed) * 8.0);
         L.color_mix = saturate(color_mix + (h11((float)i * 8.1) - 0.5) * 0.5);
         L.rotation = rotation;
+        if (i < 12u) L.pos += _Tex1[i].offset;
+        L.pos = clamp(L.pos, 0.02, 0.98);
     }
 
     LabelsOut[i] = L;
