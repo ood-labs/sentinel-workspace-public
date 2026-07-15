@@ -1,0 +1,910 @@
+{
+  "data": {
+    "link_count": 14,
+    "links": [
+      {
+        "end_pin_id": 31,
+        "from_entity": "Face_DS",
+        "from_pin": "Out",
+        "id": 25,
+        "start_pin_id": 45,
+        "to_entity": "Face_Stitch",
+        "to_pin": "Face"
+      },
+      {
+        "end_pin_id": 72,
+        "from_entity": "Face_Cutout",
+        "from_pin": "Clones",
+        "id": 65,
+        "start_pin_id": 50,
+        "to_entity": "Clone_Overlay",
+        "to_pin": "Clones"
+      },
+      {
+        "end_pin_id": 8,
+        "from_entity": "Face_Guide",
+        "from_pin": "Guide",
+        "id": 1,
+        "start_pin_id": 7,
+        "to_entity": "SD_Face",
+        "to_pin": "Video Input"
+      },
+      {
+        "end_pin_id": 33,
+        "from_entity": "Face_Track",
+        "from_pin": "Face Landmarks",
+        "id": 13,
+        "start_pin_id": 4,
+        "to_entity": "Face_Stitch",
+        "to_pin": "Face Landmarks"
+      },
+      {
+        "end_pin_id": 44,
+        "from_entity": "SD_Face",
+        "from_pin": "Color",
+        "id": 23,
+        "start_pin_id": 12,
+        "to_entity": "Face_DS",
+        "to_pin": "In"
+      },
+      {
+        "end_pin_id": 1,
+        "from_entity": "Face_DS",
+        "from_pin": "Out",
+        "id": 24,
+        "start_pin_id": 45,
+        "to_entity": "Face_Track",
+        "to_pin": "Video Input"
+      },
+      {
+        "end_pin_id": 49,
+        "from_entity": "Face_DS",
+        "from_pin": "Out",
+        "id": 35,
+        "start_pin_id": 45,
+        "to_entity": "Face_Cutout",
+        "to_pin": "Face"
+      },
+      {
+        "end_pin_id": 51,
+        "from_entity": "Face_Stitch",
+        "from_pin": "Anchors",
+        "id": 39,
+        "start_pin_id": 34,
+        "to_entity": "Face_Cutout",
+        "to_pin": "Anchors"
+      },
+      {
+        "end_pin_id": 74,
+        "from_entity": "Accum",
+        "from_pin": "Out",
+        "id": 50,
+        "start_pin_id": 47,
+        "to_entity": "Overlay_Comp",
+        "to_pin": "Accum"
+      },
+      {
+        "end_pin_id": 77,
+        "from_entity": "Clone_Overlay",
+        "from_pin": "Overlay",
+        "id": 52,
+        "start_pin_id": 73,
+        "to_entity": "Overlay_Comp",
+        "to_pin": "Overlay"
+      },
+      {
+        "end_pin_id": 112,
+        "from_entity": "Overlay_Comp",
+        "from_pin": "Out",
+        "id": 58,
+        "start_pin_id": 75,
+        "to_entity": "Editorial_Post",
+        "to_pin": "Collage"
+      },
+      {
+        "end_pin_id": 114,
+        "from_entity": "Editorial_Post",
+        "from_pin": "Final",
+        "id": 59,
+        "start_pin_id": 113,
+        "to_entity": "Face_Collage_Group_Output",
+        "to_pin": "Video"
+      },
+      {
+        "end_pin_id": 46,
+        "from_entity": "Face_Cutout",
+        "from_pin": "Cutout",
+        "id": 61,
+        "start_pin_id": 71,
+        "to_entity": "Accum",
+        "to_pin": "New"
+      },
+      {
+        "end_pin_id": 76,
+        "from_entity": "Face_Cutout",
+        "from_pin": "Cutout",
+        "id": 62,
+        "start_pin_id": 71,
+        "to_entity": "Overlay_Comp",
+        "to_pin": "Fresh"
+      }
+    ],
+    "node_count": 13,
+    "nodes": [
+      {
+        "bounds": {
+          "entity_id": "Face_Track",
+          "height": 379.1526794433594,
+          "max_x": 1063.605712890625,
+          "max_y": 730.4498291015625,
+          "min_x": 890.0413208007812,
+          "min_y": 351.2971496582031,
+          "node_id": 1,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 173.5643768310547,
+          "x": 890.0413208007812,
+          "y": 351.2971496582031
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Face_Track",
+        "entity_id": "Face_Track",
+        "id": 1,
+        "pins": [
+          {
+            "id": 1,
+            "kind": "input",
+            "name": "Video Input",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 2,
+            "kind": "input",
+            "name": "Keypoints",
+            "slot_index": 1,
+            "type": "data"
+          },
+          {
+            "id": 3,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 4,
+            "kind": "output",
+            "name": "Face Landmarks",
+            "slot_index": 1,
+            "type": "data"
+          },
+          {
+            "id": 5,
+            "kind": "output",
+            "name": "Hand Landmarks",
+            "slot_index": 2,
+            "type": "data"
+          }
+        ],
+        "pos_x": 890.0413208007812,
+        "pos_y": 351.2971496582031,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Face_Guide",
+          "height": 334.3609924316406,
+          "max_x": 305.28350830078125,
+          "max_y": 685.6581420898438,
+          "min_x": 150.0413818359375,
+          "min_y": 351.2971496582031,
+          "node_id": 2,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.24212646484375,
+          "x": 150.0413818359375,
+          "y": 351.2971496582031
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Face_Guide",
+        "entity_id": "Face_Guide",
+        "id": 2,
+        "pins": [
+          {
+            "id": 7,
+            "kind": "output",
+            "name": "Guide",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 150.0413818359375,
+        "pos_y": 351.2971496582031,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "SD_Face",
+          "height": 401.5485229492187,
+          "max_x": 565.3241577148438,
+          "max_y": 752.845703125,
+          "min_x": 410.0414733886719,
+          "min_y": 351.2971496582031,
+          "node_id": 3,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.28269958496094,
+          "x": 410.0414733886719,
+          "y": 351.2971496582031
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "SD_Face",
+        "entity_id": "SD_Face",
+        "id": 3,
+        "pins": [
+          {
+            "id": 8,
+            "kind": "input",
+            "name": "Video Input",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 9,
+            "kind": "input",
+            "name": "Style Reference",
+            "slot_index": 1,
+            "type": "style"
+          },
+          {
+            "id": 10,
+            "kind": "input",
+            "name": "Control Image",
+            "slot_index": 2,
+            "type": "controlnet"
+          },
+          {
+            "id": 11,
+            "kind": "input",
+            "name": "Warp Map",
+            "slot_index": 3,
+            "type": "reference"
+          },
+          {
+            "id": 12,
+            "kind": "output",
+            "name": "Color",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 13,
+            "kind": "output",
+            "name": "Depth",
+            "slot_index": 1,
+            "type": "video"
+          }
+        ],
+        "pos_x": 410.0414733886719,
+        "pos_y": 351.2971496582031,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Face_Stitch",
+          "height": 356.7568359375,
+          "max_x": 1292.541015625,
+          "max_y": 708.053955078125,
+          "min_x": 1130.0411376953125,
+          "min_y": 351.2971496582031,
+          "node_id": 9,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 162.4998779296875,
+          "x": 1130.0411376953125,
+          "y": 351.2971496582031
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Face_Stitch",
+        "entity_id": "Face_Stitch",
+        "id": 9,
+        "pins": [
+          {
+            "id": 31,
+            "kind": "input",
+            "name": "Face",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 33,
+            "kind": "input",
+            "name": "Face Landmarks",
+            "slot_index": 1,
+            "type": "data"
+          },
+          {
+            "id": 32,
+            "kind": "output",
+            "name": "Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 34,
+            "kind": "output",
+            "name": "Anchors",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 1130.0411376953125,
+        "pos_y": 351.2971496582031,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Face_DS",
+          "height": 83.0297622680664,
+          "max_x": 765.6246337890625,
+          "max_y": 434.326904296875,
+          "min_x": 660.0413208007812,
+          "min_y": 351.2971496582031,
+          "node_id": 14,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 105.58333587646484,
+          "x": 660.0413208007812,
+          "y": 351.2971496582031
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Face_DS",
+        "entity_id": "Face_DS",
+        "id": 14,
+        "pins": [
+          {
+            "id": 44,
+            "kind": "input",
+            "name": "In",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 45,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 660.0413208007812,
+        "pos_y": 351.2971496582031,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Accum",
+          "height": 339.61553955078125,
+          "max_x": 1775.944091796875,
+          "max_y": 630.9127197265625,
+          "min_x": 1620.0411376953125,
+          "min_y": 291.2972106933594,
+          "node_id": 15,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.9029083251953,
+          "x": 1620.0411376953125,
+          "y": 291.2972106933594
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Accum",
+        "entity_id": "Accum",
+        "id": 15,
+        "pins": [
+          {
+            "id": 46,
+            "kind": "input",
+            "name": "New",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 47,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1620.0411376953125,
+        "pos_y": 291.2972106933594,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Face_Cutout",
+          "height": 361.7336730957031,
+          "max_x": 1525.857177734375,
+          "max_y": 713.0308227539062,
+          "min_x": 1370.0413818359375,
+          "min_y": 351.2971496582031,
+          "node_id": 16,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.81573486328125,
+          "x": 1370.0413818359375,
+          "y": 351.2971496582031
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Face_Cutout",
+        "entity_id": "Face_Cutout",
+        "id": 16,
+        "pins": [
+          {
+            "id": 49,
+            "kind": "input",
+            "name": "Face",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 51,
+            "kind": "input",
+            "name": "Anchors",
+            "slot_index": 1,
+            "type": "data"
+          },
+          {
+            "id": 71,
+            "kind": "output",
+            "name": "Cutout",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 50,
+            "kind": "output",
+            "name": "Clones",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 1370.0413818359375,
+        "pos_y": 351.2971496582031,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Prompt_LFO",
+          "height": 132.7757568359375,
+          "max_x": 305.28350830078125,
+          "max_y": 880.9998168945312,
+          "min_x": 150.0413818359375,
+          "min_y": 748.2240600585938,
+          "node_id": 17,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.24212646484375,
+          "x": 150.0413818359375,
+          "y": 748.2240600585938
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Prompt_LFO",
+        "entity_id": "Prompt_LFO",
+        "id": 17,
+        "pins": [
+          {
+            "id": 53,
+            "kind": "output",
+            "name": "Display",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 54,
+            "kind": "output",
+            "name": "position",
+            "slot_index": 1,
+            "type": "unknown"
+          },
+          {
+            "id": 55,
+            "kind": "output",
+            "name": "value",
+            "slot_index": 2,
+            "type": "unknown"
+          },
+          {
+            "id": 56,
+            "kind": "output",
+            "name": "phase",
+            "slot_index": 3,
+            "type": "unknown"
+          }
+        ],
+        "pos_x": 150.0413818359375,
+        "pos_y": 748.2240600585938,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Clone_Overlay",
+          "height": 339.88201904296875,
+          "max_x": 1775.944091796875,
+          "max_y": 1111.17919921875,
+          "min_x": 1620.0411376953125,
+          "min_y": 771.2972412109375,
+          "node_id": 21,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.9029083251953,
+          "x": 1620.0411376953125,
+          "y": 771.2972412109375
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Clone_Overlay",
+        "entity_id": "Clone_Overlay",
+        "id": 21,
+        "pins": [
+          {
+            "id": 72,
+            "kind": "input",
+            "name": "Clones",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 73,
+            "kind": "output",
+            "name": "Overlay",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1620.0411376953125,
+        "pos_y": 771.2972412109375,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Overlay_Comp",
+          "height": 384.1295166015625,
+          "max_x": 2014.8330078125,
+          "max_y": 735.4266357421875,
+          "min_x": 1860.041259765625,
+          "min_y": 351.2971496582031,
+          "node_id": 22,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 154.791748046875,
+          "x": 1860.041259765625,
+          "y": 351.2971496582031
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Overlay_Comp",
+        "entity_id": "Overlay_Comp",
+        "id": 22,
+        "pins": [
+          {
+            "id": 74,
+            "kind": "input",
+            "name": "Accum",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 76,
+            "kind": "input",
+            "name": "Fresh",
+            "slot_index": 1,
+            "type": "video"
+          },
+          {
+            "id": 77,
+            "kind": "input",
+            "name": "Overlay",
+            "slot_index": 2,
+            "type": "video"
+          },
+          {
+            "id": 75,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1860.041259765625,
+        "pos_y": 351.2971496582031,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Editorial_Post",
+          "height": 339.33782958984375,
+          "max_x": 2245.0126953125,
+          "max_y": 690.635009765625,
+          "min_x": 2090.04150390625,
+          "min_y": 351.2971496582031,
+          "node_id": 29,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 154.9711151123047,
+          "x": 2090.04150390625,
+          "y": 351.2971496582031
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Editorial Post",
+        "entity_id": "Editorial_Post",
+        "id": 29,
+        "pins": [
+          {
+            "id": 112,
+            "kind": "input",
+            "name": "Collage",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 113,
+            "kind": "output",
+            "name": "Final",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 2090.04150390625,
+        "pos_y": 351.2971496582031,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Face_Collage_Group_Output",
+          "height": 339.33782958984375,
+          "max_x": 2535.16162109375,
+          "max_y": 690.635009765625,
+          "min_x": 2330.041015625,
+          "min_y": 351.2971496582031,
+          "node_id": 30,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 205.12057495117188,
+          "x": 2330.041015625,
+          "y": 351.2971496582031
+        },
+        "contained_by": [
+          "annotation_31"
+        ],
+        "display_name": "Face Collage Group Output",
+        "entity_id": "Face_Collage_Group_Output",
+        "id": 30,
+        "pins": [
+          {
+            "id": 114,
+            "kind": "input",
+            "name": "Video",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 115,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 2330.041015625,
+        "pos_y": 351.2971496582031,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "annotation_body": "Face-guided generative portrait collage with temporal layering, restrained linework, subtle editorial post, and one wireless Group Output.",
+        "annotation_color": "#5A00FF3D",
+        "annotation_title": "FACE COLLAGE // EDITORIAL PORTRAIT",
+        "bounds": {
+          "entity_id": "annotation_31",
+          "height": 1300.0,
+          "max_x": 2570.041259765625,
+          "max_y": 1331.297119140625,
+          "min_x": 90.0413589477539,
+          "min_y": 31.297119140625,
+          "node_id": 31,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "annotation",
+          "width": 2480.0,
+          "x": 90.0413589477539,
+          "y": 31.297119140625
+        },
+        "contains": [
+          "Face_Track",
+          "Face_Guide",
+          "SD_Face",
+          "Face_Stitch",
+          "Face_DS",
+          "Accum",
+          "Face_Cutout",
+          "Prompt_LFO",
+          "Clone_Overlay",
+          "Overlay_Comp",
+          "Editorial_Post",
+          "Face_Collage_Group_Output"
+        ],
+        "display_name": "FACE COLLAGE // EDITORIAL PORTRAIT",
+        "enabled": true,
+        "entity_id": "annotation_31",
+        "height": 1300.0,
+        "id": 31,
+        "pins": [],
+        "pos_x": 90.0413589477539,
+        "pos_y": 31.297119140625,
+        "position_set": true,
+        "scene_group": true,
+        "state_path": "/sentinel/groups/annotation_31",
+        "type": "annotation",
+        "width": 2480.0
+      }
+    ],
+    "processing_order": [
+      "Prompt_LFO",
+      "Face_Guide",
+      "SD_Face",
+      "Face_DS",
+      "Face_Track",
+      "Face_Stitch",
+      "Face_Cutout",
+      "Clone_Overlay",
+      "Accum",
+      "Overlay_Comp",
+      "Editorial_Post",
+      "Face_Collage_Group_Output"
+    ],
+    "routing": {
+      "Accum": {
+        "input_entity": "Face_Cutout",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Clone_Overlay": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Editorial_Post": {
+        "input_entity": "Overlay_Comp",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Face_Collage_Group_Output": {
+        "input_entity": "Editorial_Post",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Face_Cutout": {
+        "input_entity": "Face_DS",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Face_DS": {
+        "input_entity": "SD_Face",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Face_Guide": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Face_Stitch": {
+        "input_entity": "Face_DS",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Face_Track": {
+        "input_entity": "Face_DS",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Overlay_Comp": {
+        "input_entity": "Accum",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": [
+          {
+            "entity_id": "Face_Cutout",
+            "is_source": false,
+            "slot_index": 1
+          },
+          {
+            "entity_id": "Clone_Overlay",
+            "is_source": false,
+            "slot_index": 2
+          }
+        ]
+      },
+      "Prompt_LFO": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "SD_Face": {
+        "input_entity": "Face_Guide",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      }
+    }
+  },
+  "status": "ok"
+}

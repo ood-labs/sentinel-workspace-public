@@ -1,0 +1,32 @@
+{
+  "data": {
+    "count": 6,
+    "expressions": [
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_7/parameters/Ambient_Occlusion\")",
+        "path": "/sentinel/pipelines/LR_SDF_Renderer/parameters/ao_strength"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_7/parameters/Daylight\")",
+        "path": "/sentinel/pipelines/LR_Lighting/parameters/daylight_intensity"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_7/parameters/Practical_Lights\")",
+        "path": "/sentinel/pipelines/LR_Lighting/parameters/practical_intensity"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_7/parameters/LR_Camera_Switcher_selected\")",
+        "path": "/sentinel/pipelines/LR_Camera_Switcher/parameters/selected"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_7/parameters/Render_Detail\")",
+        "path": "/sentinel/pipelines/LR_SDF_Renderer/parameters/max_steps"
+      },
+      {
+        "expression": "ref(\"/sentinel/groups/annotation_7/parameters/LR_SDF_Renderer_quality_mode\")",
+        "path": "/sentinel/pipelines/LR_SDF_Renderer/parameters/quality_mode"
+      }
+    ]
+  },
+  "status": "ok"
+}

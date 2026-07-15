@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "switcher": "Gallery_Scene_Switcher",
+  "crossfade": {
+    "fade_time_seconds": 2.0,
+    "from_group": "annotation_93",
+    "from_look": "INDUSTRIAL LATTICE",
+    "to_group": "annotation_90",
+    "to_look": "TOPOGRAPHIC HUD",
+    "samples": [
+      { "at": "immediate", "fading": true, "progress": 0.013752 },
+      { "at": "800ms", "fading": true, "progress": 0.451849 },
+      { "at": "2500ms", "fading": false, "progress": 1.0 }
+    ]
+  },
+  "freeze_test": {
+    "duration_seconds": 2.5,
+    "selected_group": "annotation_90",
+    "selected_pipeline": { "id": "post", "enabled": true, "healthy": true, "frame_delta": 151 },
+    "switcher_pipeline": { "id": "Gallery_Scene_Switcher", "enabled": true, "healthy": true, "frame_delta": 151 },
+    "nonselected_streamdiff": [
+      { "id": "SD_Face", "enabled": false, "healthy": true, "frame_delta": 0 },
+      { "id": "Fruit_SD", "enabled": false, "healthy": true, "frame_delta": 0 }
+    ]
+  }
+}

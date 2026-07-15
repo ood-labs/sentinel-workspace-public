@@ -32,7 +32,7 @@ Sentinel itself is distributed separately. This repository contains authored wor
    sentinel_pipeline action=list_types
    ```
 
-5. Load [`projects/interaction_lab/interaction_lab.sentinel`](projects/interaction_lab/interaction_lab.sentinel) to explore authored controls, responsive Canvas panels, spline editing, selection, and multi-object transform gizmos.
+5. Load [`projects/showcase_gallery/showcase_gallery.sentinel`](projects/showcase_gallery/showcase_gallery.sentinel) to switch across the seven finished aesthetic examples, or open [`projects/interaction_lab/interaction_lab.sentinel`](projects/interaction_lab/interaction_lab.sentinel) for the authored UI, selection, spline, and gizmo feature laboratory.
 
 The live MCP catalog is authoritative for the installed Sentinel build. Start with [`AGENTS.md`](AGENTS.md) or [`knowledge/FEATURE-MAP.md`](knowledge/FEATURE-MAP.md) before authoring new content.
 
@@ -44,7 +44,7 @@ The live MCP catalog is authoritative for the installed Sentinel build. Start wi
 | `.agents/skills/`, `.claude/skills/` | Mirrored Sentinel authoring and automation skills |
 | `knowledge/` | Focused product and workflow reference documentation |
 | `modules/` | Curated Module library and shared HLSL includes |
-| `projects/` | Portable saved shows, including Interaction Lab and six authored visual examples |
+| `projects/` | Portable saved shows, including Interaction Lab, seven authored visual examples, and the Showcase Gallery |
 | `examples/` | Small blueprint examples for procedural construction |
 | `tools/` | Local authoring and validation helpers |
 
@@ -68,11 +68,15 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | --- | --- |
 | [`interaction_lab`](projects/interaction_lab/) | Scientific UI controls, responsive Canvas panels, spline editing, selection, and transform gizmos |
 | [`living_room_sdf`](projects/living_room_sdf/) | A bundled, data-driven SDF interior assembled from architecture, furnishing, material, lighting, render, and grade modules |
+| [`face_collage`](projects/face_collage/) | A tracking-driven StreamDiff collage with persistent accumulation, face cutouts, clone overlays, and editorial finishing |
 | [`topographic_hud`](projects/topographic_hud/) | A 15-module topographic interface using texture lanes, structured records, and a control-output signal bus |
 | [`desert_totem`](projects/desert_totem/) | A procedural Dada totem with structured layout records and layered SDF domain warping |
 | [`fruit_atlas_scatter`](projects/fruit_atlas_scatter/) | A StreamDiff, matting, depth, atlas, and 3D card-scatter workflow; its AI nodes require the corresponding Sentinel engine packs |
 | [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
-| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene using the shared root-level `steel_lattice` and `industrial_mono_post` modules |
+| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene with bundled render/post modules, shared cameras, and curated structural presets |
+| [`showcase_gallery`](projects/showcase_gallery/) | One groups-mode Scene Switcher that preserves and crossfades the seven complete aesthetic graphs while freezing nonselected looks |
+
+Face Collage and Fruit Atlas Scatter are engine-backed. The remaining aesthetic looks are model-free. The Showcase Gallery README links a representative final-output capture for every look and records live crossfade/freeze proof.
 
 ## Creating a UI Module
 

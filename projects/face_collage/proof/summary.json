@@ -1,0 +1,64 @@
+{
+  "artifacts": {
+    "expressions": "<workspace>/projects\\face_collage\\proof\\expressions.json",
+    "graph": "<workspace>/projects\\face_collage\\proof\\graph.json",
+    "graph_profile": "<workspace>/projects\\face_collage\\proof\\graph_profile.json",
+    "links": "<workspace>/projects\\face_collage\\proof\\links.json",
+    "output_capture": "<workspace>/projects\\face_collage\\proof\\output_capture.json",
+    "output_image": "<workspace>/projects\\face_collage\\proof\\output.png",
+    "pipeline_info": "<workspace>/projects\\face_collage\\proof\\pipeline_info.json",
+    "window_screenshot": "<workspace>/projects\\face_collage\\proof\\window.jpg"
+  },
+  "graph_profile": {
+    "frame_index": 665461,
+    "node_count": 12,
+    "pipeline_ms": 47.333499908447266,
+    "top_nodes": [
+      {
+        "avg_frame_ms": 44.65887069702149,
+        "entity_id": "SD_Face",
+        "hotspot_reasons": [
+          "node_wall_time_over_8ms",
+          "pipeline_avg_frame_time_over_8ms"
+        ],
+        "type": "streamdiff",
+        "wall_time_ms": 38.6251
+      },
+      {
+        "avg_frame_ms": 9.91403865814209,
+        "entity_id": "Face_Track",
+        "hotspot_reasons": [
+          "node_wall_time_over_8ms",
+          "pipeline_avg_frame_time_over_8ms"
+        ],
+        "type": "mediapipe",
+        "wall_time_ms": 8.224
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "Prompt_LFO",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.1293
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "Face_Stitch",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0234
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "entity_id": "Face_Cutout",
+        "hotspot_reasons": [],
+        "type": "module",
+        "wall_time_ms": 0.0194
+      }
+    ],
+    "total_ms": 52.64610004425049
+  },
+  "image_diff": null,
+  "pipeline_id": "Editorial_Post",
+  "proof_dir": "<workspace>/projects\\face_collage\\proof"
+}

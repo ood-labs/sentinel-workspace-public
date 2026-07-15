@@ -1,0 +1,172 @@
+{
+  "data": {
+    "control_outputs": [],
+    "data_outputs": [],
+    "id": "Editorial_Post",
+    "input_tiles": {
+      "effective_visible": false,
+      "mode": "hidden"
+    },
+    "name": "Module",
+    "output_format": "BGRA8",
+    "panel": {
+      "anchor_id": "Editorial_Post",
+      "content_size": [
+        807,
+        670
+      ],
+      "declared_mode": "standard",
+      "diagnostics": {
+        "consumed_generation": 0,
+        "deferred_resource_count": 0,
+        "extent_generations_consumed": 0,
+        "published_generation": 88,
+        "render_target_recreations": 0
+      },
+      "effective_mode": "standard",
+      "open": true,
+      "output": "Final",
+      "render_size": [
+        720,
+        1280
+      ],
+      "resolution_mode": "pipeline"
+    },
+    "parameters": [
+      {
+        "default": 0.0,
+        "description": "Path to shader project folder",
+        "fullPath": "",
+        "hidden": false,
+        "max": 1.0,
+        "min": 0.0,
+        "name": "project_dir",
+        "type": 3,
+        "value": "<workspace>/projects\\face_collage\\modules\\collage_post"
+      },
+      {
+        "default": 720.0,
+        "description": "Output width (pixels)",
+        "fullPath": "",
+        "hidden": false,
+        "max": 16384.0,
+        "min": 64.0,
+        "name": "resolution_width",
+        "type": 1,
+        "value": "720"
+      },
+      {
+        "default": 1280.0,
+        "description": "Output height (pixels)",
+        "fullPath": "",
+        "hidden": false,
+        "max": 16384.0,
+        "min": 64.0,
+        "name": "resolution_height",
+        "type": 1,
+        "value": "1280"
+      },
+      {
+        "default": 0.03500000014901161,
+        "description": "Micro Glitch",
+        "fullPath": "",
+        "hidden": false,
+        "max": 0.20000000298023224,
+        "min": 0.0,
+        "name": "glitch",
+        "type": 0,
+        "value": "0.012000"
+      },
+      {
+        "default": 0.550000011920929,
+        "description": "Chromatic Edge",
+        "fullPath": "",
+        "hidden": false,
+        "max": 2.0,
+        "min": 0.0,
+        "name": "chroma",
+        "type": 0,
+        "value": "0.250000"
+      },
+      {
+        "default": 0.02500000037252903,
+        "description": "Grain",
+        "fullPath": "",
+        "hidden": false,
+        "max": 0.15000000596046448,
+        "min": 0.0,
+        "name": "grain",
+        "type": 0,
+        "value": "0.015000"
+      },
+      {
+        "default": 0.25,
+        "description": "Vignette",
+        "fullPath": "",
+        "hidden": false,
+        "max": 1.0,
+        "min": 0.0,
+        "name": "vignette",
+        "type": 0,
+        "value": "0.260000"
+      },
+      {
+        "default": 1.0800000429153442,
+        "description": "Contrast",
+        "fullPath": "",
+        "hidden": false,
+        "max": 1.5,
+        "min": 0.699999988079071,
+        "name": "contrast",
+        "type": 0,
+        "value": "1.080000"
+      },
+      {
+        "default": 0.0,
+        "description": "Lift",
+        "fullPath": "",
+        "hidden": false,
+        "max": 0.10000000149011612,
+        "min": -0.10000000149011612,
+        "name": "lift",
+        "type": 0,
+        "value": "0.000000"
+      },
+      {
+        "default": 0.0,
+        "description": "Temperature",
+        "fullPath": "",
+        "hidden": false,
+        "max": 0.5,
+        "min": -0.5,
+        "name": "temperature",
+        "type": 0,
+        "value": "0.000000"
+      }
+    ],
+    "presets": [
+      "Restrained Post"
+    ],
+    "stats": {
+      "avgFrameMs": 0.0,
+      "compile_ok": true,
+      "enabled": true,
+      "fps": 18.599321365356445,
+      "frameTimeMs": 0.0,
+      "framesProcessed": 19186,
+      "has_preview_srv": true,
+      "health_reasons": [],
+      "healthy": true,
+      "output_resolution": [
+        720,
+        1280
+      ],
+      "running": true,
+      "statusMessage": "Loaded: Collage Editorial Post",
+      "unresolved_project_dir": false,
+      "vramUsedBytes": 0
+    },
+    "version": "1.0.0"
+  },
+  "status": "ok"
+}

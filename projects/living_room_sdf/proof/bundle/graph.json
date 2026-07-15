@@ -1,0 +1,796 @@
+{
+  "data": {
+    "link_count": 8,
+    "links": [
+      {
+        "end_pin_id": 10,
+        "from_entity": "LR_Architecture",
+        "from_pin": "PNodes",
+        "id": 1,
+        "start_pin_id": 3,
+        "to_entity": "LR_Lighting",
+        "to_pin": "Architecture PNodes"
+      },
+      {
+        "end_pin_id": 12,
+        "from_entity": "LR_Furnishings",
+        "from_pin": "PNodes",
+        "id": 2,
+        "start_pin_id": 6,
+        "to_entity": "LR_Lighting",
+        "to_pin": "Furnishings PNodes"
+      },
+      {
+        "end_pin_id": 14,
+        "from_entity": "LR_Architecture",
+        "from_pin": "PNodes",
+        "id": 3,
+        "start_pin_id": 3,
+        "to_entity": "LR_SDF_Renderer",
+        "to_pin": "Architecture PNodes"
+      },
+      {
+        "end_pin_id": 16,
+        "from_entity": "LR_Furnishings",
+        "from_pin": "PNodes",
+        "id": 4,
+        "start_pin_id": 6,
+        "to_entity": "LR_SDF_Renderer",
+        "to_pin": "Furnishings PNodes"
+      },
+      {
+        "end_pin_id": 17,
+        "from_entity": "LR_Materials",
+        "from_pin": "Material Records",
+        "id": 5,
+        "start_pin_id": 9,
+        "to_entity": "LR_SDF_Renderer",
+        "to_pin": "Material Records"
+      },
+      {
+        "end_pin_id": 18,
+        "from_entity": "LR_Lighting",
+        "from_pin": "Light Records",
+        "id": 6,
+        "start_pin_id": 13,
+        "to_entity": "LR_SDF_Renderer",
+        "to_pin": "Light Records"
+      },
+      {
+        "end_pin_id": 19,
+        "from_entity": "LR_SDF_Renderer",
+        "from_pin": "HDR Scene",
+        "id": 7,
+        "start_pin_id": 15,
+        "to_entity": "LR_Cinematic_Grade",
+        "to_pin": "HDR Scene"
+      },
+      {
+        "end_pin_id": 34,
+        "from_entity": "LR_Cinematic_Grade",
+        "from_pin": "Final",
+        "id": 8,
+        "start_pin_id": 20,
+        "to_entity": "LR_Group_Output",
+        "to_pin": "Video"
+      }
+    ],
+    "node_count": 13,
+    "nodes": [
+      {
+        "bounds": {
+          "entity_id": "LR_Architecture",
+          "height": 206.6651306152344,
+          "max_x": 303.56317138671875,
+          "max_y": 376.6651306152344,
+          "min_x": 140.0,
+          "min_y": 170.0,
+          "node_id": 1,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 163.56317138671875,
+          "x": 140.0,
+          "y": 170.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Architecture",
+        "entity_id": "LR_Architecture",
+        "id": 1,
+        "pins": [
+          {
+            "id": 2,
+            "kind": "output",
+            "name": "Architecture Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 3,
+            "kind": "output",
+            "name": "PNodes",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 140.0,
+        "pos_y": 170.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Furnishings",
+          "height": 303.92266845703125,
+          "max_x": 294.9024658203125,
+          "max_y": 733.9226684570312,
+          "min_x": 140.0,
+          "min_y": 430.0,
+          "node_id": 2,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 154.90245056152344,
+          "x": 140.0,
+          "y": 430.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Furnishings",
+        "entity_id": "LR_Furnishings",
+        "id": 2,
+        "pins": [
+          {
+            "id": 5,
+            "kind": "output",
+            "name": "Furnishings Plan",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 6,
+            "kind": "output",
+            "name": "PNodes",
+            "slot_index": 1,
+            "type": "data"
+          },
+          {
+            "id": 21,
+            "kind": "output",
+            "name": "Furnishing Transforms",
+            "slot_index": 2,
+            "type": "data"
+          },
+          {
+            "id": 22,
+            "kind": "output",
+            "name": "Viewport Objects",
+            "slot_index": 3,
+            "type": "data"
+          },
+          {
+            "id": 23,
+            "kind": "output",
+            "name": "Viewport Pick Result",
+            "slot_index": 4,
+            "type": "data"
+          }
+        ],
+        "pos_x": 140.0,
+        "pos_y": 430.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Materials",
+          "height": 204.9754638671875,
+          "max_x": 294.9024658203125,
+          "max_y": 964.9754638671876,
+          "min_x": 140.0,
+          "min_y": 760.0,
+          "node_id": 3,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 154.90245056152344,
+          "x": 140.0,
+          "y": 760.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Materials",
+        "entity_id": "LR_Materials",
+        "id": 3,
+        "pins": [
+          {
+            "id": 8,
+            "kind": "output",
+            "name": "Material Swatches",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 9,
+            "kind": "output",
+            "name": "Material Records",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 140.0,
+        "pos_y": 760.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Lighting",
+          "height": 206.06797790527344,
+          "max_x": 750.9359130859375,
+          "max_y": 596.0679931640625,
+          "min_x": 500.0,
+          "min_y": 390.0,
+          "node_id": 4,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 250.93592834472656,
+          "x": 500.0,
+          "y": 390.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Lighting",
+        "entity_id": "LR_Lighting",
+        "id": 4,
+        "pins": [
+          {
+            "id": 10,
+            "kind": "input",
+            "name": "Architecture PNodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 12,
+            "kind": "input",
+            "name": "Furnishings PNodes",
+            "slot_index": 1,
+            "type": "data"
+          },
+          {
+            "id": 11,
+            "kind": "output",
+            "name": "Lighting Preview",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 13,
+            "kind": "output",
+            "name": "Light Records",
+            "slot_index": 1,
+            "type": "data"
+          }
+        ],
+        "pos_x": 500.0,
+        "pos_y": 390.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_SDF_Renderer",
+          "height": 264.3165588378906,
+          "max_x": 1071.8115234375,
+          "max_y": 654.3165283203125,
+          "min_x": 850.0,
+          "min_y": 390.0,
+          "node_id": 5,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 221.8115234375,
+          "x": 850.0,
+          "y": 390.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR SDF Renderer",
+        "entity_id": "LR_SDF_Renderer",
+        "id": 5,
+        "pins": [
+          {
+            "id": 14,
+            "kind": "input",
+            "name": "Architecture PNodes",
+            "slot_index": 0,
+            "type": "data"
+          },
+          {
+            "id": 16,
+            "kind": "input",
+            "name": "Furnishings PNodes",
+            "slot_index": 1,
+            "type": "data"
+          },
+          {
+            "id": 17,
+            "kind": "input",
+            "name": "Material Records",
+            "slot_index": 2,
+            "type": "data"
+          },
+          {
+            "id": 18,
+            "kind": "input",
+            "name": "Light Records",
+            "slot_index": 3,
+            "type": "data"
+          },
+          {
+            "id": 15,
+            "kind": "output",
+            "name": "HDR Scene",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 850.0,
+        "pos_y": 390.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Cinematic_Grade",
+          "height": 178.88531494140625,
+          "max_x": 1384.9207763671875,
+          "max_y": 568.8853149414062,
+          "min_x": 1200.0,
+          "min_y": 390.0,
+          "node_id": 6,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 184.92074584960935,
+          "x": 1200.0,
+          "y": 390.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Cinematic Grade",
+        "entity_id": "LR_Cinematic_Grade",
+        "id": 6,
+        "pins": [
+          {
+            "id": 19,
+            "kind": "input",
+            "name": "HDR Scene",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 20,
+            "kind": "output",
+            "name": "Final",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1200.0,
+        "pos_y": 390.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "annotation_body": "Flat official Scene Group: authored architecture + whole-assembly furnishing editor + materials + lighting + shared cameras + grade + Group Output. Middle-drag and wheel navigate the plan canvas.",
+        "annotation_color": "#2D657A66",
+        "annotation_title": "LIVING ROOM // DIRECT-MANIPULATION SCENE",
+        "bounds": {
+          "entity_id": "annotation_7",
+          "height": 1320.0,
+          "max_x": 1900.0,
+          "max_y": 1350.0,
+          "min_x": 60.0,
+          "min_y": 30.0,
+          "node_id": 7,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "annotation",
+          "width": 1840.0,
+          "x": 60.0,
+          "y": 30.0
+        },
+        "contains": [
+          "LR_Architecture",
+          "LR_Furnishings",
+          "LR_Materials",
+          "LR_Lighting",
+          "LR_SDF_Renderer",
+          "LR_Cinematic_Grade",
+          "LR_Camera_Conversation",
+          "LR_Camera_Left_Side",
+          "LR_Camera_Media_Corner",
+          "LR_Camera_Reverse_Media",
+          "LR_Camera_Switcher",
+          "LR_Group_Output"
+        ],
+        "display_name": "LIVING ROOM // DIRECT-MANIPULATION SCENE",
+        "enabled": true,
+        "entity_id": "annotation_7",
+        "height": 1320.0,
+        "id": 7,
+        "pins": [],
+        "pos_x": 60.0,
+        "pos_y": 30.0,
+        "position_set": true,
+        "scene_group": true,
+        "state_path": "/sentinel/groups/annotation_7",
+        "type": "annotation",
+        "width": 1840.0
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Camera_Conversation",
+          "height": 63.06565475463867,
+          "max_x": 344.0452880859375,
+          "max_y": 1063.065673828125,
+          "min_x": 130.0,
+          "min_y": 1000.0,
+          "node_id": 8,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 214.04527282714844,
+          "x": 130.0,
+          "y": 1000.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Camera Conversation",
+        "entity_id": "LR_Camera_Conversation",
+        "id": 8,
+        "pins": [
+          {
+            "id": 24,
+            "kind": "input",
+            "name": "Video In",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 25,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 130.0,
+        "pos_y": 1000.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Camera_Left_Side",
+          "height": 63.06565475463867,
+          "max_x": 660.745849609375,
+          "max_y": 1063.065673828125,
+          "min_x": 470.0,
+          "min_y": 1000.0,
+          "node_id": 9,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 190.745849609375,
+          "x": 470.0,
+          "y": 1000.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Camera Left Side",
+        "entity_id": "LR_Camera_Left_Side",
+        "id": 9,
+        "pins": [
+          {
+            "id": 26,
+            "kind": "input",
+            "name": "Video In",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 27,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 470.0,
+        "pos_y": 1000.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Camera_Media_Corner",
+          "height": 63.06565475463867,
+          "max_x": 1024.0450439453125,
+          "max_y": 1063.065673828125,
+          "min_x": 810.0,
+          "min_y": 1000.0,
+          "node_id": 10,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 214.0450439453125,
+          "x": 810.0,
+          "y": 1000.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Camera Media Corner",
+        "entity_id": "LR_Camera_Media_Corner",
+        "id": 10,
+        "pins": [
+          {
+            "id": 28,
+            "kind": "input",
+            "name": "Video In",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 29,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 810.0,
+        "pos_y": 1000.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Camera_Reverse_Media",
+          "height": 63.06565475463867,
+          "max_x": 1371.8115234375,
+          "max_y": 1063.065673828125,
+          "min_x": 1150.0,
+          "min_y": 1000.0,
+          "node_id": 11,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 221.8115234375,
+          "x": 1150.0,
+          "y": 1000.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Camera Reverse Media",
+        "entity_id": "LR_Camera_Reverse_Media",
+        "id": 11,
+        "pins": [
+          {
+            "id": 30,
+            "kind": "input",
+            "name": "Video In",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 31,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1150.0,
+        "pos_y": 1000.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Camera_Switcher",
+          "height": 66.94889068603516,
+          "max_x": 1678.803955078125,
+          "max_y": 1066.9488525390625,
+          "min_x": 1490.0,
+          "min_y": 1000.0,
+          "node_id": 12,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 188.80398559570312,
+          "x": 1490.0,
+          "y": 1000.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Camera Switcher",
+        "entity_id": "LR_Camera_Switcher",
+        "id": 12,
+        "pins": [
+          {
+            "id": 33,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1490.0,
+        "pos_y": 1000.0,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "LR_Group_Output",
+          "height": 178.88531494140625,
+          "max_x": 1729.3878173828125,
+          "max_y": 568.8853149414062,
+          "min_x": 1560.0,
+          "min_y": 390.0,
+          "node_id": 13,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 169.38780212402344,
+          "x": 1560.0,
+          "y": 390.0
+        },
+        "contained_by": [
+          "annotation_7"
+        ],
+        "display_name": "LR Group Output",
+        "entity_id": "LR_Group_Output",
+        "id": 13,
+        "pins": [
+          {
+            "id": 34,
+            "kind": "input",
+            "name": "Video",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 35,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1560.0,
+        "pos_y": 390.0,
+        "position_set": true,
+        "type": "pipeline"
+      }
+    ],
+    "processing_order": [
+      "LR_Camera_Left_Side",
+      "LR_Architecture",
+      "LR_Furnishings",
+      "LR_Materials",
+      "LR_Camera_Conversation",
+      "LR_Camera_Media_Corner",
+      "LR_Camera_Reverse_Media",
+      "LR_Camera_Switcher",
+      "LR_Lighting",
+      "LR_SDF_Renderer",
+      "LR_Cinematic_Grade",
+      "LR_Group_Output"
+    ],
+    "routing": {
+      "LR_Architecture": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Camera_Conversation": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Camera_Left_Side": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Camera_Media_Corner": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Camera_Reverse_Media": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Camera_Switcher": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Cinematic_Grade": {
+        "input_entity": "LR_SDF_Renderer",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Furnishings": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Group_Output": {
+        "input_entity": "LR_Cinematic_Grade",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Lighting": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_Materials": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "LR_SDF_Renderer": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      }
+    }
+  },
+  "status": "ok"
+}

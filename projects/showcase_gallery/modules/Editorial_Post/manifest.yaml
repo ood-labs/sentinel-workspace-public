@@ -1,0 +1,29 @@
+name: "Collage Editorial Post"
+version: "1.0"
+mode: generator
+resolution: [720, 1280]
+input_tiles: hidden
+
+inputs:
+  - { name: "Collage", slot: 0, required: true }
+
+parameters:
+  - { name: glitch, display: "Micro Glitch", type: float, min: 0.0, max: 0.2, default: 0.035, group: "Editorial" }
+  - { name: chroma, display: "Chromatic Edge", type: float, min: 0.0, max: 2.0, default: 0.55, group: "Editorial" }
+  - { name: grain, display: "Grain", type: float, min: 0.0, max: 0.15, default: 0.025, group: "Editorial" }
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 1.0, default: 0.25, group: "Editorial" }
+  - { name: contrast, display: "Contrast", type: float, min: 0.7, max: 1.5, default: 1.08, group: "Grade" }
+  - { name: lift, display: "Lift", type: float, min: -0.1, max: 0.1, default: 0.0, group: "Grade" }
+  - { name: temperature, display: "Temperature", type: float, min: -0.5, max: 0.5, default: 0.0, group: "Grade" }
+
+passes:
+  - name: post
+    shader: post.hlsl
+    target: ps_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Final", pass: post }

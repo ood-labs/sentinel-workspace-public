@@ -1,6 +1,10 @@
 {
+  "display": {
+    "fpsLimit": 60.0,
+    "vsyncEnabled": false
+  },
   "graph": {
-    "canvasZoom": 0.6641656756401062,
+    "canvasZoom": 0.49462300539016724,
     "links": [
       {
         "endPinId": 3,
@@ -98,14 +102,14 @@
         "startPinId": 30
       },
       {
-        "endPinId": 47,
-        "id": 48,
+        "endPinId": 104,
+        "id": 49,
         "startPinId": 40
       }
     ],
-    "nextLinkId": 49,
-    "nextNodeId": 18,
-    "nextPinId": 48,
+    "nextLinkId": 50,
+    "nextNodeId": 21,
+    "nextPinId": 107,
     "nodes": [
       {
         "displayName": "field_gen",
@@ -258,22 +262,1854 @@
         "type": 1
       },
       {
-        "displayName": "TOPO_HUD",
-        "entityId": "TOPO_HUD",
-        "id": 17,
-        "posX": 1763.7396240234375,
-        "posY": 396.67236328125,
+        "displayName": "Topo_Conductor",
+        "entityId": "Topo_Conductor",
+        "id": 18,
+        "posX": -405.0,
+        "posY": 650.0,
         "positionSet": true,
         "previewVisible": true,
-        "type": 2
+        "type": 1
+      },
+      {
+        "displayName": "Topo_Group_Output",
+        "entityId": "Topo_Group_Output",
+        "id": 19,
+        "posX": 1780.0,
+        "posY": 390.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "Terrain generation / data lanes / rendered HUD / explicit cue authority",
+        "annotationColor": "#5A00FF3D",
+        "annotationTitle": "TOPOGRAPHIC OPERATIONS",
+        "displayName": "TOPOGRAPHIC OPERATIONS",
+        "entityId": "annotation_20",
+        "height": 1820.0,
+        "id": 20,
+        "posX": -480.0,
+        "posY": -260.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": true,
+        "sceneGroupActivePreset": "Performance",
+        "sceneGroupEnabled": true,
+        "sceneGroupParameters": [
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1.600000",
+            "description": "Frequency",
+            "displayName": "Frequency",
+            "enumValues": [],
+            "group": "Terrain",
+            "maxValue": 6.0,
+            "minValue": 0.30000001192092896,
+            "name": "field_gen_frequency",
+            "orderIndex": 0,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/field_gen/parameters/frequency",
+            "type": "float",
+            "value": "1.6",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "5",
+            "description": "Octaves",
+            "displayName": "Octaves",
+            "enumValues": [],
+            "group": "Terrain",
+            "maxValue": 8.0,
+            "minValue": 1.0,
+            "name": "field_gen_octaves",
+            "orderIndex": 1,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/field_gen/parameters/octaves",
+            "type": "int",
+            "value": "5",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "30.000000",
+            "description": "Grid Density",
+            "displayName": "Grid Density",
+            "enumValues": [],
+            "group": "Grid",
+            "maxValue": 90.0,
+            "minValue": 4.0,
+            "name": "grid_warp_grid_density",
+            "orderIndex": 2,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/grid_warp/parameters/grid_density",
+            "type": "float",
+            "value": "30.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "52.000000",
+            "description": "Line Count",
+            "displayName": "Line Count",
+            "enumValues": [],
+            "group": "Contours",
+            "maxValue": 120.0,
+            "minValue": 4.0,
+            "name": "contour_blue_line_count",
+            "orderIndex": 3,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/contour_blue/parameters/line_count",
+            "type": "float",
+            "value": "64.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.940000",
+            "description": "Viewport Radius",
+            "displayName": "Viewport Radius",
+            "enumValues": [],
+            "group": "Bezel",
+            "maxValue": 1.2999999523162842,
+            "minValue": 0.30000001192092896,
+            "name": "frame_hud_viewport_radius",
+            "orderIndex": 4,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/frame_hud/parameters/viewport_radius",
+            "type": "float",
+            "value": "0.94",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "280.000000",
+            "description": "Dust Density",
+            "displayName": "Dust Density",
+            "enumValues": [],
+            "group": "Dust",
+            "maxValue": 700.0,
+            "minValue": 50.0,
+            "name": "atmosphere_dust_density",
+            "orderIndex": 5,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/atmosphere/parameters/dust_density",
+            "type": "float",
+            "value": "280.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1.100000",
+            "description": "Bloom Intensity",
+            "displayName": "Bloom Intensity",
+            "enumValues": [],
+            "group": "Bloom",
+            "maxValue": 3.0,
+            "minValue": 0.0,
+            "name": "post_bloom_intensity",
+            "orderIndex": 6,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/post/parameters/bloom_intensity",
+            "type": "float",
+            "value": "0.8",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.950000",
+            "description": "Vignette",
+            "displayName": "Vignette",
+            "enumValues": [],
+            "group": "Lens",
+            "maxValue": 2.0,
+            "minValue": 0.0,
+            "name": "post_vignette",
+            "orderIndex": 7,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/post/parameters/vignette",
+            "type": "float",
+            "value": "0.95",
+            "widget": ""
+          }
+        ],
+        "sceneGroupPresets": [
+          {
+            "childGroupPresets": {},
+            "name": "Survey",
+            "pipelineBypass": {
+              "Topo_Conductor": true,
+              "Topo_Group_Output": true,
+              "atmosphere": true,
+              "compositor": true,
+              "contour_accent": true,
+              "contour_blue": true,
+              "field_gen": true,
+              "frame_hud": true,
+              "grid_warp": true,
+              "label_gen": true,
+              "label_render": true,
+              "link_gen": true,
+              "link_render": true,
+              "node_gen": true,
+              "node_render": true,
+              "post": true,
+              "signal": true
+            },
+            "pipelineValues": {
+              "Topo_Conductor": {
+                "beats_per_bar": "4",
+                "bpm": "120.000000",
+                "chunk0_duration": "4.000000",
+                "chunk1_duration": "4.000000",
+                "clock_source": "internal",
+                "energy": "0.5",
+                "quantize_grid": "0",
+                "spread": "0.5",
+                "tightness": "0.5",
+                "transition_seconds": "1.5",
+                "transport_mode": "0",
+                "transport_rate": "1.000000",
+                "transport_run": "true",
+                "transport_seconds": "0.000000"
+              },
+              "Topo_Group_Output": {
+                "background_b": "0.000000",
+                "background_g": "0.000000",
+                "background_r": "0.000000",
+                "fit": "0",
+                "height": "1080",
+                "resolution_mode": "0",
+                "width": "1920"
+              },
+              "atmosphere": {
+                "depth_gradient": "1.1",
+                "drift_speed": "0.012",
+                "dust_brightness": "0.18",
+                "dust_density": "280.000000",
+                "haze_color_b": "0.24",
+                "haze_color_g": "0.17",
+                "haze_color_r": "0.05",
+                "haze_strength": "0.7",
+                "intensity": "1.000000",
+                "project_dir": "modules/atmosphere",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_density": "95.000000",
+                "twinkle": "3.000000"
+              },
+              "compositor": {
+                "accent_gain": "0.83476",
+                "bg_gain": "1.000000",
+                "bg_tint_b": "0.18",
+                "bg_tint_g": "0.12",
+                "bg_tint_r": "0.04",
+                "blue_gain": "0.72",
+                "clip_amount": "0.85",
+                "grid_gain": "0.5",
+                "hud_gain": "0.9",
+                "labels_gain": "0.58",
+                "links_gain": "0.7",
+                "master_mix": "0.82",
+                "nodes_gain": "0.82902",
+                "project_dir": "modules/compositor",
+                "viewport_clip": "true"
+              },
+              "contour_accent": {
+                "accent_color_b": "0.16",
+                "accent_color_g": "0.5",
+                "accent_color_r": "1.000000",
+                "accent_count": "6",
+                "accent_level": "0.6",
+                "accent_mode": "0",
+                "band_width": "0.09",
+                "glow": "1.68",
+                "index_ticks": "false",
+                "intensity": "1.4",
+                "line_count": "52.000000",
+                "line_width": "0.015",
+                "phase_speed": "0.03",
+                "project_dir": "modules/contour_accent"
+              },
+              "contour_blue": {
+                "blue_color_b": "0.95",
+                "blue_color_g": "0.55",
+                "blue_color_r": "0.22",
+                "elevation_fade": "0.2",
+                "intensity": "1.4",
+                "line_count": "64.000000",
+                "line_width": "0.017",
+                "major_boost": "2.3",
+                "major_color_b": "1.000000",
+                "major_color_g": "0.85",
+                "major_color_r": "0.65",
+                "major_every": "5",
+                "max_level": "1.000000",
+                "min_level": "0.000000",
+                "phase_speed": "0.04",
+                "project_dir": "modules/contour_blue",
+                "sharpness": "0.35",
+                "slope_warp": "0.6"
+              },
+              "field_gen": {
+                "aspect": "1.000000",
+                "center_count": "5",
+                "detail_gain": "1.1075",
+                "elevation_bias": "0.000000",
+                "field_mode": "2",
+                "flow_dir_x": "0.15",
+                "flow_dir_y": "0.1",
+                "flow_speed": "0.06",
+                "frequency": "1.6",
+                "gain": "0.5",
+                "lacunarity": "2.000000",
+                "octaves": "5",
+                "project_dir": "modules/field_gen",
+                "region_split": "4.000000",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "3",
+                "warp_amount": "0.865902"
+              },
+              "frame_hud": {
+                "accent_color_b": "0.2",
+                "accent_color_g": "0.55",
+                "accent_color_r": "1.000000",
+                "corner_ticks": "true",
+                "inner_ratio": "0.52",
+                "intensity": "1.000000",
+                "project_dir": "modules/frame_hud",
+                "radius_spread": "0.24",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_color_b": "0.72",
+                "ring_color_g": "0.55",
+                "ring_color_r": "0.35",
+                "ring_count": "20",
+                "rot_speed_a": "0.024415",
+                "rot_speed_b": "-0.03",
+                "segment_gaps": "4",
+                "tick_density": "190.000000",
+                "viewport_radius": "0.94"
+              },
+              "grid_warp": {
+                "drift_speed": "0.015",
+                "fade_center": "0.25",
+                "fade_edges": "0.7",
+                "grid_color_b": "0.72",
+                "grid_color_g": "0.55",
+                "grid_color_r": "0.35",
+                "grid_density": "30.000000",
+                "intensity": "0.55",
+                "line_width": "0.03",
+                "perspective": "0.5",
+                "project_dir": "modules/grid_warp",
+                "warp_amount": "1.000000"
+              },
+              "label_gen": {
+                "attach_mode": "0",
+                "color_mix": "0.3",
+                "jitter": "0.02",
+                "label_count": "18",
+                "project_dir": "modules/label_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.46",
+                "rotation": "0.000000",
+                "scale": "1.000000",
+                "seed": "2"
+              },
+              "label_render": {
+                "dim_color_b": "0.25",
+                "dim_color_g": "0.6",
+                "dim_color_r": "0.95",
+                "glow": "0.25",
+                "intensity": "1.000000",
+                "label_color_b": "0.95",
+                "label_color_g": "0.85",
+                "label_color_r": "0.75",
+                "project_dir": "modules/label_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "show_ticks": "true",
+                "text_scale": "2.000000"
+              },
+              "link_gen": {
+                "curve_amount": "0.09",
+                "dash": "false",
+                "draw_progress": "1.000000",
+                "link_count": "26",
+                "link_mode": "0",
+                "max_dist": "0.34",
+                "min_dist": "0.14",
+                "orbit_arc": "true",
+                "orbit_radius": "0.44",
+                "orbit_spin": "0.04",
+                "orbit_width": "1.6",
+                "project_dir": "modules/link_gen",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "0",
+                "width": "0.0035"
+              },
+              "link_render": {
+                "dash_count": "14.000000",
+                "dash_offset": "0.000000",
+                "dash_speed": "0.25",
+                "glow": "0.4",
+                "intensity": "1.000000",
+                "link_color_b": "1.000000",
+                "link_color_g": "0.93",
+                "link_color_r": "0.85",
+                "orbit_color_b": "0.14",
+                "orbit_color_g": "0.5",
+                "orbit_color_r": "1.000000",
+                "project_dir": "modules/link_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "softness": "0.0025",
+                "width_scale": "1.000000"
+              },
+              "node_gen": {
+                "ascent_rate": "0.05",
+                "ascent_steps": "7",
+                "color_mix": "0.35",
+                "intensity": "1.000000",
+                "jitter": "0.04",
+                "node_count": "44",
+                "placement_mode": "4",
+                "project_dir": "modules/node_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.34",
+                "seed": "5",
+                "size_max": "0.028",
+                "size_min": "0.012"
+              },
+              "node_render": {
+                "core_size": "0.32",
+                "glow_falloff": "0.35",
+                "glow_radius": "0.5",
+                "intensity": "0.703",
+                "orange_color_b": "0.2",
+                "orange_color_g": "0.55",
+                "orange_color_r": "1.000000",
+                "project_dir": "modules/node_render",
+                "pulse_amount": "0.329",
+                "pulse_speed": "2.2",
+                "ray_count": "4",
+                "ray_length": "0.7",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_rays": "true",
+                "white_color_b": "1.000000",
+                "white_color_g": "0.93",
+                "white_color_r": "0.85"
+              },
+              "post": {
+                "bloom_intensity": "0.8",
+                "bloom_radius": "0.032",
+                "bloom_threshold": "0.5",
+                "chroma": "0.08",
+                "contrast": "1.08",
+                "exposure": "1.05",
+                "grain_amt": "0.035",
+                "highlight_tint_b": "0.25",
+                "highlight_tint_g": "0.6",
+                "highlight_tint_r": "1.000000",
+                "project_dir": "modules/post",
+                "saturation": "1.12",
+                "shadow_tint_b": "0.22",
+                "shadow_tint_g": "0.14",
+                "shadow_tint_r": "0.000000",
+                "split_balance": "0.2",
+                "vignette": "0.95"
+              },
+              "signal": {
+                "authority": "1",
+                "beat_rate": "2.000000",
+                "beat_sharp": "3.000000",
+                "conductor_energy": "0.55",
+                "conductor_phase": "0.209991",
+                "cue_mode": "0",
+                "layer_accent": "1.05",
+                "layer_blue": "0.95",
+                "layer_labels": "0.92",
+                "layer_nodes": "1.000000",
+                "manual_energy": "0.62",
+                "manual_sweep": "0.35",
+                "master_mix": "1.000000",
+                "node_density": "68",
+                "palette": "0",
+                "project_dir": "modules/signal",
+                "pulse_rate": "0.8",
+                "resolution_height": "64",
+                "resolution_width": "256",
+                "sweep_rate": "0.1",
+                "terrain": "2"
+              }
+            },
+            "values": {
+              "atmosphere_dust_density": "280.000000",
+              "contour_blue_line_count": "64.000000",
+              "field_gen_frequency": "1.6",
+              "field_gen_octaves": "5",
+              "frame_hud_viewport_radius": "0.94",
+              "grid_warp_grid_density": "30.000000",
+              "post_bloom_intensity": "0.8",
+              "post_vignette": "0.95"
+            }
+          },
+          {
+            "childGroupPresets": {},
+            "name": "Threat",
+            "pipelineBypass": {
+              "Topo_Conductor": true,
+              "Topo_Group_Output": true,
+              "atmosphere": true,
+              "compositor": true,
+              "contour_accent": true,
+              "contour_blue": true,
+              "field_gen": true,
+              "frame_hud": true,
+              "grid_warp": true,
+              "label_gen": true,
+              "label_render": true,
+              "link_gen": true,
+              "link_render": true,
+              "node_gen": true,
+              "node_render": true,
+              "post": true,
+              "signal": true
+            },
+            "pipelineValues": {
+              "Topo_Conductor": {
+                "beats_per_bar": "4",
+                "bpm": "132.000000",
+                "chunk0_duration": "4.000000",
+                "chunk1_duration": "4.000000",
+                "clock_source": "internal",
+                "energy": "0.82",
+                "quantize_grid": "0",
+                "spread": "0.5",
+                "tightness": "0.5",
+                "transition_seconds": "1.5",
+                "transport_mode": "0",
+                "transport_rate": "1.000000",
+                "transport_run": "true",
+                "transport_seconds": "0.000000"
+              },
+              "Topo_Group_Output": {
+                "background_b": "0.000000",
+                "background_g": "0.000000",
+                "background_r": "0.000000",
+                "fit": "0",
+                "height": "1080",
+                "resolution_mode": "0",
+                "width": "1920"
+              },
+              "atmosphere": {
+                "depth_gradient": "1.1",
+                "drift_speed": "0.012",
+                "dust_brightness": "0.18",
+                "dust_density": "280.000000",
+                "haze_color_b": "0.24",
+                "haze_color_g": "0.17",
+                "haze_color_r": "0.05",
+                "haze_strength": "0.7",
+                "intensity": "1.000000",
+                "project_dir": "modules/atmosphere",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_density": "95.000000",
+                "twinkle": "3.000000"
+              },
+              "compositor": {
+                "accent_gain": "0.861745",
+                "bg_gain": "1.000000",
+                "bg_tint_b": "0.18",
+                "bg_tint_g": "0.12",
+                "bg_tint_r": "0.04",
+                "blue_gain": "0.782012",
+                "clip_amount": "0.85",
+                "grid_gain": "0.5",
+                "hud_gain": "0.9",
+                "labels_gain": "0.67167",
+                "links_gain": "0.7",
+                "master_mix": "0.868531",
+                "nodes_gain": "0.901012",
+                "project_dir": "modules/compositor",
+                "viewport_clip": "true"
+              },
+              "contour_accent": {
+                "accent_color_b": "0.16",
+                "accent_color_g": "0.5",
+                "accent_color_r": "1.000000",
+                "accent_count": "6",
+                "accent_level": "0.6",
+                "accent_mode": "0",
+                "band_width": "0.09",
+                "glow": "1.461307",
+                "index_ticks": "false",
+                "intensity": "1.4",
+                "line_count": "52.000000",
+                "line_width": "0.015",
+                "phase_speed": "0.03",
+                "project_dir": "modules/contour_accent"
+              },
+              "contour_blue": {
+                "blue_color_b": "0.95",
+                "blue_color_g": "0.55",
+                "blue_color_r": "0.22",
+                "elevation_fade": "0.2",
+                "intensity": "1.4",
+                "line_count": "64.000000",
+                "line_width": "0.017",
+                "major_boost": "2.3",
+                "major_color_b": "1.000000",
+                "major_color_g": "0.85",
+                "major_color_r": "0.65",
+                "major_every": "5",
+                "max_level": "1.000000",
+                "min_level": "0.000000",
+                "phase_speed": "0.04",
+                "project_dir": "modules/contour_blue",
+                "sharpness": "0.35",
+                "slope_warp": "0.6"
+              },
+              "field_gen": {
+                "aspect": "1.000000",
+                "center_count": "5",
+                "detail_gain": "1.105573",
+                "elevation_bias": "0.000000",
+                "field_mode": "2",
+                "flow_dir_x": "0.15",
+                "flow_dir_y": "0.1",
+                "flow_speed": "0.06",
+                "frequency": "1.6",
+                "gain": "0.5",
+                "lacunarity": "2.000000",
+                "octaves": "5",
+                "project_dir": "modules/field_gen",
+                "region_split": "4.000000",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "3",
+                "warp_amount": "0.888314"
+              },
+              "frame_hud": {
+                "accent_color_b": "0.2",
+                "accent_color_g": "0.55",
+                "accent_color_r": "1.000000",
+                "corner_ticks": "true",
+                "inner_ratio": "0.52",
+                "intensity": "1.000000",
+                "project_dir": "modules/frame_hud",
+                "radius_spread": "0.24",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_color_b": "0.72",
+                "ring_color_g": "0.55",
+                "ring_color_r": "0.35",
+                "ring_count": "20",
+                "rot_speed_a": "0.027616",
+                "rot_speed_b": "-0.03",
+                "segment_gaps": "4",
+                "tick_density": "190.000000",
+                "viewport_radius": "0.94"
+              },
+              "grid_warp": {
+                "drift_speed": "0.015",
+                "fade_center": "0.25",
+                "fade_edges": "0.7",
+                "grid_color_b": "0.72",
+                "grid_color_g": "0.55",
+                "grid_color_r": "0.35",
+                "grid_density": "30.000000",
+                "intensity": "0.55",
+                "line_width": "0.03",
+                "perspective": "0.5",
+                "project_dir": "modules/grid_warp",
+                "warp_amount": "1.000000"
+              },
+              "label_gen": {
+                "attach_mode": "0",
+                "color_mix": "0.3",
+                "jitter": "0.02",
+                "label_count": "18",
+                "project_dir": "modules/label_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.46",
+                "rotation": "0.000000",
+                "scale": "1.000000",
+                "seed": "2"
+              },
+              "label_render": {
+                "dim_color_b": "0.25",
+                "dim_color_g": "0.6",
+                "dim_color_r": "0.95",
+                "glow": "0.25",
+                "intensity": "1.000000",
+                "label_color_b": "0.95",
+                "label_color_g": "0.85",
+                "label_color_r": "0.75",
+                "project_dir": "modules/label_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "show_ticks": "true",
+                "text_scale": "2.000000"
+              },
+              "link_gen": {
+                "curve_amount": "0.09",
+                "dash": "false",
+                "draw_progress": "1.000000",
+                "link_count": "26",
+                "link_mode": "0",
+                "max_dist": "0.34",
+                "min_dist": "0.14",
+                "orbit_arc": "true",
+                "orbit_radius": "0.44",
+                "orbit_spin": "0.04",
+                "orbit_width": "1.6",
+                "project_dir": "modules/link_gen",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "0",
+                "width": "0.0035"
+              },
+              "link_render": {
+                "dash_count": "14.000000",
+                "dash_offset": "0.000000",
+                "dash_speed": "0.25",
+                "glow": "0.4",
+                "intensity": "1.000000",
+                "link_color_b": "1.000000",
+                "link_color_g": "0.93",
+                "link_color_r": "0.85",
+                "orbit_color_b": "0.14",
+                "orbit_color_g": "0.5",
+                "orbit_color_r": "1.000000",
+                "project_dir": "modules/link_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "softness": "0.0025",
+                "width_scale": "1.000000"
+              },
+              "node_gen": {
+                "ascent_rate": "0.05",
+                "ascent_steps": "7",
+                "color_mix": "0.35",
+                "intensity": "1.000000",
+                "jitter": "0.04",
+                "node_count": "50",
+                "placement_mode": "4",
+                "project_dir": "modules/node_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.34",
+                "seed": "5",
+                "size_max": "0.028",
+                "size_min": "0.012"
+              },
+              "node_render": {
+                "core_size": "0.32",
+                "glow_falloff": "0.35",
+                "glow_radius": "0.5",
+                "intensity": "0.717611",
+                "orange_color_b": "0.2",
+                "orange_color_g": "0.55",
+                "orange_color_r": "1.000000",
+                "project_dir": "modules/node_render",
+                "pulse_amount": "0.327874",
+                "pulse_speed": "2.2",
+                "ray_count": "4",
+                "ray_length": "0.7",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_rays": "true",
+                "white_color_b": "1.000000",
+                "white_color_g": "0.93",
+                "white_color_r": "0.85"
+              },
+              "post": {
+                "bloom_intensity": "0.8",
+                "bloom_radius": "0.032",
+                "bloom_threshold": "0.5",
+                "chroma": "0.08",
+                "contrast": "1.08",
+                "exposure": "1.05",
+                "grain_amt": "0.035",
+                "highlight_tint_b": "0.25",
+                "highlight_tint_g": "0.6",
+                "highlight_tint_r": "1.000000",
+                "project_dir": "modules/post",
+                "saturation": "1.12",
+                "shadow_tint_b": "0.22",
+                "shadow_tint_g": "0.14",
+                "shadow_tint_r": "0.000000",
+                "split_balance": "0.2",
+                "vignette": "0.95"
+              },
+              "signal": {
+                "authority": "2",
+                "beat_rate": "2.000000",
+                "beat_sharp": "3.000000",
+                "conductor_energy": "0.5",
+                "conductor_phase": "0.215698",
+                "cue_mode": "1",
+                "layer_accent": "1.05",
+                "layer_blue": "0.95",
+                "layer_labels": "0.92",
+                "layer_nodes": "1.000000",
+                "manual_energy": "0.62",
+                "manual_sweep": "0.35",
+                "master_mix": "1.000000",
+                "node_density": "68",
+                "palette": "0",
+                "project_dir": "modules/signal",
+                "pulse_rate": "0.8",
+                "resolution_height": "64",
+                "resolution_width": "256",
+                "sweep_rate": "0.1",
+                "terrain": "2"
+              }
+            },
+            "values": {
+              "atmosphere_dust_density": "280.000000",
+              "contour_blue_line_count": "64.000000",
+              "field_gen_frequency": "1.6",
+              "field_gen_octaves": "5",
+              "frame_hud_viewport_radius": "0.94",
+              "grid_warp_grid_density": "30.000000",
+              "post_bloom_intensity": "0.8",
+              "post_vignette": "0.95"
+            }
+          },
+          {
+            "childGroupPresets": {},
+            "name": "Night Vision",
+            "pipelineBypass": {
+              "Topo_Conductor": true,
+              "Topo_Group_Output": true,
+              "atmosphere": true,
+              "compositor": true,
+              "contour_accent": true,
+              "contour_blue": true,
+              "field_gen": true,
+              "frame_hud": true,
+              "grid_warp": true,
+              "label_gen": true,
+              "label_render": true,
+              "link_gen": true,
+              "link_render": true,
+              "node_gen": true,
+              "node_render": true,
+              "post": true,
+              "signal": true
+            },
+            "pipelineValues": {
+              "Topo_Conductor": {
+                "beats_per_bar": "4",
+                "bpm": "96.000000",
+                "chunk0_duration": "4.000000",
+                "chunk1_duration": "4.000000",
+                "clock_source": "internal",
+                "energy": "0.6",
+                "quantize_grid": "0",
+                "spread": "0.5",
+                "tightness": "0.5",
+                "transition_seconds": "1.5",
+                "transport_mode": "0",
+                "transport_rate": "1.000000",
+                "transport_run": "true",
+                "transport_seconds": "0.000000"
+              },
+              "Topo_Group_Output": {
+                "background_b": "0.000000",
+                "background_g": "0.000000",
+                "background_r": "0.000000",
+                "fit": "0",
+                "height": "1080",
+                "resolution_mode": "0",
+                "width": "1920"
+              },
+              "atmosphere": {
+                "depth_gradient": "1.1",
+                "drift_speed": "0.012",
+                "dust_brightness": "0.18",
+                "dust_density": "280.000000",
+                "haze_color_b": "0.24",
+                "haze_color_g": "0.17",
+                "haze_color_r": "0.05",
+                "haze_strength": "0.7",
+                "intensity": "1.000000",
+                "project_dir": "modules/atmosphere",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_density": "95.000000",
+                "twinkle": "3.000000"
+              },
+              "compositor": {
+                "accent_gain": "1.105578",
+                "bg_gain": "1.000000",
+                "bg_tint_b": "0.18",
+                "bg_tint_g": "0.12",
+                "bg_tint_r": "0.04",
+                "blue_gain": "0.690953",
+                "clip_amount": "0.85",
+                "grid_gain": "0.5",
+                "hud_gain": "0.9",
+                "labels_gain": "0.684925",
+                "links_gain": "0.7",
+                "master_mix": "0.953955",
+                "nodes_gain": "1.075944",
+                "project_dir": "modules/compositor",
+                "viewport_clip": "true"
+              },
+              "contour_accent": {
+                "accent_color_b": "0.16",
+                "accent_color_g": "0.5",
+                "accent_color_r": "1.000000",
+                "accent_count": "6",
+                "accent_level": "0.6",
+                "accent_mode": "0",
+                "band_width": "0.09",
+                "glow": "1.573806",
+                "index_ticks": "false",
+                "intensity": "1.4",
+                "line_count": "52.000000",
+                "line_width": "0.015",
+                "phase_speed": "0.03",
+                "project_dir": "modules/contour_accent"
+              },
+              "contour_blue": {
+                "blue_color_b": "0.95",
+                "blue_color_g": "0.55",
+                "blue_color_r": "0.22",
+                "elevation_fade": "0.2",
+                "intensity": "1.4",
+                "line_count": "64.000000",
+                "line_width": "0.017",
+                "major_boost": "2.3",
+                "major_color_b": "1.000000",
+                "major_color_g": "0.85",
+                "major_color_r": "0.65",
+                "major_every": "5",
+                "max_level": "1.000000",
+                "min_level": "0.000000",
+                "phase_speed": "0.04",
+                "project_dir": "modules/contour_blue",
+                "sharpness": "0.35",
+                "slope_warp": "0.6"
+              },
+              "field_gen": {
+                "aspect": "1.000000",
+                "center_count": "5",
+                "detail_gain": "1.127437",
+                "elevation_bias": "0.000000",
+                "field_mode": "1",
+                "flow_dir_x": "0.15",
+                "flow_dir_y": "0.1",
+                "flow_speed": "0.06",
+                "frequency": "1.6",
+                "gain": "0.5",
+                "lacunarity": "2.000000",
+                "octaves": "5",
+                "project_dir": "modules/field_gen",
+                "region_split": "4.000000",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "3",
+                "warp_amount": "0.884977"
+              },
+              "frame_hud": {
+                "accent_color_b": "0.2",
+                "accent_color_g": "0.55",
+                "accent_color_r": "1.000000",
+                "corner_ticks": "true",
+                "inner_ratio": "0.52",
+                "intensity": "1.000000",
+                "project_dir": "modules/frame_hud",
+                "radius_spread": "0.24",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_color_b": "0.72",
+                "ring_color_g": "0.55",
+                "ring_color_r": "0.35",
+                "ring_count": "20",
+                "rot_speed_a": "0.02714",
+                "rot_speed_b": "-0.03",
+                "segment_gaps": "4",
+                "tick_density": "190.000000",
+                "viewport_radius": "0.94"
+              },
+              "grid_warp": {
+                "drift_speed": "0.015",
+                "fade_center": "0.25",
+                "fade_edges": "0.7",
+                "grid_color_b": "0.72",
+                "grid_color_g": "0.55",
+                "grid_color_r": "0.35",
+                "grid_density": "30.000000",
+                "intensity": "0.55",
+                "line_width": "0.03",
+                "perspective": "0.5",
+                "project_dir": "modules/grid_warp",
+                "warp_amount": "1.000000"
+              },
+              "label_gen": {
+                "attach_mode": "0",
+                "color_mix": "0.3",
+                "jitter": "0.02",
+                "label_count": "18",
+                "project_dir": "modules/label_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.46",
+                "rotation": "0.000000",
+                "scale": "1.000000",
+                "seed": "2"
+              },
+              "label_render": {
+                "dim_color_b": "0.25",
+                "dim_color_g": "0.6",
+                "dim_color_r": "0.95",
+                "glow": "0.25",
+                "intensity": "1.000000",
+                "label_color_b": "0.95",
+                "label_color_g": "0.85",
+                "label_color_r": "0.75",
+                "project_dir": "modules/label_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "show_ticks": "true",
+                "text_scale": "2.000000"
+              },
+              "link_gen": {
+                "curve_amount": "0.09",
+                "dash": "false",
+                "draw_progress": "1.000000",
+                "link_count": "26",
+                "link_mode": "0",
+                "max_dist": "0.34",
+                "min_dist": "0.14",
+                "orbit_arc": "true",
+                "orbit_radius": "0.44",
+                "orbit_spin": "0.04",
+                "orbit_width": "1.6",
+                "project_dir": "modules/link_gen",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "0",
+                "width": "0.0035"
+              },
+              "link_render": {
+                "dash_count": "14.000000",
+                "dash_offset": "0.000000",
+                "dash_speed": "0.25",
+                "glow": "0.4",
+                "intensity": "1.000000",
+                "link_color_b": "1.000000",
+                "link_color_g": "0.93",
+                "link_color_r": "0.85",
+                "orbit_color_b": "0.14",
+                "orbit_color_g": "0.5",
+                "orbit_color_r": "1.000000",
+                "project_dir": "modules/link_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "softness": "0.0025",
+                "width_scale": "1.000000"
+              },
+              "node_gen": {
+                "ascent_rate": "0.05",
+                "ascent_steps": "7",
+                "color_mix": "0.35",
+                "intensity": "1.000000",
+                "jitter": "0.04",
+                "node_count": "63",
+                "placement_mode": "4",
+                "project_dir": "modules/node_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.34",
+                "seed": "5",
+                "size_max": "0.028",
+                "size_min": "0.012"
+              },
+              "node_render": {
+                "core_size": "0.32",
+                "glow_falloff": "0.35",
+                "glow_radius": "0.5",
+                "intensity": "0.722138",
+                "orange_color_b": "0.2",
+                "orange_color_g": "0.55",
+                "orange_color_r": "1.000000",
+                "project_dir": "modules/node_render",
+                "pulse_amount": "0.340656",
+                "pulse_speed": "2.2",
+                "ray_count": "4",
+                "ray_length": "0.7",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_rays": "true",
+                "white_color_b": "1.000000",
+                "white_color_g": "0.93",
+                "white_color_r": "0.85"
+              },
+              "post": {
+                "bloom_intensity": "0.8",
+                "bloom_radius": "0.032",
+                "bloom_threshold": "0.5",
+                "chroma": "0.08",
+                "contrast": "1.08",
+                "exposure": "1.05",
+                "grain_amt": "0.035",
+                "highlight_tint_b": "0.06",
+                "highlight_tint_g": "0.22",
+                "highlight_tint_r": "1.000000",
+                "project_dir": "modules/post",
+                "saturation": "1.000000",
+                "shadow_tint_b": "0.02",
+                "shadow_tint_g": "0.03",
+                "shadow_tint_r": "0.18",
+                "split_balance": "0.28",
+                "vignette": "0.95"
+              },
+              "signal": {
+                "authority": "2",
+                "beat_rate": "2.000000",
+                "beat_sharp": "3.000000",
+                "conductor_energy": "0.82",
+                "conductor_phase": "0.222656",
+                "cue_mode": "2",
+                "layer_accent": "1.05",
+                "layer_blue": "0.95",
+                "layer_labels": "0.92",
+                "layer_nodes": "1.000000",
+                "manual_energy": "0.62",
+                "manual_sweep": "0.35",
+                "master_mix": "1.000000",
+                "node_density": "68",
+                "palette": "0",
+                "project_dir": "modules/signal",
+                "pulse_rate": "0.8",
+                "resolution_height": "64",
+                "resolution_width": "256",
+                "sweep_rate": "0.1",
+                "terrain": "2"
+              }
+            },
+            "values": {
+              "atmosphere_dust_density": "280.000000",
+              "contour_blue_line_count": "64.000000",
+              "field_gen_frequency": "1.6",
+              "field_gen_octaves": "5",
+              "frame_hud_viewport_radius": "0.94",
+              "grid_warp_grid_density": "30.000000",
+              "post_bloom_intensity": "0.8",
+              "post_vignette": "0.95"
+            }
+          },
+          {
+            "childGroupPresets": {},
+            "name": "Minimal",
+            "pipelineBypass": {
+              "Topo_Conductor": true,
+              "Topo_Group_Output": true,
+              "atmosphere": true,
+              "compositor": true,
+              "contour_accent": true,
+              "contour_blue": true,
+              "field_gen": true,
+              "frame_hud": true,
+              "grid_warp": true,
+              "label_gen": true,
+              "label_render": true,
+              "link_gen": true,
+              "link_render": true,
+              "node_gen": true,
+              "node_render": true,
+              "post": true,
+              "signal": true
+            },
+            "pipelineValues": {
+              "Topo_Conductor": {
+                "beats_per_bar": "4",
+                "bpm": "96.000000",
+                "chunk0_duration": "4.000000",
+                "chunk1_duration": "4.000000",
+                "clock_source": "internal",
+                "energy": "0.6",
+                "quantize_grid": "0",
+                "spread": "0.5",
+                "tightness": "0.5",
+                "transition_seconds": "1.5",
+                "transport_mode": "0",
+                "transport_rate": "1.000000",
+                "transport_run": "true",
+                "transport_seconds": "0.000000"
+              },
+              "Topo_Group_Output": {
+                "background_b": "0.000000",
+                "background_g": "0.000000",
+                "background_r": "0.000000",
+                "fit": "0",
+                "height": "1080",
+                "resolution_mode": "0",
+                "width": "1920"
+              },
+              "atmosphere": {
+                "depth_gradient": "1.1",
+                "drift_speed": "0.012",
+                "dust_brightness": "0.18",
+                "dust_density": "280.000000",
+                "haze_color_b": "0.24",
+                "haze_color_g": "0.17",
+                "haze_color_r": "0.05",
+                "haze_strength": "0.7",
+                "intensity": "1.000000",
+                "project_dir": "modules/atmosphere",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_density": "95.000000",
+                "twinkle": "3.000000"
+              },
+              "compositor": {
+                "accent_gain": "0.936855",
+                "bg_gain": "1.000000",
+                "bg_tint_b": "0.18",
+                "bg_tint_g": "0.12",
+                "bg_tint_r": "0.04",
+                "blue_gain": "0.789952",
+                "clip_amount": "0.85",
+                "grid_gain": "0.5",
+                "hud_gain": "0.9",
+                "labels_gain": "0.797483",
+                "links_gain": "0.7",
+                "master_mix": "0.955418",
+                "nodes_gain": "1.063238",
+                "project_dir": "modules/compositor",
+                "viewport_clip": "true"
+              },
+              "contour_accent": {
+                "accent_color_b": "0.16",
+                "accent_color_g": "0.5",
+                "accent_color_r": "1.000000",
+                "accent_count": "6",
+                "accent_level": "0.6",
+                "accent_mode": "0",
+                "band_width": "0.09",
+                "glow": "1.660646",
+                "index_ticks": "false",
+                "intensity": "1.4",
+                "line_count": "52.000000",
+                "line_width": "0.015",
+                "phase_speed": "0.03",
+                "project_dir": "modules/contour_accent"
+              },
+              "contour_blue": {
+                "blue_color_b": "0.95",
+                "blue_color_g": "0.55",
+                "blue_color_r": "0.22",
+                "elevation_fade": "0.2",
+                "intensity": "1.4",
+                "line_count": "64.000000",
+                "line_width": "0.017",
+                "major_boost": "2.3",
+                "major_color_b": "1.000000",
+                "major_color_g": "0.85",
+                "major_color_r": "0.65",
+                "major_every": "5",
+                "max_level": "1.000000",
+                "min_level": "0.000000",
+                "phase_speed": "0.04",
+                "project_dir": "modules/contour_blue",
+                "sharpness": "0.35",
+                "slope_warp": "0.6"
+              },
+              "field_gen": {
+                "aspect": "1.000000",
+                "center_count": "5",
+                "detail_gain": "1.14745",
+                "elevation_bias": "0.000000",
+                "field_mode": "3",
+                "flow_dir_x": "0.15",
+                "flow_dir_y": "0.1",
+                "flow_speed": "0.06",
+                "frequency": "1.6",
+                "gain": "0.5",
+                "lacunarity": "2.000000",
+                "octaves": "5",
+                "project_dir": "modules/field_gen",
+                "region_split": "4.000000",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "3",
+                "warp_amount": "0.883365"
+              },
+              "frame_hud": {
+                "accent_color_b": "0.2",
+                "accent_color_g": "0.55",
+                "accent_color_r": "1.000000",
+                "corner_ticks": "true",
+                "inner_ratio": "0.52",
+                "intensity": "1.000000",
+                "project_dir": "modules/frame_hud",
+                "radius_spread": "0.24",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_color_b": "0.72",
+                "ring_color_g": "0.55",
+                "ring_color_r": "0.35",
+                "ring_count": "20",
+                "rot_speed_a": "0.026909",
+                "rot_speed_b": "-0.03",
+                "segment_gaps": "4",
+                "tick_density": "190.000000",
+                "viewport_radius": "0.94"
+              },
+              "grid_warp": {
+                "drift_speed": "0.015",
+                "fade_center": "0.25",
+                "fade_edges": "0.7",
+                "grid_color_b": "0.72",
+                "grid_color_g": "0.55",
+                "grid_color_r": "0.35",
+                "grid_density": "30.000000",
+                "intensity": "0.55",
+                "line_width": "0.03",
+                "perspective": "0.5",
+                "project_dir": "modules/grid_warp",
+                "warp_amount": "1.000000"
+              },
+              "label_gen": {
+                "attach_mode": "0",
+                "color_mix": "0.3",
+                "jitter": "0.02",
+                "label_count": "18",
+                "project_dir": "modules/label_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.46",
+                "rotation": "0.000000",
+                "scale": "1.000000",
+                "seed": "2"
+              },
+              "label_render": {
+                "dim_color_b": "0.25",
+                "dim_color_g": "0.6",
+                "dim_color_r": "0.95",
+                "glow": "0.25",
+                "intensity": "1.000000",
+                "label_color_b": "0.95",
+                "label_color_g": "0.85",
+                "label_color_r": "0.75",
+                "project_dir": "modules/label_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "show_ticks": "true",
+                "text_scale": "2.000000"
+              },
+              "link_gen": {
+                "curve_amount": "0.09",
+                "dash": "false",
+                "draw_progress": "1.000000",
+                "link_count": "26",
+                "link_mode": "0",
+                "max_dist": "0.34",
+                "min_dist": "0.14",
+                "orbit_arc": "true",
+                "orbit_radius": "0.44",
+                "orbit_spin": "0.04",
+                "orbit_width": "1.6",
+                "project_dir": "modules/link_gen",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "0",
+                "width": "0.0035"
+              },
+              "link_render": {
+                "dash_count": "14.000000",
+                "dash_offset": "0.000000",
+                "dash_speed": "0.25",
+                "glow": "0.4",
+                "intensity": "1.000000",
+                "link_color_b": "1.000000",
+                "link_color_g": "0.93",
+                "link_color_r": "0.85",
+                "orbit_color_b": "0.14",
+                "orbit_color_g": "0.5",
+                "orbit_color_r": "1.000000",
+                "project_dir": "modules/link_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "softness": "0.0025",
+                "width_scale": "1.000000"
+              },
+              "node_gen": {
+                "ascent_rate": "0.05",
+                "ascent_steps": "7",
+                "color_mix": "0.35",
+                "intensity": "1.000000",
+                "jitter": "0.04",
+                "node_count": "61",
+                "placement_mode": "4",
+                "project_dir": "modules/node_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.34",
+                "seed": "5",
+                "size_max": "0.028",
+                "size_min": "0.012"
+              },
+              "node_render": {
+                "core_size": "0.32",
+                "glow_falloff": "0.35",
+                "glow_radius": "0.5",
+                "intensity": "0.727442",
+                "orange_color_b": "0.2",
+                "orange_color_g": "0.55",
+                "orange_color_r": "1.000000",
+                "project_dir": "modules/node_render",
+                "pulse_amount": "0.352356",
+                "pulse_speed": "2.2",
+                "ray_count": "4",
+                "ray_length": "0.7",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_rays": "true",
+                "white_color_b": "1.000000",
+                "white_color_g": "0.93",
+                "white_color_r": "0.85"
+              },
+              "post": {
+                "bloom_intensity": "0.8",
+                "bloom_radius": "0.032",
+                "bloom_threshold": "0.5",
+                "chroma": "0.08",
+                "contrast": "1.08",
+                "exposure": "1.05",
+                "grain_amt": "0.035",
+                "highlight_tint_b": "0.42",
+                "highlight_tint_g": "1.000000",
+                "highlight_tint_r": "0.18",
+                "project_dir": "modules/post",
+                "saturation": "0.88",
+                "shadow_tint_b": "0.04",
+                "shadow_tint_g": "0.2",
+                "shadow_tint_r": "0.01",
+                "split_balance": "0.36",
+                "vignette": "0.95"
+              },
+              "signal": {
+                "authority": "0",
+                "beat_rate": "2.000000",
+                "beat_sharp": "3.000000",
+                "conductor_energy": "0.6",
+                "conductor_phase": "0.22702",
+                "cue_mode": "3",
+                "layer_accent": "0.2",
+                "layer_blue": "0.55",
+                "layer_labels": "0.45",
+                "layer_nodes": "0.7",
+                "manual_energy": "0.25",
+                "manual_sweep": "0.3",
+                "master_mix": "0.72",
+                "node_density": "28",
+                "palette": "3",
+                "project_dir": "modules/signal",
+                "pulse_rate": "0.8",
+                "resolution_height": "64",
+                "resolution_width": "256",
+                "sweep_rate": "0.1",
+                "terrain": "0"
+              }
+            },
+            "values": {
+              "atmosphere_dust_density": "280.000000",
+              "contour_blue_line_count": "64.000000",
+              "field_gen_frequency": "1.6",
+              "field_gen_octaves": "5",
+              "frame_hud_viewport_radius": "0.94",
+              "grid_warp_grid_density": "30.000000",
+              "post_bloom_intensity": "0.8",
+              "post_vignette": "0.95"
+            }
+          },
+          {
+            "childGroupPresets": {},
+            "name": "Performance",
+            "pipelineBypass": {
+              "Topo_Conductor": true,
+              "Topo_Group_Output": true,
+              "atmosphere": true,
+              "compositor": true,
+              "contour_accent": true,
+              "contour_blue": true,
+              "field_gen": true,
+              "frame_hud": true,
+              "grid_warp": true,
+              "label_gen": true,
+              "label_render": true,
+              "link_gen": true,
+              "link_render": true,
+              "node_gen": true,
+              "node_render": true,
+              "post": true,
+              "signal": true
+            },
+            "pipelineValues": {
+              "Topo_Conductor": {
+                "beats_per_bar": "4",
+                "bpm": "120.000000",
+                "chunk0_duration": "4.000000",
+                "chunk1_duration": "4.000000",
+                "clock_source": "internal",
+                "energy": "0.55",
+                "quantize_grid": "0",
+                "spread": "0.5",
+                "tightness": "0.5",
+                "transition_seconds": "1.5",
+                "transport_mode": "0",
+                "transport_rate": "1.000000",
+                "transport_run": "true",
+                "transport_seconds": "0.000000"
+              },
+              "Topo_Group_Output": {
+                "background_b": "0.000000",
+                "background_g": "0.000000",
+                "background_r": "0.000000",
+                "fit": "0",
+                "height": "1080",
+                "resolution_mode": "0",
+                "width": "1920"
+              },
+              "atmosphere": {
+                "depth_gradient": "1.1",
+                "drift_speed": "0.012",
+                "dust_brightness": "0.18",
+                "dust_density": "280.000000",
+                "haze_color_b": "0.24",
+                "haze_color_g": "0.17",
+                "haze_color_r": "0.05",
+                "haze_strength": "0.7",
+                "intensity": "1.000000",
+                "project_dir": "modules/atmosphere",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_density": "95.000000",
+                "twinkle": "3.000000"
+              },
+              "compositor": {
+                "accent_gain": "0.76908",
+                "bg_gain": "1.000000",
+                "bg_tint_b": "0.18",
+                "bg_tint_g": "0.12",
+                "bg_tint_r": "0.04",
+                "blue_gain": "0.735317",
+                "clip_amount": "0.85",
+                "grid_gain": "0.5",
+                "hud_gain": "0.9",
+                "labels_gain": "0.718365",
+                "links_gain": "0.7",
+                "master_mix": "0.901816",
+                "nodes_gain": "0.980532",
+                "project_dir": "modules/compositor",
+                "viewport_clip": "true"
+              },
+              "contour_accent": {
+                "accent_color_b": "0.16",
+                "accent_color_g": "0.5",
+                "accent_color_r": "1.000000",
+                "accent_count": "6",
+                "accent_level": "0.6",
+                "accent_mode": "0",
+                "band_width": "0.09",
+                "glow": "1.555762",
+                "index_ticks": "false",
+                "intensity": "1.4",
+                "line_count": "52.000000",
+                "line_width": "0.015",
+                "phase_speed": "0.03",
+                "project_dir": "modules/contour_accent"
+              },
+              "contour_blue": {
+                "blue_color_b": "0.95",
+                "blue_color_g": "0.55",
+                "blue_color_r": "0.22",
+                "elevation_fade": "0.2",
+                "intensity": "1.4",
+                "line_count": "64.000000",
+                "line_width": "0.017",
+                "major_boost": "2.3",
+                "major_color_b": "1.000000",
+                "major_color_g": "0.85",
+                "major_color_r": "0.65",
+                "major_every": "5",
+                "max_level": "1.000000",
+                "min_level": "0.000000",
+                "phase_speed": "0.04",
+                "project_dir": "modules/contour_blue",
+                "sharpness": "0.35",
+                "slope_warp": "0.6"
+              },
+              "field_gen": {
+                "aspect": "1.000000",
+                "center_count": "5",
+                "detail_gain": "1.093954",
+                "elevation_bias": "0.000000",
+                "field_mode": "0",
+                "flow_dir_x": "0.15",
+                "flow_dir_y": "0.1",
+                "flow_speed": "0.06",
+                "frequency": "1.6",
+                "gain": "0.5",
+                "lacunarity": "2.000000",
+                "octaves": "5",
+                "project_dir": "modules/field_gen",
+                "region_split": "4.000000",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "3",
+                "warp_amount": "0.888291"
+              },
+              "frame_hud": {
+                "accent_color_b": "0.2",
+                "accent_color_g": "0.55",
+                "accent_color_r": "1.000000",
+                "corner_ticks": "true",
+                "inner_ratio": "0.52",
+                "intensity": "1.000000",
+                "project_dir": "modules/frame_hud",
+                "radius_spread": "0.24",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_color_b": "0.72",
+                "ring_color_g": "0.55",
+                "ring_color_r": "0.35",
+                "ring_count": "20",
+                "rot_speed_a": "0.027613",
+                "rot_speed_b": "-0.03",
+                "segment_gaps": "4",
+                "tick_density": "190.000000",
+                "viewport_radius": "0.94"
+              },
+              "grid_warp": {
+                "drift_speed": "0.015",
+                "fade_center": "0.25",
+                "fade_edges": "0.7",
+                "grid_color_b": "0.72",
+                "grid_color_g": "0.55",
+                "grid_color_r": "0.35",
+                "grid_density": "30.000000",
+                "intensity": "0.55",
+                "line_width": "0.03",
+                "perspective": "0.5",
+                "project_dir": "modules/grid_warp",
+                "warp_amount": "1.000000"
+              },
+              "label_gen": {
+                "attach_mode": "0",
+                "color_mix": "0.3",
+                "jitter": "0.02",
+                "label_count": "18",
+                "project_dir": "modules/label_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.46",
+                "rotation": "0.000000",
+                "scale": "1.000000",
+                "seed": "2"
+              },
+              "label_render": {
+                "dim_color_b": "0.25",
+                "dim_color_g": "0.6",
+                "dim_color_r": "0.95",
+                "glow": "0.25",
+                "intensity": "1.000000",
+                "label_color_b": "0.95",
+                "label_color_g": "0.85",
+                "label_color_r": "0.75",
+                "project_dir": "modules/label_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "show_ticks": "true",
+                "text_scale": "2.000000"
+              },
+              "link_gen": {
+                "curve_amount": "0.09",
+                "dash": "false",
+                "draw_progress": "1.000000",
+                "link_count": "26",
+                "link_mode": "0",
+                "max_dist": "0.34",
+                "min_dist": "0.14",
+                "orbit_arc": "true",
+                "orbit_radius": "0.44",
+                "orbit_spin": "0.04",
+                "orbit_width": "1.6",
+                "project_dir": "modules/link_gen",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "seed": "0",
+                "width": "0.0035"
+              },
+              "link_render": {
+                "dash_count": "14.000000",
+                "dash_offset": "0.000000",
+                "dash_speed": "0.25",
+                "glow": "0.4",
+                "intensity": "1.000000",
+                "link_color_b": "1.000000",
+                "link_color_g": "0.93",
+                "link_color_r": "0.85",
+                "orbit_color_b": "0.14",
+                "orbit_color_g": "0.5",
+                "orbit_color_r": "1.000000",
+                "project_dir": "modules/link_render",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "softness": "0.0025",
+                "width_scale": "1.000000"
+              },
+              "node_gen": {
+                "ascent_rate": "0.05",
+                "ascent_steps": "7",
+                "color_mix": "0.35",
+                "intensity": "1.000000",
+                "jitter": "0.04",
+                "node_count": "53",
+                "placement_mode": "4",
+                "project_dir": "modules/node_gen",
+                "reset_offsets": "false",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "ring_radius": "0.34",
+                "seed": "5",
+                "size_max": "0.028",
+                "size_min": "0.012"
+              },
+              "node_render": {
+                "core_size": "0.32",
+                "glow_falloff": "0.35",
+                "glow_radius": "0.5",
+                "intensity": "0.680209",
+                "orange_color_b": "0.2",
+                "orange_color_g": "0.55",
+                "orange_color_r": "1.000000",
+                "project_dir": "modules/node_render",
+                "pulse_amount": "0.321081",
+                "pulse_speed": "2.2",
+                "ray_count": "4",
+                "ray_length": "0.7",
+                "resolution_height": "1080",
+                "resolution_width": "1920",
+                "star_rays": "true",
+                "white_color_b": "1.000000",
+                "white_color_g": "0.93",
+                "white_color_r": "0.85"
+              },
+              "post": {
+                "bloom_intensity": "0.8",
+                "bloom_radius": "0.032",
+                "bloom_threshold": "0.5",
+                "chroma": "0.08",
+                "contrast": "1.08",
+                "exposure": "1.05",
+                "grain_amt": "0.035",
+                "highlight_tint_b": "0.9",
+                "highlight_tint_g": "0.9",
+                "highlight_tint_r": "0.9",
+                "project_dir": "modules/post",
+                "saturation": "0.76",
+                "shadow_tint_b": "0.04",
+                "shadow_tint_g": "0.04",
+                "shadow_tint_r": "0.04",
+                "split_balance": "0.44",
+                "vignette": "0.95"
+              },
+              "signal": {
+                "authority": "2",
+                "beat_rate": "2.000000",
+                "beat_sharp": "3.000000",
+                "conductor_energy": "0.6",
+                "conductor_phase": "0.231323",
+                "cue_mode": "4",
+                "layer_accent": "0.2",
+                "layer_blue": "0.55",
+                "layer_labels": "0.45",
+                "layer_nodes": "0.7",
+                "manual_energy": "0.25",
+                "manual_sweep": "0.3",
+                "master_mix": "0.72",
+                "node_density": "28",
+                "palette": "3",
+                "project_dir": "modules/signal",
+                "pulse_rate": "0.8",
+                "resolution_height": "64",
+                "resolution_width": "256",
+                "sweep_rate": "0.1",
+                "terrain": "0"
+              }
+            },
+            "values": {
+              "atmosphere_dust_density": "280.000000",
+              "contour_blue_line_count": "64.000000",
+              "field_gen_frequency": "1.6",
+              "field_gen_octaves": "5",
+              "frame_hud_viewport_radius": "0.94",
+              "grid_warp_grid_density": "30.000000",
+              "post_bloom_intensity": "0.8",
+              "post_vignette": "0.95"
+            }
+          }
+        ],
+        "type": 4,
+        "width": 2580.0
       }
     ],
     "pins": [
+      {
+        "id": 66,
+        "kind": 0,
+        "name": "Video In",
+        "nodeId": 18,
+        "slotIndex": 0,
+        "type": 0
+      },
       {
         "id": 2,
         "kind": 1,
         "name": "Field",
         "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 67,
+        "kind": 1,
+        "name": "Clock",
+        "nodeId": 18,
         "slotIndex": 0,
         "type": 0
       },
@@ -284,6 +2120,14 @@
         "nodeId": 2,
         "slotIndex": 0,
         "type": 0
+      },
+      {
+        "id": 68,
+        "kind": 1,
+        "name": "bpm",
+        "nodeId": 18,
+        "slotIndex": 1,
+        "type": 7
       },
       {
         "id": 4,
@@ -336,7 +2180,7 @@
       {
         "id": 10,
         "kind": 1,
-        "name": "Preview",
+        "name": "Priority Node Editor",
         "nodeId": 5,
         "slotIndex": 0,
         "type": 0
@@ -416,7 +2260,7 @@
       {
         "id": 20,
         "kind": 1,
-        "name": "Preview",
+        "name": "Survey Label Editor",
         "nodeId": 9,
         "slotIndex": 0,
         "type": 0
@@ -568,7 +2412,7 @@
       {
         "id": 42,
         "kind": 1,
-        "name": "Signal",
+        "name": "Operations Console",
         "nodeId": 15,
         "slotIndex": 0,
         "type": 0
@@ -606,20 +2450,750 @@
         "type": 7
       },
       {
-        "id": 47,
+        "id": 48,
+        "kind": 1,
+        "name": "Priority Node Offsets",
+        "nodeId": 5,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 49,
+        "kind": 1,
+        "name": "Node Edit State",
+        "nodeId": 5,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 50,
+        "kind": 1,
+        "name": "Viewport Objects",
+        "nodeId": 5,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 51,
+        "kind": 1,
+        "name": "Survey Label Offsets",
+        "nodeId": 9,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 52,
+        "kind": 1,
+        "name": "Viewport Objects",
+        "nodeId": 9,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 53,
+        "kind": 1,
+        "name": "Viewport Pick Result",
+        "nodeId": 9,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 54,
+        "kind": 1,
+        "name": "terrain",
+        "nodeId": 15,
+        "slotIndex": 5,
+        "type": 7
+      },
+      {
+        "id": 55,
+        "kind": 1,
+        "name": "density",
+        "nodeId": 15,
+        "slotIndex": 6,
+        "type": 7
+      },
+      {
+        "id": 56,
+        "kind": 1,
+        "name": "blue_gain",
+        "nodeId": 15,
+        "slotIndex": 7,
+        "type": 7
+      },
+      {
+        "id": 57,
+        "kind": 1,
+        "name": "accent_gain",
+        "nodeId": 15,
+        "slotIndex": 8,
+        "type": 7
+      },
+      {
+        "id": 58,
+        "kind": 1,
+        "name": "nodes_gain",
+        "nodeId": 15,
+        "slotIndex": 9,
+        "type": 7
+      },
+      {
+        "id": 59,
+        "kind": 1,
+        "name": "labels_gain",
+        "nodeId": 15,
+        "slotIndex": 10,
+        "type": 7
+      },
+      {
+        "id": 60,
+        "kind": 1,
+        "name": "palette",
+        "nodeId": 15,
+        "slotIndex": 11,
+        "type": 7
+      },
+      {
+        "id": 61,
+        "kind": 1,
+        "name": "energy",
+        "nodeId": 15,
+        "slotIndex": 12,
+        "type": 7
+      },
+      {
+        "id": 62,
+        "kind": 1,
+        "name": "authority",
+        "nodeId": 15,
+        "slotIndex": 13,
+        "type": 7
+      },
+      {
+        "id": 63,
+        "kind": 1,
+        "name": "cue_mode",
+        "nodeId": 15,
+        "slotIndex": 14,
+        "type": 7
+      },
+      {
+        "id": 64,
+        "kind": 1,
+        "name": "master_mix",
+        "nodeId": 15,
+        "slotIndex": 15,
+        "type": 7
+      },
+      {
+        "id": 65,
+        "kind": 1,
+        "name": "phase",
+        "nodeId": 15,
+        "slotIndex": 16,
+        "type": 7
+      },
+      {
+        "id": 69,
+        "kind": 1,
+        "name": "total_beats",
+        "nodeId": 18,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 70,
+        "kind": 1,
+        "name": "transport_seconds",
+        "nodeId": 18,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 71,
+        "kind": 1,
+        "name": "transport_rate",
+        "nodeId": 18,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 72,
+        "kind": 1,
+        "name": "chunk_index",
+        "nodeId": 18,
+        "slotIndex": 5,
+        "type": 7
+      },
+      {
+        "id": 73,
+        "kind": 1,
+        "name": "chunk_local_time",
+        "nodeId": 18,
+        "slotIndex": 6,
+        "type": 7
+      },
+      {
+        "id": 74,
+        "kind": 1,
+        "name": "chunk_duration",
+        "nodeId": 18,
+        "slotIndex": 7,
+        "type": 7
+      },
+      {
+        "id": 75,
+        "kind": 1,
+        "name": "transition_alpha",
+        "nodeId": 18,
+        "slotIndex": 8,
+        "type": 7
+      },
+      {
+        "id": 76,
+        "kind": 1,
+        "name": "beat",
+        "nodeId": 18,
+        "slotIndex": 9,
+        "type": 7
+      },
+      {
+        "id": 77,
+        "kind": 1,
+        "name": "bar",
+        "nodeId": 18,
+        "slotIndex": 10,
+        "type": 7
+      },
+      {
+        "id": 78,
+        "kind": 1,
+        "name": "beat_phase",
+        "nodeId": 18,
+        "slotIndex": 11,
+        "type": 7
+      },
+      {
+        "id": 79,
+        "kind": 1,
+        "name": "bar_phase",
+        "nodeId": 18,
+        "slotIndex": 12,
+        "type": 7
+      },
+      {
+        "id": 80,
+        "kind": 1,
+        "name": "is_downbeat",
+        "nodeId": 18,
+        "slotIndex": 13,
+        "type": 7
+      },
+      {
+        "id": 81,
+        "kind": 1,
+        "name": "quantum",
+        "nodeId": 18,
+        "slotIndex": 14,
+        "type": 7
+      },
+      {
+        "id": 82,
+        "kind": 1,
+        "name": "loop_phase",
+        "nodeId": 18,
+        "slotIndex": 15,
+        "type": 7
+      },
+      {
+        "id": 83,
+        "kind": 1,
+        "name": "cue_index",
+        "nodeId": 18,
+        "slotIndex": 16,
+        "type": 7
+      },
+      {
+        "id": 84,
+        "kind": 1,
+        "name": "cue_phase",
+        "nodeId": 18,
+        "slotIndex": 17,
+        "type": 7
+      },
+      {
+        "id": 85,
+        "kind": 1,
+        "name": "enter_phase",
+        "nodeId": 18,
+        "slotIndex": 18,
+        "type": 7
+      },
+      {
+        "id": 86,
+        "kind": 1,
+        "name": "exit_phase",
+        "nodeId": 18,
+        "slotIndex": 19,
+        "type": 7
+      },
+      {
+        "id": 87,
+        "kind": 1,
+        "name": "cue_a_enter_phase",
+        "nodeId": 18,
+        "slotIndex": 20,
+        "type": 7
+      },
+      {
+        "id": 88,
+        "kind": 1,
+        "name": "cue_a_exit_phase",
+        "nodeId": 18,
+        "slotIndex": 21,
+        "type": 7
+      },
+      {
+        "id": 89,
+        "kind": 1,
+        "name": "cue_a_life",
+        "nodeId": 18,
+        "slotIndex": 22,
+        "type": 7
+      },
+      {
+        "id": 90,
+        "kind": 1,
+        "name": "cue_a_life_velocity",
+        "nodeId": 18,
+        "slotIndex": 23,
+        "type": 7
+      },
+      {
+        "id": 91,
+        "kind": 1,
+        "name": "cue_b_enter_phase",
+        "nodeId": 18,
+        "slotIndex": 24,
+        "type": 7
+      },
+      {
+        "id": 92,
+        "kind": 1,
+        "name": "cue_b_exit_phase",
+        "nodeId": 18,
+        "slotIndex": 25,
+        "type": 7
+      },
+      {
+        "id": 93,
+        "kind": 1,
+        "name": "cue_b_life",
+        "nodeId": 18,
+        "slotIndex": 26,
+        "type": 7
+      },
+      {
+        "id": 94,
+        "kind": 1,
+        "name": "cue_b_life_velocity",
+        "nodeId": 18,
+        "slotIndex": 27,
+        "type": 7
+      },
+      {
+        "id": 95,
+        "kind": 1,
+        "name": "energy",
+        "nodeId": 18,
+        "slotIndex": 28,
+        "type": 7
+      },
+      {
+        "id": 96,
+        "kind": 1,
+        "name": "tightness",
+        "nodeId": 18,
+        "slotIndex": 29,
+        "type": 7
+      },
+      {
+        "id": 97,
+        "kind": 1,
+        "name": "spread",
+        "nodeId": 18,
+        "slotIndex": 30,
+        "type": 7
+      },
+      {
+        "id": 98,
+        "kind": 1,
+        "name": "retarget_active",
+        "nodeId": 18,
+        "slotIndex": 31,
+        "type": 7
+      },
+      {
+        "id": 99,
+        "kind": 1,
+        "name": "retarget_elapsed",
+        "nodeId": 18,
+        "slotIndex": 32,
+        "type": 7
+      },
+      {
+        "id": 100,
+        "kind": 1,
+        "name": "trigger_state",
+        "nodeId": 18,
+        "slotIndex": 33,
+        "type": 7
+      },
+      {
+        "id": 101,
+        "kind": 1,
+        "name": "trigger_pending",
+        "nodeId": 18,
+        "slotIndex": 34,
+        "type": 7
+      },
+      {
+        "id": 102,
+        "kind": 1,
+        "name": "trigger_target_beat",
+        "nodeId": 18,
+        "slotIndex": 35,
+        "type": 7
+      },
+      {
+        "id": 103,
+        "kind": 1,
+        "name": "Cue Records",
+        "nodeId": 18,
+        "slotIndex": 36,
+        "type": 6
+      },
+      {
+        "id": 104,
         "kind": 0,
-        "name": "In",
-        "nodeId": 17,
+        "name": "Video",
+        "nodeId": 19,
         "slotIndex": 0,
         "type": 0
+      },
+      {
+        "id": 105,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 19,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 106,
+        "kind": 1,
+        "name": "Viewport Pick Result",
+        "nodeId": 5,
+        "slotIndex": 5,
+        "type": 6
       }
     ]
   },
   "input": {
     "activeSource": ""
   },
-  "layout": "",
+  "layout": "[Window][Sources]\nPos=0,710\nSize=286,663\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Outputs]\nPos=0,710\nSize=286,663\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Stats]\nPos=0,710\nSize=286,663\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Log]\nPos=0,710\nSize=286,663\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Properties]\nPos=1621,25\nSize=573,683\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=288,710\nSize=1906,663\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2194,1348\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=590,200\nSize=566,678\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][##LoadingOverlay]\nPos=1812,1014\nSize=215,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=699,249\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][post]\nPos=0,25\nSize=1619,683\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Terminal]\nPos=0,710\nSize=286,663\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][signal]\nPos=0,25\nSize=1619,683\nCollapsed=0\nDockId=0x0000002E,1\n\n[Docking][Data]\nDockSpace                                   ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2194,1348 Split=Y\n  DockNode                                  ID=0x00000003 Parent=0xCCBD8CF7 SizeRef=1222,1399 Split=X Selected=0x376FDC27\n    DockNode                                ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n      DockNode                              ID=0x00000001 Parent=0x00000007 SizeRef=2386,1284 Split=X Selected=0x5AAC8CBA\n        DockNode                            ID=0x00000009 Parent=0x00000001 SizeRef=742,790 Selected=0x9E38CE87\n        DockNode                            ID=0x0000000A Parent=0x00000001 SizeRef=749,790 Split=X Selected=0x376FDC27\n          DockNode                          ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n            DockNode                        ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n            DockNode                        ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n              DockNode                      ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n              DockNode                      ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                DockNode                    ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                DockNode                    ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                  DockNode                  ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                    DockNode                ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                      DockNode              ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                        DockNode            ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                          DockNode          ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                          DockNode          ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                        DockNode            ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                      DockNode              ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                        DockNode            ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                          DockNode          ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                          DockNode          ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                            DockNode        ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                            DockNode        ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                        DockNode            ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                          DockNode          ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                          DockNode          ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                            DockNode        ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                            DockNode        ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                              DockNode      ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                DockNode    ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                DockNode    ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                              DockNode      ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                DockNode    ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                DockNode    ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                  DockNode  ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                  DockNode  ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 CentralNode=1 Selected=0x4EE07CC0\n                    DockNode                ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                  DockNode                  ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n          DockNode                          ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n      DockNode                              ID=0x00000002 Parent=0x00000007 SizeRef=573,1284 Selected=0x8C72BEA8\n    DockNode                                ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n  DockNode                                  ID=0x00000004 Parent=0xCCBD8CF7 SizeRef=1222,663 Split=X Selected=0xF12F3499\n    DockNode                                ID=0x00000005 Parent=0x00000004 SizeRef=286,707 Selected=0x590DF097\n    DockNode                                ID=0x00000006 Parent=0x00000004 SizeRef=1906,707 Selected=0xF12F3499\n\n",
   "name": "topographic_hud",
+  "nodePresets": [
+    {
+      "created": "2026-07-15T03:49:53",
+      "id": "0bbd22d3-0fc2-2ab9-95c9fb3bc898",
+      "modified": "2026-07-15T04:18:44",
+      "name": "Priority Offset Study",
+      "parameters": [
+        {
+          "name": "placement_mode",
+          "value": "4"
+        },
+        {
+          "name": "node_count",
+          "value": "44"
+        },
+        {
+          "name": "seed",
+          "value": "5"
+        },
+        {
+          "name": "ring_radius",
+          "value": "0.34"
+        },
+        {
+          "name": "jitter",
+          "value": "0.04"
+        },
+        {
+          "name": "ascent_steps",
+          "value": "7"
+        },
+        {
+          "name": "ascent_rate",
+          "value": "0.05"
+        },
+        {
+          "name": "size_min",
+          "value": "0.012"
+        },
+        {
+          "name": "size_max",
+          "value": "0.028"
+        },
+        {
+          "name": "intensity",
+          "value": "1.000000"
+        },
+        {
+          "name": "color_mix",
+          "value": "0.35"
+        }
+      ],
+      "pipelineType": "module:node_gen",
+      "scope": "project",
+      "statePayloads": {
+        "node_edit_state": {
+          "data": "0000804000000000000000007bdce9a97b142e3fec51b83ee1fe033f8f3af43e0000803e000080be0000000000000000",
+          "element_count": 1,
+          "element_size": 48,
+          "encoding": "hex",
+          "schema_signature": "2166316446121755527"
+        },
+        "node_overrides": {
+          "data": "0000000000000000010000000088244700000000000000000200000000000000000000000000000003000000000000000000803e000080be0400000000000000000000000000000005000000000000000000000000000000060000000000000000000000000000000700000000000000000000000000000008000000000000000000000000000000090000000000000000000000000000000a0000000000000000000000000000000b0000000000000000000000000000000c00000000000000",
+          "element_count": 12,
+          "element_size": 16,
+          "encoding": "hex",
+          "schema_signature": "12822581078674631894"
+        }
+      }
+    },
+    {
+      "created": "2026-07-15T03:50:00",
+      "id": "a5e25be3-a5e4-965d-2dac139f6fb7",
+      "modified": "2026-07-15T04:18:37",
+      "name": "Priority Baseline",
+      "parameters": [
+        {
+          "name": "placement_mode",
+          "value": "4"
+        },
+        {
+          "name": "node_count",
+          "value": "44"
+        },
+        {
+          "name": "seed",
+          "value": "5"
+        },
+        {
+          "name": "ring_radius",
+          "value": "0.34"
+        },
+        {
+          "name": "jitter",
+          "value": "0.04"
+        },
+        {
+          "name": "ascent_steps",
+          "value": "7"
+        },
+        {
+          "name": "ascent_rate",
+          "value": "0.05"
+        },
+        {
+          "name": "size_min",
+          "value": "0.012"
+        },
+        {
+          "name": "size_max",
+          "value": "0.028"
+        },
+        {
+          "name": "intensity",
+          "value": "1.000000"
+        },
+        {
+          "name": "color_mix",
+          "value": "0.35"
+        }
+      ],
+      "pipelineType": "module:node_gen",
+      "scope": "project",
+      "statePayloads": {
+        "node_edit_state": {
+          "data": "0000804000000000000000007bdce9a97b142e3fec51b83e7ba0453f48253a3f000080be000080be0000000000000000",
+          "element_count": 1,
+          "element_size": 48,
+          "encoding": "hex",
+          "schema_signature": "2166316446121755527"
+        },
+        "node_overrides": {
+          "data": "00000000000000000100000000882447000000000000000002000000000000000000000000000000030000000000000000000000000000000400000000000000000000000000000005000000000000000000000000000000060000000000000000000000000000000700000000000000000000000000000008000000000000000000000000000000090000000000000000000000000000000a0000000000000000000000000000000b0000000000000000000000000000000c00000000000000",
+          "element_count": 12,
+          "element_size": 16,
+          "encoding": "hex",
+          "schema_signature": "12822581078674631894"
+        }
+      }
+    },
+    {
+      "created": "2026-07-15T03:50:08",
+      "id": "c6d3c1aa-b2bf-4c92-8969ca3d5622",
+      "modified": "2026-07-15T03:50:08",
+      "name": "Autonomous Survey Console",
+      "parameters": [
+        {
+          "name": "authority",
+          "value": "1"
+        },
+        {
+          "name": "cue_mode",
+          "value": "0"
+        },
+        {
+          "name": "terrain",
+          "value": "2"
+        },
+        {
+          "name": "node_density",
+          "value": "68"
+        },
+        {
+          "name": "palette",
+          "value": "0"
+        },
+        {
+          "name": "layer_blue",
+          "value": "0.95"
+        },
+        {
+          "name": "layer_accent",
+          "value": "1.05"
+        },
+        {
+          "name": "layer_nodes",
+          "value": "1.000000"
+        },
+        {
+          "name": "layer_labels",
+          "value": "0.92"
+        },
+        {
+          "name": "master_mix",
+          "value": "1.000000"
+        },
+        {
+          "name": "manual_energy",
+          "value": "0.62"
+        },
+        {
+          "name": "manual_sweep",
+          "value": "0.35"
+        },
+        {
+          "name": "pulse_rate",
+          "value": "0.8"
+        },
+        {
+          "name": "sweep_rate",
+          "value": "0.1"
+        },
+        {
+          "name": "beat_rate",
+          "value": "2.000000"
+        },
+        {
+          "name": "beat_sharp",
+          "value": "3.000000"
+        }
+      ],
+      "pipelineType": "module:signal",
+      "scope": "project"
+    },
+    {
+      "created": "2026-07-15T03:50:09",
+      "id": "f3ad1393-11a2-608b-dfad2ce48cdb",
+      "modified": "2026-07-15T03:50:09",
+      "name": "Conductor Threat Console",
+      "parameters": [
+        {
+          "name": "authority",
+          "value": "2"
+        },
+        {
+          "name": "cue_mode",
+          "value": "1"
+        },
+        {
+          "name": "terrain",
+          "value": "2"
+        },
+        {
+          "name": "node_density",
+          "value": "68"
+        },
+        {
+          "name": "palette",
+          "value": "0"
+        },
+        {
+          "name": "layer_blue",
+          "value": "0.95"
+        },
+        {
+          "name": "layer_accent",
+          "value": "1.05"
+        },
+        {
+          "name": "layer_nodes",
+          "value": "1.000000"
+        },
+        {
+          "name": "layer_labels",
+          "value": "0.92"
+        },
+        {
+          "name": "master_mix",
+          "value": "1.000000"
+        },
+        {
+          "name": "manual_energy",
+          "value": "0.62"
+        },
+        {
+          "name": "manual_sweep",
+          "value": "0.35"
+        },
+        {
+          "name": "pulse_rate",
+          "value": "0.8"
+        },
+        {
+          "name": "sweep_rate",
+          "value": "0.1"
+        },
+        {
+          "name": "beat_rate",
+          "value": "2.000000"
+        },
+        {
+          "name": "beat_sharp",
+          "value": "3.000000"
+        }
+      ],
+      "pipelineType": "module:signal",
+      "scope": "project"
+    }
+  ],
   "osc": {
     "enabled": true,
     "receivePort": 9002,
@@ -628,52 +3202,45 @@
     "sendPort": 9021,
     "stateTreeBridge": true
   },
-  "outputObjects": [
-    {
-      "height": 1080,
-      "id": "TOPO_HUD",
-      "matchInputResolution": true,
-      "name": "TOPO_HUD",
-      "senderName": "TOPO_HUD",
-      "type": "spout",
-      "wasActive": true,
-      "width": 1920
-    }
-  ],
+  "outputObjects": [],
   "outputs": [],
   "pipelines": [
     {
-      "displayName": "node_render",
+      "displayName": "field_gen",
       "enabled": true,
       "expressions": {
-        "intensity": "0.42 + ref(\"signal/control_outputs/pulse\") * 0.4"
+        "detail_gain": "0.75 + ref(\"signal/control_outputs/energy\") * 0.65",
+        "field_mode": "ref(\"signal/control_outputs/terrain\")",
+        "frequency": "ref(\"/sentinel/groups/annotation_20/parameters/field_gen_frequency\")",
+        "octaves": "ref(\"/sentinel/groups/annotation_20/parameters/field_gen_octaves\")",
+        "warp_amount": "0.8 + ref(\"signal/control_outputs/slow\") * 0.35"
       },
       "fitMode": 1,
-      "id": "node_render",
-      "inputSlotSourceIds": [
-        "node_gen"
-      ],
+      "id": "field_gen",
+      "inputSlotSourceIds": [],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "field_gen",
+      "panelOpen": false,
       "parameters": {
-        "core_size": "0.320000",
-        "glow_falloff": "0.350000",
-        "glow_radius": "0.500000",
-        "intensity": "0.544421",
-        "orange_color_b": "0.200000",
-        "orange_color_g": "0.550000",
-        "orange_color_r": "1.000000",
-        "project_dir": "modules/node_render",
-        "pulse_amount": "0.250000",
-        "pulse_speed": "2.200000",
-        "ray_count": "4.000000",
-        "ray_length": "0.700000",
+        "aspect": "1.000000",
+        "center_count": "5.000000",
+        "detail_gain": "1.107500",
+        "elevation_bias": "0.000000",
+        "field_mode": "2.000000",
+        "flow_dir_x": "0.150000",
+        "flow_dir_y": "0.100000",
+        "flow_speed": "0.060000",
+        "frequency": "1.600000",
+        "gain": "0.500000",
+        "lacunarity": "2.000000",
+        "octaves": "5.000000",
+        "project_dir": "modules/field_gen",
+        "region_split": "4.000000",
         "resolution_height": "1080",
         "resolution_width": "1920",
-        "star_rays": "1.000000",
-        "white_color_b": "1.000000",
-        "white_color_g": "0.930000",
-        "white_color_r": "0.850000"
+        "seed": "3.000000",
+        "warp_amount": "1.083266"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -682,7 +3249,9 @@
     {
       "displayName": "contour_blue",
       "enabled": true,
-      "expressions": null,
+      "expressions": {
+        "line_count": "ref(\"/sentinel/groups/annotation_20/parameters/contour_blue_line_count\")"
+      },
       "fitMode": 1,
       "id": "contour_blue",
       "inputSlotSourceIds": [
@@ -690,6 +3259,8 @@
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "contour_blue",
+      "panelOpen": false,
       "parameters": {
         "blue_color_b": "0.950000",
         "blue_color_g": "0.550000",
@@ -715,66 +3286,40 @@
       "type": "module"
     },
     {
-      "displayName": "field_gen",
+      "displayName": "node_render",
       "enabled": true,
       "expressions": {
-        "warp_amount": "0.8 + ref(\"signal/control_outputs/slow\") * 0.35"
+        "intensity": "0.42 + ref(\"signal/control_outputs/pulse\") * 0.4",
+        "pulse_amount": "0.12 + ref(\"signal/control_outputs/energy\") * 0.38"
       },
       "fitMode": 1,
-      "id": "field_gen",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "aspect": "1.000000",
-        "center_count": "5.000000",
-        "detail_gain": "1.000000",
-        "elevation_bias": "0.000000",
-        "field_mode": "2.000000",
-        "flow_dir_x": "0.150000",
-        "flow_dir_y": "0.100000",
-        "flow_speed": "0.060000",
-        "frequency": "1.600000",
-        "gain": "0.500000",
-        "lacunarity": "2.000000",
-        "octaves": "5.000000",
-        "project_dir": "modules/field_gen",
-        "region_split": "4.000000",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "seed": "3.000000",
-        "warp_amount": "0.911966"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "node_gen",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "node_gen",
+      "id": "node_render",
       "inputSlotSourceIds": [
-        "field_gen"
+        "node_gen"
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "node_render",
+      "panelOpen": false,
       "parameters": {
-        "ascent_rate": "0.050000",
-        "ascent_steps": "7.000000",
-        "color_mix": "0.350000",
-        "intensity": "1.000000",
-        "jitter": "0.040000",
-        "node_count": "72.000000",
-        "placement_mode": "4.000000",
-        "project_dir": "modules/node_gen",
+        "core_size": "0.320000",
+        "glow_falloff": "0.350000",
+        "glow_radius": "0.500000",
+        "intensity": "0.703000",
+        "orange_color_b": "0.200000",
+        "orange_color_g": "0.550000",
+        "orange_color_r": "1.000000",
+        "project_dir": "modules/node_render",
+        "pulse_amount": "0.329000",
+        "pulse_speed": "2.200000",
+        "ray_count": "4.000000",
+        "ray_length": "0.700000",
         "resolution_height": "1080",
         "resolution_width": "1920",
-        "ring_radius": "0.340000",
-        "seed": "5.000000",
-        "size_max": "0.028000",
-        "size_min": "0.012000"
+        "star_rays": "1.000000",
+        "white_color_b": "1.000000",
+        "white_color_g": "0.930000",
+        "white_color_r": "0.850000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -793,6 +3338,8 @@
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "contour_accent",
+      "panelOpen": false,
       "parameters": {
         "accent_color_b": "0.160000",
         "accent_color_g": "0.500000",
@@ -801,13 +3348,130 @@
         "accent_level": "0.600000",
         "accent_mode": "0.000000",
         "band_width": "0.090000",
-        "glow": "2.013990",
+        "glow": "1.680000",
         "index_ticks": "0.000000",
         "intensity": "1.400000",
         "line_count": "52.000000",
         "line_width": "0.015000",
         "phase_speed": "0.030000",
         "project_dir": "modules/contour_accent"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "node_gen",
+      "enabled": true,
+      "expressions": {
+        "node_count": "ref(\"signal/control_outputs/density\")"
+      },
+      "fitMode": 1,
+      "id": "node_gen",
+      "inputSlotSourceIds": [
+        "field_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "node_gen",
+      "panelOpen": false,
+      "parameters": {
+        "ascent_rate": "0.050000",
+        "ascent_steps": "7.000000",
+        "color_mix": "0.350000",
+        "intensity": "1.000000",
+        "jitter": "0.040000",
+        "node_count": "44.000000",
+        "placement_mode": "4.000000",
+        "project_dir": "modules/node_gen",
+        "reset_offsets": "0.000000",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "ring_radius": "0.340000",
+        "seed": "5.000000",
+        "size_max": "0.028000",
+        "size_min": "0.012000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "grid_warp",
+      "enabled": true,
+      "expressions": {
+        "grid_density": "ref(\"/sentinel/groups/annotation_20/parameters/grid_warp_grid_density\")"
+      },
+      "fitMode": 1,
+      "id": "grid_warp",
+      "inputSlotSourceIds": [
+        "field_gen"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "grid_warp",
+      "panelOpen": false,
+      "parameters": {
+        "drift_speed": "0.015000",
+        "fade_center": "0.250000",
+        "fade_edges": "0.700000",
+        "grid_color_b": "0.720000",
+        "grid_color_g": "0.550000",
+        "grid_color_r": "0.350000",
+        "grid_density": "30.000000",
+        "intensity": "0.550000",
+        "line_width": "0.030000",
+        "perspective": "0.500000",
+        "project_dir": "modules/grid_warp",
+        "warp_amount": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "compositor",
+      "enabled": true,
+      "expressions": {
+        "accent_gain": "ref(\"signal/control_outputs/accent_gain\")",
+        "blue_gain": "ref(\"signal/control_outputs/blue_gain\")",
+        "labels_gain": "ref(\"signal/control_outputs/labels_gain\")",
+        "master_mix": "ref(\"signal/control_outputs/master_mix\")",
+        "nodes_gain": "ref(\"signal/control_outputs/nodes_gain\")"
+      },
+      "fitMode": 1,
+      "id": "compositor",
+      "inputSlotSourceIds": [
+        "atmosphere",
+        "grid_warp",
+        "contour_blue",
+        "contour_accent",
+        "link_render",
+        "node_render",
+        "frame_hud",
+        "label_render",
+        "frame_hud"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "compositor",
+      "panelOpen": false,
+      "parameters": {
+        "accent_gain": "0.834760",
+        "bg_gain": "1.000000",
+        "bg_tint_b": "0.180000",
+        "bg_tint_g": "0.120000",
+        "bg_tint_r": "0.040000",
+        "blue_gain": "0.720000",
+        "clip_amount": "0.850000",
+        "grid_gain": "0.500000",
+        "hud_gain": "0.900000",
+        "labels_gain": "0.580000",
+        "links_gain": "0.700000",
+        "master_mix": "0.820000",
+        "nodes_gain": "0.829020",
+        "project_dir": "modules/compositor",
+        "viewport_clip": "1.000000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -824,6 +3488,8 @@
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "link_gen",
+      "panelOpen": false,
       "parameters": {
         "curve_amount": "0.090000",
         "dash": "0.000000",
@@ -847,75 +3513,6 @@
       "type": "module"
     },
     {
-      "displayName": "grid_warp",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "grid_warp",
-      "inputSlotSourceIds": [
-        "field_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "drift_speed": "0.015000",
-        "fade_center": "0.250000",
-        "fade_edges": "0.700000",
-        "grid_color_b": "0.720000",
-        "grid_color_g": "0.550000",
-        "grid_color_r": "0.350000",
-        "grid_density": "30.000000",
-        "intensity": "0.550000",
-        "line_width": "0.030000",
-        "perspective": "0.500000",
-        "project_dir": "modules/grid_warp",
-        "warp_amount": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "compositor",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "compositor",
-      "inputSlotSourceIds": [
-        "atmosphere",
-        "grid_warp",
-        "contour_blue",
-        "contour_accent",
-        "link_render",
-        "node_render",
-        "frame_hud",
-        "label_render",
-        "frame_hud"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "accent_gain": "1.150000",
-        "bg_gain": "1.000000",
-        "bg_tint_b": "0.180000",
-        "bg_tint_g": "0.120000",
-        "bg_tint_r": "0.040000",
-        "blue_gain": "1.500000",
-        "clip_amount": "0.850000",
-        "grid_gain": "0.500000",
-        "hud_gain": "0.900000",
-        "labels_gain": "0.900000",
-        "links_gain": "0.700000",
-        "master_mix": "1.000000",
-        "nodes_gain": "0.500000",
-        "project_dir": "modules/compositor",
-        "viewport_clip": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
       "displayName": "link_render",
       "enabled": true,
       "expressions": null,
@@ -926,6 +3523,8 @@
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "link_render",
+      "panelOpen": false,
       "parameters": {
         "dash_count": "14.000000",
         "dash_offset": "0.000000",
@@ -959,12 +3558,15 @@
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "label_gen",
+      "panelOpen": false,
       "parameters": {
         "attach_mode": "0.000000",
         "color_mix": "0.300000",
         "jitter": "0.020000",
         "label_count": "18.000000",
         "project_dir": "modules/label_gen",
+        "reset_offsets": "0.000000",
         "resolution_height": "1080",
         "resolution_width": "1920",
         "ring_radius": "0.460000",
@@ -987,6 +3589,8 @@
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "label_render",
+      "panelOpen": false,
       "parameters": {
         "dim_color_b": "0.250000",
         "dim_color_g": "0.600000",
@@ -1010,13 +3614,16 @@
       "displayName": "frame_hud",
       "enabled": true,
       "expressions": {
-        "rot_speed_a": "0.015 + ref(\"signal/control_outputs/slow\") * 0.05"
+        "rot_speed_a": "0.015 + ref(\"signal/control_outputs/slow\") * 0.05",
+        "viewport_radius": "ref(\"/sentinel/groups/annotation_20/parameters/frame_hud_viewport_radius\")"
       },
       "fitMode": 1,
       "id": "frame_hud",
       "inputSlotSourceIds": [],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "frame_hud",
+      "panelOpen": false,
       "parameters": {
         "accent_color_b": "0.200000",
         "accent_color_g": "0.550000",
@@ -1032,7 +3639,7 @@
         "ring_color_g": "0.550000",
         "ring_color_r": "0.350000",
         "ring_count": "20.000000",
-        "rot_speed_a": "0.030995",
+        "rot_speed_a": "0.055467",
         "rot_speed_b": "-0.030000",
         "segment_gaps": "4.000000",
         "tick_density": "190.000000",
@@ -1045,12 +3652,16 @@
     {
       "displayName": "atmosphere",
       "enabled": true,
-      "expressions": null,
+      "expressions": {
+        "dust_density": "ref(\"/sentinel/groups/annotation_20/parameters/atmosphere_dust_density\")"
+      },
       "fitMode": 1,
       "id": "atmosphere",
       "inputSlotSourceIds": [],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "atmosphere",
+      "panelOpen": false,
       "parameters": {
         "depth_gradient": "1.100000",
         "drift_speed": "0.012000",
@@ -1074,14 +3685,27 @@
     {
       "displayName": "post",
       "enabled": true,
-      "expressions": null,
+      "expressions": {
+        "bloom_intensity": "ref(\"/sentinel/groups/annotation_20/parameters/post_bloom_intensity\")",
+        "highlight_tint_b": "0.25*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.06*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.42*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.90*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+        "highlight_tint_g": "0.60*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.22*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 1.00*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.90*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+        "highlight_tint_r": "1.00*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 1.00*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.18*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.90*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+        "saturation": "1.12 - ref(\"signal/control_outputs/palette\") * 0.12",
+        "shadow_tint_b": "0.22*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.02*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.04*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.04*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+        "shadow_tint_g": "0.14*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.03*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.20*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.04*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+        "shadow_tint_r": "0.00*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.18*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.01*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.04*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+        "split_balance": "0.20 + ref(\"signal/control_outputs/palette\") * 0.08",
+        "vignette": "ref(\"/sentinel/groups/annotation_20/parameters/post_vignette\")"
+      },
       "fitMode": 1,
       "id": "post",
       "inputSlotSourceIds": [
         "compositor"
       ],
       "outputFitMode": 1,
-      "outputSinkId": "TOPO_HUD",
+      "outputSinkId": "",
+      "panelAnchorId": "post",
+      "panelOpen": true,
       "parameters": {
         "bloom_intensity": "0.800000",
         "bloom_radius": "0.032000",
@@ -1098,7 +3722,7 @@
         "shadow_tint_b": "0.220000",
         "shadow_tint_g": "0.140000",
         "shadow_tint_r": "0.000000",
-        "split_balance": "0.220000",
+        "split_balance": "0.200000",
         "vignette": "0.950000"
       },
       "running": true,
@@ -1108,28 +3732,140 @@
     {
       "displayName": "signal",
       "enabled": true,
-      "expressions": null,
+      "expressions": {
+        "conductor_energy": "ref(\"Topo_Conductor/control_outputs/energy\")",
+        "conductor_phase": "ref(\"Topo_Conductor/control_outputs/loop_phase\")"
+      },
       "fitMode": 1,
       "id": "signal",
       "inputSlotSourceIds": [],
       "outputFitMode": 1,
       "outputSinkId": "",
+      "panelAnchorId": "signal",
+      "panelOpen": true,
       "parameters": {
+        "authority": "2.000000",
         "beat_rate": "2.000000",
         "beat_sharp": "3.000000",
+        "conductor_energy": "0.550000",
+        "conductor_phase": "0.830200",
+        "cue_mode": "4.000000",
+        "layer_accent": "0.200000",
+        "layer_blue": "0.550000",
+        "layer_labels": "0.450000",
+        "layer_nodes": "0.700000",
+        "manual_energy": "0.250000",
+        "manual_sweep": "0.300000",
+        "master_mix": "0.720000",
+        "node_density": "28.000000",
+        "palette": "3.000000",
         "project_dir": "modules/signal",
         "pulse_rate": "0.800000",
-        "resolution_height": "64",
-        "resolution_width": "256",
-        "slow_rate": "0.050000",
-        "sweep_rate": "0.100000"
+        "resolution_height": "658",
+        "resolution_width": "1619",
+        "sweep_rate": "0.100000",
+        "terrain": "0.000000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
       "type": "module"
+    },
+    {
+      "displayName": "Topo_Conductor",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Topo_Conductor",
+      "inputSlotSourceIds": [
+        ""
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Topo_Conductor",
+      "panelOpen": false,
+      "parameters": {
+        "beats_per_bar": "4",
+        "bpm": "120.000000",
+        "chunk0_duration": "4.000000",
+        "chunk1_duration": "4.000000",
+        "clock_source": "internal",
+        "energy": "0.550000",
+        "quantize_grid": "0",
+        "retarget_disable": "false",
+        "spread": "0.500000",
+        "tightness": "0.500000",
+        "transition_seconds": "1.500000",
+        "transport_mode": "0",
+        "transport_rate": "1.000000",
+        "transport_run": "true",
+        "transport_seconds": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "conductor"
+    },
+    {
+      "displayName": "Topo_Group_Output",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Topo_Group_Output",
+      "inputSlotSourceIds": [
+        "post"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Topo_Group_Output",
+      "panelOpen": false,
+      "parameters": {
+        "background_b": "0.000000",
+        "background_g": "0.000000",
+        "background_r": "0.000000",
+        "fit": "0",
+        "height": "1080",
+        "resolution_mode": "0",
+        "width": "1920"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "groupoutput"
     }
   ],
-  "saved_at_ms": 1783448902781,
+  "saved_at_ms": 1784114431841,
   "sources": [],
+  "statePayloads": {
+    "label_gen": {
+      "label_edit_state": {
+        "data": "00c07a440000000000000000b79321d752b81e3f3d0ad73ecf04b13e2582e33e0000803e807ec7bd0000000000000000",
+        "element_count": 1,
+        "element_size": 48,
+        "encoding": "hex",
+        "schema_signature": "18284973367236186127"
+      },
+      "label_overrides": {
+        "data": "0000000000000000e9030000008824470000000000000000ea030000000000000000000000000000eb030000000000000000000000000000ec030000000000000000000000000000ed030000000000000000000000000000ee030000000000000000000000000000ef030000000000000000000000000000f0030000000000000000000000000000f1030000000000000000000000000000f2030000000000000000000000000000f3030000000000000000000000000000f403000000000000",
+        "element_count": 12,
+        "element_size": 16,
+        "encoding": "hex",
+        "schema_signature": "10942085093437904734"
+      }
+    },
+    "node_gen": {
+      "node_edit_state": {
+        "data": "0000804000000000000000007bdce9a97b142e3fec51b83e7ba0453f48253a3f000080be000080be0000000000000000",
+        "element_count": 1,
+        "element_size": 48,
+        "encoding": "hex",
+        "schema_signature": "2166316446121755527"
+      },
+      "node_overrides": {
+        "data": "00000000000000000100000000882447000000000000000002000000000000000000000000000000030000000000000000000000000000000400000000000000000000000000000005000000000000000000000000000000060000000000000000000000000000000700000000000000000000000000000008000000000000000000000000000000090000000000000000000000000000000a0000000000000000000000000000000b0000000000000000000000000000000c00000000000000",
+        "element_count": 12,
+        "element_size": 16,
+        "encoding": "hex",
+        "schema_signature": "12822581078674631894"
+      }
+    }
+  },
   "version": 5
 }

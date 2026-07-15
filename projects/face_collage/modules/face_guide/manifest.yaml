@@ -1,0 +1,44 @@
+name: "Face Guide"
+version: "0.1"
+mode: generator
+resolution: [512, 896]
+
+# Procedural frontal-face structure plate for StreamDiff img2img (SD_Face video input).
+# No data ports. Output: Guide texture.
+
+parameters:
+  - { name: head_x,  display: "Head X",  type: float, min: 0.2, max: 0.8, default: 0.5,  group: "Head" }
+  - { name: head_y,  display: "Head Y",  type: float, min: 0.2, max: 0.8, default: 0.44, group: "Head" }
+  - { name: head_rx, display: "Head RX", type: float, min: 0.15, max: 0.45, default: 0.30, group: "Head" }
+  - { name: head_ry, display: "Head RY", type: float, min: 0.20, max: 0.55, default: 0.38, group: "Head" }
+
+  - { name: skin_r, display: "Skin R", type: float, min: 0.0, max: 1.0, default: 0.80, group: "Skin" }
+  - { name: skin_g, display: "Skin G", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Skin" }
+  - { name: skin_b, display: "Skin B", type: float, min: 0.0, max: 1.0, default: 0.52, group: "Skin" }
+
+  - { name: hair_r, display: "Hair R", type: float, min: 0.0, max: 1.0, default: 0.14, group: "Hair" }
+  - { name: hair_g, display: "Hair G", type: float, min: 0.0, max: 1.0, default: 0.10, group: "Hair" }
+  - { name: hair_b, display: "Hair B", type: float, min: 0.0, max: 1.0, default: 0.09, group: "Hair" }
+
+  - { name: iris_r, display: "Iris R", type: float, min: 0.0, max: 1.0, default: 0.30, group: "Eyes" }
+  - { name: iris_g, display: "Iris G", type: float, min: 0.0, max: 1.0, default: 0.42, group: "Eyes" }
+  - { name: iris_b, display: "Iris B", type: float, min: 0.0, max: 1.0, default: 0.40, group: "Eyes" }
+
+  - { name: lip_r, display: "Lip R", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Lips" }
+  - { name: lip_g, display: "Lip G", type: float, min: 0.0, max: 1.0, default: 0.30, group: "Lips" }
+  - { name: lip_b, display: "Lip B", type: float, min: 0.0, max: 1.0, default: 0.30, group: "Lips" }
+
+  - { name: bg_r, display: "BG R", type: float, min: 0.0, max: 1.0, default: 0.10, group: "Background" }
+  - { name: bg_g, display: "BG G", type: float, min: 0.0, max: 1.0, default: 0.10, group: "Background" }
+  - { name: bg_b, display: "BG B", type: float, min: 0.0, max: 1.0, default: 0.13, group: "Background" }
+
+passes:
+  - name: blob
+    shader: guide.hlsl
+    target: ps_5_0
+    format: RGBA8
+    output: output
+
+outputs:
+  - name: "Guide"
+    pass: blob
