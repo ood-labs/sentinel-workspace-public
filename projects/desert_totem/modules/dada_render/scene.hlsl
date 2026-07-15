@@ -33,6 +33,10 @@ float vnoise2(float2 p)
 float fbm2(float2 p)
 {
     float s = 0.0, a = 0.5;
+    // Keep the octave body as one runtime loop. This function is called from
+    // sceneMap-adjacent code, so static expansion makes a cold FXC compile grow
+    // disproportionately even though the runtime work is unchanged.
+    [loop]
     for (int i = 0; i < 5; i++) { s += a * vnoise2(p); p *= 2.02; a *= 0.5; }
     return s;
 }
@@ -287,9 +291,8 @@ float2 sceneMap(float3 p)
 
     uint c0 = min((uint)_Data0_Count, 128u);
     [loop]
-    for (uint i = 0u; i < 128u; i++)
+    for (uint i = 0u; i < c0; i++)
     {
-        if (i >= c0) break;
         DadaPart d = _Data0[i];
         if (d.active < 0.5) continue;
         if (abs(pw.y - d.pos_xy.y) > partBand(d)) continue;
@@ -298,9 +301,8 @@ float2 sceneMap(float3 p)
     }
     uint c1 = min((uint)_Data1_Count, 128u);
     [loop]
-    for (uint j = 0u; j < 128u; j++)
+    for (uint j = 0u; j < c1; j++)
     {
-        if (j >= c1) break;
         DadaPart d = _Data1[j];
         if (d.active < 0.5) continue;
         if (abs(pw.y - d.pos_xy.y) > partBand(d)) continue;
@@ -331,9 +333,8 @@ void shadeSample(float3 pos, out float3 albedo, out float2 spec)
 
     uint c0 = min((uint)_Data0_Count, 128u);
     [loop]
-    for (uint i = 0u; i < 128u; i++)
+    for (uint i = 0u; i < c0; i++)
     {
-        if (i >= c0) break;
         DadaPart d = _Data0[i];
         if (d.active < 0.5) continue;
         if (abs(pw.y - d.pos_xy.y) > partBand(d)) continue;
@@ -343,9 +344,8 @@ void shadeSample(float3 pos, out float3 albedo, out float2 spec)
     }
     uint c1 = min((uint)_Data1_Count, 128u);
     [loop]
-    for (uint j = 0u; j < 128u; j++)
+    for (uint j = 0u; j < c1; j++)
     {
-        if (j >= c1) break;
         DadaPart d = _Data1[j];
         if (d.active < 0.5) continue;
         if (abs(pw.y - d.pos_xy.y) > partBand(d)) continue;
@@ -364,7 +364,7 @@ float3 skyColor(float3 rd)
 
     float az = atan2(rd.z, rd.x);
     // three atmospheric mountain ridges, far -> near
-    [unroll]
+    [loop]
     for (int L = 0; L < 3; L++)
     {
         float fl = 1.6 + L * 2.4;
@@ -377,7 +377,7 @@ float3 skyColor(float3 rd)
     }
     // distant wrong-scale mini-totems on the horizon (cheap silhouettes: bar + top ball)
     float sil = 0.0;
-    [unroll]
+    [loop]
     for (int f = 0; f < 5; f++)
     {
         float fa = -1.35 + f * 0.62;
