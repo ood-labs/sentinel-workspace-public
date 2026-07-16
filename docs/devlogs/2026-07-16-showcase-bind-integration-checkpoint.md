@@ -47,5 +47,14 @@ summary: "Checkpoint the modernized official examples and verified Showcase Gall
   Showcase Gallery crash, supporting the diagnosis that the combined gallery
   exceeded a safe resource envelope rather than containing a project-local
   compile failure.
+- Restored and schema-sanitized the canonical Scene Group look presets for all
+  seven standalone projects. Preset snapshots exclude removed camera nodes and
+  transient Atlas payloads, retain internal-camera state, remap renamed post
+  nodes, and carry current quality/distortion defaults.
+- Restored the authoritative parameter-bind documentation that an accumulated
+  workspace checkpoint had unintentionally overwritten.
+- Hardened public promotion so only each canonical `.sentinel` project file is
+  copied, generated cache artifacts are excluded before hashing and removed
+  before validation, and private test saves cannot leak into a release.
 
 This is a mid-work checkpoint, not a phase or subphase completion.

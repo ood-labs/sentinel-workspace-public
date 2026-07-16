@@ -1,5 +1,5 @@
 @{
-    MinimumSentinelVersion = '0.5.33'
+    MinimumSentinelVersion = '0.5.35'
 
     Projects = @{
         interaction_lab = @{
@@ -88,7 +88,7 @@
     }
 
     AllowedProjectDirectories = @('assets', 'cues', 'modules', 'proof')
-    AllowedTopLevelFiles = @('*.sentinel', 'README*', 'LICENSE*')
+    AllowedTopLevelFiles = @('README*', 'LICENSE*')
     GlobalSharedPaths = @('modules/_shared')
     ForbiddenDirectoryNames = @(
         '.cache', '.shadercache', 'captures', 'checkpoint', 'checkpoints',

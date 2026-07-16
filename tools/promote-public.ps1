@@ -108,6 +108,9 @@ foreach ($projectName in $Projects) {
     $projectJson = Get-Content -Raw -LiteralPath $projectFile | ConvertFrom-Json
     $activeDirectories = [Collections.Generic.List[string]]::new()
 
+    $projectRelative = Normalize-Relative (Get-RelativePath $sourceFull $projectFile)
+    $fileMap[$projectRelative] = $projectFile
+
     foreach ($pattern in $config.AllowedTopLevelFiles) {
         foreach ($file in Get-ChildItem -LiteralPath $projectRoot -File -Filter $pattern -ErrorAction SilentlyContinue) {
             if (Test-Forbidden $file $config) { continue }
@@ -159,6 +162,25 @@ foreach ($projectName in $Projects) {
     })
 }
 
+foreach ($relative in @($fileMap.Keys)) {
+    $segments = @($relative -split '/')
+    $directorySegments = if ($segments.Count -gt 1) { @($segments[0..($segments.Count - 2)]) } else { @() }
+    $blockedDirectory = $false
+    foreach ($segment in $directorySegments) {
+        $lower = $segment.ToLowerInvariant()
+        if ($lower -in @($config.ForbiddenDirectoryNames | ForEach-Object { $_.ToLowerInvariant() }) -or
+            $lower -match '^checkpoint(?:_|$)') {
+            $blockedDirectory = $true
+            break
+        }
+    }
+    $blockedFile = $false
+    foreach ($pattern in $config.ForbiddenFileNames) {
+        if ($segments[-1] -like $pattern) { $blockedFile = $true; break }
+    }
+    if ($blockedDirectory -or $blockedFile) { $fileMap.Remove($relative) }
+}
+
 $operations = [Collections.Generic.List[object]]::new()
 foreach ($relative in @($fileMap.Keys | Sort-Object)) {
     $sourcePath = $fileMap[$relative]
@@ -180,6 +202,14 @@ foreach ($relativeDirectory in $replaceDirectories) {
     $destinationDirectory = Join-Path $destinationFull $relativeDirectory
     if (-not (Test-Path -LiteralPath $destinationDirectory -PathType Container)) { continue }
     foreach ($file in Get-ChildItem -LiteralPath $destinationDirectory -File -Force -Recurse) {
+        $blocked = Test-Forbidden $file $config
+        $cursor = $file.Directory
+        while (-not $blocked -and $cursor -and (Test-IsUnder $destinationDirectory $cursor.FullName)) {
+            if (Test-Forbidden $cursor $config) { $blocked = $true; break }
+            if ((Get-FullPath $cursor.FullName) -eq (Get-FullPath $destinationDirectory)) { break }
+            $cursor = $cursor.Parent
+        }
+        if ($blocked -or -not (Test-Path -LiteralPath $file.FullName -PathType Leaf)) { continue }
         $relative = Normalize-Relative (Get-RelativePath $destinationFull $file.FullName)
         if (-not $fileMap.ContainsKey($relative)) {
             $operations.Add([pscustomobject]@{
@@ -208,6 +238,25 @@ if ($Apply) {
         $parent = Split-Path -Parent $destinationPath
         if (-not (Test-Path -LiteralPath $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
         Copy-Item -LiteralPath $sourcePath -Destination $destinationPath -Force
+    }
+
+    foreach ($relativeDirectory in @($replaceDirectories | Sort-Object -Unique)) {
+        $targetDirectory = Get-FullPath (Join-Path $destinationFull $relativeDirectory)
+        if (-not (Test-IsUnder $destinationFull $targetDirectory)) { throw "Unsafe cleanup target: $targetDirectory" }
+        if (-not (Test-Path -LiteralPath $targetDirectory -PathType Container)) { continue }
+
+        $forbiddenFiles = @(Get-ChildItem -LiteralPath $targetDirectory -File -Force -Recurse |
+            Where-Object { Test-Forbidden $_ $config })
+        foreach ($file in $forbiddenFiles) { Remove-Item -LiteralPath $file.FullName -Force }
+
+        $forbiddenDirectories = @(Get-ChildItem -LiteralPath $targetDirectory -Directory -Force -Recurse |
+            Where-Object { Test-Forbidden $_ $config } |
+            Sort-Object { $_.FullName.Length } -Descending)
+        foreach ($directory in $forbiddenDirectories) {
+            if (Test-Path -LiteralPath $directory.FullName) {
+                Remove-Item -LiteralPath $directory.FullName -Force -Recurse
+            }
+        }
     }
 
     foreach ($operation in $operations | Where-Object { $_.action -ne 'delete' }) {
