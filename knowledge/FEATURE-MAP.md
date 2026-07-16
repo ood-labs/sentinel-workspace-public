@@ -21,8 +21,9 @@ Sentinel graphs combine four kinds of signal:
 - Data ports: structured buffers such as landmarks, detections, blobs, corners, and module-emitted records. Wire these with graph data links, not `set_input`.
 - Control outputs: scalar values published under `/sentinel/pipelines/<id>/control_outputs/<name>`.
 - Expressions: per-frame formulas set with `sentinel_expression action=set`; expressions can read control outputs using `ref("node_id/control_outputs/name")`.
+- Binds: bidirectional parameter links set with `sentinel_expression action=set_bind`; writing any bound endpoint moves every endpoint, and Scene Group exposed parameters are binds. Absent on installs at or below 0.5.34.
 
-Use `sentinel_pipeline set_input` for video inputs. Use `sentinel_graph add_link` for data-port wiring. Use `sentinel_expression action=set` when one node should drive another node's parameter over time.
+Use `sentinel_pipeline set_input` for video inputs. Use `sentinel_graph add_link` for data-port wiring. Use `sentinel_expression action=set` when one node should drive another node's parameter over time, and `action=set_bind` when parameters should stay equal in both directions. See `knowledge/expressions-and-drivers.md`.
 
 ## Common Workflow
 
@@ -144,7 +145,7 @@ ref("hand_track/control_outputs/pinch_primary")
 
 Do not use a plain StateTree `set` with a string beginning with `=ref(...)`. That only writes a value string and does not activate the expression engine. `sentinel_expression action=set` compiles and registers the per-frame driver.
 
-The shipped example `examples/tracking_ripple.sentinel` uses the same driver pattern with the model-free `features` tracker: `feature_track/control_outputs/largest_size` drives the `Tracking Ripple` module parameter `track_drive` through `ref("feature_track/control_outputs/largest_size")`.
+The same driver pattern works with the model-free `features` tracker: for example, `feature_track/control_outputs/largest_size` can drive a Module parameter through `ref("feature_track/control_outputs/largest_size")`.
 
 ## Reference Pages
 
