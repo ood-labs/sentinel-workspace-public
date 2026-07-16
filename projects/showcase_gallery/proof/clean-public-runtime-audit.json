@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "checkout": {
+    "repository": "sentinel-workspace-public",
+    "commit": "07f26bbb840aeb74f631101cbc25f39205fb0292",
+    "detached_worktree_clean_before_load": true,
+    "detached_worktree_removed_after_test": true
+  },
+  "loads": [
+    {
+      "project": "interaction_lab",
+      "unresolved_project_dirs": [],
+      "pipeline": "Spline_Output",
+      "healthy": true,
+      "compile_ok": true,
+      "frame_delta": 1,
+      "resolution": [1920, 1080]
+    },
+    {
+      "project": "living_room_sdf",
+      "unresolved_project_dirs": [],
+      "pipeline": "LR_Group_Output",
+      "healthy": true,
+      "compile_ok": true,
+      "frame_delta": 44,
+      "resolution": [512, 512],
+      "note": "The final output was healthy while the largest renderer compile was still completing."
+    },
+    {
+      "project": "face_collage",
+      "unresolved_project_dirs": [],
+      "pipeline": "Face_Collage_Group_Output",
+      "healthy": true,
+      "compile_ok": true,
+      "frame_delta": 13,
+      "resolution": [720, 1280]
+    },
+    {
+      "project": "fruit_atlas_scatter",
+      "unresolved_project_dirs": [],
+      "load_ok": true,
+      "runtime_sample_completed": false
+    },
+    {
+      "project": "topographic_hud",
+      "unresolved_project_dirs": [],
+      "load_ok": true,
+      "runtime_sample_completed": false,
+      "result": "Sentinel process exited before the post-load pipeline sample."
+    }
+  ],
+  "not_attempted_after_crash": [
+    "strata",
+    "desert_totem",
+    "industrial_lattice",
+    "showcase_gallery"
+  ],
+  "recovery": {
+    "sentinel_relaunched_without_kill": true,
+    "new_pid": 569124,
+    "private_gallery_restored": true,
+    "gallery_switcher_healthy": true,
+    "gallery_switcher_resolution": [1280, 720],
+    "selected_group": "annotation_87",
+    "serial_recompile": {
+      "Fruit_LFO": "ok",
+      "dada_render": "ok"
+    }
+  },
+  "conclusion": "Static validation and private runtime proofs remain clean. A complete sequential clean-public runtime-load sweep is blocked by a Sentinel application crash outside this workspace phase's modification scope."
+}

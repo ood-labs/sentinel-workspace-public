@@ -33,18 +33,6 @@ void label(inout float3 color, SuiContext c, SuiTheme theme, float2 p, uint id, 
     suiComposite(color, strong ? theme.text : theme.muted, suiLabelText(c, p, suiBodyStyle(), id));
 }
 
-void discrete(inout float3 color, SuiContext c, SuiTheme theme, float4 rect, SuiInteraction interaction, int selected, int count)
-{
-    suiButton(color, c, theme, rect, interaction, false);
-    float w = (rect.z - rect.x) / max((float)count, 1.0);
-    [loop] for (int i = 0; i < 5; ++i) {
-        if (i >= count) break;
-        float4 cell = float4(rect.x + w * i, rect.y, rect.x + w * (i + 1), rect.w);
-        if (i == selected) suiComposite(color, theme.accent * 0.85, suiFillRect(c, suiRectInset(c, cell, 3.0)));
-        if (i > 0) suiComposite(color, theme.border, suiLinePx(c, cell.xy, float2(cell.x, cell.w), 1.0));
-    }
-}
-
 void meter(inout float3 color, SuiContext c, SuiTheme theme, float4 rect, SuiInteraction interaction, float value)
 {
     suiSlider(color, c, theme, rect, interaction, saturate(value));
@@ -75,30 +63,22 @@ void main(uint3 tid : SV_DispatchThreadID)
     float4 right = float4(0.515, 0.190, 0.955, 0.945);
     suiPanel(color, c, theme, left, true); suiPanel(color, c, theme, right, true);
 
-    label(color, c, theme, float2(0.060, 0.195), UI_LABEL_LANGUAGE, true);
-    discrete(color, c, theme, UI_RECT_WARP_STYLE, suiInteraction(UI_INDEX_WARP_STYLE), warp_style, 5);
-    label(color, c, theme, float2(0.066, 0.322), UI_LABEL_MONUMENT, warp_style == 0);
-    label(color, c, theme, float2(0.146, 0.322), UI_LABEL_DALI, warp_style == 1);
-    label(color, c, theme, float2(0.226, 0.322), UI_LABEL_CUBIST, warp_style == 2);
-    label(color, c, theme, float2(0.306, 0.322), UI_LABEL_PAINTERLY, warp_style == 3);
-    label(color, c, theme, float2(0.406, 0.322), UI_LABEL_PERFORMANCE, warp_style == 4);
-
-    label(color, c, theme, float2(0.060, 0.385), UI_LABEL_STRUCTURE, true);
-    label(color, c, theme, float2(0.060, 0.430), UI_LABEL_MELT, false);
-    label(color, c, theme, float2(0.270, 0.430), UI_LABEL_SAG, false);
+    label(color, c, theme, float2(0.060, 0.195), UI_LABEL_STRUCTURE, true);
+    label(color, c, theme, float2(0.060, 0.245), UI_LABEL_MELT, false);
+    label(color, c, theme, float2(0.270, 0.245), UI_LABEL_SAG, false);
     meter(color, c, theme, UI_RECT_MELT_MACRO, suiInteraction(UI_INDEX_MELT_MACRO), melt_macro / 0.6);
     meter(color, c, theme, UI_RECT_SAG_MACRO, suiInteraction(UI_INDEX_SAG_MACRO), sag_macro / 0.6);
-    label(color, c, theme, float2(0.060, 0.570), UI_LABEL_SPREAD, false);
-    label(color, c, theme, float2(0.270, 0.570), UI_LABEL_EXPLODE, false);
+    label(color, c, theme, float2(0.060, 0.375), UI_LABEL_SPREAD, false);
+    label(color, c, theme, float2(0.270, 0.375), UI_LABEL_EXPLODE, false);
     meter(color, c, theme, UI_RECT_SPREAD_MACRO, suiInteraction(UI_INDEX_SPREAD_MACRO), (spread_macro - 0.7) / 0.7);
     meter(color, c, theme, UI_RECT_EXPLODE_MACRO, suiInteraction(UI_INDEX_EXPLODE_MACRO), explode_macro / 1.2);
 
-    label(color, c, theme, float2(0.060, 0.705), UI_LABEL_WARP, true);
-    label(color, c, theme, float2(0.060, 0.750), UI_LABEL_PRIMARY, false);
-    label(color, c, theme, float2(0.270, 0.750), UI_LABEL_SECONDARY, false);
+    label(color, c, theme, float2(0.060, 0.545), UI_LABEL_WARP, true);
+    label(color, c, theme, float2(0.060, 0.595), UI_LABEL_PRIMARY, false);
+    label(color, c, theme, float2(0.270, 0.595), UI_LABEL_SECONDARY, false);
     meter(color, c, theme, UI_RECT_WARP_PRIMARY, suiInteraction(UI_INDEX_WARP_PRIMARY), warp_primary / 1.2);
     meter(color, c, theme, UI_RECT_WARP_SECONDARY, suiInteraction(UI_INDEX_WARP_SECONDARY), warp_secondary);
-    label(color, c, theme, float2(0.060, 0.835), UI_LABEL_TWIST, false);
+    label(color, c, theme, float2(0.060, 0.765), UI_LABEL_TWIST, false);
     meter(color, c, theme, UI_RECT_TWIST_MACRO, suiInteraction(UI_INDEX_TWIST_MACRO), (twist_macro + 1.0) * 0.5);
 
     label(color, c, theme, float2(0.550, 0.195), UI_LABEL_SURFACE, true);

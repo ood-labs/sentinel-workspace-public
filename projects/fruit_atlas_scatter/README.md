@@ -1,6 +1,6 @@
 # Fruit Transit Chamber
 
-Fruit Transit Chamber is a live generative instrument built from StreamDiff, Background Removal, Depth Estimation, Atlas, authored Modules, shared cameras, and a single Group Output. A continuously refreshed 24-slot bank becomes a swarm of roughly 70 depth-aware fruit particles flying through a monochrome tunnel.
+Fruit Transit Chamber is a live generative instrument built from StreamDiff, Background Removal, Depth Estimation, Atlas, and authored Modules. A continuously refreshed 24-slot bank becomes a swarm of roughly 70 depth-aware fruit particles flying through a monochrome tunnel.
 
 ## What to open
 
@@ -11,7 +11,7 @@ The default **Live Fill** preset is intentionally active: Atlas interval capture
 ## Main controls
 
 - **Motion World**: `Flythrough` is the hero tunnel, `Fruitfall` drops and bounces fruit onto a floor, and `Orbit` forms a slower gallery ring.
-- **Camera View**: compact `Hero`, `Orbit`, and `Profile` choices drive the Camera Switcher without exposing its 0–1024 raw index.
+- **Camera**: `Fruit_Scene` uses its built-in camera; keep **Camera Ref** empty and tune the camera controls directly on the renderer.
 - **Swarm Clones**: renders 1–4 visual particles per occupied Atlas identity. The default is 3.
 - **Fruit Scale** and **Lifecycle Rate**: control visual density and forward speed.
 - **Interval Enabled** and **Capture Slot**: switch between continuous replacement and deliberate slot curation.
@@ -52,10 +52,6 @@ Fruit_Guide -> Fruit_SD -> Fruit_Matte --\
                        -> Fruit_Depth ---+-> Fruit_Atlas -> Fruit_Scene -> Fruit_Group_Output
                        ------------------/        |              ^
 Fruit_LFO -- expressions -> prompt/motion         +-- occupancy--+
-
-Fruit_Camera_Hero ----\
-Fruit_Camera_Orbit -----+-> Fruit_Camera_Switcher -> Fruit_Scene.camera_ref
-Fruit_Camera_Profile --/
 ```
 
 ## Runtime checks

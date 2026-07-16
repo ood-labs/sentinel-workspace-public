@@ -1,4 +1,3 @@
-
 #ifndef SENTINEL_SUI_GENERATED_TEXT_HLSLI
 #define SENTINEL_SUI_GENERATED_TEXT_HLSLI
 
@@ -14,4 +13,3 @@ float suiLabelText(SuiContext c, float2 anchorUv, SuiTextStyle style, uint label
 }
 
 #endif
-

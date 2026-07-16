@@ -103,4 +103,3 @@ void suiComposite(inout float3 color, float3 layer, float coverage) {
 }
 
 #endif
-

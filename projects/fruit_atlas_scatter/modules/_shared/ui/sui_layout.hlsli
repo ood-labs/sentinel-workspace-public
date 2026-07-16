@@ -53,4 +53,3 @@ float4 suiLayoutNext(inout SuiLayout l, float extentNormalized) {
 }
 
 #endif
-

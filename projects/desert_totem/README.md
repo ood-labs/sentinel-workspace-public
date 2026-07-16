@@ -1,10 +1,10 @@
 # Desert Totem Sculpture Workstation
 
-Desert Totem is a procedural Dada assemblage built from typed `DadaPart` records and rendered as one coherent distance field. The modernization preserves the modular layout, accent-field, renderer, signal, and post lanes while adding a semantic assembly editor, a focused ochre/black Warp Deck, shared cameras, safe scene presets, and one Group Output.
+Desert Totem is a procedural Dada assemblage built from typed `DadaPart` records and rendered as one coherent distance field. The modernization preserves the modular layout, accent-field, renderer, signal, and post lanes while adding a semantic assembly editor, a focused ochre/black Warp Deck, and safe scene presets.
 
 ## What to open
 
-Open `desert_totem.sentinel`. All twelve active nodes live in one flat `DESERT TOTEM WORKSTATION` Scene Group with no child groups. `Desert_Group_Output` is the sole final endpoint.
+Open `desert_totem.sentinel`. Its six authored Modules form one compact render graph.
 
 No engine pack is required. Every dependency is bundled under `modules/`.
 
@@ -21,22 +21,16 @@ The transform overrides live in a durable structured buffer. Project-scoped node
 
 Open `dada_control` for the full-bleed **Desert Warp Deck**. It owns the existing safe macro layer rather than duplicating renderer math:
 
-- Monument, Dali, Cubist, Painterly, and Performance warp languages;
 - melt, sag, spread, explode, primary, secondary, and twist controls;
 - painterly, facet, hue, heat-haze, and accent-field controls.
 
-The Canvas uses an ochre/black scientific-instrument treatment. Its aspect ratio is preserved, and `follow_panel` rendering scales to the real dock size. Control outputs drive ordinary expressions into layout, scatter, and render parameters.
+The Canvas uses an ochre/black scientific-instrument treatment. Its aspect ratio is preserved, and `follow_panel` rendering scales to the real dock size. Direct equality controls use bidirectional binds into layout, scatter, and render parameters; derived modulation remains expression-driven.
 
-## Cameras
+Warp 1 and Warp 2 mode selection intentionally lives on `dada_render` as named button grids: Flow, Ripple, Turbulent, Fractal, Steps, Boxes, and Shatter. Those enum modes are not duplicated or bound through the Warp Deck, so the renderer buttons remain directly editable.
 
-`Desert_Camera_Switcher` selects four wireless cameras:
+## Camera
 
-- **Hero** - frontal full sculpture;
-- **Detail** - close upper-assembly study;
-- **Orbit** - right-side depth view;
-- **Silhouette** - opposite-side profile.
-
-`dada_render` references the switcher directly, so the camera control nodes need no fake video wiring.
+`dada_render` uses its built-in camera directly. Keep **Camera Ref** empty and use the renderer's internal position, target, orbit, and viewport navigation controls for framing.
 
 ## Scene Group presets
 
@@ -60,7 +54,7 @@ All presets are project-scoped and portable.
 
 ## Safety
 
-The complete warp system can become expensive when many high-amplitude distortions are combined. The shipped ranges and presets remain bounded. Use **Performance** first when adapting the scene to a slower GPU; use **Fidelity** for the approved full-quality state. Avoid raising every warp amount and raymarch quality control to its maximum simultaneously.
+The complete warp system can become expensive when many high-amplitude distortions are combined. The shipped ranges and presets remain bounded. Use **Performance** first when adapting the scene to a slower GPU; use **Fidelity** for the approved full-quality state. The renderer's **Quality** section exposes rays per axis, march steps, surface epsilon, step scale, normal epsilon, shadow steps, and AO steps. Avoid raising every warp amount and raymarch quality control to its maximum simultaneously.
 
 ## Graph lanes
 
@@ -69,8 +63,7 @@ dada_control -- control outputs / expressions --> layout, scatter, renderer
 signal ------- slow modulation expression ------> renderer warp speed
 dada_layout  -- Parts ---------------------------> dada_render
 dada_scatter -- Parts ---------------------------> dada_render
-dada_render --> post --> Desert_Group_Output
-camera nodes --> Desert_Camera_Switcher -- camera_ref --> dada_render
+dada_render --> post
 ```
 
 Textures carry the rendered image; structured buffers carry semantic sculpture records and durable overrides; expressions carry the shared scalar macro state.

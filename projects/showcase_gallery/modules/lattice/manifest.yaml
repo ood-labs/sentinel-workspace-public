@@ -21,7 +21,61 @@ parameters:
   - { name: spec_amt,    display: "Specular",     type: float, min: 0.0, max: 1.0, default: 0.22, group: "Look" }
   - { name: shadows,     display: "Sun Shadows",  type: bool, default: true, flags: button, group: "Look" }
   - { name: march_dist,  display: "March Distance", type: float, min: 20.0, max: 200.0, default: 63.66, group: "Look" }
-  - { name: aa_samples,  display: "AA Samples (NxN)", type: int, min: 1, max: 8, default: 4, group: "Look" }
+
+  # ---- ray-march quality (defaults preserve the authored look) ----
+  # AA is per axis: 4 casts 4x4 = 16 rays per output pixel.
+  - { name: aa_samples,     display: "Rays Per Axis (NxN)", type: int,   min: 1,      max: 8,     default: 4,      group: "Quality" }
+  - { name: march_steps,    display: "March Steps",         type: int,   min: 32,     max: 256,   default: 160,    group: "Quality" }
+  - { name: surface_epsilon,display: "Surface Epsilon",     type: float, min: 0.0001, max: 0.002, default: 0.0006, group: "Quality" }
+  - { name: step_scale,     display: "Step Scale",          type: float, min: 0.5,    max: 1.0,   default: 0.82,   group: "Quality" }
+  - { name: normal_epsilon, display: "Normal Epsilon",      type: float, min: 0.0002, max: 0.004, default: 0.0009, group: "Quality" }
+
+  # ---- Living Room-style world-space SDF distortion ----
+  # Master defaults off so existing projects and presets render exactly as authored.
+  - { name: fx_amount, display: "Distortion Master", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Distortion" }
+  - { name: fx_speed, display: "Time Speed", type: float, min: 0.0, max: 3.0, default: 0.6, group: "Distortion" }
+  - { name: melt_amt, display: "Melt", type: float, min: 0.0, max: 3.0, default: 0.85, group: "Distortion" }
+
+  - { name: w1_amt, display: "Amount", type: float, min: 0.0, max: 3.0, default: 0.5, group: "Distortion/Warp 1" }
+  - name: w1_mode
+    display: "Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
+    default: 0
+    flags: button_grid
+    group: "Distortion/Warp 1"
+  - { name: w1_freq, display: "Frequency", type: float, min: 0.2, max: 4.0, default: 1.0, group: "Distortion/Warp 1" }
+  - { name: w1_speed, display: "Speed", type: float, min: 0.0, max: 3.0, default: 0.6, group: "Distortion/Warp 1" }
+  - { name: w1_yaw, display: "Yaw", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Distortion/Warp 1" }
+  - { name: w1_pitch, display: "Pitch", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Distortion/Warp 1" }
+  - { name: w1_ox, display: "Offset X", type: float, min: -8.0, max: 8.0, default: 0.0, group: "Distortion/Warp 1" }
+  - { name: w1_oy, display: "Offset Y", type: float, min: -8.0, max: 8.0, default: 0.0, group: "Distortion/Warp 1" }
+  - { name: w1_oz, display: "Offset Z", type: float, min: -8.0, max: 8.0, default: 0.0, group: "Distortion/Warp 1" }
+
+  - { name: w2_amt, display: "Amount", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Distortion/Warp 2" }
+  - name: w2_mode
+    display: "Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
+    default: 2
+    flags: button_grid
+    group: "Distortion/Warp 2"
+  - { name: w2_freq, display: "Frequency", type: float, min: 0.2, max: 4.0, default: 1.8, group: "Distortion/Warp 2" }
+  - { name: w2_speed, display: "Speed", type: float, min: 0.0, max: 3.0, default: 0.9, group: "Distortion/Warp 2" }
+  - { name: w2_yaw, display: "Yaw", type: float, min: -3.15, max: 3.15, default: 1.57, group: "Distortion/Warp 2" }
+  - { name: w2_pitch, display: "Pitch", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Distortion/Warp 2" }
+  - { name: w2_ox, display: "Offset X", type: float, min: -8.0, max: 8.0, default: 0.0, group: "Distortion/Warp 2" }
+  - { name: w2_oy, display: "Offset Y", type: float, min: -8.0, max: 8.0, default: 0.0, group: "Distortion/Warp 2" }
+  - { name: w2_oz, display: "Offset Z", type: float, min: -8.0, max: 8.0, default: 0.0, group: "Distortion/Warp 2" }
+
+  - { name: twist_amt, display: "Twist", type: float, min: -2.0, max: 2.0, default: 0.0, group: "Distortion/Deform" }
+  - { name: bend_amt, display: "Bend", type: float, min: -1.5, max: 1.5, default: 0.0, group: "Distortion/Deform" }
+  - { name: swirl_amt, display: "Swirl", type: float, min: -3.0, max: 3.0, default: 0.0, group: "Distortion/Deform" }
+  - { name: wave_amt, display: "Wave", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Distortion/Deform" }
+  - { name: wave_freq, display: "Wave Frequency", type: float, min: 0.5, max: 8.0, default: 2.0, group: "Distortion/Deform" }
+  - { name: dist_cx, display: "Center X", type: float, min: -8.0, max: 8.0, default: 0.0, group: "Distortion/Center" }
+  - { name: dist_cy, display: "Center Y", type: float, min: -8.0, max: 8.0, default: 1.0, group: "Distortion/Center" }
+  - { name: dist_cz, display: "Center Z", type: float, min: -8.0, max: 8.0, default: 0.0, group: "Distortion/Center" }
 
   # ---- panels (coffered formwork carved as REAL recessed grooves in the SDF) ----
   - name: panels_on

@@ -10,7 +10,6 @@ panel:
   resolution: follow_panel
 
 parameters:
-  - { name: warp_style, display: "Warp Language", type: int, min: 0, max: 4, default: 0, group: "Warp Language" }
   - { name: melt_macro, display: "Melt", type: float, min: 0.0, max: 0.6, default: 0.12, group: "Structure" }
   - { name: sag_macro, display: "Sag", type: float, min: 0.0, max: 0.6, default: 0.18, group: "Structure" }
   - { name: spread_macro, display: "Spread", type: float, min: 0.7, max: 1.4, default: 1.0, group: "Structure" }
@@ -25,15 +24,9 @@ parameters:
   - { name: scatter_macro, display: "Accent Field", type: int, min: 0, max: 80, default: 48, group: "Field" }
 
 viewport:
-  hint: "Ochre/black warp workstation. Select an authored warp language, balance structure and surface, then use the separate Assembly Editor for semantic part transforms."
+  hint: "Ochre/black warp workstation. Choose named Warp 1 and Warp 2 modes on Dada Render; use this deck for structure, distortion amount, surface, and field controls."
   # ui-label: title = DESERT WARP DECK
   # ui-label: subtitle = SAFE DOMAIN DISTORTION / ASSEMBLY FIELD
-  # ui-label: language = WARP LANGUAGE
-  # ui-label: monument = MON
-  # ui-label: dali = DALI
-  # ui-label: cubist = CUB
-  # ui-label: painterly = PAINT
-  # ui-label: performance = PERF
   # ui-label: structure = STRUCTURE
   # ui-label: melt = MELT
   # ui-label: sag = SAG
@@ -50,14 +43,13 @@ viewport:
   # ui-label: heat = HEAT HAZE
   # ui-label: accents = ACCENT FIELD
   controls:
-    - { id: warp_style, kind: slider, param: warp_style, rect: [0.060, 0.245, 0.455, 0.305], label: "Warp Language" }
-    - { id: melt_macro, kind: slider, param: melt_macro, rect: [0.060, 0.450, 0.245, 0.510], label: "Melt" }
-    - { id: sag_macro, kind: slider, param: sag_macro, rect: [0.270, 0.450, 0.455, 0.510], label: "Sag" }
-    - { id: spread_macro, kind: slider, param: spread_macro, rect: [0.060, 0.590, 0.245, 0.650], label: "Spread" }
-    - { id: explode_macro, kind: slider, param: explode_macro, rect: [0.270, 0.590, 0.455, 0.650], label: "Explode" }
-    - { id: warp_primary, kind: slider, param: warp_primary, rect: [0.060, 0.770, 0.245, 0.830], label: "Primary Warp" }
-    - { id: warp_secondary, kind: slider, param: warp_secondary, rect: [0.270, 0.770, 0.455, 0.830], label: "Secondary Warp" }
-    - { id: twist_macro, kind: slider, param: twist_macro, rect: [0.060, 0.860, 0.455, 0.925], label: "Twist" }
+    - { id: melt_macro, kind: slider, param: melt_macro, rect: [0.060, 0.275, 0.245, 0.335], label: "Melt" }
+    - { id: sag_macro, kind: slider, param: sag_macro, rect: [0.270, 0.275, 0.455, 0.335], label: "Sag" }
+    - { id: spread_macro, kind: slider, param: spread_macro, rect: [0.060, 0.405, 0.245, 0.465], label: "Spread" }
+    - { id: explode_macro, kind: slider, param: explode_macro, rect: [0.270, 0.405, 0.455, 0.465], label: "Explode" }
+    - { id: warp_primary, kind: slider, param: warp_primary, rect: [0.060, 0.625, 0.245, 0.685], label: "Primary Warp" }
+    - { id: warp_secondary, kind: slider, param: warp_secondary, rect: [0.270, 0.625, 0.455, 0.685], label: "Secondary Warp" }
+    - { id: twist_macro, kind: slider, param: twist_macro, rect: [0.060, 0.795, 0.455, 0.855], label: "Twist" }
     - { id: painterly_macro, kind: slider, param: painterly_macro, rect: [0.550, 0.285, 0.920, 0.345], label: "Painterly" }
     - { id: facet_macro, kind: slider, param: facet_macro, rect: [0.550, 0.435, 0.920, 0.495], label: "Facet" }
     - { id: hue_macro, kind: slider, param: hue_macro, rect: [0.550, 0.585, 0.920, 0.645], label: "Hue Shift" }
@@ -85,7 +77,7 @@ outputs:
   - { name: "Warp Deck", pass: display }
 
 control_outputs:
-  - { name: style, buffer: ctrl, element: 0, field_offset: 0, description: "Warp language 0-4" }
+  - { name: style, buffer: ctrl, element: 0, field_offset: 0, description: "Legacy primary-mode mirror" }
   - { name: melt, buffer: ctrl, element: 0, field_offset: 4, description: "Watchdog-safe melt amount" }
   - { name: sag, buffer: ctrl, element: 0, field_offset: 8, description: "Coherent vertical sag" }
   - { name: spread, buffer: ctrl, element: 0, field_offset: 12, description: "Assembly spread" }
@@ -98,5 +90,5 @@ control_outputs:
   - { name: hue, buffer: ctrl, element: 0, field_offset: 40, description: "Palette hue rotation" }
   - { name: heat, buffer: ctrl, element: 0, field_offset: 44, description: "Desert heat haze" }
   - { name: scatter, buffer: ctrl, element: 0, field_offset: 48, description: "Accent record count" }
-  - { name: primary_mode, buffer: ctrl, element: 0, field_offset: 52, description: "Primary warp mode selected by language" }
-  - { name: secondary_mode, buffer: ctrl, element: 0, field_offset: 56, description: "Secondary warp mode selected by language" }
+  - { name: primary_mode, buffer: ctrl, element: 0, field_offset: 52, description: "Primary warp mode" }
+  - { name: secondary_mode, buffer: ctrl, element: 0, field_offset: 56, description: "Secondary warp mode" }

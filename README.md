@@ -6,7 +6,7 @@ This repository contains ready-to-use Module projects, shared HLSL libraries, ag
 
 ## Requirements
 
-- Sentinel 0.5.33 or newer installed in its standard Windows location.
+- Sentinel 0.5.35 or newer installed in its standard Windows location.
 - Windows 10 or 11 with a supported NVIDIA GPU.
 - An MCP-capable coding agent when using the included automation and authoring skills.
 
@@ -32,7 +32,7 @@ Sentinel itself is distributed separately. This repository contains authored wor
    sentinel_pipeline action=list_types
    ```
 
-5. Load [`projects/showcase_gallery/showcase_gallery.sentinel`](projects/showcase_gallery/showcase_gallery.sentinel) to switch across the seven finished aesthetic examples, or open [`projects/interaction_lab/interaction_lab.sentinel`](projects/interaction_lab/interaction_lab.sentinel) for the authored UI, selection, spline, and gizmo feature laboratory.
+5. Load any standalone project under [`projects/`](projects/), or open [`projects/interaction_lab/interaction_lab.sentinel`](projects/interaction_lab/interaction_lab.sentinel) for the authored UI, selection, spline, and gizmo feature laboratory.
 
 The live MCP catalog is authoritative for the installed Sentinel build. Start with [`AGENTS.md`](AGENTS.md) or [`knowledge/FEATURE-MAP.md`](knowledge/FEATURE-MAP.md) before authoring new content.
 
@@ -73,10 +73,10 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | [`desert_totem`](projects/desert_totem/) | A procedural Dada totem with structured layout records and layered SDF domain warping |
 | [`fruit_atlas_scatter`](projects/fruit_atlas_scatter/) | A StreamDiff, matting, depth, atlas, and 3D card-scatter workflow; its AI nodes require the corresponding Sentinel engine packs |
 | [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
-| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene with bundled render/post modules, shared cameras, and curated structural presets |
-| [`showcase_gallery`](projects/showcase_gallery/) | One groups-mode Scene Switcher that preserves and crossfades the seven complete aesthetic graphs while freezing nonselected looks |
+| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene with bundled render/post modules, internal camera controls, quality settings, and extreme domain distortion |
+| [`showcase_gallery`](projects/showcase_gallery/) | A high-VRAM review artifact containing all seven looks behind one groups-mode Scene Switcher |
 
-Face Collage and Fruit Atlas Scatter are engine-backed. The remaining aesthetic looks are model-free. The Showcase Gallery README links a representative final-output capture for every look and records live crossfade/freeze proof.
+Face Collage and Fruit Atlas Scatter are engine-backed. The remaining aesthetic looks are model-free. Open the standalone projects for normal use; the combined Showcase Gallery retains every look and can exceed the VRAM budget of many GPUs.
 
 ## Creating a UI Module
 

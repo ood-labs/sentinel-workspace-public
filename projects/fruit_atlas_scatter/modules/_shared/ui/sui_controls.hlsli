@@ -68,4 +68,3 @@ void suiMarquee(inout float3 color, SuiContext c, SuiTheme theme, float4 rect) {
 }
 
 #endif
-
