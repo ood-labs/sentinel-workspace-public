@@ -57,8 +57,8 @@ deferred until Sentinel exposes a proper bidirectional bind contract.
 
 The `LIVING ROOM // DIRECT-MANIPULATION SCENE` group exposes the controls intended
 for live use: render detail, ambient occlusion, daylight, practical lights,
-exposure, bloom, and renderer quality. Camera selection stays on the dedicated
-Camera Switcher as four named buttons.
+exposure, bloom, and renderer quality. Camera framing lives on the renderer's
+built-in camera.
 
 Scene Group presets:
 
@@ -69,23 +69,11 @@ Scene Group presets:
 - `Gallery` — restrained, desaturated media-wall view
 - `Material Study` — stronger AO and saturation for surface review
 
-## Cameras
+## Camera
 
-Four shared Camera nodes feed `LR Camera Switcher`; the renderer binds to the
-switcher rather than keeping a private review camera.
-
-| Camera | Review purpose |
-| --- | --- |
-| Conversation | Wide primary seating and material review |
-| Left Side | Sofa profile, media wall, and circulation |
-| Media Corner | Reverse media wall and foreground lamp relationships |
-| Reverse Media | Frontal conversation grouping and spacing |
-
-The cameras are arranged as a compact review cluster inside the flat Scene Group.
-Choose views with the four named buttons on `LR Camera Switcher` or use the
-switcher's OSC triggers. Camera selection is intentionally not exposed as a raw
-Scene Group integer: the native field spans 0-1024, while this project has four
-cameras, and the switcher's named buttons are the clear source of truth.
+`LR SDF Renderer` uses its built-in camera directly. Keep **Camera Ref** empty and
+use the renderer's internal camera position, target, field of view, and viewport
+navigation controls for review framing.
 
 ## Remix guide
 
@@ -93,7 +81,7 @@ cameras, and the switcher's named buttons are the clear source of truth.
 2. Use the plan editor for object-specific layout changes and ordinary parameters
    for broad authored offsets.
 3. Save reusable furnishing arrangements as project-scoped node presets.
-4. Save complete lighting, camera, grade, and quality states as Scene Group presets.
+4. Save complete lighting, internal-camera, grade, and quality states as Scene Group presets.
 5. Route `LR Group Output` into a groups-mode Mux to include the room in a gallery.
 
 The renderer is intentionally a consumer: furnishing identity, selection, and edit

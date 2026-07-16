@@ -17,7 +17,7 @@ parameters:
   - { name: local_space, display: "Local Space", type: bool, default: false, group: "Transform" }
 
 viewport:
-  hint: "Click/Shift-click objects. Drag an object in the view plane or use the custom gizmo. 1/2/3 translate/rotate/scale, 4 world/local, Escape cancel."
+  hint: "Click/Shift-click objects. Drag the custom gizmo. 1/2/3 translate/rotate/scale, 4 world/local, Escape cancel."
   interactions: [events, selection]
   selection: { mode: multiple, provider: ray_query, result_buffer: pick_result, object_buffer: viewport_objects }
   input:

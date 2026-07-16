@@ -38,7 +38,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float aa = 1.5 / res.y;
 
     // panel rect (point2D center + half-size, square in pixels via aspect)
-    float2 c = panel_center;
+    float2 c = float2(panel_cx, panel_cy);
     float2 hs = float2(panel_w, panel_h);
     float2 q = abs(uv - c) - hs;
     float inside = smoothstep(aa, -aa, max(q.x, q.y));

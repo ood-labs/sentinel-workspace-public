@@ -394,13 +394,71 @@ float3 skyColor(float3 rd)
     return col;
 }
 
-[numthreads(8, 8, 1)]
-void main(uint3 DTid : SV_DispatchThreadID)
+float dadaMarch(float3 ro, float3 rd, float maxT, int maxSteps, out float outMat)
 {
-    uint2 pixel = DTid.xy;
-    if (pixel.x >= (uint)_Resolution.x || pixel.y >= (uint)_Resolution.y) return;
+    outMat = -1.0;
+    float t = 0.0;
+    [loop] for (int i = 0; i < 256; i++)
+    {
+        if (i >= maxSteps) break;
+        float2 h = sceneMap(ro + rd * t);
+        if (h.x < surface_epsilon * t + surface_epsilon * (2.0 / 7.0))
+        {
+            outMat = h.y;
+            return t;
+        }
+        t += h.x * step_scale;
+        if (t > maxT) break;
+    }
+    return -1.0;
+}
 
-    float2 uv = ((float2)pixel + 0.5) / _Resolution.xy;
+float3 dadaNormal(float3 p)
+{
+    float3 n = float3(0.0, 0.0, 0.0);
+    [loop] for (int i = 0; i < 4; i++)
+    {
+        float3 k = (i == 0) ? float3(1.0, -1.0, -1.0)
+                 : (i == 1) ? float3(-1.0, -1.0, 1.0)
+                 : (i == 2) ? float3(-1.0, 1.0, -1.0)
+                 :            float3(1.0, 1.0, 1.0);
+        n += k * sceneMap(p + k * normal_epsilon).x;
+    }
+    return normalize(n);
+}
+
+float dadaAO(float3 p, float3 n)
+{
+    float occ = 0.0;
+    float sca = 1.0;
+    [loop] for (int i = 1; i <= 8; i++)
+    {
+        if (i > ao_steps) break;
+        float h = 0.02 + 0.06 * (float)i;
+        occ += (h - sceneMap(p + n * h).x) * sca;
+        sca *= 0.74;
+    }
+    return saturate(1.0 - 2.1 * occ);
+}
+
+float dadaSoftShadow(float3 ro, float3 rd, float k, float maxT)
+{
+    float res = 1.0;
+    float t = 0.02;
+    [loop] for (int i = 0; i < 96; i++)
+    {
+        if (i >= shadow_steps) break;
+        float h = sceneMap(ro + rd * t).x;
+        if (h < 0.0004) return 0.0;
+        res = min(res, k * h / t);
+        t += clamp(h, 0.01, 0.25);
+        if (t > maxT) break;
+    }
+    return saturate(res);
+}
+
+float3 shadeRay(float2 uv)
+{
     float2 ndc = (uv * 2.0 - 1.0) * float2(_Resolution.x / _Resolution.y, -1.0);
 
     float3 ro, rd;
@@ -423,7 +481,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float3 haze = lerp(sky_horizon.rgb, float3(0.86, 0.83, 0.76), 0.5);
 
     float mat;
-    float t = sdf_march(ro, rd, march_dist, 140, mat);
+    float t = dadaMarch(ro, rd, march_dist, clamp((int)march_steps, 32, 256), mat);
 
     float3 col;
     if (t < 0.0)
@@ -437,10 +495,10 @@ void main(uint3 DTid : SV_DispatchThreadID)
     else
     {
         float3 pos = ro + rd * t;
-        float3 n = sdf_calcNormal(pos);
-        float ao = sdf_calcAO(pos, n);
+        float3 n = dadaNormal(pos);
+        float ao = dadaAO(pos, n);
         float sha = 1.0;
-        if (shadows != 0) sha = sdf_softShadow(pos + n * 0.02, sun, 16.0, 24.0);
+        if (shadows != 0) sha = dadaSoftShadow(pos + n * 0.02, sun, 16.0, 24.0);
 
         float3 albedo; float2 sp;
         shadeSample(pos, albedo, sp);
@@ -472,6 +530,27 @@ void main(uint3 DTid : SV_DispatchThreadID)
         col = lerp(col, haze, fog);
     }
 
-    col = pow(saturate(col * exposure), 1.0 / 2.2);
-    OutputUAV[pixel] = float4(col, 1.0);
+    return pow(saturate(col * exposure), 1.0 / 2.2);
+}
+
+[numthreads(8, 8, 1)]
+void main(uint3 DTid : SV_DispatchThreadID)
+{
+    uint2 pixel = DTid.xy;
+    if (pixel.x >= (uint)_Resolution.x || pixel.y >= (uint)_Resolution.y) return;
+
+    int ss = clamp((int)aa_samples, 1, 4);
+    float3 acc = float3(0.0, 0.0, 0.0);
+    [loop] for (int sy = 0; sy < 4; sy++)
+    {
+        if (sy >= ss) break;
+        [loop] for (int sx = 0; sx < 4; sx++)
+        {
+            if (sx >= ss) break;
+            float2 sub = (float2(sx, sy) + 0.5) / (float)ss;
+            acc += shadeRay(((float2)pixel + sub) / _Resolution.xy);
+        }
+    }
+    acc /= (float)(ss * ss);
+    OutputUAV[pixel] = float4(acc, 1.0);
 }

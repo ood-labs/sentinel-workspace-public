@@ -13,6 +13,7 @@
 #include "../_shared/sdf/sdf_ops.hlsli"
 #include "../_shared/sdf/sdf_noise.hlsli"
 #include "../_shared/sdf/sdf_shading.hlsli"
+#include "distortion.hlsli"
 
 RWTexture2D<float4> OutputUAV : register(u0);
 
@@ -112,6 +113,8 @@ float addHardware(float d, float3 p)
 // ---- the infinite lattice (contract for sdf_shading.hlsli) ------------------
 float2 sceneMap(float3 p)
 {
+    p = latticeDomainDistort(p);
+
     // vertical columns: infinite in Y, on the XZ grid
     float2 pc = float2(rep1(p.x, cell), rep1(p.z, cell));
     float dCol = box2round(pc, col_thick.xx, member_round);
@@ -127,7 +130,7 @@ float2 sceneMap(float3 p)
     float d = min(dCol, min(dBX, dBZ));
     d = carveGrooves(d, p);
     d = addHardware(d, p);
-    return float2(d, 1.0);
+    return float2(d * latticeDistortLip(), 1.0);
 }
 
 // relaxed sphere-trace: domain repetition can slightly over-report distance at
@@ -139,11 +142,24 @@ float march(float3 ro, float3 rd, float maxT, int maxSteps)
     {
         if (i >= maxSteps) break;
         float h = sceneMap(ro + rd * t).x;
-        if (h < 0.0006 * t + 0.0004) return t;
-        t += h * 0.82;
+        if (h < surface_epsilon * t + surface_epsilon * (2.0 / 3.0)) return t;
+        t += h * step_scale;
         if (t > maxT) break;
     }
     return -1.0;
+}
+
+// Parameterized tetrahedral normal so surface smoothness can be tuned independently
+// from the shared SDF defaults. Smaller epsilon preserves finer surface detail.
+float3 latticeNormal(float3 p)
+{
+    float e = normal_epsilon;
+    float2 k = float2(1.0, -1.0);
+    return normalize(
+        k.xyy * sceneMap(p + k.xyy * e).x +
+        k.yyx * sceneMap(p + k.yyx * e).x +
+        k.yxy * sceneMap(p + k.yxy * e).x +
+        k.xxx * sceneMap(p + k.xxx * e).x);
 }
 
 // Full per-ray shade: camera ray -> march -> weathered concrete + headlamp -> fade to
@@ -170,13 +186,13 @@ float3 shadeRay(float2 uv)
                      float3(0.0, cam_target_y, 0.0), ndc, cam_focal, ro, rd);
     }
 
-    g_camPos = ro;   // feed sceneMap's distance LOD (correct in both camera modes)
+    g_camPos = latticeDomainDistort(ro); // keep distance LOD in the deformed domain
 
-    float t = march(ro, rd, march_dist, 160);
+    float t = march(ro, rd, march_dist, clamp((int)march_steps, 32, 256));
     if (t < 0.0) return float3(0.0, 0.0, 0.0);   // miss -> fade-to-black background
 
     float3 pos = ro + rd * t;
-    float3 n = sdf_calcNormal(pos);
+    float3 n = latticeNormal(pos);
     float ao = sdf_calcAO(pos, n);
 
     // high-frequency surface detail fades with distance to kill shimmer (SSAA does the rest)

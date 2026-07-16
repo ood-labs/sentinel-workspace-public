@@ -23,4 +23,3 @@ passes:
 
 outputs:
   - { name: "Final Designer", pass: color_lab }
-

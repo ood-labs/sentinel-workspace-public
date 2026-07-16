@@ -1,0 +1,60 @@
+name: "Living Room Procedural Materials"
+version: "1.0"
+mode: generator
+resolution: [480, 270]
+
+parameters:
+  - { name: oak_color, display: "Oak Floor", type: color, default: [0.26, 0.12, 0.045], group: "Architecture" }
+  - { name: plaster_color, display: "Warm Plaster", type: color, default: [0.54, 0.51, 0.46], group: "Architecture" }
+  - { name: accent_wall_color, display: "Accent Wall", type: color, default: [0.11, 0.13, 0.16], group: "Architecture" }
+  - { name: walnut_color, display: "Walnut", type: color, default: [0.22, 0.08, 0.025], group: "Wood + Metal" }
+  - { name: brass_color, display: "Aged Brass", type: color, default: [0.55, 0.32, 0.10], group: "Wood + Metal" }
+  - { name: sofa_color, display: "Teal Boucle", type: color, default: [0.055, 0.20, 0.22], group: "Textiles" }
+  - { name: chair_color, display: "Cognac Leather", type: color, default: [0.36, 0.115, 0.035], group: "Textiles" }
+  - { name: rug_color, display: "Wool Rug", type: color, default: [0.34, 0.20, 0.12], group: "Textiles" }
+  - { name: accent_color, display: "Ochre Accent", type: color, default: [0.68, 0.36, 0.07], group: "Textiles" }
+  - { name: ceramic_color, display: "Cream Ceramic", type: color, default: [0.72, 0.68, 0.60], group: "Decor" }
+  - { name: linen_color, display: "Lamp Linen", type: color, default: [0.78, 0.71, 0.60], group: "Decor" }
+  - { name: leaf_color, display: "Foliage", type: color, default: [0.04, 0.20, 0.075], group: "Decor" }
+  - { name: art_a_color, display: "Artwork A", type: color, default: [0.62, 0.19, 0.08], group: "Artwork" }
+  - { name: art_b_color, display: "Artwork B", type: color, default: [0.07, 0.25, 0.34], group: "Artwork" }
+
+buffers:
+  - name: materials
+    structured: true
+    element_size: 64
+    element_count: 24
+
+passes:
+  - name: emit
+    shader: emit_materials.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 32
+    thread_group_y: 1
+    output: "buffer:materials"
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:materials" }
+
+outputs:
+  - { name: "Material Swatches", pass: preview }
+
+data_outputs:
+  - name: "Material Records"
+    buffer: materials
+    schema:
+      - { name: base_color, type: float, count: 3 }
+      - { name: roughness, type: float }
+      - { name: secondary_color, type: float, count: 3 }
+      - { name: metallic, type: float }
+      - { name: texture_scale, type: float }
+      - { name: texture_strength, type: float }
+      - { name: pattern_id, type: float }
+      - { name: emissive, type: float }
+      - { name: specular, type: float }
+      - { name: normal_strength, type: float }
+      - { name: seed, type: float }
+      - { name: reserved, type: float }

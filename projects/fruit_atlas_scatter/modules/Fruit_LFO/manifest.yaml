@@ -1,70 +1,106 @@
-name: "Fruit Motion Console"
-version: "2.0"
+name: "LFO Panel"
+version: "1.0"
 mode: generator
-resolution: [960, 540]
-
-panel:
-  mode: canvas
-  output: "Motion Console"
-  resolution: follow_panel
+resolution: [800, 400]
 
 parameters:
-  - { name: master_rate, display: "Master Rate", type: float, min: 0.10, max: 3.0, default: 1.0, group: "Master" }
-  - { name: motion_bias, display: "Motion Bias", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.52, 0.64], group: "Master" }
-  - { name: mute, display: "Mute", type: bool, default: false, group: "Master" }
-  - { name: burst, display: "Burst", type: button, group: "Master" }
+  # LFO 1
+  - name: lfo1_speed
+    display: "Speed"
+    type: float
+    min: 0.05
+    max: 10.0
+    default: 0.5
+    group: "LFO 1"
+  - name: lfo1_amp
+    display: "Amplitude"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 1.0
+    group: "LFO 1"
+  - name: lfo1_shape
+    display: "Shape"
+    type: float
+    min: 0.0
+    max: 3.0
+    default: 0.0
+    group: "LFO 1"
 
-  - { name: lfo1_speed, display: "Speed", type: float, min: 0.05, max: 4.0, default: 1.50, group: "01 Prompt" }
-  - { name: lfo1_amp, display: "Amplitude", type: float, min: 0.0, max: 1.0, default: 1.0, group: "01 Prompt" }
-  - { name: lfo1_shape, display: "Shape", type: float, min: 0.0, max: 3.0, default: 0.0, group: "01 Prompt" }
+  # LFO 2
+  - name: lfo2_speed
+    display: "Speed"
+    type: float
+    min: 0.05
+    max: 10.0
+    default: 0.3
+    group: "LFO 2"
+  - name: lfo2_amp
+    display: "Amplitude"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.8
+    group: "LFO 2"
+  - name: lfo2_shape
+    display: "Shape"
+    type: float
+    min: 0.0
+    max: 3.0
+    default: 1.0
+    group: "LFO 2"
 
-  - { name: lfo2_speed, display: "Speed", type: float, min: 0.05, max: 4.0, default: 0.30, group: "02 Energy" }
-  - { name: lfo2_amp, display: "Amplitude", type: float, min: 0.0, max: 1.0, default: 0.80, group: "02 Energy" }
-  - { name: lfo2_shape, display: "Shape", type: float, min: 0.0, max: 3.0, default: 1.0, group: "02 Energy" }
+  # LFO 3
+  - name: lfo3_speed
+    display: "Speed"
+    type: float
+    min: 0.05
+    max: 10.0
+    default: 0.15
+    group: "LFO 3"
+  - name: lfo3_amp
+    display: "Amplitude"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.6
+    group: "LFO 3"
+  - name: lfo3_shape
+    display: "Shape"
+    type: float
+    min: 0.0
+    max: 3.0
+    default: 2.0
+    group: "LFO 3"
 
-  - { name: lfo3_speed, display: "Speed", type: float, min: 0.05, max: 4.0, default: 0.15, group: "03 Camera" }
-  - { name: lfo3_amp, display: "Amplitude", type: float, min: 0.0, max: 1.0, default: 0.60, group: "03 Camera" }
-  - { name: lfo3_shape, display: "Shape", type: float, min: 0.0, max: 3.0, default: 2.0, group: "03 Camera" }
-
-  - { name: lfo4_speed, display: "Speed", type: float, min: 0.05, max: 4.0, default: 1.0, group: "04 Pulse" }
-  - { name: lfo4_amp, display: "Amplitude", type: float, min: 0.0, max: 1.0, default: 0.50, group: "04 Pulse" }
-  - { name: lfo4_shape, display: "Shape", type: float, min: 0.0, max: 3.0, default: 3.0, group: "04 Pulse" }
-
-viewport:
-  hint: "Monochrome modulation desk for prompt cycling, fruit motion, camera drift, and rhythmic accents."
-  # ui-label: title = FRUIT MOTION CONSOLE
-  # ui-label: subtitle = FOUR-LANE MODULATION FIELD
-  # ui-label: prompt = PROMPT
-  # ui-label: energy = ENERGY
-  # ui-label: camera = CAMERA
-  # ui-label: pulse = PULSE
-  # ui-label: rate = RATE
-  # ui-label: amp = AMP
-  # ui-label: shape = SHAPE
-  # ui-label: bias = MOTION BIAS
-  # ui-label: burst = BURST
-  # ui-label: muted = MUTED
-  # ui-label: live = LIVE
-  controls:
-    - { id: master_rate, kind: slider, param: master_rate, rect: [0.600, 0.080, 0.820, 0.145], label: "Master Rate" }
-    - { id: mute, kind: toggle, param: mute, rect: [0.840, 0.080, 0.950, 0.145], label: "Mute" }
-    - { id: motion_bias, kind: xypad, param: motion_bias, rect: [0.800, 0.280, 0.950, 0.485], label: "Motion Bias" }
-    - { id: burst, kind: button, param: burst, rect: [0.800, 0.535, 0.950, 0.600], label: "Burst" }
-    - { id: lfo1_speed, kind: slider, param: lfo1_speed, rect: [0.535, 0.235, 0.620, 0.330], label: "Prompt Rate" }
-    - { id: lfo1_amp, kind: slider, param: lfo1_amp, rect: [0.640, 0.235, 0.725, 0.330], label: "Prompt Amplitude" }
-    - { id: lfo1_shape, kind: slider, param: lfo1_shape, rect: [0.135, 0.305, 0.505, 0.365], label: "Prompt Shape" }
-    - { id: lfo2_speed, kind: slider, param: lfo2_speed, rect: [0.535, 0.425, 0.620, 0.520], label: "Energy Rate" }
-    - { id: lfo2_amp, kind: slider, param: lfo2_amp, rect: [0.640, 0.425, 0.725, 0.520], label: "Energy Amplitude" }
-    - { id: lfo2_shape, kind: slider, param: lfo2_shape, rect: [0.135, 0.495, 0.505, 0.555], label: "Energy Shape" }
-    - { id: lfo3_speed, kind: slider, param: lfo3_speed, rect: [0.535, 0.615, 0.620, 0.710], label: "Camera Rate" }
-    - { id: lfo3_amp, kind: slider, param: lfo3_amp, rect: [0.640, 0.615, 0.725, 0.710], label: "Camera Amplitude" }
-    - { id: lfo3_shape, kind: slider, param: lfo3_shape, rect: [0.135, 0.685, 0.505, 0.745], label: "Camera Shape" }
-    - { id: lfo4_speed, kind: slider, param: lfo4_speed, rect: [0.535, 0.805, 0.620, 0.900], label: "Pulse Rate" }
-    - { id: lfo4_amp, kind: slider, param: lfo4_amp, rect: [0.640, 0.805, 0.725, 0.900], label: "Pulse Amplitude" }
-    - { id: lfo4_shape, kind: slider, param: lfo4_shape, rect: [0.135, 0.875, 0.505, 0.935], label: "Pulse Shape" }
+  # LFO 4
+  - name: lfo4_speed
+    display: "Speed"
+    type: float
+    min: 0.05
+    max: 10.0
+    default: 1.0
+    group: "LFO 4"
+  - name: lfo4_amp
+    display: "Amplitude"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.5
+    group: "LFO 4"
+  - name: lfo4_shape
+    display: "Shape"
+    type: float
+    min: 0.0
+    max: 3.0
+    default: 3.0
+    group: "LFO 4"
 
 buffers:
-  - { name: lfo_buf, structured: true, element_size: 32, element_count: 1 }
+  - name: lfo_buf
+    structured: true
+    element_size: 16
+    element_count: 1
 
 passes:
   - name: compute
@@ -74,23 +110,34 @@ passes:
     thread_group_x: 1
     thread_group_y: 1
     output: "buffer:lfo_buf"
+
   - name: display
     shader: lfo_display.hlsl
     target: cs_5_0
-    time_dependent: true
     inputs:
       - { slot: 0, source: "buffer:lfo_buf" }
-    output: output
 
 outputs:
-  - { name: "Motion Console", pass: display }
+  - display
 
 control_outputs:
-  - { name: lfo1, buffer: lfo_buf, element: 0, field_offset: 0, description: "Prompt-position modulation (0-1)" }
-  - { name: lfo2, buffer: lfo_buf, element: 0, field_offset: 4, description: "Fruit motion energy (0-1)" }
-  - { name: lfo3, buffer: lfo_buf, element: 0, field_offset: 8, description: "Camera drift modulation (0-1)" }
-  - { name: lfo4, buffer: lfo_buf, element: 0, field_offset: 12, description: "Rhythmic scene pulse (0-1)" }
-  - { name: bias_x, buffer: lfo_buf, element: 0, field_offset: 16, description: "Horizontal motion bias (0-1)" }
-  - { name: bias_y, buffer: lfo_buf, element: 0, field_offset: 20, description: "Vertical motion bias (0-1)" }
-  - { name: energy, buffer: lfo_buf, element: 0, field_offset: 24, description: "Combined modulation energy (0-1)" }
-  - { name: pulse, buffer: lfo_buf, element: 0, field_offset: 28, description: "Fast pulse lane (0-1)" }
+  - name: lfo1
+    buffer: lfo_buf
+    element: 0
+    field_offset: 0
+    description: "LFO 1 output (0-1)"
+  - name: lfo2
+    buffer: lfo_buf
+    element: 0
+    field_offset: 4
+    description: "LFO 2 output (0-1)"
+  - name: lfo3
+    buffer: lfo_buf
+    element: 0
+    field_offset: 8
+    description: "LFO 3 output (0-1)"
+  - name: lfo4
+    buffer: lfo_buf
+    element: 0
+    field_offset: 12
+    description: "LFO 4 output (0-1)"

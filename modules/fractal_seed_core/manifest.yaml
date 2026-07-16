@@ -47,4 +47,3 @@ data_outputs:
 
 outputs:
   - { name: "Seed Preview", pass: preview }
-

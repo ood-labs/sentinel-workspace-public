@@ -1,103 +1,33 @@
-name: "Dada Assembly Editor"
-version: "2.0"
+name: "Dada Layout"
+version: "0.1"
 mode: generator
-resolution: [640, 720]
-working_format: RGBA8
+resolution: [420, 640]
 
-parameters:
-  - name: tool_mode
-    display: "Transform Tool"
-    type: enum
-    options: [Move, Rotate, Scale]
-    default: 0
-    flags: button_grid
-    group: "Assembly Editor"
-  - { name: reset_overrides, display: "Reset Assembly Edits", type: bool, default: false, flags: button, group: "Assembly Editor" }
-  - { name: spread, display: "Spread", type: float, min: 0.3, max: 2.2, default: 1.0, group: "Arrange" }
-  - { name: explode, display: "Explode", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Arrange" }
-  - { name: jitter, display: "Jitter", type: float, min: 0.0, max: 2.0, default: 0.0, group: "Arrange" }
-  - { name: seed, display: "Seed", type: float, min: 0.0, max: 50.0, default: 1.0, group: "Arrange" }
-  - { name: lift, display: "Lift Y", type: float, min: -3.0, max: 3.0, default: 0.0, group: "Arrange" }
-  - { name: size_mul, display: "Size", type: float, min: 0.4, max: 2.0, default: 1.0, group: "Arrange" }
-
-viewport:
-  hint: "Select Crown, Upper, Mid Shelf, or Base. Drag with Move, Rotate, or Scale selected; every child primitive in the assembly moves coherently. Escape cancels the active edit."
-  interactions: [events, selection]
-  selection: { mode: single, provider: ray_query, result_buffer: pick_result, object_buffer: viewport_objects }
-  input:
-    pointer: [left]
-    keyboard: [escape]
-    gestures: [click, drag]
-  bindings:
-    - { gesture: left_click, action: select_assembly, label: "Select Assembly" }
-    - { gesture: left_drag, action: transform_assembly, label: "Transform Selected Assembly" }
-    - { key: escape, action: cancel_assembly_edit, label: "Cancel Edit" }
+# STAGE 2 — authors the DadaPart buffer from the hand-dialed base table. External
+# transform params (spread / explode / group offsets / jitter) arrive in Stage 3.
 
 buffers:
-  - { name: parts, structured: true, element_size: 64, element_count: 128 }
-  - { name: assembly_overrides, structured: true, element_size: 32, element_count: 5, persistent: true }
-  - { name: assembly_edit_state, structured: true, element_size: 64, element_count: 1, persistent: true }
-  - { name: viewport_objects, structured: true, element_size: 120, element_count: 4, persistent: true }
-  - { name: pick_result, structured: true, element_size: 40, element_count: 1, persistent: true }
+  - name: parts
+    structured: true
+    element_size: 64
+    element_count: 128
 
-state_buffers:
-  - name: assembly_overrides
-    max_elements: 4
-    schema:
-      - { name: offset, type: float2 }
-      - { name: rotation, type: float }
-      - { name: scale, type: float }
-      - { name: object_id, type: uint }
-      - { name: marker, type: float }
-      - { name: pad, type: float2 }
+parameters:
+  - { name: spread,   display: "Spread",     type: float, min: 0.3, max: 2.2, default: 1.0, group: "Arrange" }
+  - { name: explode,  display: "Explode",    type: float, min: 0.0, max: 3.0, default: 0.0, group: "Arrange" }
+  - { name: jitter,   display: "Jitter",     type: float, min: 0.0, max: 2.0, default: 0.0, group: "Arrange" }
+  - { name: seed,     display: "Seed",       type: float, min: 0.0, max: 50.0, default: 1.0, group: "Arrange" }
+  - { name: lift,     display: "Lift Y",     type: float, min: -3.0, max: 3.0, default: 0.0, group: "Arrange" }
+  - { name: size_mul, display: "Size",       type: float, min: 0.4, max: 2.0, default: 1.0, group: "Arrange" }
+
 passes:
-  - name: assembly_interaction
-    shader: assembly_interaction.hlsl
-    target: cs_5_0
-    time_dependent: true
-    dispatch: [1, 1, 1]
-    thread_group_x: 1
-    thread_group_y: 1
-    inputs:
-      - { slot: 0, source: "buffer:assembly_overrides" }
-    output: "buffer:assembly_edit_state"
-  - name: assembly_update
-    shader: assembly_update.hlsl
-    target: cs_5_0
-    dispatch: [1, 1, 1]
-    thread_group_x: 1
-    thread_group_y: 1
-    inputs:
-      - { slot: 0, source: "buffer:assembly_edit_state" }
-      - { slot: 1, source: "buffer:assembly_overrides" }
-    output: "buffer:assembly_overrides"
   - name: compute
     shader: compute.hlsl
     target: cs_5_0
     dispatch: [2, 1, 1]
     thread_group_x: 64
     thread_group_y: 1
-    inputs:
-      - { slot: 0, source: "buffer:assembly_overrides" }
     output: "buffer:parts"
-  - name: assembly_descriptors
-    shader: assembly_descriptors.hlsl
-    target: cs_5_0
-    dispatch: [1, 1, 1]
-    thread_group_x: 4
-    thread_group_y: 1
-    inputs:
-      - { slot: 0, source: "buffer:parts" }
-    output: "buffer:viewport_objects"
-  - name: assembly_pick
-    shader: assembly_pick.hlsl
-    target: cs_5_0
-    dispatch: [1, 1, 1]
-    thread_group_x: 1
-    thread_group_y: 1
-    inputs:
-      - { slot: 0, source: "buffer:parts" }
-    output: "buffer:pick_result"
   - name: preview
     shader: preview.hlsl
     target: cs_5_0
@@ -122,15 +52,6 @@ data_outputs:
       - { name: p1, type: float }
       - { name: p2, type: float }
       - { name: active, type: float }
-  - name: "Assembly Overrides"
-    buffer: "assembly_overrides"
-    schema:
-      - { name: offset, type: float2 }
-      - { name: rotation, type: float }
-      - { name: scale, type: float }
-      - { name: object_id, type: uint }
-      - { name: marker, type: float }
-      - { name: pad, type: float2 }
 
 outputs:
-  - { name: "Assembly Editor", pass: preview }
+  - { name: "Preview", pass: preview }

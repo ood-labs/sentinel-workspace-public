@@ -1,55 +1,94 @@
 # Sentinel Workspace
 
-The reference / seed workspace for the **Sentinel** agent environment. Sentinel is a
-GPU-accelerated live-video application for performance and interactive visuals (Spout/NDI/
-camera/pattern/video sources, real-time AI generation, tracking, depth, segmentation, object
-detection, HLSL shader modules, and Spout/NDI output).
+An open authoring workspace for building interactive visuals, tools, and control surfaces with Sentinel.
 
-This is a **private development copy** maintained under `ood-labs`. End users do **not** clone
-this repo — they receive a provisioned copy of the workspace through the Sentinel installer.
-This repo is where that seed content is authored, curated, and versioned before it ships.
+This repository contains ready-to-use Module projects, shared HLSL libraries, agent skills, product knowledge, and portable example shows. It is a focused public snapshot rather than a copy of Sentinel's private development workspace.
 
-## Curation policy
+## Requirements
 
-This is a curated repo, not a mirror of a local machine. `modules/` and `projects/` are
-**allowlisted** in [`.gitignore`](.gitignore): everything under them is ignored by default, and
-only blessed, shippable (or reference-example) content is committed. Local experiments stay
-untracked. To promote work into the repo, add a matching `!` line in `.gitignore` (or
-`git add -f <path>`).
+- Sentinel 0.5.33 or newer installed in its standard Windows location.
+- Windows 10 or 11 with a supported NVIDIA GPU.
+- An MCP-capable coding agent when using the included automation and authoring skills.
 
-Generated artifacts (`captures/`, recovery snapshots, `*.previous` backups, logs) are never
-committed.
+Sentinel itself is distributed separately. This repository contains authored workspace content, not the Sentinel application or engine source.
 
-## Layout
+## Quick start
 
-| Path | What it is |
+1. Clone this repository:
+
+   ```powershell
+   git clone https://github.com/ood-labs/sentinel-workspace-public.git
+   cd sentinel-workspace-public
+   ```
+
+2. Start Sentinel.
+
+3. Open this folder in an MCP-capable agent. The included `.mcp.json` targets the normal Sentinel installation at `C:\Program Files\OODLabs\Sentinel\sentinel-mcp.exe`.
+
+4. Confirm the live connection:
+
+   ```text
+   sentinel_app action=ping
+   sentinel_pipeline action=list_types
+   ```
+
+5. Load [`projects/interaction_lab/interaction_lab.sentinel`](projects/interaction_lab/interaction_lab.sentinel) to explore authored controls, responsive Canvas panels, spline editing, selection, and multi-object transform gizmos.
+
+The live MCP catalog is authoritative for the installed Sentinel build. Start with [`AGENTS.md`](AGENTS.md) or [`knowledge/FEATURE-MAP.md`](knowledge/FEATURE-MAP.md) before authoring new content.
+
+## Repository layout
+
+| Path | Contents |
 | --- | --- |
-| `CLAUDE.md` / `AGENTS.md` / `GEMINI.md` | Identical agent entry manuals (start here) |
-| `.claude/skills/`, `.agents/skills/` | Curated user-facing authoring skills |
-| `knowledge/` | Product reference docs — start with `knowledge/FEATURE-MAP.md` |
-| `docs/` | Additional documentation |
-| `modules/` | Curated Module library (HLSL multi-pass projects). `_shared/` holds common includes (e.g. the scientifica font). |
-| `projects/` | Curated example `.sentinel` shows / bundled module graphs |
-| `shaders/` | Example shader graphs |
-| `tools/` | Workspace helper tooling |
-| `.mcp.json` | Connects an agent to the bundled `sentinel-mcp.exe` |
+| `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` | Equivalent entry instructions for common coding agents |
+| `.agents/skills/`, `.claude/skills/` | Mirrored Sentinel authoring and automation skills |
+| `knowledge/` | Focused product and workflow reference documentation |
+| `modules/` | Curated Module library and shared HLSL includes |
+| `projects/` | Portable saved shows, including Interaction Lab and six authored visual examples |
+| `examples/` | Small blueprint examples for procedural construction |
+| `tools/` | Local authoring and validation helpers |
 
-## Included examples
+## Interaction Lab
 
-- **`projects/topographic_hud/`** — a 15-module sci-fi topographic-HUD scene built as a modular
-  graph (shared height field → contours / grid / nodes / links / labels → HUD / atmosphere →
-  compositor → post), with a control-output "signal bus" driving reactive parameters. See its
-  `DEBRIEF.md` for the build write-up.
+Interaction Lab is a Module-only example containing:
 
-- **`projects/fruit_atlas_scatter/`** — a generative 3D scatter scene: StreamDiff fruit stills
-  cut out by Background Removal and depth-mapped, banked into a 9-slot atlas (color / matte /
-  depth columns), and spawned as depth-scaled cutout cards with orbit parallax. Demonstrates the
-  continuous atlas fill (one interval toggle refreshes the whole scene) and the StreamDiff
-  prompt bank cycled per frame by an LFO expression. See its `DEBRIEF.md`.
+- A monochrome scientific UI kit and live typography/spacing tuner.
+- A font-style sampler using the bundled Scientifica glyph data.
+- A persistent cubic spline editor connected to a downstream renderer.
+- A selectable 3D scene with translate, rotate, and scale gizmos.
+- Full-frame Canvas panels whose render resolution follows the panel size.
 
-## Getting started (for an agent)
+See the [Interaction Lab guide](projects/interaction_lab/README.md) and the [UI authoring guide](knowledge/ui-authoring.md).
 
-Read `CLAUDE.md`. In short: the live MCP surface is the source of truth for a given build —
-use `sentinel_app action=ping`, `sentinel_pipeline action=list_types`, and
-`sentinel_app action=capabilities` to discover what the running install can actually do before
-building anything.
+## Example projects
+
+Open any project by loading its `.sentinel` file in Sentinel:
+
+| Project | What it demonstrates |
+| --- | --- |
+| [`interaction_lab`](projects/interaction_lab/) | Scientific UI controls, responsive Canvas panels, spline editing, selection, and transform gizmos |
+| [`living_room_sdf`](projects/living_room_sdf/) | A bundled, data-driven SDF interior assembled from architecture, furnishing, material, lighting, render, and grade modules |
+| [`topographic_hud`](projects/topographic_hud/) | A 15-module topographic interface using texture lanes, structured records, and a control-output signal bus |
+| [`desert_totem`](projects/desert_totem/) | A procedural Dada totem with structured layout records and layered SDF domain warping |
+| [`fruit_atlas_scatter`](projects/fruit_atlas_scatter/) | A StreamDiff, matting, depth, atlas, and 3D card-scatter workflow; its AI nodes require the corresponding Sentinel engine packs |
+| [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
+| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene using the shared root-level `steel_lattice` and `industrial_mono_post` modules |
+
+## Creating a UI Module
+
+Use the scaffold helper from the repository root:
+
+```powershell
+./tools/module-ui.ps1 new modules/my_ui -Name "My UI"
+./tools/module-ui.ps1 validate
+```
+
+The template uses the shared scientific UI foundation and opts into a full-frame Canvas panel with `follow_panel` resolution.
+
+## Local data
+
+Captures, shader caches, recovery files, provider configuration, and other machine-local artifacts are ignored. Keep provider keys in the ignored `vision.json` file or supported environment variables; never commit them.
+
+## License
+
+Original repository content is available under the [MIT License](LICENSE). Scientifica font data remains covered by its bundled SIL Open Font License notice at [`modules/_shared/fonts/SCIENTIFICA_LICENSE.txt`](modules/_shared/fonts/SCIENTIFICA_LICENSE.txt).

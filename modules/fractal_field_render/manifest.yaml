@@ -37,4 +37,3 @@ passes:
 
 outputs:
   - { name: "Fractal Field", pass: render }
-

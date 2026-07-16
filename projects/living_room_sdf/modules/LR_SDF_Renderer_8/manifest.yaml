@@ -6,6 +6,12 @@ features: [camera]
 working_format: RGBA16F
 output_format: RGBA16F
 
+inputs:
+  - { name: "Artwork Texture", slot: 0, required: false }
+  - { name: "Artwork Depth", slot: 1, required: false }
+  - { name: "Artwork B Texture", slot: 2, required: false }
+  - { name: "Artwork B Depth", slot: 3, required: false }
+
 data_inputs:
   - name: "Architecture PNodes"
     slot: 0
@@ -83,6 +89,36 @@ parameters:
   - { name: ao_strength, display: "Ambient Occlusion", type: float, min: 0.0, max: 4.0, default: 2.2, group: "Lighting" }
   - { name: fog_amount, display: "Atmosphere", type: float, min: 0.0, max: 2.0, default: 0.10, group: "Lighting" }
 
+  - { name: art_texture_enabled, display: "Use Artwork Texture", type: bool, default: false, flags: button, group: "Artwork Texture" }
+  - { name: art_texture_target, display: "Target Frame", type: enum, options: [Right, Left, Both], default: 0, flags: button_grid, group: "Artwork Texture" }
+  - { name: art_texture_pan, display: "Pan", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [0.0, 0.0], group: "Artwork Texture/Framing" }
+  - { name: art_texture_zoom, display: "Zoom", type: float, min: 1.0, max: 4.0, default: 1.0, group: "Artwork Texture/Framing" }
+  - { name: art_texture_opacity, display: "Opacity", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Artwork Texture" }
+  - { name: art_depth_enabled, display: "Use Depth Relief", type: bool, default: false, flags: button, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_amount, display: "Relief Amount", type: float, min: 0.0, max: 0.6, default: 0.18, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_direction, display: "Direction", type: enum, options: [Outward, Inward], default: 0, flags: button_grid, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_recess, display: "Recess Offset", type: float, min: 0.0, max: 0.6, default: 0.12, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_invert, display: "Invert Depth", type: bool, default: false, flags: button, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_black, display: "Black Level", type: float, min: 0.0, max: 0.95, default: 0.0, group: "Artwork Texture/Depth Relief/Range" }
+  - { name: art_depth_white, display: "White Level", type: float, min: 0.05, max: 1.0, default: 1.0, group: "Artwork Texture/Depth Relief/Range" }
+  - { name: art_depth_gamma, display: "Depth Gamma", type: float, min: 0.25, max: 4.0, default: 1.0, group: "Artwork Texture/Depth Relief/Range" }
+  - { name: art_depth_edge_fade, display: "Frame Edge Fade", type: float, min: 0.005, max: 0.25, default: 0.08, group: "Artwork Texture/Depth Relief" }
+
+  - { name: art2_texture_enabled, display: "Use Artwork B", type: bool, default: false, flags: button, group: "Artwork B" }
+  - { name: art2_texture_target, display: "Target Frame", type: enum, options: [Left, Right], default: 0, flags: button_grid, group: "Artwork B" }
+  - { name: art2_texture_pan, display: "Pan", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [0.0, 0.0], group: "Artwork B/Framing" }
+  - { name: art2_texture_zoom, display: "Zoom", type: float, min: 1.0, max: 4.0, default: 1.0, group: "Artwork B/Framing" }
+  - { name: art2_texture_opacity, display: "Opacity", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Artwork B" }
+  - { name: art2_depth_enabled, display: "Use Depth Relief", type: bool, default: false, flags: button, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_amount, display: "Relief Amount", type: float, min: 0.0, max: 0.6, default: 0.18, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_direction, display: "Direction", type: enum, options: [Outward, Inward], default: 0, flags: button_grid, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_recess, display: "Recess Offset", type: float, min: 0.0, max: 0.6, default: 0.12, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_invert, display: "Invert Depth", type: bool, default: false, flags: button, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_black, display: "Black Level", type: float, min: 0.0, max: 0.95, default: 0.0, group: "Artwork B/Depth Relief/Range" }
+  - { name: art2_depth_white, display: "White Level", type: float, min: 0.05, max: 1.0, default: 1.0, group: "Artwork B/Depth Relief/Range" }
+  - { name: art2_depth_gamma, display: "Depth Gamma", type: float, min: 0.25, max: 4.0, default: 1.0, group: "Artwork B/Depth Relief/Range" }
+  - { name: art2_depth_edge_fade, display: "Frame Edge Fade", type: float, min: 0.005, max: 0.25, default: 0.08, group: "Artwork B/Depth Relief" }
+
   # Strata-style world-space SDF distortion. The master defaults off so the
   # authored room, Fly camera, and live-safe presets remain unchanged.
   - { name: fx_amount, display: "Distortion Master", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Distortion" }
@@ -142,6 +178,10 @@ passes:
       - { slot: 1, source: "data:1" }
       - { slot: 2, source: "data:2" }
       - { slot: 3, source: "data:3" }
+      - { slot: 4, source: "input:0" }
+      - { slot: 5, source: "input:1" }
+      - { slot: 6, source: "input:2" }
+      - { slot: 7, source: "input:3" }
   - name: seating
     shader: seating.hlsl
     target: cs_5_0

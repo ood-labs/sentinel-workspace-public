@@ -10,6 +10,14 @@ This workspace is the user-writable Sentinel agent workspace. It is seeded by Se
 
 Sentinel is a GPU-accelerated live video application for performance and interactive visuals. It combines Spout/NDI/camera/image/pattern/video sources, real-time AI generation, tracking, depth, segmentation, object detection, shader modules, and Spout/NDI output.
 
+## Current Status
+
+- Active phase: Phase 1 - Official Examples Modernization (`docs/phases/phase-1-official-examples-modernization.md`).
+- Status: implementation complete; approval remains pending after a clean-public cold-load sequence crashed Sentinel during the Topographic HUD sample. Both private and public static validators pass all nine projects.
+- Next step: investigate the recorded cold-load crash in the Sentinel application repository, then rerun the remaining clean-public runtime-load samples before final approval.
+- Verified portable content is locally committed in the sibling public repository through `d2ea3a0`. No network push is authorized.
+- Preserve the existing local Module and project work in progress while executing the phase.
+
 ## First Rule: Discover Live
 
 Do not guess what this install can create. Ask Sentinel.
@@ -135,9 +143,7 @@ Example expression:
 0.2 + ref("hand_track/control_outputs/pinch_primary") * 2.0
 ```
 
-Do not use a plain StateTree `set` to write `=ref(...)`. Use the expression command so the driver is compiled and evaluated every frame.
-
-To keep two or more parameters equal in BOTH directions, use a bind instead of an expression: `sentinel_expression action=set_bind` with `path` + `peer_path` (or an `endpoints` array). Writing any bound endpoint (UI, OSC, presets, MCP) moves every endpoint; `clear_bind` removes the whole network; a bind network carries at most one expression-driven endpoint, which drives all of it. Binds are absent on installs at or below 0.5.34. See `knowledge/expressions-and-drivers.md` for the full rules and examples.
+Do not use a plain StateTree `set` to write `=ref(...)`. Use the expression command so the driver is compiled and evaluated every frame. See `knowledge/expressions-and-drivers.md`.
 
 ## Creative Module Authoring
 
@@ -149,7 +155,7 @@ Modules can declare viewport behavior in a manifest `viewport:` block: a `hint` 
 
 ## Choreography And Sequencing
 
-For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary in `modules/_shared/anim/anim.hlsli` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, and integrate phase for anything rate-driven. The shipped `timeline_hud` module visualizes the arrangement from the Conductor's `Cue Records` port, and `choreo_cascade` is the reference stagger/spring consumer. See `knowledge/motion-choreography.md`.
+For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary in `shaders/projects/_shared/anim/anim.hlsli` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, and integrate phase for anything rate-driven. The shipped `timeline_hud` module visualizes the arrangement from the Conductor's `Cue Records` port, and `choreo_cascade` is the reference stagger/spring consumer. Example cue sheets: `examples/phase75/`. See `knowledge/motion-choreography.md`.
 
 StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` node switches variants live and its `solo_upstream` keeps only the visible variant diffusing; an `atlas` node banks aligned stills for 3D scene spawning. See `knowledge/scene-system.md`.
 
@@ -157,7 +163,7 @@ To mix whole looks instead of single streams, author each look as a Scene Group 
 
 ## Precise 3D Construction
 
-When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against the kind registry `modules/_shared/sdf/sdf_kinds.yaml`, relax under-constrained layouts with warm-start stability, and compile to a generated Module publishing `PNodes` records for the shipped `sdf_scene_render` project. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints: `examples/blueprints/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
+When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against the kind registry `shaders/projects/_shared/sdf/sdf_kinds.yaml`, relax under-constrained layouts with warm-start stability, and compile to a generated Module publishing `PNodes` records for the shipped `sdf_scene_render` project. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints: `examples/blueprints/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
 
 ## Scene Groups
 
@@ -167,9 +173,7 @@ Group presets snapshot every parameter of every contained pipeline plus per-node
 
 Scene Groups can also expose selected member parameters as first-class group controls. Exposed parameters keep their authored defaults, enums, and source sections, render as normal full-width Properties rows with reset, OSC, expressions, range editing, and undo, and authored color and XY compounds expose as one complete swatch or pad unit.
 
-Over MCP, use `sentinel_graph expose_scene_group_parameter` with the group's annotation `entity_id`, the member `pipeline_id`, and a `param_name`. Compound parameters live in StateTree as flattened components (`main_color_r/_g/_b`, `center_x/_y`); pass a COMPONENT name (the compound base name errors with parameter-not-found) and the whole compound promotes at once, returning every exposed path under `/sentinel/groups/<id>/parameters/`.
-
-Exposed parameters are parameter binds on installs newer than 0.5.34: the group path and the member path form a bidirectional network, so writing either side moves both, dragging the member's own slider keeps the link, and undo reverts both sides together. Older projects whose exposes were one-way `ref()` expressions migrate to binds automatically on load. On installs at or below 0.5.34, exposes are one-way expressions and dragging the member slider silently breaks the link.
+Over MCP, use `sentinel_graph expose_scene_group_parameter` with the group's annotation `entity_id`, the member `pipeline_id`, and a `param_name`. Compound parameters live in StateTree as flattened components (`main_color_r/_g/_b`, `center_x/_y`); pass a COMPONENT name (the compound base name errors with parameter-not-found) and the whole compound promotes at once, returning every exposed path under `/sentinel/groups/<id>/parameters/`. Writes to a group path flow to the member parameter and back.
 
 Scene Groups are for control and organization. They do not replace video/data wiring, and they should not be used to hide whether a graph is healthy.
 

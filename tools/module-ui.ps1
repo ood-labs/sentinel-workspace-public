@@ -42,10 +42,9 @@ function Parse-Rect([string]$Value) {
 
 function Read-UiManifest([string]$ManifestPath) {
     $lines = Get-Content -LiteralPath $ManifestPath
-    # Git may materialize manifests as CRLF on Windows while generated headers
-    # are shared with LF checkouts. Hash the logical YAML text, not the checkout's
-    # line-ending policy, so validation is portable across both repositories.
-    $text = [IO.File]::ReadAllText($ManifestPath).Replace("`r`n", "`n").Replace("`r", "`n")
+    # Hash canonical LF text so generated headers stay stable across Git's
+    # Windows checkout conversion and clean archive exports.
+    $text = [IO.File]::ReadAllText($ManifestPath).Replace("`r`n", "`n")
     $resolution = @(960.0, 540.0)
     $name = Split-Path -Leaf (Split-Path -Parent $ManifestPath)
     $parameters = @{}

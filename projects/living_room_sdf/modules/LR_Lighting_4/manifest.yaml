@@ -1,12 +1,7 @@
-name: "Living Room Lighting Desk"
-version: "2.0"
+name: "Living Room Lighting Extractor"
+version: "1.0"
 mode: generator
-resolution: [960, 540]
-
-panel:
-  mode: canvas
-  output: "Lighting Preview"
-  resolution: follow_panel
+resolution: [480, 270]
 
 data_inputs:
   - name: "Architecture PNodes"
@@ -44,25 +39,6 @@ parameters:
   - { name: ambient_fill, display: "Ambient Fill", type: float, min: 0.0, max: 1.5, default: 0.55, group: "Environment" }
   - { name: shadow_softness, display: "Shadow Softness", type: float, min: 0.02, max: 1.0, default: 0.32, group: "Shadows" }
 
-viewport:
-  hint: "Lighting desk with live architecture/furnishing context and direct daylight, practical, ambient, and shadow controls. No pan or zoom."
-  # ui-label: title = LIGHTING DESK
-  # ui-label: subtitle = 6 LIVE LIGHT RECORDS / ARCHITECTURE + FURNISHINGS
-  # ui-label: controls = LIGHTING CONTROLS
-  # ui-label: daylight = WINDOW DAYLIGHT
-  # ui-label: practical = PRACTICAL LAMPS
-  # ui-label: ambient = AMBIENT FILL
-  # ui-label: softness = SHADOW SOFTNESS
-  # ui-label: legend = LIGHT TYPES
-  # ui-label: day = DAY
-  # ui-label: lamps = LAMPS
-  # ui-label: fill = FILL
-  controls:
-    - { id: daylight, kind: slider, param: daylight_intensity, rect: [0.692, 0.320, 0.948, 0.385], label: "Window Daylight" }
-    - { id: practical, kind: slider, param: practical_intensity, rect: [0.692, 0.460, 0.948, 0.525], label: "Practical Lamps" }
-    - { id: ambient, kind: slider, param: ambient_fill, rect: [0.692, 0.600, 0.948, 0.665], label: "Ambient Fill" }
-    - { id: softness, kind: slider, param: shadow_softness, rect: [0.692, 0.740, 0.948, 0.805], label: "Shadow Softness" }
-
 buffers:
   - name: lights
     structured: true
@@ -85,8 +61,6 @@ passes:
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:lights" }
-      - { slot: 1, source: "data:0" }
-      - { slot: 2, source: "data:1" }
 
 outputs:
   - { name: "Lighting Preview", pass: preview }

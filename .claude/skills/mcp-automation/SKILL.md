@@ -252,8 +252,8 @@ NOT display names like "Background Removal" — those won't work.
 ### `sentinel_preset` — Identity-aware node presets
 `list` / `save` / `recall` / `update` / `delete` / `rename` / `bundle` / `copy_to_library`. Presets are keyed by node identity, discoverable by pipeline or identity, saved to library or project scope (plus a bundled scope for presets that travel with a show), and support grouped compound-safe param selection, `include_engine_params`, and strict or loose recall onto compatible nodes.
 
-### `sentinel_expression` — Typed ref() parameter drivers and binds
-`set` / `get` / `clear` / `list` / `set_bind` / `list_binds` / `clear_bind`. Always use this for expression drivers; `sentinel_state set` with a literal `=ref(...)` string writes a value without registering the expression engine binding. `set_bind` takes `path` + `peer_path` or an `endpoints` array (two or more paths) and creates a bidirectional bind network where writing any endpoint moves all endpoints; `clear_bind path=...` removes that path's whole network; a network carries at most one expression-driven endpoint. Binds are absent on installs at or below 0.5.34. See `knowledge/expressions-and-drivers.md`.
+### `sentinel_expression` — Typed ref() parameter drivers
+`set` / `get` / `clear` / `list`. Always use this for expression drivers; `sentinel_state set` with a literal `=ref(...)` string writes a value without registering the expression engine binding.
 
 ### `sentinel_conductor` — Cue sheets and transport
 `load_sheet` / `bake_sheet` / `status` / `fire` / `jump` / `set_tempo` / `transport`. Compiles cue-sheet YAML into sheet params and generated expressions on a Conductor node.
