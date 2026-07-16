@@ -1,0 +1,117 @@
+name: "Living Room Furnishings Plan Editor"
+version: "2.0"
+mode: generator
+resolution: [960, 540]
+
+panel:
+  mode: canvas
+  output: "Furnishings Plan"
+  resolution: follow_panel
+
+parameters:
+  - { name: tool_mode, display: "Tool", type: enum, options: [Move, Rotate], flags: button_grid, default: 0, group: "Plan Editor" }
+  - { name: move_tool, display: "Move", type: button, hidden: true, group: "Plan Editor" }
+  - { name: rotate_tool, display: "Rotate", type: button, hidden: true, group: "Plan Editor" }
+  - { name: snap_enabled, display: "Snap", type: bool, default: true, group: "Plan Editor" }
+  - { name: snap_step, display: "Move Snap", type: float, min: 0.05, max: 1.0, default: 0.25, group: "Plan Editor" }
+  - { name: reset_selected, display: "Reset Selected", type: button, hidden: true, group: "Plan Editor" }
+  - { name: reset_all, display: "Reset All", type: button, hidden: true, group: "Plan Editor" }
+  - { name: fit_view, display: "Fit View", type: button, hidden: true, group: "Plan Editor" }
+  - { name: layout_offset, display: "All Furniture X/Z", type: point2D, min: [-2.5, -2.5], max: [2.5, 2.5], default: [0.0, 0.0], group: "Authored Layout" }
+  - { name: seating_spread, display: "Conversation Spread", type: float, min: 0.55, max: 1.55, default: 1.0, group: "Authored Layout" }
+  - { name: sofa_offset, display: "Sofa X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Authored Layout/Seating" }
+  - { name: left_chair_offset, display: "Left Chair X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Authored Layout/Seating" }
+  - { name: left_chair_yaw, display: "Left Chair Heading", type: float, min: -3.1416, max: 3.1416, default: -1.30, group: "Authored Layout/Seating" }
+  - { name: right_chair_offset, display: "Right Chair X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Authored Layout/Seating" }
+  - { name: right_chair_yaw, display: "Right Chair Heading", type: float, min: -3.1416, max: 3.1416, default: 1.95, group: "Authored Layout/Seating" }
+  - { name: coffee_table_offset, display: "Coffee Table X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Authored Layout/Tables" }
+  - { name: coffee_table_yaw, display: "Coffee Table Heading", type: float, min: -3.1416, max: 3.1416, default: -0.08, group: "Authored Layout/Tables" }
+  - { name: media_wall_offset, display: "Media Wall X/Z", type: point2D, min: [-2.0, -1.0], max: [2.0, 1.0], default: [0.0, 0.0], group: "Authored Layout/Media" }
+  - { name: plant_spread, display: "Plant Spread", type: float, min: 0.5, max: 1.45, default: 1.0, group: "Authored Layout/Plants" }
+  - { name: plant_depth_offset, display: "Plant Depth", type: float, min: -1.5, max: 1.5, default: 0.0, group: "Authored Layout/Plants" }
+
+viewport:
+  hint: "Click/drag a furnishing to transform it. Middle-drag pans the plan; wheel zooms around the pointer. M/T tools, S snap, Backspace reset selected, Shift+Backspace reset all."
+  interactions: [events, selection]
+  selection: { mode: single, provider: ray_query, result_buffer: pick_result, object_buffer: viewport_objects }
+  input:
+    pointer: [left, middle, wheel]
+    keyboard: [m, t, s, f, backspace, escape, shift]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select_furnishing, label: "Select Furnishing" }
+    - { gesture: left_drag, action: transform_furnishing, label: "Transform Furnishing" }
+    - { gesture: middle_drag, action: pan_plan, label: "Pan Plan" }
+    - { gesture: wheel, action: zoom_plan, label: "Zoom Plan" }
+    - { key: m, action: move_mode, label: "Move Tool" }
+    - { key: t, action: rotate_mode, label: "Rotate Tool" }
+    - { key: s, action: toggle_snap, label: "Toggle Snap" }
+    - { key: f, action: fit_view, label: "Fit Plan" }
+  # ui-label: title = FURNISHINGS PLAN
+  # ui-label: move = MOVE
+  # ui-label: rotate = ROTATE
+  # ui-label: snap = SNAP
+  # ui-label: reset = RESET
+  # ui-label: reset_all = RESET ALL
+  # ui-label: fit = FIT
+  controls:
+    - { id: move, kind: button, param: move_tool, rect: [0.025, 0.025, 0.135, 0.105], label: "Move Tool" }
+    - { id: rotate, kind: button, param: rotate_tool, rect: [0.145, 0.025, 0.265, 0.105], label: "Rotate Tool" }
+    - { id: snap, kind: toggle, param: snap_enabled, rect: [0.285, 0.025, 0.385, 0.105], label: "Snap" }
+    - { id: fit, kind: button, param: fit_view, rect: [0.415, 0.025, 0.505, 0.105], label: "Fit Plan" }
+    - { id: reset, kind: button, param: reset_selected, rect: [0.705, 0.025, 0.825, 0.105], label: "Reset Selected" }
+    - { id: reset_all, kind: button, param: reset_all, rect: [0.835, 0.025, 0.975, 0.105], label: "Reset All" }
+
+buffers:
+  - { name: editor_state, structured: true, element_size: 80, element_count: 1, persistent: true }
+  - { name: drag_snapshot, structured: true, element_size: 32, element_count: 12, persistent: true }
+  - { name: furnishing_state, structured: true, element_size: 32, element_count: 12, persistent: true }
+  - { name: base_pnodes, structured: true, element_size: 48, element_count: 23 }
+  - { name: pnodes, structured: true, element_size: 48, element_count: 23 }
+  - { name: viewport_objects, structured: true, element_size: 120, element_count: 12, persistent: true }
+  - { name: pick_result, structured: true, element_size: 40, element_count: 1, persistent: true }
+
+state_buffers:
+  - name: furnishing_state
+    max_elements: 12
+    schema:
+      - { name: offset, type: float2 }
+      - { name: yaw_offset, type: float }
+      - { name: object_id, type: uint }
+      - { name: marker, type: float }
+      - { name: pad, type: float3 }
+
+passes:
+  - { name: base, shader: emit_records.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 64, thread_group_y: 1, output: "buffer:base_pnodes" }
+  - { name: interaction, shader: interaction.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:furnishing_state" }, { slot: 1, source: "buffer:base_pnodes" } ], output: "buffer:editor_state" }
+  - { name: snapshot, shader: snapshot.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:editor_state" }, { slot: 1, source: "buffer:furnishing_state" } ], output: "buffer:drag_snapshot" }
+  - { name: update, shader: update.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:editor_state" }, { slot: 1, source: "buffer:drag_snapshot" } ], output: "buffer:furnishing_state" }
+  - { name: apply_state, shader: apply_state.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 64, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:base_pnodes" }, { slot: 1, source: "buffer:furnishing_state" } ], output: "buffer:pnodes" }
+  - { name: descriptors, shader: descriptors.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 16, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:pnodes" } ], output: "buffer:viewport_objects" }
+  - { name: pick, shader: pick.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:pnodes" }, { slot: 1, source: "buffer:editor_state" } ], output: "buffer:pick_result" }
+  - { name: preview, shader: preview.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:pnodes" }, { slot: 1, source: "buffer:editor_state" } ], output: output }
+
+outputs:
+  - { name: "Furnishings Plan", pass: preview }
+
+data_outputs:
+  - name: PNodes
+    buffer: pnodes
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: scale, type: float }
+      - { name: kind_id, type: float }
+      - { name: seed, type: float }
+      - { name: yaw, type: float }
+      - { name: height, type: float }
+      - { name: width, type: float }
+      - { name: depth, type: float }
+      - { name: dir, type: float, count: 2 }
+  - name: "Furnishing Transforms"
+    buffer: furnishing_state
+    schema:
+      - { name: offset, type: float2 }
+      - { name: yaw_offset, type: float }
+      - { name: object_id, type: uint }
+      - { name: marker, type: float }
+      - { name: pad, type: float3 }

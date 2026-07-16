@@ -2,6 +2,8 @@
 
 `showcase_gallery.sentinel` is the public portfolio switcher for Sentinel's seven aesthetic examples. It keeps each original graph intact inside one flat Scene Group and collects the groups wirelessly through a single groups-mode Mux.
 
+> **High-VRAM review project:** the Gallery loads all seven looks and their engine-backed pipelines into one process. Use the canonical standalone projects under `projects/` for normal distribution and lower-VRAM systems. Each standalone contains one Scene Group and one Group Output, with no Gallery Scene Switcher.
+
 ## Use it
 
 1. Load `showcase_gallery.sentinel` in Sentinel 0.5.33 or newer.

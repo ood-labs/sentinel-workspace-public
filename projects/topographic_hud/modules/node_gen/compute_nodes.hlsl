@@ -1,18 +1,10 @@
 // node_gen — produce glowing-node point records. Optionally snaps points onto
 // Field peaks/pits via gradient ascent (input:0 = Field texture).
 
-struct NodeRecord
-{
-    float2 pos;      // 0..1 screen uv
-    float radius;
-    float intensity;
-    float color_mix; // 0 = white, 1 = orange
-    float kind;
-    float seed;
-    float active;
-};
+#include "node_edit_types.hlsli"
 
 RWStructuredBuffer<NodeRecord> NodesOut : register(u0);
+StructuredBuffer<NodeOverride> _Tex1 : register(t1);
 
 float h11(float p)
 {
@@ -66,6 +58,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     }
 
     pos += (float2(h11(fi * 5.5), h11(fi * 7.7)) - 0.5) * jitter;
+    if (i < 12u) pos += _Tex1[i].offset;
     pos = clamp(pos, 0.03, 0.97);
 
     n.pos = pos;

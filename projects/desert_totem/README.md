@@ -21,11 +21,12 @@ The transform overrides live in a durable structured buffer. Project-scoped node
 
 Open `dada_control` for the full-bleed **Desert Warp Deck**. It owns the existing safe macro layer rather than duplicating renderer math:
 
-- Monument, Dali, Cubist, Painterly, and Performance warp languages;
 - melt, sag, spread, explode, primary, secondary, and twist controls;
 - painterly, facet, hue, heat-haze, and accent-field controls.
 
-The Canvas uses an ochre/black scientific-instrument treatment. Its aspect ratio is preserved, and `follow_panel` rendering scales to the real dock size. Control outputs drive ordinary expressions into layout, scatter, and render parameters.
+The Canvas uses an ochre/black scientific-instrument treatment. Its aspect ratio is preserved, and `follow_panel` rendering scales to the real dock size. Direct equality controls use bidirectional binds into layout, scatter, and render parameters; derived modulation remains expression-driven.
+
+Warp 1 and Warp 2 mode selection intentionally lives on `dada_render` as named button grids: Flow, Ripple, Turbulent, Fractal, Steps, Boxes, and Shatter. Those enum modes are not duplicated or bound through the Warp Deck, so the renderer buttons remain directly editable.
 
 ## Camera
 

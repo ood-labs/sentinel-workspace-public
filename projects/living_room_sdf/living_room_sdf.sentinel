@@ -1,1463 +1,1399 @@
 {
-  "display": {
-    "fpsLimit": 60.0,
-    "vsyncEnabled": false
-  },
-  "graph": {
-    "canvasZoom": 0.7929916381835938,
-    "links": [
-      {
-        "endPinId": 10,
-        "id": 1,
-        "startPinId": 3
-      },
-      {
-        "endPinId": 12,
-        "id": 2,
-        "startPinId": 6
-      },
-      {
-        "endPinId": 19,
-        "id": 7,
-        "startPinId": 15
-      },
-      {
-        "endPinId": 25,
-        "id": 14,
-        "startPinId": 24
-      },
-      {
-        "endPinId": 14,
-        "id": 20,
-        "startPinId": 32
-      },
-      {
-        "endPinId": 16,
-        "id": 21,
-        "startPinId": 33
-      },
-      {
-        "endPinId": 21,
-        "id": 22,
-        "startPinId": 3
-      },
-      {
-        "endPinId": 27,
-        "id": 23,
-        "startPinId": 6
-      },
-      {
-        "endPinId": 34,
-        "id": 24,
-        "startPinId": 9
-      },
-      {
-        "endPinId": 35,
-        "id": 25,
-        "startPinId": 13
-      },
-      {
-        "endPinId": 17,
-        "id": 27,
-        "startPinId": 24
-      },
-      {
-        "endPinId": 18,
-        "id": 28,
-        "startPinId": 26
-      }
-    ],
-    "nextLinkId": 29,
-    "nextNodeId": 13,
-    "nextPinId": 36,
-    "nodes": [
-      {
-        "displayName": "LR Architecture",
-        "entityId": "LR_Architecture",
-        "id": 1,
-        "posX": 128.9503173828125,
-        "posY": 170.63414001464844,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "LR Furnishings",
-        "entityId": "LR_Furnishings",
-        "id": 2,
-        "posX": 136.640625,
-        "posY": 386.2792053222656,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "LR Materials",
-        "entityId": "LR_Materials",
-        "id": 3,
-        "posX": 132.65966796875,
-        "posY": 657.2022094726563,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "LR Lighting",
-        "entityId": "LR_Lighting",
-        "id": 4,
-        "posX": 433.3936767578125,
-        "posY": 470.8052062988281,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "LR SDF Renderer",
-        "entityId": "LR_SDF_Renderer",
-        "id": 5,
-        "posX": 792.3311767578125,
-        "posY": 336.7840270996094,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "LR Cinematic Grade",
-        "entityId": "LR_Cinematic_Grade",
-        "id": 6,
-        "inputTilesOverride": 1,
-        "posX": 1098.161376953125,
-        "posY": 373.9438781738281,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "annotationBody": "Architecture + Furnishings + procedural Material Records feed a PNode-derived Lighting extractor and split-pass HDR SDF Renderer, then Cinematic Grade. Fly is the default camera. Open producer nodes for detailed layout, palette, and fixture controls; use the Scene Group only for performance and show-level lighting/grade.",
-        "annotationColor": "#2FA7C93D",
-        "annotationTitle": "LIVING ROOM // MODULAR SDF REFINEMENT",
-        "displayName": "LIVING ROOM // MODULAR SDF REFINEMENT",
-        "entityId": "annotation_7",
-        "height": 850.0,
-        "id": 7,
-        "posX": 82.65953063964844,
-        "posY": 81.70211791992188,
-        "positionSet": true,
-        "previewVisible": false,
-        "sceneGroup": true,
-        "sceneGroupActivePreset": "Performance",
-        "sceneGroupEnabled": true,
-        "sceneGroupParameters": [
-          {
-            "compoundIndex": 0,
-            "compoundKey": "",
-            "defaultValue": "112",
-            "description": "Ray Steps",
-            "displayName": "Ray Steps",
-            "enumValues": [],
-            "group": "",
-            "maxValue": 128.0,
-            "minValue": 48.0,
-            "name": "Render_Detail",
-            "orderIndex": 0,
-            "subgroup": "",
-            "targetPath": "/sentinel/pipelines/LR_SDF_Renderer/parameters/max_steps",
-            "type": "int",
-            "value": "64",
-            "widget": ""
-          },
-          {
-            "compoundIndex": 0,
-            "compoundKey": "",
-            "defaultValue": "2.7",
-            "description": "Ambient Occlusion",
-            "displayName": "Ambient Occlusion",
-            "enumValues": [],
-            "group": "",
-            "maxValue": 4.0,
-            "minValue": 0.0,
-            "name": "Ambient_Occlusion",
-            "orderIndex": 0,
-            "subgroup": "",
-            "targetPath": "/sentinel/pipelines/LR_SDF_Renderer/parameters/ao_strength",
-            "type": "float",
-            "value": "1.8",
-            "widget": ""
-          },
-          {
-            "compoundIndex": 0,
-            "compoundKey": "",
-            "defaultValue": "1.45",
-            "description": "Window Daylight",
-            "displayName": "Window Daylight",
-            "enumValues": [],
-            "group": "",
-            "maxValue": 3.0,
-            "minValue": 0.0,
-            "name": "Daylight",
-            "orderIndex": 0,
-            "subgroup": "",
-            "targetPath": "/sentinel/pipelines/LR_Lighting/parameters/daylight_intensity",
-            "type": "float",
-            "value": "1.4",
-            "widget": ""
-          },
-          {
-            "compoundIndex": 0,
-            "compoundKey": "",
-            "defaultValue": "1.75",
-            "description": "Practical Lamps",
-            "displayName": "Practical Lamps",
-            "enumValues": [],
-            "group": "",
-            "maxValue": 4.0,
-            "minValue": 0.0,
-            "name": "Practical_Lights",
-            "orderIndex": 0,
-            "subgroup": "",
-            "targetPath": "/sentinel/pipelines/LR_Lighting/parameters/practical_intensity",
-            "type": "float",
-            "value": "1.4",
-            "widget": ""
-          },
-          {
-            "compoundIndex": 0,
-            "compoundKey": "",
-            "defaultValue": "1.1",
-            "description": "Exposure",
-            "displayName": "Exposure",
-            "enumValues": [],
-            "group": "",
-            "maxValue": 3.0,
-            "minValue": 0.20000000298023224,
-            "name": "Exposure",
-            "orderIndex": 0,
-            "subgroup": "",
-            "targetPath": "/sentinel/pipelines/LR_Cinematic_Grade/parameters/exposure",
-            "type": "float",
-            "value": "1.22",
-            "widget": ""
-          },
-          {
-            "compoundIndex": 0,
-            "compoundKey": "",
-            "defaultValue": "0.48",
-            "description": "Intensity",
-            "displayName": "Intensity",
-            "enumValues": [],
-            "group": "",
-            "maxValue": 2.0,
-            "minValue": 0.0,
-            "name": "Bloom",
-            "orderIndex": 0,
-            "subgroup": "",
-            "targetPath": "/sentinel/pipelines/LR_Cinematic_Grade/parameters/bloom_intensity",
-            "type": "float",
-            "value": "0.36",
-            "widget": ""
-          }
-        ],
-        "sceneGroupPresets": [
-          {
-            "childGroupPresets": {},
-            "name": "Fidelity",
-            "pipelineBypass": {
-              "LR_Architecture": true,
-              "LR_Cinematic_Grade": true,
-              "LR_Furnishings": true,
-              "LR_Lighting": true,
-              "LR_Materials": true,
-              "LR_SDF_Renderer": true
+    "binds":  [
+                  [
+                      "/sentinel/groups/annotation_87/parameters/Render_Detail",
+                      "/sentinel/pipelines/LR_SDF_Renderer/parameters/max_steps"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_87/parameters/Ambient_Occlusion",
+                      "/sentinel/pipelines/LR_SDF_Renderer/parameters/ao_strength"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_87/parameters/Daylight",
+                      "/sentinel/pipelines/LR_Lighting/parameters/daylight_intensity"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_87/parameters/Practical_Lights",
+                      "/sentinel/pipelines/LR_Lighting/parameters/practical_intensity"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_87/parameters/Exposure",
+                      "/sentinel/pipelines/LR_Cinematic_Grade/parameters/exposure"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_87/parameters/Bloom",
+                      "/sentinel/pipelines/LR_Cinematic_Grade/parameters/bloom_intensity"
+                  ]
+              ],
+    "display":  {
+                    "fpsLimit":  60.0,
+                    "vsyncEnabled":  false
+                },
+    "graph":  {
+                  "canvasZoom":  0.72,
+                  "links":  [
+                                {
+                                    "endPinId":  24,
+                                    "id":  1,
+                                    "startPinId":  13
+                                },
+                                {
+                                    "endPinId":  32,
+                                    "id":  2,
+                                    "startPinId":  25
+                                },
+                                {
+                                    "endPinId":  18,
+                                    "id":  3,
+                                    "startPinId":  39
+                                },
+                                {
+                                    "endPinId":  43,
+                                    "id":  4,
+                                    "startPinId":  34
+                                },
+                                {
+                                    "endPinId":  12,
+                                    "id":  5,
+                                    "startPinId":  39
+                                },
+                                {
+                                    "endPinId":  40,
+                                    "id":  6,
+                                    "startPinId":  34
+                                },
+                                {
+                                    "endPinId":  41,
+                                    "id":  7,
+                                    "startPinId":  38
+                                },
+                                {
+                                    "endPinId":  42,
+                                    "id":  8,
+                                    "startPinId":  44
+                                }
+                            ],
+                  "nextLinkId":  76,
+                  "nextNodeId":  94,
+                  "nextPinId":  347,
+                  "nodes":  [
+                                {
+                                    "displayName":  "LR Architecture 2",
+                                    "entityId":  "LR_Architecture",
+                                    "id":  2,
+                                    "posX":  150,
+                                    "posY":  159.99995422363281,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "LR SDF Renderer 2",
+                                    "entityId":  "LR_SDF_Renderer",
+                                    "id":  3,
+                                    "posX":  860.000244140625,
+                                    "posY":  380.00006103515625,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "LR Furnishings 2",
+                                    "entityId":  "LR_Furnishings",
+                                    "id":  4,
+                                    "posX":  150.5810546875,
+                                    "posY":  400.60083007812506,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "LR Materials 2",
+                                    "entityId":  "LR_Materials",
+                                    "id":  5,
+                                    "posX":  150,
+                                    "posY":  749.999755859375,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "LR Lighting 2",
+                                    "entityId":  "LR_Lighting",
+                                    "id":  6,
+                                    "posX":  509.9996337890625,
+                                    "posY":  378.17843627929688,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "LR Cinematic Grade 2",
+                                    "entityId":  "LR_Cinematic_Grade",
+                                    "id":  9,
+                                    "inputTilesOverride":  1,
+                                    "posX":  1212.14453125,
+                                    "posY":  380.00006103515625,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "LR Group Output 2",
+                                    "entityId":  "LR_Group_Output",
+                                    "id":  13,
+                                    "posX":  1570.000244140625,
+                                    "posY":  380.00006103515625,
+                                    "positionSet":  true,
+                                    "previewVisible":  true,
+                                    "type":  1
+                                },
+                                {
+                                    "annotationBody":  "Gallery look Â· architectural SDF scene",
+                                    "annotationColor":  "#D0A24A3D",
+                                    "annotationTitle":  "LIVING ROOM SDF",
+                                    "displayName":  "LIVING ROOM SDF",
+                                    "entityId":  "annotation_87",
+                                    "height":  1008.0,
+                                    "id":  87,
+                                    "posX":  80,
+                                    "posY":  80,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "sceneGroup":  true,
+                                    "sceneGroupActivePreset":  "",
+                                    "sceneGroupEnabled":  true,
+                                    "sceneGroupParameters":  [
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "80",
+                                                                     "description":  "Ray Steps",
+                                                                     "displayName":  "Ray Steps",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Quality",
+                                                                     "maxValue":  128.0,
+                                                                     "minValue":  48.0,
+                                                                     "name":  "Render_Detail",
+                                                                     "orderIndex":  0,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/LR_SDF_Renderer/parameters/max_steps",
+                                                                     "type":  "int",
+                                                                     "value":  "96",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "2.200000",
+                                                                     "description":  "Ambient Occlusion",
+                                                                     "displayName":  "Ambient Occlusion",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Lighting",
+                                                                     "maxValue":  4.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Ambient_Occlusion",
+                                                                     "orderIndex":  1,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/LR_SDF_Renderer/parameters/ao_strength",
+                                                                     "type":  "float",
+                                                                     "value":  "2.2",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "1.100000",
+                                                                     "description":  "Window Daylight",
+                                                                     "displayName":  "Window Daylight",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Environment",
+                                                                     "maxValue":  3.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Daylight",
+                                                                     "orderIndex":  2,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/LR_Lighting/parameters/daylight_intensity",
+                                                                     "type":  "float",
+                                                                     "value":  "2.25",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "1.250000",
+                                                                     "description":  "Practical Lamps",
+                                                                     "displayName":  "Practical Lamps",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Practical Lights",
+                                                                     "maxValue":  4.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Practical_Lights",
+                                                                     "orderIndex":  3,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/LR_Lighting/parameters/practical_intensity",
+                                                                     "type":  "float",
+                                                                     "value":  "0.65",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "1.220000",
+                                                                     "description":  "Exposure",
+                                                                     "displayName":  "Exposure",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Tone",
+                                                                     "maxValue":  3.0,
+                                                                     "minValue":  0.20000000298023224,
+                                                                     "name":  "Exposure",
+                                                                     "orderIndex":  4,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/LR_Cinematic_Grade/parameters/exposure",
+                                                                     "type":  "float",
+                                                                     "value":  "1.02",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "0.420000",
+                                                                     "description":  "Intensity",
+                                                                     "displayName":  "Intensity",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Bloom",
+                                                                     "maxValue":  2.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Bloom",
+                                                                     "orderIndex":  5,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/LR_Cinematic_Grade/parameters/bloom_intensity",
+                                                                     "type":  "float",
+                                                                     "value":  "0.16",
+                                                                     "widget":  ""
+                                                                 }
+                                                             ],
+                                    "sceneGroupPresets":  [
+                                                              {
+                                                                  "childGroupPresets":  {
+
+                                                                                        },
+                                                                  "name":  "Fidelity",
+                                                                  "pipelineBypass":  {
+                                                                                         "LR_Architecture":  true,
+                                                                                         "LR_Cinematic_Grade":  true,
+                                                                                         "LR_Furnishings":  true,
+                                                                                         "LR_Lighting":  true,
+                                                                                         "LR_Materials":  true,
+                                                                                         "LR_SDF_Renderer":  true
+                                                                                     },
+                                                                  "pipelineValues":  {
+                                                                                         "LR_Architecture":  {
+                                                                                                                 "art_center_x":  "-0.25",
+                                                                                                                 "art_height":  "1.32",
+                                                                                                                 "art_spread":  "2.05",
+                                                                                                                 "ceiling_height":  "3.6",
+                                                                                                                 "door_position_x":  "4.21",
+                                                                                                                 "door_position_y":  "1.85",
+                                                                                                                 "door_yaw":  "-1.5708",
+                                                                                                                 "pendant_drop":  "0.78",
+                                                                                                                 "pendant_spread":  "2.4",
+                                                                                                                 "pendant_z":  "0.35",
+                                                                                                                 "project_dir":  "modules/LR_Architecture",
+                                                                                                                 "resolution_height":  "270",
+                                                                                                                 "resolution_width":  "480",
+                                                                                                                 "room_depth":  "7.2",
+                                                                                                                 "room_offset_x":  "0.000000",
+                                                                                                                 "room_offset_y":  "0.000000",
+                                                                                                                 "room_width":  "8.8",
+                                                                                                                 "rug_position_x":  "-0.3",
+                                                                                                                 "rug_position_y":  "0.45",
+                                                                                                                 "rug_size":  "1.05",
+                                                                                                                 "window_position_x":  "-2.45",
+                                                                                                                 "window_position_y":  "0.72",
+                                                                                                                 "window_scale":  "1.000000"
+                                                                                                             },
+                                                                                         "LR_Cinematic_Grade":  {
+                                                                                                                    "bloom_intensity":  "0.36",
+                                                                                                                    "bloom_knee":  "0.3",
+                                                                                                                    "bloom_radius":  "0.012",
+                                                                                                                    "bloom_threshold":  "1.15",
+                                                                                                                    "contrast":  "1.02",
+                                                                                                                    "exposure":  "1.22",
+                                                                                                                    "grain_amount":  "0.0015",
+                                                                                                                    "highlight_tint_b":  "0.56",
+                                                                                                                    "highlight_tint_g":  "0.78",
+                                                                                                                    "highlight_tint_r":  "1.000000",
+                                                                                                                    "project_dir":  "modules/LR_Cinematic_Grade",
+                                                                                                                    "saturation":  "0.94",
+                                                                                                                    "shadow_tint_b":  "0.62",
+                                                                                                                    "shadow_tint_g":  "0.5",
+                                                                                                                    "shadow_tint_r":  "0.36",
+                                                                                                                    "split_tone":  "0.08",
+                                                                                                                    "vignette":  "0.25"
+                                                                                                                },
+                                                                                         "LR_Furnishings":  {
+                                                                                                                "coffee_table_offset_x":  "0.000000",
+                                                                                                                "coffee_table_offset_y":  "0.000000",
+                                                                                                                "coffee_table_yaw":  "-0.08",
+                                                                                                                "layout_offset_x":  "0.000000",
+                                                                                                                "layout_offset_y":  "0.000000",
+                                                                                                                "left_chair_offset_x":  "0.000000",
+                                                                                                                "left_chair_offset_y":  "0.000000",
+                                                                                                                "left_chair_yaw":  "-1.3",
+                                                                                                                "media_wall_offset_x":  "0.000000",
+                                                                                                                "media_wall_offset_y":  "0.000000",
+                                                                                                                "plant_depth_offset":  "0.000000",
+                                                                                                                "plant_spread":  "1.000000",
+                                                                                                                "project_dir":  "modules/LR_Furnishings",
+                                                                                                                "resolution_height":  "270",
+                                                                                                                "resolution_width":  "480",
+                                                                                                                "right_chair_offset_x":  "0.000000",
+                                                                                                                "right_chair_offset_y":  "0.000000",
+                                                                                                                "right_chair_yaw":  "1.95",
+                                                                                                                "seating_spread":  "1.000000",
+                                                                                                                "sofa_offset_x":  "0.000000",
+                                                                                                                "sofa_offset_y":  "0.000000"
+                                                                                                            },
+                                                                                         "LR_Lighting":  {
+                                                                                                             "ambient_fill":  "0.42",
+                                                                                                             "daylight_intensity":  "1.4",
+                                                                                                             "practical_intensity":  "1.4",
+                                                                                                             "project_dir":  "modules/LR_Lighting",
+                                                                                                             "resolution_height":  "270",
+                                                                                                             "resolution_width":  "480",
+                                                                                                             "shadow_softness":  "0.32"
+                                                                                                         },
+                                                                                         "LR_Materials":  {
+                                                                                                              "accent_color_b":  "0.07",
+                                                                                                              "accent_color_g":  "0.36",
+                                                                                                              "accent_color_r":  "0.68",
+                                                                                                              "accent_wall_color_b":  "0.16",
+                                                                                                              "accent_wall_color_g":  "0.13",
+                                                                                                              "accent_wall_color_r":  "0.11",
+                                                                                                              "art_a_color_b":  "0.08",
+                                                                                                              "art_a_color_g":  "0.19",
+                                                                                                              "art_a_color_r":  "0.62",
+                                                                                                              "art_b_color_b":  "0.34",
+                                                                                                              "art_b_color_g":  "0.25",
+                                                                                                              "art_b_color_r":  "0.07",
+                                                                                                              "brass_color_b":  "0.1",
+                                                                                                              "brass_color_g":  "0.32",
+                                                                                                              "brass_color_r":  "0.55",
+                                                                                                              "ceramic_color_b":  "0.6",
+                                                                                                              "ceramic_color_g":  "0.68",
+                                                                                                              "ceramic_color_r":  "0.72",
+                                                                                                              "chair_color_b":  "0.035",
+                                                                                                              "chair_color_g":  "0.115",
+                                                                                                              "chair_color_r":  "0.36",
+                                                                                                              "leaf_color_b":  "0.075",
+                                                                                                              "leaf_color_g":  "0.2",
+                                                                                                              "leaf_color_r":  "0.04",
+                                                                                                              "linen_color_b":  "0.6",
+                                                                                                              "linen_color_g":  "0.71",
+                                                                                                              "linen_color_r":  "0.78",
+                                                                                                              "oak_color_b":  "0.045",
+                                                                                                              "oak_color_g":  "0.12",
+                                                                                                              "oak_color_r":  "0.26",
+                                                                                                              "plaster_color_b":  "0.46",
+                                                                                                              "plaster_color_g":  "0.51",
+                                                                                                              "plaster_color_r":  "0.54",
+                                                                                                              "project_dir":  "modules/LR_Materials",
+                                                                                                              "resolution_height":  "270",
+                                                                                                              "resolution_width":  "480",
+                                                                                                              "rug_color_b":  "0.12",
+                                                                                                              "rug_color_g":  "0.2",
+                                                                                                              "rug_color_r":  "0.34",
+                                                                                                              "sofa_color_b":  "0.22",
+                                                                                                              "sofa_color_g":  "0.2",
+                                                                                                              "sofa_color_r":  "0.055",
+                                                                                                              "walnut_color_b":  "0.025",
+                                                                                                              "walnut_color_g":  "0.08",
+                                                                                                              "walnut_color_r":  "0.22"
+                                                                                                          },
+                                                                                         "LR_SDF_Renderer":  {
+                                                                                                                 "ao_strength":  "2.5",
+                                                                                                                 "cam_mode":  "0",
+                                                                                                                 "camera_far":  "100.000000",
+                                                                                                                 "camera_fov":  "60.000000",
+                                                                                                                 "camera_look_sensitivity":  "6.000000",
+                                                                                                                 "camera_move_speed":  "3.000000",
+                                                                                                                 "camera_near":  "0.1",
+                                                                                                                 "camera_pitch":  "-0.211044",
+                                                                                                                 "camera_pos_x":  "-3.518935",
+                                                                                                                 "camera_pos_y":  "2.161128",
+                                                                                                                 "camera_pos_z":  "-2.190373",
+                                                                                                                 "camera_yaw":  "-5.352382",
+                                                                                                                 "evaluation_view":  "3",
+                                                                                                                 "fog_amount":  "0.1",
+                                                                                                                 "max_steps":  "96",
+                                                                                                                 "orbit_azimuth":  "0.22",
+                                                                                                                 "orbit_distance":  "6.8",
+                                                                                                                 "orbit_elevation":  "0.17",
+                                                                                                                 "orbit_focal":  "0.78",
+                                                                                                                 "orbit_phase":  "0.000000",
+                                                                                                                 "orbit_target_x":  "-0.25",
+                                                                                                                 "orbit_target_y":  "1.05",
+                                                                                                                 "orbit_target_z":  "0.000000",
+                                                                                                                 "project_dir":  "modules/LR_SDF_Renderer",
+                                                                                                                 "quality_mode":  "1",
+                                                                                                                 "resolution_height":  "720",
+                                                                                                                 "resolution_width":  "1280"
+                                                                                                             }
+                                                                                     },
+                                                                  "values":  {
+                                                                                 "Ambient_Occlusion":  "2.5",
+                                                                                 "Bloom":  "0.36",
+                                                                                 "Daylight":  "1.4",
+                                                                                 "Exposure":  "1.22",
+                                                                                 "Practical_Lights":  "1.4",
+                                                                                 "Render_Detail":  "96"
+                                                                             }
+                                                              },
+                                                              {
+                                                                  "childGroupPresets":  {
+
+                                                                                        },
+                                                                  "name":  "Performance",
+                                                                  "pipelineBypass":  {
+                                                                                         "LR_Architecture":  true,
+                                                                                         "LR_Cinematic_Grade":  true,
+                                                                                         "LR_Furnishings":  true,
+                                                                                         "LR_Lighting":  true,
+                                                                                         "LR_Materials":  true,
+                                                                                         "LR_SDF_Renderer":  true
+                                                                                     },
+                                                                  "pipelineValues":  {
+                                                                                         "LR_Architecture":  {
+                                                                                                                 "art_center_x":  "-0.25",
+                                                                                                                 "art_height":  "1.32",
+                                                                                                                 "art_spread":  "2.05",
+                                                                                                                 "ceiling_height":  "3.6",
+                                                                                                                 "door_position_x":  "4.21",
+                                                                                                                 "door_position_y":  "1.85",
+                                                                                                                 "door_yaw":  "-1.5708",
+                                                                                                                 "pendant_drop":  "0.78",
+                                                                                                                 "pendant_spread":  "2.4",
+                                                                                                                 "pendant_z":  "0.35",
+                                                                                                                 "project_dir":  "modules/LR_Architecture",
+                                                                                                                 "resolution_height":  "270",
+                                                                                                                 "resolution_width":  "480",
+                                                                                                                 "room_depth":  "7.2",
+                                                                                                                 "room_offset_x":  "0.000000",
+                                                                                                                 "room_offset_y":  "0.000000",
+                                                                                                                 "room_width":  "8.8",
+                                                                                                                 "rug_position_x":  "-0.3",
+                                                                                                                 "rug_position_y":  "0.45",
+                                                                                                                 "rug_size":  "1.05",
+                                                                                                                 "window_position_x":  "-2.45",
+                                                                                                                 "window_position_y":  "0.72",
+                                                                                                                 "window_scale":  "1.000000"
+                                                                                                             },
+                                                                                         "LR_Cinematic_Grade":  {
+                                                                                                                    "bloom_intensity":  "0.36",
+                                                                                                                    "bloom_knee":  "0.3",
+                                                                                                                    "bloom_radius":  "0.012",
+                                                                                                                    "bloom_threshold":  "1.15",
+                                                                                                                    "contrast":  "1.02",
+                                                                                                                    "exposure":  "1.22",
+                                                                                                                    "grain_amount":  "0.0015",
+                                                                                                                    "highlight_tint_b":  "0.56",
+                                                                                                                    "highlight_tint_g":  "0.78",
+                                                                                                                    "highlight_tint_r":  "1.000000",
+                                                                                                                    "project_dir":  "modules/LR_Cinematic_Grade",
+                                                                                                                    "saturation":  "0.94",
+                                                                                                                    "shadow_tint_b":  "0.62",
+                                                                                                                    "shadow_tint_g":  "0.5",
+                                                                                                                    "shadow_tint_r":  "0.36",
+                                                                                                                    "split_tone":  "0.08",
+                                                                                                                    "vignette":  "0.25"
+                                                                                                                },
+                                                                                         "LR_Furnishings":  {
+                                                                                                                "coffee_table_offset_x":  "0.000000",
+                                                                                                                "coffee_table_offset_y":  "0.000000",
+                                                                                                                "coffee_table_yaw":  "-0.08",
+                                                                                                                "layout_offset_x":  "0.000000",
+                                                                                                                "layout_offset_y":  "0.000000",
+                                                                                                                "left_chair_offset_x":  "0.000000",
+                                                                                                                "left_chair_offset_y":  "0.000000",
+                                                                                                                "left_chair_yaw":  "-1.3",
+                                                                                                                "media_wall_offset_x":  "0.000000",
+                                                                                                                "media_wall_offset_y":  "0.000000",
+                                                                                                                "plant_depth_offset":  "0.000000",
+                                                                                                                "plant_spread":  "1.000000",
+                                                                                                                "project_dir":  "modules/LR_Furnishings",
+                                                                                                                "resolution_height":  "270",
+                                                                                                                "resolution_width":  "480",
+                                                                                                                "right_chair_offset_x":  "0.000000",
+                                                                                                                "right_chair_offset_y":  "0.000000",
+                                                                                                                "right_chair_yaw":  "1.95",
+                                                                                                                "seating_spread":  "1.000000",
+                                                                                                                "sofa_offset_x":  "0.000000",
+                                                                                                                "sofa_offset_y":  "0.000000"
+                                                                                                            },
+                                                                                         "LR_Lighting":  {
+                                                                                                             "ambient_fill":  "0.42",
+                                                                                                             "daylight_intensity":  "1.4",
+                                                                                                             "practical_intensity":  "1.4",
+                                                                                                             "project_dir":  "modules/LR_Lighting",
+                                                                                                             "resolution_height":  "270",
+                                                                                                             "resolution_width":  "480",
+                                                                                                             "shadow_softness":  "0.32"
+                                                                                                         },
+                                                                                         "LR_Materials":  {
+                                                                                                              "accent_color_b":  "0.07",
+                                                                                                              "accent_color_g":  "0.36",
+                                                                                                              "accent_color_r":  "0.68",
+                                                                                                              "accent_wall_color_b":  "0.16",
+                                                                                                              "accent_wall_color_g":  "0.13",
+                                                                                                              "accent_wall_color_r":  "0.11",
+                                                                                                              "art_a_color_b":  "0.08",
+                                                                                                              "art_a_color_g":  "0.19",
+                                                                                                              "art_a_color_r":  "0.62",
+                                                                                                              "art_b_color_b":  "0.34",
+                                                                                                              "art_b_color_g":  "0.25",
+                                                                                                              "art_b_color_r":  "0.07",
+                                                                                                              "brass_color_b":  "0.1",
+                                                                                                              "brass_color_g":  "0.32",
+                                                                                                              "brass_color_r":  "0.55",
+                                                                                                              "ceramic_color_b":  "0.6",
+                                                                                                              "ceramic_color_g":  "0.68",
+                                                                                                              "ceramic_color_r":  "0.72",
+                                                                                                              "chair_color_b":  "0.035",
+                                                                                                              "chair_color_g":  "0.115",
+                                                                                                              "chair_color_r":  "0.36",
+                                                                                                              "leaf_color_b":  "0.075",
+                                                                                                              "leaf_color_g":  "0.2",
+                                                                                                              "leaf_color_r":  "0.04",
+                                                                                                              "linen_color_b":  "0.6",
+                                                                                                              "linen_color_g":  "0.71",
+                                                                                                              "linen_color_r":  "0.78",
+                                                                                                              "oak_color_b":  "0.045",
+                                                                                                              "oak_color_g":  "0.12",
+                                                                                                              "oak_color_r":  "0.26",
+                                                                                                              "plaster_color_b":  "0.46",
+                                                                                                              "plaster_color_g":  "0.51",
+                                                                                                              "plaster_color_r":  "0.54",
+                                                                                                              "project_dir":  "modules/LR_Materials",
+                                                                                                              "resolution_height":  "270",
+                                                                                                              "resolution_width":  "480",
+                                                                                                              "rug_color_b":  "0.12",
+                                                                                                              "rug_color_g":  "0.2",
+                                                                                                              "rug_color_r":  "0.34",
+                                                                                                              "sofa_color_b":  "0.22",
+                                                                                                              "sofa_color_g":  "0.2",
+                                                                                                              "sofa_color_r":  "0.055",
+                                                                                                              "walnut_color_b":  "0.025",
+                                                                                                              "walnut_color_g":  "0.08",
+                                                                                                              "walnut_color_r":  "0.22"
+                                                                                                          },
+                                                                                         "LR_SDF_Renderer":  {
+                                                                                                                 "ao_strength":  "1.8",
+                                                                                                                 "cam_mode":  "0",
+                                                                                                                 "camera_far":  "100.000000",
+                                                                                                                 "camera_fov":  "60.000000",
+                                                                                                                 "camera_look_sensitivity":  "6.000000",
+                                                                                                                 "camera_move_speed":  "3.000000",
+                                                                                                                 "camera_near":  "0.1",
+                                                                                                                 "camera_pitch":  "-0.211044",
+                                                                                                                 "camera_pos_x":  "-3.518935",
+                                                                                                                 "camera_pos_y":  "2.161128",
+                                                                                                                 "camera_pos_z":  "-2.190373",
+                                                                                                                 "camera_yaw":  "-5.352382",
+                                                                                                                 "evaluation_view":  "3",
+                                                                                                                 "fog_amount":  "0.1",
+                                                                                                                 "max_steps":  "64",
+                                                                                                                 "orbit_azimuth":  "0.22",
+                                                                                                                 "orbit_distance":  "6.8",
+                                                                                                                 "orbit_elevation":  "0.17",
+                                                                                                                 "orbit_focal":  "0.78",
+                                                                                                                 "orbit_phase":  "0.000000",
+                                                                                                                 "orbit_target_x":  "-0.25",
+                                                                                                                 "orbit_target_y":  "1.05",
+                                                                                                                 "orbit_target_z":  "0.000000",
+                                                                                                                 "project_dir":  "modules/LR_SDF_Renderer",
+                                                                                                                 "quality_mode":  "0",
+                                                                                                                 "resolution_height":  "360",
+                                                                                                                 "resolution_width":  "640"
+                                                                                                             }
+                                                                                     },
+                                                                  "values":  {
+                                                                                 "Ambient_Occlusion":  "1.8",
+                                                                                 "Bloom":  "0.36",
+                                                                                 "Daylight":  "1.4",
+                                                                                 "Exposure":  "1.22",
+                                                                                 "Practical_Lights":  "1.4",
+                                                                                 "Render_Detail":  "64"
+                                                                             }
+                                                              }
+                                                          ],
+                                    "type":  4,
+                                    "width":  1716.0
+                                }
+                            ],
+                  "pins":  [
+                               {
+                                   "id":  11,
+                                   "kind":  1,
+                                   "name":  "Architecture Plan",
+                                   "nodeId":  2,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  12,
+                                   "kind":  0,
+                                   "name":  "Architecture PNodes",
+                                   "nodeId":  3,
+                                   "slotIndex":  0,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  13,
+                                   "kind":  1,
+                                   "name":  "HDR Scene",
+                                   "nodeId":  3,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  15,
+                                   "kind":  1,
+                                   "name":  "Furnishings Plan",
+                                   "nodeId":  4,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  17,
+                                   "kind":  1,
+                                   "name":  "Material Swatches",
+                                   "nodeId":  5,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  18,
+                                   "kind":  0,
+                                   "name":  "Architecture PNodes",
+                                   "nodeId":  6,
+                                   "slotIndex":  0,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  19,
+                                   "kind":  1,
+                                   "name":  "Lighting Preview",
+                                   "nodeId":  6,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  24,
+                                   "kind":  0,
+                                   "name":  "HDR Scene",
+                                   "nodeId":  9,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  25,
+                                   "kind":  1,
+                                   "name":  "Final",
+                                   "nodeId":  9,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  32,
+                                   "kind":  0,
+                                   "name":  "Video",
+                                   "nodeId":  13,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  33,
+                                   "kind":  1,
+                                   "name":  "Out",
+                                   "nodeId":  13,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  34,
+                                   "kind":  1,
+                                   "name":  "PNodes",
+                                   "nodeId":  4,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  35,
+                                   "kind":  1,
+                                   "name":  "Furnishing Transforms",
+                                   "nodeId":  4,
+                                   "slotIndex":  2,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  36,
+                                   "kind":  1,
+                                   "name":  "Viewport Objects",
+                                   "nodeId":  4,
+                                   "slotIndex":  3,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  37,
+                                   "kind":  1,
+                                   "name":  "Viewport Pick Result",
+                                   "nodeId":  4,
+                                   "slotIndex":  4,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  38,
+                                   "kind":  1,
+                                   "name":  "Material Records",
+                                   "nodeId":  5,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  39,
+                                   "kind":  1,
+                                   "name":  "PNodes",
+                                   "nodeId":  2,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  40,
+                                   "kind":  0,
+                                   "name":  "Furnishings PNodes",
+                                   "nodeId":  3,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  41,
+                                   "kind":  0,
+                                   "name":  "Material Records",
+                                   "nodeId":  3,
+                                   "slotIndex":  2,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  42,
+                                   "kind":  0,
+                                   "name":  "Light Records",
+                                   "nodeId":  3,
+                                   "slotIndex":  3,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  43,
+                                   "kind":  0,
+                                   "name":  "Furnishings PNodes",
+                                   "nodeId":  6,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  44,
+                                   "kind":  1,
+                                   "name":  "Light Records",
+                                   "nodeId":  6,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               }
+                           ]
+              },
+    "input":  {
+                  "activeSource":  ""
+              },
+    "layout":  "",
+    "name":  "living_room_sdf",
+    "nodePresets":  [
+                        {
+                            "created":  "2026-07-15T00:48:07",
+                            "id":  "7fc7c658-ff1d-498d-745cc571131c",
+                            "modified":  "2026-07-15T00:48:07",
+                            "name":  "Conversation Plan",
+                            "parameters":  [
+                                               {
+                                                   "name":  "tool_mode",
+                                                   "value":  "0"
+                                               },
+                                               {
+                                                   "name":  "snap_enabled",
+                                                   "value":  "true"
+                                               },
+                                               {
+                                                   "name":  "snap_step",
+                                                   "value":  "0.25"
+                                               },
+                                               {
+                                                   "name":  "layout_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "layout_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "seating_spread",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "sofa_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "sofa_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "left_chair_offset_x",
+                                                   "value":  "-0.314286"
+                                               },
+                                               {
+                                                   "name":  "left_chair_offset_y",
+                                                   "value":  "0.114286"
+                                               },
+                                               {
+                                                   "name":  "left_chair_yaw",
+                                                   "value":  "-1.3"
+                                               },
+                                               {
+                                                   "name":  "right_chair_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "right_chair_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "right_chair_yaw",
+                                                   "value":  "1.95"
+                                               },
+                                               {
+                                                   "name":  "coffee_table_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "coffee_table_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "coffee_table_yaw",
+                                                   "value":  "-0.08"
+                                               },
+                                               {
+                                                   "name":  "media_wall_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "media_wall_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "plant_spread",
+                                                   "value":  "0.818"
+                                               },
+                                               {
+                                                   "name":  "plant_depth_offset",
+                                                   "value":  "0.000000"
+                                               }
+                                           ],
+                            "pipelineType":  "module:LR_Furnishings_2",
+                            "scope":  "project",
+                            "statePayloads":  {
+                                                  "furnishing_state":  {
+                                                                           "data":  "0000000000000000000000000100000000b8e445000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000008000000080000000000400000000000000000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000009000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000b000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000",
+                                                                           "element_count":  12,
+                                                                           "element_size":  32,
+                                                                           "encoding":  "hex",
+                                                                           "schema_signature":  "2142268984039736206"
+                                                                       }
+                                              }
+                        },
+                        {
+                            "created":  "2026-07-15T00:50:17",
+                            "id":  "535f4e49-afbf-5a4d-f35cf31d13c1",
+                            "modified":  "2026-07-15T00:50:17",
+                            "name":  "Offset Sofa Study",
+                            "parameters":  [
+                                               {
+                                                   "name":  "tool_mode",
+                                                   "value":  "0"
+                                               },
+                                               {
+                                                   "name":  "snap_enabled",
+                                                   "value":  "true"
+                                               },
+                                               {
+                                                   "name":  "snap_step",
+                                                   "value":  "0.25"
+                                               },
+                                               {
+                                                   "name":  "layout_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "layout_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "seating_spread",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "sofa_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "sofa_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "left_chair_offset_x",
+                                                   "value":  "-0.314286"
+                                               },
+                                               {
+                                                   "name":  "left_chair_offset_y",
+                                                   "value":  "0.114286"
+                                               },
+                                               {
+                                                   "name":  "left_chair_yaw",
+                                                   "value":  "-1.3"
+                                               },
+                                               {
+                                                   "name":  "right_chair_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "right_chair_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "right_chair_yaw",
+                                                   "value":  "1.95"
+                                               },
+                                               {
+                                                   "name":  "coffee_table_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "coffee_table_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "coffee_table_yaw",
+                                                   "value":  "-0.08"
+                                               },
+                                               {
+                                                   "name":  "media_wall_offset_x",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "media_wall_offset_y",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "plant_spread",
+                                                   "value":  "0.818"
+                                               },
+                                               {
+                                                   "name":  "plant_depth_offset",
+                                                   "value":  "0.000000"
+                                               }
+                                           ],
+                            "pipelineType":  "module:LR_Furnishings_2",
+                            "scope":  "project",
+                            "statePayloads":  {
+                                                  "furnishing_state":  {
+                                                                           "data":  "0000803e0000803e000000000100000000b8e445000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000008000000080000000000400000000000000000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000009000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000b000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000",
+                                                                           "element_count":  12,
+                                                                           "element_size":  32,
+                                                                           "encoding":  "hex",
+                                                                           "schema_signature":  "2142268984039736206"
+                                                                       }
+                                              }
+                        }
+                    ],
+    "osc":  {
+                "enabled":  true,
+                "receivePort":  9002,
+                "sendFeedback":  true,
+                "sendHost":  "127.0.0.1",
+                "sendPort":  9021,
+                "stateTreeBridge":  true
             },
-            "pipelineValues": {
-              "LR_Architecture": {
-                "art_center_x": "-0.25",
-                "art_height": "1.32",
-                "art_spread": "2.05",
-                "ceiling_height": "3.6",
-                "door_position_x": "4.21",
-                "door_position_y": "1.85",
-                "door_yaw": "-1.5708",
-                "pendant_drop": "0.78",
-                "pendant_spread": "2.4",
-                "pendant_z": "0.35",
-                "project_dir": "modules/LR_Architecture_5",
-                "resolution_height": "270",
-                "resolution_width": "480",
-                "room_depth": "7.2",
-                "room_offset_x": "0.000000",
-                "room_offset_y": "0.000000",
-                "room_width": "8.8",
-                "rug_position_x": "-0.3",
-                "rug_position_y": "0.45",
-                "rug_size": "1.05",
-                "window_position_x": "-2.45",
-                "window_position_y": "0.72",
-                "window_scale": "1.000000"
-              },
-              "LR_Cinematic_Grade": {
-                "bloom_intensity": "0.36",
-                "bloom_knee": "0.3",
-                "bloom_radius": "0.012",
-                "bloom_threshold": "1.15",
-                "contrast": "1.02",
-                "exposure": "1.22",
-                "grain_amount": "0.0015",
-                "highlight_tint_b": "0.56",
-                "highlight_tint_g": "0.78",
-                "highlight_tint_r": "1.000000",
-                "project_dir": "modules/LR_Cinematic_Grade_5",
-                "saturation": "0.94",
-                "shadow_tint_b": "0.62",
-                "shadow_tint_g": "0.5",
-                "shadow_tint_r": "0.36",
-                "split_tone": "0.08",
-                "vignette": "0.25"
-              },
-              "LR_Furnishings": {
-                "coffee_table_offset_x": "0.000000",
-                "coffee_table_offset_y": "0.000000",
-                "coffee_table_yaw": "-0.08",
-                "layout_offset_x": "0.000000",
-                "layout_offset_y": "0.000000",
-                "left_chair_offset_x": "0.000000",
-                "left_chair_offset_y": "0.000000",
-                "left_chair_yaw": "-1.3",
-                "media_wall_offset_x": "0.000000",
-                "media_wall_offset_y": "0.000000",
-                "plant_depth_offset": "0.000000",
-                "plant_spread": "1.000000",
-                "project_dir": "modules/LR_Furnishings_2",
-                "resolution_height": "270",
-                "resolution_width": "480",
-                "right_chair_offset_x": "0.000000",
-                "right_chair_offset_y": "0.000000",
-                "right_chair_yaw": "1.95",
-                "seating_spread": "1.000000",
-                "sofa_offset_x": "0.000000",
-                "sofa_offset_y": "0.000000"
-              },
-              "LR_Lighting": {
-                "ambient_fill": "0.42",
-                "daylight_intensity": "1.4",
-                "practical_intensity": "1.4",
-                "project_dir": "modules/LR_Lighting_4",
-                "resolution_height": "270",
-                "resolution_width": "480",
-                "shadow_softness": "0.32"
-              },
-              "LR_Materials": {
-                "accent_color_b": "0.07",
-                "accent_color_g": "0.36",
-                "accent_color_r": "0.68",
-                "accent_wall_color_b": "0.16",
-                "accent_wall_color_g": "0.13",
-                "accent_wall_color_r": "0.11",
-                "art_a_color_b": "0.08",
-                "art_a_color_g": "0.19",
-                "art_a_color_r": "0.62",
-                "art_b_color_b": "0.34",
-                "art_b_color_g": "0.25",
-                "art_b_color_r": "0.07",
-                "brass_color_b": "0.1",
-                "brass_color_g": "0.32",
-                "brass_color_r": "0.55",
-                "ceramic_color_b": "0.6",
-                "ceramic_color_g": "0.68",
-                "ceramic_color_r": "0.72",
-                "chair_color_b": "0.035",
-                "chair_color_g": "0.115",
-                "chair_color_r": "0.36",
-                "leaf_color_b": "0.075",
-                "leaf_color_g": "0.2",
-                "leaf_color_r": "0.04",
-                "linen_color_b": "0.6",
-                "linen_color_g": "0.71",
-                "linen_color_r": "0.78",
-                "oak_color_b": "0.045",
-                "oak_color_g": "0.12",
-                "oak_color_r": "0.26",
-                "plaster_color_b": "0.46",
-                "plaster_color_g": "0.51",
-                "plaster_color_r": "0.54",
-                "project_dir": "modules/LR_Materials_4",
-                "resolution_height": "270",
-                "resolution_width": "480",
-                "rug_color_b": "0.12",
-                "rug_color_g": "0.2",
-                "rug_color_r": "0.34",
-                "sofa_color_b": "0.22",
-                "sofa_color_g": "0.2",
-                "sofa_color_r": "0.055",
-                "walnut_color_b": "0.025",
-                "walnut_color_g": "0.08",
-                "walnut_color_r": "0.22"
-              },
-              "LR_SDF_Renderer": {
-                "ao_strength": "2.5",
-                "cam_mode": "0",
-                "camera_far": "100.000000",
-                "camera_fov": "60.000000",
-                "camera_look_sensitivity": "6.000000",
-                "camera_move_speed": "3.000000",
-                "camera_near": "0.1",
-                "camera_pitch": "-0.211044",
-                "camera_pos_x": "-3.518935",
-                "camera_pos_y": "2.161128",
-                "camera_pos_z": "-2.190373",
-                "camera_yaw": "-5.352382",
-                "evaluation_view": "3",
-                "fog_amount": "0.1",
-                "max_steps": "96",
-                "orbit_azimuth": "0.22",
-                "orbit_distance": "6.8",
-                "orbit_elevation": "0.17",
-                "orbit_focal": "0.78",
-                "orbit_phase": "0.000000",
-                "orbit_target_x": "-0.25",
-                "orbit_target_y": "1.05",
-                "orbit_target_z": "0.000000",
-                "project_dir": "modules/LR_SDF_Renderer_8",
-                "quality_mode": "1",
-                "resolution_height": "720",
-                "resolution_width": "1280"
-              }
-            },
-            "values": {
-              "Ambient_Occlusion": "2.5",
-              "Bloom": "0.36",
-              "Daylight": "1.4",
-              "Exposure": "1.22",
-              "Practical_Lights": "1.4",
-              "Render_Detail": "96"
-            }
-          },
-          {
-            "childGroupPresets": {},
-            "name": "Performance",
-            "pipelineBypass": {
-              "LR_Architecture": true,
-              "LR_Cinematic_Grade": true,
-              "LR_Furnishings": true,
-              "LR_Lighting": true,
-              "LR_Materials": true,
-              "LR_SDF_Renderer": true
-            },
-            "pipelineValues": {
-              "LR_Architecture": {
-                "art_center_x": "-0.25",
-                "art_height": "1.32",
-                "art_spread": "2.05",
-                "ceiling_height": "3.6",
-                "door_position_x": "4.21",
-                "door_position_y": "1.85",
-                "door_yaw": "-1.5708",
-                "pendant_drop": "0.78",
-                "pendant_spread": "2.4",
-                "pendant_z": "0.35",
-                "project_dir": "modules/LR_Architecture_5",
-                "resolution_height": "270",
-                "resolution_width": "480",
-                "room_depth": "7.2",
-                "room_offset_x": "0.000000",
-                "room_offset_y": "0.000000",
-                "room_width": "8.8",
-                "rug_position_x": "-0.3",
-                "rug_position_y": "0.45",
-                "rug_size": "1.05",
-                "window_position_x": "-2.45",
-                "window_position_y": "0.72",
-                "window_scale": "1.000000"
-              },
-              "LR_Cinematic_Grade": {
-                "bloom_intensity": "0.36",
-                "bloom_knee": "0.3",
-                "bloom_radius": "0.012",
-                "bloom_threshold": "1.15",
-                "contrast": "1.02",
-                "exposure": "1.22",
-                "grain_amount": "0.0015",
-                "highlight_tint_b": "0.56",
-                "highlight_tint_g": "0.78",
-                "highlight_tint_r": "1.000000",
-                "project_dir": "modules/LR_Cinematic_Grade_5",
-                "saturation": "0.94",
-                "shadow_tint_b": "0.62",
-                "shadow_tint_g": "0.5",
-                "shadow_tint_r": "0.36",
-                "split_tone": "0.08",
-                "vignette": "0.25"
-              },
-              "LR_Furnishings": {
-                "coffee_table_offset_x": "0.000000",
-                "coffee_table_offset_y": "0.000000",
-                "coffee_table_yaw": "-0.08",
-                "layout_offset_x": "0.000000",
-                "layout_offset_y": "0.000000",
-                "left_chair_offset_x": "0.000000",
-                "left_chair_offset_y": "0.000000",
-                "left_chair_yaw": "-1.3",
-                "media_wall_offset_x": "0.000000",
-                "media_wall_offset_y": "0.000000",
-                "plant_depth_offset": "0.000000",
-                "plant_spread": "1.000000",
-                "project_dir": "modules/LR_Furnishings_2",
-                "resolution_height": "270",
-                "resolution_width": "480",
-                "right_chair_offset_x": "0.000000",
-                "right_chair_offset_y": "0.000000",
-                "right_chair_yaw": "1.95",
-                "seating_spread": "1.000000",
-                "sofa_offset_x": "0.000000",
-                "sofa_offset_y": "0.000000"
-              },
-              "LR_Lighting": {
-                "ambient_fill": "0.42",
-                "daylight_intensity": "1.4",
-                "practical_intensity": "1.4",
-                "project_dir": "modules/LR_Lighting_4",
-                "resolution_height": "270",
-                "resolution_width": "480",
-                "shadow_softness": "0.32"
-              },
-              "LR_Materials": {
-                "accent_color_b": "0.07",
-                "accent_color_g": "0.36",
-                "accent_color_r": "0.68",
-                "accent_wall_color_b": "0.16",
-                "accent_wall_color_g": "0.13",
-                "accent_wall_color_r": "0.11",
-                "art_a_color_b": "0.08",
-                "art_a_color_g": "0.19",
-                "art_a_color_r": "0.62",
-                "art_b_color_b": "0.34",
-                "art_b_color_g": "0.25",
-                "art_b_color_r": "0.07",
-                "brass_color_b": "0.1",
-                "brass_color_g": "0.32",
-                "brass_color_r": "0.55",
-                "ceramic_color_b": "0.6",
-                "ceramic_color_g": "0.68",
-                "ceramic_color_r": "0.72",
-                "chair_color_b": "0.035",
-                "chair_color_g": "0.115",
-                "chair_color_r": "0.36",
-                "leaf_color_b": "0.075",
-                "leaf_color_g": "0.2",
-                "leaf_color_r": "0.04",
-                "linen_color_b": "0.6",
-                "linen_color_g": "0.71",
-                "linen_color_r": "0.78",
-                "oak_color_b": "0.045",
-                "oak_color_g": "0.12",
-                "oak_color_r": "0.26",
-                "plaster_color_b": "0.46",
-                "plaster_color_g": "0.51",
-                "plaster_color_r": "0.54",
-                "project_dir": "modules/LR_Materials_4",
-                "resolution_height": "270",
-                "resolution_width": "480",
-                "rug_color_b": "0.12",
-                "rug_color_g": "0.2",
-                "rug_color_r": "0.34",
-                "sofa_color_b": "0.22",
-                "sofa_color_g": "0.2",
-                "sofa_color_r": "0.055",
-                "walnut_color_b": "0.025",
-                "walnut_color_g": "0.08",
-                "walnut_color_r": "0.22"
-              },
-              "LR_SDF_Renderer": {
-                "ao_strength": "1.8",
-                "cam_mode": "0",
-                "camera_far": "100.000000",
-                "camera_fov": "60.000000",
-                "camera_look_sensitivity": "6.000000",
-                "camera_move_speed": "3.000000",
-                "camera_near": "0.1",
-                "camera_pitch": "-0.211044",
-                "camera_pos_x": "-3.518935",
-                "camera_pos_y": "2.161128",
-                "camera_pos_z": "-2.190373",
-                "camera_yaw": "-5.352382",
-                "evaluation_view": "3",
-                "fog_amount": "0.1",
-                "max_steps": "64",
-                "orbit_azimuth": "0.22",
-                "orbit_distance": "6.8",
-                "orbit_elevation": "0.17",
-                "orbit_focal": "0.78",
-                "orbit_phase": "0.000000",
-                "orbit_target_x": "-0.25",
-                "orbit_target_y": "1.05",
-                "orbit_target_z": "0.000000",
-                "project_dir": "modules/LR_SDF_Renderer_8",
-                "quality_mode": "0",
-                "resolution_height": "360",
-                "resolution_width": "640"
-              }
-            },
-            "values": {
-              "Ambient_Occlusion": "1.8",
-              "Bloom": "0.36",
-              "Daylight": "1.4",
-              "Exposure": "1.22",
-              "Practical_Lights": "1.4",
-              "Render_Detail": "64"
-            }
-          }
-        ],
-        "type": 4,
-        "width": 1360.0
-      },
-      {
-        "displayName": "abandoned_factory00",
-        "entityId": "source_0",
-        "id": 8,
-        "posX": -970.5197143554688,
-        "posY": 614.81005859375,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 0
-      },
-      {
-        "displayName": "6616343-hd_1920_1...",
-        "entityId": "source_1",
-        "id": 10,
-        "posX": -610.0991821289063,
-        "posY": 601.4168090820313,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 0
-      },
-      {
-        "displayName": "Depth Estimation #0",
-        "entityId": "depthestimation_0",
-        "id": 11,
-        "posX": -388.5174255371094,
-        "posY": 677.1340942382813,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "StreamDiffusion #0",
-        "entityId": "streamdiff_0",
-        "id": 12,
-        "posX": -618.000732421875,
-        "posY": 150.76718139648438,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      }
-    ],
-    "pins": [
-      {
-        "id": 2,
-        "kind": 1,
-        "name": "Architecture Preview",
-        "nodeId": 1,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 10,
-        "kind": 0,
-        "name": "Architecture PNodes",
-        "nodeId": 4,
-        "slotIndex": 0,
-        "type": 6
-      },
-      {
-        "id": 3,
-        "kind": 1,
-        "name": "PNodes",
-        "nodeId": 1,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 11,
-        "kind": 1,
-        "name": "Lighting Preview",
-        "nodeId": 4,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 5,
-        "kind": 1,
-        "name": "Furnishings Preview",
-        "nodeId": 2,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 6,
-        "kind": 1,
-        "name": "PNodes",
-        "nodeId": 2,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 8,
-        "kind": 1,
-        "name": "Material Swatches",
-        "nodeId": 3,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 9,
-        "kind": 1,
-        "name": "Material Records",
-        "nodeId": 3,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 12,
-        "kind": 0,
-        "name": "Furnishings PNodes",
-        "nodeId": 4,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 13,
-        "kind": 1,
-        "name": "Light Records",
-        "nodeId": 4,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 14,
-        "kind": 0,
-        "name": "Artwork Texture",
-        "nodeId": 5,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 15,
-        "kind": 1,
-        "name": "HDR Scene",
-        "nodeId": 5,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 16,
-        "kind": 0,
-        "name": "Artwork Depth",
-        "nodeId": 5,
-        "slotIndex": 1,
-        "type": 0
-      },
-      {
-        "id": 17,
-        "kind": 0,
-        "name": "Artwork B Texture",
-        "nodeId": 5,
-        "slotIndex": 2,
-        "type": 0
-      },
-      {
-        "id": 18,
-        "kind": 0,
-        "name": "Artwork B Depth",
-        "nodeId": 5,
-        "slotIndex": 3,
-        "type": 0
-      },
-      {
-        "id": 19,
-        "kind": 0,
-        "name": "HDR Scene",
-        "nodeId": 6,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 20,
-        "kind": 1,
-        "name": "Final",
-        "nodeId": 6,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 21,
-        "kind": 0,
-        "name": "Architecture PNodes",
-        "nodeId": 5,
-        "slotIndex": 4,
-        "type": 6
-      },
-      {
-        "id": 22,
-        "kind": 1,
-        "name": "Out",
-        "nodeId": 8,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 24,
-        "kind": 1,
-        "name": "Out",
-        "nodeId": 10,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 25,
-        "kind": 0,
-        "name": "Video Input",
-        "nodeId": 11,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 26,
-        "kind": 1,
-        "name": "Out",
-        "nodeId": 11,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 27,
-        "kind": 0,
-        "name": "Furnishings PNodes",
-        "nodeId": 5,
-        "slotIndex": 5,
-        "type": 6
-      },
-      {
-        "id": 28,
-        "kind": 0,
-        "name": "Video Input",
-        "nodeId": 12,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 29,
-        "kind": 0,
-        "name": "Style Reference",
-        "nodeId": 12,
-        "slotIndex": 1,
-        "type": 1
-      },
-      {
-        "id": 30,
-        "kind": 0,
-        "name": "Control Image",
-        "nodeId": 12,
-        "slotIndex": 2,
-        "type": 2
-      },
-      {
-        "id": 31,
-        "kind": 0,
-        "name": "Warp Map",
-        "nodeId": 12,
-        "slotIndex": 3,
-        "type": 4
-      },
-      {
-        "id": 32,
-        "kind": 1,
-        "name": "Color",
-        "nodeId": 12,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 33,
-        "kind": 1,
-        "name": "Depth",
-        "nodeId": 12,
-        "slotIndex": 1,
-        "type": 0
-      },
-      {
-        "id": 34,
-        "kind": 0,
-        "name": "Material Records",
-        "nodeId": 5,
-        "slotIndex": 6,
-        "type": 6
-      },
-      {
-        "id": 35,
-        "kind": 0,
-        "name": "Light Records",
-        "nodeId": 5,
-        "slotIndex": 7,
-        "type": 6
-      }
-    ]
-  },
-  "input": {
-    "activeSource": ""
-  },
-  "layout": "[Window][Sources]\nPos=0,1219\nSize=1211,870\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Outputs]\nPos=0,1219\nSize=1211,870\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Stats]\nPos=0,1219\nSize=1211,870\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Log]\nPos=0,1219\nSize=1211,870\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Properties]\nPos=3267,25\nSize=573,1192\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=1213,1219\nSize=2627,870\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=3840,2064\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=590,200\nSize=566,678\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=616,25\nSize=680,1192\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][##LoadingOverlay]\nPos=1812,1014\nSize=215,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=614,1192\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][Engines]\nPos=699,249\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][About Sentinel]\nPos=1007,593\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Terminal]\nPos=0,1219\nSize=1211,870\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][LR_Cinematic_Grade]\nPos=1298,25\nSize=1967,1192\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=1298,25\nSize=1967,1192\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=614,1192\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,3\n\n[Docking][Data]\nDockSpace                                       ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=3840,2064 Split=Y\n  DockNode                                      ID=0x00000003 Parent=0xCCBD8CF7 SizeRef=1222,1192 Split=X Selected=0x376FDC27\n    DockNode                                    ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n      DockNode                                  ID=0x00000001 Parent=0x00000007 SizeRef=2386,1284 Split=X Selected=0x5AAC8CBA\n        DockNode                                ID=0x00000009 Parent=0x00000001 SizeRef=742,790 Selected=0x9E38CE87\n        DockNode                                ID=0x0000000A Parent=0x00000001 SizeRef=749,790 Split=X Selected=0x376FDC27\n          DockNode                              ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n            DockNode                            ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n            DockNode                            ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n              DockNode                          ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n              DockNode                          ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                DockNode                        ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                DockNode                        ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                  DockNode                      ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                    DockNode                    ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                      DockNode                  ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                        DockNode                ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                          DockNode              ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                          DockNode              ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                        DockNode                ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                      DockNode                  ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                        DockNode                ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                          DockNode              ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                          DockNode              ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                            DockNode            ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                            DockNode            ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                        DockNode                ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                          DockNode              ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                          DockNode              ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                            DockNode            ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                            DockNode            ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                              DockNode          ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                DockNode        ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                DockNode        ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                              DockNode          ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                DockNode        ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                DockNode        ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                  DockNode      ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                  DockNode      ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 Split=X Selected=0x42F69FEE\n                                    DockNode    ID=0x0000002F Parent=0x0000002E SizeRef=614,1115 Selected=0x20EB7BCC\n                                    DockNode    ID=0x00000030 Parent=0x0000002E SizeRef=2649,1115 Split=X Selected=0x376FDC27\n                                      DockNode  ID=0x00000031 Parent=0x00000030 SizeRef=680,1183 CentralNode=1 Selected=0x376FDC27\n                                      DockNode  ID=0x00000032 Parent=0x00000030 SizeRef=1967,1183 Selected=0x42F69FEE\n                    DockNode                    ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                  DockNode                      ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n          DockNode                              ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n      DockNode                                  ID=0x00000002 Parent=0x00000007 SizeRef=573,1284 Selected=0x8C72BEA8\n    DockNode                                    ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n  DockNode                                      ID=0x00000004 Parent=0xCCBD8CF7 SizeRef=1222,870 Split=X Selected=0xF12F3499\n    DockNode                                    ID=0x00000005 Parent=0x00000004 SizeRef=808,707 Selected=0xD33228A6\n    DockNode                                    ID=0x00000006 Parent=0x00000004 SizeRef=1752,707 Selected=0xF12F3499\n\n",
-  "name": "living_room_sdf",
-  "nodePresets": [],
-  "osc": {
-    "enabled": true,
-    "receivePort": 9002,
-    "sendFeedback": true,
-    "sendHost": "127.0.0.1",
-    "sendPort": 9021,
-    "stateTreeBridge": true
-  },
-  "outputObjects": [],
-  "outputs": [],
-  "pipelines": [
-    {
-      "displayName": "LR Architecture",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "LR_Architecture",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "LR_Architecture",
-      "panelOpen": false,
-      "parameters": {
-        "art_center_x": "-0.250000",
-        "art_height": "1.320000",
-        "art_spread": "2.050000",
-        "ceiling_height": "3.600000",
-        "door_position_x": "4.210000",
-        "door_position_y": "1.850000",
-        "door_yaw": "-1.570800",
-        "pendant_drop": "0.780000",
-        "pendant_spread": "2.400000",
-        "pendant_z": "0.350000",
-        "project_dir": "modules/LR_Architecture_5",
-        "resolution_height": "270",
-        "resolution_width": "480",
-        "room_depth": "7.200000",
-        "room_offset_x": "0.000000",
-        "room_offset_y": "0.000000",
-        "room_width": "8.800000",
-        "rug_position_x": "-0.300000",
-        "rug_position_y": "0.450000",
-        "rug_size": "1.050000",
-        "window_position_x": "-2.450000",
-        "window_position_y": "0.720000",
-        "window_scale": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "LR SDF Renderer",
-      "enabled": true,
-      "expressions": {
-        "ao_strength": "ref(\"/sentinel/groups/annotation_7/parameters/Ambient_Occlusion\")"
-      },
-      "fitMode": 1,
-      "id": "LR_SDF_Renderer",
-      "inputSlotSourceIds": [
-        "streamdiff_0",
-        "streamdiff_0",
-        "source_1",
-        "depthestimation_0",
-        "LR_Architecture",
-        "LR_Furnishings",
-        "LR_Materials",
-        "LR_Lighting"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "LR_SDF_Renderer",
-      "panelOpen": true,
-      "parameters": {
-        "ao_strength": "1.800000",
-        "art2_depth_amount": "0.600000",
-        "art2_depth_black": "0.000000",
-        "art2_depth_direction": "1.000000",
-        "art2_depth_edge_fade": "0.005000",
-        "art2_depth_enabled": "1.000000",
-        "art2_depth_gamma": "1.000000",
-        "art2_depth_invert": "0.000000",
-        "art2_depth_recess": "0.139000",
-        "art2_depth_white": "1.000000",
-        "art2_texture_enabled": "1.000000",
-        "art2_texture_opacity": "1.000000",
-        "art2_texture_pan_x": "0.000000",
-        "art2_texture_pan_y": "0.000000",
-        "art2_texture_target": "0.000000",
-        "art2_texture_zoom": "1.000000",
-        "art_depth_amount": "0.600000",
-        "art_depth_black": "0.000000",
-        "art_depth_direction": "0.000000",
-        "art_depth_edge_fade": "0.005000",
-        "art_depth_enabled": "1.000000",
-        "art_depth_gamma": "1.000000",
-        "art_depth_invert": "0.000000",
-        "art_depth_recess": "0.088000",
-        "art_depth_white": "1.000000",
-        "art_texture_enabled": "1.000000",
-        "art_texture_opacity": "1.000000",
-        "art_texture_pan_x": "0.000000",
-        "art_texture_pan_y": "0.000000",
-        "art_texture_target": "0.000000",
-        "art_texture_zoom": "1.000000",
-        "bend_amt": "0.000000",
-        "cam_mode": "0.000000",
-        "camera_distance": "5.000000",
-        "camera_far": "100.000000",
-        "camera_fov": "89.819000",
-        "camera_look_sensitivity": "6.000000",
-        "camera_mode": "0",
-        "camera_move_speed": "1.777695",
-        "camera_near": "0.100000",
-        "camera_pitch": "0.206710",
-        "camera_pos_x": "0.638780",
-        "camera_pos_y": "1.926865",
-        "camera_pos_z": "1.987509",
-        "camera_target_x": "0.000000",
-        "camera_target_y": "1.000000",
-        "camera_target_z": "0.000000",
-        "camera_yaw": "-5.959111",
-        "dist_cx": "0.000000",
-        "dist_cy": "1.000000",
-        "dist_cz": "0.000000",
-        "evaluation_view": "3.000000",
-        "fog_amount": "0.100000",
-        "fx_amount": "0.000000",
-        "fx_architecture": "1.000000",
-        "fx_media": "1.000000",
-        "fx_seating": "0.000000",
-        "fx_speed": "0.600000",
-        "max_steps": "111.000000",
-        "melt_amt": "0.850000",
-        "orbit_azimuth": "0.220000",
-        "orbit_distance": "6.800000",
-        "orbit_elevation": "0.170000",
-        "orbit_focal": "0.780000",
-        "orbit_phase": "0.000000",
-        "orbit_target_x": "-0.250000",
-        "orbit_target_y": "1.050000",
-        "orbit_target_z": "0.000000",
-        "project_dir": "modules/LR_SDF_Renderer_8",
-        "quality_mode": "1.000000",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "swirl_amt": "0.000000",
-        "twist_amt": "0.000000",
-        "w1_amt": "1.113000",
-        "w1_freq": "2.590000",
-        "w1_mode": "1.000000",
-        "w1_ox": "0.000000",
-        "w1_oy": "0.000000",
-        "w1_oz": "0.000000",
-        "w1_pitch": "1.344000",
-        "w1_speed": "0.600000",
-        "w1_yaw": "-1.344000",
-        "w2_amt": "0.000000",
-        "w2_freq": "1.091000",
-        "w2_mode": "6.000000",
-        "w2_ox": "0.000000",
-        "w2_oy": "0.000000",
-        "w2_oz": "0.000000",
-        "w2_pitch": "0.000000",
-        "w2_speed": "0.900000",
-        "w2_yaw": "-3.150000",
-        "wave_amt": "0.000000",
-        "wave_freq": "2.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "Depth Estimation #0",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "depthestimation_0",
-      "inputSlotSourceIds": [
-        "source_1"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "depthestimation_0",
-      "panelOpen": true,
-      "parameters": {
-        "adaptiveSmoothing": "0",
-        "claheClipLimit": "1.000000",
-        "claheEnabled": "0",
-        "colormap": "turbo",
-        "contrastBoost": "0.000000",
-        "depthSharpen": "0.000000",
-        "depthSharpenRadius": "2.000000",
-        "detailEnhance": "0.000000",
-        "detailRadius": "20.000000",
-        "fllfStrength": "0.000000",
-        "fllfThreshold": "0.050000",
-        "invertDepth": "0",
-        "jbuEnabled": "1",
-        "jbuSigmaRange": "0.238000",
-        "jbuSigmaSpace": "9.057000",
-        "maxPercentile": "93.675003",
-        "minPercentile": "0.256000",
-        "motionThreshold": "0.050000",
-        "normalizationMode": "perframe",
-        "outputMode": "grayscale",
-        "temporalSmoothing": "0.806000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "depthestimation"
-    },
-    {
-      "displayName": "LR Furnishings",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "LR_Furnishings",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "LR_Furnishings",
-      "panelOpen": true,
-      "parameters": {
-        "coffee_table_offset_x": "0.000000",
-        "coffee_table_offset_y": "0.000000",
-        "coffee_table_yaw": "-0.080000",
-        "layout_offset_x": "0.000000",
-        "layout_offset_y": "0.000000",
-        "left_chair_offset_x": "-0.314286",
-        "left_chair_offset_y": "0.114286",
-        "left_chair_yaw": "-1.300000",
-        "media_wall_offset_x": "0.000000",
-        "media_wall_offset_y": "0.000000",
-        "plant_depth_offset": "0.000000",
-        "plant_spread": "0.818000",
-        "project_dir": "modules/LR_Furnishings_2",
-        "resolution_height": "270",
-        "resolution_width": "480",
-        "right_chair_offset_x": "0.000000",
-        "right_chair_offset_y": "0.000000",
-        "right_chair_yaw": "1.950000",
-        "seating_spread": "1.000000",
-        "sofa_offset_x": "0.000000",
-        "sofa_offset_y": "0.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "LR Materials",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "LR_Materials",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "LR_Materials",
-      "panelOpen": false,
-      "parameters": {
-        "accent_color_b": "0.070000",
-        "accent_color_g": "0.360000",
-        "accent_color_r": "0.680000",
-        "accent_wall_color_b": "0.160000",
-        "accent_wall_color_g": "0.130000",
-        "accent_wall_color_r": "0.110000",
-        "art_a_color_b": "0.080000",
-        "art_a_color_g": "0.190000",
-        "art_a_color_r": "0.620000",
-        "art_b_color_b": "0.340000",
-        "art_b_color_g": "0.250000",
-        "art_b_color_r": "0.070000",
-        "brass_color_b": "0.100000",
-        "brass_color_g": "0.320000",
-        "brass_color_r": "0.550000",
-        "ceramic_color_b": "0.600000",
-        "ceramic_color_g": "0.680000",
-        "ceramic_color_r": "0.720000",
-        "chair_color_b": "0.035000",
-        "chair_color_g": "0.115000",
-        "chair_color_r": "0.360000",
-        "leaf_color_b": "0.075000",
-        "leaf_color_g": "0.200000",
-        "leaf_color_r": "0.040000",
-        "linen_color_b": "0.600000",
-        "linen_color_g": "0.710000",
-        "linen_color_r": "0.780000",
-        "oak_color_b": "0.045000",
-        "oak_color_g": "0.120000",
-        "oak_color_r": "0.260000",
-        "plaster_color_b": "0.460000",
-        "plaster_color_g": "0.510000",
-        "plaster_color_r": "0.540000",
-        "project_dir": "modules/LR_Materials_4",
-        "resolution_height": "270",
-        "resolution_width": "480",
-        "rug_color_b": "0.120000",
-        "rug_color_g": "0.200000",
-        "rug_color_r": "0.340000",
-        "sofa_color_b": "0.220000",
-        "sofa_color_g": "0.200000",
-        "sofa_color_r": "0.055000",
-        "walnut_color_b": "0.025000",
-        "walnut_color_g": "0.080000",
-        "walnut_color_r": "0.220000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "LR Lighting",
-      "enabled": true,
-      "expressions": {
-        "daylight_intensity": "ref(\"/sentinel/groups/annotation_7/parameters/Daylight\")",
-        "practical_intensity": "ref(\"/sentinel/groups/annotation_7/parameters/Practical_Lights\")"
-      },
-      "fitMode": 1,
-      "id": "LR_Lighting",
-      "inputSlotSourceIds": [
-        "LR_Architecture",
-        "LR_Furnishings"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "LR_Lighting",
-      "panelOpen": false,
-      "parameters": {
-        "ambient_fill": "0.420000",
-        "daylight_intensity": "1.400000",
-        "practical_intensity": "1.400000",
-        "project_dir": "modules/LR_Lighting_4",
-        "resolution_height": "270",
-        "resolution_width": "480",
-        "shadow_softness": "0.320000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "StreamDiffusion #0",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "streamdiff_0",
-      "inputSlotSourceIds": [
-        "",
-        "",
-        "",
-        ""
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "streamdiff_0",
-      "panelOpen": true,
-      "parameters": {
-        "autopilot_deadzone": "0.040000",
-        "autopilot_enabled": "false",
-        "autopilot_invert_x": "false",
-        "autopilot_invert_y": "false",
-        "autopilot_sensitivity": "2.000000",
-        "autopilot_smoothing": "0.900000",
-        "autopilot_strength": "0.100000",
-        "black_level": "0.000000",
-        "brightness": "0.000000",
-        "cadence_fade_curve": "0",
-        "cadence_fade_frames": "0",
-        "color_match_algorithm": "2",
-        "color_match_ema_alpha": "0.100000",
-        "color_match_enabled": "false",
-        "color_match_strength": "0.850000",
-        "color_match_style_blend": "0.500000",
-        "color_match_target": "2",
-        "contrast": "1.000000",
-        "controlnet_auto_depth": "false",
-        "controlnet_enabled": "true",
-        "controlnet_scale": "0.700000",
-        "controlnet_type": "1",
-        "denoise": "0.500000",
-        "depth_adaptive_smoothing": "true",
-        "depth_cadence": "1",
-        "depth_fllf_strength": "0.500000",
-        "depth_fllf_threshold": "0.050000",
-        "depth_frame_delay": "0",
-        "depth_model_family": "dav2",
-        "depth_model_resolution": "518",
-        "depth_model_size": "small",
-        "depth_motion_threshold": "0.050000",
-        "depth_parallax": "true",
-        "depth_quantize_bits": "8",
-        "depth_range_smoothing": "0.900000",
-        "depth_smoothing": "0.600000",
-        "dilate": "0.000000",
-        "engine_precision": "1",
-        "engine_profile": "sdxl/512x896",
-        "engine_profile_type": "fixed",
-        "engine_resolution": "0",
-        "engine_tier": "0",
-        "erode": "0.000000",
-        "feedback": "1.000000",
-        "frame_skip": "1",
-        "frame_skip_blend": "1.000000",
-        "frame_skip_steady": "false",
-        "gamma": "1.000000",
-        "hold": "false",
-        "image_noise_blend": "0",
-        "image_noise_scale": "1.000000",
-        "image_noise_strength": "0.020000",
-        "image_noise_type": "0",
-        "ipadapter_enable": "true",
-        "ipadapter_scale": "1.000000",
-        "ipadapter_update_interval": "30",
-        "pan_x": "-0.002369",
-        "pan_y": "-0.003147",
-        "parallax_focus": "0.420000",
-        "parallax_height": "0.040000",
-        "parallax_invert_depth": "false",
-        "parallax_isometric": "0.000000",
-        "parallax_multiplier_x": "9.000000",
-        "parallax_multiplier_y": "9.000000",
-        "parallax_offset_x": "0.000000",
-        "parallax_offset_y": "0.000000",
-        "parallax_quality": "0.800000",
-        "parallax_steady": "1.000000",
-        "processing_height": "896",
-        "processing_width": "512",
-        "profile_has_controlnet": "false",
-        "profile_has_ipadapter": "true",
-        "profile_has_union": "true",
-        "prompt": "a monochrome skull made of chrome, floating on black background hyper realistic, 4k",
-        "prompt_bank_enabled": "false",
-        "prompt_position": "0.000000",
-        "prompt_weight": "1.000000",
-        "render_count": "1",
-        "render_one": "0",
-        "rotation": "0.000000",
-        "saturation": "1.000000",
-        "seed": "42",
-        "seed_locked": "false",
-        "seed_travel_enabled": "true",
-        "seed_travel_interpolation": "1",
-        "seed_travel_speed": "1.000000",
-        "seed_variation": "0.100000",
-        "sharpen": "0.100000",
-        "sharpen_radius": "1.000000",
-        "steps": "1",
-        "vsr_downsample_enabled": "false",
-        "vsr_downsample_filter": "1",
-        "vsr_downsample_scale": "100.000000",
-        "vsr_enabled": "true",
-        "vsr_quality": "3",
-        "warp_edge_mode": "1",
-        "warp_enabled": "false",
-        "warp_scale": "0.100000",
-        "zoom": "0.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "streamdiff"
-    },
-    {
-      "displayName": "LR Cinematic Grade",
-      "enabled": true,
-      "expressions": {
-        "bloom_intensity": "ref(\"/sentinel/groups/annotation_7/parameters/Bloom\")",
-        "exposure": "ref(\"/sentinel/groups/annotation_7/parameters/Exposure\")"
-      },
-      "fitMode": 1,
-      "id": "LR_Cinematic_Grade",
-      "inputSlotSourceIds": [
-        "LR_SDF_Renderer"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "LR_Cinematic_Grade",
-      "panelOpen": true,
-      "parameters": {
-        "bloom_intensity": "0.360000",
-        "bloom_knee": "0.300000",
-        "bloom_radius": "0.012000",
-        "bloom_threshold": "1.150000",
-        "contrast": "1.020000",
-        "exposure": "1.220000",
-        "grain_amount": "0.001500",
-        "highlight_tint_b": "0.560000",
-        "highlight_tint_g": "0.780000",
-        "highlight_tint_r": "1.000000",
-        "project_dir": "modules/LR_Cinematic_Grade_5",
-        "saturation": "0.940000",
-        "shadow_tint_b": "0.620000",
-        "shadow_tint_g": "0.500000",
-        "shadow_tint_r": "0.360000",
-        "split_tone": "0.080000",
-        "vignette": "0.250000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    }
-  ],
-  "saved_at_ms": 1784164138184,
-  "sources": [
-    {
-      "captureFrameRate": 0,
-      "captureHeight": 0,
-      "captureWidth": 0,
-      "deviceId": "",
-      "id": "source_0",
-      "imageFitMode": 2,
-      "imageHeight": 1400,
-      "imagePath": "images/abandoned_factory00_3.jpg",
-      "imageWidth": 1400,
-      "loop": true,
-      "name": "abandoned_factory00",
-      "patternAnimated": true,
-      "patternHeight": 1080,
-      "patternType": "colorbars",
-      "patternWidth": 1920,
-      "playbackRate": 1.0,
-      "playing": true,
-      "senderName": "",
-      "type": "image",
-      "videoPath": ""
-    },
-    {
-      "captureFrameRate": 0,
-      "captureHeight": 0,
-      "captureWidth": 0,
-      "deviceId": "",
-      "id": "source_1",
-      "imageFitMode": 1,
-      "imageHeight": 1080,
-      "imagePath": "",
-      "imageWidth": 1920,
-      "loop": true,
-      "name": "6616343-hd_1920_1...",
-      "patternAnimated": true,
-      "patternHeight": 1080,
-      "patternType": "colorbars",
-      "patternWidth": 1920,
-      "playbackRate": 1.0,
-      "playing": true,
-      "senderName": "",
-      "type": "video",
-      "videoPath": "videos/6616343-hd_1920_1080_25fps_vert_2.mp4"
-    }
-  ],
-  "version": 5
+    "outputObjects":  [
+
+                      ],
+    "outputs":  [
+
+                ],
+    "pipelines":  [
+                      {
+                          "displayName":  "LR Group Output 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "LR_Group_Output",
+                          "inputSlotSourceIds":  [
+                                                     "LR_Cinematic_Grade"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "LR_Group_Output",
+                          "panelOpen":  true,
+                          "parameters":  {
+                                             "background_b":  "0.000000",
+                                             "background_g":  "0.000000",
+                                             "background_r":  "0.000000",
+                                             "fit":  "0",
+                                             "height":  "1080",
+                                             "resolution_mode":  "0",
+                                             "width":  "1920"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "groupoutput"
+                      },
+                      {
+                          "displayName":  "LR Furnishings 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "LR_Furnishings",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "LR_Furnishings",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "coffee_table_offset_x":  "0.000000",
+                                             "coffee_table_offset_y":  "0.000000",
+                                             "coffee_table_yaw":  "-0.080000",
+                                             "fit_view":  "1.000000",
+                                             "layout_offset_x":  "0.000000",
+                                             "layout_offset_y":  "0.000000",
+                                             "left_chair_offset_x":  "-0.314286",
+                                             "left_chair_offset_y":  "0.114286",
+                                             "left_chair_yaw":  "-1.300000",
+                                             "media_wall_offset_x":  "0.000000",
+                                             "media_wall_offset_y":  "0.000000",
+                                             "move_tool":  "1.000000",
+                                             "plant_depth_offset":  "0.000000",
+                                             "plant_spread":  "0.818000",
+                                             "project_dir":  "modules/LR_Furnishings",
+                                             "reset_all":  "1.000000",
+                                             "reset_selected":  "1.000000",
+                                             "resolution_height":  "270",
+                                             "resolution_width":  "480",
+                                             "right_chair_offset_x":  "0.000000",
+                                             "right_chair_offset_y":  "0.000000",
+                                             "right_chair_yaw":  "1.950000",
+                                             "rotate_tool":  "1.000000",
+                                             "seating_spread":  "1.000000",
+                                             "snap_enabled":  "1.000000",
+                                             "snap_step":  "0.250000",
+                                             "sofa_offset_x":  "0.000000",
+                                             "sofa_offset_y":  "0.000000",
+                                             "tool_mode":  "0.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "LR SDF Renderer 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "LR_SDF_Renderer",
+                          "inputSlotSourceIds":  [
+                                                     "LR_Architecture",
+                                                     "LR_Furnishings",
+                                                     "LR_Materials",
+                                                     "LR_Lighting"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "LR_SDF_Renderer",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "ao_strength":  "2.200000",
+                                             "bend_amt":  "0.000000",
+                                             "cam_mode":  "0.000000",
+                                             "camera_distance":  "5.000000",
+                                             "camera_far":  "100.000000",
+                                             "camera_fov":  "89.819000",
+                                             "camera_look_sensitivity":  "6.000000",
+                                             "camera_mode":  "0",
+                                             "camera_move_speed":  "3.600000",
+                                             "camera_near":  "0.100000",
+                                             "camera_pitch":  "-0.241789",
+                                             "camera_pos_x":  "3.572262",
+                                             "camera_pos_y":  "1.698089",
+                                             "camera_pos_z":  "2.626495",
+                                             "camera_target_x":  "0.000000",
+                                             "camera_target_y":  "1.000000",
+                                             "camera_target_z":  "0.000000",
+                                             "camera_yaw":  "4.147632",
+                                             "dist_cx":  "0.000000",
+                                             "dist_cy":  "1.000000",
+                                             "dist_cz":  "0.000000",
+                                             "evaluation_view":  "0.000000",
+                                             "fog_amount":  "0.015000",
+                                             "fx_amount":  "0.335000",
+                                             "fx_architecture":  "1.000000",
+                                             "fx_media":  "1.000000",
+                                             "fx_seating":  "1.000000",
+                                             "fx_speed":  "0.600000",
+                                             "max_steps":  "96.000000",
+                                             "melt_amt":  "0.850000",
+                                             "orbit_azimuth":  "0.220000",
+                                             "orbit_distance":  "6.800000",
+                                             "orbit_elevation":  "0.170000",
+                                             "orbit_focal":  "0.780000",
+                                             "orbit_phase":  "0.000000",
+                                             "orbit_target_x":  "-0.250000",
+                                             "orbit_target_y":  "1.050000",
+                                             "orbit_target_z":  "0.000000",
+                                             "project_dir":  "modules/LR_SDF_Renderer",
+                                             "quality_mode":  "1.000000",
+                                             "resolution_height":  "720",
+                                             "resolution_width":  "1280",
+                                             "swirl_amt":  "0.000000",
+                                             "twist_amt":  "0.000000",
+                                             "w1_amt":  "1.113000",
+                                             "w1_freq":  "2.590000",
+                                             "w1_mode":  "2.000000",
+                                             "w1_ox":  "0.000000",
+                                             "w1_oy":  "0.000000",
+                                             "w1_oz":  "0.000000",
+                                             "w1_pitch":  "-0.738000",
+                                             "w1_speed":  "0.600000",
+                                             "w1_yaw":  "0.000000",
+                                             "w2_amt":  "0.000000",
+                                             "w2_freq":  "1.091000",
+                                             "w2_mode":  "6.000000",
+                                             "w2_ox":  "0.000000",
+                                             "w2_oy":  "0.000000",
+                                             "w2_oz":  "0.000000",
+                                             "w2_pitch":  "0.000000",
+                                             "w2_speed":  "0.900000",
+                                             "w2_yaw":  "-3.150000",
+                                             "wave_amt":  "0.000000",
+                                             "wave_freq":  "2.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "LR Architecture 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "LR_Architecture",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "LR_Architecture",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "art_center_x":  "-0.250000",
+                                             "art_height":  "1.320000",
+                                             "art_spread":  "2.050000",
+                                             "ceiling_height":  "3.600000",
+                                             "door_position_x":  "4.210000",
+                                             "door_position_y":  "1.850000",
+                                             "door_yaw":  "-1.570800",
+                                             "pendant_drop":  "0.780000",
+                                             "pendant_spread":  "2.400000",
+                                             "pendant_z":  "0.350000",
+                                             "project_dir":  "modules/LR_Architecture",
+                                             "resolution_height":  "270",
+                                             "resolution_width":  "480",
+                                             "room_depth":  "7.200000",
+                                             "room_offset_x":  "0.000000",
+                                             "room_offset_y":  "0.000000",
+                                             "room_width":  "8.800000",
+                                             "rug_position_x":  "-0.300000",
+                                             "rug_position_y":  "0.450000",
+                                             "rug_size":  "1.050000",
+                                             "window_position_x":  "-2.450000",
+                                             "window_position_y":  "0.720000",
+                                             "window_scale":  "1.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "LR Materials 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "LR_Materials",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "LR_Materials",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "accent_color_b":  "0.070000",
+                                             "accent_color_g":  "0.360000",
+                                             "accent_color_r":  "0.680000",
+                                             "accent_wall_color_b":  "0.160000",
+                                             "accent_wall_color_g":  "0.130000",
+                                             "accent_wall_color_r":  "0.110000",
+                                             "art_a_color_b":  "0.080000",
+                                             "art_a_color_g":  "0.190000",
+                                             "art_a_color_r":  "0.620000",
+                                             "art_b_color_b":  "0.340000",
+                                             "art_b_color_g":  "0.250000",
+                                             "art_b_color_r":  "0.070000",
+                                             "brass_color_b":  "0.100000",
+                                             "brass_color_g":  "0.320000",
+                                             "brass_color_r":  "0.550000",
+                                             "ceramic_color_b":  "0.600000",
+                                             "ceramic_color_g":  "0.680000",
+                                             "ceramic_color_r":  "0.720000",
+                                             "chair_color_b":  "0.035000",
+                                             "chair_color_g":  "0.115000",
+                                             "chair_color_r":  "0.360000",
+                                             "leaf_color_b":  "0.075000",
+                                             "leaf_color_g":  "0.200000",
+                                             "leaf_color_r":  "0.040000",
+                                             "linen_color_b":  "0.600000",
+                                             "linen_color_g":  "0.710000",
+                                             "linen_color_r":  "0.780000",
+                                             "oak_color_b":  "0.045000",
+                                             "oak_color_g":  "0.120000",
+                                             "oak_color_r":  "0.260000",
+                                             "plaster_color_b":  "0.460000",
+                                             "plaster_color_g":  "0.510000",
+                                             "plaster_color_r":  "0.540000",
+                                             "project_dir":  "modules/LR_Materials",
+                                             "resolution_height":  "270",
+                                             "resolution_width":  "480",
+                                             "rug_color_b":  "0.120000",
+                                             "rug_color_g":  "0.200000",
+                                             "rug_color_r":  "0.340000",
+                                             "sofa_color_b":  "0.220000",
+                                             "sofa_color_g":  "0.200000",
+                                             "sofa_color_r":  "0.055000",
+                                             "walnut_color_b":  "0.025000",
+                                             "walnut_color_g":  "0.080000",
+                                             "walnut_color_r":  "0.220000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "LR Lighting 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "LR_Lighting",
+                          "inputSlotSourceIds":  [
+                                                     "LR_Architecture",
+                                                     "LR_Furnishings"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "LR_Lighting",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "ambient_fill":  "0.680000",
+                                             "daylight_intensity":  "2.250000",
+                                             "practical_intensity":  "0.650000",
+                                             "project_dir":  "modules/LR_Lighting",
+                                             "resolution_height":  "270",
+                                             "resolution_width":  "480",
+                                             "shadow_softness":  "0.180000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "LR Cinematic Grade 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "LR_Cinematic_Grade",
+                          "inputSlotSourceIds":  [
+                                                     "LR_SDF_Renderer"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "LR_Cinematic_Grade",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "bloom_intensity":  "0.160000",
+                                             "bloom_knee":  "0.300000",
+                                             "bloom_radius":  "0.012000",
+                                             "bloom_threshold":  "1.150000",
+                                             "contrast":  "1.020000",
+                                             "exposure":  "1.020000",
+                                             "grain_amount":  "0.000000",
+                                             "highlight_tint_b":  "0.560000",
+                                             "highlight_tint_g":  "0.780000",
+                                             "highlight_tint_r":  "1.000000",
+                                             "project_dir":  "modules/LR_Cinematic_Grade",
+                                             "saturation":  "0.940000",
+                                             "shadow_tint_b":  "0.620000",
+                                             "shadow_tint_g":  "0.500000",
+                                             "shadow_tint_r":  "0.360000",
+                                             "split_tone":  "0.030000",
+                                             "vignette":  "0.060000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      }
+                  ],
+    "saved_at_ms":  1784242419321,
+    "sources":  [
+
+                ],
+    "statePayloads":  {
+                          "LR_Furnishings":  {
+                                                 "furnishing_state":  {
+                                                                          "data":  "0000000000000000000000000100000000b8e445000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000009000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000b000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000",
+                                                                          "element_count":  12,
+                                                                          "element_size":  32,
+                                                                          "encoding":  "hex",
+                                                                          "schema_signature":  "2142268984039736206"
+                                                                      }
+                                             }
+                      },
+    "version":  5
 }

@@ -1,14 +1,14 @@
-// strata_control — the "drive the whole system from one node" macro. Publishes a master
-// SEED (reshuffles every plate's arrangement at once → infinite variation) plus distortion
-// macros (melt/twist for the solids, marble warp) as control outputs. Wire to each plate's
-// seed + warp params via ref() expressions. This is the knob that makes strata infinitely
-// variable while keeping palette + framing fixed.
+struct Ctrl {
+    float seed; float melt; float twist; float marble_warp;
+    float spread; float wire_scale; float palette; float blob_mix;
+    float marble_mix; float wire_mix; float marks_mix; float feature_enabled;
+    float feature_gain; float feature_count; float marker; float pad;
+};
 
-struct Ctrl { float seed; float melt; float twist; float marble_warp; float spread; float wire_scale; float p6; float p7; };
-RWStructuredBuffer<Ctrl> Out : register(u0);
+RWStructuredBuffer<Ctrl> OutputBuffer : register(u0);
 
 [numthreads(1, 1, 1)]
-void main(uint3 DTid : SV_DispatchThreadID)
+void main(uint3 tid : SV_DispatchThreadID)
 {
     Ctrl c;
     c.seed = master_seed;
@@ -17,6 +17,15 @@ void main(uint3 DTid : SV_DispatchThreadID)
     c.marble_warp = marble_warp_macro;
     c.spread = spread_macro;
     c.wire_scale = wire_scale_macro;
-    c.p6 = 0; c.p7 = 0;
-    Out[0] = c;
+    c.palette = (float)palette_variant;
+    c.blob_mix = blob_mix;
+    c.marble_mix = marble_mix;
+    c.wire_mix = wire_mix;
+    c.marks_mix = marks_mix;
+    c.feature_enabled = feature_enabled != 0 ? 1.0 : 0.0;
+    c.feature_gain = feature_gain;
+    c.feature_count = (float)_Data0_Count;
+    c.marker = 75110.0;
+    c.pad = 0.0;
+    OutputBuffer[0] = c;
 }

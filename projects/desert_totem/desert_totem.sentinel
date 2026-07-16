@@ -1,483 +1,1256 @@
 {
-  "graph": {
-    "canvasZoom": 1.0175881385803223,
-    "links": [
-      {
-        "endPinId": 27,
-        "id": 7,
-        "startPinId": 3
-      },
-      {
-        "endPinId": 29,
-        "id": 8,
-        "startPinId": 6
-      },
-      {
-        "endPinId": 19,
-        "id": 9,
-        "startPinId": 28
-      }
-    ],
-    "nextLinkId": 10,
-    "nextNodeId": 9,
-    "nextPinId": 30,
-    "nodes": [
-      {
-        "displayName": "dada_layout",
-        "entityId": "dada_layout",
-        "id": 1,
-        "posX": 540.2144165039063,
-        "posY": 280.5276794433594,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "dada_scatter",
-        "entityId": "dada_scatter",
-        "id": 2,
-        "posX": 725.7006225585938,
-        "posY": 426.1196594238281,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "dada_control",
-        "entityId": "dada_control",
-        "id": 3,
-        "posX": 251.4580078125,
-        "posY": 542.607666015625,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "signal",
-        "entityId": "signal",
-        "id": 4,
-        "posX": 417.1359558105469,
-        "posY": 680.8325805664063,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "post",
-        "entityId": "post",
-        "id": 5,
-        "posX": 1166.2283935546875,
-        "posY": 324.8908386230469,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "dada_render",
-        "entityId": "dada_render",
-        "id": 8,
-        "posX": 938.0548095703125,
-        "posY": 331.33892822265625,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      }
-    ],
-    "pins": [
-      {
-        "id": 2,
-        "kind": 1,
-        "name": "Preview",
-        "nodeId": 1,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 10,
-        "kind": 1,
-        "name": "Control",
-        "nodeId": 3,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 3,
-        "kind": 1,
-        "name": "Parts",
-        "nodeId": 1,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 11,
-        "kind": 1,
-        "name": "melt",
-        "nodeId": 3,
-        "slotIndex": 1,
-        "type": 7
-      },
-      {
-        "id": 5,
-        "kind": 1,
-        "name": "Preview",
-        "nodeId": 2,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 6,
-        "kind": 1,
-        "name": "Parts",
-        "nodeId": 2,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 8,
-        "kind": 1,
-        "name": "sag",
-        "nodeId": 3,
-        "slotIndex": 2,
-        "type": 7
-      },
-      {
-        "id": 9,
-        "kind": 1,
-        "name": "spread",
-        "nodeId": 3,
-        "slotIndex": 3,
-        "type": 7
-      },
-      {
-        "id": 12,
-        "kind": 1,
-        "name": "explode",
-        "nodeId": 3,
-        "slotIndex": 4,
-        "type": 7
-      },
-      {
-        "id": 14,
-        "kind": 1,
-        "name": "Signal",
-        "nodeId": 4,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 15,
-        "kind": 1,
-        "name": "pulse",
-        "nodeId": 4,
-        "slotIndex": 1,
-        "type": 7
-      },
-      {
-        "id": 16,
-        "kind": 1,
-        "name": "sweep",
-        "nodeId": 4,
-        "slotIndex": 2,
-        "type": 7
-      },
-      {
-        "id": 17,
-        "kind": 1,
-        "name": "beat",
-        "nodeId": 4,
-        "slotIndex": 3,
-        "type": 7
-      },
-      {
-        "id": 18,
-        "kind": 1,
-        "name": "slow",
-        "nodeId": 4,
-        "slotIndex": 4,
-        "type": 7
-      },
-      {
-        "id": 19,
-        "kind": 0,
-        "name": "Scene",
-        "nodeId": 5,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 20,
-        "kind": 1,
-        "name": "Out",
-        "nodeId": 5,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 27,
-        "kind": 0,
-        "name": "Parts",
-        "nodeId": 8,
-        "slotIndex": 0,
-        "type": 6
-      },
-      {
-        "id": 28,
-        "kind": 1,
-        "name": "Render",
-        "nodeId": 8,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 29,
-        "kind": 0,
-        "name": "Scatter",
-        "nodeId": 8,
-        "slotIndex": 1,
-        "type": 6
-      }
-    ]
-  },
-  "input": {
-    "activeSource": ""
-  },
-  "layout": "",
-  "name": "desert_totem",
-  "osc": {
-    "enabled": true,
-    "receivePort": 9000,
-    "sendFeedback": true,
-    "sendHost": "127.0.0.1",
-    "sendPort": 9001,
-    "stateTreeBridge": true
-  },
-  "outputObjects": [],
-  "outputs": [],
-  "pipelines": [
-    {
-      "displayName": "dada_layout",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "dada_layout",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "explode": "0.000000",
-        "jitter": "0.163000",
-        "lift": "-0.330000",
-        "project_dir": "modules/dada_layout",
-        "resolution_height": "640",
-        "resolution_width": "420",
-        "seed": "0.000000",
-        "size_mul": "1.490000",
-        "spread": "1.264000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "dada_scatter",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "dada_scatter",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "project_dir": "modules/dada_scatter",
-        "resolution_height": "640",
-        "resolution_width": "420",
-        "scatter_count": "41.000000",
-        "scatter_seed": "3.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "dada_control",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "dada_control",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "explode_macro": "0.000000",
-        "melt_macro": "0.080000",
-        "project_dir": "modules/dada_control",
-        "resolution_height": "128",
-        "resolution_width": "256",
-        "sag_macro": "0.180000",
-        "spread_macro": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "signal",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "signal",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "beat_rate": "2.000000",
-        "beat_sharp": "3.000000",
-        "project_dir": "modules/signal",
-        "pulse_rate": "0.800000",
-        "resolution_height": "64",
-        "resolution_width": "256",
-        "slow_rate": "0.050000",
-        "sweep_rate": "0.100000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "post",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "post",
-      "inputSlotSourceIds": [
-        "dada_render"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "bloom_intensity": "0.500000",
-        "bloom_radius": "0.032000",
-        "bloom_threshold": "0.900000",
-        "chroma": "0.400000",
-        "contrast": "1.080000",
-        "exposure": "1.050000",
-        "grain_amt": "0.035000",
-        "highlight_tint_b": "0.250000",
-        "highlight_tint_g": "0.600000",
-        "highlight_tint_r": "1.000000",
-        "project_dir": "modules/post",
-        "saturation": "1.200000",
-        "shadow_tint_b": "0.220000",
-        "shadow_tint_g": "0.140000",
-        "shadow_tint_r": "0.000000",
-        "split_balance": "0.220000",
-        "vignette": "0.600000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "dada_render",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "dada_render",
-      "inputSlotSourceIds": [
-        "dada_layout",
-        "dada_scatter"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "bend_amt": "0.000000",
-        "board_yaw": "0.140000",
-        "cam_distance": "15.000000",
-        "cam_elevation": "4.000000",
-        "cam_focal": "2.600000",
-        "cam_mode": "0.000000",
-        "cam_orbit": "87.000000",
-        "cam_target_y": "4.900000",
-        "camera_far": "100.000000",
-        "camera_fov": "60.000000",
-        "camera_look_sensitivity": "6.000000",
-        "camera_move_speed": "3.288661",
-        "camera_near": "0.100000",
-        "camera_pitch": "0.263101",
-        "camera_pos_x": "-2.795339",
-        "camera_pos_y": "1.815673",
-        "camera_pos_z": "14.249688",
-        "camera_yaw": "9.194325",
-        "dist_cx": "0.000000",
-        "dist_cy": "4.500000",
-        "dist_cz": "0.300000",
-        "exposure": "1.050000",
-        "facet_amt": "0.000000",
-        "fog_density": "1.000000",
-        "heat_amt": "0.350000",
-        "hue_shift": "0.000000",
-        "march_dist": "120.000000",
-        "melt_amt": "3.000000",
-        "mirror_count": "0.000000",
-        "mirror_mode": "0.000000",
-        "painterly_amt": "0.370000",
-        "painterly_scale": "5.240000",
-        "pinch_amt": "0.000000",
-        "project_dir": "modules/dada_render",
-        "resolution_height": "1140",
-        "resolution_width": "760",
-        "rotate_speed": "0.000000",
-        "sag_amt": "0.000000",
-        "shadows": "1.000000",
-        "sky_horizon_b": "0.750000",
-        "sky_horizon_g": "0.830000",
-        "sky_horizon_r": "0.860000",
-        "sky_zenith_b": "0.740000",
-        "sky_zenith_g": "0.640000",
-        "sky_zenith_r": "0.500000",
-        "spine_height": "3.550000",
-        "sun_azimuth": "62.000000",
-        "sun_elevation": "48.000000",
-        "swirl_amt": "0.000000",
-        "twist_amt": "0.000000",
-        "w1_amt": "0.540000",
-        "w1_freq": "0.979000",
-        "w1_mode": "3.000000",
-        "w1_ox": "0.000000",
-        "w1_oy": "0.000000",
-        "w1_oz": "0.000000",
-        "w1_pitch": "1.701000",
-        "w1_speed": "0.600000",
-        "w1_yaw": "-1.134000",
-        "w2_amt": "0.000000",
-        "w2_freq": "1.800000",
-        "w2_mode": "1.000000",
-        "w2_ox": "0.000000",
-        "w2_oy": "0.000000",
-        "w2_oz": "0.000000",
-        "w2_pitch": "0.000000",
-        "w2_speed": "0.900000",
-        "w2_yaw": "1.570000",
-        "w3_amt": "0.000000",
-        "w3_freq": "2.600000",
-        "w3_mode": "3.000000",
-        "w3_ox": "0.000000",
-        "w3_oy": "0.000000",
-        "w3_oz": "0.000000",
-        "w3_pitch": "1.570000",
-        "w3_speed": "1.300000",
-        "w3_yaw": "0.000000",
-        "warp_speed": "0.000000",
-        "wave_amt": "0.000000",
-        "wave_freq": "2.000000",
-        "wobble_amt": "0.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    }
-  ],
-  "saved_at_ms": 1783490422339,
-  "sources": [],
-  "version": 5
+    "binds":  [
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/sag_macro",
+                      "/sentinel/pipelines/dada_render/parameters/sag_amt"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/spread_macro",
+                      "/sentinel/pipelines/dada_layout/parameters/spread"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/explode_macro",
+                      "/sentinel/pipelines/dada_layout/parameters/explode"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/warp_primary",
+                      "/sentinel/pipelines/dada_render/parameters/w1_amt"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/warp_secondary",
+                      "/sentinel/pipelines/dada_render/parameters/w2_amt"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/twist_macro",
+                      "/sentinel/pipelines/dada_render/parameters/twist_amt"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/painterly_macro",
+                      "/sentinel/pipelines/dada_render/parameters/painterly_amt"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/facet_macro",
+                      "/sentinel/pipelines/dada_render/parameters/facet_amt"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/hue_macro",
+                      "/sentinel/pipelines/dada_render/parameters/hue_shift"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/heat_macro",
+                      "/sentinel/pipelines/dada_render/parameters/heat_amt"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/scatter_macro",
+                      "/sentinel/pipelines/dada_scatter/parameters/scatter_count"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_92/parameters/Layout_Seed",
+                      "/sentinel/pipelines/dada_layout/parameters/seed"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_92/parameters/Scatter_Seed",
+                      "/sentinel/pipelines/dada_scatter/parameters/scatter_seed"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_92/parameters/Layout_Jitter",
+                      "/sentinel/pipelines/dada_layout/parameters/jitter"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_92/parameters/Fog_Density",
+                      "/sentinel/pipelines/dada_render/parameters/fog_density"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_92/parameters/Sun_Azimuth",
+                      "/sentinel/pipelines/dada_render/parameters/sun_azimuth"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_92/parameters/Sun_Elevation",
+                      "/sentinel/pipelines/dada_render/parameters/sun_elevation"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_92/parameters/Bloom",
+                      "/sentinel/pipelines/post_2/parameters/bloom_intensity"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_92/parameters/Film_Grain",
+                      "/sentinel/pipelines/post_2/parameters/grain_amt"
+                  ],
+                  [
+                      "/sentinel/pipelines/dada_control/parameters/melt_macro",
+                      "/sentinel/pipelines/dada_render/parameters/melt_amt"
+                  ]
+              ],
+    "display":  {
+                    "fpsLimit":  60.0,
+                    "vsyncEnabled":  false
+                },
+    "graph":  {
+                  "canvasZoom":  0.72,
+                  "links":  [
+                                {
+                                    "endPinId":  292,
+                                    "id":  64,
+                                    "startPinId":  295
+                                },
+                                {
+                                    "endPinId":  302,
+                                    "id":  65,
+                                    "startPinId":  293
+                                },
+                                {
+                                    "endPinId":  330,
+                                    "id":  74,
+                                    "startPinId":  287
+                                },
+                                {
+                                    "endPinId":  294,
+                                    "id":  75,
+                                    "startPinId":  285
+                                }
+                            ],
+                  "nextLinkId":  76,
+                  "nextNodeId":  94,
+                  "nextPinId":  347,
+                  "nodes":  [
+                                {
+                                    "displayName":  "dada_layout 2",
+                                    "entityId":  "dada_layout",
+                                    "id":  68,
+                                    "posX":  470,
+                                    "posY":  159.99978637695313,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "dada_scatter 2",
+                                    "entityId":  "dada_scatter",
+                                    "id":  69,
+                                    "posX":  470,
+                                    "posY":  508.61724853515625,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "dada_control 2",
+                                    "entityId":  "dada_control",
+                                    "id":  70,
+                                    "posX":  149.99951171875,
+                                    "posY":  190.00003051757813,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "signal 3",
+                                    "entityId":  "signal_1",
+                                    "id":  71,
+                                    "posX":  149.99951171875,
+                                    "posY":  539.99993896484375,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "post 4",
+                                    "entityId":  "post_2",
+                                    "id":  72,
+                                    "posX":  1130.0009765625,
+                                    "posY":  240.00009155273438,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "dada_render 2",
+                                    "entityId":  "dada_render",
+                                    "id":  73,
+                                    "posX":  850,
+                                    "posY":  238.53424072265625,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "Desert Group Output 2",
+                                    "entityId":  "Desert_Group_Output",
+                                    "id":  77,
+                                    "posX":  1400,
+                                    "posY":  240.00009155273438,
+                                    "positionSet":  true,
+                                    "previewVisible":  true,
+                                    "type":  1
+                                },
+                                {
+                                    "annotationBody":  "Gallery look Â· procedural sculpture workstation",
+                                    "annotationColor":  "#C8643D3D",
+                                    "annotationTitle":  "DESERT TOTEM",
+                                    "displayName":  "DESERT TOTEM",
+                                    "entityId":  "annotation_92",
+                                    "height":  1044.0,
+                                    "id":  92,
+                                    "posX":  80,
+                                    "posY":  80,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "sceneGroup":  true,
+                                    "sceneGroupActivePreset":  "",
+                                    "sceneGroupEnabled":  true,
+                                    "sceneGroupParameters":  [
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "1.000000",
+                                                                     "description":  "Seed",
+                                                                     "displayName":  "Seed",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Arrange",
+                                                                     "maxValue":  50.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Layout_Seed",
+                                                                     "orderIndex":  0,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/dada_layout/parameters/seed",
+                                                                     "type":  "float",
+                                                                     "value":  "2.000000",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "3.000000",
+                                                                     "description":  "Seed",
+                                                                     "displayName":  "Seed",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Scatter",
+                                                                     "maxValue":  50.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Scatter_Seed",
+                                                                     "orderIndex":  1,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/dada_scatter/parameters/scatter_seed",
+                                                                     "type":  "float",
+                                                                     "value":  "3.000000",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "0.000000",
+                                                                     "description":  "Jitter",
+                                                                     "displayName":  "Jitter",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Arrange",
+                                                                     "maxValue":  2.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Layout_Jitter",
+                                                                     "orderIndex":  2,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/dada_layout/parameters/jitter",
+                                                                     "type":  "float",
+                                                                     "value":  "0.05",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "1.000000",
+                                                                     "description":  "Haze Density",
+                                                                     "displayName":  "Haze Density",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Environment",
+                                                                     "maxValue":  3.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Fog_Density",
+                                                                     "orderIndex":  3,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/dada_render/parameters/fog_density",
+                                                                     "type":  "float",
+                                                                     "value":  "0.8",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "62.000000",
+                                                                     "description":  "Sun Azimuth",
+                                                                     "displayName":  "Sun Azimuth",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Sun",
+                                                                     "maxValue":  360.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Sun_Azimuth",
+                                                                     "orderIndex":  4,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/dada_render/parameters/sun_azimuth",
+                                                                     "type":  "float",
+                                                                     "value":  "62.000000",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "48.000000",
+                                                                     "description":  "Sun Elevation",
+                                                                     "displayName":  "Sun Elevation",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Sun",
+                                                                     "maxValue":  89.0,
+                                                                     "minValue":  5.0,
+                                                                     "name":  "Sun_Elevation",
+                                                                     "orderIndex":  5,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/dada_render/parameters/sun_elevation",
+                                                                     "type":  "float",
+                                                                     "value":  "48.000000",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "1.100000",
+                                                                     "description":  "Bloom Intensity",
+                                                                     "displayName":  "Bloom Intensity",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Bloom",
+                                                                     "maxValue":  3.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Bloom",
+                                                                     "orderIndex":  6,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/post_2/parameters/bloom_intensity",
+                                                                     "type":  "float",
+                                                                     "value":  "0.45",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "0.035000",
+                                                                     "description":  "Film Grain",
+                                                                     "displayName":  "Film Grain",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Lens",
+                                                                     "maxValue":  0.20000000298023224,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Film_Grain",
+                                                                     "orderIndex":  7,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/post_2/parameters/grain_amt",
+                                                                     "type":  "float",
+                                                                     "value":  "0.025",
+                                                                     "widget":  ""
+                                                                 }
+                                                             ],
+                                    "sceneGroupPresets":  [
+
+                                                          ],
+                                    "type":  4,
+                                    "width":  1565.0
+                                }
+                            ],
+                  "pins":  [
+                               {
+                                   "id":  318,
+                                   "kind":  1,
+                                   "name":  "Warp Deck",
+                                   "nodeId":  70,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  312,
+                                   "kind":  1,
+                                   "name":  "Assembly Editor",
+                                   "nodeId":  68,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  292,
+                                   "kind":  0,
+                                   "name":  "Scene",
+                                   "nodeId":  72,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  294,
+                                   "kind":  0,
+                                   "name":  "Parts",
+                                   "nodeId":  73,
+                                   "slotIndex":  0,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  308,
+                                   "kind":  1,
+                                   "name":  "Signal",
+                                   "nodeId":  71,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  302,
+                                   "kind":  0,
+                                   "name":  "Video",
+                                   "nodeId":  77,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  306,
+                                   "kind":  1,
+                                   "name":  "pulse",
+                                   "nodeId":  71,
+                                   "slotIndex":  1,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  316,
+                                   "kind":  1,
+                                   "name":  "style",
+                                   "nodeId":  70,
+                                   "slotIndex":  1,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  310,
+                                   "kind":  1,
+                                   "name":  "Preview",
+                                   "nodeId":  69,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  324,
+                                   "kind":  1,
+                                   "name":  "melt",
+                                   "nodeId":  70,
+                                   "slotIndex":  2,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  322,
+                                   "kind":  1,
+                                   "name":  "sag",
+                                   "nodeId":  70,
+                                   "slotIndex":  3,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  326,
+                                   "kind":  1,
+                                   "name":  "spread",
+                                   "nodeId":  70,
+                                   "slotIndex":  4,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  320,
+                                   "kind":  1,
+                                   "name":  "explode",
+                                   "nodeId":  70,
+                                   "slotIndex":  5,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  330,
+                                   "kind":  0,
+                                   "name":  "Scatter",
+                                   "nodeId":  73,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  328,
+                                   "kind":  1,
+                                   "name":  "primary",
+                                   "nodeId":  70,
+                                   "slotIndex":  6,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  285,
+                                   "kind":  1,
+                                   "name":  "Parts",
+                                   "nodeId":  68,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  287,
+                                   "kind":  1,
+                                   "name":  "Parts",
+                                   "nodeId":  69,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  289,
+                                   "kind":  1,
+                                   "name":  "secondary",
+                                   "nodeId":  70,
+                                   "slotIndex":  7,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  291,
+                                   "kind":  1,
+                                   "name":  "sweep",
+                                   "nodeId":  71,
+                                   "slotIndex":  2,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  293,
+                                   "kind":  1,
+                                   "name":  "Out",
+                                   "nodeId":  72,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  295,
+                                   "kind":  1,
+                                   "name":  "Render",
+                                   "nodeId":  73,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  303,
+                                   "kind":  1,
+                                   "name":  "Out",
+                                   "nodeId":  77,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  307,
+                                   "kind":  1,
+                                   "name":  "beat",
+                                   "nodeId":  71,
+                                   "slotIndex":  3,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  309,
+                                   "kind":  1,
+                                   "name":  "slow",
+                                   "nodeId":  71,
+                                   "slotIndex":  4,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  311,
+                                   "kind":  1,
+                                   "name":  "Assembly Overrides",
+                                   "nodeId":  68,
+                                   "slotIndex":  2,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  313,
+                                   "kind":  1,
+                                   "name":  "Viewport Objects",
+                                   "nodeId":  68,
+                                   "slotIndex":  3,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  314,
+                                   "kind":  1,
+                                   "name":  "Viewport Pick Result",
+                                   "nodeId":  68,
+                                   "slotIndex":  4,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  315,
+                                   "kind":  1,
+                                   "name":  "twist",
+                                   "nodeId":  70,
+                                   "slotIndex":  8,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  317,
+                                   "kind":  1,
+                                   "name":  "painterly",
+                                   "nodeId":  70,
+                                   "slotIndex":  9,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  319,
+                                   "kind":  1,
+                                   "name":  "facet",
+                                   "nodeId":  70,
+                                   "slotIndex":  10,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  321,
+                                   "kind":  1,
+                                   "name":  "hue",
+                                   "nodeId":  70,
+                                   "slotIndex":  11,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  323,
+                                   "kind":  1,
+                                   "name":  "heat",
+                                   "nodeId":  70,
+                                   "slotIndex":  12,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  325,
+                                   "kind":  1,
+                                   "name":  "scatter",
+                                   "nodeId":  70,
+                                   "slotIndex":  13,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  327,
+                                   "kind":  1,
+                                   "name":  "primary_mode",
+                                   "nodeId":  70,
+                                   "slotIndex":  14,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  329,
+                                   "kind":  1,
+                                   "name":  "secondary_mode",
+                                   "nodeId":  70,
+                                   "slotIndex":  15,
+                                   "type":  7
+                               }
+                           ]
+              },
+    "input":  {
+                  "activeSource":  ""
+              },
+    "layout":  "",
+    "name":  "desert_totem",
+    "nodePresets":  [
+                        {
+                            "created":  "2026-07-15T05:17:44",
+                            "id":  "513c9de0-3430-6a6d-3f46627436e5",
+                            "modified":  "2026-07-15T05:38:23",
+                            "name":  "Monument Baseline",
+                            "parameters":  [
+                                               {
+                                                   "name":  "tool_mode",
+                                                   "value":  "0"
+                                               },
+                                               {
+                                                   "name":  "spread",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "explode",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "jitter",
+                                                   "value":  "0.163"
+                                               },
+                                               {
+                                                   "name":  "seed",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "lift",
+                                                   "value":  "-0.33"
+                                               },
+                                               {
+                                                   "name":  "size_mul",
+                                                   "value":  "1.49"
+                                               }
+                                           ],
+                            "pipelineType":  "module:dada_layout",
+                            "scope":  "project",
+                            "statePayloads":  {
+                                                  "assembly_overrides":  {
+                                                                             "data":  "0000000000000000000000000000803f0100000000c1724700000000000000000000000000000000000000000000803f020000000000000000000000000000000000000000000000000000000000803f030000000000000000000000000000000000000000000000000000000000803f04000000000000000000000000000000",
+                                                                             "element_count":  4,
+                                                                             "element_size":  32,
+                                                                             "encoding":  "hex",
+                                                                             "schema_signature":  "2543607919935778994"
+                                                                         }
+                                              }
+                        },
+                        {
+                            "created":  "2026-07-15T05:36:51",
+                            "id":  "aa1adb4a-be12-7bf8-a78d22dac73d",
+                            "modified":  "2026-07-15T05:38:06",
+                            "name":  "Asymmetric Study",
+                            "parameters":  [
+                                               {
+                                                   "name":  "tool_mode",
+                                                   "value":  "2"
+                                               },
+                                               {
+                                                   "name":  "spread",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "explode",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "jitter",
+                                                   "value":  "0.163"
+                                               },
+                                               {
+                                                   "name":  "seed",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "lift",
+                                                   "value":  "-0.33"
+                                               },
+                                               {
+                                                   "name":  "size_mul",
+                                                   "value":  "1.49"
+                                               }
+                                           ],
+                            "pipelineType":  "module:dada_layout",
+                            "scope":  "project",
+                            "statePayloads":  {
+                                                  "assembly_overrides":  {
+                                                                             "data":  "0000000000000000f251b83e0000803f0100000000c1724700000000000000000000000000000000000000000000803f020000000000000000000000000000000000000000000000000000001583c03f03000000000000000000000000000000ad78833f57f0223f000000000000803f04000000000000000000000000000000",
+                                                                             "element_count":  4,
+                                                                             "element_size":  32,
+                                                                             "encoding":  "hex",
+                                                                             "schema_signature":  "2543607919935778994"
+                                                                         }
+                                              }
+                        },
+                        {
+                            "created":  "2026-07-15T05:45:11",
+                            "id":  "a90b68b9-e772-b156-6ac89a1b12c0",
+                            "modified":  "2026-07-15T05:45:11",
+                            "name":  "Monument Warp Desk",
+                            "parameters":  [
+                                               {
+                                                   "name":  "warp_style",
+                                                   "value":  "0"
+                                               },
+                                               {
+                                                   "name":  "melt_macro",
+                                                   "value":  "0.08"
+                                               },
+                                               {
+                                                   "name":  "sag_macro",
+                                                   "value":  "0.18"
+                                               },
+                                               {
+                                                   "name":  "spread_macro",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "explode_macro",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "warp_primary",
+                                                   "value":  "0.35"
+                                               },
+                                               {
+                                                   "name":  "warp_secondary",
+                                                   "value":  "0.1"
+                                               },
+                                               {
+                                                   "name":  "twist_macro",
+                                                   "value":  "0.1"
+                                               },
+                                               {
+                                                   "name":  "painterly_macro",
+                                                   "value":  "0.25"
+                                               },
+                                               {
+                                                   "name":  "facet_macro",
+                                                   "value":  "0.08"
+                                               },
+                                               {
+                                                   "name":  "hue_macro",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "heat_macro",
+                                                   "value":  "0.28"
+                                               },
+                                               {
+                                                   "name":  "scatter_macro",
+                                                   "value":  "36"
+                                               }
+                                           ],
+                            "pipelineType":  "module:dada_control",
+                            "scope":  "project"
+                        },
+                        {
+                            "created":  "2026-07-15T05:45:11",
+                            "id":  "058f18b1-4189-cc81-7f538e8402ed",
+                            "modified":  "2026-07-15T05:45:11",
+                            "name":  "Safe Sculptural Render",
+                            "parameters":  [
+                                               {
+                                                   "name":  "march_dist",
+                                                   "value":  "120.000000"
+                                               },
+                                               {
+                                                   "name":  "shadows",
+                                                   "value":  "true"
+                                               },
+                                               {
+                                                   "name":  "exposure",
+                                                   "value":  "1.05"
+                                               },
+                                               {
+                                                   "name":  "painterly_scale",
+                                                   "value":  "5.24"
+                                               },
+                                               {
+                                                   "name":  "sky_horizon_r",
+                                                   "value":  "0.86"
+                                               },
+                                               {
+                                                   "name":  "sky_horizon_g",
+                                                   "value":  "0.83"
+                                               },
+                                               {
+                                                   "name":  "sky_horizon_b",
+                                                   "value":  "0.75"
+                                               },
+                                               {
+                                                   "name":  "sky_zenith_r",
+                                                   "value":  "0.5"
+                                               },
+                                               {
+                                                   "name":  "sky_zenith_g",
+                                                   "value":  "0.64"
+                                               },
+                                               {
+                                                   "name":  "sky_zenith_b",
+                                                   "value":  "0.74"
+                                               }
+                                           ],
+                            "pipelineType":  "module:dada_render",
+                            "scope":  "project"
+                        },
+                        {
+                            "created":  "2026-07-15T05:45:11",
+                            "id":  "44036f18-5f4e-03d6-b2d63a8361cf",
+                            "modified":  "2026-07-15T05:45:11",
+                            "name":  "Desert Film Finish",
+                            "parameters":  [
+                                               {
+                                                   "name":  "bloom_threshold",
+                                                   "value":  "0.9"
+                                               },
+                                               {
+                                                   "name":  "bloom_radius",
+                                                   "value":  "0.032"
+                                               },
+                                               {
+                                                   "name":  "exposure",
+                                                   "value":  "1.05"
+                                               },
+                                               {
+                                                   "name":  "contrast",
+                                                   "value":  "1.08"
+                                               },
+                                               {
+                                                   "name":  "saturation",
+                                                   "value":  "1.2"
+                                               },
+                                               {
+                                                   "name":  "split_balance",
+                                                   "value":  "0.22"
+                                               },
+                                               {
+                                                   "name":  "vignette",
+                                                   "value":  "0.6"
+                                               },
+                                               {
+                                                   "name":  "chroma",
+                                                   "value":  "0.4"
+                                               },
+                                               {
+                                                   "name":  "shadow_tint_r",
+                                                   "value":  "0.000000"
+                                               },
+                                               {
+                                                   "name":  "shadow_tint_g",
+                                                   "value":  "0.14"
+                                               },
+                                               {
+                                                   "name":  "shadow_tint_b",
+                                                   "value":  "0.22"
+                                               },
+                                               {
+                                                   "name":  "highlight_tint_r",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "highlight_tint_g",
+                                                   "value":  "0.6"
+                                               },
+                                               {
+                                                   "name":  "highlight_tint_b",
+                                                   "value":  "0.25"
+                                               }
+                                           ],
+                            "pipelineType":  "module:post",
+                            "scope":  "project"
+                        }
+                    ],
+    "osc":  {
+                "enabled":  true,
+                "receivePort":  9002,
+                "sendFeedback":  true,
+                "sendHost":  "127.0.0.1",
+                "sendPort":  9021,
+                "stateTreeBridge":  true
+            },
+    "outputObjects":  [
+
+                      ],
+    "outputs":  [
+
+                ],
+    "pipelines":  [
+                      {
+                          "displayName":  "dada_layout 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "dada_layout",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "dada_layout",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "explode":  "0.000000",
+                                             "jitter":  "0.050000",
+                                             "lift":  "-0.330000",
+                                             "project_dir":  "modules/dada_layout",
+                                             "reset_overrides":  "0.000000",
+                                             "resolution_height":  "720",
+                                             "resolution_width":  "640",
+                                             "seed":  "2.000000",
+                                             "size_mul":  "1.000000",
+                                             "spread":  "1.270171",
+                                             "tool_mode":  "0.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "dada_scatter 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "dada_scatter",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "dada_scatter",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "project_dir":  "modules/dada_scatter",
+                                             "resolution_height":  "640",
+                                             "resolution_width":  "420",
+                                             "scatter_count":  "33.000000",
+                                             "scatter_seed":  "3.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "dada_control 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "dada_control",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "dada_control",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "explode_macro":  "0.000000",
+                                             "facet_macro":  "0.346304",
+                                             "heat_macro":  "0.000000",
+                                             "hue_macro":  "0.000000",
+                                             "melt_macro":  "0.600000",
+                                             "painterly_macro":  "1.000000",
+                                             "project_dir":  "modules/dada_control",
+                                             "resolution_height":  "686",
+                                             "resolution_width":  "923",
+                                             "sag_macro":  "0.180000",
+                                             "scatter_macro":  "33.000000",
+                                             "spread_macro":  "1.270171",
+                                             "twist_macro":  "0.100000",
+                                             "warp_primary":  "0.694548",
+                                             "warp_secondary":  "0.220599"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "signal 3",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "signal_1",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "signal_1",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "beat_rate":  "2.000000",
+                                             "beat_sharp":  "3.000000",
+                                             "project_dir":  "modules/signal_1",
+                                             "pulse_rate":  "0.800000",
+                                             "resolution_height":  "64",
+                                             "resolution_width":  "256",
+                                             "slow_rate":  "0.050000",
+                                             "sweep_rate":  "0.100000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "post 4",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "post_2",
+                          "inputSlotSourceIds":  [
+                                                     "dada_render"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "post_2",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "bloom_intensity":  "0.450000",
+                                             "bloom_radius":  "0.032000",
+                                             "bloom_threshold":  "0.900000",
+                                             "chroma":  "0.400000",
+                                             "contrast":  "1.080000",
+                                             "exposure":  "1.050000",
+                                             "grain_amt":  "0.025000",
+                                             "highlight_tint_b":  "0.250000",
+                                             "highlight_tint_g":  "0.600000",
+                                             "highlight_tint_r":  "1.000000",
+                                             "project_dir":  "modules/post_2",
+                                             "saturation":  "1.200000",
+                                             "shadow_tint_b":  "0.220000",
+                                             "shadow_tint_g":  "0.140000",
+                                             "shadow_tint_r":  "0.000000",
+                                             "split_balance":  "0.220000",
+                                             "vignette":  "0.600000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "dada_render 2",
+                          "enabled":  true,
+                          "expressions":  {
+                                              "warp_speed":  "0.18 + ref(\"signal_1/control_outputs/slow\") * 0.32"
+                                          },
+                          "fitMode":  1,
+                          "id":  "dada_render",
+                          "inputSlotSourceIds":  [
+                                                     "dada_layout",
+                                                     "dada_scatter"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "dada_render",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "aa_samples":  "1.000000",
+                                             "ao_steps":  "3.000000",
+                                             "bend_amt":  "0.000000",
+                                             "board_yaw":  "0.140000",
+                                             "cam_distance":  "15.000000",
+                                             "cam_elevation":  "4.000000",
+                                             "cam_focal":  "2.600000",
+                                             "cam_mode":  "0.000000",
+                                             "cam_orbit":  "87.000000",
+                                             "cam_target_y":  "4.900000",
+                                             "camera_distance":  "5.000000",
+                                             "camera_far":  "100.000000",
+                                             "camera_fov":  "60.000000",
+                                             "camera_look_sensitivity":  "6.000000",
+                                             "camera_mode":  "0",
+                                             "camera_move_speed":  "10.321227",
+                                             "camera_near":  "0.100000",
+                                             "camera_pitch":  "0.018753",
+                                             "camera_pos_x":  "4.656158",
+                                             "camera_pos_y":  "4.776241",
+                                             "camera_pos_z":  "12.979477",
+                                             "camera_target_x":  "0.000000",
+                                             "camera_target_y":  "1.000000",
+                                             "camera_target_z":  "0.000000",
+                                             "camera_yaw":  "3.456324",
+                                             "dist_cx":  "0.000000",
+                                             "dist_cy":  "4.500000",
+                                             "dist_cz":  "0.300000",
+                                             "exposure":  "1.050000",
+                                             "facet_amt":  "0.346304",
+                                             "fog_density":  "0.800000",
+                                             "heat_amt":  "0.000000",
+                                             "hue_shift":  "0.000000",
+                                             "march_dist":  "96.363998",
+                                             "march_steps":  "198.000000",
+                                             "melt_amt":  "0.600000",
+                                             "mirror_count":  "0.000000",
+                                             "mirror_mode":  "0.000000",
+                                             "normal_epsilon":  "0.000900",
+                                             "painterly_amt":  "1.000000",
+                                             "painterly_scale":  "5.240000",
+                                             "pinch_amt":  "0.000000",
+                                             "project_dir":  "modules/dada_render",
+                                             "resolution_height":  "1140",
+                                             "resolution_width":  "760",
+                                             "rotate_speed":  "0.000000",
+                                             "sag_amt":  "0.180000",
+                                             "shadow_steps":  "15.000000",
+                                             "shadows":  "1.000000",
+                                             "sky_horizon_b":  "0.750000",
+                                             "sky_horizon_g":  "0.830000",
+                                             "sky_horizon_r":  "0.860000",
+                                             "sky_zenith_b":  "0.740000",
+                                             "sky_zenith_g":  "0.640000",
+                                             "sky_zenith_r":  "0.500000",
+                                             "spine_height":  "3.541000",
+                                             "step_scale":  "0.657000",
+                                             "sun_azimuth":  "62.000000",
+                                             "sun_elevation":  "48.000000",
+                                             "surface_epsilon":  "0.002000",
+                                             "swirl_amt":  "0.000000",
+                                             "twist_amt":  "0.100000",
+                                             "w1_amt":  "0.705000",
+                                             "w1_freq":  "0.979000",
+                                             "w1_mode":  "5.000000",
+                                             "w1_ox":  "0.000000",
+                                             "w1_oy":  "0.000000",
+                                             "w1_oz":  "0.000000",
+                                             "w1_pitch":  "1.701000",
+                                             "w1_speed":  "0.600000",
+                                             "w1_yaw":  "-1.134000",
+                                             "w2_amt":  "0.000000",
+                                             "w2_freq":  "1.800000",
+                                             "w2_mode":  "6.000000",
+                                             "w2_ox":  "0.000000",
+                                             "w2_oy":  "0.000000",
+                                             "w2_oz":  "0.000000",
+                                             "w2_pitch":  "0.000000",
+                                             "w2_speed":  "0.900000",
+                                             "w2_yaw":  "1.570000",
+                                             "w3_amt":  "0.000000",
+                                             "w3_freq":  "2.600000",
+                                             "w3_mode":  "3.000000",
+                                             "w3_ox":  "0.000000",
+                                             "w3_oy":  "0.000000",
+                                             "w3_oz":  "0.000000",
+                                             "w3_pitch":  "1.570000",
+                                             "w3_speed":  "1.300000",
+                                             "w3_yaw":  "0.000000",
+                                             "warp_speed":  "0.389548",
+                                             "wave_amt":  "0.000000",
+                                             "wave_freq":  "2.000000",
+                                             "wobble_amt":  "0.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "Desert Group Output 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "Desert_Group_Output",
+                          "inputSlotSourceIds":  [
+                                                     "post_2"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "Desert_Group_Output",
+                          "panelOpen":  true,
+                          "parameters":  {
+                                             "background_b":  "0.000000",
+                                             "background_g":  "0.000000",
+                                             "background_r":  "0.000000",
+                                             "fit":  "0",
+                                             "height":  "1080",
+                                             "resolution_mode":  "0",
+                                             "width":  "1920"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "groupoutput"
+                      }
+                  ],
+    "saved_at_ms":  1784242423380,
+    "sources":  [
+
+                ],
+    "statePayloads":  {
+                          "dada_layout":  {
+                                              "assembly_overrides":  {
+                                                                         "data":  "0000000000000000000000000000803f0100000000c1724700000000000000000000000000000000000000000000803f020000000000000000000000000000000000000000000000000000000000803f030000000000000000000000000000000000000000000000000000000000803f04000000000000000000000000000000",
+                                                                         "element_count":  4,
+                                                                         "element_size":  32,
+                                                                         "encoding":  "hex",
+                                                                         "schema_signature":  "2543607919935778994"
+                                                                     }
+                                          }
+                      },
+    "version":  5
 }

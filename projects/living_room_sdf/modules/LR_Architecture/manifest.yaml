@@ -1,0 +1,90 @@
+name: "Living Room Architecture Controls"
+version: "2.0"
+mode: generator
+resolution: [960, 540]
+
+panel:
+  mode: canvas
+  output: "Architecture Plan"
+  resolution: follow_panel
+
+parameters:
+  - { name: room_offset, display: "Room Offset X/Z", type: point2D, min: [-2.0, -2.0], max: [2.0, 2.0], default: [0.0, 0.0], group: "Room" }
+  - { name: room_width, display: "Room Width", type: float, min: 6.0, max: 12.0, default: 8.8, group: "Room" }
+  - { name: room_depth, display: "Room Depth", type: float, min: 5.0, max: 10.0, default: 7.2, group: "Room" }
+  - { name: ceiling_height, display: "Ceiling Height", type: float, min: 2.6, max: 5.0, default: 3.6, group: "Room" }
+  - { name: window_position, display: "Window X/Height", type: point2D, min: [-3.5, 0.15], max: [3.5, 1.5], default: [-2.45, 0.72], group: "Back Wall" }
+  - { name: window_scale, display: "Window Scale", type: float, min: 0.5, max: 1.35, default: 1.0, group: "Back Wall" }
+  - { name: door_position, display: "Door X/Z", type: point2D, min: [-4.3, -3.2], max: [4.3, 3.2], default: [4.21, 1.85], group: "Entry" }
+  - { name: door_yaw, display: "Door Heading", type: float, min: -3.1416, max: 3.1416, default: -1.5708, group: "Entry" }
+  - { name: rug_position, display: "Rug Position X/Z", type: point2D, min: [-3.0, -2.5], max: [3.0, 2.5], default: [-0.3, 0.45], group: "Floor" }
+  - { name: rug_size, display: "Rug Size", type: float, min: 0.55, max: 1.30, default: 1.05, group: "Floor" }
+  - { name: pendant_spread, display: "Pendant Spread", type: float, min: 0.4, max: 5.0, default: 2.4, group: "Ceiling" }
+  - { name: pendant_drop, display: "Pendant Drop", type: float, min: 0.25, max: 1.6, default: 0.78, group: "Ceiling" }
+  - { name: pendant_z, display: "Pendant Z", type: float, min: -2.5, max: 2.5, default: 0.35, group: "Ceiling" }
+  - { name: art_center_x, display: "Art Center X", type: float, min: -2.5, max: 2.5, default: -0.25, group: "Front Wall/Art" }
+  - { name: art_spread, display: "Art Spread", type: float, min: 0.8, max: 4.5, default: 2.70, group: "Front Wall/Art" }
+  - { name: art_height, display: "Art Height", type: float, min: 0.4, max: 2.4, default: 1.32, group: "Front Wall/Art" }
+
+viewport:
+  hint: "Architecture stays a separate data producer. Middle-drag pans the aspect-correct plan; wheel zooms around the pointer. Edit authored dimensions in Properties."
+  interactions: [events]
+  input:
+    pointer: [middle, wheel]
+    gestures: [drag]
+  bindings:
+    - { gesture: middle_drag, action: pan_plan, label: "Pan Architecture Plan" }
+    - { gesture: wheel, action: zoom_plan, label: "Zoom Architecture Plan" }
+  # ui-label: title = ARCHITECTURE PLAN
+  # ui-label: shell = SHELL
+  # ui-label: entry = ENTRY
+  # ui-label: floor = FLOOR
+  # ui-label: art = ART
+  # ui-label: lights = LIGHTS
+  # ui-label: nav = MIDDLE PAN / WHEEL ZOOM
+
+buffers:
+  - { name: editor_state, structured: true, element_size: 32, element_count: 1, persistent: true }
+  - name: pnodes
+    structured: true
+    element_size: 48
+    element_count: 13
+
+passes:
+  - name: interaction
+    shader: interaction.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:editor_state"
+  - name: emit
+    shader: emit_records.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:pnodes"
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:pnodes" }
+      - { slot: 1, source: "buffer:editor_state" }
+
+outputs:
+  - { name: "Architecture Plan", pass: preview }
+
+data_outputs:
+  - name: PNodes
+    buffer: pnodes
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: scale, type: float, count: 1 }
+      - { name: kind_id, type: float, count: 1 }
+      - { name: seed, type: float, count: 1 }
+      - { name: yaw, type: float, count: 1 }
+      - { name: height, type: float, count: 1 }
+      - { name: width, type: float, count: 1 }
+      - { name: depth, type: float, count: 1 }
+      - { name: dir, type: float, count: 2 }

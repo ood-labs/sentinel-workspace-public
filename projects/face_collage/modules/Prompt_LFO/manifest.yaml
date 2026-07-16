@@ -1,0 +1,48 @@
+name: "LFO"
+version: "0.1"
+mode: generator
+resolution: [320, 96]
+
+# Self-animating LFO on _Time. Publishes control outputs: position (value*range), value (0..1),
+# phase. Drive any ranged param with ref("<id>/control_outputs/position").
+
+buffers:
+  - name: ctrl
+    structured: true
+    element_size: 16
+    element_count: 1
+
+parameters:
+  - name: waveform
+    display: "Waveform"
+    type: enum
+    options: [Saw, Triangle, Sine, Square]
+    default: 0
+    flags: button_grid
+    group: "LFO"
+  - { name: rate,         display: "Rate (Hz)",   type: float, min: 0.01, max: 4.0, default: 0.12, group: "LFO" }
+  - { name: range,        display: "Range",        type: float, min: 1.0, max: 64.0, default: 6.0, group: "LFO" }
+  - { name: phase_offset, display: "Phase Offset", type: float, min: 0.0, max: 1.0, default: 0.0, group: "LFO" }
+
+passes:
+  - name: compute
+    shader: compute.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ctrl"
+  - name: display
+    shader: display.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:ctrl" }
+
+control_outputs:
+  - { name: position, buffer: ctrl, element: 0, field_offset: 0, description: "value * range" }
+  - { name: value,    buffer: ctrl, element: 0, field_offset: 4, description: "0..1 wave" }
+  - { name: phase,    buffer: ctrl, element: 0, field_offset: 8, description: "0..1 saw phase" }
+
+outputs:
+  - name: "Display"
+    pass: display

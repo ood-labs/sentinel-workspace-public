@@ -7,6 +7,7 @@ resolution: [720, 1080]
 # mass. Premultiplied-alpha RGBA, seedable. No distortion (stays razor sharp).
 
 parameters:
+  - { name: palette_variant, display: "Palette", type: int, min: 0, max: 4, default: 0, hidden: true, group: "Marks" }
   - { name: mark_seed,    display: "Seed",        type: float, min: 0.0, max: 50.0, default: 3.0, group: "Marks" }
   - { name: mark_scale,   display: "Scale",       type: float, min: 0.4, max: 3.0,  default: 1.0, group: "Marks" }
   - { name: mark_opacity, display: "Opacity",     type: float, min: 0.0, max: 1.0,  default: 1.0, group: "Marks" }

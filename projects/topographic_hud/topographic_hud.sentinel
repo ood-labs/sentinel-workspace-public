@@ -1,1135 +1,2277 @@
 {
-  "graph": {
-    "canvasZoom": 0.6641656756401062,
-    "links": [
-      {
-        "endPinId": 3,
-        "id": 1,
-        "startPinId": 2
-      },
-      {
-        "endPinId": 5,
-        "id": 2,
-        "startPinId": 2
-      },
-      {
-        "endPinId": 7,
-        "id": 3,
-        "startPinId": 2
-      },
-      {
-        "endPinId": 9,
-        "id": 4,
-        "startPinId": 2
-      },
-      {
-        "endPinId": 12,
-        "id": 5,
-        "startPinId": 11
-      },
-      {
-        "endPinId": 14,
-        "id": 6,
-        "startPinId": 11
-      },
-      {
-        "endPinId": 17,
-        "id": 7,
-        "startPinId": 16
-      },
-      {
-        "endPinId": 19,
-        "id": 8,
-        "startPinId": 11
-      },
-      {
-        "endPinId": 22,
-        "id": 9,
-        "startPinId": 21
-      },
-      {
-        "endPinId": 29,
-        "id": 38,
-        "startPinId": 28
-      },
-      {
-        "endPinId": 31,
-        "id": 39,
-        "startPinId": 8
-      },
-      {
-        "endPinId": 32,
-        "id": 40,
-        "startPinId": 4
-      },
-      {
-        "endPinId": 33,
-        "id": 41,
-        "startPinId": 6
-      },
-      {
-        "endPinId": 34,
-        "id": 42,
-        "startPinId": 18
-      },
-      {
-        "endPinId": 35,
-        "id": 43,
-        "startPinId": 13
-      },
-      {
-        "endPinId": 36,
-        "id": 44,
-        "startPinId": 25
-      },
-      {
-        "endPinId": 37,
-        "id": 45,
-        "startPinId": 23
-      },
-      {
-        "endPinId": 38,
-        "id": 46,
-        "startPinId": 26
-      },
-      {
-        "endPinId": 39,
-        "id": 47,
-        "startPinId": 30
-      },
-      {
-        "endPinId": 47,
-        "id": 48,
-        "startPinId": 40
-      }
-    ],
-    "nextLinkId": 49,
-    "nextNodeId": 18,
-    "nextPinId": 48,
-    "nodes": [
-      {
-        "displayName": "field_gen",
-        "entityId": "field_gen",
-        "id": 1,
-        "posX": -15.934928894042969,
-        "posY": 101.5653076171875,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "contour_blue",
-        "entityId": "contour_blue",
-        "id": 2,
-        "posX": 762.234130859375,
-        "posY": 311.2119445800781,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "contour_accent",
-        "entityId": "contour_accent",
-        "id": 3,
-        "posX": 759.222900390625,
-        "posY": 515.1974487304688,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "grid_warp",
-        "entityId": "grid_warp",
-        "id": 4,
-        "posX": 760.728515625,
-        "posY": 107.22640991210938,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "node_gen",
-        "entityId": "node_gen",
-        "id": 5,
-        "posX": 337.6412353515625,
-        "posY": 1009.892333984375,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "node_render",
-        "entityId": "node_render",
-        "id": 6,
-        "posX": 602.3841552734375,
-        "posY": 1038.0784912109375,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "link_gen",
-        "entityId": "link_gen",
-        "id": 7,
-        "posX": 602.3841552734375,
-        "posY": 791.9349975585938,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "link_render",
-        "entityId": "link_render",
-        "id": 8,
-        "posX": 790.3389892578125,
-        "posY": 805.8473510742188,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "label_gen",
-        "entityId": "label_gen",
-        "id": 9,
-        "posX": 597.8672485351563,
-        "posY": 1273.6827392578125,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "label_render",
-        "entityId": "label_render",
-        "id": 10,
-        "posX": 794.8558959960938,
-        "posY": 1279.3438720703125,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "frame_hud",
-        "entityId": "frame_hud",
-        "id": 11,
-        "posX": 15.330657958984375,
-        "posY": 493.70367431640625,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "atmosphere",
-        "entityId": "atmosphere",
-        "id": 12,
-        "posX": 756.3723754882813,
-        "posY": -185.18707275390625,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "compositor",
-        "entityId": "compositor",
-        "id": 13,
-        "posX": 1329.109619140625,
-        "posY": 393.6611022949219,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "post",
-        "entityId": "post",
-        "id": 14,
-        "posX": 1556.21142578125,
-        "posY": 386.1328430175781,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "signal",
-        "entityId": "signal",
-        "id": 15,
-        "posX": -401.62713623046875,
-        "posY": 366.96270751953125,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "TOPO_HUD",
-        "entityId": "TOPO_HUD",
-        "id": 17,
-        "posX": 1763.7396240234375,
-        "posY": 396.67236328125,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 2
-      }
-    ],
-    "pins": [
-      {
-        "id": 2,
-        "kind": 1,
-        "name": "Field",
-        "nodeId": 1,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 3,
-        "kind": 0,
-        "name": "Field",
-        "nodeId": 2,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 4,
-        "kind": 1,
-        "name": "Blue Contours",
-        "nodeId": 2,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 5,
-        "kind": 0,
-        "name": "Field",
-        "nodeId": 3,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 6,
-        "kind": 1,
-        "name": "Accent Contours",
-        "nodeId": 3,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 7,
-        "kind": 0,
-        "name": "Field",
-        "nodeId": 4,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 8,
-        "kind": 1,
-        "name": "Grid",
-        "nodeId": 4,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 9,
-        "kind": 0,
-        "name": "Field",
-        "nodeId": 5,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 10,
-        "kind": 1,
-        "name": "Preview",
-        "nodeId": 5,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 11,
-        "kind": 1,
-        "name": "Nodes",
-        "nodeId": 5,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 12,
-        "kind": 0,
-        "name": "Nodes",
-        "nodeId": 6,
-        "slotIndex": 0,
-        "type": 6
-      },
-      {
-        "id": 13,
-        "kind": 1,
-        "name": "Nodes Glow",
-        "nodeId": 6,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 14,
-        "kind": 0,
-        "name": "Nodes",
-        "nodeId": 7,
-        "slotIndex": 0,
-        "type": 6
-      },
-      {
-        "id": 15,
-        "kind": 1,
-        "name": "Preview",
-        "nodeId": 7,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 16,
-        "kind": 1,
-        "name": "Links",
-        "nodeId": 7,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 17,
-        "kind": 0,
-        "name": "Links",
-        "nodeId": 8,
-        "slotIndex": 0,
-        "type": 6
-      },
-      {
-        "id": 18,
-        "kind": 1,
-        "name": "Links",
-        "nodeId": 8,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 19,
-        "kind": 0,
-        "name": "Nodes",
-        "nodeId": 9,
-        "slotIndex": 0,
-        "type": 6
-      },
-      {
-        "id": 20,
-        "kind": 1,
-        "name": "Preview",
-        "nodeId": 9,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 21,
-        "kind": 1,
-        "name": "Labels",
-        "nodeId": 9,
-        "slotIndex": 1,
-        "type": 6
-      },
-      {
-        "id": 22,
-        "kind": 0,
-        "name": "Labels",
-        "nodeId": 10,
-        "slotIndex": 0,
-        "type": 6
-      },
-      {
-        "id": 23,
-        "kind": 1,
-        "name": "Labels Tex",
-        "nodeId": 10,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 25,
-        "kind": 1,
-        "name": "HUD",
-        "nodeId": 11,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 26,
-        "kind": 1,
-        "name": "Viewport Mask",
-        "nodeId": 11,
-        "slotIndex": 1,
-        "type": 0
-      },
-      {
-        "id": 28,
-        "kind": 1,
-        "name": "Atmosphere",
-        "nodeId": 12,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 29,
-        "kind": 0,
-        "name": "Atmosphere",
-        "nodeId": 13,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 30,
-        "kind": 1,
-        "name": "Scene",
-        "nodeId": 13,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 31,
-        "kind": 0,
-        "name": "Grid",
-        "nodeId": 13,
-        "slotIndex": 1,
-        "type": 0
-      },
-      {
-        "id": 32,
-        "kind": 0,
-        "name": "Blue Contours",
-        "nodeId": 13,
-        "slotIndex": 2,
-        "type": 0
-      },
-      {
-        "id": 33,
-        "kind": 0,
-        "name": "Accent Contours",
-        "nodeId": 13,
-        "slotIndex": 3,
-        "type": 0
-      },
-      {
-        "id": 34,
-        "kind": 0,
-        "name": "Links",
-        "nodeId": 13,
-        "slotIndex": 4,
-        "type": 0
-      },
-      {
-        "id": 35,
-        "kind": 0,
-        "name": "Nodes Glow",
-        "nodeId": 13,
-        "slotIndex": 5,
-        "type": 0
-      },
-      {
-        "id": 36,
-        "kind": 0,
-        "name": "HUD",
-        "nodeId": 13,
-        "slotIndex": 6,
-        "type": 0
-      },
-      {
-        "id": 37,
-        "kind": 0,
-        "name": "Labels Tex",
-        "nodeId": 13,
-        "slotIndex": 7,
-        "type": 0
-      },
-      {
-        "id": 38,
-        "kind": 0,
-        "name": "Viewport Mask",
-        "nodeId": 13,
-        "slotIndex": 8,
-        "type": 0
-      },
-      {
-        "id": 39,
-        "kind": 0,
-        "name": "Scene",
-        "nodeId": 14,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 40,
-        "kind": 1,
-        "name": "Out",
-        "nodeId": 14,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 42,
-        "kind": 1,
-        "name": "Signal",
-        "nodeId": 15,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 43,
-        "kind": 1,
-        "name": "pulse",
-        "nodeId": 15,
-        "slotIndex": 1,
-        "type": 7
-      },
-      {
-        "id": 44,
-        "kind": 1,
-        "name": "sweep",
-        "nodeId": 15,
-        "slotIndex": 2,
-        "type": 7
-      },
-      {
-        "id": 45,
-        "kind": 1,
-        "name": "beat",
-        "nodeId": 15,
-        "slotIndex": 3,
-        "type": 7
-      },
-      {
-        "id": 46,
-        "kind": 1,
-        "name": "slow",
-        "nodeId": 15,
-        "slotIndex": 4,
-        "type": 7
-      },
-      {
-        "id": 47,
-        "kind": 0,
-        "name": "In",
-        "nodeId": 17,
-        "slotIndex": 0,
-        "type": 0
-      }
-    ]
-  },
-  "input": {
-    "activeSource": ""
-  },
-  "layout": "",
-  "name": "topographic_hud",
-  "osc": {
-    "enabled": true,
-    "receivePort": 9002,
-    "sendFeedback": true,
-    "sendHost": "127.0.0.1",
-    "sendPort": 9021,
-    "stateTreeBridge": true
-  },
-  "outputObjects": [
-    {
-      "height": 1080,
-      "id": "TOPO_HUD",
-      "matchInputResolution": true,
-      "name": "TOPO_HUD",
-      "senderName": "TOPO_HUD",
-      "type": "spout",
-      "wasActive": true,
-      "width": 1920
-    }
-  ],
-  "outputs": [],
-  "pipelines": [
-    {
-      "displayName": "node_render",
-      "enabled": true,
-      "expressions": {
-        "intensity": "0.42 + ref(\"signal/control_outputs/pulse\") * 0.4"
-      },
-      "fitMode": 1,
-      "id": "node_render",
-      "inputSlotSourceIds": [
-        "node_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "core_size": "0.320000",
-        "glow_falloff": "0.350000",
-        "glow_radius": "0.500000",
-        "intensity": "0.544421",
-        "orange_color_b": "0.200000",
-        "orange_color_g": "0.550000",
-        "orange_color_r": "1.000000",
-        "project_dir": "modules/node_render",
-        "pulse_amount": "0.250000",
-        "pulse_speed": "2.200000",
-        "ray_count": "4.000000",
-        "ray_length": "0.700000",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "star_rays": "1.000000",
-        "white_color_b": "1.000000",
-        "white_color_g": "0.930000",
-        "white_color_r": "0.850000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "contour_blue",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "contour_blue",
-      "inputSlotSourceIds": [
-        "field_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "blue_color_b": "0.950000",
-        "blue_color_g": "0.550000",
-        "blue_color_r": "0.220000",
-        "elevation_fade": "0.200000",
-        "intensity": "1.400000",
-        "line_count": "64.000000",
-        "line_width": "0.017000",
-        "major_boost": "2.300000",
-        "major_color_b": "1.000000",
-        "major_color_g": "0.850000",
-        "major_color_r": "0.650000",
-        "major_every": "5.000000",
-        "max_level": "1.000000",
-        "min_level": "0.000000",
-        "phase_speed": "0.040000",
-        "project_dir": "modules/contour_blue",
-        "sharpness": "0.350000",
-        "slope_warp": "0.600000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "field_gen",
-      "enabled": true,
-      "expressions": {
-        "warp_amount": "0.8 + ref(\"signal/control_outputs/slow\") * 0.35"
-      },
-      "fitMode": 1,
-      "id": "field_gen",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "aspect": "1.000000",
-        "center_count": "5.000000",
-        "detail_gain": "1.000000",
-        "elevation_bias": "0.000000",
-        "field_mode": "2.000000",
-        "flow_dir_x": "0.150000",
-        "flow_dir_y": "0.100000",
-        "flow_speed": "0.060000",
-        "frequency": "1.600000",
-        "gain": "0.500000",
-        "lacunarity": "2.000000",
-        "octaves": "5.000000",
-        "project_dir": "modules/field_gen",
-        "region_split": "4.000000",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "seed": "3.000000",
-        "warp_amount": "0.911966"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "node_gen",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "node_gen",
-      "inputSlotSourceIds": [
-        "field_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "ascent_rate": "0.050000",
-        "ascent_steps": "7.000000",
-        "color_mix": "0.350000",
-        "intensity": "1.000000",
-        "jitter": "0.040000",
-        "node_count": "72.000000",
-        "placement_mode": "4.000000",
-        "project_dir": "modules/node_gen",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "ring_radius": "0.340000",
-        "seed": "5.000000",
-        "size_max": "0.028000",
-        "size_min": "0.012000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "contour_accent",
-      "enabled": true,
-      "expressions": {
-        "glow": "0.8 + ref(\"signal/control_outputs/beat\") * 1.6"
-      },
-      "fitMode": 1,
-      "id": "contour_accent",
-      "inputSlotSourceIds": [
-        "field_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "accent_color_b": "0.160000",
-        "accent_color_g": "0.500000",
-        "accent_color_r": "1.000000",
-        "accent_count": "6.000000",
-        "accent_level": "0.600000",
-        "accent_mode": "0.000000",
-        "band_width": "0.090000",
-        "glow": "2.013990",
-        "index_ticks": "0.000000",
-        "intensity": "1.400000",
-        "line_count": "52.000000",
-        "line_width": "0.015000",
-        "phase_speed": "0.030000",
-        "project_dir": "modules/contour_accent"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "link_gen",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "link_gen",
-      "inputSlotSourceIds": [
-        "node_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "curve_amount": "0.090000",
-        "dash": "0.000000",
-        "draw_progress": "1.000000",
-        "link_count": "26.000000",
-        "link_mode": "0.000000",
-        "max_dist": "0.340000",
-        "min_dist": "0.140000",
-        "orbit_arc": "1.000000",
-        "orbit_radius": "0.440000",
-        "orbit_spin": "0.040000",
-        "orbit_width": "1.600000",
-        "project_dir": "modules/link_gen",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "seed": "0.000000",
-        "width": "0.003500"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "grid_warp",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "grid_warp",
-      "inputSlotSourceIds": [
-        "field_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "drift_speed": "0.015000",
-        "fade_center": "0.250000",
-        "fade_edges": "0.700000",
-        "grid_color_b": "0.720000",
-        "grid_color_g": "0.550000",
-        "grid_color_r": "0.350000",
-        "grid_density": "30.000000",
-        "intensity": "0.550000",
-        "line_width": "0.030000",
-        "perspective": "0.500000",
-        "project_dir": "modules/grid_warp",
-        "warp_amount": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "compositor",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "compositor",
-      "inputSlotSourceIds": [
-        "atmosphere",
-        "grid_warp",
-        "contour_blue",
-        "contour_accent",
-        "link_render",
-        "node_render",
-        "frame_hud",
-        "label_render",
-        "frame_hud"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "accent_gain": "1.150000",
-        "bg_gain": "1.000000",
-        "bg_tint_b": "0.180000",
-        "bg_tint_g": "0.120000",
-        "bg_tint_r": "0.040000",
-        "blue_gain": "1.500000",
-        "clip_amount": "0.850000",
-        "grid_gain": "0.500000",
-        "hud_gain": "0.900000",
-        "labels_gain": "0.900000",
-        "links_gain": "0.700000",
-        "master_mix": "1.000000",
-        "nodes_gain": "0.500000",
-        "project_dir": "modules/compositor",
-        "viewport_clip": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "link_render",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "link_render",
-      "inputSlotSourceIds": [
-        "link_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "dash_count": "14.000000",
-        "dash_offset": "0.000000",
-        "dash_speed": "0.250000",
-        "glow": "0.400000",
-        "intensity": "1.000000",
-        "link_color_b": "1.000000",
-        "link_color_g": "0.930000",
-        "link_color_r": "0.850000",
-        "orbit_color_b": "0.140000",
-        "orbit_color_g": "0.500000",
-        "orbit_color_r": "1.000000",
-        "project_dir": "modules/link_render",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "softness": "0.002500",
-        "width_scale": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "label_gen",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "label_gen",
-      "inputSlotSourceIds": [
-        "node_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "attach_mode": "0.000000",
-        "color_mix": "0.300000",
-        "jitter": "0.020000",
-        "label_count": "18.000000",
-        "project_dir": "modules/label_gen",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "ring_radius": "0.460000",
-        "rotation": "0.000000",
-        "scale": "1.000000",
-        "seed": "2.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "label_render",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "label_render",
-      "inputSlotSourceIds": [
-        "label_gen"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "dim_color_b": "0.250000",
-        "dim_color_g": "0.600000",
-        "dim_color_r": "0.950000",
-        "glow": "0.250000",
-        "intensity": "1.000000",
-        "label_color_b": "0.950000",
-        "label_color_g": "0.850000",
-        "label_color_r": "0.750000",
-        "project_dir": "modules/label_render",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "show_ticks": "1.000000",
-        "text_scale": "2.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "frame_hud",
-      "enabled": true,
-      "expressions": {
-        "rot_speed_a": "0.015 + ref(\"signal/control_outputs/slow\") * 0.05"
-      },
-      "fitMode": 1,
-      "id": "frame_hud",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "accent_color_b": "0.200000",
-        "accent_color_g": "0.550000",
-        "accent_color_r": "1.000000",
-        "corner_ticks": "1.000000",
-        "inner_ratio": "0.520000",
-        "intensity": "1.000000",
-        "project_dir": "modules/frame_hud",
-        "radius_spread": "0.240000",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "ring_color_b": "0.720000",
-        "ring_color_g": "0.550000",
-        "ring_color_r": "0.350000",
-        "ring_count": "20.000000",
-        "rot_speed_a": "0.030995",
-        "rot_speed_b": "-0.030000",
-        "segment_gaps": "4.000000",
-        "tick_density": "190.000000",
-        "viewport_radius": "0.940000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "atmosphere",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "atmosphere",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "depth_gradient": "1.100000",
-        "drift_speed": "0.012000",
-        "dust_brightness": "0.180000",
-        "dust_density": "280.000000",
-        "haze_color_b": "0.240000",
-        "haze_color_g": "0.170000",
-        "haze_color_r": "0.050000",
-        "haze_strength": "0.700000",
-        "intensity": "1.000000",
-        "project_dir": "modules/atmosphere",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "star_density": "95.000000",
-        "twinkle": "3.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "post",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "post",
-      "inputSlotSourceIds": [
-        "compositor"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "TOPO_HUD",
-      "parameters": {
-        "bloom_intensity": "0.800000",
-        "bloom_radius": "0.032000",
-        "bloom_threshold": "0.500000",
-        "chroma": "0.080000",
-        "contrast": "1.080000",
-        "exposure": "1.050000",
-        "grain_amt": "0.035000",
-        "highlight_tint_b": "0.250000",
-        "highlight_tint_g": "0.600000",
-        "highlight_tint_r": "1.000000",
-        "project_dir": "modules/post",
-        "saturation": "1.120000",
-        "shadow_tint_b": "0.220000",
-        "shadow_tint_g": "0.140000",
-        "shadow_tint_r": "0.000000",
-        "split_balance": "0.220000",
-        "vignette": "0.950000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "signal",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "signal",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "parameters": {
-        "beat_rate": "2.000000",
-        "beat_sharp": "3.000000",
-        "project_dir": "modules/signal",
-        "pulse_rate": "0.800000",
-        "resolution_height": "64",
-        "resolution_width": "256",
-        "slow_rate": "0.050000",
-        "sweep_rate": "0.100000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    }
-  ],
-  "saved_at_ms": 1783448902781,
-  "sources": [],
-  "version": 5
+    "binds":  [
+                  [
+                      "/sentinel/groups/annotation_90/parameters/Terrain_Frequency",
+                      "/sentinel/pipelines/field_gen/parameters/frequency"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_90/parameters/Terrain_Octaves",
+                      "/sentinel/pipelines/field_gen/parameters/octaves"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_90/parameters/Grid_Density",
+                      "/sentinel/pipelines/grid_warp/parameters/grid_density"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_90/parameters/Contour_Density",
+                      "/sentinel/pipelines/contour_blue/parameters/line_count"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_90/parameters/Viewport_Radius",
+                      "/sentinel/pipelines/frame_hud/parameters/viewport_radius"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_90/parameters/Atmosphere_Density",
+                      "/sentinel/pipelines/atmosphere/parameters/haze_strength"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_90/parameters/Bloom",
+                      "/sentinel/pipelines/post/parameters/bloom_intensity"
+                  ],
+                  [
+                      "/sentinel/groups/annotation_90/parameters/Vignette",
+                      "/sentinel/pipelines/post/parameters/vignette"
+                  ]
+              ],
+    "display":  {
+                    "fpsLimit":  60.0,
+                    "vsyncEnabled":  false
+                },
+    "graph":  {
+                  "canvasZoom":  0.72,
+                  "links":  [
+                                {
+                                    "endPinId":  131,
+                                    "id":  32,
+                                    "startPinId":  130
+                                },
+                                {
+                                    "endPinId":  135,
+                                    "id":  33,
+                                    "startPinId":  130
+                                },
+                                {
+                                    "endPinId":  139,
+                                    "id":  34,
+                                    "startPinId":  130
+                                },
+                                {
+                                    "endPinId":  137,
+                                    "id":  35,
+                                    "startPinId":  130
+                                },
+                                {
+                                    "endPinId":  141,
+                                    "id":  36,
+                                    "startPinId":  154
+                                },
+                                {
+                                    "endPinId":  155,
+                                    "id":  37,
+                                    "startPinId":  142
+                                },
+                                {
+                                    "endPinId":  197,
+                                    "id":  38,
+                                    "startPinId":  156
+                                },
+                                {
+                                    "endPinId":  133,
+                                    "id":  39,
+                                    "startPinId":  224
+                                },
+                                {
+                                    "endPinId":  143,
+                                    "id":  40,
+                                    "startPinId":  224
+                                },
+                                {
+                                    "endPinId":  145,
+                                    "id":  41,
+                                    "startPinId":  229
+                                },
+                                {
+                                    "endPinId":  147,
+                                    "id":  42,
+                                    "startPinId":  224
+                                },
+                                {
+                                    "endPinId":  149,
+                                    "id":  43,
+                                    "startPinId":  230
+                                },
+                                {
+                                    "endPinId":  200,
+                                    "id":  44,
+                                    "startPinId":  140
+                                },
+                                {
+                                    "endPinId":  201,
+                                    "id":  45,
+                                    "startPinId":  132
+                                },
+                                {
+                                    "endPinId":  202,
+                                    "id":  46,
+                                    "startPinId":  136
+                                },
+                                {
+                                    "endPinId":  203,
+                                    "id":  47,
+                                    "startPinId":  146
+                                },
+                                {
+                                    "endPinId":  204,
+                                    "id":  48,
+                                    "startPinId":  134
+                                },
+                                {
+                                    "endPinId":  205,
+                                    "id":  49,
+                                    "startPinId":  152
+                                },
+                                {
+                                    "endPinId":  206,
+                                    "id":  50,
+                                    "startPinId":  150
+                                },
+                                {
+                                    "endPinId":  207,
+                                    "id":  51,
+                                    "startPinId":  199
+                                }
+                            ],
+                  "nextLinkId":  76,
+                  "nextNodeId":  94,
+                  "nextPinId":  347,
+                  "nodes":  [
+                                {
+                                    "displayName":  "field_gen 2",
+                                    "entityId":  "field_gen",
+                                    "id":  38,
+                                    "posX":  539.06591796875,
+                                    "posY":  447.56532287597656,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "contour_blue 2",
+                                    "entityId":  "contour_blue",
+                                    "id":  39,
+                                    "posX":  1317.234375,
+                                    "posY":  657.2117919921875,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "node_render 2",
+                                    "entityId":  "node_render",
+                                    "id":  40,
+                                    "posX":  1157.38427734375,
+                                    "posY":  1384.0782165527344,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "contour_accent 2",
+                                    "entityId":  "contour_accent",
+                                    "id":  41,
+                                    "posX":  1314.22314453125,
+                                    "posY":  861.19741821289063,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "node_gen 2",
+                                    "entityId":  "node_gen",
+                                    "id":  42,
+                                    "posX":  892.6416015625,
+                                    "posY":  1355.8925476074219,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "grid_warp 2",
+                                    "entityId":  "grid_warp",
+                                    "id":  43,
+                                    "posX":  1315.7294921875,
+                                    "posY":  453.22640228271484,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "compositor 2",
+                                    "entityId":  "compositor",
+                                    "id":  44,
+                                    "posX":  1884.109375,
+                                    "posY":  739.66107177734375,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "link_gen 2",
+                                    "entityId":  "link_gen",
+                                    "id":  45,
+                                    "posX":  1157.38427734375,
+                                    "posY":  1137.9349060058594,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "link_render 2",
+                                    "entityId":  "link_render",
+                                    "id":  46,
+                                    "posX":  1345.3388671875,
+                                    "posY":  1151.8473815917969,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "label_gen 2",
+                                    "entityId":  "label_gen",
+                                    "id":  47,
+                                    "posX":  1152.8671875,
+                                    "posY":  1619.6822204589844,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "label_render 2",
+                                    "entityId":  "label_render",
+                                    "id":  48,
+                                    "posX":  1349.8564453125,
+                                    "posY":  1625.3439636230469,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "frame_hud 2",
+                                    "entityId":  "frame_hud",
+                                    "id":  49,
+                                    "posX":  570.330810546875,
+                                    "posY":  839.70355224609375,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "atmosphere 2",
+                                    "entityId":  "atmosphere",
+                                    "id":  50,
+                                    "posX":  1311.373046875,
+                                    "posY":  160.81278991699219,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "post 2",
+                                    "entityId":  "post",
+                                    "id":  51,
+                                    "posX":  2111.21142578125,
+                                    "posY":  732.1328125,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "signal 2",
+                                    "entityId":  "signal",
+                                    "id":  52,
+                                    "posX":  153.373046875,
+                                    "posY":  712.96267700195313,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "Topo_Conductor 2",
+                                    "entityId":  "Topo_Conductor",
+                                    "id":  53,
+                                    "posX":  150.000244140625,
+                                    "posY":  995.99996948242188,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "Topo_Group_Output 2",
+                                    "entityId":  "Topo_Group_Output",
+                                    "id":  54,
+                                    "posX":  2335,
+                                    "posY":  736.00009155273438,
+                                    "positionSet":  true,
+                                    "previewVisible":  true,
+                                    "type":  1
+                                },
+                                {
+                                    "annotationBody":  "Gallery look Â· modular cartographic interface",
+                                    "annotationColor":  "#3E9FC43D",
+                                    "annotationTitle":  "TOPOGRAPHIC HUD",
+                                    "displayName":  "TOPOGRAPHIC HUD",
+                                    "entityId":  "annotation_90",
+                                    "height":  2002.290283203125,
+                                    "id":  90,
+                                    "posX":  80,
+                                    "posY":  80,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "sceneGroup":  true,
+                                    "sceneGroupActivePreset":  "",
+                                    "sceneGroupEnabled":  true,
+                                    "sceneGroupParameters":  [
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "1.600000",
+                                                                     "description":  "Frequency",
+                                                                     "displayName":  "Frequency",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Terrain",
+                                                                     "maxValue":  6.0,
+                                                                     "minValue":  0.30000001192092896,
+                                                                     "name":  "Terrain_Frequency",
+                                                                     "orderIndex":  0,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/field_gen/parameters/frequency",
+                                                                     "type":  "float",
+                                                                     "value":  "1.6",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "5",
+                                                                     "description":  "Octaves",
+                                                                     "displayName":  "Octaves",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Terrain",
+                                                                     "maxValue":  8.0,
+                                                                     "minValue":  1.0,
+                                                                     "name":  "Terrain_Octaves",
+                                                                     "orderIndex":  1,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/field_gen/parameters/octaves",
+                                                                     "type":  "int",
+                                                                     "value":  "5",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "30.000000",
+                                                                     "description":  "Grid Density",
+                                                                     "displayName":  "Grid Density",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Grid",
+                                                                     "maxValue":  90.0,
+                                                                     "minValue":  4.0,
+                                                                     "name":  "Grid_Density",
+                                                                     "orderIndex":  2,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/grid_warp/parameters/grid_density",
+                                                                     "type":  "float",
+                                                                     "value":  "30.000000",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "52.000000",
+                                                                     "description":  "Line Count",
+                                                                     "displayName":  "Line Count",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Contours",
+                                                                     "maxValue":  120.0,
+                                                                     "minValue":  4.0,
+                                                                     "name":  "Contour_Density",
+                                                                     "orderIndex":  3,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/contour_blue/parameters/line_count",
+                                                                     "type":  "float",
+                                                                     "value":  "64.000000",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "0.940000",
+                                                                     "description":  "Viewport Radius",
+                                                                     "displayName":  "Viewport Radius",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Bezel",
+                                                                     "maxValue":  1.2999999523162842,
+                                                                     "minValue":  0.30000001192092896,
+                                                                     "name":  "Viewport_Radius",
+                                                                     "orderIndex":  4,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/frame_hud/parameters/viewport_radius",
+                                                                     "type":  "float",
+                                                                     "value":  "0.94",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "0.700000",
+                                                                     "description":  "Haze Strength",
+                                                                     "displayName":  "Haze Strength",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Haze",
+                                                                     "maxValue":  2.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Atmosphere_Density",
+                                                                     "orderIndex":  5,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/atmosphere/parameters/haze_strength",
+                                                                     "type":  "float",
+                                                                     "value":  "0.7",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "1.100000",
+                                                                     "description":  "Bloom Intensity",
+                                                                     "displayName":  "Bloom Intensity",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Bloom",
+                                                                     "maxValue":  3.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Bloom",
+                                                                     "orderIndex":  6,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/post/parameters/bloom_intensity",
+                                                                     "type":  "float",
+                                                                     "value":  "0.8",
+                                                                     "widget":  ""
+                                                                 },
+                                                                 {
+                                                                     "compoundIndex":  0,
+                                                                     "compoundKey":  "",
+                                                                     "defaultValue":  "0.950000",
+                                                                     "description":  "Vignette",
+                                                                     "displayName":  "Vignette",
+                                                                     "enumValues":  [
+
+                                                                                    ],
+                                                                     "group":  "Lens",
+                                                                     "maxValue":  2.0,
+                                                                     "minValue":  0.0,
+                                                                     "name":  "Vignette",
+                                                                     "orderIndex":  7,
+                                                                     "subgroup":  "",
+                                                                     "targetPath":  "/sentinel/pipelines/post/parameters/vignette",
+                                                                     "type":  "float",
+                                                                     "value":  "0.95",
+                                                                     "widget":  ""
+                                                                 }
+                                                             ],
+                                    "sceneGroupPresets":  [
+
+                                                          ],
+                                    "type":  4,
+                                    "width":  2500.880126953125
+                                }
+                            ],
+                  "pins":  [
+                               {
+                                   "id":  130,
+                                   "kind":  1,
+                                   "name":  "Field",
+                                   "nodeId":  38,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  131,
+                                   "kind":  0,
+                                   "name":  "Field",
+                                   "nodeId":  39,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  132,
+                                   "kind":  1,
+                                   "name":  "Blue Contours",
+                                   "nodeId":  39,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  133,
+                                   "kind":  0,
+                                   "name":  "Nodes",
+                                   "nodeId":  40,
+                                   "slotIndex":  0,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  134,
+                                   "kind":  1,
+                                   "name":  "Nodes Glow",
+                                   "nodeId":  40,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  135,
+                                   "kind":  0,
+                                   "name":  "Field",
+                                   "nodeId":  41,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  136,
+                                   "kind":  1,
+                                   "name":  "Accent Contours",
+                                   "nodeId":  41,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  137,
+                                   "kind":  0,
+                                   "name":  "Field",
+                                   "nodeId":  42,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  138,
+                                   "kind":  1,
+                                   "name":  "Priority Node Editor",
+                                   "nodeId":  42,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  139,
+                                   "kind":  0,
+                                   "name":  "Field",
+                                   "nodeId":  43,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  140,
+                                   "kind":  1,
+                                   "name":  "Grid",
+                                   "nodeId":  43,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  141,
+                                   "kind":  0,
+                                   "name":  "Atmosphere",
+                                   "nodeId":  44,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  142,
+                                   "kind":  1,
+                                   "name":  "Scene",
+                                   "nodeId":  44,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  143,
+                                   "kind":  0,
+                                   "name":  "Nodes",
+                                   "nodeId":  45,
+                                   "slotIndex":  0,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  144,
+                                   "kind":  1,
+                                   "name":  "Preview",
+                                   "nodeId":  45,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  145,
+                                   "kind":  0,
+                                   "name":  "Links",
+                                   "nodeId":  46,
+                                   "slotIndex":  0,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  146,
+                                   "kind":  1,
+                                   "name":  "Links",
+                                   "nodeId":  46,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  147,
+                                   "kind":  0,
+                                   "name":  "Nodes",
+                                   "nodeId":  47,
+                                   "slotIndex":  0,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  148,
+                                   "kind":  1,
+                                   "name":  "Survey Label Editor",
+                                   "nodeId":  47,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  149,
+                                   "kind":  0,
+                                   "name":  "Labels",
+                                   "nodeId":  48,
+                                   "slotIndex":  0,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  150,
+                                   "kind":  1,
+                                   "name":  "Labels Tex",
+                                   "nodeId":  48,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  152,
+                                   "kind":  1,
+                                   "name":  "HUD",
+                                   "nodeId":  49,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  154,
+                                   "kind":  1,
+                                   "name":  "Atmosphere",
+                                   "nodeId":  50,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  155,
+                                   "kind":  0,
+                                   "name":  "Scene",
+                                   "nodeId":  51,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  156,
+                                   "kind":  1,
+                                   "name":  "Out",
+                                   "nodeId":  51,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  158,
+                                   "kind":  1,
+                                   "name":  "Operations Console",
+                                   "nodeId":  52,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  160,
+                                   "kind":  1,
+                                   "name":  "Clock",
+                                   "nodeId":  53,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  161,
+                                   "kind":  1,
+                                   "name":  "bpm",
+                                   "nodeId":  53,
+                                   "slotIndex":  1,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  162,
+                                   "kind":  1,
+                                   "name":  "total_beats",
+                                   "nodeId":  53,
+                                   "slotIndex":  2,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  163,
+                                   "kind":  1,
+                                   "name":  "transport_seconds",
+                                   "nodeId":  53,
+                                   "slotIndex":  3,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  164,
+                                   "kind":  1,
+                                   "name":  "transport_rate",
+                                   "nodeId":  53,
+                                   "slotIndex":  4,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  165,
+                                   "kind":  1,
+                                   "name":  "chunk_index",
+                                   "nodeId":  53,
+                                   "slotIndex":  5,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  166,
+                                   "kind":  1,
+                                   "name":  "chunk_local_time",
+                                   "nodeId":  53,
+                                   "slotIndex":  6,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  167,
+                                   "kind":  1,
+                                   "name":  "chunk_duration",
+                                   "nodeId":  53,
+                                   "slotIndex":  7,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  168,
+                                   "kind":  1,
+                                   "name":  "transition_alpha",
+                                   "nodeId":  53,
+                                   "slotIndex":  8,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  169,
+                                   "kind":  1,
+                                   "name":  "beat",
+                                   "nodeId":  53,
+                                   "slotIndex":  9,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  170,
+                                   "kind":  1,
+                                   "name":  "bar",
+                                   "nodeId":  53,
+                                   "slotIndex":  10,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  171,
+                                   "kind":  1,
+                                   "name":  "beat_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  11,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  172,
+                                   "kind":  1,
+                                   "name":  "bar_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  12,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  173,
+                                   "kind":  1,
+                                   "name":  "is_downbeat",
+                                   "nodeId":  53,
+                                   "slotIndex":  13,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  174,
+                                   "kind":  1,
+                                   "name":  "quantum",
+                                   "nodeId":  53,
+                                   "slotIndex":  14,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  175,
+                                   "kind":  1,
+                                   "name":  "loop_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  15,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  176,
+                                   "kind":  1,
+                                   "name":  "cue_index",
+                                   "nodeId":  53,
+                                   "slotIndex":  16,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  177,
+                                   "kind":  1,
+                                   "name":  "cue_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  17,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  178,
+                                   "kind":  1,
+                                   "name":  "enter_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  18,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  179,
+                                   "kind":  1,
+                                   "name":  "exit_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  19,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  180,
+                                   "kind":  1,
+                                   "name":  "cue_a_enter_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  20,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  181,
+                                   "kind":  1,
+                                   "name":  "cue_a_exit_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  21,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  182,
+                                   "kind":  1,
+                                   "name":  "cue_a_life",
+                                   "nodeId":  53,
+                                   "slotIndex":  22,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  183,
+                                   "kind":  1,
+                                   "name":  "cue_a_life_velocity",
+                                   "nodeId":  53,
+                                   "slotIndex":  23,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  184,
+                                   "kind":  1,
+                                   "name":  "cue_b_enter_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  24,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  185,
+                                   "kind":  1,
+                                   "name":  "cue_b_exit_phase",
+                                   "nodeId":  53,
+                                   "slotIndex":  25,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  186,
+                                   "kind":  1,
+                                   "name":  "cue_b_life",
+                                   "nodeId":  53,
+                                   "slotIndex":  26,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  187,
+                                   "kind":  1,
+                                   "name":  "cue_b_life_velocity",
+                                   "nodeId":  53,
+                                   "slotIndex":  27,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  188,
+                                   "kind":  1,
+                                   "name":  "energy",
+                                   "nodeId":  53,
+                                   "slotIndex":  28,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  189,
+                                   "kind":  1,
+                                   "name":  "tightness",
+                                   "nodeId":  53,
+                                   "slotIndex":  29,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  190,
+                                   "kind":  1,
+                                   "name":  "spread",
+                                   "nodeId":  53,
+                                   "slotIndex":  30,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  191,
+                                   "kind":  1,
+                                   "name":  "retarget_active",
+                                   "nodeId":  53,
+                                   "slotIndex":  31,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  192,
+                                   "kind":  1,
+                                   "name":  "retarget_elapsed",
+                                   "nodeId":  53,
+                                   "slotIndex":  32,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  193,
+                                   "kind":  1,
+                                   "name":  "trigger_state",
+                                   "nodeId":  53,
+                                   "slotIndex":  33,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  194,
+                                   "kind":  1,
+                                   "name":  "trigger_pending",
+                                   "nodeId":  53,
+                                   "slotIndex":  34,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  195,
+                                   "kind":  1,
+                                   "name":  "trigger_target_beat",
+                                   "nodeId":  53,
+                                   "slotIndex":  35,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  196,
+                                   "kind":  1,
+                                   "name":  "Cue Records",
+                                   "nodeId":  53,
+                                   "slotIndex":  36,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  197,
+                                   "kind":  0,
+                                   "name":  "Video",
+                                   "nodeId":  54,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  198,
+                                   "kind":  1,
+                                   "name":  "Out",
+                                   "nodeId":  54,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  199,
+                                   "kind":  1,
+                                   "name":  "Viewport Mask",
+                                   "nodeId":  49,
+                                   "slotIndex":  1,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  200,
+                                   "kind":  0,
+                                   "name":  "Grid",
+                                   "nodeId":  44,
+                                   "slotIndex":  1,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  201,
+                                   "kind":  0,
+                                   "name":  "Blue Contours",
+                                   "nodeId":  44,
+                                   "slotIndex":  2,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  202,
+                                   "kind":  0,
+                                   "name":  "Accent Contours",
+                                   "nodeId":  44,
+                                   "slotIndex":  3,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  203,
+                                   "kind":  0,
+                                   "name":  "Links",
+                                   "nodeId":  44,
+                                   "slotIndex":  4,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  204,
+                                   "kind":  0,
+                                   "name":  "Nodes Glow",
+                                   "nodeId":  44,
+                                   "slotIndex":  5,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  205,
+                                   "kind":  0,
+                                   "name":  "HUD",
+                                   "nodeId":  44,
+                                   "slotIndex":  6,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  206,
+                                   "kind":  0,
+                                   "name":  "Labels Tex",
+                                   "nodeId":  44,
+                                   "slotIndex":  7,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  207,
+                                   "kind":  0,
+                                   "name":  "Viewport Mask",
+                                   "nodeId":  44,
+                                   "slotIndex":  8,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  208,
+                                   "kind":  1,
+                                   "name":  "pulse",
+                                   "nodeId":  52,
+                                   "slotIndex":  1,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  209,
+                                   "kind":  1,
+                                   "name":  "sweep",
+                                   "nodeId":  52,
+                                   "slotIndex":  2,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  210,
+                                   "kind":  1,
+                                   "name":  "beat",
+                                   "nodeId":  52,
+                                   "slotIndex":  3,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  211,
+                                   "kind":  1,
+                                   "name":  "slow",
+                                   "nodeId":  52,
+                                   "slotIndex":  4,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  212,
+                                   "kind":  1,
+                                   "name":  "terrain",
+                                   "nodeId":  52,
+                                   "slotIndex":  5,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  213,
+                                   "kind":  1,
+                                   "name":  "density",
+                                   "nodeId":  52,
+                                   "slotIndex":  6,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  214,
+                                   "kind":  1,
+                                   "name":  "blue_gain",
+                                   "nodeId":  52,
+                                   "slotIndex":  7,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  215,
+                                   "kind":  1,
+                                   "name":  "accent_gain",
+                                   "nodeId":  52,
+                                   "slotIndex":  8,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  216,
+                                   "kind":  1,
+                                   "name":  "nodes_gain",
+                                   "nodeId":  52,
+                                   "slotIndex":  9,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  217,
+                                   "kind":  1,
+                                   "name":  "labels_gain",
+                                   "nodeId":  52,
+                                   "slotIndex":  10,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  218,
+                                   "kind":  1,
+                                   "name":  "palette",
+                                   "nodeId":  52,
+                                   "slotIndex":  11,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  219,
+                                   "kind":  1,
+                                   "name":  "energy",
+                                   "nodeId":  52,
+                                   "slotIndex":  12,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  220,
+                                   "kind":  1,
+                                   "name":  "authority",
+                                   "nodeId":  52,
+                                   "slotIndex":  13,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  221,
+                                   "kind":  1,
+                                   "name":  "cue_mode",
+                                   "nodeId":  52,
+                                   "slotIndex":  14,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  222,
+                                   "kind":  1,
+                                   "name":  "master_mix",
+                                   "nodeId":  52,
+                                   "slotIndex":  15,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  223,
+                                   "kind":  1,
+                                   "name":  "phase",
+                                   "nodeId":  52,
+                                   "slotIndex":  16,
+                                   "type":  7
+                               },
+                               {
+                                   "id":  224,
+                                   "kind":  1,
+                                   "name":  "Nodes",
+                                   "nodeId":  42,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  225,
+                                   "kind":  1,
+                                   "name":  "Priority Node Offsets",
+                                   "nodeId":  42,
+                                   "slotIndex":  2,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  226,
+                                   "kind":  1,
+                                   "name":  "Node Edit State",
+                                   "nodeId":  42,
+                                   "slotIndex":  3,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  227,
+                                   "kind":  1,
+                                   "name":  "Viewport Objects",
+                                   "nodeId":  42,
+                                   "slotIndex":  4,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  228,
+                                   "kind":  1,
+                                   "name":  "Viewport Pick Result",
+                                   "nodeId":  42,
+                                   "slotIndex":  5,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  229,
+                                   "kind":  1,
+                                   "name":  "Links",
+                                   "nodeId":  45,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  230,
+                                   "kind":  1,
+                                   "name":  "Labels",
+                                   "nodeId":  47,
+                                   "slotIndex":  1,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  231,
+                                   "kind":  1,
+                                   "name":  "Survey Label Offsets",
+                                   "nodeId":  47,
+                                   "slotIndex":  2,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  232,
+                                   "kind":  1,
+                                   "name":  "Viewport Objects",
+                                   "nodeId":  47,
+                                   "slotIndex":  3,
+                                   "type":  6
+                               },
+                               {
+                                   "id":  233,
+                                   "kind":  1,
+                                   "name":  "Viewport Pick Result",
+                                   "nodeId":  47,
+                                   "slotIndex":  4,
+                                   "type":  6
+                               }
+                           ]
+              },
+    "input":  {
+                  "activeSource":  ""
+              },
+    "layout":  "",
+    "name":  "topographic_hud",
+    "nodePresets":  [
+                        {
+                            "created":  "2026-07-15T03:49:53",
+                            "id":  "986f397d-da97-9f42-61a3718244f1",
+                            "modified":  "2026-07-15T04:18:44",
+                            "name":  "Priority Offset Study",
+                            "parameters":  [
+                                               {
+                                                   "name":  "placement_mode",
+                                                   "value":  "4"
+                                               },
+                                               {
+                                                   "name":  "node_count",
+                                                   "value":  "44"
+                                               },
+                                               {
+                                                   "name":  "seed",
+                                                   "value":  "5"
+                                               },
+                                               {
+                                                   "name":  "ring_radius",
+                                                   "value":  "0.34"
+                                               },
+                                               {
+                                                   "name":  "jitter",
+                                                   "value":  "0.04"
+                                               },
+                                               {
+                                                   "name":  "ascent_steps",
+                                                   "value":  "7"
+                                               },
+                                               {
+                                                   "name":  "ascent_rate",
+                                                   "value":  "0.05"
+                                               },
+                                               {
+                                                   "name":  "size_min",
+                                                   "value":  "0.012"
+                                               },
+                                               {
+                                                   "name":  "size_max",
+                                                   "value":  "0.028"
+                                               },
+                                               {
+                                                   "name":  "intensity",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "color_mix",
+                                                   "value":  "0.35"
+                                               }
+                                           ],
+                            "pipelineType":  "module:node_gen",
+                            "scope":  "project",
+                            "statePayloads":  {
+                                                  "node_edit_state":  {
+                                                                          "data":  "0000804000000000000000007bdce9a97b142e3fec51b83ee1fe033f8f3af43e0000803e000080be0000000000000000",
+                                                                          "element_count":  1,
+                                                                          "element_size":  48,
+                                                                          "encoding":  "hex",
+                                                                          "schema_signature":  "2166316446121755527"
+                                                                      },
+                                                  "node_overrides":  {
+                                                                         "data":  "0000000000000000010000000088244700000000000000000200000000000000000000000000000003000000000000000000803e000080be0400000000000000000000000000000005000000000000000000000000000000060000000000000000000000000000000700000000000000000000000000000008000000000000000000000000000000090000000000000000000000000000000a0000000000000000000000000000000b0000000000000000000000000000000c00000000000000",
+                                                                         "element_count":  12,
+                                                                         "element_size":  16,
+                                                                         "encoding":  "hex",
+                                                                         "schema_signature":  "12822581078674631894"
+                                                                     }
+                                              }
+                        },
+                        {
+                            "created":  "2026-07-15T03:50:00",
+                            "id":  "4f96ad5a-f4bf-7d5e-343c6b4202ce",
+                            "modified":  "2026-07-15T04:18:37",
+                            "name":  "Priority Baseline",
+                            "parameters":  [
+                                               {
+                                                   "name":  "placement_mode",
+                                                   "value":  "4"
+                                               },
+                                               {
+                                                   "name":  "node_count",
+                                                   "value":  "44"
+                                               },
+                                               {
+                                                   "name":  "seed",
+                                                   "value":  "5"
+                                               },
+                                               {
+                                                   "name":  "ring_radius",
+                                                   "value":  "0.34"
+                                               },
+                                               {
+                                                   "name":  "jitter",
+                                                   "value":  "0.04"
+                                               },
+                                               {
+                                                   "name":  "ascent_steps",
+                                                   "value":  "7"
+                                               },
+                                               {
+                                                   "name":  "ascent_rate",
+                                                   "value":  "0.05"
+                                               },
+                                               {
+                                                   "name":  "size_min",
+                                                   "value":  "0.012"
+                                               },
+                                               {
+                                                   "name":  "size_max",
+                                                   "value":  "0.028"
+                                               },
+                                               {
+                                                   "name":  "intensity",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "color_mix",
+                                                   "value":  "0.35"
+                                               }
+                                           ],
+                            "pipelineType":  "module:node_gen",
+                            "scope":  "project",
+                            "statePayloads":  {
+                                                  "node_edit_state":  {
+                                                                          "data":  "0000804000000000000000007bdce9a97b142e3fec51b83e7ba0453f48253a3f000080be000080be0000000000000000",
+                                                                          "element_count":  1,
+                                                                          "element_size":  48,
+                                                                          "encoding":  "hex",
+                                                                          "schema_signature":  "2166316446121755527"
+                                                                      },
+                                                  "node_overrides":  {
+                                                                         "data":  "00000000000000000100000000882447000000000000000002000000000000000000000000000000030000000000000000000000000000000400000000000000000000000000000005000000000000000000000000000000060000000000000000000000000000000700000000000000000000000000000008000000000000000000000000000000090000000000000000000000000000000a0000000000000000000000000000000b0000000000000000000000000000000c00000000000000",
+                                                                         "element_count":  12,
+                                                                         "element_size":  16,
+                                                                         "encoding":  "hex",
+                                                                         "schema_signature":  "12822581078674631894"
+                                                                     }
+                                              }
+                        },
+                        {
+                            "created":  "2026-07-15T03:50:08",
+                            "id":  "a4ae4bbd-41f1-97a6-cb2fa2d0cb5e",
+                            "modified":  "2026-07-15T03:50:08",
+                            "name":  "Autonomous Survey Console",
+                            "parameters":  [
+                                               {
+                                                   "name":  "authority",
+                                                   "value":  "1"
+                                               },
+                                               {
+                                                   "name":  "cue_mode",
+                                                   "value":  "0"
+                                               },
+                                               {
+                                                   "name":  "terrain",
+                                                   "value":  "2"
+                                               },
+                                               {
+                                                   "name":  "node_density",
+                                                   "value":  "68"
+                                               },
+                                               {
+                                                   "name":  "palette",
+                                                   "value":  "0"
+                                               },
+                                               {
+                                                   "name":  "layer_blue",
+                                                   "value":  "0.95"
+                                               },
+                                               {
+                                                   "name":  "layer_accent",
+                                                   "value":  "1.05"
+                                               },
+                                               {
+                                                   "name":  "layer_nodes",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "layer_labels",
+                                                   "value":  "0.92"
+                                               },
+                                               {
+                                                   "name":  "master_mix",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "manual_energy",
+                                                   "value":  "0.62"
+                                               },
+                                               {
+                                                   "name":  "manual_sweep",
+                                                   "value":  "0.35"
+                                               },
+                                               {
+                                                   "name":  "pulse_rate",
+                                                   "value":  "0.8"
+                                               },
+                                               {
+                                                   "name":  "sweep_rate",
+                                                   "value":  "0.1"
+                                               },
+                                               {
+                                                   "name":  "beat_rate",
+                                                   "value":  "2.000000"
+                                               },
+                                               {
+                                                   "name":  "beat_sharp",
+                                                   "value":  "3.000000"
+                                               }
+                                           ],
+                            "pipelineType":  "module:signal",
+                            "scope":  "project"
+                        },
+                        {
+                            "created":  "2026-07-15T03:50:09",
+                            "id":  "055ccdd8-135c-4086-25935cd0a3ed",
+                            "modified":  "2026-07-15T03:50:09",
+                            "name":  "Conductor Threat Console",
+                            "parameters":  [
+                                               {
+                                                   "name":  "authority",
+                                                   "value":  "2"
+                                               },
+                                               {
+                                                   "name":  "cue_mode",
+                                                   "value":  "1"
+                                               },
+                                               {
+                                                   "name":  "terrain",
+                                                   "value":  "2"
+                                               },
+                                               {
+                                                   "name":  "node_density",
+                                                   "value":  "68"
+                                               },
+                                               {
+                                                   "name":  "palette",
+                                                   "value":  "0"
+                                               },
+                                               {
+                                                   "name":  "layer_blue",
+                                                   "value":  "0.95"
+                                               },
+                                               {
+                                                   "name":  "layer_accent",
+                                                   "value":  "1.05"
+                                               },
+                                               {
+                                                   "name":  "layer_nodes",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "layer_labels",
+                                                   "value":  "0.92"
+                                               },
+                                               {
+                                                   "name":  "master_mix",
+                                                   "value":  "1.000000"
+                                               },
+                                               {
+                                                   "name":  "manual_energy",
+                                                   "value":  "0.62"
+                                               },
+                                               {
+                                                   "name":  "manual_sweep",
+                                                   "value":  "0.35"
+                                               },
+                                               {
+                                                   "name":  "pulse_rate",
+                                                   "value":  "0.8"
+                                               },
+                                               {
+                                                   "name":  "sweep_rate",
+                                                   "value":  "0.1"
+                                               },
+                                               {
+                                                   "name":  "beat_rate",
+                                                   "value":  "2.000000"
+                                               },
+                                               {
+                                                   "name":  "beat_sharp",
+                                                   "value":  "3.000000"
+                                               }
+                                           ],
+                            "pipelineType":  "module:signal",
+                            "scope":  "project"
+                        }
+                    ],
+    "osc":  {
+                "enabled":  true,
+                "receivePort":  9002,
+                "sendFeedback":  true,
+                "sendHost":  "127.0.0.1",
+                "sendPort":  9021,
+                "stateTreeBridge":  true
+            },
+    "outputObjects":  [
+
+                      ],
+    "outputs":  [
+
+                ],
+    "pipelines":  [
+                      {
+                          "displayName":  "frame_hud 2",
+                          "enabled":  true,
+                          "expressions":  {
+                                              "rot_speed_a":  "0.015 + ref(\"signal/control_outputs/slow\") * 0.05"
+                                          },
+                          "fitMode":  1,
+                          "id":  "frame_hud",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "frame_hud",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "accent_color_b":  "0.200000",
+                                             "accent_color_g":  "0.550000",
+                                             "accent_color_r":  "1.000000",
+                                             "corner_ticks":  "1.000000",
+                                             "inner_ratio":  "0.520000",
+                                             "intensity":  "1.000000",
+                                             "project_dir":  "modules/frame_hud",
+                                             "radius_spread":  "0.240000",
+                                             "resolution_height":  "1080",
+                                             "resolution_width":  "1920",
+                                             "ring_color_b":  "0.720000",
+                                             "ring_color_g":  "0.550000",
+                                             "ring_color_r":  "0.350000",
+                                             "ring_count":  "20.000000",
+                                             "rot_speed_a":  "0.029776",
+                                             "rot_speed_b":  "-0.030000",
+                                             "segment_gaps":  "4.000000",
+                                             "tick_density":  "190.000000",
+                                             "viewport_radius":  "0.940000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "grid_warp 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "grid_warp",
+                          "inputSlotSourceIds":  [
+                                                     "field_gen"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "grid_warp",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "drift_speed":  "0.015000",
+                                             "fade_center":  "0.250000",
+                                             "fade_edges":  "0.700000",
+                                             "grid_color_b":  "0.720000",
+                                             "grid_color_g":  "0.550000",
+                                             "grid_color_r":  "0.350000",
+                                             "grid_density":  "30.000000",
+                                             "intensity":  "0.550000",
+                                             "line_width":  "0.030000",
+                                             "perspective":  "0.500000",
+                                             "project_dir":  "modules/grid_warp",
+                                             "warp_amount":  "1.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "compositor 2",
+                          "enabled":  true,
+                          "expressions":  {
+                                              "accent_gain":  "ref(\"signal/control_outputs/accent_gain\")",
+                                              "blue_gain":  "ref(\"signal/control_outputs/blue_gain\")",
+                                              "labels_gain":  "ref(\"signal/control_outputs/labels_gain\")",
+                                              "master_mix":  "ref(\"signal/control_outputs/master_mix\")",
+                                              "nodes_gain":  "ref(\"signal/control_outputs/nodes_gain\")"
+                                          },
+                          "fitMode":  1,
+                          "id":  "compositor",
+                          "inputSlotSourceIds":  [
+                                                     "atmosphere",
+                                                     "grid_warp",
+                                                     "contour_blue",
+                                                     "contour_accent",
+                                                     "link_render",
+                                                     "node_render",
+                                                     "frame_hud",
+                                                     "label_render",
+                                                     "frame_hud"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "compositor",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "accent_gain":  "0.834760",
+                                             "bg_gain":  "1.000000",
+                                             "bg_tint_b":  "0.180000",
+                                             "bg_tint_g":  "0.120000",
+                                             "bg_tint_r":  "0.040000",
+                                             "blue_gain":  "0.720000",
+                                             "clip_amount":  "0.850000",
+                                             "grid_gain":  "0.500000",
+                                             "hud_gain":  "0.900000",
+                                             "labels_gain":  "0.580000",
+                                             "links_gain":  "0.700000",
+                                             "master_mix":  "0.820000",
+                                             "nodes_gain":  "0.829020",
+                                             "project_dir":  "modules/compositor",
+                                             "viewport_clip":  "1.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "signal 2",
+                          "enabled":  true,
+                          "expressions":  {
+                                              "conductor_energy":  "ref(\"Topo_Conductor/control_outputs/energy\")",
+                                              "conductor_phase":  "ref(\"Topo_Conductor/control_outputs/loop_phase\")"
+                                          },
+                          "fitMode":  1,
+                          "id":  "signal",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "signal",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "authority":  "2.000000",
+                                             "beat_rate":  "2.000000",
+                                             "beat_sharp":  "3.000000",
+                                             "conductor_energy":  "0.550000",
+                                             "conductor_phase":  "0.316988",
+                                             "cue_mode":  "4.000000",
+                                             "layer_accent":  "0.200000",
+                                             "layer_blue":  "0.550000",
+                                             "layer_labels":  "0.450000",
+                                             "layer_nodes":  "0.700000",
+                                             "manual_energy":  "0.250000",
+                                             "manual_sweep":  "0.300000",
+                                             "master_mix":  "0.720000",
+                                             "node_density":  "28.000000",
+                                             "palette":  "3.000000",
+                                             "project_dir":  "modules/signal",
+                                             "pulse_rate":  "0.800000",
+                                             "resolution_height":  "64",
+                                             "resolution_width":  "256",
+                                             "sweep_rate":  "0.100000",
+                                             "terrain":  "0.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "contour_blue 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "contour_blue",
+                          "inputSlotSourceIds":  [
+                                                     "field_gen"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "contour_blue",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "blue_color_b":  "0.950000",
+                                             "blue_color_g":  "0.550000",
+                                             "blue_color_r":  "0.220000",
+                                             "elevation_fade":  "0.200000",
+                                             "intensity":  "1.400000",
+                                             "line_count":  "64.000000",
+                                             "line_width":  "0.017000",
+                                             "major_boost":  "2.300000",
+                                             "major_color_b":  "1.000000",
+                                             "major_color_g":  "0.850000",
+                                             "major_color_r":  "0.650000",
+                                             "major_every":  "5.000000",
+                                             "max_level":  "1.000000",
+                                             "min_level":  "0.000000",
+                                             "phase_speed":  "0.040000",
+                                             "project_dir":  "modules/contour_blue",
+                                             "sharpness":  "0.350000",
+                                             "slope_warp":  "0.600000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "node_render 2",
+                          "enabled":  true,
+                          "expressions":  {
+                                              "intensity":  "0.42 + ref(\"signal/control_outputs/pulse\") * 0.4",
+                                              "pulse_amount":  "0.12 + ref(\"signal/control_outputs/energy\") * 0.38"
+                                          },
+                          "fitMode":  1,
+                          "id":  "node_render",
+                          "inputSlotSourceIds":  [
+                                                     "node_gen"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "node_render",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "core_size":  "0.320000",
+                                             "glow_falloff":  "0.350000",
+                                             "glow_radius":  "0.500000",
+                                             "intensity":  "0.703000",
+                                             "orange_color_b":  "0.200000",
+                                             "orange_color_g":  "0.550000",
+                                             "orange_color_r":  "1.000000",
+                                             "project_dir":  "modules/node_render",
+                                             "pulse_amount":  "0.329000",
+                                             "pulse_speed":  "2.200000",
+                                             "ray_count":  "4.000000",
+                                             "ray_length":  "0.700000",
+                                             "resolution_height":  "1080",
+                                             "resolution_width":  "1920",
+                                             "star_rays":  "1.000000",
+                                             "white_color_b":  "1.000000",
+                                             "white_color_g":  "0.930000",
+                                             "white_color_r":  "0.850000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "label_render 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "label_render",
+                          "inputSlotSourceIds":  [
+                                                     "label_gen"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "label_render",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "dim_color_b":  "0.250000",
+                                             "dim_color_g":  "0.600000",
+                                             "dim_color_r":  "0.950000",
+                                             "glow":  "0.250000",
+                                             "intensity":  "1.000000",
+                                             "label_color_b":  "0.950000",
+                                             "label_color_g":  "0.850000",
+                                             "label_color_r":  "0.750000",
+                                             "project_dir":  "modules/label_render",
+                                             "resolution_height":  "1080",
+                                             "resolution_width":  "1920",
+                                             "show_ticks":  "1.000000",
+                                             "text_scale":  "2.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "field_gen 2",
+                          "enabled":  true,
+                          "expressions":  {
+                                              "detail_gain":  "0.75 + ref(\"signal/control_outputs/energy\") * 0.65",
+                                              "field_mode":  "ref(\"signal/control_outputs/terrain\")",
+                                              "warp_amount":  "0.8 + ref(\"signal/control_outputs/slow\") * 0.35"
+                                          },
+                          "fitMode":  1,
+                          "id":  "field_gen",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "field_gen",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "aspect":  "1.000000",
+                                             "center_count":  "5.000000",
+                                             "detail_gain":  "1.107500",
+                                             "elevation_bias":  "0.000000",
+                                             "field_mode":  "2.000000",
+                                             "flow_dir_x":  "0.150000",
+                                             "flow_dir_y":  "0.100000",
+                                             "flow_speed":  "0.060000",
+                                             "frequency":  "1.600000",
+                                             "gain":  "0.500000",
+                                             "lacunarity":  "2.000000",
+                                             "octaves":  "5.000000",
+                                             "project_dir":  "modules/field_gen",
+                                             "region_split":  "4.000000",
+                                             "resolution_height":  "1080",
+                                             "resolution_width":  "1920",
+                                             "seed":  "3.000000",
+                                             "warp_amount":  "0.903435"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "contour_accent 2",
+                          "enabled":  true,
+                          "expressions":  {
+                                              "glow":  "0.8 + ref(\"signal/control_outputs/beat\") * 1.6"
+                                          },
+                          "fitMode":  1,
+                          "id":  "contour_accent",
+                          "inputSlotSourceIds":  [
+                                                     "field_gen"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "contour_accent",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "accent_color_b":  "0.160000",
+                                             "accent_color_g":  "0.500000",
+                                             "accent_color_r":  "1.000000",
+                                             "accent_count":  "6.000000",
+                                             "accent_level":  "0.600000",
+                                             "accent_mode":  "0.000000",
+                                             "band_width":  "0.090000",
+                                             "glow":  "1.680000",
+                                             "index_ticks":  "0.000000",
+                                             "intensity":  "1.400000",
+                                             "line_count":  "52.000000",
+                                             "line_width":  "0.015000",
+                                             "phase_speed":  "0.030000",
+                                             "project_dir":  "modules/contour_accent"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "node_gen 2",
+                          "enabled":  true,
+                          "expressions":  {
+                                              "node_count":  "ref(\"signal/control_outputs/density\")"
+                                          },
+                          "fitMode":  1,
+                          "id":  "node_gen",
+                          "inputSlotSourceIds":  [
+                                                     "field_gen"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "node_gen",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "ascent_rate":  "0.050000",
+                                             "ascent_steps":  "7.000000",
+                                             "color_mix":  "0.350000",
+                                             "intensity":  "1.000000",
+                                             "jitter":  "0.040000",
+                                             "node_count":  "44.000000",
+                                             "placement_mode":  "4.000000",
+                                             "project_dir":  "modules/node_gen",
+                                             "reset_offsets":  "0.000000",
+                                             "resolution_height":  "1080",
+                                             "resolution_width":  "1920",
+                                             "ring_radius":  "0.340000",
+                                             "seed":  "5.000000",
+                                             "size_max":  "0.028000",
+                                             "size_min":  "0.012000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "link_gen 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "link_gen",
+                          "inputSlotSourceIds":  [
+                                                     "node_gen"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "link_gen",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "curve_amount":  "0.090000",
+                                             "dash":  "0.000000",
+                                             "draw_progress":  "1.000000",
+                                             "link_count":  "26.000000",
+                                             "link_mode":  "0.000000",
+                                             "max_dist":  "0.340000",
+                                             "min_dist":  "0.140000",
+                                             "orbit_arc":  "1.000000",
+                                             "orbit_radius":  "0.440000",
+                                             "orbit_spin":  "0.040000",
+                                             "orbit_width":  "1.600000",
+                                             "project_dir":  "modules/link_gen",
+                                             "resolution_height":  "1080",
+                                             "resolution_width":  "1920",
+                                             "seed":  "0.000000",
+                                             "width":  "0.003500"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "link_render 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "link_render",
+                          "inputSlotSourceIds":  [
+                                                     "link_gen"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "link_render",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "dash_count":  "14.000000",
+                                             "dash_offset":  "0.000000",
+                                             "dash_speed":  "0.250000",
+                                             "glow":  "0.400000",
+                                             "intensity":  "1.000000",
+                                             "link_color_b":  "1.000000",
+                                             "link_color_g":  "0.930000",
+                                             "link_color_r":  "0.850000",
+                                             "orbit_color_b":  "0.140000",
+                                             "orbit_color_g":  "0.500000",
+                                             "orbit_color_r":  "1.000000",
+                                             "project_dir":  "modules/link_render",
+                                             "resolution_height":  "1080",
+                                             "resolution_width":  "1920",
+                                             "softness":  "0.002500",
+                                             "width_scale":  "1.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "label_gen 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "label_gen",
+                          "inputSlotSourceIds":  [
+                                                     "node_gen"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "label_gen",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "attach_mode":  "0.000000",
+                                             "color_mix":  "0.300000",
+                                             "jitter":  "0.020000",
+                                             "label_count":  "18.000000",
+                                             "project_dir":  "modules/label_gen",
+                                             "reset_offsets":  "0.000000",
+                                             "resolution_height":  "1080",
+                                             "resolution_width":  "1920",
+                                             "ring_radius":  "0.460000",
+                                             "rotation":  "0.000000",
+                                             "scale":  "1.000000",
+                                             "seed":  "2.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "atmosphere 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "atmosphere",
+                          "inputSlotSourceIds":  [
+
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "atmosphere",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "depth_gradient":  "1.100000",
+                                             "drift_speed":  "0.012000",
+                                             "dust_brightness":  "0.180000",
+                                             "dust_density":  "280.000000",
+                                             "haze_color_b":  "0.240000",
+                                             "haze_color_g":  "0.170000",
+                                             "haze_color_r":  "0.050000",
+                                             "haze_strength":  "0.700000",
+                                             "intensity":  "1.000000",
+                                             "project_dir":  "modules/atmosphere",
+                                             "resolution_height":  "1080",
+                                             "resolution_width":  "1920",
+                                             "star_density":  "95.000000",
+                                             "twinkle":  "3.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "post 2",
+                          "enabled":  true,
+                          "expressions":  {
+                                              "highlight_tint_b":  "0.25*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.06*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.42*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.90*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+                                              "highlight_tint_g":  "0.60*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.22*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 1.00*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.90*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+                                              "highlight_tint_r":  "1.00*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 1.00*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.18*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.90*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+                                              "saturation":  "1.12 - ref(\"signal/control_outputs/palette\") * 0.12",
+                                              "shadow_tint_b":  "0.22*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.02*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.04*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.04*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+                                              "shadow_tint_g":  "0.14*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.03*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.20*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.04*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+                                              "shadow_tint_r":  "0.00*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 0)) + 0.18*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 1)) + 0.01*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 2)) + 0.04*max(0, 1 - abs(ref(\"signal/control_outputs/palette\") - 3))",
+                                              "split_balance":  "0.20 + ref(\"signal/control_outputs/palette\") * 0.08"
+                                          },
+                          "fitMode":  1,
+                          "id":  "post",
+                          "inputSlotSourceIds":  [
+                                                     "compositor"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "post",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "bloom_intensity":  "0.800000",
+                                             "bloom_radius":  "0.032000",
+                                             "bloom_threshold":  "0.500000",
+                                             "chroma":  "0.080000",
+                                             "contrast":  "1.080000",
+                                             "exposure":  "1.050000",
+                                             "grain_amt":  "0.035000",
+                                             "highlight_tint_b":  "0.250000",
+                                             "highlight_tint_g":  "0.600000",
+                                             "highlight_tint_r":  "1.000000",
+                                             "project_dir":  "modules/post",
+                                             "saturation":  "1.120000",
+                                             "shadow_tint_b":  "0.220000",
+                                             "shadow_tint_g":  "0.140000",
+                                             "shadow_tint_r":  "0.000000",
+                                             "split_balance":  "0.200000",
+                                             "vignette":  "0.950000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
+                      },
+                      {
+                          "displayName":  "Topo_Conductor 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "Topo_Conductor",
+                          "inputSlotSourceIds":  [
+                                                     ""
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "Topo_Conductor",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "beats_per_bar":  "4",
+                                             "bpm":  "120.000000",
+                                             "chunk0_duration":  "4.000000",
+                                             "chunk1_duration":  "4.000000",
+                                             "clock_source":  "internal",
+                                             "energy":  "0.550000",
+                                             "quantize_grid":  "0",
+                                             "retarget_disable":  "false",
+                                             "spread":  "0.500000",
+                                             "tightness":  "0.500000",
+                                             "transition_seconds":  "1.500000",
+                                             "transport_mode":  "0",
+                                             "transport_rate":  "1.000000",
+                                             "transport_run":  "true",
+                                             "transport_seconds":  "0.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "conductor"
+                      },
+                      {
+                          "displayName":  "Topo_Group_Output 2",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "Topo_Group_Output",
+                          "inputSlotSourceIds":  [
+                                                     "post"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "Topo_Group_Output",
+                          "panelOpen":  true,
+                          "parameters":  {
+                                             "background_b":  "0.000000",
+                                             "background_g":  "0.000000",
+                                             "background_r":  "0.000000",
+                                             "fit":  "0",
+                                             "height":  "1080",
+                                             "resolution_mode":  "0",
+                                             "width":  "1920"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "groupoutput"
+                      }
+                  ],
+    "saved_at_ms":  1784242421916,
+    "sources":  [
+
+                ],
+    "statePayloads":  {
+                          "label_gen":  {
+                                            "label_edit_state":  {
+                                                                     "data":  "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                                     "element_count":  1,
+                                                                     "element_size":  48,
+                                                                     "encoding":  "hex",
+                                                                     "schema_signature":  "18284973367236186127"
+                                                                 },
+                                            "label_overrides":  {
+                                                                    "data":  "0000000000000000e9030000008824470000000000000000ea030000000000000000000000000000eb030000000000000000000000000000ec030000000000000000000000000000ed030000000000000000000000000000ee030000000000000000000000000000ef030000000000000000000000000000f0030000000000000000000000000000f1030000000000000000000000000000f2030000000000000000000000000000f3030000000000000000000000000000f403000000000000",
+                                                                    "element_count":  12,
+                                                                    "element_size":  16,
+                                                                    "encoding":  "hex",
+                                                                    "schema_signature":  "10942085093437904734"
+                                                                }
+                                        },
+                          "node_gen":  {
+                                           "node_edit_state":  {
+                                                                   "data":  "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                                                   "element_count":  1,
+                                                                   "element_size":  48,
+                                                                   "encoding":  "hex",
+                                                                   "schema_signature":  "2166316446121755527"
+                                                               },
+                                           "node_overrides":  {
+                                                                  "data":  "00000000000000000100000000882447000000000000000002000000000000000000000000000000030000000000000000000000000000000400000000000000000000000000000005000000000000000000000000000000060000000000000000000000000000000700000000000000000000000000000008000000000000000000000000000000090000000000000000000000000000000a0000000000000000000000000000000b0000000000000000000000000000000c00000000000000",
+                                                                  "element_count":  12,
+                                                                  "element_size":  16,
+                                                                  "encoding":  "hex",
+                                                                  "schema_signature":  "12822581078674631894"
+                                                              }
+                                       }
+                      },
+    "version":  5
 }

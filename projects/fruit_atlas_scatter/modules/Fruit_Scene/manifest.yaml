@@ -1,13 +1,12 @@
-name: "Fruit Scatter Spawner"
-version: "1.0"
+name: "Fruit Transit Chamber"
+version: "2.0"
 mode: generator
 resolution: [1280, 720]
 working_format: RGBA16F
+features: [camera, math3d]
 
 inputs:
-  - name: "Atlas"
-    slot: 0
-    required: true
+  - { name: "Atlas", slot: 0, required: true }
 
 data_inputs:
   - name: "Slot Occupancy"
@@ -19,137 +18,118 @@ data_inputs:
       - { name: occupied, type: float }
 
 parameters:
-  - name: tile_width
-    display: "Tile Width"
-    type: float
-    min: 16.0
-    max: 512.0
-    default: 128.0
-    group: "Atlas"
+  - { name: tile_width, display: "Tile Width", type: float, min: 16.0, max: 512.0, default: 128.0, group: "Atlas" }
+  - { name: tile_height, display: "Tile Height", type: float, min: 16.0, max: 512.0, default: 224.0, group: "Atlas" }
+  - { name: slot_count, display: "Slot Count", type: int, min: 1, max: 64, default: 24, group: "Atlas" }
+  - { name: occupied_count, display: "Occupied Count", type: int, min: 0, max: 64, default: 24, group: "Atlas" }
+  - { name: column_count, display: "Column Count", type: int, min: 1, max: 8, default: 3, group: "Atlas" }
+  - { name: depth_column, display: "Depth Column", type: int, min: 0, max: 7, default: 2, group: "Atlas" }
+  - { name: segmentation_column, display: "Segmentation Column", type: int, min: 0, max: 7, default: 1, group: "Atlas" }
+  - { name: segmentation_enabled, display: "Use Segmentation Mask", type: bool, default: true, group: "Atlas" }
 
-  - name: tile_height
-    display: "Tile Height"
-    type: float
-    min: 16.0
-    max: 512.0
-    default: 224.0
-    group: "Atlas"
+  - { name: scene_mode, display: "Motion World", type: enum, options: [Flythrough, Fruitfall, Orbit], flags: button_grid, default: 0, group: "Direction" }
+  - { name: spawn_rate, display: "Lifecycle Rate", type: float, min: 0.0, max: 0.60, default: 0.115, group: "Direction" }
+  - { name: phase, display: "Motion Phase", type: float, min: 0.0, max: 1.0, default: 0.000000, hidden: true, group: "Direction" }
+  - { name: tunnel_depth, display: "Tunnel Depth", type: float, min: 4.0, max: 24.0, default: 12.000000, group: "Direction" }
+  - { name: camera_push, display: "Camera Push", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Direction" }
+  - { name: camera_view, display: "Camera View", type: enum, options: [Hero, Orbit, Profile], flags: button_grid, default: 0, group: "Direction" }
 
-  - name: slot_count
-    display: "Slot Count"
-    type: int
-    min: 1
-    max: 64
-    default: 7
-    group: "Atlas"
+  - { name: card_scale, display: "Fruit Scale", type: float, min: 0.15, max: 1.5, default: 0.78, group: "Fruit" }
+  - { name: depth_scale, display: "Depth Relief", type: float, min: 0.0, max: 1.5, default: 0.592, group: "Fruit" }
+  - { name: motion_energy, display: "Motion Energy", type: float, min: 0.0, max: 1.5, default: 0.80, group: "Fruit" }
+  - { name: particle_clones, display: "Swarm Clones", type: int, min: 1, max: 4, default: 3, group: "Fruit" }
+  - { name: wind, display: "Crosswind", type: float, min: -1.0, max: 1.0, default: 0.08, group: "Fruit" }
+  - { name: gravity, display: "Gravity", type: float, min: 0.2, max: 2.0, default: 1.0, group: "Fruit" }
+  - { name: bounce, display: "Bounce", type: float, min: 0.0, max: 1.0, default: 0.68, group: "Fruit" }
+  - { name: spin, display: "Spin", type: float, min: 0.0, max: 2.0, default: 0.55, group: "Fruit" }
+  - { name: scatter_seed, display: "Arrangement Seed", type: float, min: 0.0, max: 100.0, default: 7.000000, group: "Fruit" }
 
-  - name: occupied_count
-    display: "Occupied Count"
-    type: int
-    min: 0
-    max: 64
-    default: 7
-    group: "Atlas"
+  - { name: stage_glow, display: "Stage Glow", type: float, min: 0.0, max: 1.5, default: 0.85, group: "Stage" }
+  - { name: grid_density, display: "Grid Density", type: float, min: 4.0, max: 32.0, default: 16.000000, group: "Stage" }
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 1.5, default: 0.72, group: "Stage" }
+  - { name: transform_mode, display: "Card Tool", type: enum, options: [Move, Rotate, Scale], flags: button_grid, default: 0, group: "Card Editor" }
 
-  - name: column_count
-    display: "Column Count"
-    type: int
-    min: 1
-    max: 8
-    default: 3
-    group: "Atlas"
+viewport:
+  hint: "Select a visible fruit card, then drag to move, rotate, or scale its persistent offset. Keys 1/2/3 switch tools; Escape cancels."
+  interactions: [events, selection]
+  selection: { mode: single, provider: ray_query, result_buffer: pick_result, object_buffer: viewport_objects }
+  input:
+    pointer: [left]
+    keyboard: ["1", "2", "3", escape]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select_card, label: "Select Fruit Card" }
+    - { gesture: left_drag, action: transform_card, label: "Transform Selected Card" }
+    - { key: "1", action: move_mode, label: "Move Card" }
+    - { key: "2", action: rotate_mode, label: "Rotate Card" }
+    - { key: "3", action: scale_mode, label: "Scale Card" }
 
-  - name: depth_column
-    display: "Depth Column"
-    type: int
-    min: 0
-    max: 7
-    default: 2
-    group: "Atlas"
+buffers:
+  - { name: card_overrides, structured: true, element_size: 32, element_count: 64, persistent: true }
+  - { name: card_edit_state, structured: true, element_size: 64, element_count: 1, persistent: true }
+  - { name: viewport_objects, structured: true, element_size: 120, element_count: 64, persistent: true }
+  - { name: pick_result, structured: true, element_size: 40, element_count: 1, persistent: true }
 
-  - name: segmentation_column
-    display: "Segmentation Column"
-    type: int
-    min: 0
-    max: 7
-    default: 1
-    group: "Atlas"
-
-  - name: segmentation_enabled
-    display: "Use Segmentation Mask"
-    type: bool
-    default: true
-    group: "Atlas"
-
-  - name: orbit
-    display: "Orbit"
-    type: float
-    min: -1.0
-    max: 1.0
-    default: 0.0
-    group: "Scene"
-
-  - name: card_scale
-    display: "Card Scale"
-    type: float
-    min: 0.1
-    max: 1.2
-    default: 0.5
-    group: "Scene"
-
-  - name: depth_scale
-    display: "Depth Scale"
-    type: float
-    min: 0.0
-    max: 1.5
-    default: 0.75
-    group: "Scene"
-
-  - name: spread_x
-    display: "Scatter Spread X"
-    type: float
-    min: 0.0
-    max: 1.0
-    default: 0.72
-    group: "Scatter"
-
-  - name: spread_y
-    display: "Scatter Spread Y"
-    type: float
-    min: 0.0
-    max: 1.0
-    default: 0.5
-    group: "Scatter"
-
-  - name: scatter_seed
-    display: "Scatter Seed"
-    type: float
-    min: 0.0
-    max: 100.0
-    default: 7.0
-    group: "Scatter"
-
-  - name: phase
-    display: "Phase"
-    type: float
-    min: 0.0
-    max: 1.0
-    default: 0.0
-    group: "Motion"
-
-  - name: bob_amount
-    display: "Bob Amount"
-    type: float
-    min: 0.0
-    max: 0.2
-    default: 0.03
-    group: "Motion"
+state_buffers:
+  - name: card_overrides
+    max_elements: 64
+    schema:
+      - { name: offset, type: float3 }
+      - { name: rotation, type: float }
+      - { name: scale, type: float }
+      - { name: object_id, type: uint }
+      - { name: marker, type: float }
+      - { name: pad, type: float }
 
 passes:
+  - name: card_interaction
+    shader: card_interaction.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:card_overrides" }
+      - { slot: 1, source: "data:0" }
+    output: "buffer:card_edit_state"
+
+  - name: card_update
+    shader: card_update.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:card_edit_state" }
+      - { slot: 1, source: "buffer:card_overrides" }
+    output: "buffer:card_overrides"
+
+  - name: card_descriptors
+    shader: card_descriptors.hlsl
+    target: cs_5_0
+    dispatch: [4, 1, 1]
+    thread_group_x: 16
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:card_overrides" }
+      - { slot: 1, source: "data:0" }
+    output: "buffer:viewport_objects"
+
+  - name: card_pick
+    shader: card_pick.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:card_overrides" }
+      - { slot: 1, source: "data:0" }
+    output: "buffer:pick_result"
+
   - name: scene_cards
     shader: scene_cards.hlsl
     target: draw
-    vertex_count: 384
+    vertex_count: 1536
     topology: trianglelist
     depth: true
     cull: none
@@ -157,16 +137,41 @@ passes:
     ps_entry: PSMain
     inputs:
       - { slot: 0, source: "input:0" }
-      - { slot: 1, source: "data:0" }
+      - { slot: 1, source: "buffer:card_overrides" }
+      - { slot: 2, source: "data:0" }
 
   - name: present
     shader: present.hlsl
     target: ps_5_0
     format: RGBA8
+    time_dependent: true
     inputs:
       - { slot: 0, source: "pass:scene_cards" }
     output: output
 
 outputs:
-  - name: "Scene"
-    pass: present
+  - { name: "Fruit World", pass: present }
+
+data_outputs:
+  - name: "Card Overrides"
+    buffer: card_overrides
+    schema:
+      - { name: offset, type: float3 }
+      - { name: rotation, type: float }
+      - { name: scale, type: float }
+      - { name: object_id, type: uint }
+      - { name: marker, type: float }
+      - { name: pad, type: float }
+  - name: "Card Edit State"
+    buffer: card_edit_state
+    schema:
+      - { name: mode, type: float }
+      - { name: active_id, type: float }
+      - { name: dragging, type: float }
+      - { name: command, type: float }
+      - { name: pointer, type: float2 }
+      - { name: start_pointer, type: float2 }
+      - { name: snapshot_offset, type: float3 }
+      - { name: snapshot_rotation, type: float }
+      - { name: snapshot_scale, type: float }
+      - { name: pad, type: float3 }

@@ -27,6 +27,7 @@ data_inputs:
       - { name: active, type: float }
 
 parameters:
+  - { name: palette_variant, display: "Palette", type: int, min: 0, max: 4, default: 0, hidden: true, group: "Look" }
   # ---- look ----
   - { name: blend_k,  display: "Blend (smin)", type: float, min: 0.02, max: 0.6, default: 0.20, group: "Look" }
   - { name: gloss,    display: "Gloss",        type: float, min: 0.0,  max: 2.0, default: 1.0,  group: "Look" }

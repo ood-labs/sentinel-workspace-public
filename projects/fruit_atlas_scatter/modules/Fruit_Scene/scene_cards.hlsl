@@ -1,148 +1,130 @@
-static const uint MAX_SLOTS = 64;
-static const float TWO_PI = 6.28318530718;
+#include "fruit_scene_types.hlsli"
+
+static const uint MAX_SLOTS = 64u;
+static const uint MAX_PARTICLES = 256u;
+StructuredBuffer<CardOverride> _Tex1 : register(t1);
 
 struct VS_OUTPUT {
     float4 Position : SV_POSITION;
-    float2 CellUV   : TEXCOORD0;
-    float  Valid    : TEXCOORD1;
-    float3 Tint     : COLOR0;
-    float2 LocalUV  : TEXCOORD2;
-    float  Slot     : TEXCOORD3;
+    float2 CellUV : TEXCOORD0;
+    float2 LocalUV : TEXCOORD1;
+    float Slot : TEXCOORD2;
+    float Fade : TEXCOORD3;
+    float DepthSample : TEXCOORD4;
+    float Highlight : TEXCOORD5;
 };
 
 static const float2 QUAD_OFFSETS[6] = {
-    float2(-1.0, -1.0), float2( 1.0, -1.0), float2( 1.0,  1.0),
-    float2(-1.0, -1.0), float2( 1.0,  1.0), float2(-1.0,  1.0)
+    float2(-1.0, -1.0), float2(1.0, -1.0), float2(1.0, 1.0),
+    float2(-1.0, -1.0), float2(1.0, 1.0), float2(-1.0, 1.0)
 };
-
 static const float2 QUAD_UVS[6] = {
     float2(0.0, 1.0), float2(1.0, 1.0), float2(1.0, 0.0),
     float2(0.0, 1.0), float2(1.0, 0.0), float2(0.0, 0.0)
 };
 
-uint blockColumns(uint slots)
-{
-    if (slots <= 1) return 1;
-    if (slots <= 4) return 2;
-    if (slots <= 9) return 3;
-    if (slots <= 16) return 4;
-    if (slots <= 25) return 5;
-    if (slots <= 36) return 6;
-    if (slots <= 49) return 7;
-    return 8;
+uint blockColumns(uint slots) {
+    if (slots <= 1u) return 1u;
+    if (slots <= 4u) return 2u;
+    if (slots <= 9u) return 3u;
+    if (slots <= 16u) return 4u;
+    if (slots <= 25u) return 5u;
+    if (slots <= 36u) return 6u;
+    if (slots <= 49u) return 7u;
+    return 8u;
 }
 
-float2 cellOrigin(uint slot, uint column)
-{
-    uint slots = max(1, (uint)slot_count);
-    uint columns = max(1, (uint)column_count);
+float2 cellUV(uint slot, uint column, float2 localUv) {
+    uint slots = max(1u, (uint)slot_count);
+    uint columns = max(1u, (uint)column_count);
     uint blocks = blockColumns(slots);
     uint blockX = slot % blocks;
     uint blockY = slot / blocks;
-    return float2((blockX * columns + column) * tile_width, blockY * tile_height);
-}
-
-float2 cellUV(uint slot, uint column, float2 localUv)
-{
-    float2 origin = cellOrigin(slot, column);
-    float2 pixel = origin + localUv * float2(tile_width, tile_height);
+    float2 origin = float2((blockX * columns + column) * tile_width, blockY * tile_height);
     float2 atlasSize;
     _Tex0.GetDimensions(atlasSize.x, atlasSize.y);
-    return pixel / max(float2(1.0, 1.0), atlasSize);
+    return (origin + localUv * float2(tile_width, tile_height)) / max(atlasSize, 1.0.xx);
 }
 
-float slotHash(uint slot, float salt)
-{
-    float v = frac(sin(dot(float2((float)slot + 1.0, salt + scatter_seed), float2(12.9898, 78.233))) * 43758.5453);
-    return v;
+float slotDepth(uint slot) {
+    uint column = min((uint)depth_column, max(1u, (uint)column_count) - 1u);
+    float3 d = _Tex0.SampleLevel(LinearSampler, cellUV(slot, column, 0.5.xx), 0).rgb;
+    return saturate(dot(d, float3(0.299, 0.587, 0.114)));
 }
 
-float slotDepth(uint slot)
-{
-    uint column = min((uint)depth_column, max(1, (uint)column_count) - 1);
-    float2 uv = cellUV(slot, column, float2(0.5, 0.5));
-    return saturate(dot(_Tex0.SampleLevel(LinearSampler, uv, 0).rgb, float3(0.299, 0.587, 0.114)));
+float segmentationMask(uint slot, float2 localUv) {
+    if (!segmentation_enabled) return 1.0;
+    uint column = min((uint)segmentation_column, max(1u, (uint)column_count) - 1u);
+    float3 m = _Tex0.SampleLevel(LinearSampler, cellUV(slot, column, localUv), 0).rgb;
+    return saturate(dot(m, float3(0.299, 0.587, 0.114)));
 }
 
-float segmentationMask(uint slot, float2 localUv)
-{
-    if (segmentation_enabled == 0) return 1.0;
-    uint column = min((uint)segmentation_column, max(1, (uint)column_count) - 1);
-    float2 uv = cellUV(slot, column, localUv);
-    float4 maskValue = _Tex0.SampleLevel(LinearSampler, uv, 0);
-    return saturate(dot(maskValue.rgb, float3(0.299, 0.587, 0.114)));
-}
-
-VS_OUTPUT VSMain(uint vertexId : SV_VertexID)
-{
-    VS_OUTPUT o;
-    uint recordIndex = vertexId / 6;
-    uint corner = vertexId % 6;
+VS_OUTPUT VSMain(uint vertexId : SV_VertexID) {
+    VS_OUTPUT o = (VS_OUTPUT)0;
+    uint particleIndex = vertexId / 6u;
+    uint corner = vertexId % 6u;
     uint liveSlots = min(_Data0_Count, min((uint)slot_count, MAX_SLOTS));
-    if (liveSlots == 0) {
-        liveSlots = min((uint)occupied_count, min((uint)slot_count, MAX_SLOTS));
-    }
-    if (recordIndex >= liveSlots) {
+    if (liveSlots == 0u) liveSlots = min((uint)occupied_count, min((uint)slot_count, MAX_SLOTS));
+    uint cloneCount = (uint)clamp(particle_clones, 1, 4);
+    uint particleCount = min(liveSlots * cloneCount, MAX_PARTICLES);
+    if (particleIndex >= particleCount || liveSlots == 0u) {
         o.Position = float4(0.0, 0.0, -999.0, 1.0);
-        o.CellUV = float2(0.0, 0.0);
-        o.Valid = 0.0;
-        o.Tint = float3(0.0, 0.0, 0.0);
-        o.LocalUV = float2(0.0, 0.0);
-        o.Slot = 0.0;
         return o;
     }
 
+    uint recordIndex = particleIndex % liveSlots;
+    uint cloneIndex = particleIndex / liveSlots;
+
     uint slot = recordIndex;
-    if (_Data0_Count > 0) {
+    float sequence = (float)recordIndex;
+    float ageRank = (float)recordIndex;
+    if (_Data0_Count > 0u) {
         _DataType_0 occ = _Data0[recordIndex];
         if (occ.occupied < 0.5) {
             o.Position = float4(0.0, 0.0, -999.0, 1.0);
-            o.CellUV = float2(0.0, 0.0);
-            o.Valid = 0.0;
-            o.Tint = float3(0.0, 0.0, 0.0);
-            o.LocalUV = float2(0.0, 0.0);
-            o.Slot = 0.0;
             return o;
         }
-        slot = min((uint)round(occ.slot_index), max(1, (uint)slot_count) - 1);
+        slot = min((uint)round(occ.slot_index), max(1u, (uint)slot_count) - 1u);
+        sequence = occ.sequence + (float)cloneIndex * 31.731;
+        ageRank = occ.age_rank + (float)cloneIndex * 0.37;
     }
 
-    float depth = slotDepth(slot) * depth_scale;
+    float life = fruitLife(particleIndex, sequence, particleCount);
+    CardOverride edit = _Tex1[recordIndex];
+    float3 center = fruitTrajectory(particleIndex, life, ageRank) + edit.offset;
+    float depthValue = slotDepth(slot);
+    center.z += (depthValue - 0.5) * depth_scale * 0.7;
 
-    float scatterX = (slotHash(slot, 3.1) * 2.0 - 1.0) * spread_x;
-    float scatterY = (slotHash(slot, 17.7) * 2.0 - 1.0) * spread_y;
-    float bobPhase = phase * TWO_PI + slotHash(slot, 41.3) * TWO_PI;
-    float bobY = sin(bobPhase) * bob_amount;
-    float swayX = cos(bobPhase * 0.5) * bob_amount * 0.5;
+    float cloneScale = lerp(0.72, 1.18, hash1(particleIndex + 121.0));
+    float scale = fruitScale(slot, life, edit) * cloneScale;
+    float angle = signedHash(particleIndex + 51.0) * 0.24 + _Time * spin * signedHash(particleIndex + 71.0) * 0.18 + edit.rotation;
+    float cs = cos(angle), sn = sin(angle);
+    float2 local = QUAD_OFFSETS[corner];
+    local = float2(local.x * cs - local.y * sn, local.x * sn + local.y * cs);
+    float atlasAspect = tile_width / max(tile_height, 1.0);
+    local.x *= atlasAspect;
+    float3 world = center + float3(local * scale, 0.0);
 
-    float parallaxX = orbit * (depth - 0.35) * 0.65;
-    float scale = card_scale / (1.0 + depth * 0.55);
-    float outAspect = 1280.0 / 720.0;
-    float2 aspect = float2((tile_width / max(1.0, tile_height)) / outAspect, 1.0);
-    float2 local = QUAD_OFFSETS[corner] * aspect * scale;
-    float2 ndc = float2(scatterX + swayX + parallaxX, scatterY + bobY - depth * 0.12) + local;
-
-    o.Position = float4(ndc, depth * 0.5, 1.0);
-    o.CellUV = cellUV(slot, 0, QUAD_UVS[corner]);
-    o.Valid = 1.0;
-    o.Tint = lerp(float3(1.0, 1.0, 1.0), float3(0.82, 0.9, 1.0), saturate(depth) * 0.5);
+    float4 clip = mul(_ViewProjMatrix, float4(world, 1.0));
+    o.Position = clip;
+    o.CellUV = cellUV(slot, 0u, QUAD_UVS[corner]);
     o.LocalUV = QUAD_UVS[corner];
     o.Slot = (float)slot;
+    o.Fade = smoothstep(0.0, 0.07, life) * (1.0 - smoothstep(0.90, 1.0, life));
+    o.DepthSample = depthValue;
+    o.Highlight = pow(saturate(1.0 - abs(life - 0.78) * 3.5), 2.0);
     return o;
 }
 
-float4 PSMain(VS_OUTPUT input) : SV_TARGET
-{
-    if (input.Valid < 0.5) {
-        discard;
-    }
+float4 PSMain(VS_OUTPUT input) : SV_TARGET {
     uint slot = (uint)round(input.Slot);
-    float4 color = _Tex0.SampleLevel(LinearSampler, input.CellUV, 0);
     float mask = segmentationMask(slot, input.LocalUV);
-    if (segmentation_enabled != 0 && mask <= 0.05) {
-        discard;
-    }
+    if (segmentation_enabled && mask <= 0.045) discard;
 
-    float3 sceneColor = color.rgb * input.Tint;
-    return float4(sceneColor, mask);
+    float2 reliefOffset = (input.LocalUV - 0.5) * (input.DepthSample - 0.5) * depth_scale * 0.012;
+    float3 fruit = _Tex0.SampleLevel(LinearSampler, input.CellUV + reliefOffset, 0).rgb;
+    float luminance = dot(fruit, float3(0.299, 0.587, 0.114));
+    fruit *= lerp(0.84, 1.18, input.DepthSample);
+    fruit += input.Highlight * stage_glow * (0.04 + luminance * 0.05);
+    return float4(saturate(fruit), mask * input.Fade);
 }

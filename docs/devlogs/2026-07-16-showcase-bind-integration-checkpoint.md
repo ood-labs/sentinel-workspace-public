@@ -28,11 +28,24 @@ summary: "Checkpoint the modernized official examples and verified Showcase Gall
 
 ## Still in progress
 
-- Split the seven Showcase Scene Groups into independent portable projects so
-  lower-VRAM systems can load one example at a time without the Gallery Scene
-  Switcher retaining every look.
-- Cold-load and runtime-validate each standalone project independently.
 - After verification, synchronize the portable examples and refreshed workspace
   documentation into `sentinel-workspace-public` and push the public update.
+
+## Standalone split verification
+
+- Split all seven Showcase Scene Groups into their canonical standalone
+  projects with one Scene Group, one Group Output, and no Gallery Scene
+  Switcher: Living Room SDF, Face Collage, Fruit Atlas Scatter, Topographic
+  HUD, Strata, Desert Totem, and Industrial Lattice.
+- Bundled every referenced Module and shared include with portable relative
+  paths, preserved valid binds, expressions, links, and compatible presets,
+  and added repeatable split and static-validation scripts under `tools/`.
+- Cold-loaded every standalone project in Sentinel and verified that every
+  pipeline was enabled and healthy, every Module compiled successfully, and
+  each final Group Output was producing live frames.
+- Topographic HUD loaded independently without reproducing the previous
+  Showcase Gallery crash, supporting the diagnosis that the combined gallery
+  exceeded a safe resource envelope rather than containing a project-local
+  compile failure.
 
 This is a mid-work checkpoint, not a phase or subphase completion.

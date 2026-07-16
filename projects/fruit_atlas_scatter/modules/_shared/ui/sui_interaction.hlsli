@@ -36,4 +36,3 @@ SuiInteraction suiInteractionNone() {
 }
 
 #endif
-
