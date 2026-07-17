@@ -1,16 +1,26 @@
 # Interaction Lab
 
-Interaction Lab is a bundled Module-only example project for authored viewport tools. It combines a reusable monochrome scientific UI gallery, a live UI style tuner, a font-style sampler, a GPU spline editor, a downstream spline renderer, and a multi-object 3D transform gizmo.
+Interaction Lab is a bundled Module-only example project for authored viewport tools. It combines a reusable monochrome scientific UI gallery, a live UI style tuner, a font-style sampler, a tightly tailored four-lane motion console, a GPU spline editor, a downstream spline renderer, and a multi-object 3D transform gizmo.
 
 Load `interaction_lab.sentinel` in Sentinel. Each example is boxed and labeled in the graph; double-click a Module node to use its viewport.
 
-The graph is organized as three independent, flat Scene Group stations:
+The graph is organized as four independent, flat Scene Group stations:
 
 - `01 · SCIENTIFIC UI + TYPE SYSTEM`
 - `02 · SPLINE EDITOR + PNODE OUTPUT`
 - `03 · 3D TRANSFORM GIZMO`
 
-The groups save `Reference UI`, `Default Sweep`, and `Object Study`. They are intentionally control-only: Interaction Lab is a tool and data-flow reference, so it has no Group Output endpoint. Scene Groups are never nested.
+- `04 - TAILORED MOTION CONSOLE`
+
+The groups save `Reference UI`, `Default Sweep`, `Object Study`, and `Motion Reference`. They are intentionally control-only: Interaction Lab is a tool and data-flow reference, so it has no Group Output endpoint. Scene Groups are never nested.
+
+## Tailored Motion Console
+
+`Motion_Console` is the canonical reference for a compact interface designed around one operator workflow rather than a generic dashboard template. Its four semantic lanes—Prompt, Energy, Camera, and Pulse—place live waveforms, numeric state, rate, amplitude, and shape selection together. The master strip, motion-bias XY pad, burst, mute, and output meters occupy a narrow side rail because they affect or summarize the whole modulation system.
+
+The reusable lesson is not “make every UI monochrome” or “always use four lanes.” It is that every region earns its space by changing the system or explaining live state. New interfaces should reuse the shared UI primitives while deriving their own grouping, labels, ranges, feedback, and density from the requested tool.
+
+Control outputs publish the four LFO lanes, XY bias, combined energy, and pulse under the normal Module control-output paths so the console can drive other examples through expressions.
 
 ## Scientific UI Kit
 

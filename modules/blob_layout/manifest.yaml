@@ -14,6 +14,7 @@ buffers:
     element_count: 128
 
 parameters:
+  - { name: palette_variant, display: "Palette", type: int, min: 0, max: 4, default: 0, hidden: true, group: "Arrange" }
   - { name: spread,   display: "Spread",   type: float, min: 0.4, max: 2.0, default: 1.0, group: "Arrange" }
   - { name: jitter,   display: "Jitter",   type: float, min: 0.0, max: 2.0, default: 0.0, group: "Arrange" }
   - { name: seed,     display: "Seed",     type: float, min: 0.0, max: 50.0, default: 1.0, group: "Arrange" }

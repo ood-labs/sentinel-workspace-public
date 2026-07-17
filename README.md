@@ -44,7 +44,7 @@ The live MCP catalog is authoritative for the installed Sentinel build. Start wi
 | `.agents/skills/`, `.claude/skills/` | Mirrored Sentinel authoring and automation skills |
 | `knowledge/` | Focused product and workflow reference documentation |
 | `modules/` | Curated Module library and shared HLSL includes |
-| `projects/` | Portable saved shows, including Interaction Lab, seven authored visual examples, and the Showcase Gallery |
+| `projects/` | Portable saved shows, including Interaction Lab and six authored visual examples |
 | `examples/` | Small blueprint examples for procedural construction |
 | `tools/` | Local authoring and validation helpers |
 
@@ -71,12 +71,10 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | [`face_collage`](projects/face_collage/) | A tracking-driven StreamDiff collage with persistent accumulation, face cutouts, clone overlays, and editorial finishing |
 | [`topographic_hud`](projects/topographic_hud/) | A 15-module topographic interface using texture lanes, structured records, and a control-output signal bus |
 | [`desert_totem`](projects/desert_totem/) | A procedural Dada totem with structured layout records and layered SDF domain warping |
-| [`fruit_atlas_scatter`](projects/fruit_atlas_scatter/) | A StreamDiff, matting, depth, atlas, and 3D card-scatter workflow; its AI nodes require the corresponding Sentinel engine packs |
 | [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
 | [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene with bundled render/post modules, internal camera controls, quality settings, and extreme domain distortion |
-| [`showcase_gallery`](projects/showcase_gallery/) | A high-VRAM review artifact containing all seven looks behind one groups-mode Scene Switcher |
 
-Face Collage and Fruit Atlas Scatter are engine-backed. The remaining aesthetic looks are model-free. Open the standalone projects for normal use; the combined Showcase Gallery retains every look and can exceed the VRAM budget of many GPUs.
+Face Collage is engine-backed. The remaining aesthetic looks are model-free. Each example is intentionally distributed as a standalone project so people can load only the content they want without paying the memory and startup cost of a combined gallery.
 
 ## Creating a UI Module
 

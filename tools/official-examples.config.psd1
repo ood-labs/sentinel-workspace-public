@@ -5,7 +5,7 @@
         interaction_lab = @{
             ProjectFile = 'interaction_lab.sentinel'
             SharedModules = @()
-            MinimumSceneGroups = 3
+            MinimumSceneGroups = 4
             RequiresGroupOutput = $false
             MinimumGroupPresets = 1
             MinimumNodePresets = 2
@@ -23,15 +23,6 @@
         face_collage = @{
             ProjectFile = 'face_collage.sentinel'
             SharedModules = @('modules/lfo', 'modules/resample')
-            MinimumSceneGroups = 1
-            RequiresGroupOutput = $true
-            MinimumGroupPresets = 3
-            MinimumNodePresets = 2
-            Exemptions = @()
-        }
-        fruit_atlas_scatter = @{
-            ProjectFile = 'fruit_atlas_scatter.sentinel'
-            SharedModules = @()
             MinimumSceneGroups = 1
             RequiresGroupOutput = $true
             MinimumGroupPresets = 3
@@ -73,17 +64,6 @@
             MinimumGroupPresets = 3
             MinimumNodePresets = 2
             Exemptions = @('object-picking')
-        }
-        showcase_gallery = @{
-            ProjectFile = 'showcase_gallery.sentinel'
-            SharedModules = @()
-            MinimumSceneGroups = 7
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 7
-            RequiresGroupsMux = $true
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 0
-            Exemptions = @('gallery-final-mux', 'scene-group-controls', 'scene-group-presets', 'object-picking')
         }
     }
 

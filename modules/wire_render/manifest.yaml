@@ -7,6 +7,7 @@ resolution: [720, 1080]
 # lines on transparent bg (premultiplied RGBA), seedable. No distortion (frames the mass).
 
 parameters:
+  - { name: palette_variant, display: "Palette", type: int, min: 0, max: 4, default: 0, hidden: true, group: "Wire" }
   - { name: wire_seed,    display: "Seed",      type: float, min: 0.0, max: 50.0, default: 4.0, group: "Wire" }
   - { name: wire_scale,   display: "Scale",     type: float, min: 0.4, max: 2.0,  default: 1.0, group: "Wire" }
   - { name: wire_width,   display: "Width",     type: float, min: 0.3, max: 3.0,  default: 1.0, group: "Wire" }

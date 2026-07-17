@@ -1,6 +1,6 @@
 # Interaction Lab proof
 
-Verified live in Sentinel 0.5.33 on 2026-07-14. All six Module pipelines compiled and processed at interactive frame rate with healthy status.
+Verified live in Sentinel 0.5.33 on 2026-07-14, with the Motion Console addition reverified on 2026-07-17. All seven Module pipelines compiled and processed at interactive frame rate with healthy status.
 
 ## Canvas and responsive layout
 
@@ -11,8 +11,13 @@ Every authored Canvas reported a non-zero `content_size` exactly equal to `rende
 - UI Style Tuner: 1704 x 1235
 - Spline Editor: 517 x 643
 - Gizmo Lab: 517 x 643
+- Motion Console: 1593 x 1321
 
-The PNGs in this folder are direct pipeline captures at those live render sizes. `ui-style-tuner.png` is the Dense Instrument state; `ui-style-airy.png` is the Airy Review preset.
+The PNGs in this folder are direct pipeline captures at those live render sizes. `ui-style-tuner.png` is the Dense Instrument state; `ui-style-airy.png` is the Airy Review preset; `motion-console.png` is the canonical tailored-instrument state.
+
+## Tailored Motion Console
+
+`Motion_Console` compiled with 16 authored controls and published eight live control outputs. Its Canvas reported `content_size` exactly equal to `render_size` at 1593 x 1321 with zero deferred resources. The `Balanced Motion` and `Slow Drift` project presets recall complete modulation states, and the independent `Motion Reference` Scene Group preset restores the canonical station.
 
 ## Spline interaction, downstream data, and undo
 
@@ -28,6 +33,6 @@ The synthetic provider pick at normalized `(0.70, 0.60)` hit visible object 7 th
 
 ## Scene Groups
 
-The UI, spline, and gizmo stations are independent, flat control-only Scene Groups. Disabling the UI station bypassed only UI Kit, Font Sampler, and UI Style Tuner; the spline and gizmo stations remained enabled and healthy. Re-enabling restored all six pipelines. No Scene Group contains another Scene Group.
+The UI, spline, gizmo, and motion-console stations are independent, flat control-only Scene Groups. Disabling the UI station bypassed only UI Kit, Font Sampler, and UI Style Tuner; the spline, gizmo, and motion-console stations remained enabled and healthy. Re-enabling restored all seven pipelines. No Scene Group contains another Scene Group.
 
 Interaction Lab intentionally has no Group Output because it is a tool/data reference rather than a final scene texture. See the project README for controls and preset names.

@@ -135,9 +135,7 @@ Example expression:
 0.2 + ref("hand_track/control_outputs/pinch_primary") * 2.0
 ```
 
-Do not use a plain StateTree `set` to write `=ref(...)`. Use the expression command so the driver is compiled and evaluated every frame.
-
-To keep two or more parameters equal in BOTH directions, use a bind instead of an expression: `sentinel_expression action=set_bind` with `path` + `peer_path` (or an `endpoints` array). Writing any bound endpoint (UI, OSC, presets, MCP) moves every endpoint; `clear_bind` removes the whole network; a bind network carries at most one expression-driven endpoint, which drives all of it. Binds are absent on installs at or below 0.5.34. See `knowledge/expressions-and-drivers.md` for the full rules and examples.
+Do not use a plain StateTree `set` to write `=ref(...)`. Use the expression command so the driver is compiled and evaluated every frame. See `knowledge/expressions-and-drivers.md`.
 
 ## Creative Module Authoring
 
@@ -167,9 +165,7 @@ Group presets snapshot every parameter of every contained pipeline plus per-node
 
 Scene Groups can also expose selected member parameters as first-class group controls. Exposed parameters keep their authored defaults, enums, and source sections, render as normal full-width Properties rows with reset, OSC, expressions, range editing, and undo, and authored color and XY compounds expose as one complete swatch or pad unit.
 
-Over MCP, use `sentinel_graph expose_scene_group_parameter` with the group's annotation `entity_id`, the member `pipeline_id`, and a `param_name`. Compound parameters live in StateTree as flattened components (`main_color_r/_g/_b`, `center_x/_y`); pass a COMPONENT name (the compound base name errors with parameter-not-found) and the whole compound promotes at once, returning every exposed path under `/sentinel/groups/<id>/parameters/`.
-
-Exposed parameters are parameter binds on installs newer than 0.5.34: the group path and the member path form a bidirectional network, so writing either side moves both, dragging the member's own slider keeps the link, and undo reverts both sides together. Older projects whose exposes were one-way `ref()` expressions migrate to binds automatically on load. On installs at or below 0.5.34, exposes are one-way expressions and dragging the member slider silently breaks the link.
+Over MCP, use `sentinel_graph expose_scene_group_parameter` with the group's annotation `entity_id`, the member `pipeline_id`, and a `param_name`. Compound parameters live in StateTree as flattened components (`main_color_r/_g/_b`, `center_x/_y`); pass a COMPONENT name (the compound base name errors with parameter-not-found) and the whole compound promotes at once, returning every exposed path under `/sentinel/groups/<id>/parameters/`. Writes to a group path flow to the member parameter and back.
 
 Scene Groups are for control and organization. They do not replace video/data wiring, and they should not be used to hide whether a graph is healthy.
 

@@ -14,7 +14,7 @@ Read `knowledge/ui-authoring.md` before implementing. Use `knowledge/module-pipe
 
 1. Discover the live build with `sentinel_app ping`, `sentinel_pipeline list_types`, and `sentinel_app capabilities`. Canvas panels require Sentinel 0.5.32 or newer.
 2. Choose the interaction level: `viewport.controls` for fixed controls, `events` for custom pointer/keyboard behavior, `param_gestures` for parameter-backed movement, or `selection` plus state buffers for object editors and gizmos.
-3. Scaffold with `./tools/module-ui.ps1 new modules/<name> -Name "<Display Name>"`, or copy the nearest Interaction Lab example.
+3. Scaffold with `./tools/module-ui.ps1 new modules/<name> -Name "<Display Name>"`, or study the nearest Interaction Lab example for implementation patterns. Do not copy its layout wholesale.
 4. Keep control rectangles and labels in `manifest.yaml`. Run `module-ui.ps1 generate` after every control or label change.
 5. Render through `../_shared/ui/sui_v2.hlsli`. Use named typography roles and normalized rectangles; derive every pixel measurement from `_Resolution` through `SuiContext`.
 6. For a standalone full-frame panel, declare `panel.mode: canvas`, name the UI output, and choose `panel.resolution: follow_panel`. Keep the selected output pass inheriting root resolution.
@@ -26,6 +26,9 @@ Read `knowledge/ui-authoring.md` before implementing. Use `knowledge/module-pipe
 ## Hard Rules
 
 - Keep this work Module-only unless the user explicitly requests a native Sentinel capability.
+- Derive the control topology, grouping, labels, feedback, and density from the requested operator workflow. Reuse primitives, never a generic dashboard composition.
+- Use `projects/interaction_lab/modules/Motion_Console/` as the canonical task-specific instrument reference: learn from its tight coupling of controls and live feedback, not its exact four-lane layout.
+- Every visible panel, chart, and readout must answer a concrete operator question or support an action. Remove generic filler.
 - Make the manifest hit rectangle and the rendered rectangle identical.
 - Keep hit targets at least 32 pixels tall at the declared default resolution.
 - Read momentary feedback from only that control's pressed flag. Do not let hover state recolor shared borders or neighboring controls.

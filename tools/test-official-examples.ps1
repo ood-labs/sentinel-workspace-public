@@ -4,13 +4,11 @@ param()
 $ErrorActionPreference = 'Stop'
 $workspaceRoot = Split-Path -Parent $PSScriptRoot
 $validator = Join-Path $PSScriptRoot 'validate-official-examples.ps1'
-$promoter = Join-Path $PSScriptRoot 'promote-public.ps1'
 $config = Join-Path $PSScriptRoot 'official-examples.config.psd1'
 $moduleUi = Join-Path $PSScriptRoot 'module-ui.ps1'
 $powerShellExe = (Get-Process -Id $PID).Path
 $testRoot = Join-Path ([IO.Path]::GetTempPath()) ("sentinel-official-examples-{0}" -f [guid]::NewGuid().ToString('N'))
 $sourceRoot = Join-Path $testRoot 'private'
-$publicRoot = Join-Path $testRoot 'public'
 $projectRoot = Join-Path $sourceRoot 'projects/industrial_lattice'
 
 function Write-Utf8([string]$Path, [string]$Text) {
@@ -69,48 +67,8 @@ function New-FixtureProject([string]$ProjectDir) {
     Write-Utf8 (Join-Path $projectRoot 'industrial_lattice.sentinel') (($project | ConvertTo-Json -Depth 12) + "`n")
 }
 
-function New-GalleryFixture {
-    $galleryRoot = Join-Path $sourceRoot 'projects/showcase_gallery'
-    $groups = @()
-    $outputs = @()
-    $nodes = @()
-    $pins = @()
-    $links = @()
-    $allowed = @()
-    for ($index = 1; $index -le 7; $index++) {
-        $groupId = "annotation_$index"
-        $outputId = "Output_$index"
-        $groupX = ($index - 1) * 1000
-        $nodeId = 100 + $index
-        $pinId = 200 + $index
-        $groups += [ordered]@{
-            entityId = $groupId; sceneGroup = $true; posX = $groupX; posY = 0
-            width = 900; height = 900; sceneGroupParameters = @(); sceneGroupPresets = @()
-        }
-        $outputs += [ordered]@{ id = $outputId; displayName = $outputId; type = 'groupoutput'; parameters = [ordered]@{} }
-        $nodes += [ordered]@{ entityId = $outputId; id = $nodeId; posX = $groupX + 700; posY = 700 }
-        $pins += [ordered]@{ id = $pinId; nodeId = $nodeId; kind = 0; name = 'Video'; slotIndex = 0; type = 0 }
-        $links += [ordered]@{ id = $index; startPinId = 300 + $index; endPinId = $pinId }
-        $allowed += $groupId
-    }
-    $mux = [ordered]@{
-        id = 'Gallery_Mux'; displayName = 'Gallery Mux'; type = 'mux'; enabled = $true
-        parameters = [ordered]@{
-            source_mode = '1'; solo_upstream = 'true'; allowed_groups = ($allowed -join ',')
-            selected_group = $allowed[0]; fade_time = '0.75'
-        }
-    }
-    $project = [ordered]@{
-        version = '0.5.33'; name = 'Gallery Fixture'; pipelines = @($outputs) + @($mux); nodePresets = @()
-        graph = [ordered]@{ nodes = @($nodes) + @($groups); pins = $pins; links = $links }
-    }
-    Write-Utf8 (Join-Path $galleryRoot 'showcase_gallery.sentinel') (($project | ConvertTo-Json -Depth 12) + "`n")
-    Write-Utf8 (Join-Path $galleryRoot 'README.md') "# Gallery Fixture`n"
-    Write-Utf8 (Join-Path $galleryRoot 'proof/output.txt') "gallery fixture proof`n"
-}
-
 try {
-    New-Item -ItemType Directory -Path $sourceRoot, $publicRoot -Force | Out-Null
+    New-Item -ItemType Directory -Path $sourceRoot -Force | Out-Null
     Write-Utf8 (Join-Path $projectRoot 'README.md') "# Industrial Lattice Fixture`n"
     Write-Utf8 (Join-Path $projectRoot 'proof/output.txt') "fixture proof`n"
     Write-Utf8 (Join-Path $projectRoot 'modules/Active/manifest.yaml') @'
@@ -173,65 +131,10 @@ viewport:
     if (-not (@($duplicate.projects[0].errors) -match 'exactly one .sentinel')) { throw 'Duplicate root project file was not rejected.' }
     Remove-Item -LiteralPath (Join-Path $projectRoot 'duplicate.sentinel') -Force
 
-    # The gallery needs seven owned, connected Group Outputs and one exact
-    # groups-mode Mux; exercise each central structural failure independently.
-    New-GalleryFixture
-    $galleryClean = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'showcase_gallery', '-ConfigPath', $config, '-Json') 0
-    if (-not $galleryClean.portable) { throw 'Valid gallery fixture did not pass.' }
-    $galleryFile = Join-Path $sourceRoot 'projects/showcase_gallery/showcase_gallery.sentinel'
-
-    $galleryJson = [IO.File]::ReadAllText($galleryFile) | ConvertFrom-Json
-    $galleryJson.pipelines = @($galleryJson.pipelines | Where-Object { $_.id -ne 'Output_1' })
-    Write-Utf8 $galleryFile (($galleryJson | ConvertTo-Json -Depth 12) + "`n")
-    $missingOutput = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'showcase_gallery', '-ConfigPath', $config, '-Json') 1
-    if (-not (@($missingOutput.projects[0].errors) -match 'Group Output')) { throw 'Missing gallery Group Output was not rejected.' }
-
-    New-GalleryFixture
-    $galleryJson = [IO.File]::ReadAllText($galleryFile) | ConvertFrom-Json
-    $galleryJson.pipelines = @($galleryJson.pipelines | Where-Object { $_.type -ne 'mux' })
-    Write-Utf8 $galleryFile (($galleryJson | ConvertTo-Json -Depth 12) + "`n")
-    $missingMux = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'showcase_gallery', '-ConfigPath', $config, '-Json') 1
-    if (-not (@($missingMux.projects[0].errors) -match 'final Mux')) { throw 'Missing gallery Mux was not rejected.' }
-
-    New-GalleryFixture
-    $galleryJson = [IO.File]::ReadAllText($galleryFile) | ConvertFrom-Json
-    ($galleryJson.pipelines | Where-Object { $_.type -eq 'mux' }).parameters.allowed_groups = 'annotation_1'
-    Write-Utf8 $galleryFile (($galleryJson | ConvertTo-Json -Depth 12) + "`n")
-    $badAllowList = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'showcase_gallery', '-ConfigPath', $config, '-Json') 1
-    if (-not (@($badAllowList.projects[0].errors) -match 'allowed_groups')) { throw 'Incomplete gallery allow-list was not rejected.' }
-
-    New-GalleryFixture
-    $galleryJson = [IO.File]::ReadAllText($galleryFile) | ConvertFrom-Json
-    ($galleryJson.graph.nodes | Where-Object { $_.entityId -eq 'Output_1' }).posX = 950
-    Write-Utf8 $galleryFile (($galleryJson | ConvertTo-Json -Depth 12) + "`n")
-    $badOwnership = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'showcase_gallery', '-ConfigPath', $config, '-Json') 1
-    if (-not (@($badOwnership.projects[0].errors) -match 'must contain exactly one Group Output')) { throw 'Out-of-group gallery output was not rejected.' }
-    New-GalleryFixture
-
-    # Dry-run must be non-mutating and list only the selected fixture project.
-    $dryRun = Invoke-JsonScript $promoter @('-SourceRoot', $sourceRoot, '-DestinationRoot', $publicRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 0
-    if ($dryRun.mode -ne 'dry-run') { throw 'Promotion did not default to dry-run.' }
-    if (Test-Path -LiteralPath (Join-Path $publicRoot 'projects/industrial_lattice')) { throw 'Dry-run mutated the public fixture.' }
-    if (@($dryRun.projects).Count -ne 1 -or $dryRun.projects[0].project -ne 'industrial_lattice') { throw 'Dry-run escaped the selected project allowlist.' }
-
-    # Apply into the disposable public root, validate there, and prove normalized parity.
-    $applied = Invoke-JsonScript $promoter @('-SourceRoot', $sourceRoot, '-DestinationRoot', $publicRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Apply', '-Json') 0
-    if ($applied.mode -ne 'apply' -or @($applied.validation).Count -ne 1 -or -not $applied.validation[0].portable) {
-        throw 'Applied promotion was not validator-clean.'
-    }
-    foreach ($operation in @($applied.operations | Where-Object { $_.action -ne 'delete' })) {
-        if ($operation.source_sha256 -ne $operation.destination_sha256) {
-            throw "Normalized promotion mismatch: $($operation.path)"
-        }
-    }
-
     Write-Host 'PASS normalized manifest hashing is checkout-line-ending invariant'
     Write-Host 'PASS validator reports absolute path, orphan module, and shader cache independently'
     Write-Host 'PASS repaired fixture validates cleanly'
     Write-Host 'PASS validator rejects workspace escapes and duplicate root project files'
-    Write-Host 'PASS gallery validator enforces outputs, ownership, links, Mux mode, and exact allow-list'
-    Write-Host 'PASS promotion dry-run is allowlisted and non-mutating'
-    Write-Host 'PASS disposable public promotion validates and matches normalized source content'
 } finally {
     $tempFull = [IO.Path]::GetFullPath([IO.Path]::GetTempPath())
     $testFull = [IO.Path]::GetFullPath($testRoot)

@@ -35,6 +35,26 @@ void main(uint3 tid:SV_DispatchThreadID){
     float3 renderedPivot=st.active_id>0.5?st.pivot:pivot;uint renderedActive=st.active_id>0.5?(uint)round(st.active_id):activeId;uint renderedMask=st.selection_mask>0.5?(uint)round(st.selection_mask):currentMask;bool ownsTransaction=st.drag_pad.z>0.5;
     bool beganThisCook=false;uint events=min(_ViewportEventCount,64u);[loop]for(uint i=0u;i<events;i++){ViewportEvent e=_ViewportEvents[i];
         if(e.type==4u&&e.phase==1u){if(e.code==33u)st.mode=0;if(e.code==34u)st.mode=1;if(e.code==35u)st.mode=2;if(e.code==36u)st.local_space=1.0-st.local_space;if(e.code==48u&&st.dragging>0.5){st.command=4;st.dragging=0;}}
+        // Host selection edits are object-body drags, not custom-gizmo-handle
+        // drags. Translate the selected object(s) in the view plane while
+        // keeping the same snapshot/update/commit transaction used below.
+        // HostSelection is ABI flag bit 4 (the generated HLSL constants stop
+        // at CaptureCancel in 0.5.33, so keep the ABI value local here).
+        bool hostSelectionDrag=e.type==5u&&e.code==3u&&e.device==0u&&(e.flags&16u)!=0u;
+        if(hostSelectionDrag){
+            if(e.phase==5u&&currentMask>0u){
+                st.pivot=pivot;st.active_id=(float)activeId;st.selection_mask=(float)currentMask;
+                st.mode=0.0;st.active_handle=4.0;st.dragging=1.0;st.command=1.0;
+                st.drag_start=e.position;st.pointer=e.position;st.drag_pad=float3(e.position,8.0);
+                beganThisCook=true;ownsTransaction=true;
+            }else if(st.dragging>0.5&&st.drag_pad.z>7.5&&(e.phase==6u||e.phase==7u||e.phase==8u)){
+                ownsTransaction=true;st.pointer=e.position;
+                if(e.phase==8u){st.command=4.0;st.dragging=0.0;st.drag_pad.z=0.0;}
+                else if(e.phase==7u){st.command=beganThisCook?5.0:3.0;st.dragging=0.0;st.drag_pad.z=0.0;}
+                else st.command=beganThisCook?6.0:2.0;
+            }
+            continue;
+        }
         // A drag Begin is reported at the first point beyond the host drag
         // threshold, which can already be far past a narrow handle. Arm the
         // handle at the actual mouse-down position and reuse that hit when the
