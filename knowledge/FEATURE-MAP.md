@@ -21,9 +21,8 @@ Sentinel graphs combine four kinds of signal:
 - Data ports: structured buffers such as landmarks, detections, blobs, corners, and module-emitted records. Wire these with graph data links, not `set_input`.
 - Control outputs: scalar values published under `/sentinel/pipelines/<id>/control_outputs/<name>`.
 - Expressions: per-frame formulas set with `sentinel_expression action=set`; expressions can read control outputs using `ref("node_id/control_outputs/name")`.
-- Binds: bidirectional parameter links set with `sentinel_expression action=set_bind`; writing any bound endpoint moves every endpoint, and Scene Group exposed parameters are binds. Absent on installs at or below 0.5.34.
 
-Use `sentinel_pipeline set_input` for video inputs. Use `sentinel_graph add_link` for data-port wiring. Use `sentinel_expression action=set` when one node should drive another node's parameter over time, and `action=set_bind` when parameters should stay equal in both directions. See `knowledge/expressions-and-drivers.md`.
+Use `sentinel_pipeline set_input` for video inputs. Use `sentinel_graph add_link` for data-port wiring. Use `sentinel_expression action=set` when one node should drive another node's parameter over time.
 
 ## Common Workflow
 

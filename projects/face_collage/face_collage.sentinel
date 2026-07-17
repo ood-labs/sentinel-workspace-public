@@ -503,7 +503,6 @@
                                                                                                              "offset_x":  "0.000000",
                                                                                                              "offset_y":  "0.000000",
                                                                                                              "patch_slot":  "8",
-                                                                                                             "project_dir":  "modules/Face_Stitch",
                                                                                                              "resolution_height":  "896",
                                                                                                              "resolution_width":  "512",
                                                                                                              "right_eye_slot":  "0",
@@ -515,7 +514,6 @@
                                                                                                                 "glitch":  "0.008",
                                                                                                                 "grain":  "0.01",
                                                                                                                 "lift":  "0.000000",
-                                                                                                                "project_dir":  "modules/Editorial_Post",
                                                                                                                 "resolution_height":  "1280",
                                                                                                                 "resolution_width":  "720",
                                                                                                                 "temperature":  "0.000000",
@@ -523,13 +521,11 @@
                                                                                                             },
                                                                                          "Overlay_Comp":  {
                                                                                                               "fresh_amt":  "1.000000",
-                                                                                                              "project_dir":  "modules/Overlay_Comp",
                                                                                                               "resolution_height":  "1280",
                                                                                                               "resolution_width":  "720"
                                                                                                           },
                                                                                          "Prompt_LFO":  {
                                                                                                             "phase_offset":  "0.000000",
-                                                                                                            "project_dir":  "modules/Prompt_LFO",
                                                                                                             "range":  "6.000000",
                                                                                                             "rate":  "0.12",
                                                                                                             "resolution_height":  "96",
@@ -553,7 +549,6 @@
                                                                                                             "lip_b":  "0.3",
                                                                                                             "lip_g":  "0.3",
                                                                                                             "lip_r":  "0.62",
-                                                                                                            "project_dir":  "modules/Face_Guide",
                                                                                                             "resolution_height":  "896",
                                                                                                             "resolution_width":  "512",
                                                                                                             "skin_b":  "0.52",
@@ -614,14 +609,12 @@
                                                                                                                "line_on":  "true",
                                                                                                                "line_width":  "0.5",
                                                                                                                "opacity":  "0.45",
-                                                                                                               "project_dir":  "modules/Clone_Overlay",
                                                                                                                "radius":  "0.05",
                                                                                                                "resolution_height":  "1280",
                                                                                                                "resolution_width":  "720",
                                                                                                                "subset":  "1.000000"
                                                                                                            },
                                                                                          "Face_DS":  {
-                                                                                                         "project_dir":  "modules/Face_DS",
                                                                                                          "resolution_height":  "896",
                                                                                                          "resolution_width":  "512",
                                                                                                          "sharpen":  "0.25"
@@ -633,7 +626,6 @@
                                                                                                        "paint":  "1.000000",
                                                                                                        "pan_x":  "0.000000",
                                                                                                        "pan_y":  "0.028571",
-                                                                                                       "project_dir":  "modules/Accum",
                                                                                                        "resolution_height":  "1280",
                                                                                                        "resolution_width":  "720",
                                                                                                        "zoom":  "-1.000000"
@@ -655,7 +647,6 @@
                                                                                                              "edge_soft":  "0.02",
                                                                                                              "history_on":  "false",
                                                                                                              "motion_mode":  "1",
-                                                                                                             "project_dir":  "modules/Face_Cutout",
                                                                                                              "resolution_height":  "1280",
                                                                                                              "resolution_width":  "720",
                                                                                                              "sample_scale":  "0.759",
@@ -818,7 +809,6 @@
                                                                                                              "offset_x":  "0.000000",
                                                                                                              "offset_y":  "0.000000",
                                                                                                              "patch_slot":  "8",
-                                                                                                             "project_dir":  "modules/Face_Stitch",
                                                                                                              "resolution_height":  "896",
                                                                                                              "resolution_width":  "512",
                                                                                                              "right_eye_slot":  "0",
@@ -830,7 +820,6 @@
                                                                                                                 "glitch":  "0.012",
                                                                                                                 "grain":  "0.015",
                                                                                                                 "lift":  "0.000000",
-                                                                                                                "project_dir":  "modules/Editorial_Post",
                                                                                                                 "resolution_height":  "1280",
                                                                                                                 "resolution_width":  "720",
                                                                                                                 "temperature":  "0.000000",
@@ -838,13 +827,11 @@
                                                                                                             },
                                                                                          "Overlay_Comp":  {
                                                                                                               "fresh_amt":  "1.000000",
-                                                                                                              "project_dir":  "modules/Overlay_Comp",
                                                                                                               "resolution_height":  "1280",
                                                                                                               "resolution_width":  "720"
                                                                                                           },
                                                                                          "Prompt_LFO":  {
                                                                                                             "phase_offset":  "0.000000",
-                                                                                                            "project_dir":  "modules/Prompt_LFO",
                                                                                                             "range":  "6.000000",
                                                                                                             "rate":  "0.12",
                                                                                                             "resolution_height":  "96",
@@ -868,7 +855,6 @@
                                                                                                             "lip_b":  "0.3",
                                                                                                             "lip_g":  "0.3",
                                                                                                             "lip_r":  "0.62",
-                                                                                                            "project_dir":  "modules/Face_Guide",
                                                                                                             "resolution_height":  "896",
                                                                                                             "resolution_width":  "512",
                                                                                                             "skin_b":  "0.52",
@@ -929,14 +915,12 @@
                                                                                                                "line_on":  "true",
                                                                                                                "line_width":  "0.5",
                                                                                                                "opacity":  "0.62",
-                                                                                                               "project_dir":  "modules/Clone_Overlay",
                                                                                                                "radius":  "0.05",
                                                                                                                "resolution_height":  "1280",
                                                                                                                "resolution_width":  "720",
                                                                                                                "subset":  "1.000000"
                                                                                                            },
                                                                                          "Face_DS":  {
-                                                                                                         "project_dir":  "modules/Face_DS",
                                                                                                          "resolution_height":  "896",
                                                                                                          "resolution_width":  "512",
                                                                                                          "sharpen":  "0.25"
@@ -948,7 +932,6 @@
                                                                                                        "paint":  "1.000000",
                                                                                                        "pan_x":  "0.000000",
                                                                                                        "pan_y":  "0.028571",
-                                                                                                       "project_dir":  "modules/Accum",
                                                                                                        "resolution_height":  "1280",
                                                                                                        "resolution_width":  "720",
                                                                                                        "zoom":  "-1.000000"
@@ -970,7 +953,6 @@
                                                                                                              "edge_soft":  "0.02",
                                                                                                              "history_on":  "false",
                                                                                                              "motion_mode":  "1",
-                                                                                                             "project_dir":  "modules/Face_Cutout",
                                                                                                              "resolution_height":  "1280",
                                                                                                              "resolution_width":  "720",
                                                                                                              "sample_scale":  "0.759",
@@ -1133,7 +1115,6 @@
                                                                                                              "offset_x":  "0.000000",
                                                                                                              "offset_y":  "0.000000",
                                                                                                              "patch_slot":  "8",
-                                                                                                             "project_dir":  "modules/Face_Stitch",
                                                                                                              "resolution_height":  "896",
                                                                                                              "resolution_width":  "512",
                                                                                                              "right_eye_slot":  "0",
@@ -1145,7 +1126,6 @@
                                                                                                                 "glitch":  "0.018",
                                                                                                                 "grain":  "0.02",
                                                                                                                 "lift":  "0.000000",
-                                                                                                                "project_dir":  "modules/Editorial_Post",
                                                                                                                 "resolution_height":  "1280",
                                                                                                                 "resolution_width":  "720",
                                                                                                                 "temperature":  "0.000000",
@@ -1153,13 +1133,11 @@
                                                                                                             },
                                                                                          "Overlay_Comp":  {
                                                                                                               "fresh_amt":  "0.72",
-                                                                                                              "project_dir":  "modules/Overlay_Comp",
                                                                                                               "resolution_height":  "1280",
                                                                                                               "resolution_width":  "720"
                                                                                                           },
                                                                                          "Prompt_LFO":  {
                                                                                                             "phase_offset":  "0.000000",
-                                                                                                            "project_dir":  "modules/Prompt_LFO",
                                                                                                             "range":  "6.000000",
                                                                                                             "rate":  "0.12",
                                                                                                             "resolution_height":  "96",
@@ -1183,7 +1161,6 @@
                                                                                                             "lip_b":  "0.3",
                                                                                                             "lip_g":  "0.3",
                                                                                                             "lip_r":  "0.62",
-                                                                                                            "project_dir":  "modules/Face_Guide",
                                                                                                             "resolution_height":  "896",
                                                                                                             "resolution_width":  "512",
                                                                                                             "skin_b":  "0.52",
@@ -1244,14 +1221,12 @@
                                                                                                                "line_on":  "true",
                                                                                                                "line_width":  "0.5",
                                                                                                                "opacity":  "0.52",
-                                                                                                               "project_dir":  "modules/Clone_Overlay",
                                                                                                                "radius":  "0.05",
                                                                                                                "resolution_height":  "1280",
                                                                                                                "resolution_width":  "720",
                                                                                                                "subset":  "1.000000"
                                                                                                            },
                                                                                          "Face_DS":  {
-                                                                                                         "project_dir":  "modules/Face_DS",
                                                                                                          "resolution_height":  "896",
                                                                                                          "resolution_width":  "512",
                                                                                                          "sharpen":  "0.25"
@@ -1263,7 +1238,6 @@
                                                                                                        "paint":  "1.000000",
                                                                                                        "pan_x":  "0.000000",
                                                                                                        "pan_y":  "0.028571",
-                                                                                                       "project_dir":  "modules/Accum",
                                                                                                        "resolution_height":  "1280",
                                                                                                        "resolution_width":  "720",
                                                                                                        "zoom":  "-1.000000"
@@ -1285,7 +1259,6 @@
                                                                                                              "edge_soft":  "0.02",
                                                                                                              "history_on":  "true",
                                                                                                              "motion_mode":  "0",
-                                                                                                             "project_dir":  "modules/Face_Cutout",
                                                                                                              "resolution_height":  "1280",
                                                                                                              "resolution_width":  "720",
                                                                                                              "sample_scale":  "0.759",
@@ -1448,7 +1421,6 @@
                                                                                                              "offset_x":  "0.000000",
                                                                                                              "offset_y":  "0.000000",
                                                                                                              "patch_slot":  "8",
-                                                                                                             "project_dir":  "modules/Face_Stitch",
                                                                                                              "resolution_height":  "896",
                                                                                                              "resolution_width":  "512",
                                                                                                              "right_eye_slot":  "0",
@@ -1460,7 +1432,6 @@
                                                                                                                 "glitch":  "0.026",
                                                                                                                 "grain":  "0.024",
                                                                                                                 "lift":  "0.000000",
-                                                                                                                "project_dir":  "modules/Editorial_Post",
                                                                                                                 "resolution_height":  "1280",
                                                                                                                 "resolution_width":  "720",
                                                                                                                 "temperature":  "0.000000",
@@ -1468,13 +1439,11 @@
                                                                                                             },
                                                                                          "Overlay_Comp":  {
                                                                                                               "fresh_amt":  "0.58",
-                                                                                                              "project_dir":  "modules/Overlay_Comp",
                                                                                                               "resolution_height":  "1280",
                                                                                                               "resolution_width":  "720"
                                                                                                           },
                                                                                          "Prompt_LFO":  {
                                                                                                             "phase_offset":  "0.000000",
-                                                                                                            "project_dir":  "modules/Prompt_LFO",
                                                                                                             "range":  "6.000000",
                                                                                                             "rate":  "0.12",
                                                                                                             "resolution_height":  "96",
@@ -1498,7 +1467,6 @@
                                                                                                             "lip_b":  "0.3",
                                                                                                             "lip_g":  "0.3",
                                                                                                             "lip_r":  "0.62",
-                                                                                                            "project_dir":  "modules/Face_Guide",
                                                                                                             "resolution_height":  "896",
                                                                                                             "resolution_width":  "512",
                                                                                                             "skin_b":  "0.52",
@@ -1559,14 +1527,12 @@
                                                                                                                "line_on":  "true",
                                                                                                                "line_width":  "0.5",
                                                                                                                "opacity":  "0.68",
-                                                                                                               "project_dir":  "modules/Clone_Overlay",
                                                                                                                "radius":  "0.05",
                                                                                                                "resolution_height":  "1280",
                                                                                                                "resolution_width":  "720",
                                                                                                                "subset":  "1.000000"
                                                                                                            },
                                                                                          "Face_DS":  {
-                                                                                                         "project_dir":  "modules/Face_DS",
                                                                                                          "resolution_height":  "896",
                                                                                                          "resolution_width":  "512",
                                                                                                          "sharpen":  "0.25"
@@ -1578,7 +1544,6 @@
                                                                                                        "paint":  "1.000000",
                                                                                                        "pan_x":  "0.000000",
                                                                                                        "pan_y":  "0.028571",
-                                                                                                       "project_dir":  "modules/Accum",
                                                                                                        "resolution_height":  "1280",
                                                                                                        "resolution_width":  "720",
                                                                                                        "zoom":  "-1.000000"
@@ -1600,7 +1565,6 @@
                                                                                                              "edge_soft":  "0.02",
                                                                                                              "history_on":  "true",
                                                                                                              "motion_mode":  "2",
-                                                                                                             "project_dir":  "modules/Face_Cutout",
                                                                                                              "resolution_height":  "1280",
                                                                                                              "resolution_width":  "720",
                                                                                                              "sample_scale":  "0.759",
