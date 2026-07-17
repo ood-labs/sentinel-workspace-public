@@ -19,8 +19,8 @@ Turn the loose StreamDiff experiments into a compact, portable technique collect
 
 - Added six focused projects under `projects/streamdiff_workflows/`: image-space feedback zoom, depth-parallax zoom, architectural flythrough tuning, direct variant Mux switching, video depth conditioning, and procedural warp-map displacement.
 - Bundled the authored `Expressive_Flow_Layers` Module and its shared timeline include using project-relative paths.
-- Replaced the author-machine dancer reference with an original six-second procedural motion guide that is safe and lightweight to redistribute.
-- Linked the Marble Dancer study's Video source to `assets/motion_guide.mp4`; verified the saved relative path resolves, the H.264 file is present, and Sentinel connects it at 512x896 and 25 fps.
+- Bundled the actual dancer source used to author the Marble Dancer study so the example retains its intended motion rather than substituting a procedural placeholder.
+- Linked the Marble Dancer study's Video source to `assets/dancer_vert.mp4`; verified the saved relative path resolves, the H.264 file is present, and Sentinel connects it at 512x896 and 25 fps.
 - Added collection-level authoring notes, engine requirements, runtime acceptance checks, and a validation record.
 - Extended `knowledge/streamdiff.md` with the isolated motion mechanisms, direct-Mux versus Scene-Switcher distinction, and an engine-safe review sequence.
 - Updated the repository index and tracking rules so the collection and bundled MP4 are included in Git.

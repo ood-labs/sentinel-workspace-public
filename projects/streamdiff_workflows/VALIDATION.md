@@ -9,7 +9,7 @@ Validated against Sentinel 0.5.38 on 2026-07-17. Captures were kept in ignored l
 - Saved dock layouts are empty; no unrelated historical windows are restored.
 - No project, module, media, or text file contains an absolute author-machine path.
 - The bundled flow-map Module resolves through `modules/Expressive_Flow_Layers`.
-- `assets/motion_guide.mp4` is H.264, 512x896, 25 fps, six seconds, and 24,054 bytes.
+- `assets/dancer_vert.mp4` is H.264, 512x896, 25 fps, 24.76 seconds, and 30,013,125 bytes.
 
 ## Module compile
 

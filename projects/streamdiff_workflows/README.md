@@ -60,10 +60,10 @@ This is not the final Scene Group switching reference. It teaches the lightweigh
 
 ## 05 - video depth control
 
-The included `assets/motion_guide.mp4` is a six-second, 512x896 procedural block-figure loop created for this repository. It is only 24 KB and can be freely replaced with any portrait video.
+The included `assets/dancer_vert.mp4` is the 24.76-second, 512x896 dancer source used to author this study. It is bundled with the project so the saved graph opens with its intended motion guide on another machine.
 
 ```text
-Procedural Motion Guide -> Video Depth Guide -> Marble Dancer Control Image
+Dancer Video Guide -> Video Depth Guide -> Marble Dancer Control Image
 ```
 
 Depth Estimation converts motion into a temporally smoothed grayscale structure map. StreamDiff uses that map as depth ControlNet input while the marble-sculpture prompt supplies appearance. The source clip does not feed the main video input; this is structural conditioning rather than ordinary video compositing.

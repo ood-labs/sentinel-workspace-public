@@ -325,7 +325,7 @@
                         "imagePath":  "",
                         "imageWidth":  1920,
                         "loop":  true,
-                        "name":  "Procedural Motion Guide",
+                        "name":  "Dancer Video Guide",
                         "patternAnimated":  true,
                         "patternHeight":  1080,
                         "patternType":  "colorbars",
@@ -334,7 +334,7 @@
                         "playing":  true,
                         "senderName":  "",
                         "type":  "video",
-                        "videoPath":  "assets/motion_guide.mp4"
+                        "videoPath":  "assets/dancer_vert.mp4"
                     }
                 ],
     "version":  5
