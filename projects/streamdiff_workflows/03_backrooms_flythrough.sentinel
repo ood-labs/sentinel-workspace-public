@@ -1,0 +1,227 @@
+{
+    "display":  {
+                    "fpsLimit":  60.0,
+                    "vsyncEnabled":  false
+                },
+    "graph":  {
+                  "canvasZoom":  0.9654321670532227,
+                  "links":  [
+
+                            ],
+                  "nextLinkId":  25,
+                  "nextNodeId":  17,
+                  "nextPinId":  24,
+                  "nodes":  [
+                                {
+                                    "displayName":  "Backrooms Flythrough",
+                                    "entityId":  "streamdiff_0",
+                                    "id":  3,
+                                    "posX":  217.53961181640625,
+                                    "posY":  115.55604553222656,
+                                    "positionSet":  true,
+                                    "previewVisible":  true,
+                                    "type":  1
+                                }
+                            ],
+                  "pins":  [
+                               {
+                                   "id":  3,
+                                   "kind":  0,
+                                   "name":  "Video Input",
+                                   "nodeId":  3,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  20,
+                                   "kind":  1,
+                                   "name":  "Color",
+                                   "nodeId":  3,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  4,
+                                   "kind":  0,
+                                   "name":  "Style Reference",
+                                   "nodeId":  3,
+                                   "slotIndex":  1,
+                                   "type":  1
+                               },
+                               {
+                                   "id":  5,
+                                   "kind":  0,
+                                   "name":  "Control Image",
+                                   "nodeId":  3,
+                                   "slotIndex":  2,
+                                   "type":  2
+                               },
+                               {
+                                   "id":  6,
+                                   "kind":  0,
+                                   "name":  "Warp Map",
+                                   "nodeId":  3,
+                                   "slotIndex":  3,
+                                   "type":  4
+                               },
+                               {
+                                   "id":  8,
+                                   "kind":  1,
+                                   "name":  "Depth",
+                                   "nodeId":  3,
+                                   "slotIndex":  1,
+                                   "type":  0
+                               }
+                           ]
+              },
+    "input":  {
+                  "activeSource":  ""
+              },
+    "layout":  "",
+    "name":  "StreamDiff 03 - Backrooms Flythrough",
+    "nodePresets":  [
+
+                    ],
+    "osc":  {
+                "enabled":  true,
+                "receivePort":  9002,
+                "sendFeedback":  true,
+                "sendHost":  "127.0.0.1",
+                "sendPort":  9021,
+                "stateTreeBridge":  true
+            },
+    "outputObjects":  [
+
+                      ],
+    "outputs":  [
+
+                ],
+    "pipelines":  [
+                      {
+                          "displayName":  "Backrooms Flythrough",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "streamdiff_0",
+                          "inputSlotSourceIds":  [
+                                                     "",
+                                                     "",
+                                                     "",
+                                                     ""
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "streamdiff_0",
+                          "panelOpen":  true,
+                          "parameters":  {
+                                             "autopilot_deadzone":  "0.040000",
+                                             "autopilot_enabled":  "false",
+                                             "autopilot_invert_x":  "false",
+                                             "autopilot_invert_y":  "false",
+                                             "autopilot_sensitivity":  "2.000000",
+                                             "autopilot_smoothing":  "0.900000",
+                                             "autopilot_strength":  "0.025000",
+                                             "black_level":  "0.000000",
+                                             "brightness":  "0.000000",
+                                             "cadence_fade_curve":  "0",
+                                             "cadence_fade_frames":  "5",
+                                             "color_match_algorithm":  "2",
+                                             "color_match_ema_alpha":  "0.100000",
+                                             "color_match_enabled":  "false",
+                                             "color_match_strength":  "0.850000",
+                                             "color_match_style_blend":  "0.500000",
+                                             "color_match_target":  "2",
+                                             "contrast":  "1.000000",
+                                             "controlnet_auto_depth":  "true",
+                                             "controlnet_enabled":  "true",
+                                             "controlnet_scale":  "0.736000",
+                                             "controlnet_type":  "1",
+                                             "denoise":  "0.798000",
+                                             "depth_adaptive_smoothing":  "true",
+                                             "depth_cadence":  "1",
+                                             "depth_fllf_strength":  "0.500000",
+                                             "depth_fllf_threshold":  "0.050000",
+                                             "depth_frame_delay":  "0",
+                                             "depth_model_family":  "dav2",
+                                             "depth_model_resolution":  "518",
+                                             "depth_model_size":  "small",
+                                             "depth_motion_threshold":  "0.050000",
+                                             "depth_parallax":  "true",
+                                             "depth_quantize_bits":  "8",
+                                             "depth_range_smoothing":  "0.900000",
+                                             "depth_smoothing":  "0.604000",
+                                             "dilate":  "0.000000",
+                                             "engine_precision":  "1",
+                                             "engine_profile":  "sdxl/896x512",
+                                             "engine_profile_type":  "fixed",
+                                             "engine_resolution":  "1",
+                                             "engine_tier":  "1",
+                                             "erode":  "0.000000",
+                                             "feedback":  "1.000000",
+                                             "frame_skip":  "6",
+                                             "frame_skip_blend":  "1.000000",
+                                             "frame_skip_steady":  "false",
+                                             "gamma":  "1.000000",
+                                             "hold":  "false",
+                                             "image_noise_blend":  "0",
+                                             "image_noise_scale":  "1.000000",
+                                             "image_noise_strength":  "0.020000",
+                                             "image_noise_type":  "0",
+                                             "ipadapter_enable":  "false",
+                                             "ipadapter_scale":  "0.000000",
+                                             "ipadapter_update_interval":  "30",
+                                             "pan_x":  "-0.000356",
+                                             "pan_y":  "-0.000623",
+                                             "parallax_focus":  "0.417000",
+                                             "parallax_height":  "0.039000",
+                                             "parallax_invert_depth":  "false",
+                                             "parallax_isometric":  "0.000000",
+                                             "parallax_multiplier_x":  "9.000000",
+                                             "parallax_multiplier_y":  "9.000000",
+                                             "parallax_offset_x":  "0.000000",
+                                             "parallax_offset_y":  "0.000000",
+                                             "parallax_quality":  "0.800000",
+                                             "parallax_steady":  "1.000000",
+                                             "processing_height":  "512",
+                                             "processing_width":  "896",
+                                             "profile_has_controlnet":  "true",
+                                             "profile_has_ipadapter":  "true",
+                                             "profile_has_union":  "true",
+                                             "prompt":  "empty motel hallways,  realistic 4k",
+                                             "prompt_bank_enabled":  "false",
+                                             "prompt_position":  "0.000000",
+                                             "prompt_weight":  "1.000000",
+                                             "render_count":  "1",
+                                             "render_one":  "0",
+                                             "rotation":  "0.000000",
+                                             "saturation":  "1.000000",
+                                             "seed":  "0",
+                                             "seed_locked":  "false",
+                                             "seed_travel_enabled":  "true",
+                                             "seed_travel_interpolation":  "1",
+                                             "seed_travel_speed":  "0.010000",
+                                             "seed_variation":  "0.919000",
+                                             "sharpen":  "0.100000",
+                                             "sharpen_radius":  "1.000000",
+                                             "steps":  "1",
+                                             "vsr_downsample_enabled":  "false",
+                                             "vsr_downsample_filter":  "1",
+                                             "vsr_downsample_scale":  "100.000000",
+                                             "vsr_enabled":  "true",
+                                             "vsr_quality":  "3",
+                                             "warp_edge_mode":  "1",
+                                             "warp_enabled":  "false",
+                                             "warp_scale":  "1.000000",
+                                             "zoom":  "0.080000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "streamdiff"
+                      }
+                  ],
+    "saved_at_ms":  1784281814762,
+    "sources":  [
+
+                ],
+    "version":  5
+}

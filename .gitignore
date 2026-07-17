@@ -44,3 +44,4 @@ projects/*
 !projects/face_collage/
 !projects/industrial_lattice/
 !projects/showcase_gallery/
+!projects/streamdiff_workflows/

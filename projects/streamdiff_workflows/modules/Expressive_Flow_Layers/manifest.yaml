@@ -1,0 +1,79 @@
+name: "Expressive Flow Layers"
+version: "1.0"
+mode: generator
+resolution: [1920, 1080]
+features: [noise]
+
+parameters:
+  # -- Timeline --
+  - { name: phase, display: "Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Timeline" }
+  - { name: animation_speed, display: "Auto-Cycle Speed", type: float, min: 0.0, max: 2.0, default: 0.04, group: "Timeline" }
+  - { name: time_mode, display: "Time 0 Live 1 Deterministic", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Timeline" }
+  - { name: in_end, display: "In Ends", type: float, min: 0.0, max: 1.0, default: 0.02, group: "Timeline" }
+  - { name: out_start, display: "Out Begins", type: float, min: 0.0, max: 1.0, default: 0.98, group: "Timeline" }
+  - { name: loop_speed, display: "Loop Speed", type: float, min: 0.0, max: 4.0, default: 0.22, group: "Timeline" }
+  - { name: loop_phase, display: "Loop Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Timeline" }
+
+  # -- Master --
+  - { name: master_strength, display: "Master Strength", type: float, min: 0.0, max: 3.0, default: 0.42, group: "Master" }
+  - { name: normalize_flow, display: "Normalize Flow", type: bool, default: true, group: "Master" }
+  - { name: invert_flow, display: "Invert Flow", type: bool, default: false, group: "Master" }
+
+  # -- Layer 1 --
+  - { name: layer1_enabled, display: "Layer 1 Enabled", type: bool, default: true, group: "Layer 1" }
+  - { name: layer1_mode, display: "Layer 1 Mode", type: enum, options: [Rings, Waves, Spiral, Flower, Lattice, Polygon, Ripple, Pinwheel, CurlNoise, FractalRings, Cells], default: 0, flags: button_grid, group: "Layer 1" }
+  - { name: layer1_strength, display: "Layer 1 Strength", type: float, min: -2.0, max: 2.0, default: 0.75, group: "Layer 1" }
+  - { name: layer1_frequency, display: "Layer 1 Freq X/Radial", type: float, min: 0.1, max: 32.0, default: 7.0, group: "Layer 1" }
+  - { name: layer1_frequency_y, display: "Layer 1 Freq Y/Angular", type: float, min: 0.1, max: 32.0, default: 5.0, group: "Layer 1" }
+  - { name: layer1_speed, display: "Layer 1 Speed", type: float, min: -4.0, max: 4.0, default: 0.55, group: "Layer 1" }
+  - { name: layer1_rotation, display: "Layer 1 Rotation", type: float, min: -6.2832, max: 6.2832, default: 0.0, group: "Layer 1" }
+  - { name: layer1_phase, display: "Layer 1 Phase", type: float, min: -2.0, max: 2.0, default: 0.0, group: "Layer 1" }
+  - { name: layer1_swirl, display: "Layer 1 Swirl", type: float, min: 0.0, max: 1.0, default: 0.2, group: "Layer 1" }
+  - { name: layer1_shape, display: "Layer 1 Shape", type: float, min: 0.0, max: 16.0, default: 5.0, group: "Layer 1" }
+  - { name: layer1_noise, display: "Layer 1 Noise/Warp", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Layer 1" }
+  - { name: layer1_center, display: "Layer 1 Center", type: point2D, default: [0.5, 0.5], group: "Layer 1" }
+
+  # -- Layer 2 --
+  - { name: layer2_enabled, display: "Layer 2 Enabled", type: bool, default: true, group: "Layer 2" }
+  - { name: layer2_mode, display: "Layer 2 Mode", type: enum, options: [Rings, Waves, Spiral, Flower, Lattice, Polygon, Ripple, Pinwheel, CurlNoise, FractalRings, Cells], default: 1, flags: button_grid, group: "Layer 2" }
+  - { name: layer2_strength, display: "Layer 2 Strength", type: float, min: -2.0, max: 2.0, default: -0.38, group: "Layer 2" }
+  - { name: layer2_frequency, display: "Layer 2 Freq X/Radial", type: float, min: 0.1, max: 32.0, default: 4.0, group: "Layer 2" }
+  - { name: layer2_frequency_y, display: "Layer 2 Freq Y/Angular", type: float, min: 0.1, max: 32.0, default: 9.0, group: "Layer 2" }
+  - { name: layer2_speed, display: "Layer 2 Speed", type: float, min: -4.0, max: 4.0, default: -0.32, group: "Layer 2" }
+  - { name: layer2_rotation, display: "Layer 2 Rotation", type: float, min: -6.2832, max: 6.2832, default: 0.72, group: "Layer 2" }
+  - { name: layer2_phase, display: "Layer 2 Phase", type: float, min: -2.0, max: 2.0, default: 0.18, group: "Layer 2" }
+  - { name: layer2_swirl, display: "Layer 2 Swirl", type: float, min: 0.0, max: 1.0, default: 0.75, group: "Layer 2" }
+  - { name: layer2_shape, display: "Layer 2 Shape", type: float, min: 0.0, max: 16.0, default: 7.0, group: "Layer 2" }
+  - { name: layer2_noise, display: "Layer 2 Noise/Warp", type: float, min: 0.0, max: 1.0, default: 0.08, group: "Layer 2" }
+  - { name: layer2_center, display: "Layer 2 Center", type: point2D, default: [0.45, 0.52], group: "Layer 2" }
+
+  # -- Layer 3 --
+  - { name: layer3_enabled, display: "Layer 3 Enabled", type: bool, default: true, group: "Layer 3" }
+  - { name: layer3_mode, display: "Layer 3 Mode", type: enum, options: [Rings, Waves, Spiral, Flower, Lattice, Polygon, Ripple, Pinwheel, CurlNoise, FractalRings, Cells], default: 3, flags: button_grid, group: "Layer 3" }
+  - { name: layer3_strength, display: "Layer 3 Strength", type: float, min: -2.0, max: 2.0, default: 0.28, group: "Layer 3" }
+  - { name: layer3_frequency, display: "Layer 3 Freq X/Radial", type: float, min: 0.1, max: 32.0, default: 9.0, group: "Layer 3" }
+  - { name: layer3_frequency_y, display: "Layer 3 Freq Y/Angular", type: float, min: 0.1, max: 32.0, default: 6.0, group: "Layer 3" }
+  - { name: layer3_speed, display: "Layer 3 Speed", type: float, min: -4.0, max: 4.0, default: 0.18, group: "Layer 3" }
+  - { name: layer3_rotation, display: "Layer 3 Rotation", type: float, min: -6.2832, max: 6.2832, default: -0.35, group: "Layer 3" }
+  - { name: layer3_phase, display: "Layer 3 Phase", type: float, min: -2.0, max: 2.0, default: 0.37, group: "Layer 3" }
+  - { name: layer3_swirl, display: "Layer 3 Swirl", type: float, min: 0.0, max: 1.0, default: 0.45, group: "Layer 3" }
+  - { name: layer3_shape, display: "Layer 3 Shape", type: float, min: 0.0, max: 16.0, default: 6.0, group: "Layer 3" }
+  - { name: layer3_noise, display: "Layer 3 Noise/Warp", type: float, min: 0.0, max: 1.0, default: 0.12, group: "Layer 3" }
+  - { name: layer3_center, display: "Layer 3 Center", type: point2D, default: [0.56, 0.47], group: "Layer 3" }
+
+  # -- Encoding --
+  - { name: red_gain, display: "Red Gain", type: float, min: -2.0, max: 2.0, default: 0.5, group: "Encoding" }
+  - { name: green_gain, display: "Green Gain", type: float, min: -2.0, max: 2.0, default: 0.5, group: "Encoding" }
+  - { name: blue_gain, display: "Blue Gain", type: float, min: -2.0, max: 2.0, default: 0.35, group: "Encoding" }
+  - { name: red_offset, display: "Red Offset", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Encoding" }
+  - { name: green_offset, display: "Green Offset", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Encoding" }
+  - { name: blue_offset, display: "Blue Offset", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Encoding" }
+  - { name: blue_mode, display: "Blue Mode", type: enum, options: [Magnitude, Rings, Interference, Layer1, Layer2, Layer3], default: 2, flags: button_grid, group: "Encoding" }
+
+passes:
+  - name: flow
+    shader: flow.hlsl
+    target: cs_5_0
+
+outputs:
+  - { name: "Out", pass: flow }

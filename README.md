@@ -44,7 +44,7 @@ The live MCP catalog is authoritative for the installed Sentinel build. Start wi
 | `.agents/skills/`, `.claude/skills/` | Mirrored Sentinel authoring and automation skills |
 | `knowledge/` | Focused product and workflow reference documentation |
 | `modules/` | Curated Module library and shared HLSL includes |
-| `projects/` | Portable saved shows, including Interaction Lab and six authored visual examples |
+| `projects/` | Portable saved shows, focused technique collections, and authored visual examples |
 | `examples/` | Small blueprint examples for procedural construction |
 | `tools/` | Local authoring and validation helpers |
 
@@ -73,6 +73,7 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | [`fruit_atlas_scatter`](projects/fruit_atlas_scatter/) | A StreamDiff, matting, depth, atlas, and 3D card-scatter workflow; its AI nodes require the corresponding Sentinel engine packs |
 | [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
 | [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene using the shared root-level `steel_lattice` and `industrial_mono_post` modules |
+| [`streamdiff_workflows`](projects/streamdiff_workflows/) | Six focused StreamDiff studies covering 2D feedback, depth-parallax motion, video depth conditioning, procedural warp maps, and direct Mux switching |
 
 ## Creating a UI Module
 

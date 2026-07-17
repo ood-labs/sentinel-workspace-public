@@ -80,3 +80,34 @@ All three are StateTree parameters, so OSC, expressions, MCP, and scene-group pr
 ## Multiple Variants, Shared Engines, Mux
 
 Several StreamDiff variants using the same engine files share loaded TensorRT engines through a ref-counted pool, so N variants cost one engine load (execution is one at a time). Switch between variants live with a `mux` node (`selected` picks 1-of-8 inputs); enable the mux's `solo_upstream` so the non-selected variants auto-hold and only the visible one diffuses. See `knowledge/scene-system.md`.
+
+## Focused Workflow Examples
+
+The portable collection at `projects/streamdiff_workflows/` isolates six patterns that are easy to confuse in a larger show:
+
+1. image-space feedback zoom;
+2. integrated depth-parallax feedback with auto-depth ControlNet;
+3. content-aware tuning of that depth pattern for architectural flythroughs;
+4. direct input-mode Mux switching with `solo_upstream`;
+5. external video -> Depth Estimation -> Control Image conditioning;
+6. authored RGB flow maps -> Warp Map displacement.
+
+These studies deliberately omit Scene Groups and preset banks. They are technique specimens, not complete show looks. The direct Mux study also does not replace the separate groups-mode Scene Switcher pattern: use input mode for several individual textures, and groups mode when switching complete multi-node looks with one Group Output in each Scene Group.
+
+### Feedback motion layers
+
+Keep these motion mechanisms conceptually separate when debugging:
+
+- `zoom`, `pan_x`, `pan_y`, and `rotation` transform the previous image in 2D;
+- `depth_parallax` reprojects it according to estimated depth;
+- `controlnet_auto_depth` uses projected prior-frame depth to condition the next diffusion result;
+- an external Control Image supplies structure from another node, such as Depth Estimation;
+- `warp_enabled` consumes a Warp Map and displaces the feedback loop by its encoded vector field.
+
+Combining mechanisms is valid, but first prove each one in isolation. A flat zoom with depth disabled is the control case for depth-parallax tuning; a neutral-gray warp map is the control case for procedural displacement.
+
+### Engine-safe review sequence
+
+Engine profiles are large and can take seconds to unload. When reviewing a collection, load one saved project at a time and wait for `stats.has_preview_srv=true` before capturing or moving to a different resolution/tier. Avoid repeatedly cold-loading 896x512 and 512x896 ControlNet projects in immediate succession, especially on a constrained GPU.
+
+Do not assume `engine_precision=Auto` will fall back across every installed pack in every build. Sentinel 0.5.38 was observed reporting `compatLevel=no_engine` when the saved 896x512 input-tier study used Auto but only the FP8 pack was installed. Save and document the precision that was actually proven, then tell users which alternate pack/precision to select on other GPU generations.
