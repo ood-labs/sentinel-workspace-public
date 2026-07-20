@@ -1,0 +1,341 @@
+{
+    "display":  {
+                    "fpsLimit":  60.0,
+                    "vsyncEnabled":  false
+                },
+    "graph":  {
+                  "canvasZoom":  1.2868986129760742,
+                  "links":  [
+                                {
+                                    "endPinId":  71,
+                                    "id":  54,
+                                    "startPinId":  70
+                                },
+                                {
+                                    "endPinId":  63,
+                                    "id":  56,
+                                    "startPinId":  72
+                                }
+                            ],
+                  "nextLinkId":  57,
+                  "nextNodeId":  34,
+                  "nextPinId":  73,
+                  "nodes":  [
+                                {
+                                    "displayName":  "Marble Dancer",
+                                    "entityId":  "streamdiff_0",
+                                    "id":  28,
+                                    "posX":  555.5501098632813,
+                                    "posY":  83.81533813476563,
+                                    "positionSet":  true,
+                                    "previewVisible":  true,
+                                    "type":  1
+                                },
+                                {
+                                    "displayName":  "dancer_vert",
+                                    "entityId":  "source_2",
+                                    "id":  32,
+                                    "posX":  102.91152954101563,
+                                    "posY":  122.66845703125,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  0
+                                },
+                                {
+                                    "displayName":  "Video Depth Guide",
+                                    "entityId":  "depthestimation_0",
+                                    "id":  33,
+                                    "posX":  306.1131896972656,
+                                    "posY":  121.89138793945313,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
+                                }
+                            ],
+                  "pins":  [
+                               {
+                                   "id":  61,
+                                   "kind":  0,
+                                   "name":  "Video Input",
+                                   "nodeId":  28,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  62,
+                                   "kind":  0,
+                                   "name":  "Style Reference",
+                                   "nodeId":  28,
+                                   "slotIndex":  1,
+                                   "type":  1
+                               },
+                               {
+                                   "id":  63,
+                                   "kind":  0,
+                                   "name":  "Control Image",
+                                   "nodeId":  28,
+                                   "slotIndex":  2,
+                                   "type":  2
+                               },
+                               {
+                                   "id":  64,
+                                   "kind":  0,
+                                   "name":  "Warp Map",
+                                   "nodeId":  28,
+                                   "slotIndex":  3,
+                                   "type":  4
+                               },
+                               {
+                                   "id":  65,
+                                   "kind":  1,
+                                   "name":  "Color",
+                                   "nodeId":  28,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  66,
+                                   "kind":  1,
+                                   "name":  "Depth",
+                                   "nodeId":  28,
+                                   "slotIndex":  1,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  70,
+                                   "kind":  1,
+                                   "name":  "Out",
+                                   "nodeId":  32,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  71,
+                                   "kind":  0,
+                                   "name":  "Video Input",
+                                   "nodeId":  33,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  72,
+                                   "kind":  1,
+                                   "name":  "Out",
+                                   "nodeId":  33,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               }
+                           ]
+              },
+    "input":  {
+                  "activeSource":  ""
+              },
+    "layout":  "",
+    "name":  "StreamDiff 05 - Video Depth Control",
+    "nodePresets":  [
+
+                    ],
+    "osc":  {
+                "enabled":  true,
+                "receivePort":  9002,
+                "sendFeedback":  true,
+                "sendHost":  "127.0.0.1",
+                "sendPort":  9021,
+                "stateTreeBridge":  true
+            },
+    "outputObjects":  [
+
+                      ],
+    "outputs":  [
+
+                ],
+    "pipelines":  [
+                      {
+                          "displayName":  "Marble Dancer",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "streamdiff_0",
+                          "inputSlotSourceIds":  [
+                                                     "",
+                                                     "",
+                                                     "depthestimation_0",
+                                                     ""
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "streamdiff_0",
+                          "panelOpen":  true,
+                          "parameters":  {
+                                             "autopilot_deadzone":  "0.040000",
+                                             "autopilot_enabled":  "false",
+                                             "autopilot_invert_x":  "false",
+                                             "autopilot_invert_y":  "false",
+                                             "autopilot_sensitivity":  "2.000000",
+                                             "autopilot_smoothing":  "0.900000",
+                                             "autopilot_strength":  "0.100000",
+                                             "black_level":  "0.000000",
+                                             "brightness":  "0.000000",
+                                             "cadence_fade_curve":  "0",
+                                             "cadence_fade_frames":  "0",
+                                             "color_match_algorithm":  "2",
+                                             "color_match_ema_alpha":  "0.100000",
+                                             "color_match_enabled":  "false",
+                                             "color_match_strength":  "0.850000",
+                                             "color_match_style_blend":  "0.500000",
+                                             "color_match_target":  "2",
+                                             "contrast":  "1.000000",
+                                             "controlnet_auto_depth":  "false",
+                                             "controlnet_enabled":  "true",
+                                             "controlnet_scale":  "0.800000",
+                                             "controlnet_type":  "1",
+                                             "denoise":  "0.800000",
+                                             "depth_adaptive_smoothing":  "true",
+                                             "depth_cadence":  "1",
+                                             "depth_fllf_strength":  "0.500000",
+                                             "depth_fllf_threshold":  "0.050000",
+                                             "depth_frame_delay":  "0",
+                                             "depth_model_family":  "dav2",
+                                             "depth_model_resolution":  "518",
+                                             "depth_model_size":  "small",
+                                             "depth_motion_threshold":  "0.050000",
+                                             "depth_parallax":  "false",
+                                             "depth_quantize_bits":  "8",
+                                             "depth_range_smoothing":  "0.900000",
+                                             "depth_smoothing":  "0.600000",
+                                             "dilate":  "0.000000",
+                                             "engine_precision":  "1",
+                                             "engine_profile":  "sdxl/512x896",
+                                             "engine_profile_type":  "fixed",
+                                             "engine_resolution":  "0",
+                                             "engine_tier":  "1",
+                                             "erode":  "0.000000",
+                                             "feedback":  "0.800000",
+                                             "frame_skip":  "1",
+                                             "frame_skip_blend":  "1.000000",
+                                             "frame_skip_steady":  "false",
+                                             "gamma":  "1.000000",
+                                             "hold":  "false",
+                                             "image_noise_blend":  "0",
+                                             "image_noise_scale":  "1.000000",
+                                             "image_noise_strength":  "0.020000",
+                                             "image_noise_type":  "0",
+                                             "ipadapter_enable":  "true",
+                                             "ipadapter_scale":  "1.000000",
+                                             "ipadapter_update_interval":  "30",
+                                             "pan_x":  "0.000000",
+                                             "pan_y":  "0.000000",
+                                             "parallax_focus":  "0.420000",
+                                             "parallax_height":  "0.040000",
+                                             "parallax_invert_depth":  "false",
+                                             "parallax_isometric":  "0.000000",
+                                             "parallax_multiplier_x":  "9.000000",
+                                             "parallax_multiplier_y":  "9.000000",
+                                             "parallax_offset_x":  "0.000000",
+                                             "parallax_offset_y":  "0.000000",
+                                             "parallax_quality":  "0.800000",
+                                             "parallax_steady":  "1.000000",
+                                             "processing_height":  "896",
+                                             "processing_width":  "512",
+                                             "profile_has_controlnet":  "true",
+                                             "profile_has_ipadapter":  "true",
+                                             "profile_has_union":  "true",
+                                             "prompt":  "marble sculpture of woman dancing, hyper realistic, 4k",
+                                             "prompt_bank_enabled":  "false",
+                                             "prompt_position":  "0.000000",
+                                             "prompt_weight":  "1.000000",
+                                             "render_count":  "1",
+                                             "render_one":  "0",
+                                             "rotation":  "0.000000",
+                                             "saturation":  "1.000000",
+                                             "seed":  "42",
+                                             "seed_locked":  "true",
+                                             "seed_travel_enabled":  "false",
+                                             "seed_travel_interpolation":  "1",
+                                             "seed_travel_speed":  "1.000000",
+                                             "seed_variation":  "0.100000",
+                                             "sharpen":  "0.100000",
+                                             "sharpen_radius":  "1.000000",
+                                             "steps":  "1",
+                                             "vsr_downsample_enabled":  "false",
+                                             "vsr_downsample_filter":  "1",
+                                             "vsr_downsample_scale":  "100.000000",
+                                             "vsr_enabled":  "true",
+                                             "vsr_quality":  "3",
+                                             "warp_edge_mode":  "1",
+                                             "warp_enabled":  "false",
+                                             "warp_scale":  "0.100000",
+                                             "zoom":  "0.000000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "streamdiff"
+                      },
+                      {
+                          "displayName":  "Video Depth Guide",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "depthestimation_0",
+                          "inputSlotSourceIds":  [
+                                                     "source_2"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "depthestimation_0",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "adaptiveSmoothing":  "1",
+                                             "claheClipLimit":  "3.000000",
+                                             "claheEnabled":  "0",
+                                             "colormap":  "turbo",
+                                             "contrastBoost":  "0.000000",
+                                             "depthSharpen":  "0.000000",
+                                             "depthSharpenRadius":  "2.000000",
+                                             "detailEnhance":  "0.000000",
+                                             "detailRadius":  "20.000000",
+                                             "fllfStrength":  "0.000000",
+                                             "fllfThreshold":  "0.050000",
+                                             "invertDepth":  "0",
+                                             "jbuEnabled":  "1",
+                                             "jbuSigmaRange":  "0.100000",
+                                             "jbuSigmaSpace":  "7.000000",
+                                             "maxPercentile":  "98.000000",
+                                             "minPercentile":  "2.000000",
+                                             "motionThreshold":  "0.050000",
+                                             "normalizationMode":  "perframe",
+                                             "outputMode":  "grayscale",
+                                             "temporalSmoothing":  "0.600000"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "depthestimation"
+                      }
+                  ],
+    "saved_at_ms":  1784282216387,
+    "sources":  [
+                    {
+                        "captureFrameRate":  0,
+                        "captureHeight":  0,
+                        "captureWidth":  0,
+                        "deviceId":  "",
+                        "id":  "source_2",
+                        "imageFitMode":  1,
+                        "imageHeight":  1080,
+                        "imagePath":  "",
+                        "imageWidth":  1920,
+                        "loop":  true,
+                        "name":  "Dancer Video Guide",
+                        "patternAnimated":  true,
+                        "patternHeight":  1080,
+                        "patternType":  "colorbars",
+                        "patternWidth":  1920,
+                        "playbackRate":  1.0,
+                        "playing":  true,
+                        "senderName":  "",
+                        "type":  "video",
+                        "videoPath":  "assets/dancer_vert.mp4"
+                    }
+                ],
+    "version":  5
+}

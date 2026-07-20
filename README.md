@@ -44,7 +44,7 @@ The live MCP catalog is authoritative for the installed Sentinel build. Start wi
 | `.agents/skills/`, `.claude/skills/` | Mirrored Sentinel authoring and automation skills |
 | `knowledge/` | Focused product and workflow reference documentation |
 | `modules/` | Curated Module library and shared HLSL includes |
-| `projects/` | Portable saved shows, including Interaction Lab and six authored visual examples |
+| `projects/` | Portable saved shows, focused technique collections, and authored visual examples |
 | `examples/` | Small blueprint examples for procedural construction |
 | `tools/` | Local authoring and validation helpers |
 
@@ -73,8 +73,9 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | [`desert_totem`](projects/desert_totem/) | A procedural Dada totem with structured layout records and layered SDF domain warping |
 | [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
 | [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene with bundled render/post modules, internal camera controls, quality settings, and extreme domain distortion |
+| [`streamdiff_workflows`](projects/streamdiff_workflows/) | Six focused StreamDiff studies covering 2D feedback, depth-parallax motion, video depth conditioning, procedural warp maps, and direct Mux switching |
 
-Face Collage is engine-backed. The remaining aesthetic looks are model-free. Each example is intentionally distributed as a standalone project so people can load only the content they want without paying the memory and startup cost of a combined gallery.
+Face Collage and the StreamDiff workflow studies are engine-backed. The remaining aesthetic looks are model-free. Each example is intentionally distributed as a standalone project or focused collection so people can load only the content they want without paying the memory and startup cost of a combined gallery.
 
 ## Creating a UI Module
 
