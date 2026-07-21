@@ -15,10 +15,13 @@ void main(uint3 DTid : SV_DispatchThreadID)
     uint cycle = (uint)max(floor(_Time / seconds + seed * 0.31), 0.0);
     float cycleValue = (float)(cycle & 0x00ffffffu);
     bool newCycle = !wasInitialized || abs(state.x - cycleValue) > 0.25;
+    // With Run Trigger enabled, the viewport's held-key snapshot replaces the
+    // ordinary Run toggle. S is key code 19 in the authored-input ABI.
+    bool effectiveRun = run_trigger != 0 ? ViewportKeyDown(19u) : (run != 0);
 
     float action = 0.0;
     if (!wasInitialized || clearEdge) action = -1.0;
-    else if (run != 0 && newCycle) action = 1.0;
+    else if (effectiveRun && newCycle) action = 1.0;
 
     state.x = cycleValue;
     state.y = action;

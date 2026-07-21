@@ -10,6 +10,7 @@ struct SpawnPoint
 
 RWStructuredBuffer<SpawnPoint> OutputBuffer : register(u0);
 StructuredBuffer<float4> CanvasState : register(t0);
+StructuredBuffer<float4> KickEnvelope : register(t1);
 
 float pcMirrorPointCoordinate(float value)
 {
@@ -22,10 +23,12 @@ float2 pcForwardFeedback(float2 uv, out bool visible)
     float dt = clamp(_DeltaTime, 0.0, 0.1);
     float aspect = _Resolution.x / max(_Resolution.y, 1.0);
     float2 pivot = feedback_pivot;
-    float gain = max(control_gain, 0.0);
+    float kickAmount = saturate(KickEnvelope[0].x);
+    float kick = lerp(1.0, max(feedback_kick, 1.0), kickAmount);
+    float gain = max(control_gain, 0.0) * kick;
     float2 drift = float2(pan.x * aspect, pan.y) * (dt * gain);
     float zoomFactor = exp2((zoom * 2.0) * dt * gain);
-    float angle = radians(feedback_rotation_speed) * dt;
+    float angle = radians(feedback_rotation_speed) * dt * kick;
     float cs = cos(angle);
     float sn = sin(angle);
 
