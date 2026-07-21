@@ -1,0 +1,148 @@
+{
+  "display": {
+    "fpsLimit": 30.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 1.0,
+    "links": [
+      {
+        "endPinId": 3,
+        "id": 1,
+        "startPinId": 2
+      }
+    ],
+    "nextLinkId": 2,
+    "nextNodeId": 5,
+    "nextPinId": 5,
+    "nodes": [
+      {
+        "displayName": "Dancer VSR Source",
+        "entityId": "Dancer_VSR_Source",
+        "id": 2,
+        "posX": 100.0,
+        "posY": 110.5,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 0
+      },
+      {
+        "displayName": "Dancer RTX VSR",
+        "entityId": "Dancer_RTX_VSR",
+        "id": 3,
+        "posX": 396.0,
+        "posY": 100.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "Dancer RTX VSR reads the 512x896 Dancer VSR Source and publishes a 1024x1792 enhanced texture. scale_factor=2x doubles both dimensions; quality=High selects the RTX Video Super Resolution pass.",
+        "annotationColor": "#54545443",
+        "annotationTitle": "RTX Video Super Resolution",
+        "displayName": "RTX Video Super Resolution",
+        "entityId": "annotation_4",
+        "height": 360.0,
+        "id": 4,
+        "posX": 40.0,
+        "posY": 40.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": false,
+        "type": 4,
+        "width": 900.0
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "kind": 0,
+        "name": "Video",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 4,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Terminal]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Sources]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Outputs]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Stats]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Log]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Properties]\nPos=1224,25\nSize=376,875\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=611,127\nSize=611,773\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=1600,875\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][GridInner]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][GridOuter]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Save Group Preset##group_preset_save]\nPos=638,324\nSize=324,855\nCollapsed=0\n\n[Window][Delete Group Preset##group_preset_delete]\nPos=664,389\nSize=272,122\nCollapsed=0\n\n[Window][Phase79_A1_Color]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=400,24\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Settings]\nPos=590,200\nSize=420,500\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][GroupSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][GroupRangeEdit]\nPos=653,382\nSize=294,136\nCollapsed=0\n\n[Window][Phase83_Wired_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Show_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][streamdiff_1]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][Group_Output_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][Phase84BaselineCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase84PostFixCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase84StreamDiff]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase84OutlineTarget]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Phase84Ripple]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase84Different]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Phase84NoViewport]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][Phase84DeclaredGate]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,4\n\n[Window][Phase84CameraAuto]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][OrbitProof]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][NonCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][BoundSphere]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][View_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Camera_Mux]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Switched_View]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase85Compound]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][GroupCompoundSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][Phase85LegacyFlat]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase85DistCompound]\nPos=0,25\nSize=1571,448\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Legacy_Stream_Target]\nPos=0,25\nSize=1222,252\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Presets]\nPos=60,60\nSize=350,500\nCollapsed=0\n\n[Window][Save Preset]\nPos=600,164\nSize=400,572\nCollapsed=0\n\n[Window][Edit Preset Stack]\nPos=590,244\nSize=420,411\nCollapsed=0\n\n[Window][Rename Node Preset]\nPos=668,397\nSize=264,105\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=730,402\nSize=140,95\nCollapsed=0\n\n[Window][Save Group Preset]\nPos=570,70\nSize=460,760\nCollapsed=0\n\n[Window][Save Node Preset]\nPos=700,233\nSize=420,515\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][grid_warp]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][atmosphere]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][field_gen]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][link_render]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_srv_spike]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_keyboard]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_keyboard_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_keyboard_series]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_keyboard_hold]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_control]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_double]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_drag]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_wheel]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_storm]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_idle]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_srv_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mouse_compat_active]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][surface_split_smoke]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][final_surface_smoke]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_bindings_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_bindings_focus_reload]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_arbitration_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase_88_Arbitration]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase88_Mouse_Compat]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Viewport_Ripple]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase88_Replay]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Click_Ripples]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Controls89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Scene89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Big89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][Gizmo_Lab]\nPos=0,25\nSize=2182,700\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Spline_Editor]\nPos=0,25\nSize=2182,700\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][Spline_Output]\nPos=0,25\nSize=2182,1057\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][UI_Kit]\nPos=0,25\nSize=2182,700\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Font_Sampler]\nPos=0,25\nSize=2182,700\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][UI_Kit_V2_Test]\nPos=0,25\nSize=1087,587\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][UI_Style_Tuner]\nPos=880,25\nSize=1302,990\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Spline_V2_Test]\nPos=0,614\nSize=1087,590\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Gizmo_V2_Test]\nPos=1089,25\nSize=1093,1179\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][VP_Controls]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][VP_Ripple]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][VP_Pointer]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][Ripple_Storm]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][HR_Precision]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,4\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=631,389\nSize=337,122\nCollapsed=0\n\n[Docking][Data]\nDockSpace           ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=1600,875 Split=X\n  DockNode          ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1222,900 Split=Y\n    DockNode        ID=0x00000003 Parent=0x00000001 SizeRef=1222,700 Split=X Selected=0x60D1231E\n      DockNode      ID=0x00000007 Parent=0x00000003 SizeRef=878,760 Split=Y Selected=0x3B5B8D41\n        DockNode    ID=0x00000009 Parent=0x00000007 SizeRef=878,525 Selected=0x3B5B8D41\n        DockNode    ID=0x0000000A Parent=0x00000007 SizeRef=878,463 Selected=0x37544B19\n      DockNode      ID=0x00000008 Parent=0x00000003 SizeRef=1302,760 Split=X Selected=0x5A80C6E1\n        DockNode    ID=0x0000000B Parent=0x00000008 SizeRef=1087,990 Split=Y Selected=0x3B5B8D41\n          DockNode  ID=0x0000000D Parent=0x0000000B SizeRef=1087,587 Selected=0x3B5B8D41\n          DockNode  ID=0x0000000E Parent=0x0000000B SizeRef=1087,590 Selected=0x37544B19\n        DockNode    ID=0x0000000C Parent=0x00000008 SizeRef=1093,990 CentralNode=1 Selected=0x376FDC27\n    DockNode        ID=0x00000004 Parent=0x00000001 SizeRef=1222,802 Split=X\n      DockNode      ID=0x00000005 Parent=0x00000004 SizeRef=827,360 Selected=0x0E1F77DA\n      DockNode      ID=0x00000006 Parent=0x00000004 SizeRef=831,360 Selected=0xF12F3499\n  DockNode          ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
+  "name": "18_vsr_upscale",
+  "nodePresets": [],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9000,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9001,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "Dancer RTX VSR",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Dancer_RTX_VSR",
+      "inputSlotSourceIds": [
+        "Dancer_VSR_Source"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Dancer_RTX_VSR",
+      "panelOpen": false,
+      "parameters": {
+        "quality": "3",
+        "scale_factor": "0"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "vsr"
+    }
+  ],
+  "saved_at_ms": 1784658876008,
+  "sources": [
+    {
+      "captureFrameRate": 0,
+      "captureHeight": 0,
+      "captureWidth": 0,
+      "deviceId": "",
+      "id": "Dancer_VSR_Source",
+      "imageFitMode": 1,
+      "imageHeight": 1080,
+      "imagePath": "",
+      "imageWidth": 1920,
+      "loop": true,
+      "name": "Dancer VSR Source",
+      "patternAnimated": true,
+      "patternHeight": 1080,
+      "patternType": "colorbars",
+      "patternWidth": 1920,
+      "playbackRate": 1.0,
+      "playing": true,
+      "senderName": "",
+      "type": "video",
+      "videoPath": "videos/dancer_vert.mp4"
+    }
+  ],
+  "version": 5
+}
