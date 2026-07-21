@@ -1,0 +1,493 @@
+{
+  "display": {
+    "fpsLimit": 30.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 1.0,
+    "links": [
+      {
+        "endPinId": 41,
+        "id": 1,
+        "startPinId": 38
+      }
+    ],
+    "nextLinkId": 2,
+    "nextNodeId": 6,
+    "nextPinId": 43,
+    "nodes": [
+      {
+        "displayName": "Beat Conductor",
+        "entityId": "Beat_Conductor",
+        "id": 2,
+        "posX": 100.0,
+        "posY": 100.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Beat Driven Glow",
+        "entityId": "Beat_Driven_Glow",
+        "id": 3,
+        "posX": 100.0,
+        "posY": 420.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Timeline HUD",
+        "entityId": "Timeline_HUD",
+        "id": 4,
+        "posX": 396.0,
+        "posY": 328.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "Beat Conductor publishes beat_phase as a control output and Cue Records as a data port. A ref() expression drives Beat Driven Glow highlight, while Cue Records feeds Timeline HUD and total_beats drives its playhead_seconds.",
+        "annotationColor": "#5A3B21",
+        "annotationTitle": "13 | CONDUCTOR BEAT DRIVE",
+        "displayName": "13 | CONDUCTOR BEAT DRIVE",
+        "entityId": "annotation_5",
+        "height": 700.0,
+        "id": 5,
+        "posX": 50.0,
+        "posY": 50.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": false,
+        "type": 4,
+        "width": 600.0
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "Clock",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "kind": 1,
+        "name": "bpm",
+        "nodeId": 2,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 4,
+        "kind": 1,
+        "name": "total_beats",
+        "nodeId": 2,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 5,
+        "kind": 1,
+        "name": "transport_seconds",
+        "nodeId": 2,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "transport_rate",
+        "nodeId": 2,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 7,
+        "kind": 1,
+        "name": "chunk_index",
+        "nodeId": 2,
+        "slotIndex": 5,
+        "type": 7
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "chunk_local_time",
+        "nodeId": 2,
+        "slotIndex": 6,
+        "type": 7
+      },
+      {
+        "id": 9,
+        "kind": 1,
+        "name": "chunk_duration",
+        "nodeId": 2,
+        "slotIndex": 7,
+        "type": 7
+      },
+      {
+        "id": 10,
+        "kind": 1,
+        "name": "transition_alpha",
+        "nodeId": 2,
+        "slotIndex": 8,
+        "type": 7
+      },
+      {
+        "id": 11,
+        "kind": 1,
+        "name": "beat",
+        "nodeId": 2,
+        "slotIndex": 9,
+        "type": 7
+      },
+      {
+        "id": 12,
+        "kind": 1,
+        "name": "bar",
+        "nodeId": 2,
+        "slotIndex": 10,
+        "type": 7
+      },
+      {
+        "id": 13,
+        "kind": 1,
+        "name": "beat_phase",
+        "nodeId": 2,
+        "slotIndex": 11,
+        "type": 7
+      },
+      {
+        "id": 14,
+        "kind": 1,
+        "name": "bar_phase",
+        "nodeId": 2,
+        "slotIndex": 12,
+        "type": 7
+      },
+      {
+        "id": 15,
+        "kind": 1,
+        "name": "is_downbeat",
+        "nodeId": 2,
+        "slotIndex": 13,
+        "type": 7
+      },
+      {
+        "id": 16,
+        "kind": 1,
+        "name": "quantum",
+        "nodeId": 2,
+        "slotIndex": 14,
+        "type": 7
+      },
+      {
+        "id": 17,
+        "kind": 1,
+        "name": "loop_phase",
+        "nodeId": 2,
+        "slotIndex": 15,
+        "type": 7
+      },
+      {
+        "id": 18,
+        "kind": 1,
+        "name": "cue_index",
+        "nodeId": 2,
+        "slotIndex": 16,
+        "type": 7
+      },
+      {
+        "id": 19,
+        "kind": 1,
+        "name": "cue_phase",
+        "nodeId": 2,
+        "slotIndex": 17,
+        "type": 7
+      },
+      {
+        "id": 20,
+        "kind": 1,
+        "name": "enter_phase",
+        "nodeId": 2,
+        "slotIndex": 18,
+        "type": 7
+      },
+      {
+        "id": 21,
+        "kind": 1,
+        "name": "exit_phase",
+        "nodeId": 2,
+        "slotIndex": 19,
+        "type": 7
+      },
+      {
+        "id": 22,
+        "kind": 1,
+        "name": "cue_a_enter_phase",
+        "nodeId": 2,
+        "slotIndex": 20,
+        "type": 7
+      },
+      {
+        "id": 23,
+        "kind": 1,
+        "name": "cue_a_exit_phase",
+        "nodeId": 2,
+        "slotIndex": 21,
+        "type": 7
+      },
+      {
+        "id": 24,
+        "kind": 1,
+        "name": "cue_a_life",
+        "nodeId": 2,
+        "slotIndex": 22,
+        "type": 7
+      },
+      {
+        "id": 25,
+        "kind": 1,
+        "name": "cue_a_life_velocity",
+        "nodeId": 2,
+        "slotIndex": 23,
+        "type": 7
+      },
+      {
+        "id": 26,
+        "kind": 1,
+        "name": "cue_b_enter_phase",
+        "nodeId": 2,
+        "slotIndex": 24,
+        "type": 7
+      },
+      {
+        "id": 27,
+        "kind": 1,
+        "name": "cue_b_exit_phase",
+        "nodeId": 2,
+        "slotIndex": 25,
+        "type": 7
+      },
+      {
+        "id": 28,
+        "kind": 1,
+        "name": "cue_b_life",
+        "nodeId": 2,
+        "slotIndex": 26,
+        "type": 7
+      },
+      {
+        "id": 29,
+        "kind": 1,
+        "name": "cue_b_life_velocity",
+        "nodeId": 2,
+        "slotIndex": 27,
+        "type": 7
+      },
+      {
+        "id": 30,
+        "kind": 1,
+        "name": "energy",
+        "nodeId": 2,
+        "slotIndex": 28,
+        "type": 7
+      },
+      {
+        "id": 31,
+        "kind": 1,
+        "name": "tightness",
+        "nodeId": 2,
+        "slotIndex": 29,
+        "type": 7
+      },
+      {
+        "id": 32,
+        "kind": 1,
+        "name": "spread",
+        "nodeId": 2,
+        "slotIndex": 30,
+        "type": 7
+      },
+      {
+        "id": 33,
+        "kind": 1,
+        "name": "retarget_active",
+        "nodeId": 2,
+        "slotIndex": 31,
+        "type": 7
+      },
+      {
+        "id": 34,
+        "kind": 1,
+        "name": "retarget_elapsed",
+        "nodeId": 2,
+        "slotIndex": 32,
+        "type": 7
+      },
+      {
+        "id": 35,
+        "kind": 1,
+        "name": "trigger_state",
+        "nodeId": 2,
+        "slotIndex": 33,
+        "type": 7
+      },
+      {
+        "id": 36,
+        "kind": 1,
+        "name": "trigger_pending",
+        "nodeId": 2,
+        "slotIndex": 34,
+        "type": 7
+      },
+      {
+        "id": 37,
+        "kind": 1,
+        "name": "trigger_target_beat",
+        "nodeId": 2,
+        "slotIndex": 35,
+        "type": 7
+      },
+      {
+        "id": 38,
+        "kind": 1,
+        "name": "Cue Records",
+        "nodeId": 2,
+        "slotIndex": 36,
+        "type": 6
+      },
+      {
+        "id": 40,
+        "kind": 1,
+        "name": "BG",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 41,
+        "kind": 0,
+        "name": "Cue Records",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 42,
+        "kind": 1,
+        "name": "render",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Terminal]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Sources]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Outputs]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Stats]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Log]\nPos=0,127\nSize=609,773\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Properties]\nPos=1224,25\nSize=376,875\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=611,127\nSize=611,773\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=1600,875\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][GridInner]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][GridOuter]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Save Group Preset##group_preset_save]\nPos=638,324\nSize=324,855\nCollapsed=0\n\n[Window][Delete Group Preset##group_preset_delete]\nPos=664,389\nSize=272,122\nCollapsed=0\n\n[Window][Phase79_A1_Color]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Settings]\nPos=590,200\nSize=420,500\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][GroupSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][GroupRangeEdit]\nPos=653,382\nSize=294,136\nCollapsed=0\n\n[Window][Phase83_Wired_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Show_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][streamdiff_1]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][Group_Output_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][Phase84BaselineCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase84PostFixCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase84StreamDiff]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase84OutlineTarget]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Phase84Ripple]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase84Different]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Phase84NoViewport]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][Phase84DeclaredGate]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,4\n\n[Window][Phase84CameraAuto]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][OrbitProof]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][NonCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][BoundSphere]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][View_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Camera_Mux]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Switched_View]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase85Compound]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][GroupCompoundSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][Phase85LegacyFlat]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase85DistCompound]\nPos=0,25\nSize=1571,448\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Legacy_Stream_Target]\nPos=0,25\nSize=1222,252\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Presets]\nPos=60,60\nSize=350,500\nCollapsed=0\n\n[Window][Save Preset]\nPos=600,164\nSize=400,572\nCollapsed=0\n\n[Window][Edit Preset Stack]\nPos=590,244\nSize=420,411\nCollapsed=0\n\n[Window][Rename Node Preset]\nPos=668,397\nSize=264,105\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=730,402\nSize=140,95\nCollapsed=0\n\n[Window][Save Group Preset]\nPos=570,70\nSize=460,760\nCollapsed=0\n\n[Window][Save Node Preset]\nPos=700,233\nSize=420,515\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][grid_warp]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][atmosphere]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][field_gen]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][link_render]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_srv_spike]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_keyboard]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_keyboard_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_keyboard_series]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_keyboard_hold]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_control]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_double]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_drag]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_wheel]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_storm]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_pointer_idle]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_srv_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mouse_compat_active]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][surface_split_smoke]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][final_surface_smoke]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_bindings_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_bindings_focus_reload]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][phase88_arbitration_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase_88_Arbitration]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase88_Mouse_Compat]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Viewport_Ripple]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Phase88_Replay]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Click_Ripples]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Controls89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Scene89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Big89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][Gizmo_Lab]\nPos=0,25\nSize=2182,700\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][Spline_Editor]\nPos=0,25\nSize=2182,700\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][Spline_Output]\nPos=0,25\nSize=2182,1057\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][UI_Kit]\nPos=0,25\nSize=2182,700\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Font_Sampler]\nPos=0,25\nSize=2182,700\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][UI_Kit_V2_Test]\nPos=0,25\nSize=1087,587\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][UI_Style_Tuner]\nPos=880,25\nSize=1302,990\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][Spline_V2_Test]\nPos=0,614\nSize=1087,590\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Gizmo_V2_Test]\nPos=1089,25\nSize=1093,1179\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][VP_Controls]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,2\n\n[Window][VP_Ripple]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,1\n\n[Window][VP_Pointer]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,3\n\n[Window][Ripple_Storm]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][HR_Precision]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000C,4\n\n[Docking][Data]\nDockSpace           ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=1600,875 Split=X\n  DockNode          ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1222,900 Split=Y\n    DockNode        ID=0x00000003 Parent=0x00000001 SizeRef=1222,700 Split=X Selected=0x60D1231E\n      DockNode      ID=0x00000007 Parent=0x00000003 SizeRef=878,760 Split=Y Selected=0x3B5B8D41\n        DockNode    ID=0x00000009 Parent=0x00000007 SizeRef=878,525 Selected=0x3B5B8D41\n        DockNode    ID=0x0000000A Parent=0x00000007 SizeRef=878,463 Selected=0x37544B19\n      DockNode      ID=0x00000008 Parent=0x00000003 SizeRef=1302,760 Split=X Selected=0x5A80C6E1\n        DockNode    ID=0x0000000B Parent=0x00000008 SizeRef=1087,990 Split=Y Selected=0x3B5B8D41\n          DockNode  ID=0x0000000D Parent=0x0000000B SizeRef=1087,587 Selected=0x3B5B8D41\n          DockNode  ID=0x0000000E Parent=0x0000000B SizeRef=1087,590 Selected=0x37544B19\n        DockNode    ID=0x0000000C Parent=0x00000008 SizeRef=1093,990 CentralNode=1 Selected=0x4FC197DD\n    DockNode        ID=0x00000004 Parent=0x00000001 SizeRef=1222,802 Split=X\n      DockNode      ID=0x00000005 Parent=0x00000004 SizeRef=827,360 Selected=0x0E1F77DA\n      DockNode      ID=0x00000006 Parent=0x00000004 SizeRef=831,360 Selected=0xF12F3499\n  DockNode          ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
+  "name": "13_conductor_beat_drive",
+  "nodePresets": [],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9000,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9001,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "Beat Conductor",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Beat_Conductor",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Beat_Conductor",
+      "panelOpen": false,
+      "parameters": {
+        "beats_per_bar": "4",
+        "bpm": "120.000000",
+        "chunk0_duration": "4.000000",
+        "chunk1_duration": "4.000000",
+        "clock_source": "internal",
+        "energy": "0.500000",
+        "quantize_grid": "0",
+        "retarget_disable": "false",
+        "spread": "0.500000",
+        "tightness": "0.500000",
+        "transition_seconds": "1.500000",
+        "transport_mode": "0",
+        "transport_rate": "1.000000",
+        "transport_run": "true",
+        "transport_seconds": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "conductor"
+    },
+    {
+      "displayName": "Timeline HUD",
+      "enabled": true,
+      "expressions": {
+        "playhead_seconds": "ref(\"Beat_Conductor/control_outputs/total_beats\") * 0.5"
+      },
+      "fitMode": 1,
+      "id": "Timeline_HUD",
+      "inputSlotSourceIds": [
+        "Beat_Conductor"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Timeline_HUD",
+      "panelOpen": false,
+      "parameters": {
+        "playhead_seconds": "23.006021",
+        "project_dir": "modules/Timeline_HUD",
+        "resolution_height": "360",
+        "resolution_width": "1280",
+        "timeline_span": "12.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Beat Driven Glow",
+      "enabled": true,
+      "expressions": {
+        "highlight": "0.15 + ref(\"Beat_Conductor/control_outputs/beat_phase\") * 1.85"
+      },
+      "fitMode": 1,
+      "id": "Beat_Driven_Glow",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Beat_Driven_Glow",
+      "panelOpen": false,
+      "parameters": {
+        "grain_amount": "0.008000",
+        "highlight": "0.172280",
+        "project_dir": "modules/Beat_Driven_Glow",
+        "resolution_height": "1080",
+        "resolution_width": "864",
+        "vignette": "0.850000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1784657752733,
+  "sources": [],
+  "version": 5
+}

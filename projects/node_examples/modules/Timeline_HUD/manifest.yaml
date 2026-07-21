@@ -1,0 +1,42 @@
+name: "Timeline HUD"
+version: "1.0"
+mode: generator
+resolution: [1280, 360]
+
+data_inputs:
+  - name: "Cue Records"
+    slot: 0
+    schema:
+      - { name: track, type: float }
+      - { name: start, type: float }
+      - { name: duration, type: float }
+      - { name: state, type: float }
+      - { name: color_id, type: float }
+
+parameters:
+  - name: playhead_seconds
+    display: "Playhead Seconds"
+    type: float
+    min: 0.0
+    max: 64.0
+    default: 0.0
+    group: "Timeline"
+
+  - name: timeline_span
+    display: "Timeline Span"
+    type: float
+    min: 1.0
+    max: 64.0
+    default: 12.0
+    group: "Timeline"
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: output
+
+outputs:
+  - render
