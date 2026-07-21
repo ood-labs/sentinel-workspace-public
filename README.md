@@ -74,6 +74,7 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
 | [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene with bundled render/post modules, internal camera controls, quality settings, and extreme domain distortion |
 | [`streamdiff_workflows`](projects/streamdiff_workflows/) | Six focused StreamDiff studies covering 2D feedback, depth-parallax motion, video depth conditioning, procedural warp maps, and direct Mux switching |
+| [`node_examples`](projects/node_examples/) | Eighteen focused studies covering tracking, analysis, routing, control, authored modules, HLSL post-processing, cameras, and RTX Video SR |
 
 Face Collage and the StreamDiff workflow studies are engine-backed. The remaining aesthetic looks are model-free. Each example is intentionally distributed as a standalone project or focused collection so people can load only the content they want without paying the memory and startup cost of a combined gallery.
 
