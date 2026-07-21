@@ -1,0 +1,11 @@
+name: "Camera Orbit Proof"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+features: [camera]
+
+passes:
+  - name: orbit_proof
+    shader: orbit_proof.hlsl
+    target: cs_5_0
+    output: output
