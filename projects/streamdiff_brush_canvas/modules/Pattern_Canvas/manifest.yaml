@@ -1,0 +1,80 @@
+name: "Pattern Canvas"
+version: "1.0"
+mode: generator
+resolution: [1080, 1350]
+working_format: RGBA16F
+time_dependent: true
+
+inputs:
+  - { name: "Generated Subject", slot: 0, required: true }
+  - { name: "Subject Matte", slot: 1, required: true }
+
+buffers:
+  - { name: canvas, format: RGBA16F, scale: 1.0, persistent: true }
+  - { name: canvas_state, structured: true, element_size: 16, element_count: 1, persistent: true }
+
+parameters:
+  - { name: run, display: "Run", type: bool, default: true, group: "Spawn" }
+  - { name: spawn_seconds, display: "Seconds Per Stamp", type: float, min: 0.05, max: 2.0, default: 0.18, group: "Spawn" }
+  - { name: clear_toggle, display: "Clear Canvas", type: bool, default: false, group: "Spawn" }
+
+  - { name: feedback_enabled, display: "Feedback", type: bool, default: false, group: "Feedback" }
+  - { name: feedback_zoom_speed, display: "Zoom Speed", type: float, min: -2.0, max: 2.0, default: 0.20, group: "Feedback" }
+  - { name: feedback_rotation_speed, display: "Rotation Speed", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Feedback" }
+  - { name: feedback_drift, display: "Drift", type: point2D, min: [-0.5, -0.5], max: [0.5, 0.5], default: [0.0, 0.0], group: "Feedback" }
+  - { name: feedback_pivot, display: "Pivot", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.5, 0.5], group: "Feedback" }
+  - { name: feedback_fade, display: "Trail Fade", type: float, min: 0.0, max: 4.0, default: 0.12, group: "Feedback" }
+  - { name: feedback_edge_mode, display: "Edges", type: enum, options: [Background, Clamp, Repeat, Mirror], flags: button_grid, default: 0, group: "Feedback" }
+
+  - { name: pattern_mode, display: "Pattern", type: enum, options: [Random, Grid, Spiral, Wave, Border], flags: button_grid, default: 0, group: "Pattern" }
+  - { name: pattern_count, display: "Pattern Count", type: int, min: 4, max: 36, default: 16, group: "Pattern" }
+  - { name: pattern_phase, display: "Pattern Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Pattern" }
+  - { name: seed, display: "Seed", type: float, min: 0.0, max: 100.0, default: 7.0, group: "Pattern" }
+  - { name: position_jitter, display: "Position Jitter", type: float, min: 0.0, max: 0.35, default: 0.035, group: "Pattern" }
+  - { name: follow_pattern, display: "Follow Pattern", type: bool, default: true, group: "Pattern" }
+
+  - { name: cutout_scale, display: "Scale", type: float, min: 0.05, max: 0.70, default: 0.24, group: "Stamp" }
+  - { name: scale_variation, display: "Scale Variation", type: float, min: 0.0, max: 0.85, default: 0.22, group: "Stamp" }
+  - { name: rotation, display: "Rotation", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Stamp" }
+  - { name: rotation_jitter, display: "Rotation Jitter", type: float, min: 0.0, max: 360.0, default: 28.0, group: "Stamp" }
+  - { name: opacity, display: "Opacity", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Stamp" }
+
+  - { name: background_color, display: "Background", type: color, default: [0.94, 0.94, 0.92], group: "Canvas" }
+  - { name: matte_threshold, display: "Matte Threshold", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Canvas" }
+  - { name: matte_feather, display: "Matte Feather", type: float, min: 0.001, max: 0.30, default: 0.08, group: "Canvas" }
+  - { name: drop_shadow, display: "Drop Shadow", type: float, min: 0.0, max: 1.5, default: 0.28, group: "Canvas" }
+
+passes:
+  - name: state_update
+    shader: state_update.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:canvas_state" }
+    output: "buffer:canvas_state"
+
+  - name: accumulate
+    shader: accumulate.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "buffer:canvas" }
+      - { slot: 3, source: "buffer:canvas_state" }
+    output: "buffer:canvas"
+
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    format: RGBA8
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:canvas" }
+    output: output
+
+outputs:
+  - { name: "Pattern Canvas", pass: present }

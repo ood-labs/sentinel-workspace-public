@@ -4,22 +4,27 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 0.724183976650238,
+    "canvasZoom": 0.7435584664344788,
     "links": [
-      {
-        "endPinId": 93,
-        "id": 24,
-        "startPinId": 91
-      },
       {
         "endPinId": 87,
         "id": 88,
         "startPinId": 369
       },
       {
+        "endPinId": 93,
+        "id": 24,
+        "startPinId": 91
+      },
+      {
         "endPinId": 89,
         "id": 89,
         "startPinId": 370
+      },
+      {
+        "endPinId": 380,
+        "id": 93,
+        "startPinId": 94
       },
       {
         "endPinId": 363,
@@ -35,19 +40,34 @@
         "endPinId": 352,
         "id": 87,
         "startPinId": 366
+      },
+      {
+        "endPinId": 378,
+        "id": 92,
+        "startPinId": 91
       }
     ],
-    "nextLinkId": 90,
-    "nextNodeId": 103,
-    "nextPinId": 375,
+    "nextLinkId": 94,
+    "nextNodeId": 105,
+    "nextPinId": 381,
     "nodes": [
       {
         "displayName": "Collage Diffusion",
         "entityId": "Collage_Diffusion",
         "id": 27,
         "inputTilesOverride": 0,
-        "posX": 702.2076416015625,
-        "posY": 96.81838989257813,
+        "posX": 696.6841430664063,
+        "posY": 131.33999633789063,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Collage Cutout",
+        "entityId": "Collage_Cutout",
+        "id": 28,
+        "posX": 964.08642578125,
+        "posY": 235.18328857421875,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -63,21 +83,11 @@
         "type": 1
       },
       {
-        "displayName": "Collage Cutout",
-        "entityId": "Collage_Cutout",
-        "id": 28,
-        "posX": 1010.650634765625,
-        "posY": 197.62933349609375,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
         "displayName": "Collage Output",
         "entityId": "Collage_Output",
         "id": 97,
         "posX": 1587.814453125,
-        "posY": 114.65225219726563,
+        "posY": 112.76594543457031,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -88,7 +98,7 @@
         "annotationTitle": "STREAMDIFF BRUSH CANVAS",
         "displayName": "STREAMDIFF BRUSH CANVAS",
         "entityId": "annotation_101",
-        "height": 517.03955078125,
+        "height": 752.971435546875,
         "id": 101,
         "posX": 50.249515533447266,
         "posY": 37.04984664916992,
@@ -100,7 +110,7 @@
         "sceneGroupParameters": [],
         "sceneGroupPresets": [],
         "type": 4,
-        "width": 1913.8988037109375
+        "width": 1934.0169677734375
       },
       {
         "displayName": "Shape Maker",
@@ -108,6 +118,16 @@
         "id": 102,
         "posX": 409.1941223144531,
         "posY": 149.4891815185547,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Pattern_Canvas",
+        "entityId": "Pattern_Canvas",
+        "id": 104,
+        "posX": 1237.425537109375,
+        "posY": 392.5246887207031,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -139,20 +159,20 @@
         "type": 2
       },
       {
-        "id": 353,
-        "kind": 1,
-        "name": "Out",
-        "nodeId": 97,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
         "id": 90,
         "kind": 0,
         "name": "Warp Map",
         "nodeId": 27,
         "slotIndex": 3,
         "type": 4
+      },
+      {
+        "id": 353,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 97,
+        "slotIndex": 0,
+        "type": 0
       },
       {
         "id": 91,
@@ -281,6 +301,30 @@
         "nodeId": 102,
         "slotIndex": 6,
         "type": 7
+      },
+      {
+        "id": 378,
+        "kind": 0,
+        "name": "Generated Subject",
+        "nodeId": 104,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 379,
+        "kind": 1,
+        "name": "Pattern Canvas",
+        "nodeId": 104,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 380,
+        "kind": 0,
+        "name": "Subject Matte",
+        "nodeId": 104,
+        "slotIndex": 1,
+        "type": 0
       }
     ]
   },
@@ -299,7 +343,7 @@
   "input": {
     "activeSource": ""
   },
-  "layout": "[Window][Sources]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Outputs]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Stats]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Log]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Properties]\nPos=2153,25\nSize=407,1010\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=809,1037\nSize=1751,540\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=997,419\nSize=566,738\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][##LoadingOverlay]\nPos=1155,758\nSize=250,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=1020,513\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Terminal]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Collage_Cutout]\nPos=499,586\nSize=367,449\nCollapsed=0\nDockId=0x00000034,0\n\n[Window][Collage_Diffusion]\nPos=0,586\nSize=497,449\nCollapsed=0\nDockId=0x00000033,0\n\n[Window][Collage_Guide]\nPos=497,219\nSize=1985,887\nCollapsed=0\n\n[Window][Poster_Accumulator]\nPos=874,25\nSize=438,1010\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Collage_Output]\nPos=874,25\nSize=438,1010\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Field_Studio]\nPos=0,25\nSize=872,563\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Shape_Studio]\nPos=0,25\nSize=872,563\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Paint_Canvas]\nPos=868,25\nSize=1283,1010\nCollapsed=0\nDockId=0x00000036,0\n\n[Window][Shape_Maker]\nPos=0,25\nSize=866,559\nCollapsed=0\nDockId=0x00000031,0\n\n[Docking][Data]\nDockSpace                                         ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=Y\n  DockNode                                        ID=0x00000003 Parent=0xCCBD8CF7 SizeRef=1222,1010 Split=X Selected=0x376FDC27\n    DockNode                                      ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n      DockNode                                    ID=0x00000001 Parent=0x00000007 SizeRef=2151,1284 Split=X Selected=0x5AAC8CBA\n        DockNode                                  ID=0x00000009 Parent=0x00000001 SizeRef=742,790 Selected=0x9E38CE87\n        DockNode                                  ID=0x0000000A Parent=0x00000001 SizeRef=749,790 Split=X Selected=0x376FDC27\n          DockNode                                ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n            DockNode                              ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n            DockNode                              ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n              DockNode                            ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n              DockNode                            ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                DockNode                          ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                DockNode                          ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                  DockNode                        ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                    DockNode                      ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                      DockNode                    ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                        DockNode                  ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                          DockNode                ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                          DockNode                ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                        DockNode                  ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                      DockNode                    ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                        DockNode                  ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                          DockNode                ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                          DockNode                ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                            DockNode              ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                            DockNode              ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                        DockNode                  ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                          DockNode                ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                          DockNode                ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                            DockNode              ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                            DockNode              ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                              DockNode            ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                DockNode          ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                DockNode          ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                              DockNode            ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                DockNode          ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                DockNode          ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                  DockNode        ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                  DockNode        ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 Split=X Selected=0xAAC3CE4D\n                                    DockNode      ID=0x0000002F Parent=0x0000002E SizeRef=866,887 Split=Y Selected=0xF2899CED\n                                      DockNode    ID=0x00000031 Parent=0x0000002F SizeRef=994,559 CentralNode=1 Selected=0xC2083E66\n                                      DockNode    ID=0x00000032 Parent=0x0000002F SizeRef=994,449 Split=X Selected=0xF2899CED\n                                        DockNode  ID=0x00000033 Parent=0x00000032 SizeRef=497,445 Selected=0xF2899CED\n                                        DockNode  ID=0x00000034 Parent=0x00000032 SizeRef=367,445 Selected=0x00E7E7B8\n                                    DockNode      ID=0x00000030 Parent=0x0000002E SizeRef=1283,887 Split=X Selected=0x1E52BDC5\n                                      DockNode    ID=0x00000035 Parent=0x00000030 SizeRef=438,1010 Selected=0xAAC3CE4D\n                                      DockNode    ID=0x00000036 Parent=0x00000030 SizeRef=837,1010 Selected=0x57E7E081\n                    DockNode                      ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                  DockNode                        ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n          DockNode                                ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n      DockNode                                    ID=0x00000002 Parent=0x00000007 SizeRef=407,1284 Selected=0x8C72BEA8\n    DockNode                                      ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n  DockNode                                        ID=0x00000004 Parent=0xCCBD8CF7 SizeRef=1222,540 Split=X Selected=0xF12F3499\n    DockNode                                      ID=0x00000005 Parent=0x00000004 SizeRef=808,707 Selected=0xD33228A6\n    DockNode                                      ID=0x00000006 Parent=0x00000004 SizeRef=1752,707 Selected=0xF12F3499\n\n",
+  "layout": "[Window][Sources]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Outputs]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Stats]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Log]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Properties]\nPos=2153,25\nSize=407,1010\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=809,1037\nSize=1751,540\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=997,419\nSize=566,738\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][##LoadingOverlay]\nPos=1155,758\nSize=250,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=1020,513\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000031,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Terminal]\nPos=0,1037\nSize=807,540\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000031,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000031,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000031,3\n\n[Window][Collage_Cutout]\nPos=499,457\nSize=417,578\nCollapsed=0\nDockId=0x00000034,0\n\n[Window][Collage_Diffusion]\nPos=0,457\nSize=497,578\nCollapsed=0\nDockId=0x00000033,0\n\n[Window][Collage_Guide]\nPos=497,219\nSize=1985,887\nCollapsed=0\n\n[Window][Poster_Accumulator]\nPos=874,25\nSize=438,1010\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Collage_Output]\nPos=868,25\nSize=1283,1010\nCollapsed=0\nDockId=0x00000036,1\n\n[Window][Field_Studio]\nPos=0,25\nSize=872,563\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Shape_Studio]\nPos=0,25\nSize=872,563\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Paint_Canvas]\nPos=918,25\nSize=1233,1010\nCollapsed=0\nDockId=0x00000036,0\n\n[Window][Shape_Maker]\nPos=0,25\nSize=916,430\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Pattern_Canvas]\nPos=918,25\nSize=1233,1010\nCollapsed=0\nDockId=0x00000036,1\n\n[Docking][Data]\nDockSpace                                         ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=Y\n  DockNode                                        ID=0x00000003 Parent=0xCCBD8CF7 SizeRef=1222,1010 Split=X Selected=0x376FDC27\n    DockNode                                      ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n      DockNode                                    ID=0x00000001 Parent=0x00000007 SizeRef=2151,1284 Split=X Selected=0x5AAC8CBA\n        DockNode                                  ID=0x00000009 Parent=0x00000001 SizeRef=742,790 Selected=0x9E38CE87\n        DockNode                                  ID=0x0000000A Parent=0x00000001 SizeRef=749,790 Split=X Selected=0x376FDC27\n          DockNode                                ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n            DockNode                              ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n            DockNode                              ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n              DockNode                            ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n              DockNode                            ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                DockNode                          ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                DockNode                          ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                  DockNode                        ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                    DockNode                      ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                      DockNode                    ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                        DockNode                  ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                          DockNode                ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                          DockNode                ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                        DockNode                  ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                      DockNode                    ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                        DockNode                  ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                          DockNode                ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                          DockNode                ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                            DockNode              ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                            DockNode              ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                        DockNode                  ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                          DockNode                ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                          DockNode                ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                            DockNode              ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                            DockNode              ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                              DockNode            ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                DockNode          ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                DockNode          ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                              DockNode            ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                DockNode          ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                DockNode          ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                  DockNode        ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                  DockNode        ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 Split=X Selected=0xAAC3CE4D\n                                    DockNode      ID=0x0000002F Parent=0x0000002E SizeRef=916,887 Split=Y Selected=0xF2899CED\n                                      DockNode    ID=0x00000031 Parent=0x0000002F SizeRef=994,430 CentralNode=1 Selected=0xC2083E66\n                                      DockNode    ID=0x00000032 Parent=0x0000002F SizeRef=994,578 Split=X Selected=0xF2899CED\n                                        DockNode  ID=0x00000033 Parent=0x00000032 SizeRef=497,578 Selected=0xF2899CED\n                                        DockNode  ID=0x00000034 Parent=0x00000032 SizeRef=417,578 Selected=0x00E7E7B8\n                                    DockNode      ID=0x00000030 Parent=0x0000002E SizeRef=1233,887 Split=X Selected=0x1E52BDC5\n                                      DockNode    ID=0x00000035 Parent=0x00000030 SizeRef=438,1010 Selected=0xAAC3CE4D\n                                      DockNode    ID=0x00000036 Parent=0x00000030 SizeRef=837,1010 Selected=0xF805296F\n                    DockNode                      ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                  DockNode                        ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n          DockNode                                ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n      DockNode                                    ID=0x00000002 Parent=0x00000007 SizeRef=407,1284 Selected=0x8C72BEA8\n    DockNode                                      ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n  DockNode                                        ID=0x00000004 Parent=0xCCBD8CF7 SizeRef=1222,540 Split=X Selected=0xF12F3499\n    DockNode                                      ID=0x00000005 Parent=0x00000004 SizeRef=808,707 Selected=0xD33228A6\n    DockNode                                      ID=0x00000006 Parent=0x00000004 SizeRef=1752,707 Selected=0xF12F3499\n\n",
   "name": "streamdiff_brush_canvas",
   "nodePresets": [
     {
@@ -625,7 +669,7 @@
         "contrast": "1.000000",
         "controlnet_auto_depth": "false",
         "controlnet_enabled": "true",
-        "controlnet_scale": "0.646000",
+        "controlnet_scale": "0.164000",
         "controlnet_type": "1",
         "denoise": "0.938000",
         "depth_adaptive_smoothing": "true",
@@ -680,7 +724,7 @@
         "profile_has_union": "true",
         "prompt": "an oversized slice of pepperoni pizza, single isolated object filling the frame on pure black, hand painted editorial food photograph, crisp cutout silhouette, no plate, no text\nan ornate cupcake with yellow frosting, single isolated object filling the frame on pure black, painterly magazine cutout, crisp silhouette, no plate, no text\na ceramic coffee cup and saucer, single isolated object filling the frame on pure black, vintage painted still life cutout, crisp silhouette, no text\na ripe pear, single isolated object filling the frame on pure black, painterly food photograph, crisp silhouette, no plate, no text\na bowl of noodles with chopsticks, single isolated object filling the frame on pure black, editorial food collage cutout, crisp silhouette, no text\na golden baguette, single isolated object filling the frame on pure black, painted food photograph, crisp silhouette, no plate, no text\na glossy red tomato, single isolated object filling the frame on pure black, painterly still life cutout, crisp silhouette, no plate, no text\na yellow layer cake slice, single isolated object filling the frame on pure black, vintage painted dessert photograph, crisp silhouette, no plate, no text\na twisted pretzel, single isolated object filling the frame on pure black, hand painted editorial cutout, crisp silhouette, no plate, no text\nan irregular organic checkerboard paper blob, teal and cream squares, single isolated collage element filling the frame on pure black, crisp torn cutout silhouette, no text\na looping cobalt blue folded paper ribbon, single isolated collage element filling the frame on pure black, painted paper texture, crisp cutout silhouette, no text\na thick scarlet red paint splotch with expressive brush edges, single isolated shape filling the frame on pure black, tactile painted texture, crisp silhouette, no text\na dark green paper arch covered with white dots and wavy mint stripes, single isolated collage element filling the frame on pure black, crisp torn silhouette, no text\na flat cyan painted circle with rough handmade edges, single isolated collage element filling the frame on pure black, tactile paper texture, crisp silhouette, no text",
         "prompt_bank_enabled": "true",
-        "prompt_position": "0.000000",
+        "prompt_position": "2.000000",
         "prompt_weight": "1.000000",
         "render_count": "1",
         "render_one": "0",
@@ -735,12 +779,64 @@
         "motion_speed": "-0.406266",
         "pattern_angle": "0.000000",
         "project_dir": "modules/Shape_Maker",
-        "resolution_height": "534",
-        "resolution_width": "866",
-        "rotation": "0.000000",
+        "resolution_height": "405",
+        "resolution_width": "916",
+        "rotation": "-5.220627",
         "shape_mode": "0.000000",
         "show_depth": "0.000000",
         "size": "0.217603"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Pattern_Canvas",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Pattern_Canvas",
+      "inputSlotSourceIds": [
+        "Collage_Diffusion",
+        "Collage_Cutout"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Pattern_Canvas",
+      "panelOpen": true,
+      "parameters": {
+        "background_color_b": "0.000000",
+        "background_color_g": "0.000000",
+        "background_color_r": "0.000000",
+        "clear_toggle": "1.000000",
+        "cutout_scale": "0.277000",
+        "drop_shadow": "0.280000",
+        "feedback_drift_x": "0.021429",
+        "feedback_drift_y": "0.000000",
+        "feedback_edge_mode": "3.000000",
+        "feedback_enabled": "1.000000",
+        "feedback_fade": "3.261000",
+        "feedback_pivot_x": "0.500000",
+        "feedback_pivot_y": "0.500000",
+        "feedback_rotation_speed": "-12.000000",
+        "feedback_zoom_speed": "-0.523000",
+        "follow_pattern": "1.000000",
+        "matte_feather": "0.080000",
+        "matte_threshold": "0.220000",
+        "opacity": "1.000000",
+        "pattern_count": "12.000000",
+        "pattern_mode": "2.000000",
+        "pattern_phase": "0.000000",
+        "position_jitter": "0.000000",
+        "project_dir": "modules/Pattern_Canvas",
+        "resolution_height": "1350",
+        "resolution_width": "1080",
+        "rotation": "0.000000",
+        "rotation_jitter": "0.000000",
+        "run": "1.000000",
+        "scale_variation": "0.732000",
+        "seed": "7.000000",
+        "spawn_seconds": "0.050000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -790,34 +886,34 @@
       "panelAnchorId": "Paint_Canvas",
       "panelOpen": true,
       "parameters": {
-        "align_to_stroke": "1.000000",
+        "align_to_stroke": "0.000000",
         "background_hue": "0.000000",
         "background_saturation": "0.000000",
         "background_value": "0.000000",
         "brush_aspect": "1.000000",
         "brush_size": "0.388000",
         "clear_canvas": "1.000000",
-        "feather": "0.080000",
+        "feather": "0.000000",
         "opacity": "1.000000",
         "project_dir": "modules/Paint_Canvas",
         "resolution_height": "985",
-        "resolution_width": "1283",
+        "resolution_width": "1233",
         "rotation": "0.000000",
-        "spacing": "0.683050",
-        "subject_anchor_x": "0.504163",
-        "subject_anchor_y": "0.509960"
+        "spacing": "0.340000",
+        "subject_anchor_x": "0.558405",
+        "subject_anchor_y": "0.490617"
       },
       "running": true,
       "secondaryInputFilePaths": null,
       "type": "module"
     }
   ],
-  "saved_at_ms": 1784621769110,
+  "saved_at_ms": 1784624320956,
   "sources": [],
   "statePayloads": {
     "Shape_Maker": {
       "interaction_state": {
-        "data": "d810013fc08c023f592f9c3ec48d7a3fad50203f9e5f003f52d35e3e16a92e42",
+        "data": "a1f30e3f1a32fb3e592f9c3ebf43713fad50203f9e5f003f52d35e3e1d840345",
         "element_count": 2,
         "element_size": 16,
         "encoding": "hex",
