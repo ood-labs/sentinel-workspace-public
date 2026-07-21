@@ -148,6 +148,7 @@ The shipped example `examples/tracking_ripple.sentinel` uses the same driver pat
 
 ## Reference Pages
 
+- [UI Interactions and Shortcuts](ui-interactions.md)
 - [Graph Wiring](graph-wiring.md)
 - [Expressions And Drivers](expressions-and-drivers.md)
 - [Tracking Suite](tracking-suite.md)
