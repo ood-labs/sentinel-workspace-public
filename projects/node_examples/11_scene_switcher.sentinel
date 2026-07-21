@@ -112,7 +112,7 @@
         "width": 600.0
       },
       {
-        "annotationBody": "Scene Switcher uses source_mode Groups to collect both Group Output textures wirelessly. Change selected_group for cuts and fade_time for crossfades on Out.",
+        "annotationBody": "Scene Switcher uses source_mode Groups to collect both Group Output textures wirelessly. Change selected_group for cuts and fade_time for crossfades on Out. Out is a texture and Scene Switcher has no numeric control output. To drive another numeric parameter, use a contributing look control such as ref(\"Green_Look/control_outputs/value\") on the target parameter.",
         "annotationColor": "#294B68",
         "annotationTitle": "11 | SCENE SWITCHER",
         "displayName": "11 | SCENE SWITCHER",
@@ -129,6 +129,14 @@
       }
     ],
     "pins": [
+      {
+        "id": 10,
+        "kind": 1,
+        "name": "value",
+        "nodeId": 3,
+        "slotIndex": 2,
+        "type": 7
+      },
       {
         "id": 2,
         "kind": 1,
@@ -183,14 +191,6 @@
         "name": "position",
         "nodeId": 3,
         "slotIndex": 1,
-        "type": 7
-      },
-      {
-        "id": 10,
-        "kind": 1,
-        "name": "value",
-        "nodeId": 3,
-        "slotIndex": 2,
         "type": 7
       },
       {
@@ -293,6 +293,29 @@
   "outputs": [],
   "pipelines": [
     {
+      "displayName": "Mauve Look",
+      "enabled": false,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Mauve_Look",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Mauve_Look",
+      "panelOpen": false,
+      "parameters": {
+        "grain_amount": "0.008000",
+        "highlight": "1.000000",
+        "project_dir": "modules/Mauve_Look",
+        "resolution_height": "1080",
+        "resolution_width": "864",
+        "vignette": "0.850000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
       "displayName": "Scene Switcher",
       "enabled": true,
       "expressions": null,
@@ -327,29 +350,6 @@
       "running": true,
       "secondaryInputFilePaths": null,
       "type": "mux"
-    },
-    {
-      "displayName": "Mauve Look",
-      "enabled": false,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "Mauve_Look",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "Mauve_Look",
-      "panelOpen": false,
-      "parameters": {
-        "grain_amount": "0.008000",
-        "highlight": "1.000000",
-        "project_dir": "modules/Mauve_Look",
-        "resolution_height": "1080",
-        "resolution_width": "864",
-        "vignette": "0.850000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
     },
     {
       "displayName": "Mauve Group Output",
@@ -428,7 +428,7 @@
       "type": "groupoutput"
     }
   ],
-  "saved_at_ms": 1784657655032,
+  "saved_at_ms": 1784672611553,
   "sources": [],
   "version": 5
 }

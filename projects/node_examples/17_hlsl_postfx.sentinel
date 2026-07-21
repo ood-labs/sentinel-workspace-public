@@ -37,7 +37,7 @@
         "type": 1
       },
       {
-        "annotationBody": "Dancer PostFX Source feeds Chromatic Edges InputBuffer. The in-folder shaders/chromatic_edges.fx file exposes ChromaticEdges; -5 is neutral and 10 adds RGB separation plus cyan edge glow to the output texture.",
+        "annotationBody": "Dancer PostFX Source feeds Chromatic Edges InputBuffer. The in-folder shaders/chromatic_edges.fx file exposes the ChromaticEdges input; -5 is neutral and 10 adds RGB separation plus cyan edge glow. Out is a texture and this shader has no numeric control output. To animate ChromaticEdges, copy Hello_LFO from study 16 and set the target expression to -5 + ref(\"Hello_LFO/control_outputs/value\") * 15.",
         "annotationColor": "#54545443",
         "annotationTitle": "Single-file HLSL post-effect",
         "displayName": "Single-file HLSL post-effect",
@@ -120,7 +120,7 @@
       "type": "hlslshader"
     }
   ],
-  "saved_at_ms": 1784658595037,
+  "saved_at_ms": 1784672671255,
   "sources": [
     {
       "captureFrameRate": 0,

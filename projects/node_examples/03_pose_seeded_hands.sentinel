@@ -57,7 +57,7 @@
         "type": 1
       },
       {
-        "annotationBody": "Pose Wrist Seeds publishes the Keypoints data port into Seeded Hand Tracker Keypoints while both read Dancer Seed Source video. poseFusionEnabled uses confident pose wrists as hand-search seeds; Hand Landmarks and gesture controls report the result.",
+        "annotationBody": "Pose Wrist Seeds publishes the Keypoints data port into Seeded Hand Tracker Keypoints while both read Dancer Seed Source video. poseFusionEnabled uses confident pose wrists as hand-search seeds. Seeded Hand Tracker publishes Hand Landmarks records and numeric gesture controls such as hand_pos_x_primary in the 0 to 1 range. To drive another numeric parameter, set its expression to ref(\"Seeded_Hand_Tracker/control_outputs/hand_pos_x_primary\").",
         "annotationColor": "#54545443",
         "annotationTitle": "Pose-seeded hand tracking",
         "displayName": "Pose-seeded hand tracking",
@@ -228,7 +228,7 @@
       "type": "mediapipe"
     }
   ],
-  "saved_at_ms": 1784660095242,
+  "saved_at_ms": 1784672607254,
   "sources": [
     {
       "captureFrameRate": 0,
