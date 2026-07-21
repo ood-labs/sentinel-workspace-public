@@ -203,7 +203,9 @@ A clean-room agent received only `projects/node_examples/` and reviewed studies 
 - Study 17 passed: the card states that HLSL Shader has texture-only output and gives the study-16 LFO expression `-5 + ref("Hello_LFO/control_outputs/value") * 15` for animating `ChromaticEdges` across its authored range.
 - The second agent reported no remaining ambiguity for any sampled study.
 
-## Remaining release gates
+## Publication verification
 
-- Confirm the final tracked-file and absolute-path gates.
-- Commit and push only after all pending gates are green.
+- Final static gate: 18 valid study files, zero absolute-path matches, zero missing bundled project directories, exactly 18 README register rows, and one shared dancer video with the expected SHA256.
+- Tracked payload: 18 studies, 22 bundled Module files, one shader file, one shared video, and three collection documentation files.
+- Initial publication landed on `origin/main` at `0d32577`.
+- A fresh clone of that revision reproduced all 45 tracked collection files and included `knowledge/ui-interactions.md`.
