@@ -44,5 +44,5 @@ Shaders must work in BOTH Sentinel and Notch. Every .fx shader must include the 
 4. **Full `technique11` block** -- Use `vs_4_0`/`ps_4_0` (NOT `vs_5_0`/`ps_5_0`), include state setup
 5. **Blend with `InputBuffer.Load`** -- `lerp(original, color, BlendAmount)` using `Load(uint3(In.Position.xy, 0))`
 
-See working examples: `shaders/water_ripple.fx`, `shaders/glass_bubbles.fx`
-See devlogs: `docs/devlogs/phase-misc-notch-shader-compatibility.md`, `docs/devlogs/phase-misc-shaderfx-authoring.md`
+Use the live Sentinel shader compiler as the compatibility authority for single-file `.fx` shaders.
+Use this compatibility checklist alongside the live Sentinel compiler output; private development devlogs are intentionally not part of the public workspace.

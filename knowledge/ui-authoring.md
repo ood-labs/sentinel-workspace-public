@@ -11,24 +11,6 @@ Use the `module-ui-authoring` skill for the end-to-end workflow. The reference i
 - Sentinel owns routing: focus, pointer capture, undo transactions, parameter commits, host selection, project persistence, and the dock tab.
 - Keep custom UI inside the Module system. Do not add native Sentinel widgets for an authored look unless the product itself needs a new general capability.
 
-## Tailored Instrument Standard
-
-An authored interface is not a reusable dashboard skin. Start from the operator's actual task, data topology, control frequency, and decision order, then design one compact instrument around that workflow. Reuse the shared interaction and typography primitives, but do not copy another example's panel arrangement, labels, decorative charts, or information hierarchy unless the new tool genuinely has the same job.
-
-`projects/interaction_lab/modules/Motion_Console/` is the canonical reference for this standard. Its density is earned by a specific modulation workflow: four semantic lanes, live waveform previews, directly adjacent rate/amplitude/shape controls, numeric readouts, a master strip, an XY bias pad, burst, mute, and output meters. Every region either changes the modulation system or explains its live state. The lesson is the tight fit between information and action—not the monochrome styling or the four-lane layout itself.
-
-Before authoring a UI:
-
-- inventory the actions and state the operator needs at a glance;
-- group controls by workflow and semantic ownership, not parameter type;
-- put high-frequency controls next to the feedback they change;
-- use domain labels, units, ranges, status, and previews rather than generic placeholder cards;
-- remove decorative panels and charts that do not answer an operator question;
-- keep the result compact, but preserve the 32-pixel hit-target minimum and clear hierarchy;
-- study the nearest Interaction Lab example for implementation patterns, then compose a new layout tailored to the requested tool.
-
-A UI review should be able to explain why every visible region exists. If the same panel could be dropped unchanged onto an unrelated module, it is probably not tailored enough.
-
 ## Scientific UI Foundation
 
 Include the shared foundation from a sibling Module:
@@ -156,7 +138,6 @@ Prove controls with real or injected pointer input, not StateTree writes alone. 
 - `modules/font_style_sampler/`: regular-face edge-weight comparison.
 - `modules/spline_editor/`: authored sub-object editing with persistent state and typed outputs.
 - `modules/transform_gizmo_lab/`: selection, multi-object transforms, projected handles, and camera-aware rotation rings.
-- `projects/interaction_lab/modules/Motion_Console/`: canonical tightly packed, task-specific instrument with semantic modulation lanes, adjacent live feedback, and no generic dashboard filler.
 - `projects/interaction_lab/interaction_lab.sentinel`: bundled review project.
 
 Everything above is authored Module content. It does not require a new Sentinel native widget or IPC feature.

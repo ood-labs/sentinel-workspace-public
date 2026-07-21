@@ -10,14 +10,6 @@ This workspace is the user-writable Sentinel agent workspace. It is seeded by Se
 
 Sentinel is a GPU-accelerated live video application for performance and interactive visuals. It combines Spout/NDI/camera/image/pattern/video sources, real-time AI generation, tracking, depth, segmentation, object detection, shader modules, and Spout/NDI output.
 
-## Current Status
-
-- Active phase: Phase 1 - Official Examples Modernization (`docs/phases/phase-1-official-examples-modernization.md`).
-- Status: implementation complete; approval remains pending after a clean-public cold-load sequence crashed Sentinel during the Topographic HUD sample. Both private and public static validators pass all nine projects.
-- Next step: investigate the recorded cold-load crash in the Sentinel application repository, then rerun the remaining clean-public runtime-load samples before final approval.
-- Verified portable content is locally committed in the sibling public repository through `d2ea3a0`. No network push is authorized.
-- Preserve the existing local Module and project work in progress while executing the phase.
-
 ## First Rule: Discover Live
 
 Do not guess what this install can create. Ask Sentinel.
@@ -88,6 +80,22 @@ Use video links for textures and data links for structured buffers.
 
 After creating and wiring nodes, always inspect real runtime state. A successful create call is not proof that the node is processing.
 
+## Visible Incremental Node Construction
+
+When building or extending a live graph, work one node at a time so the user can watch the graph take shape. Do not author every planned node first and then create or import them all at the end. Do not issue concurrent node-creation calls or hide multiple creations inside a batch or loop.
+
+For each node, complete this visible cycle before starting the next node:
+
+1. Author or modify only the files needed for that node and any unavoidable shared prerequisite.
+2. Create the node in the live graph immediately. Place it near the relevant node and add its currently known video or data links.
+3. Call `sentinel_graph action=focus` for the new node so it is centered and visible in the graph.
+4. Call `sentinel_pipeline action=open_window` for pipeline nodes so the node's preview/properties panel is open and visible. For entity types without a pipeline window, expose the closest applicable Properties or preview UI supported by the live capabilities.
+5. Wait for any asynchronous compile, inspect health and frames, and leave the new node focused long enough for the UI to update before authoring or creating the next node.
+
+Continue through that cycle without requiring approval after every node unless the user asks for checkpoints. The goal is visible incremental construction, not a stop-and-confirm workflow.
+
+Only suspend this behavior when the user explicitly asks for a batch/background workflow or says that repeated focusing would interfere with simultaneous hands-on tweaking. Treat that exception as narrowly scoped to the requested situation, then return to visible one-node-at-a-time construction.
+
 ## Health And Proof
 
 Trust live health, frames, and captures.
@@ -155,15 +163,15 @@ Modules can declare viewport behavior in a manifest `viewport:` block: a `hint` 
 
 ## Choreography And Sequencing
 
-For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary in `shaders/projects/_shared/anim/anim.hlsli` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, and integrate phase for anything rate-driven. The shipped `timeline_hud` module visualizes the arrangement from the Conductor's `Cue Records` port, and `choreo_cascade` is the reference stagger/spring consumer. Example cue sheets: `examples/phase75/`. See `knowledge/motion-choreography.md`.
+For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary in `modules/_shared/anim/anim.hlsli` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, and integrate phase for anything rate-driven. The shipped `timeline_hud` module visualizes the arrangement from the Conductor's `Cue Records` port, and `choreo_cascade` is the reference stagger/spring consumer. See `knowledge/motion-choreography.md`.
 
-StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` node switches variants live and its `solo_upstream` keeps only the visible variant diffusing; an `atlas` node banks aligned stills for 3D scene spawning. See `knowledge/scene-system.md`.
+StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` node switches variants live and its `solo_upstream` keeps only the visible variant diffusing; an `atlas` node banks aligned stills for 3D scene spawning. The focused examples under `projects/streamdiff_workflows/` cover feedback zoom, depth parallax, direct Mux switching, video depth conditioning, and procedural warp maps; open one at a time to avoid unnecessary engine-memory spikes. See `knowledge/streamdiff.md` and `knowledge/scene-system.md`.
 
 To mix whole looks instead of single streams, author each look as a Scene Group containing exactly one `groupoutput` node and set a Mux to `source_mode=Groups`. The switcher collects the groups wirelessly, fully freezes non-selected looks, and offers hard cuts or `fade_time` crossfades plus one `select/<slug>` OSC trigger per look; `allowed_groups` filters the collection and accepts a string `ref()` expression. For 3D shows, `camera` nodes own a shared fly/orbit rig that camera-capable modules bind to through `camera_ref` (or automatically through their containing Scene Group), and a `camswitch` node cuts or blends between cameras with the same trigger pattern. See `knowledge/scene-system.md`.
 
 ## Precise 3D Construction
 
-When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against the kind registry `shaders/projects/_shared/sdf/sdf_kinds.yaml`, relax under-constrained layouts with warm-start stability, and compile to a generated Module publishing `PNodes` records for the shipped `sdf_scene_render` project. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints: `examples/blueprints/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
+When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against the kind registry `modules/_shared/sdf/sdf_kinds.yaml`, relax under-constrained layouts with warm-start stability, and compile to a generated Module publishing `PNodes` records for the shipped `sdf_scene_render` project. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints: `examples/blueprints/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
 
 ## Scene Groups
 

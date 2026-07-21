@@ -25,7 +25,7 @@ Author in two passes: relations first with registry-default dimensions (a semant
 
 ## Kind Registry
 
-`shaders/projects/_shared/sdf/sdf_kinds.yaml` describes each SDF object kind: numeric `id` (the record `kind_id`), real dimensions, footprint radius, and named anchors. The registry is the compiler's ground truth for relation arithmetic, validation, relaxation, and the overlap checker.
+`modules/_shared/sdf/sdf_kinds.yaml` describes each SDF object kind: numeric `id` (the record `kind_id`), real dimensions, footprint radius, and named anchors. The registry is the compiler's ground truth for relation arithmetic, validation, relaxation, and the overlap checker.
 
 ## Compiler Actions (sentinel_blueprint)
 
@@ -42,12 +42,12 @@ The generated producer publishes one `PNodes` structured output, element size 48
 
 ## Audits (Measured Geometry Assertions)
 
-A `<blueprint-stem>.audit.yaml` sidecar makes `compile` emit an `Audit Results` data output. Assertions carry `id`, `type`, `expected` or `min_separation`, `tolerance`, optional `pair`; generated measures include `record_field`, `count_kind`, `flush_gap`, and `pair_separation`. Hand-authored hero modules can add their own audit pass with `shaders/projects/_shared/sdf/sdf_audit.hlsli` (bisection dimension measurement, bounds clearance, overlap sampling) and the same result-record shape.
+A `<blueprint-stem>.audit.yaml` sidecar makes `compile` emit an `Audit Results` data output. Assertions carry `id`, `type`, `expected` or `min_separation`, `tolerance`, optional `pair`; generated measures include `record_field`, `count_kind`, `flush_gap`, and `pair_separation`. Hand-authored hero modules can add their own audit pass with `modules/_shared/sdf/sdf_audit.hlsli` (bisection dimension measurement, bounds clearance, overlap sampling) and the same result-record shape.
 
 Run with explicit `max_elements` (data-port capture defaults to 20 elements and truncates silently):
 
 ```json
-{"action":"audit","pipeline_id":"Blueprint_Cafe","audit_path":"examples/blueprints/cafe.audit.yaml","port_name":"Audit Results","max_elements":8}
+{"action":"audit","pipeline_id":"Blueprint_Living_Room","audit_path":"path/to/blueprint.audit.yaml","port_name":"Audit Results","max_elements":8}
 ```
 
 An audit measures the live distance field, so a wrong offset fails mechanically even when the render looks plausible.

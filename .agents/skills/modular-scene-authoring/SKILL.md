@@ -8,11 +8,11 @@ distribution: true
 
 Build a scene as a graph of small, semantic Module nodes that pass typed data and texture lanes to each other, rather than one giant shader that does everything. This is how Sentinel's Module system (`data_inputs` / `data_outputs`, zero-copy SRV routing, control outputs) is designed to be used. A monolith is hard to inspect, hard to iterate, and hides the design structure; a graph of named nodes lets you prove each stage, swap a renderer without touching the generator, and tune one contract at a time.
 
-For manifest syntax, HLSL compiler name mappings, structured buffer I/O, and hot-reload mechanics, use the `module-authoring` skill and `docs/knowledge/module-pipeline.md`. This skill is about the workflow and graph decomposition on top of those mechanics.
+For manifest syntax, HLSL compiler name mappings, structured buffer I/O, and hot-reload mechanics, use the `module-authoring` skill and `knowledge/module-pipeline.md`. This skill is about the workflow and graph decomposition on top of those mechanics.
 
 If one node is meant to be a complete control surface, editor, HUD, or dashboard, use the `module-ui-authoring` skill for that node. A UI Module can declare a full-bleed Canvas and `follow_panel` resolution while remaining one semantic node in the larger scene graph.
 
-In-repo modular graphs worth reading before starting: `shaders/projects/mux_demo/`, `projects/switcher_demo.sentinel`, `shaders/projects/hstack_3/`, `shaders/projects/compositor/`.
+In-repo modular references worth reading before starting: `modules/compositor/`, `modules/choreo_cascade/`, `modules/timeline_hud/`, and `projects/interaction_lab/interaction_lab.sentinel`.
 
 ---
 
@@ -20,15 +20,15 @@ In-repo modular graphs worth reading before starting: `shaders/projects/mux_demo
 
 When a scene is mostly objects with real dimensions, anchors, clearances, and repeated instances, use the `procedural-geometry-authoring` skill and the Phase 76 blueprint compiler before writing custom generator shaders.
 
-Blueprint producers compile to generated Module projects that publish fixed 48-byte `PNodes`. Wire those records into `shaders/projects/sdf_scene_render`, run `sentinel_graph auto_layout`, then prove the graph with:
+Blueprint producers compile to generated Module projects that publish fixed 48-byte `PNodes`. Wire those records into `modules/sdf_scene_render`, run `sentinel_graph auto_layout`, then prove the graph with:
 
 - `sentinel_blueprint validate` for schema and relation errors.
 - `sentinel_blueprint solve_report` for record hashes, topology, solver stats, and warm-start stability.
 - `sentinel_blueprint audit` when a `<blueprint-stem>.audit.yaml` sidecar exists.
-- `tools/blueprint_spotcheck.py` and `tools/check_overlaps.py` for independent record-level checks.
+- `sentinel_blueprint solve_report` and `sentinel_blueprint audit` for independent record-level checks.
 - A renderer capture plus `sentinel_vision action="eval"` for visible scene claims. If it reports a missing or rejected key, run `sentinel_vision action="status"` and have the user paste their provider key (OpenRouter or another OpenAI-compatible provider) into the returned workspace `vision.json` `api_key` field, then rerun `status` until `key_present` and `key_ok` are true. Never take keys through chat or tool arguments.
 
-The canonical smoke scene is `examples/blueprints/cafe.yaml`. From skill text alone, validating it should return `ok: true`, `node_count: 14`, `group_instance_count: 6`, `resolved_instance_count: 20`, and `instance_budget: 96`.
+The public smoke blueprint is `examples/blueprints/living_room_architecture.yaml`; validate it before compiling or creating a live pipeline.
 
 ---
 
@@ -115,7 +115,7 @@ The tight loop for multi-node contract work:
 
 1. `sentinel_app ping`, then `sentinel_pipeline list_types` and `sentinel_app capabilities` if starting fresh.
 2. **Snapshot before you experiment.** `sentinel_state action=snapshot pipeline_id=<id>` returns the node's current params inline so you can revert a throwaway test with `sentinel_state action=restore` and no filesystem churn. Save the whole project (`save_project`) before large graph or buffer-contract changes.
-3. Edit the Module files. **Write all shader files before saving `manifest.yaml`** (the file-watch hot-reload fires on the manifest save and fails if a referenced shader is missing; see `docs/knowledge/module-pipeline.md`).
+3. Edit the Module files. **Write all shader files before saving `manifest.yaml`** (the file-watch hot-reload fires on the manifest save and fails if a referenced shader is missing; see `knowledge/module-pipeline.md`).
 4. `sentinel_pipeline compile_check project_dir=<dir>` for every touched Module before reloading anything.
 5. `sentinel_pipeline force_reload pipeline_id=<id>` only after the compile checks pass.
 6. Poll `sentinel_pipeline compile_status` to `ok`.
@@ -134,12 +134,12 @@ A finished modular scene is more valuable as an editable show project (a bundled
 
 ## Motion vocabulary
 
-For scene motion, use the Phase 75 shared vocabulary from `docs/knowledge/motion-choreography.md` and `shaders/projects/_shared/anim/anim.hlsli`. Do not hand-roll independent spring or stagger equations in renderer nodes. Keep rate-driven timelines on accumulated phase, and use retarget stamps plus `an_spring_v` when a cue jump or target change must remain continuous.
+For scene motion, use the shared vocabulary from `knowledge/motion-choreography.md` and `modules/_shared/anim/anim.hlsli`. Do not hand-roll independent spring or stagger equations in renderer nodes. Keep rate-driven timelines on accumulated phase, and use retarget stamps plus `an_spring_v` when a cue jump or target change must remain continuous.
 
 ---
 
 ## Cross-links
 
 - `module-authoring` skill: manifest syntax, compiler name mappings, structured buffer I/O, hot-reload, control outputs.
-- `docs/knowledge/module-pipeline.md`: data ports, `resolution_source`, bundling, write-order gotcha.
+- `knowledge/module-pipeline.md`: data ports, `resolution_source`, bundling, write-order gotcha.
 - `laser-content-authoring` skill: multi-output Module composition and HStack routing, a concrete instance of this modular approach.

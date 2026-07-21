@@ -60,7 +60,7 @@ Data port:
 Basic smoke recipe:
 
 1. Confirm the pack is ready with `sentinel_app action=engine_status`. If `auxiliary-detection` is missing, call `sentinel_app action=download_pack pack_id=auxiliary-detection` or `sentinel_app action=install_pack pack_id=auxiliary-detection`, then poll `engine_status`.
-2. Create an image source from `examples/example.jpg`, or use a camera/Spout source with people or common COCO objects visible.
+2. Create a camera, image, video, or Spout source with people or common COCO objects visible.
 3. Create `sentinel_pipeline action=create type=detection name=object_track`.
 4. Wire the image/video source to the detection node with `sentinel_pipeline action=set_input` or `sentinel_graph action=add_link`.
 5. Inspect `sentinel_pipeline action=info pipeline_id=object_track`; the `Detections` data port reports boxes, confidence, and class fields.

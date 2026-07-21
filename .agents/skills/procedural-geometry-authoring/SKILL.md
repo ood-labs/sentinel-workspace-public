@@ -11,7 +11,7 @@ Use the precise-construction blueprint path when a scene needs real dimensions, 
 ## Blueprint-first workflow
 
 1. Write a YAML blueprint under `examples/blueprints/` or the current show folder.
-2. Use kinds from `shaders/projects/_shared/sdf/sdf_kinds.yaml`.
+2. Use kinds from `modules/_shared/sdf/sdf_kinds.yaml`.
 3. Author in two passes: first use registry-default dimensions and relations only, then validate and add dimension overrides only where the scene needs them.
 4. Prefer relations over raw coordinates:
    - `supported_by` for objects on surfaces.
@@ -24,7 +24,7 @@ Use the precise-construction blueprint path when a scene needs real dimensions, 
 Validation command:
 
 ```json
-{"action":"validate","path":"examples/blueprints/cafe.yaml"}
+{"action":"validate","path":"examples/blueprints/living_room_architecture.yaml"}
 ```
 
 The expected cafe summary is `ok: true`, `node_count: 14`, `group_instance_count: 6`, `resolved_instance_count: 20`, and `instance_budget: 96`.
@@ -34,10 +34,10 @@ The expected cafe summary is `ok: true`, `node_count: 14`, `group_instance_count
 Compile with `sentinel_blueprint compile`. With `create: true`, the tool creates a Module producer that publishes `PNodes`.
 
 ```json
-{"action":"compile","path":"examples/blueprints/cafe.yaml","create":true,"pipeline_name":"Blueprint_Cafe"}
+{"action":"compile","path":"examples/blueprints/living_room_architecture.yaml","create":true,"pipeline_name":"Blueprint_Living_Room"}
 ```
 
-Wire `PNodes` to `shaders/projects/sdf_scene_render`, then run `sentinel_graph auto_layout`.
+Wire `PNodes` to `modules/sdf_scene_render`, then run `sentinel_graph auto_layout`.
 
 The PNode schema is fixed at 48 bytes: position, scale, kind id, seed, yaw, height, width, depth, and direction. Keep scene-specific needs in blueprint data or renderer logic.
 
@@ -53,13 +53,13 @@ For measured assertions, place `<blueprint-stem>.audit.yaml` beside the blueprin
 Run `sentinel_blueprint audit` against the generated producer's `Audit Results` port with explicit `max_elements`.
 
 ```json
-{"action":"audit","pipeline_id":"Blueprint_Cafe","audit_path":"examples/blueprints/cafe.audit.yaml","port_name":"Audit Results","max_elements":5}
+{"action":"audit","pipeline_id":"Blueprint_Living_Room","audit_path":"path/to/blueprint.audit.yaml","port_name":"Audit Results","max_elements":5}
 ```
 
 ## Proof helpers
 
-- `tools/blueprint_spotcheck.py` independently checks one named relation target.
-- `tools/check_overlaps.py` checks captured `PNodes` against registry footprints and blueprint clearances.
+- `sentinel_blueprint solve_report` independently reports solved records, topology, and solver stability.
+- `sentinel_blueprint audit` evaluates an authored audit sidecar against live GPU output.
 - Use `sentinel_vision action="eval"` on the renderer capture for visible scene claims. If it reports a missing or rejected key, run `sentinel_vision action="status"` and have the user paste their provider key into the returned workspace `vision.json` `api_key` field, then rerun `status` until `key_present` and `key_ok` are true. Never take keys through chat or tool arguments.
 
-For detailed schema notes, read `docs/knowledge/precise-construction.md`.
+For detailed schema notes, read `knowledge/precise-construction.md`.

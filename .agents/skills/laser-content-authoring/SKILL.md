@@ -8,8 +8,7 @@ distribution: true
 
 Patterns for Module projects that produce content for physical laser projection. The output goes Spout/NDI → MadMapper → laser DAC. The laser controller traces white pixels as beam paths, so laser channels must be **vectorizable**: pure white-on-black, crisp edges, no gradients or anti-aliasing. The color channel beside it can be lush HDR for monitor preview / video projection.
 
-Reference project: `shaders/projects/laser_ripples/` (water surface generator with two color-tinted laser outputs and auto-spawn).
-Composition project: `shaders/projects/hstack_3/` (3-input horizontal layout, equivalent to TouchDesigner's Layout TOP).
+The patterns below are self-contained and are intended to be authored as Module projects under `modules/`.
 
 ---
 
@@ -316,7 +315,7 @@ Wire all your laser-content module's outputs (Color + Laser 1 + Laser 2) into HS
 
 When building a Module via tool calls in sequence:
 
-1. Create folder `shaders/projects/<name>/`
+1. Create folder `modules/<name>/`
 2. **Write all `.hlsl` shader files first.**
 3. **Write `manifest.yaml` last.**
 4. Now create the pipeline via MCP — first compile sees a complete project.
@@ -342,7 +341,7 @@ All laser-output passes that produce colors should write `OutputUAV[pixel] = flo
 
 ## Pattern: Shared Trace-Control Vocabulary
 
-Every finished laser module exposes the same 8-knob "trace control" surface so the operator has a consistent performative vocabulary across the whole module set. The shared header is `shaders/projects/laser_refs/_shared/trace_utils.hlsli` and every module's .hlsl passes `#include` it.
+Every finished laser module should expose the same 8-knob "trace control" surface so the operator has a consistent performative vocabulary across the whole module set. Keep the shared trace helpers in a project-local `_shared/trace_utils.hlsli` and include that header from each related Module.
 
 ### Shared params (always present in the manifest)
 

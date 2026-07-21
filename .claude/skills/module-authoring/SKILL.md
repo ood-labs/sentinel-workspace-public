@@ -107,7 +107,7 @@ For authored motion, include the shared Phase 75 library instead of hand-rolling
 
 Use `an_spring`, `an_spring_v`, `an_stagger_index`, `an_stagger_radial`, `an_stagger_wave`, `an_stagger_noise`, `an_anticipate`, `an_squash`, and `an_loop_noise`. The same equations are registered in ExprTk as `spring`, `spring_v`, `stagger`, `anticipate`, and `loop_noise`, so Module shaders and parameter expressions can be checked against one reference.
 
-Rate-class changes must use a phase accumulator (`phase += rate * dt`) instead of `absolute_time * live_rate`. Target-class changes should stamp current value and velocity, then continue with `an_spring_v`. See `docs/knowledge/motion-choreography.md`.
+Rate-class changes must use a phase accumulator (`phase += rate * dt`) instead of `absolute_time * live_rate`. Target-class changes should stamp current value and velocity, then continue with `an_spring_v`. See `knowledge/motion-choreography.md`.
 
 ### Motion vocabulary
 
@@ -119,7 +119,7 @@ For authored motion, include the shared Phase 75 library instead of hand-rolling
 
 Use `an_spring`, `an_spring_v`, `an_stagger_index`, `an_stagger_radial`, `an_stagger_wave`, `an_stagger_noise`, `an_anticipate`, `an_squash`, and `an_loop_noise`. The same equations are registered in ExprTk as `spring`, `spring_v`, `stagger`, `anticipate`, and `loop_noise`, so Module shaders and parameter expressions can be checked against one reference.
 
-Rate-class changes must use a phase accumulator (`phase += rate * dt`) instead of `absolute_time * live_rate`. Target-class changes should stamp current value and velocity, then continue with `an_spring_v`. See `docs/knowledge/motion-choreography.md`.
+Rate-class changes must use a phase accumulator (`phase += rate * dt`) instead of `absolute_time * live_rate`. Target-class changes should stamp current value and velocity, then continue with `an_spring_v`. See `knowledge/motion-choreography.md`.
 
 ### Auto-injected globals (always available):
 - `_Time` (float) — elapsed time in seconds
@@ -155,7 +155,7 @@ parameters:
 - Compounds decompose into per-channel StateTree nodes (`tint_r/_g/_b`, `center_x/_y`),
   each independently OSC-mappable; the UI folds them into one color picker / XY pad.
 - A `group: "Parent/Child"` label nests a collapsible sub-tree in the Properties panel.
-- Reference module exercising every control: `shaders/projects/param_showcase/`.
+- The manifests under this skill's `examples/` directory demonstrate compound controls, enums, buffers, and multi-pass outputs.
 
 ### Entry point is `main`, NOT `CSMain`:
 ```hlsl
@@ -244,7 +244,7 @@ Author Modules so the manifest resolution is a default target, not a hidden layo
 ## MCP Workflow for Module Creation
 
 ```
-1. Create project folder: shaders/projects/<name>/
+1. Create project folder: modules/<name>/
 2. Write ALL shader files first, THEN write manifest.yaml LAST (avoids the hot-reload race below).
 3. sentinel_pipeline create type=module name="Name" project_dir="path"
 4. sentinel_state set path=/sentinel/pipelines/<id>/parameters/project_dir value="path"
@@ -276,7 +276,7 @@ Full working projects are in `examples/` alongside this SKILL.md. Read these fil
 - `wave_field.hlsl` — Camera ray generation with Y-flip, `_ViewProjMatrix` projection, finite-range glows, post-gamma background, depth in alpha
 - `color_out.hlsl` / `depth_out.hlsl` — Trivial ps_5_0 extract passes (`VS_OUTPUT`, `SV_TARGET0`, `_Tex0.SampleLevel`)
 
-### Other Projects (in `shaders/projects/`)
+### Additional Project Patterns
 
 | Project | Features | Key Patterns |
 |---------|----------|-------------|
@@ -444,7 +444,7 @@ Pan/zoom mouse handling and the hint row follow the declared interactions, so a 
 
 For ordered pointer/keyboard/gesture events in shaders (clicks, key pulses, drags with capture semantics), add `events` to `interactions` and declare interests under `viewport.input` plus help `bindings`; the compiler then injects `_ViewportEventCount`, `_ViewportEvents[]`, pointer/key state globals, and the `ViewportKeyDown`/`ViewportButtonDown`/`ViewportModifierDown` helpers. Available on builds 0.5.30 and newer; `_Mouse` remains the simple fallback.
 
-Three verified gotchas: `bindings[].gesture` tokens differ from `input.gestures` tokens (`left_click`/`left_drag`/..., not `click`/`drag`); event positions are normalized preview coordinates matching your pass `uv`; and modules cook at an uncapped rate far above the display rate, so decay/accumulation MUST scale by `_DeltaTime` (`energy *= pow(k, _DeltaTime * 60.0)`), otherwise event visuals vanish within milliseconds and events appear "not to arrive". The proven pass structure is a `dispatch: [1,1,1]` event-reduction pass writing a persistent state buffer plus generation counter, with full-res passes consuming derived state. Full token lists, the frozen v1 event ABI, event type/phase/code tables, and router priority live in `docs/knowledge/module-pipeline.md` (Authored Viewport Events); the workspace module `modules/click_ripples/` is a complete worked example.
+Three verified gotchas: `bindings[].gesture` tokens differ from `input.gestures` tokens (`left_click`/`left_drag`/..., not `click`/`drag`); event positions are normalized preview coordinates matching your pass `uv`; and modules cook at an uncapped rate far above the display rate, so decay/accumulation MUST scale by `_DeltaTime` (`energy *= pow(k, _DeltaTime * 60.0)`), otherwise event visuals vanish within milliseconds and events appear "not to arrive". The proven pass structure is a `dispatch: [1,1,1]` event-reduction pass writing a persistent state buffer plus generation counter, with full-res passes consuming derived state. Full token lists, the frozen v1 event ABI, event type/phase/code tables, and router priority live in `knowledge/module-pipeline.md` (Authored Viewport Events); the workspace module `modules/click_ripples/` is a complete worked example.
 
 For ray-marched scenes, generate rays from camera. **Must Y-flip for DX NDC**:
 ```hlsl
@@ -647,7 +647,7 @@ float4 main(VS_OUTPUT In) : SV_TARGET0 {
 }
 ```
 
-**Pattern**: Compute pass writes color+depth to intermediate (depth in alpha), then two trivial pixel shader passes split channels for separate output pins. See `shaders/projects/infinite_zoom/` and `shaders/projects/wave_field/` for working examples.
+**Pattern**: Compute pass writes color+depth to intermediate (depth in alpha), then two trivial pixel shader passes split channels for separate output pins. See `examples/wave_field/` beside this skill for a working example.
 
 ## High Bit Depth Passes (Phase 46)
 

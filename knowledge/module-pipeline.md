@@ -64,7 +64,7 @@ ref("module_lfo/control_outputs/rate")
 
 For authored motion, include `#include "../_shared/anim/anim.hlsli"` and use `an_spring`, `an_spring_v`, the `an_stagger_*` family, `an_anticipate`, `an_squash`, and `an_loop_noise` instead of hand-rolled easing. The same equations exist in expressions (`spring`, `stagger`, ...). Rate-driven values integrate phase; never multiply a live rate by absolute time. See `knowledge/motion-choreography.md`.
 
-For measured geometry assertions on SDF modules, `shaders/projects/_shared/sdf/sdf_audit.hlsli` provides bisection dimension measurement, bounds clearance, and overlap sampling; results publish through a structured data output that `sentinel_blueprint action=audit` reads. See `knowledge/precise-construction.md`.
+For measured geometry assertions on SDF modules, `modules/_shared/sdf/sdf_audit.hlsli` provides bisection dimension measurement, bounds clearance, and overlap sampling; results publish through a structured data output that `sentinel_blueprint action=audit` reads. See `knowledge/precise-construction.md`.
 
 ## Viewport Interactions And Cameras
 
@@ -140,7 +140,7 @@ This keeps event handling single-threaded and testable, dedupes work across cook
 
 Events deliver only while the module's preview is focused; a click on the preview focuses it. Hot reload cancels focus and capture, so after editing shaders the first click refocuses. The router priority is modal and text/terminal input, then pointer capture, then focused authored bindings, then global shortcuts; Escape cancels active pointer capture before delivery. Capture also cancels on disable, project load, and preview close. `_Mouse` keeps working for existing modules.
 
-To verify an events module end to end, read the live diagnostics under `/sentinel/pipelines/<id>/viewport/`: `focused`, `delivered_boundary_count` (grows by 3 per click: press, release, click gesture), `bindings`, `event_overflow_count`, and `capture_owner`. Real input can be injected with `tools/capture_verify/inject_mouse.ps1` (modes: `move`, `path`, `click`, `double_click`, `drag`, `wheel`, `tap`, `tap_series`, `key_hold`; coordinates are Sentinel client-area pixels), and captures of the output confirm the visual result. State writes never exercise this path; only real or injected input does.
+To verify an events module end to end, read the live diagnostics under `/sentinel/pipelines/<id>/viewport/`: `focused`, `delivered_boundary_count` (grows by 3 per click: press, release, click gesture), `bindings`, `event_overflow_count`, and `capture_owner`. Exercise the preview with real pointer or keyboard input and capture the output to confirm the visual result. State writes never exercise this path; only real or host-injected input does.
 
 ## Viewport Persistence, Controls, And Selection
 

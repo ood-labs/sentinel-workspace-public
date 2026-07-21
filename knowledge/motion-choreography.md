@@ -44,12 +44,12 @@ A cue sheet is YAML: `transport` (`beat` or `timecode`), optional `tempo` (`bpm`
 
 `load_sheet` validates targets, registers every timing and intensity literal as a live parameter under `/sentinel/pipelines/<conductor>/parameters/sheet/...`, and installs the generated expressions. Tweak the sheet parameters live (MCP, UI, OSC), then `bake_sheet` writes the tweaked values back into the YAML (`dry_run: true` previews). Unknown targets and bad references return structured `compile_errors` and install nothing.
 
-Example cue sheets ship under `examples/phase75/` (`timeline_hud_two_cue.yaml`, `timeline_hud_multi_track.yaml`).
+Use the `timeline_hud` and `choreo_cascade` modules as the reference consumers when authoring cue sheets for a Conductor node.
 
 ## Timeline HUD And Ghost Preview
 
-- `timeline_hud` (shipped under `shaders/projects/timeline_hud`) consumes the Conductor's `Cue Records` data port (`track`, `start`, `duration`, `state`, `color_id`) and renders lanes, cue blocks, a beat grid, and a playhead. Drive `playhead_seconds` with `ref("Conductor/control_outputs/transport_seconds")` or `total_beats`.
-- `choreo_cascade` (shipped under `shaders/projects/choreo_cascade`) is the reference stagger/spring consumer: a radial cascade over instance records with spring presets and a `ghost_mode` toggle that renders past and future evaluations of the closed-form motion as translucent onion-skin copies. Because motion is a pure function of time, the leading ghost shows where instances will be.
+- `timeline_hud` (under `modules/timeline_hud`) consumes the Conductor's `Cue Records` data port (`track`, `start`, `duration`, `state`, `color_id`) and renders lanes, cue blocks, a beat grid, and a playhead. Drive `playhead_seconds` with `ref("Conductor/control_outputs/transport_seconds")` or `total_beats`.
+- `choreo_cascade` (under `modules/choreo_cascade`) is the reference stagger/spring consumer: a radial cascade over instance records with spring presets and a `ghost_mode` toggle that renders past and future evaluations of the closed-form motion as translucent onion-skin copies. Because motion is a pure function of time, the leading ghost shows where instances will be.
 
 ## Verification
 
