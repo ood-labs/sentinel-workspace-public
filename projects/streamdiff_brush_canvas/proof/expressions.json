@@ -1,0 +1,20 @@
+{
+  "data": {
+    "count": 3,
+    "expressions": [
+      {
+        "expression": "floor(time / max(ref(\"Poster_Accumulator/parameters/update_seconds\"), 0.05)) - floor(floor(time / max(ref(\"Poster_Accumulator/parameters/update_seconds\"), 0.05)) / 14) * 14",
+        "path": "/sentinel/pipelines/Collage_Diffusion/parameters/prompt_position"
+      },
+      {
+        "expression": "ref(\"Shape_Studio/parameters/center_x\")",
+        "path": "/sentinel/pipelines/Paint_Canvas/parameters/subject_anchor_x"
+      },
+      {
+        "expression": "ref(\"Shape_Studio/parameters/center_y\")",
+        "path": "/sentinel/pipelines/Paint_Canvas/parameters/subject_anchor_y"
+      }
+    ]
+  },
+  "status": "ok"
+}

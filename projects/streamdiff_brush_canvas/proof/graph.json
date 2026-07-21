@@ -1,0 +1,523 @@
+{
+  "data": {
+    "link_count": 8,
+    "links": [
+      {
+        "end_pin_id": 93,
+        "from_entity": "Collage_Diffusion",
+        "from_pin": "Color",
+        "id": 24,
+        "start_pin_id": 91,
+        "to_entity": "Collage_Cutout",
+        "to_pin": "Video Input"
+      },
+      {
+        "end_pin_id": 358,
+        "from_entity": "Field_Studio",
+        "from_pin": "Pattern RGB",
+        "id": 81,
+        "start_pin_id": 356,
+        "to_entity": "Shape_Studio",
+        "to_pin": "Pattern"
+      },
+      {
+        "end_pin_id": 360,
+        "from_entity": "Field_Studio",
+        "from_pin": "Field",
+        "id": 82,
+        "start_pin_id": 357,
+        "to_entity": "Shape_Studio",
+        "to_pin": "Field"
+      },
+      {
+        "end_pin_id": 87,
+        "from_entity": "Shape_Studio",
+        "from_pin": "Video Guide",
+        "id": 83,
+        "start_pin_id": 361,
+        "to_entity": "Collage_Diffusion",
+        "to_pin": "Video Input"
+      },
+      {
+        "end_pin_id": 89,
+        "from_entity": "Shape_Studio",
+        "from_pin": "Depth Guide",
+        "id": 84,
+        "start_pin_id": 362,
+        "to_entity": "Collage_Diffusion",
+        "to_pin": "Control Image"
+      },
+      {
+        "end_pin_id": 363,
+        "from_entity": "Collage_Diffusion",
+        "from_pin": "Color",
+        "id": 85,
+        "start_pin_id": 91,
+        "to_entity": "Paint_Canvas",
+        "to_pin": "Generated Subject"
+      },
+      {
+        "end_pin_id": 365,
+        "from_entity": "Collage_Cutout",
+        "from_pin": "Out",
+        "id": 86,
+        "start_pin_id": 94,
+        "to_entity": "Paint_Canvas",
+        "to_pin": "Subject Matte"
+      },
+      {
+        "end_pin_id": 352,
+        "from_entity": "Paint_Canvas",
+        "from_pin": "Canvas",
+        "id": 87,
+        "start_pin_id": 366,
+        "to_entity": "Collage_Output",
+        "to_pin": "Video"
+      }
+    ],
+    "node_count": 7,
+    "nodes": [
+      {
+        "bounds": {
+          "entity_id": "Shape_Studio",
+          "height": 213.07144165039065,
+          "max_x": 550.9646606445312,
+          "max_y": 349.2370910644531,
+          "min_x": 395.298095703125,
+          "min_y": 136.1656494140625,
+          "node_id": 99,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.66656494140625,
+          "x": 395.298095703125,
+          "y": 136.1656494140625
+        },
+        "contained_by": [
+          "annotation_101"
+        ],
+        "display_name": "Shape Studio",
+        "entity_id": "Shape_Studio",
+        "id": 99,
+        "pins": [
+          {
+            "id": 358,
+            "kind": "input",
+            "name": "Pattern",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 360,
+            "kind": "input",
+            "name": "Field",
+            "slot_index": 1,
+            "type": "video"
+          },
+          {
+            "id": 359,
+            "kind": "output",
+            "name": "UI",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 361,
+            "kind": "output",
+            "name": "Video Guide",
+            "slot_index": 1,
+            "type": "video"
+          },
+          {
+            "id": 362,
+            "kind": "output",
+            "name": "Depth Guide",
+            "slot_index": 2,
+            "type": "video"
+          }
+        ],
+        "pos_x": 395.298095703125,
+        "pos_y": 136.1656494140625,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Collage_Diffusion",
+          "height": 286.9438171386719,
+          "max_x": 846.1998901367188,
+          "max_y": 384.5369873046875,
+          "min_x": 690.5365600585938,
+          "min_y": 97.59318542480467,
+          "node_id": 27,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.663330078125,
+          "x": 690.5365600585938,
+          "y": 97.59318542480467
+        },
+        "contained_by": [
+          "annotation_101"
+        ],
+        "display_name": "Collage Diffusion",
+        "entity_id": "Collage_Diffusion",
+        "id": 27,
+        "pins": [
+          {
+            "id": 87,
+            "kind": "input",
+            "name": "Video Input",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 88,
+            "kind": "input",
+            "name": "Style Reference",
+            "slot_index": 1,
+            "type": "style"
+          },
+          {
+            "id": 89,
+            "kind": "input",
+            "name": "Control Image",
+            "slot_index": 2,
+            "type": "controlnet"
+          },
+          {
+            "id": 90,
+            "kind": "input",
+            "name": "Warp Map",
+            "slot_index": 3,
+            "type": "reference"
+          },
+          {
+            "id": 91,
+            "kind": "output",
+            "name": "Color",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 92,
+            "kind": "output",
+            "name": "Depth",
+            "slot_index": 1,
+            "type": "video"
+          }
+        ],
+        "pos_x": 690.5365600585938,
+        "pos_y": 97.59318542480467,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Paint_Canvas",
+          "height": 214.46327209472656,
+          "max_x": 1437.4725341796875,
+          "max_y": 317.14630126953125,
+          "min_x": 1281.818115234375,
+          "min_y": 102.68302917480467,
+          "node_id": 100,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.6544189453125,
+          "x": 1281.818115234375,
+          "y": 102.68302917480467
+        },
+        "contained_by": [
+          "annotation_101"
+        ],
+        "display_name": "Paint Canvas",
+        "entity_id": "Paint_Canvas",
+        "id": 100,
+        "pins": [
+          {
+            "id": 363,
+            "kind": "input",
+            "name": "Generated Subject",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 365,
+            "kind": "input",
+            "name": "Subject Matte",
+            "slot_index": 1,
+            "type": "video"
+          },
+          {
+            "id": 364,
+            "kind": "output",
+            "name": "UI",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 366,
+            "kind": "output",
+            "name": "Canvas",
+            "slot_index": 1,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1281.818115234375,
+        "pos_y": 102.68302917480467,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Collage_Cutout",
+          "height": 226.21438598632812,
+          "max_x": 1142.237548828125,
+          "max_y": 357.259765625,
+          "min_x": 986.4130859375,
+          "min_y": 131.04539489746094,
+          "node_id": 28,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.82443237304688,
+          "x": 986.4130859375,
+          "y": 131.04539489746094
+        },
+        "contained_by": [
+          "annotation_101"
+        ],
+        "display_name": "Collage Cutout",
+        "entity_id": "Collage_Cutout",
+        "id": 28,
+        "pins": [
+          {
+            "id": 93,
+            "kind": "input",
+            "name": "Video Input",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 94,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 986.4130859375,
+        "pos_y": 131.04539489746094,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Collage_Output",
+          "height": 261.50506591796875,
+          "max_x": 1733.51025390625,
+          "max_y": 374.10748291015625,
+          "min_x": 1577.5648193359375,
+          "min_y": 112.60240173339844,
+          "node_id": 97,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.9454803466797,
+          "x": 1577.5648193359375,
+          "y": 112.60240173339844
+        },
+        "contained_by": [
+          "annotation_101"
+        ],
+        "display_name": "Collage Output",
+        "entity_id": "Collage_Output",
+        "id": 97,
+        "pins": [
+          {
+            "id": 352,
+            "kind": "input",
+            "name": "Video",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 353,
+            "kind": "output",
+            "name": "Out",
+            "slot_index": 0,
+            "type": "video"
+          }
+        ],
+        "pos_x": 1577.5648193359375,
+        "pos_y": 112.60240173339844,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "bounds": {
+          "entity_id": "Field_Studio",
+          "height": 213.07144165039065,
+          "max_x": 255.72943115234375,
+          "max_y": 350.03936767578125,
+          "min_x": 100.0,
+          "min_y": 136.96792602539065,
+          "node_id": 98,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "node",
+          "width": 155.72943115234375,
+          "x": 100.0,
+          "y": 136.96792602539065
+        },
+        "contained_by": [
+          "annotation_101"
+        ],
+        "display_name": "Field Studio",
+        "entity_id": "Field_Studio",
+        "id": 98,
+        "pins": [
+          {
+            "id": 355,
+            "kind": "output",
+            "name": "UI",
+            "slot_index": 0,
+            "type": "video"
+          },
+          {
+            "id": 356,
+            "kind": "output",
+            "name": "Pattern RGB",
+            "slot_index": 1,
+            "type": "video"
+          },
+          {
+            "id": 357,
+            "kind": "output",
+            "name": "Field",
+            "slot_index": 2,
+            "type": "video"
+          }
+        ],
+        "pos_x": 100.0,
+        "pos_y": 136.96792602539065,
+        "position_set": true,
+        "type": "pipeline"
+      },
+      {
+        "annotation_body": "Field + shape conditioning, live StreamDiff cutout, and persistent manual paint canvas.",
+        "annotation_color": "#1D6A78",
+        "annotation_title": "STREAMDIFF BRUSH CANVAS",
+        "bounds": {
+          "entity_id": "annotation_101",
+          "height": 390.0,
+          "max_x": 1860.0,
+          "max_y": 425.0,
+          "min_x": 40.0,
+          "min_y": 35.0,
+          "node_id": 101,
+          "position_set": true,
+          "size_available": true,
+          "size_estimated": false,
+          "type": "annotation",
+          "width": 1820.0,
+          "x": 40.0,
+          "y": 35.0
+        },
+        "contains": [
+          "Shape_Studio",
+          "Collage_Diffusion",
+          "Paint_Canvas",
+          "Collage_Cutout",
+          "Collage_Output",
+          "Field_Studio"
+        ],
+        "display_name": "STREAMDIFF BRUSH CANVAS",
+        "enabled": true,
+        "entity_id": "annotation_101",
+        "height": 390.0,
+        "id": 101,
+        "pins": [],
+        "pos_x": 40.0,
+        "pos_y": 35.0,
+        "position_set": true,
+        "scene_group": true,
+        "state_path": "/sentinel/groups/annotation_101",
+        "type": "annotation",
+        "width": 1820.0
+      }
+    ],
+    "processing_order": [
+      "Field_Studio",
+      "Shape_Studio",
+      "Collage_Diffusion",
+      "Collage_Cutout",
+      "Paint_Canvas",
+      "Collage_Output"
+    ],
+    "routing": {
+      "Collage_Cutout": {
+        "input_entity": "Collage_Diffusion",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Collage_Diffusion": {
+        "input_entity": "Shape_Studio",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": [
+          {
+            "entity_id": "Shape_Studio",
+            "is_source": false,
+            "slot_index": 2
+          }
+        ]
+      },
+      "Collage_Output": {
+        "input_entity": "Paint_Canvas",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Field_Studio": {
+        "input_entity": "",
+        "input_is_source": true,
+        "output_sink": "",
+        "secondary_inputs": []
+      },
+      "Paint_Canvas": {
+        "input_entity": "Collage_Diffusion",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": [
+          {
+            "entity_id": "Collage_Cutout",
+            "is_source": false,
+            "slot_index": 1
+          }
+        ]
+      },
+      "Shape_Studio": {
+        "input_entity": "Field_Studio",
+        "input_is_source": false,
+        "output_sink": "",
+        "secondary_inputs": [
+          {
+            "entity_id": "Field_Studio",
+            "is_source": false,
+            "slot_index": 1
+          }
+        ]
+      }
+    }
+  },
+  "status": "ok"
+}

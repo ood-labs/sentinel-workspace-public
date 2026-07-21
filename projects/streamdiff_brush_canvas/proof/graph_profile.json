@@ -1,0 +1,193 @@
+{
+  "data": {
+    "frame": {
+      "frame_index": 28024,
+      "input_ms": 1.6334999799728394,
+      "output_ms": 0.09920000284910202,
+      "pipeline_ms": 53.714900970458984,
+      "present_ms": 0.0,
+      "total_ms": 55.560700953006744,
+      "ui_present_ms": 0.11309999972581863
+    },
+    "hotspots": [
+      {
+        "avg_frame_ms": 38.28004837036133,
+        "entity_id": "Collage_Diffusion",
+        "reasons": [
+          "node_wall_time_over_8ms",
+          "pipeline_avg_frame_time_over_8ms"
+        ],
+        "wall_time_ms": 37.3809
+      },
+      {
+        "avg_frame_ms": 13.261250495910645,
+        "entity_id": "Collage_Cutout",
+        "reasons": [
+          "node_wall_time_over_8ms",
+          "pipeline_avg_frame_time_over_8ms"
+        ],
+        "wall_time_ms": 15.2966
+      }
+    ],
+    "node_count": 6,
+    "nodes": [
+      {
+        "avg_frame_ms": 38.28004837036133,
+        "enabled": true,
+        "entity_id": "Collage_Diffusion",
+        "fps": 26.123268127441406,
+        "frame_index": 28024,
+        "frame_time_ms": 37.36869812011719,
+        "frames_processed": 24839,
+        "healthy": true,
+        "hotspot_reasons": [
+          "node_wall_time_over_8ms",
+          "pipeline_avg_frame_time_over_8ms"
+        ],
+        "link_counts": {
+          "data_incoming": 0,
+          "data_outgoing": 0,
+          "incoming": 2,
+          "outgoing": 2
+        },
+        "name": "Collage Diffusion",
+        "output_freshness_counter": 24839,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "streamdiff",
+        "wall_time_ms": 37.3809
+      },
+      {
+        "avg_frame_ms": 13.261250495910645,
+        "enabled": true,
+        "entity_id": "Collage_Cutout",
+        "fps": 75.40766906738281,
+        "frame_index": 28024,
+        "frame_time_ms": 15.295299530029297,
+        "frames_processed": 24857,
+        "healthy": true,
+        "hotspot_reasons": [
+          "node_wall_time_over_8ms",
+          "pipeline_avg_frame_time_over_8ms"
+        ],
+        "link_counts": {
+          "data_incoming": 0,
+          "data_outgoing": 0,
+          "incoming": 1,
+          "outgoing": 1
+        },
+        "name": "Collage Cutout",
+        "output_freshness_counter": 24857,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "matting",
+        "wall_time_ms": 15.2966
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "enabled": true,
+        "entity_id": "Paint_Canvas",
+        "fps": 18.985599517822266,
+        "frame_index": 28024,
+        "frame_time_ms": 0.0,
+        "frames_processed": 11277,
+        "healthy": true,
+        "hotspot_reasons": [],
+        "link_counts": {
+          "data_incoming": 0,
+          "data_outgoing": 0,
+          "incoming": 2,
+          "outgoing": 1
+        },
+        "name": "Paint Canvas",
+        "output_freshness_counter": 11277,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "module",
+        "wall_time_ms": 0.0272
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "enabled": true,
+        "entity_id": "Field_Studio",
+        "fps": 18.985599517822266,
+        "frame_index": 28024,
+        "frame_time_ms": 0.0,
+        "frames_processed": 22455,
+        "healthy": true,
+        "hotspot_reasons": [],
+        "link_counts": {
+          "data_incoming": 0,
+          "data_outgoing": 0,
+          "incoming": 0,
+          "outgoing": 2
+        },
+        "name": "Field Studio",
+        "output_freshness_counter": 22455,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "module",
+        "wall_time_ms": 0.027
+      },
+      {
+        "avg_frame_ms": 0.0,
+        "enabled": true,
+        "entity_id": "Shape_Studio",
+        "fps": 18.985599517822266,
+        "frame_index": 28024,
+        "frame_time_ms": 0.0,
+        "frames_processed": 17224,
+        "healthy": true,
+        "hotspot_reasons": [],
+        "link_counts": {
+          "data_incoming": 0,
+          "data_outgoing": 0,
+          "incoming": 2,
+          "outgoing": 2
+        },
+        "name": "Shape Studio",
+        "output_freshness_counter": 17224,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "module",
+        "wall_time_ms": 0.0114
+      },
+      {
+        "avg_frame_ms": 0.0012947689974680543,
+        "enabled": true,
+        "entity_id": "Collage_Output",
+        "fps": 772338.5625,
+        "frame_index": 28024,
+        "frame_time_ms": 0.0010000000474974513,
+        "frames_processed": 24857,
+        "healthy": true,
+        "hotspot_reasons": [],
+        "link_counts": {
+          "data_incoming": 0,
+          "data_outgoing": 0,
+          "incoming": 1,
+          "outgoing": 0
+        },
+        "name": "Collage Output",
+        "output_freshness_counter": 24857,
+        "process_success": true,
+        "processed_this_frame": true,
+        "running": true,
+        "type": "groupoutput",
+        "wall_time_ms": 0.0014
+      }
+    ],
+    "notes": [
+      "v1 profiler uses CPU wall-clock timings around graph node process() calls.",
+      "GPU kernel, CPU readback, inference, queue wait, and synchronization buckets are not separated yet."
+    ],
+    "sort_by": "wall_time_ms",
+    "summary": true
+  },
+  "status": "ok"
+}

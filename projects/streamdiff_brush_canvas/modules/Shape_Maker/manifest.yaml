@@ -1,0 +1,132 @@
+name: "Shape Maker"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+time_dependent: true
+
+panel:
+  mode: canvas
+  output: UI
+  resolution: follow_panel
+
+parameters:
+  - { name: shape_mode, display: "Shape", type: int, min: 0, max: 5, default: 5, group: "Shape" }
+  - { name: center, display: "Position", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.5, 0.5], hidden: true, group: "Shape" }
+  - { name: size, display: "Size", type: float, min: 0.08, max: 0.48, default: 0.31, hidden: true, group: "Shape" }
+  - { name: aspect, display: "Aspect", type: float, min: 0.35, max: 2.8, default: 1.0, group: "Shape" }
+  - { name: rotation, display: "Rotation", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Shape" }
+  - { name: character_a, display: "Character A", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Shape" }
+  - { name: character_b, display: "Character B", type: float, min: 0.0, max: 1.0, default: 0.38, group: "Shape" }
+  - { name: displacement_mode, display: "Displacement", type: int, min: 0, max: 3, default: 0, group: "Displacement" }
+  - { name: displacement_amount, display: "Displace Amount", type: float, min: 0.0, max: 0.45, default: 0.16, group: "Displacement" }
+  - { name: displacement_scale, display: "Displace Scale", type: float, min: 1.0, max: 16.0, default: 6.0, group: "Displacement" }
+  - { name: pattern_angle, display: "Displace Angle", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Displacement" }
+  - { name: motion_speed, display: "Speed", type: float, min: -2.0, max: 2.0, default: 0.55, group: "Displacement" }
+  - { name: edge_softness, display: "Edge Softness", type: float, min: 0.001, max: 0.08, default: 0.014, group: "Output" }
+  - { name: depth_profile, display: "Depth Shape", type: int, min: 0, max: 2, default: 0, group: "Output" }
+  - { name: depth_strength, display: "Depth Strength", type: float, min: 0.25, max: 2.0, default: 1.0, group: "Output" }
+  - { name: show_depth, display: "Preview Depth", type: bool, default: false, group: "Output" }
+
+viewport:
+  hint: "Drag preview to position. Wheel over preview changes size. Depth toggles the preview lane."
+  interactions: [events]
+  input:
+    pointer: [left, wheel]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: position_shape, label: "Position Shape" }
+    - { gesture: left_drag, action: move_shape, label: "Move Shape" }
+    - { gesture: wheel, action: scale_shape, label: "Scale Shape" }
+  # ui-label: nav = DRAG MOVE  /  WHEEL SIZE
+  # ui-label: depth = DEPTH
+  # ui-label: shape_round = ROUND
+  # ui-label: shape_box = ROUNDED BOX
+  # ui-label: shape_capsule = CAPSULE
+  # ui-label: shape_triangle = TRIANGLE
+  # ui-label: shape_star = STAR
+  # ui-label: shape_blob = BLOB
+  # ui-label: displace_waves = TRAVELING WAVES
+  # ui-label: displace_orbit = ORBITING EDGE
+  # ui-label: displace_radial = RADIAL PULSE
+  # ui-label: displace_organic = ORGANIC DRIFT
+  controls:
+    - { id: shape_mode, kind: slider, param: shape_mode, rect: [0.040, 0.050, 0.270, 0.095], label: "Shape  0-5" }
+    - { id: aspect, kind: slider, param: aspect, rect: [0.040, 0.115, 0.270, 0.160], label: "Aspect" }
+    - { id: rotation, kind: slider, param: rotation, rect: [0.040, 0.180, 0.270, 0.225], label: "Rotation" }
+    - { id: character_a, kind: slider, param: character_a, rect: [0.040, 0.245, 0.270, 0.290], label: "Character A" }
+    - { id: character_b, kind: slider, param: character_b, rect: [0.040, 0.310, 0.270, 0.355], label: "Character B" }
+    - { id: displacement_mode, kind: slider, param: displacement_mode, rect: [0.040, 0.375, 0.270, 0.420], label: "Displacement  0-3" }
+    - { id: displacement_amount, kind: slider, param: displacement_amount, rect: [0.040, 0.440, 0.270, 0.485], label: "Displace Amount" }
+    - { id: displacement_scale, kind: slider, param: displacement_scale, rect: [0.040, 0.505, 0.270, 0.550], label: "Displace Scale" }
+    - { id: pattern_angle, kind: slider, param: pattern_angle, rect: [0.040, 0.570, 0.270, 0.615], label: "Displace Angle" }
+    - { id: motion_speed, kind: slider, param: motion_speed, rect: [0.040, 0.635, 0.270, 0.680], label: "Speed  -2..2" }
+    - { id: edge_softness, kind: slider, param: edge_softness, rect: [0.040, 0.700, 0.270, 0.745], label: "Edge Softness" }
+    - { id: depth_profile, kind: slider, param: depth_profile, rect: [0.040, 0.765, 0.270, 0.810], label: "Depth Shape  0-2" }
+    - { id: depth_strength, kind: slider, param: depth_strength, rect: [0.040, 0.830, 0.270, 0.875], label: "Depth Strength" }
+    - { id: show_depth, kind: toggle, param: show_depth, rect: [0.875, 0.025, 0.970, 0.085], label: "Depth" }
+
+buffers:
+  - { name: interaction_state, structured: true, element_size: 16, element_count: 2, persistent: true }
+
+state_buffers:
+  - name: interaction_state
+    max_elements: 2
+    schema:
+      - { name: center, type: float2 }
+      - { name: size, type: float }
+      - { name: state, type: float }
+
+passes:
+  - name: interaction
+    shader: interaction.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:interaction_state" }
+    output: "buffer:interaction_state"
+
+  - name: shape_core
+    shader: shape_core.hlsl
+    target: cs_5_0
+    resolution: [640, 640]
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "buffer:interaction_state" }
+
+  - name: video
+    shader: video_out.hlsl
+    target: cs_5_0
+    resolution: [640, 640]
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "pass:shape_core" }
+
+  - name: depth
+    shader: depth_out.hlsl
+    target: cs_5_0
+    resolution: [640, 640]
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "pass:shape_core" }
+
+  - name: ui
+    shader: ui_v2.hlsl
+    target: cs_5_0
+    format: RGBA8
+    output: output
+    inputs:
+      - { slot: 0, source: "pass:shape_core" }
+      - { slot: 1, source: "buffer:interaction_state" }
+
+control_outputs:
+  - { name: center_x, buffer: interaction_state, element: 0, field_offset: 0, description: "Effective preview center X" }
+  - { name: center_y, buffer: interaction_state, element: 0, field_offset: 4, description: "Effective preview center Y" }
+  - { name: effective_size, buffer: interaction_state, element: 0, field_offset: 8, description: "Wheel-controlled shape size" }
+  - { name: motion_phase, buffer: interaction_state, element: 0, field_offset: 12, description: "Integrated displacement phase" }
+
+outputs:
+  - { name: "UI", pass: ui }
+  - { name: "Video Guide", pass: video }
+  - { name: "Depth Guide", pass: depth }
