@@ -6,14 +6,17 @@ An interactive Sentinel graph that turns StreamDiff into a live paint source.
 
 `Shape Maker -> Collage Diffusion -> Collage Cutout -> Paint Canvas -> Collage Output`
 
-The generated subject and cutout also feed a parallel `Pattern Canvas` branch for automatic placement experiments.
+The generated subject and cutout also feed a parallel data-driven branch:
+
+`Pattern Canvas -- video + Spawn Points --> Pattern Tracer`
 
 - **Shape Maker** produces a matched monochrome 640x640 Video Guide and Depth Guide with six shape types, four fill modes, and direct preview positioning.
 - **Paint Canvas** stamps the generated color through the Matting cutout into a persistent 1080x1350 canvas.
 - **Pattern Canvas** automatically stamps the same live subject into a separate persistent 1080x1350 canvas using Random, Grid, Spiral, Wave, or Border placement.
-- **Collage Output** publishes the clean canvas, not the authored viewport chrome.
+- **Pattern Tracer** overlays an adjustable spline through the Pattern Canvas spawn history.
+- **Collage Output** publishes the clean manual canvas, not the authored viewport chrome.
 
-All six processing nodes live inside the `STREAMDIFF BRUSH CANVAS` Scene Group.
+The graph lives inside the `STREAMDIFF BRUSH CANVAS` Scene Group.
 
 ## Shape Maker controls
 
@@ -43,9 +46,14 @@ The viewport follows the panel size without stretching. The persistent poster st
 - **Clear Canvas** is a one-shot toggle: every click clears once, whether the checkbox turns on or off.
 - **Feedback** transforms the accumulated canvas continuously between stamps.
 - **Zoom Speed**, **Rotation Speed**, and the **Drift** XY pad create fly-through, spiral, and lateral motion.
+- Left-drag directly steers Drift using relative pointer movement; each mouse-wheel notch moves Zoom Speed by 2% of its full control range.
+- **Control Gain** multiplies both Drift and Zoom response and defaults to 5x.
+- Hold Alt for fine drag/wheel adjustment or Alt+Shift for ultra-fine adjustment. Double-click resets Drift and Zoom Speed.
 - **Pivot** chooses the transform center; **Trail Fade** dissolves older imagery toward the canvas background.
 - **Edges** chooses Background, Clamp, Repeat, or Mirror behavior when transformed pixels move beyond the canvas.
 - **Pattern** selects Random, Grid, Spiral, Wave, or Border placement.
+- **Spawn Points** publishes the latest 64 stamp centers as normalized, chronological structured records. Clear Canvas clears this history, and feedback transforms keep the points registered to the accumulated image.
+- **Pattern Tracer** consumes Pattern Canvas plus Spawn Points and draws a Strata-style open Catmull-Rom thread over the recent spawn path. Trace Length and Trace Offset trim the visible portion of the path.
 - Pattern Count, Phase, Seed, Position Jitter, and Follow Pattern shape the layout.
 - Scale, Scale Variation, Rotation, Rotation Jitter, Opacity, matte controls, shadow, and background color tune the stamps.
 

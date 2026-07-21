@@ -143,7 +143,8 @@ float3 pcFeedbackSample(float2 uv)
     // Positive zoom flies into the canvas; positive rotation turns clockwise
     // in the screen's top-left coordinate system; positive drift moves right/down.
     float2 p = float2((uv.x - pivot.x) * aspect, uv.y - pivot.y);
-    float2 drift = float2(feedback_drift.x * aspect, feedback_drift.y) * dt;
+    float gain = max(control_gain, 0.0);
+    float2 drift = float2(pan.x * aspect, pan.y) * (dt * gain);
     p -= drift;
 
     float angle = radians(feedback_rotation_speed) * dt;
@@ -151,8 +152,11 @@ float3 pcFeedbackSample(float2 uv)
     float sn = sin(angle);
     float2 rotated = float2(cs * p.x + sn * p.y,
                             -sn * p.x + cs * p.y);
-    float zoom = exp2(feedback_zoom_speed * dt);
-    rotated /= max(zoom, 0.0001);
+    // The host applies a fixed 0.02 wheel increment. A +/-0.5 parameter
+    // range makes each notch exactly 2% of the full control span; this 2x
+    // compensation preserves the same maximum feedback velocity.
+    float zoomFactor = exp2((zoom * 2.0) * dt * gain);
+    rotated /= max(zoomFactor, 0.0001);
 
     float2 sampleUv = pivot + float2(rotated.x / aspect, rotated.y);
     float inside = step(0.0, sampleUv.x) * step(sampleUv.x, 1.0) *
