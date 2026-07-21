@@ -120,7 +120,6 @@
       "panelOpen": false,
       "parameters": {
         "binarize_mask": "1",
-        "engine_path": "C:/Users/bot/Downloads/engines_10/auxiliary/rfdetr_seg_l_fp16.engine",
         "mask_color_b": "0.000000",
         "mask_color_g": "1.000000",
         "mask_color_r": "0.000000",
