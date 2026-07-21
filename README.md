@@ -74,6 +74,7 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
 | [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene using the shared root-level `steel_lattice` and `industrial_mono_post` modules |
 | [`streamdiff_workflows`](projects/streamdiff_workflows/) | Six focused StreamDiff studies covering 2D feedback, depth-parallax motion, video depth conditioning, procedural warp maps, and direct Mux switching |
+| [`streamdiff_collage`](projects/streamdiff_collage/) | A rapid StreamDiff poster instrument that mattes generated food and graphic elements, atomically stamps them into persistent feedback, and applies rare print interventions |
 
 ## Creating a UI Module
 

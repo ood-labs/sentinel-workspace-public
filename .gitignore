@@ -45,3 +45,4 @@ projects/*
 !projects/industrial_lattice/
 !projects/showcase_gallery/
 !projects/streamdiff_workflows/
+!projects/streamdiff_collage/
