@@ -4,7 +4,7 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 0.504797101020813,
+    "canvasZoom": 0.8062619566917419,
     "links": [
       {
         "endPinId": 93,
@@ -152,8 +152,8 @@
         "displayName": "Pattern_Canvas",
         "entityId": "Pattern_Canvas",
         "id": 104,
-        "posX": 1230.1661376953125,
-        "posY": 591.0918579101563,
+        "posX": 1222.2420654296875,
+        "posY": 636.6547241210938,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -841,9 +841,9 @@
         "profile_has_controlnet": "true",
         "profile_has_ipadapter": "true",
         "profile_has_union": "true",
-        "prompt": "an oversized slice of pepperoni pizza, single isolated object filling the frame on pure black, hand painted editorial food photograph, crisp cutout silhouette, no plate, no text\nan ornate cupcake with yellow frosting, single isolated object filling the frame on pure black, painterly magazine cutout, crisp silhouette, no plate, no text\na ceramic coffee cup and saucer, single isolated object filling the frame on pure black, vintage painted still life cutout, crisp silhouette, no text\na ripe pear, single isolated object filling the frame on pure black, painterly food photograph, crisp silhouette, no plate, no text\na bowl of noodles with chopsticks, single isolated object filling the frame on pure black, editorial food collage cutout, crisp silhouette, no text\na golden baguette, single isolated object filling the frame on pure black, painted food photograph, crisp silhouette, no plate, no text\na glossy red tomato, single isolated object filling the frame on pure black, painterly still life cutout, crisp silhouette, no plate, no text\na yellow layer cake slice, single isolated object filling the frame on pure black, vintage painted dessert photograph, crisp silhouette, no plate, no text\na twisted pretzel, single isolated object filling the frame on pure black, hand painted editorial cutout, crisp silhouette, no plate, no text\nan irregular organic checkerboard paper blob, teal and cream squares, single isolated collage element filling the frame on pure black, crisp torn cutout silhouette, no text\na looping cobalt blue folded paper ribbon, single isolated collage element filling the frame on pure black, painted paper texture, crisp cutout silhouette, no text\na thick scarlet red paint splotch with expressive brush edges, single isolated shape filling the frame on pure black, tactile painted texture, crisp silhouette, no text\na dark green paper arch covered with white dots and wavy mint stripes, single isolated collage element filling the frame on pure black, crisp torn silhouette, no text\na flat cyan painted circle with rough handmade edges, single isolated collage element filling the frame on pure black, tactile paper texture, crisp silhouette, no text",
+        "prompt": "an oversized slice of pepperoni pizza, single isolated object filling the frame on pure black, hand painted editorial food photograph, crisp cutout silhouette, no plate, no text, hyper-realistic, 4K\nan ornate cupcake with yellow frosting, single isolated object filling the frame on pure black, painterly magazine cutout, crisp silhouette, no plate, no text, hyper-realistic, 4K\na ceramic coffee cup and saucer, single isolated object filling the frame on pure black, vintage painted still life cutout, crisp silhouette, no text, hyper-realistic, 4K\na ripe pear, single isolated object filling the frame on pure black, painterly food photograph, crisp silhouette, no plate, no text, hyper-realistic, 4K\na bowl of noodles with chopsticks, single isolated object filling the frame on pure black, editorial food collage cutout, crisp silhouette, no text, hyper-realistic, 4K\na golden baguette, single isolated object filling the frame on pure black, painted food photograph, crisp silhouette, no plate, no text, hyper-realistic, 4K\na glossy red tomato, single isolated object filling the frame on pure black, painterly still life cutout, crisp silhouette, no plate, no text, hyper-realistic, 4K\na yellow layer cake slice, single isolated object filling the frame on pure black, vintage painted dessert photograph, crisp silhouette, no plate, no text, hyper-realistic, 4K\na twisted pretzel, single isolated object filling the frame on pure black, hand painted editorial cutout, crisp silhouette, no plate, no text, hyper-realistic, 4K\nan irregular organic checkerboard paper blob, teal and cream squares, single isolated collage element filling the frame on pure black, crisp torn cutout silhouette, no text, hyper-realistic, 4K\na looping cobalt blue folded paper ribbon, single isolated collage element filling the frame on pure black, painted paper texture, crisp cutout silhouette, no text, hyper-realistic, 4K\na thick scarlet red paint splotch with expressive brush edges, single isolated shape filling the frame on pure black, tactile painted texture, crisp silhouette, no text, hyper-realistic, 4K\na dark green paper arch covered with white dots and wavy mint stripes, single isolated collage element filling the frame on pure black, crisp torn silhouette, no text, hyper-realistic, 4K\na flat cyan painted circle with rough handmade edges, single isolated collage element filling the frame on pure black, tactile paper texture, crisp silhouette, no text, hyper-realistic, 4K",
         "prompt_bank_enabled": "true",
-        "prompt_position": "6.000000",
+        "prompt_position": "12.000000",
         "prompt_weight": "1.000000",
         "render_count": "1",
         "render_one": "0",
@@ -910,12 +910,6 @@
       "type": "module"
     },
     {
-      "customRanges": {
-        "spawn_seconds": [
-          0.0,
-          2.0
-        ]
-      },
       "displayName": "Pattern_Canvas",
       "enabled": true,
       "expressions": null,
@@ -940,7 +934,7 @@
         "feedback_edge_mode": "1.000000",
         "feedback_enabled": "1.000000",
         "feedback_fade": "0.000000",
-        "feedback_kick": "9.908000",
+        "feedback_kick": "10.000000",
         "feedback_pivot_x": "0.500000",
         "feedback_pivot_y": "0.500000",
         "feedback_rotation_speed": "0.000000",
@@ -948,12 +942,12 @@
         "kick_attack": "0.030000",
         "kick_decay": "0.010000",
         "kick_release": "0.010000",
-        "kick_sustain": "0.550000",
+        "kick_sustain": "0.995000",
         "matte_feather": "0.049000",
         "matte_threshold": "0.221000",
         "opacity": "1.000000",
-        "pan_x": "0.001400",
-        "pan_y": "-0.004851",
+        "pan_x": "0.000000",
+        "pan_y": "0.000000",
         "pattern_count": "13.000000",
         "pattern_mode": "0.000000",
         "pattern_phase": "0.000000",
@@ -968,7 +962,7 @@
         "scale_variation": "0.732000",
         "seed": "7.000000",
         "spawn_seconds": "0.050000",
-        "zoom": "-0.020000"
+        "zoom": "0.020000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -1028,8 +1022,8 @@
         "feather": "0.000000",
         "opacity": "1.000000",
         "project_dir": "modules/Paint_Canvas",
-        "resolution_height": "1171",
-        "resolution_width": "1233",
+        "resolution_height": "1162",
+        "resolution_width": "933",
         "rotation": "0.000000",
         "spacing": "0.340000",
         "subject_anchor_x": "0.558405",
@@ -1092,12 +1086,12 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1784630664445,
+  "saved_at_ms": 1784631216326,
   "sources": [],
   "statePayloads": {
     "Shape_Maker": {
       "interaction_state": {
-        "data": "a1f30e3f1a32fb3e592f9c3ec57b9d3ead50203f9e5f003f52d35e3e0e43f845",
+        "data": "a1f30e3f1a32fb3e592f9c3e0e1aa83dad50203f9e5f003f52d35e3e33c10446",
         "element_count": 2,
         "element_size": 16,
         "encoding": "hex",
