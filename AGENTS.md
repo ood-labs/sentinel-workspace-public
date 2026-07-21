@@ -24,6 +24,10 @@ Use:
 
 The shipped docs are a guide, but the live MCP surface is the source of truth for this exact build.
 
+## Sentinel Launch Safety
+
+Sentinel must run in the active interactive Windows desktop. Never launch `sentinel.exe` from Windows Session 0, a service, SSH background execution, or any headless or non-interactive context. Check the agent process session ID before every launch. Reuse a user-launched Sentinel instance in the active desktop session, or use an explicitly interactive `/IT` scheduled task and verify the resulting process session ID before testing. MCP and raw localhost IPC can connect across sessions after the interactive app is running.
+
 ## First-Run Engine Setup
 
 Some pipelines need TensorRT engine packs. A fresh install may have none.
