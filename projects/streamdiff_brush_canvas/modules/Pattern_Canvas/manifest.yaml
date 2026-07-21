@@ -11,6 +11,9 @@ inputs:
 
 buffers:
   - { name: canvas, format: RGBA16F, scale: 1.0, persistent: true }
+  - { name: stamp_subject, format: RGBA8, scale: 1.0, persistent: true }
+  - { name: stamp_matte, format: RGBA8, scale: 1.0, persistent: true }
+  - { name: stamp_pose, structured: true, element_size: 32, element_count: 1, persistent: true }
   - { name: canvas_state, structured: true, element_size: 16, element_count: 1, persistent: true }
   - { name: kick_envelope, structured: true, element_size: 16, element_count: 1, persistent: true }
   - { name: spawn_points, structured: true, element_size: 16, element_count: 64, persistent: true }
@@ -47,6 +50,8 @@ parameters:
   - { name: rotation, display: "Rotation", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Stamp" }
   - { name: rotation_jitter, display: "Rotation Jitter", type: float, min: 0.0, max: 360.0, default: 28.0, group: "Stamp" }
   - { name: opacity, display: "Opacity", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Stamp" }
+  - { name: reveal_sequence, display: "Three-Frame Reveal", type: bool, default: false, flags: button, group: "Stamp" }
+  - { name: reveal_border, display: "Reveal Border", type: float, min: 0.0, max: 0.25, default: 0.08, group: "Stamp" }
 
   - { name: background_color, display: "Background", type: color, default: [0.94, 0.94, 0.92], group: "Canvas" }
   - { name: matte_threshold, display: "Matte Threshold", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Canvas" }
@@ -83,17 +88,52 @@ passes:
       - { slot: 0, source: "buffer:canvas_state" }
     output: "buffer:canvas_state"
 
+  - name: capture_subject
+    shader: capture_stamp.hlsl
+    target: cs_5_0
+    format: RGBA8
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:stamp_subject" }
+      - { slot: 2, source: "buffer:canvas_state" }
+    output: "buffer:stamp_subject"
+
+  - name: stamp_pose_update
+    shader: stamp_pose.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:stamp_pose" }
+      - { slot: 1, source: "buffer:kick_envelope" }
+      - { slot: 2, source: "buffer:canvas_state" }
+    output: "buffer:stamp_pose"
+
+  - name: capture_matte
+    shader: capture_stamp.hlsl
+    target: cs_5_0
+    format: RGBA8
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "input:1" }
+      - { slot: 1, source: "buffer:stamp_matte" }
+      - { slot: 2, source: "buffer:canvas_state" }
+    output: "buffer:stamp_matte"
+
   - name: accumulate
     shader: accumulate.hlsl
     target: cs_5_0
     format: RGBA16F
     time_dependent: true
     inputs:
-      - { slot: 0, source: "input:0" }
-      - { slot: 1, source: "input:1" }
+      - { slot: 0, source: "buffer:stamp_subject" }
+      - { slot: 1, source: "buffer:stamp_matte" }
       - { slot: 2, source: "buffer:canvas" }
       - { slot: 3, source: "buffer:canvas_state" }
       - { slot: 4, source: "buffer:kick_envelope" }
+      - { slot: 5, source: "buffer:stamp_pose" }
     output: "buffer:canvas"
 
   - name: spawn_points_update

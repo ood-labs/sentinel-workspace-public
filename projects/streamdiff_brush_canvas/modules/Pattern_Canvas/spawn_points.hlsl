@@ -95,7 +95,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
         OutputBuffer[clearIndex] = emptyPoint;
     }
 
-    if (action > 0.5) {
+    // Stage 1 creates the point once; white/color reveal stages reuse it.
+    if (action > 0.5 && action < 1.5) {
         if (writeIndex >= 64u) {
             [unroll] for (uint shiftIndex = 0u; shiftIndex < 63u; ++shiftIndex)
                 OutputBuffer[shiftIndex] = OutputBuffer[shiftIndex + 1u];

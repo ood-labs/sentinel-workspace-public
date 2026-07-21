@@ -2,6 +2,17 @@ RWTexture2D<float4> OutputUAV : register(u0);
 StructuredBuffer<float4> CanvasState : register(t3);
 StructuredBuffer<float4> KickEnvelope : register(t4);
 
+struct StampPose
+{
+    float2 center;
+    float size;
+    float angle;
+    uint cycle;
+    uint visible;
+    float2 padding;
+};
+StructuredBuffer<StampPose> ActiveStampPose : register(t5);
+
 static const float PI = 3.14159265359;
 static const float TAU = 6.28318530718;
 
@@ -92,12 +103,19 @@ void pcPlacement(uint cycle, out float2 center, out float stampSize, out float a
     if (follow_pattern != 0 && mode >= 2) angle += pathAngle;
 }
 
-float4 pcStamp(float2 uv, uint cycle)
+float4 pcStamp(float2 uv, uint cycle, int revealStage)
 {
-    float2 center;
-    float stampSize;
-    float angle;
-    pcPlacement(cycle, center, stampSize, angle);
+    StampPose pose = ActiveStampPose[0];
+    if (pose.visible == 0u) return float4(0.0, 0.0, 0.0, 0.0);
+    float2 center = pose.center;
+    float stampSize = pose.size;
+    float angle = pose.angle;
+
+    int stage = reveal_sequence != 0 ? clamp(revealStage, 1, 3) : 3;
+    float border = max(reveal_border, 0.0);
+    float stageScale = stage == 1 ? 1.0 + border
+                     : (stage == 2 ? 1.0 + border * 0.5 : 1.0);
+    stampSize *= stageScale;
 
     float canvasAspect = _Resolution.x / max(_Resolution.y, 1.0);
     float2 p = float2((uv.x - center.x) * canvasAspect, uv.y - center.y);
@@ -116,15 +134,38 @@ float4 pcStamp(float2 uv, uint cycle)
 
     float3 matteRgb = _Tex1.SampleLevel(LinearSampler, saturate(localUv), 0).rgb;
     float matte = max(matteRgb.r, max(matteRgb.g, matteRgb.b)) * inside;
-    float alpha = smoothstep(matte_threshold - matte_feather,
-                             matte_threshold + matte_feather,
-                             matte) * opacity;
+    float matteAlpha = smoothstep(matte_threshold - matte_feather,
+                                  matte_threshold + matte_feather,
+                                  matte);
+    float alpha = matteAlpha * (stage < 3 ? 1.0 : opacity);
+
+    // The first beat is an outer matte ring rather than a full black fill.
+    // This keeps the shadow pop without destructively repainting the stamp's
+    // entire interior on a persistent feedback canvas.
+    if (stage == 1 && border > 0.0001) {
+        float innerScale = 1.0 + border * 0.5;
+        float2 innerHalfSize = float2((pose.size * innerScale) * sourceAspect,
+                                      pose.size * innerScale) * 0.5;
+        float2 innerUv = q / max(innerHalfSize * 2.0, 0.0001.xx) + 0.5;
+        float innerInside = step(0.0, innerUv.x) * step(innerUv.x, 1.0) *
+                            step(0.0, innerUv.y) * step(innerUv.y, 1.0);
+        float3 innerMatteRgb = _Tex1.SampleLevel(LinearSampler, saturate(innerUv), 0).rgb;
+        float innerMatte = max(innerMatteRgb.r, max(innerMatteRgb.g, innerMatteRgb.b)) * innerInside;
+        float innerAlpha = smoothstep(matte_threshold - matte_feather,
+                                      matte_threshold + matte_feather,
+                                      innerMatte);
+        alpha = matteAlpha * (1.0 - innerAlpha);
+    }
     float3 subject = _Tex0.SampleLevel(LinearSampler, saturate(localUv), 0).rgb;
 
-    float shadowMatte = _Tex1.SampleLevel(LinearSampler,
-        saturate(localUv + float2(-0.022, -0.018)), 0).r * inside;
-    float shadow = smoothstep(0.10, 0.45, shadowMatte) * (1.0 - alpha) * drop_shadow;
-    float3 layer = lerp(float3(0.0, 0.0, 0.0), subject, alpha);
+    float shadow = 0.0;
+    if (stage == 3) {
+        float shadowMatte = _Tex1.SampleLevel(LinearSampler,
+            saturate(localUv + float2(-0.022, -0.018)), 0).r * inside;
+        shadow = smoothstep(0.10, 0.45, shadowMatte) * (1.0 - alpha) * drop_shadow;
+    }
+    float3 layer = stage == 1 ? float3(0.0, 0.0, 0.0)
+                 : (stage == 2 ? float3(1.0, 1.0, 1.0) : subject);
     return float4(layer, saturate(alpha + shadow * 0.45));
 }
 
@@ -205,7 +246,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     if (action > 0.5) {
         uint cycle = (uint)max(state.x, 0.0);
-        float4 stamp = pcStamp(uv, cycle);
+        int revealStage = (int)round(clamp(action, 1.0, 3.0));
+        float4 stamp = pcStamp(uv, cycle, revealStage);
         color = lerp(color, stamp.rgb, stamp.a);
     }
 

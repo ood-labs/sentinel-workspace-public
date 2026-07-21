@@ -54,6 +54,7 @@ The viewport follows the panel size without stretching. The persistent poster st
 - **Pivot** chooses the transform center; **Trail Fade** dissolves older imagery toward the canvas background.
 - **Edges** chooses Background, Clamp, Repeat, or Mirror behavior when transformed pixels move beyond the canvas.
 - **Pattern** selects Random, Grid, Spiral, Wave, or Border placement.
+- **Three-Frame Reveal** optionally freezes each incoming subject and layers a black outer ring, white inset, then final color across three frames; **Reveal Border** controls the spacing. When disabled, stamping uses the original single-frame cadence with no reveal staging.
 - **Spawn Points** publishes the latest 64 stamp centers as normalized, chronological structured records. Clear Canvas clears this history, and feedback transforms keep the points registered to the accumulated image.
 - **Pattern Tracer** consumes Pattern Canvas plus Spawn Points. Spline preserves the original Strata-style chronological Catmull-Rom thread; Chain, Loop, Proximity, Nearest, and Cage provide alternate connection topologies.
 - **Link Distance** controls the Proximity web and **Links Per Point** controls Cage density. Trace Length and Trace Offset retain the original path-trimming behavior.

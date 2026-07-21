@@ -19,11 +19,26 @@ void main(uint3 DTid : SV_DispatchThreadID)
     // ordinary Run toggle. S is key code 19 in the authored-input ABI.
     bool effectiveRun = run_trigger != 0 ? ViewportKeyDown(19u) : (run != 0);
 
+    int previousStage = (int)round(clamp(state.y, 0.0, 3.0));
+    bool revealEnabled = reveal_sequence != 0;
     float action = 0.0;
-    if (!wasInitialized || clearEdge) action = -1.0;
-    else if (effectiveRun && newCycle) action = 1.0;
+    if (!wasInitialized || clearEdge) {
+        action = -1.0;
+        state.x = cycleValue;
+    }
+    // Once a reveal begins, always finish it even if the run key is released.
+    else if (revealEnabled && previousStage >= 1 && previousStage < 3) {
+        action = (float)(previousStage + 1);
+    }
+    else if (!effectiveRun) {
+        action = 0.0;
+        state.x = cycleValue;
+    }
+    else if (newCycle) {
+        action = 1.0;
+        state.x = cycleValue;
+    }
 
-    state.x = cycleValue;
     state.y = action;
     state.z = clearValue ? 1.0 : 0.0;
     state.w = 1.0;
