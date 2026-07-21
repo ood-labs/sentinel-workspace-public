@@ -1,6 +1,6 @@
 # Node Example Studies
 
-This collection contains 18 small Sentinel projects. Each project isolates one node type or one closely related wiring pattern, includes an in-graph teaching card, and opens independently. Load one `.sentinel` file at a time and inspect the named controls before adapting the graph.
+This collection contains 18 small Sentinel projects for Sentinel 0.5.40 or newer. Each project isolates one node type or one closely related wiring pattern, includes an in-graph teaching card, and opens independently. Load one `.sentinel` file at a time and inspect the named controls before adapting the graph.
 
 The human keyboard and mouse reference is [UI Interactions and Shortcuts](../../knowledge/ui-interactions.md).
 
@@ -24,8 +24,8 @@ The human keyboard and mouse reference is [UI Interactions and Shortcuts](../../
 | `14_camera_orbit_rig.sentinel` | `camera` + `module` | Camera-reference orbit control of a 3D scene | orbit yaw, pitch, radius, target | None |
 | `15_camera_switcher.sentinel` | `camera` + `camswitch` + `module` | Three-camera cuts and blends through `camera_ref` | selected camera, blend duration | None |
 | `16_hello_module.sentinel` | `module` | Minimal authored module driven by an LFO control expression | pulse/phase driver and module color response | None |
-| `17_hlsl_postfx.sentinel` | `hlslshader` | Notch-style chromatic edge post-process | amount, edge strength, color split | None |
-| `18_vsr_upscale.sentinel` | `vsr` | RTX Video Super Resolution at 2x linear scale | quality and output scale | None, RTX GPU with R550.50+ driver |
+| `17_hlsl_postfx.sentinel` | `hlslshader` | Notch-style chromatic edge post-process | `ChromaticEdges`, `blend_amount` | None |
+| `18_vsr_upscale.sentinel` | `vsr` | RTX Video Super Resolution at 2x linear scale | `quality`, `scale_factor` | None, RTX GPU with R550.50+ driver |
 
 ## Study notes
 

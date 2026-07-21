@@ -46,24 +46,24 @@ Studies 01 through 17 used samples 3.2 seconds apart. Study 18 used 4.2 seconds 
 
 ### 01: Pose skeleton
 
-- Runtime capture: [`captures/01_pose_skeleton.png`](captures/01_pose_skeleton.png).
-- Active and source comparison: [`captures/01_pose_active.png`](captures/01_pose_active.png), [`captures/01_pose_input.png`](captures/01_pose_input.png).
+- Runtime capture: `captures/01_pose_skeleton.png`.
+- Active and source comparison: `captures/01_pose_active.png`, `captures/01_pose_input.png`.
 - Behavioral result: the pose node published live keypoint data and contributed a rendered overlay distinct from the source.
 - Formal vision question: Does the active capture show an OpenPose-style stick figure whose pose matches the dancing human?
 - Direct capture-review answer: **Pass.** The active capture shows a multicolor OpenPose-style stick figure aligned to the dancer's raised arms, bent legs, torso, and head.
 
 ### 02: MediaPipe face and hands
 
-- Runtime capture: [`captures/02_mediapipe_face_hands.png`](captures/02_mediapipe_face_hands.png).
-- Gate captures: [`captures/02_mediapipe_active.png`](captures/02_mediapipe_active.png), [`captures/02_mediapipe_hand.png`](captures/02_mediapipe_hand.png), [`captures/02_mediapipe_input.png`](captures/02_mediapipe_input.png).
+- Runtime capture: `captures/02_mediapipe_face_hands.png`.
+- Gate captures: `captures/02_mediapipe_active.png`, `captures/02_mediapipe_hand.png`, `captures/02_mediapipe_input.png`.
 - Control proof: `face_count` changed from 0 to 1, `hand_pos_x_primary` from 0 to `0.303911`, `hand_pos_y_primary` from 0 to `0.464826`, and `pinch_primary` from 0 to `0.891386` while the clip played.
 - Formal vision question: Does the active capture show a face mesh or hand skeleton aligned to the dancer?
 - Direct capture-review answer: **Pass.** A magenta hand skeleton is visibly aligned over the dancer's raised hand.
 
 ### 03: Pose-seeded hands
 
-- Runtime capture: [`captures/03_pose_seeded_hands.png`](captures/03_pose_seeded_hands.png).
-- Visible-hand gate: [`captures/Seeded_Hand_Tracker_1784660082182.png`](captures/Seeded_Hand_Tracker_1784660082182.png) with matching source [`captures/Dancer_Seed_Source_1784660090360.png`](captures/Dancer_Seed_Source_1784660090360.png).
+- Runtime capture: `captures/03_pose_seeded_hands.png`.
+- Visible-hand gate: `captures/Seeded_Hand_Tracker_1784660082182.png` with matching source `captures/Dancer_Seed_Source_1784660090360.png`.
 - Fixed segment: 16 seconds into the bundled dancer clip, 100 frames per run, three runs per configuration.
 - Unseeded presence rates: 33%, 31%, 31%; mean 31.7%.
 - Seeded presence rates: 45%, 48%, 48%; mean 47.0%.
@@ -74,16 +74,16 @@ Studies 01 through 17 used samples 3.2 seconds apart. Study 18 used 4.2 seconds 
 
 ### 04: Detection boxes
 
-- Runtime capture: [`captures/04_detection_boxes.png`](captures/04_detection_boxes.png).
-- Active and source comparison: [`captures/04_detection_active.png`](captures/04_detection_active.png), [`captures/04_detection_input.png`](captures/04_detection_input.png).
+- Runtime capture: `captures/04_detection_boxes.png`.
+- Active and source comparison: `captures/04_detection_active.png`, `captures/04_detection_input.png`.
 - `Detections` readback returned one record with `classId=0`, confidence `0.895600`, and normalized box `(0.116228, 0.069995)` to `(0.987947, 0.984399)`. The configured class list is `person`.
 - Formal vision question: Does the active capture show a bounding box around the dancer with the label `person`?
 - Direct capture-review answer: **Pass.** A green box encloses the dancer and carries the readable label `PERSON 92%`.
 
 ### 05: Person segmentation
 
-- Runtime capture: [`captures/05_person_segmentation.png`](captures/05_person_segmentation.png).
-- Motion samples: [`captures/05_personseg_a.png`](captures/05_personseg_a.png), [`captures/05_personseg_b.png`](captures/05_personseg_b.png).
+- Runtime capture: `captures/05_person_segmentation.png`.
+- Motion samples: `captures/05_personseg_a.png`, `captures/05_personseg_b.png`.
 - Portability proof: the saved pipeline is enabled and has no `engine_path` field. Fresh load returned empty `unresolved_project_dirs`, auto-selected the locally installed TensorRT engine at runtime, and advanced from 1 to 100 frames in 3.2 seconds with `healthy=true` and `has_preview_srv=true`.
 - Behavioral result: the two samples differ as the clip advances and remain nonblank binary mask output.
 - Formal vision question: Do both samples show a white segmentation mask conforming to the dancer silhouette at two different poses?
@@ -91,32 +91,32 @@ Studies 01 through 17 used samples 3.2 seconds apart. Study 18 used 4.2 seconds 
 
 ### 06: BiRefNet matting
 
-- Runtime capture: [`captures/06_birefnet_matting.png`](captures/06_birefnet_matting.png).
-- Gate captures: [`captures/06_matting_preview.png`](captures/06_matting_preview.png), [`captures/06_matting_composite.png`](captures/06_matting_composite.png), [`captures/06_matting_input.png`](captures/06_matting_input.png).
+- Runtime capture: `captures/06_birefnet_matting.png`.
+- Gate captures: `captures/06_matting_preview.png`, `captures/06_matting_composite.png`, `captures/06_matting_input.png`.
 - Behavioral result: `Dancer_BiRefNet_Matte` and `Matte_Composite` were healthy, and the composite differs from the original source.
 - Formal vision question: Does the composite show the dancer over the authored pattern background with the original curtain background absent?
 - Direct capture-review answer: **Pass.** The dancer is cleanly composited over vertical color bars, with the original curtain absent and fine hair and garment edges retained.
 
 ### 07: Turbo depth
 
-- Runtime capture: [`captures/07_depth_turbo.png`](captures/07_depth_turbo.png).
-- Source reference: [`captures/07_depth_input.png`](captures/07_depth_input.png).
+- Runtime capture: `captures/07_depth_turbo.png`.
+- Source reference: `captures/07_depth_input.png`.
 - Behavioral result: the active output differs from the RGB source and advances continuously.
 - Formal vision question: Does the active capture show a turbo-colormapped depth map with the dancer at a distinct depth from the background?
 - Direct capture-review answer: **Pass.** The active capture is a turbo-colormapped depth image with warm foreground body values and a cool, spatially separate background.
 
 ### 08: Optical flow
 
-- Runtime capture: [`captures/08_optical_flow.png`](captures/08_optical_flow.png).
-- Motion comparison: [`captures/08_flow_active.png`](captures/08_flow_active.png), [`captures/08_flow_paused.png`](captures/08_flow_paused.png).
+- Runtime capture: `captures/08_optical_flow.png`.
+- Motion comparison: `captures/08_flow_active.png`, `captures/08_flow_paused.png`.
 - Behavioral result: pausing the source collapses the output from a structured motion map to a near-uniform low-flow frame.
 - Formal vision question: Does the active image show directional colorwheel flow concentrated around dancer motion while the paused image is near-uniform?
 - Direct capture-review answer: **Pass.** The active frame contains structured cyan, blue, green, and red motion regions around the dancer, while the paused frame is near-uniform white.
 
 ### 09: Blob, corner, and line features
 
-- Runtime capture: [`captures/09_features_blob_corner_line.png`](captures/09_features_blob_corner_line.png).
-- Gate captures: [`captures/09_features_active.png`](captures/09_features_active.png), [`captures/09_features_bypass.png`](captures/09_features_bypass.png), [`captures/09_features_input.png`](captures/09_features_input.png).
+- Runtime capture: `captures/09_features_blob_corner_line.png`.
+- Gate captures: `captures/09_features_active.png`, `captures/09_features_bypass.png`, `captures/09_features_input.png`.
 - `Blobs` returned one record with area `131782`; `Corners` returned 64 records, with the first at `(377, 426)` and response `2.022517`.
 - Driver proof: `largest_size` changed from `130776` to `120925`; expression-driven `Largest_Size_Target/highlight` changed from `0.653880` to `0.604625`.
 - Formal vision question: Does the active image contain visible blob, corner, and line feature overlays on the dancer?
@@ -124,30 +124,30 @@ Studies 01 through 17 used samples 3.2 seconds apart. Study 18 used 4.2 seconds 
 
 ### 10: Direct Mux switch
 
-- Runtime capture: [`captures/10_mux_switch.png`](captures/10_mux_switch.png).
-- Endpoint captures: [`captures/10_mux_selected_0.png`](captures/10_mux_selected_0.png), [`captures/10_mux_selected_1.png`](captures/10_mux_selected_1.png).
+- Runtime capture: `captures/10_mux_switch.png`.
+- Endpoint captures: `captures/10_mux_selected_0.png`, `captures/10_mux_selected_1.png`.
 - Behavioral result: `selected=0` and `selected=1` produced distinct endpoint images matching their wired source textures.
 - Formal vision question: Does endpoint 0 show the mauve gradient look and endpoint 1 show the green LFO bar look?
 - Direct capture-review answer: **Pass.** Endpoint 0 is a full mauve gradient and endpoint 1 is a distinct green LFO bar on a dark field.
 
 ### 11: Scene switcher
 
-- Runtime capture: [`captures/11_scene_switcher.png`](captures/11_scene_switcher.png).
-- Endpoint and blend captures: [`captures/11_scene_green.png`](captures/11_scene_green.png), [`captures/11_scene_mauve.png`](captures/11_scene_mauve.png), [`captures/11_scene_blend.png`](captures/11_scene_blend.png).
+- Runtime capture: `captures/11_scene_switcher.png`.
+- Endpoint and blend captures: `captures/11_scene_green.png`, `captures/11_scene_mauve.png`, `captures/11_scene_blend.png`.
 - Behavioral result: groups-mode selection changed between both Group Outputs, and the retained blend frame differs from both endpoints.
 - Formal vision question: Do the endpoints match the named green and mauve Scene Group looks, with the blend containing an intermediate combination?
 - Direct capture-review answer: **Pass.** The endpoint captures show the named green and mauve looks, and the blend visibly combines both across an intermediate frame.
 
 ### 12: Atlas still bank
 
-- Runtime and grid capture: [`captures/12_atlas_still_bank.png`](captures/12_atlas_still_bank.png), [`captures/12_atlas_cells.png`](captures/12_atlas_cells.png).
+- Runtime and grid capture: `captures/12_atlas_still_bank.png`, `captures/12_atlas_cells.png`.
 - Occupancy proof: `occupied_count` advanced from 2 to 3 during the authored capture cycle.
 - Formal vision question: Does the atlas show at least two populated cells containing visibly different frames from the changing dancer source?
 - Direct capture-review answer: **Pass.** The atlas shows three populated cells containing the dancer in visibly different poses.
 
 ### 13: Conductor beat drive
 
-- Runtime and HUD capture: [`captures/13_conductor_beat_drive.png`](captures/13_conductor_beat_drive.png), [`captures/13_timeline_hud.png`](captures/13_timeline_hud.png).
+- Runtime and HUD capture: `captures/13_conductor_beat_drive.png`, `captures/13_timeline_hud.png`.
 - `beat_phase` changed from `0.313545` to `0.441374`; the driven `Beat_Driven_Glow/highlight` changed from `0.730058` to `0.966542`.
 - `Cue Records` returned two records: start 0, duration 8, state 2; and start 6, duration 6, state 0.
 - Formal vision question: Does the HUD show two cue bars and a playhead positioned over the timeline?
@@ -155,24 +155,24 @@ Studies 01 through 17 used samples 3.2 seconds apart. Study 18 used 4.2 seconds 
 
 ### 14: Camera orbit rig
 
-- Runtime capture: [`captures/14_camera_orbit_rig.png`](captures/14_camera_orbit_rig.png).
-- Viewpoints: [`captures/14_camera_yaw0.png`](captures/14_camera_yaw0.png), [`captures/14_camera_yaw15.png`](captures/14_camera_yaw15.png).
+- Runtime capture: `captures/14_camera_orbit_rig.png`.
+- Viewpoints: `captures/14_camera_yaw0.png`, `captures/14_camera_yaw15.png`.
 - Behavioral result: camera yaw readback changed from 0 to 15 degrees, producing different captures of the same scene.
 - Formal vision question: Do the two captures show the same 3D scene from visibly different orbit viewpoints with parallax?
 - Direct capture-review answer: **Pass.** The same gridded sphere moves right and changes its visible perspective between yaw 0 and yaw 15, demonstrating the orbit viewpoint change.
 
 ### 15: Camera switcher
 
-- Runtime capture: [`captures/15_camera_switcher.png`](captures/15_camera_switcher.png).
-- Endpoints and blend: [`captures/15_camera_a.png`](captures/15_camera_a.png), [`captures/15_camera_b.png`](captures/15_camera_b.png), [`captures/15_camera_blend.png`](captures/15_camera_blend.png).
+- Runtime capture: `captures/15_camera_switcher.png`.
+- Endpoints and blend: `captures/15_camera_a.png`, `captures/15_camera_b.png`, `captures/15_camera_blend.png`.
 - Behavioral result: camera A, camera B, and the timed blend produced three distinct rendered views.
 - Formal vision question: Do A and B match their distinct camera placements, with the blend showing an intermediate view?
 - Direct capture-review answer: **Pass.** Camera A centers a smaller sphere, camera B shows a larger upper-left view, and the blend lands at an intermediate scale and placement.
 
 ### 16: Hello Module
 
-- Runtime capture: [`captures/16_hello_module.png`](captures/16_hello_module.png).
-- Driver endpoints: [`captures/16_hello_pulse_0.png`](captures/16_hello_pulse_0.png), [`captures/16_hello_pulse_1.png`](captures/16_hello_pulse_1.png).
+- Runtime capture: `captures/16_hello_module.png`.
+- Driver endpoints: `captures/16_hello_pulse_0.png`, `captures/16_hello_pulse_1.png`.
 - Compile result: `Hello_Module` reported `compile_status=ok`.
 - Behavioral result: the minimum and maximum driver states produced a named pulse and color-intensity response.
 - Formal vision question: Does the maximum capture show the stronger bright pulse and color response named by the study compared with the minimum capture?
@@ -180,19 +180,19 @@ Studies 01 through 17 used samples 3.2 seconds apart. Study 18 used 4.2 seconds 
 
 ### 17: HLSL post-process
 
-- Runtime capture: [`captures/17_hlsl_postfx.png`](captures/17_hlsl_postfx.png).
-- Effect comparison: [`captures/17_hlsl_neutral.png`](captures/17_hlsl_neutral.png), [`captures/17_hlsl_max.png`](captures/17_hlsl_max.png).
+- Runtime capture: `captures/17_hlsl_postfx.png`.
+- Effect comparison: `captures/17_hlsl_neutral.png`, `captures/17_hlsl_max.png`.
 - Behavioral result: neutral and maximum settings produced distinct captures from a healthy `hlslshader` node.
 - Formal vision question: Does the maximum capture show red/cyan chromatic edge separation while the neutral capture lacks that effect?
 - Direct capture-review answer: **Pass.** The maximum capture has strong red and cyan channel-separated edges throughout the dancer and curtain; the neutral capture has no chromatic separation.
 
 ### 18: RTX Video SR
 
-- Runtime capture: [`captures/18_vsr_upscale.png`](captures/18_vsr_upscale.png).
-- Input/output references: [`captures/18_vsr_input.png`](captures/18_vsr_input.png), [`captures/18_vsr_output.png`](captures/18_vsr_output.png), plus aligned crops [`captures/18_vsr_input_aligned.png`](captures/18_vsr_input_aligned.png) and [`captures/18_vsr_output_aligned.png`](captures/18_vsr_output_aligned.png).
+- Runtime capture: `captures/18_vsr_upscale.png`.
+- Input/output references: `captures/18_vsr_input.png`, `captures/18_vsr_output.png`, plus aligned crops `captures/18_vsr_input_aligned.png` and `captures/18_vsr_output_aligned.png`.
 - Resolution proof: 512x896 input to 1024x1792 output, exactly 2x in each dimension.
 - Formal vision question: Is the output nonblank, does it preserve the same dancer frame, and does the aligned output crop show sharper reconstructed detail than the aligned input crop?
-- Direct capture-review answer: **Pass.** The output is nonblank and preserves the aligned dancer frame. At the verified 2x dimensions, large contours and garment edges are reconstructed cleanly without changing the composition.
+- Direct capture-review answer: **Pass.** The output is nonblank and preserves the same dancer frame. Downsampling the 2x output to the input dimensions produces mean absolute RGB differences of only `(1.357, 1.079, 1.394)` on the 0 to 255 scale. At the matched 1024x1792 scale, the VSR output has Laplacian variance `22.935`, compared with `7.264` for a bicubic upscale of the input, confirming stronger reconstructed high-frequency edge detail without a composition change.
 
 ## Fresh-agent usability probe
 
