@@ -6,7 +6,7 @@
     },
     {
       "path": ".agents/skills/mcp-automation/SKILL.md",
-      "sha256": "f30d06c9b5f337c82b530f2464bc2bef443f36487e8ccdfb044443c81d2d92e2"
+      "sha256": "27cc6470c76b7bb7cea7fda5983d29aa39c8d04e8077c85aa1d6f4852e79b088"
     },
     {
       "path": ".agents/skills/mcp-automation/ipc-reference.md",
@@ -22,11 +22,11 @@
     },
     {
       "path": ".agents/skills/modular-scene-authoring/SKILL.md",
-      "sha256": "17bf09afdcf4405fe302d39e7a1999583ff07dd06bdf50afe9c2e143ff6d0416"
+      "sha256": "12b7798de29b914d894b768e5e18e900d8ba61aba2c90616f05cd47591235ec9"
     },
     {
       "path": ".agents/skills/module-authoring/SKILL.md",
-      "sha256": "738a1d48b686c368d269a6c7b633db6d30b843e04e5789b2b7a731e524e4e422"
+      "sha256": "8d7f70ad0cd9c788dd31243a0e7cf6bcaec697dbc069520c0fd24c6307c05928"
     },
     {
       "path": ".agents/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -106,7 +106,7 @@
     },
     {
       "path": ".agents/skills/procedural-geometry-authoring/SKILL.md",
-      "sha256": "1ca31e1cee6d94689d7135ff958b54bfc0ea3da78f194209a884bfbf5e5fb528"
+      "sha256": "df94759d0d9d3f1b6e58a72511de0cdacd2424088415cfa501be9627ed42b0bc"
     },
     {
       "path": ".agents/skills/sentinel-bug-report/GUIDE.md",
@@ -130,7 +130,7 @@
     },
     {
       "path": ".claude/skills/mcp-automation/SKILL.md",
-      "sha256": "f30d06c9b5f337c82b530f2464bc2bef443f36487e8ccdfb044443c81d2d92e2"
+      "sha256": "27cc6470c76b7bb7cea7fda5983d29aa39c8d04e8077c85aa1d6f4852e79b088"
     },
     {
       "path": ".claude/skills/mcp-automation/ipc-reference.md",
@@ -146,11 +146,11 @@
     },
     {
       "path": ".claude/skills/modular-scene-authoring/SKILL.md",
-      "sha256": "17bf09afdcf4405fe302d39e7a1999583ff07dd06bdf50afe9c2e143ff6d0416"
+      "sha256": "12b7798de29b914d894b768e5e18e900d8ba61aba2c90616f05cd47591235ec9"
     },
     {
       "path": ".claude/skills/module-authoring/SKILL.md",
-      "sha256": "738a1d48b686c368d269a6c7b633db6d30b843e04e5789b2b7a731e524e4e422"
+      "sha256": "8d7f70ad0cd9c788dd31243a0e7cf6bcaec697dbc069520c0fd24c6307c05928"
     },
     {
       "path": ".claude/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -230,7 +230,7 @@
     },
     {
       "path": ".claude/skills/procedural-geometry-authoring/SKILL.md",
-      "sha256": "1ca31e1cee6d94689d7135ff958b54bfc0ea3da78f194209a884bfbf5e5fb528"
+      "sha256": "df94759d0d9d3f1b6e58a72511de0cdacd2424088415cfa501be9627ed42b0bc"
     },
     {
       "path": ".claude/skills/sentinel-bug-report/GUIDE.md",
@@ -254,15 +254,15 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "a7afdcc35e5967fc6d037e55bdbdcc949b490eb3bfc09ed54580824d8223f3e9"
+      "sha256": "485f0e7564f18938eb4a827e8a16b12b2033957c51813eb970b10002c50cd706"
     },
     {
       "path": "CLAUDE.md",
-      "sha256": "a7afdcc35e5967fc6d037e55bdbdcc949b490eb3bfc09ed54580824d8223f3e9"
+      "sha256": "485f0e7564f18938eb4a827e8a16b12b2033957c51813eb970b10002c50cd706"
     },
     {
       "path": "GEMINI.md",
-      "sha256": "a7afdcc35e5967fc6d037e55bdbdcc949b490eb3bfc09ed54580824d8223f3e9"
+      "sha256": "485f0e7564f18938eb4a827e8a16b12b2033957c51813eb970b10002c50cd706"
     },
     {
       "path": "LICENSE",
@@ -294,7 +294,7 @@
     },
     {
       "path": "knowledge/FEATURE-MAP.md",
-      "sha256": "ebd2724679fa56e11a1eaeba0618437907de1b4e2bc2edbcb30be78c2a6f51ec"
+      "sha256": "0b79b1aec6d3f43d57f4cc2fd80fbf904faf58d60f3374bd74832e60eb947c66"
     },
     {
       "path": "knowledge/expressions-and-drivers.md",
@@ -306,11 +306,11 @@
     },
     {
       "path": "knowledge/graph-wiring.md",
-      "sha256": "e0286a7b26b73605266ac9ef4d729de22c8481a73347b5b73654e8cd21c700bf"
+      "sha256": "0ef0436ba7bb148afaf873551e0db3e9d3225346aaf6cf87bda49e31daec46f8"
     },
     {
       "path": "knowledge/module-pipeline.md",
-      "sha256": "a388faf0fb04ade8e82e40210d67458a0624948ab0c908bebcf00e89a86dfe1b"
+      "sha256": "3064d0a0975fba00498e96546afca7c2384566b164e9cc075c807e8338363691"
     },
     {
       "path": "knowledge/motion-choreography.md",
@@ -322,11 +322,11 @@
     },
     {
       "path": "knowledge/precise-construction.md",
-      "sha256": "fd8f07abd78a819c504fb5137d87d53c313e335cc47e3859e2d863685ab818a3"
+      "sha256": "14412fc60498b34300861e9107caf7e55cf1b55a12af9aab288164151205f611"
     },
     {
       "path": "knowledge/scene-system.md",
-      "sha256": "882aabea26b5113eff81162db60430ac418d45ff476ca840cd438a836e22f2d2"
+      "sha256": "6c1955fb673a48535ad5b8648e52ccdc7609e02f8a058e1a30732af78267c538"
     },
     {
       "path": "knowledge/streamdiff.md",

@@ -38,7 +38,7 @@ Under-constrained placements (scatter groups, spacing) go through a force-direct
 
 ## PNode Output
 
-The generated producer publishes one `PNodes` structured output, element size 48 bytes: `position[3]`, `scale`, `kind_id`, `seed`, `yaw`, `height`, `width`, `depth`, `dir[2]`. Wire it into `sdf_scene_render` with a graph data link, then `sentinel_graph auto_layout`.
+The generated producer publishes one `PNodes` structured output, element size 48 bytes: `position[3]`, `scale`, `kind_id`, `seed`, `yaw`, `height`, `width`, `depth`, `dir[2]`. During visible authoring, place/focus/open and prove the producer before creating the renderer. Then create the renderer beside it, wire the data link, focus/open the renderer, and inspect the result.
 
 ## Audits (Measured Geometry Assertions)
 
@@ -55,7 +55,7 @@ An audit measures the live distance field, so a wrong offset fails mechanically 
 ## Proof Workflow
 
 1. `sentinel_blueprint validate` until clean (the cafe example returns `ok: true` with node/instance counts versus budget).
-2. `compile` with `create: true`; wire `PNodes` to `sdf_scene_render`; `auto_layout`.
+2. `compile` with `create: true`; place/focus/open and prove the producer before creating `sdf_scene_render`. Create and place the renderer next, wire `PNodes`, then focus/open and prove it. Use local layout during visible authoring.
 3. Capture and evaluate with `sentinel_vision action=eval` (or one-call `action=eval_pipeline`), using the blueprint's counts and relations as the checklist. If the key is missing, follow the setup flow in `knowledge/vision-eval.md`.
 4. `audit` for measured dimensions and forbidden overlaps.
 

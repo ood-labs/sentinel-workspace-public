@@ -10,6 +10,10 @@ This workspace is the user-writable Sentinel agent workspace. It is seeded by Se
 
 Sentinel is a GPU-accelerated live video application for performance and interactive visuals. It combines Spout/NDI/camera/image/pattern/video sources, real-time AI generation, tracking, depth, segmentation, object detection, shader modules, and Spout/NDI output.
 
+## Managed Instruction Persistence
+
+Sentinel workspace repair and version refreshes can replace `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.claude/skills/`, `.agents/skills/`, and `knowledge/` from the installed workspace seed. The manuals are backed up as `.previous`, but the skill and knowledge trees are replaced. After intentionally changing agent behavior, compare any `.previous` backups and verify the live workspace again after the next launch or repair. A durable product-level change requires updating the shipped workspace seed as well as this user workspace; changing manifest hashes alone does not alter repair behavior.
+
 ## First Rule: Discover Live
 
 Do not guess what this install can create. Ask Sentinel.
@@ -79,22 +83,27 @@ Use video links for textures and data links for structured buffers.
 - `sentinel_pipeline action=create`: create a pipeline.
 - `sentinel_pipeline action=set_input`: connect video texture inputs.
 - `sentinel_graph action=add_link`: connect typed data ports.
-- `sentinel_graph action=auto_layout`: arrange newly created graphs.
+- `sentinel_graph action=auto_layout`: arrange a whole graph only for explicit batch work or smoke tests.
 - `sentinel_graph action=layout_neighborhood`: arrange a local area without disturbing a hand-arranged graph.
 
 After creating and wiring nodes, always inspect real runtime state. A successful create call is not proof that the node is processing.
 
-## Visible, Preview-First Node Construction
+## Visible, One-Node-at-a-Time Construction
 
-When building or extending a live creative graph, work one semantic node at a time so the user can watch and evaluate the graph as it takes shape. Do not batch or concurrently create the planned nodes unless the user explicitly asks for a background/batch workflow.
+When building or extending a live creative graph, work one semantic node at a time so the user can watch and evaluate the graph as it takes shape. Do not pre-author every planned Module, issue concurrent node-creation calls, hide multiple creations in a batch or loop, or create the whole graph before showing it. Only use a batch/background workflow when the user explicitly requests one. This live-authoring rule overrides general tool-call parallelization guidance for node authoring and graph mutation; parallel read-only discovery is allowed only when it does not obscure the visible sequence.
 
-For every pipeline node, complete this cycle before creating the next one:
+Complete this entire cycle before authoring or creating the next node:
 
-1. Author or select that node, create it, place it near its neighbors, and add the currently known links.
-2. Wait for compilation, then inspect health, frames, schemas, and data counts as applicable.
-3. Call `sentinel_graph action=focus`, then `sentinel_pipeline action=open_window` and visually inspect the rendered preview/properties panel in Sentinel.
-4. Exercise the node's important controls while its window is open and confirm that the preview changes as intended. Capture the intermediate output when visual proof is useful.
-5. Fix a blank, constant, misleading, or illegible preview before continuing downstream. `stats.has_preview_srv=true` proves only that a texture exists; it does not prove that the preview communicates the node's current data.
+1. Author or select only the current node and any unavoidable shared prerequisite. Compile-check a custom Module before creating it.
+2. Create only that node. Immediately place it near its neighbor with create-time `relative_to` placement or `sentinel_graph action=place_relative`, then add its currently known links.
+3. Wait for compilation and inspect health, frames, schemas, and data counts as applicable.
+4. Call `sentinel_graph action=focus`, then `sentinel_pipeline action=open_window` so the node and its live preview/Properties are visibly presented to the user.
+5. Exercise the node's important controls and confirm that the preview changes as intended. Capture the intermediate output or data port when useful.
+6. Fix a blank, constant, generic, misleading, or illegible preview before continuing downstream. `stats.has_preview_srv=true` proves only that a texture exists.
+
+Continue through the cycle without requiring approval after every node unless the user asks for checkpoints. The requirement is visible incremental construction, not stop-and-confirm gating.
+
+Do not use whole-graph `auto_layout` to repair a pile of bulk-created nodes. Preserve the graph's evolving layout with `place_relative`, explicit geometry, or `layout_neighborhood`. Whole-graph `auto_layout` is reserved for an explicitly requested batch workflow or a non-creative smoke test where the user is not watching the graph being authored.
 
 Generator, plan, layout, assembly, and data-transform nodes must provide a meaningful visual preview of their own intermediate state. Show active records and their spatial structure, direction, grouping, weight, or type as appropriate. A downstream renderer and `capture_data_port` are additional proof, not substitutes for an inspectable node preview.
 

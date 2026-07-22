@@ -20,7 +20,7 @@ In-repo modular references worth reading before starting: `modules/compositor/`,
 
 When a scene is mostly objects with real dimensions, anchors, clearances, and repeated instances, use the `procedural-geometry-authoring` skill and the Phase 76 blueprint compiler before writing custom generator shaders.
 
-Blueprint producers compile to generated Module projects that publish fixed 48-byte `PNodes`. Wire those records into `modules/sdf_scene_render`, run `sentinel_graph auto_layout`, then prove the graph with:
+Blueprint producers compile to generated Module projects that publish fixed 48-byte `PNodes`. During visible authoring, prove the producer in its focused/open window before creating the renderer; then place the renderer beside it, wire the records, focus/open it, and prove the graph with:
 
 - `sentinel_blueprint validate` for schema and relation errors.
 - `sentinel_blueprint solve_report` for record hashes, topology, solver stats, and warm-start stability.
@@ -47,11 +47,13 @@ Minimum standards:
 - Save the project before any major graph or buffer-contract change. Keep a snapshot of the last working state so a failed contract change is one reload away from recovery.
 - Judge the actual image the pipeline produces. Capture the output early and often and let the picture drive the next edit.
 
-### Preview-first construction
+### Visible, one-node-at-a-time construction
 
-Create one semantic node at a time. After it compiles and is wired, focus it, open its pipeline window, and inspect the live preview before authoring or creating the next node. Exercise at least one structural parameter and require an obvious preview change. Generator, plan, layout, assembly, and data-transform nodes must visualize their active records and enough spatial/type/group/weight information to explain the intermediate state. A final renderer or buffer readback supplements this preview; neither replaces it.
+Author and create one semantic node at a time. Do not code every planned Module first, create several nodes concurrently, or hide creation inside a batch or loop. After the current node compiles and is wired, place it relative to its neighbor, call `sentinel_graph focus`, call `sentinel_pipeline open_window`, and inspect the live preview before authoring or creating the next node. Exercise at least one structural parameter and require an obvious preview change.
 
-Treat a blank, constant, generic, misleading, or illegible intermediate preview as a blocking authoring defect. Fix or replace the node before downstream work hides the problem.
+Do not use whole-graph `auto_layout` to repair a bulk-created pile. Use create-time `relative_to`, `place_relative`, or `layout_neighborhood` as each node enters the graph. Whole-graph `auto_layout` is only for an explicitly requested batch build or non-creative smoke test.
+
+Generator, plan, layout, assembly, and data-transform nodes must visualize their active records and enough spatial/type/group/weight information to explain the intermediate state. Treat a blank, constant, generic, misleading, or illegible intermediate preview as a blocking authoring defect. A final renderer or buffer readback supplements this preview; neither replaces it.
 
 ---
 
@@ -137,7 +139,7 @@ The tight loop for multi-node contract work:
 10. Profile with `sentinel_graph profile summary=true` to catch a node that dominates frame time.
 11. **Checkpoint the working state.** `sentinel_capture action=checkpoint pipeline_id=<id>` saves a bundled `.sentinel`, captures the output image, and records the graph profile in one call, writing a `summary.md` proof folder. Use it whenever a look is worth keeping.
 
-After creating pipelines and wiring links, always run `sentinel_graph auto_layout` (nodes spawn at 0,0 and stack otherwise); on a hand-arranged graph prefer `layout_neighborhood`.
+During visible construction, place and inspect each node before proceeding. Use `layout_neighborhood` for local cleanup; reserve whole-graph `auto_layout` for explicit batch work.
 
 ---
 
