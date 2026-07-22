@@ -22,7 +22,7 @@
     },
     {
       "path": ".agents/skills/modular-scene-authoring/SKILL.md",
-      "sha256": "12b7798de29b914d894b768e5e18e900d8ba61aba2c90616f05cd47591235ec9"
+      "sha256": "9b4a9574f2e946ca795f0fe7069503d077d601180205af9e9307d4f6f0845158"
     },
     {
       "path": ".agents/skills/module-authoring/SKILL.md",
@@ -146,7 +146,7 @@
     },
     {
       "path": ".claude/skills/modular-scene-authoring/SKILL.md",
-      "sha256": "12b7798de29b914d894b768e5e18e900d8ba61aba2c90616f05cd47591235ec9"
+      "sha256": "9b4a9574f2e946ca795f0fe7069503d077d601180205af9e9307d4f6f0845158"
     },
     {
       "path": ".claude/skills/module-authoring/SKILL.md",
@@ -250,7 +250,7 @@
     },
     {
       "path": ".gitignore",
-      "sha256": "7f5a3a9d89913418020c2845e4501bd326095ad7e6f5f9886ff328bae41f2d7e"
+      "sha256": "637c84ae388986883ee9ecb3b13e791b5c37e706f94c52093e03ea90ed97e9cd"
     },
     {
       "path": "AGENTS.md",
@@ -270,7 +270,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "2f1e2596f11d584791a20077c4077b780ae9f08d3c726996da167d66e3437dde"
+      "sha256": "d47ac11398985f527ed0655fe12af9a03fc9f4374df49d98b8ae7ccb447ee331"
     },
     {
       "path": "examples/blueprints/living_room_architecture.solved.json",
@@ -311,6 +311,10 @@
     {
       "path": "knowledge/module-pipeline.md",
       "sha256": "3064d0a0975fba00498e96546afca7c2384566b164e9cc075c807e8338363691"
+    },
+    {
+      "path": "knowledge/modular-procedural-systems.md",
+      "sha256": "053de18dd8720d0e1665032eec30c863703ce4e9a8fe950eed2e89fd84575a0c"
     },
     {
       "path": "knowledge/motion-choreography.md",
@@ -3230,7 +3234,7 @@
     },
     {
       "path": "tools/official-examples.config.psd1",
-      "sha256": "de22d7790077f620850c6ec08d8af2a5b0eb54bda94fb8f19b33c2fd21c26d13"
+      "sha256": "c26052eb7de33ab31f478019834f85a575668dee19be4cdc7f3bd5ad87f9ba82"
     },
     {
       "path": "tools/test-official-examples.ps1",

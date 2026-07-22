@@ -1,6 +1,6 @@
 ---
 name: modular-scene-authoring
-description: Author Sentinel scenes as a modular Module graph of separable generator, data-lane, renderer, compositor, and post nodes wired by typed data ports, instead of one monolithic shader. Use when recreating a reference image or building a complex scene, choosing a data contract from the reference's structure (routing/poster vs organic vs atlas), wiring producer/consumer structured buffers, preserving route/group ids across segment records, or running the compile-check to force-reload to capture iteration loop.
+description: Author Sentinel scenes and procedural systems as modular Module graphs of separable generators, data lanes, editors, renderers, compositors, and post nodes wired by typed data ports. Use when recreating a reference image, building a complex or architectural procedural scene, choosing a data contract from the reference's structure, wiring producer/consumer structured buffers, preserving logical ids, or running the compile-check to live-proof iteration loop.
 distribution: true
 ---
 
@@ -12,7 +12,7 @@ For manifest syntax, HLSL compiler name mappings, structured buffer I/O, and hot
 
 If one node is meant to be a complete control surface, editor, HUD, or dashboard, use the `module-ui-authoring` skill for that node. A UI Module can declare a full-bleed Canvas and `follow_panel` resolution while remaining one semantic node in the larger scene graph.
 
-In-repo modular references worth reading before starting: `modules/compositor/`, `modules/choreo_cascade/`, `modules/timeline_hud/`, and `projects/interaction_lab/interaction_lab.sentinel`.
+In-repo modular references worth reading before starting: `modules/compositor/`, `modules/choreo_cascade/`, `modules/timeline_hud/`, `projects/interaction_lab/interaction_lab.sentinel`, and `projects/procedural_building_system/`. For editable procedural construction systems, read `knowledge/modular-procedural-systems.md` before authoring.
 
 ---
 
@@ -54,6 +54,20 @@ Author and create one semantic node at a time. Do not code every planned Module 
 Do not use whole-graph `auto_layout` to repair a bulk-created pile. Use create-time `relative_to`, `place_relative`, or `layout_neighborhood` as each node enters the graph. Whole-graph `auto_layout` is only for an explicitly requested batch build or non-creative smoke test.
 
 Generator, plan, layout, assembly, and data-transform nodes must visualize their active records and enough spatial/type/group/weight information to explain the intermediate state. Treat a blank, constant, generic, misleading, or illegible intermediate preview as a blocking authoring defect. A final renderer or buffer readback supplements this preview; neither replaces it.
+
+### Editable procedural-system contract
+
+For architectural and other multi-editor procedural systems:
+
+- Keep semantic structure in typed records and feed the same source records to every consumer that needs them.
+- Use Canvas for spatial manipulation and ordinary Properties for dense numeric/color tuning. Do not duplicate every parameter as a fragile authored slider rail.
+- Derive render placement, selection descriptors, picking, and drag inversion from one edit-rectangle transform. A visible handle must pick the exact object or cell it appears to control.
+- Keep logical edits in declared state buffers and preserve drag ownership through commit/cancel.
+- Choose one camera owner. Prefer the host's native Fly camera as the saved internal-camera default; do not invent Hero/Architectural Orbit shader modes.
+- Keep HDR internal if useful, but publish 8-bit sRGB color for video consumers and a separate native depth lane for structural conditioning.
+- Treat StreamDiff or other AI interpretation as optional. Prove the procedural renderer and auxiliary outputs first.
+
+Use `projects/procedural_building_system/` as the reference implementation and `knowledge/modular-procedural-systems.md` as the complete acceptance contract.
 
 ---
 

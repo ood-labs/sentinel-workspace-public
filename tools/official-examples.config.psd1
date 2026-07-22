@@ -74,6 +74,21 @@
             MinimumNodePresets = 2
             Exemptions = @('object-picking')
         }
+        procedural_building_system = @{
+            ProjectFile = 'procedural_building_system.sentinel'
+            SharedModules = @(
+                'modules/pl_blueprint_procedural_building',
+                'modules/procedural_building_facade',
+                'modules/procedural_building_materials',
+                'modules/procedural_building_lighting',
+                'modules/procedural_building_render'
+            )
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $false
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 0
+            Exemptions = @('scene-group-presets', 'technical-workflow-output')
+        }
         showcase_gallery = @{
             ProjectFile = 'showcase_gallery.sentinel'
             SharedModules = @()

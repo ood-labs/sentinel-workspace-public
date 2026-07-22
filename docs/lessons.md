@@ -1,12 +1,72 @@
 ---
 type: lessons
-updated: 2026-07-15
+updated: 2026-07-22
 ---
 
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-22 - Zero-control Canvases must not include control-state helpers
+
+**Symptoms**: The Material Library compiled with authored controls, but removing its last Canvas control failed with `undeclared identifier '_ViewportControlFlags'` even though the preview never called `suiInteraction`.
+
+**Cause**: `sui_v2.hlsli` includes `sui_interaction.hlsli`, whose helper bodies reference the host-injected control flag array. Sentinel does not inject that array when the manifest declares zero viewport controls (`modules/procedural_building_materials/preview.hlsl:1`).
+
+**Fix**: For a truly control-free Canvas, include only the required theme, core, layout, and typography headers and define the small local panel helper used by the preview (`modules/procedural_building_materials/preview.hlsl:10`).
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-22
+
+## 2026-07-22 - Migrate persistent normalized state when expanding a Canvas
+
+**Symptoms**: Expanding an editor from a right-hand subpanel to a full Canvas would either leave existing light handles clustered in the old region or change their world-space lighting meaning.
+
+**Cause**: The durable light state stored absolute normalized Canvas coordinates, while the lighting emitter interpreted those coordinates through the old panel-to-world transform (`modules/procedural_building_lighting/update.hlsl:3`).
+
+**Fix**: Version the state marker and migrate once through `old canvas -> world -> new canvas`, then use shared `lcCanvasToWorld`/`lcWorldToCanvas` functions everywhere (`modules/procedural_building_lighting/update.hlsl:6`, `modules/procedural_building_lighting/types.hlsli:7`).
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-22
+
+## 2026-07-22 - Render, pick, and drag must share one spatial mapping
+
+**Symptoms**: A facade marker could be clicked and dragged, but the highlighted brick was offset from the marker and pointer motion did not feel one-to-one.
+
+**Cause**: The elevation renderer, selection descriptors, picker, and drag inversion used related but non-identical normalized transforms and vertical conventions.
+
+**Fix**: Centralize the edit rectangle and semantic/canvas conversion functions, including the discrete bay/floor mapping, and use them from preview, descriptors, pick, interaction, and update (`modules/procedural_building_facade/types.hlsli:4`, `modules/procedural_building_facade/types.hlsli:16`).
+
+**Frequency**: always
+
+**Discovered**: 2026-07-22
+
+## 2026-07-22 - StreamDiff needs display color and native depth as separate lanes
+
+**Symptoms**: Architectural StreamDiff color looked incorrectly exposed and ControlNet failed to preserve the procedural structure when the same renderer image fed Video, Style, and Control Image.
+
+**Cause**: The renderer's linear HDR working image was not a suitable display-referred video input, and a duplicated color texture does not provide depth conditioning.
+
+**Fix**: Keep the internal render in `RGBA16F`, publish a tone-mapped sRGB `RGBA8` color output and a separate camera-aligned `RGBA8` depth output, then feed only native depth to Depth ControlNet (`modules/procedural_building_render/manifest.yaml:6`, `modules/procedural_building_render/manifest.yaml:85`).
+
+**Frequency**: always
+
+**Discovered**: 2026-07-22
+
+## 2026-07-22 - Use Properties instead of duplicating dense Canvas parameter rails
+
+**Symptoms**: Authored slider rails became awkwardly spaced or cramped as Canvas panels changed aspect ratio, and maintaining separate visual and host hit rectangles added complexity without improving the spatial editors.
+
+**Cause**: Sentinel 0.5.44 viewport controls use fixed normalized rectangles. Dense sliders were duplicating functionality already provided by Properties while competing with the actual massing, elevation, material, and lighting canvases.
+
+**Fix**: Keep Canvas controls only for spatial tools and direct manipulation; keep dense dimensions, counts, colors, response, energy, and quality parameters in Properties. Revisit authored responsive control stacks only as a deliberate host capability.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-22
 
 ## 2026-07-15 - Project import does not carry Scene Group authority
 

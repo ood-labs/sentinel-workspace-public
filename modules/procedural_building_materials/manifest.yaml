@@ -1,0 +1,74 @@
+name: "Interactive Material Laboratory"
+version: "2.0"
+mode: generator
+resolution: [1280, 720]
+
+panel:
+  mode: canvas
+  output: "Material Library"
+  resolution: follow_panel
+
+parameters:
+  - { name: plaza_stone, display: "Plaza Stone", type: color, default: [0.32, 0.30, 0.27], group: "Architecture" }
+  - { name: limestone, display: "Limestone", type: color, default: [0.58, 0.53, 0.45], group: "Architecture" }
+  - { name: board_concrete, display: "Board Concrete", type: color, default: [0.24, 0.25, 0.26], group: "Architecture" }
+  - { name: glass_tint, display: "Low-Iron Glass", type: color, default: [0.075, 0.18, 0.24], group: "Facade" }
+  - { name: bronze, display: "Patinated Bronze", type: color, default: [0.34, 0.19, 0.085], group: "Facade" }
+  - { name: black_metal, display: "Blackened Steel", type: color, default: [0.035, 0.045, 0.055], group: "Facade" }
+  - { name: timber, display: "Soffit Timber", type: color, default: [0.31, 0.14, 0.045], group: "Accents" }
+  - { name: foliage, display: "Landscape Green", type: color, default: [0.035, 0.16, 0.055], group: "Landscape" }
+  - { name: window_glow, display: "Interior Warmth", type: color, default: [1.0, 0.52, 0.19], group: "Emission" }
+  - { name: stone_roughness, display: "Stone Roughness", type: float, min: 0.25, max: 0.98, default: 0.82, group: "Surface" }
+  - { name: glass_roughness, display: "Glass Roughness", type: float, min: 0.02, max: 0.48, default: 0.10, group: "Surface" }
+  - { name: bronze_roughness, display: "Bronze Roughness", type: float, min: 0.06, max: 0.70, default: 0.28, group: "Surface" }
+  - { name: bronze_age, display: "Bronze Patina", type: float, min: 0, max: 1, default: 0.36, group: "Surface" }
+  - { name: texture_detail, display: "Texture Detail", type: float, min: 0, max: 1, default: 0.72, group: "Detail" }
+  - { name: normal_detail, display: "Normal Detail", type: float, min: 0, max: 1, default: 0.62, group: "Detail" }
+  - { name: emission_gain, display: "Emission Gain", type: float, min: 0, max: 2, default: 1.0, group: "Emission" }
+  - { name: tone_balance, display: "Warmth / Reflectance", type: point2D, min: [0,0], max: [1,1], default: [0.56,0.58], group: "Global" }
+
+viewport:
+  hint: "Inspect the live material library here; tune all material parameters in Properties."
+  # ui-label: title = MATERIAL LABORATORY
+  # ui-label: hint = MATERIAL SWATCHES / LIVE PBR RECORDS
+  # ui-label: board = TWELVE LIVE MATERIAL RECORDS
+
+buffers:
+  - name: materials
+    structured: true
+    element_size: 64
+    element_count: 12
+
+passes:
+  - name: emit
+    shader: emit_materials.hlsl
+    target: cs_5_0
+    dispatch: [1,1,1]
+    thread_group_x: 16
+    thread_group_y: 1
+    output: "buffer:materials"
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:materials" }
+
+outputs:
+  - { name: "Material Library", pass: preview }
+
+data_outputs:
+  - name: "Material Records"
+    buffer: materials
+    schema:
+      - { name: base_color, type: float, count: 3 }
+      - { name: roughness, type: float }
+      - { name: secondary_color, type: float, count: 3 }
+      - { name: metallic, type: float }
+      - { name: texture_scale, type: float }
+      - { name: texture_strength, type: float }
+      - { name: pattern_id, type: float }
+      - { name: emissive, type: float }
+      - { name: specular, type: float }
+      - { name: normal_strength, type: float }
+      - { name: seed, type: float }
+      - { name: reserved, type: float }

@@ -75,6 +75,7 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene using the shared root-level `steel_lattice` and `industrial_mono_post` modules |
 | [`streamdiff_workflows`](projects/streamdiff_workflows/) | Six focused StreamDiff studies covering 2D feedback, depth-parallax motion, video depth conditioning, procedural warp maps, and direct Mux switching |
 | [`streamdiff_collage`](projects/streamdiff_collage/) | A rapid StreamDiff poster instrument that mattes generated food and graphic elements, atomically stamps them into persistent feedback, and applies rare print interventions |
+| [`procedural_building_system`](projects/procedural_building_system/) | A modular architectural system with editable massing, facade, materials, and lighting data; an sRGB/depth renderer; and an optional depth-ControlNet StreamDiff pass |
 
 ## Creating a UI Module
 

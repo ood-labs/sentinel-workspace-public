@@ -14,6 +14,7 @@ This document is the release-readiness contract for the curated projects in the 
 | Strata | Modular plate composition and feature-reactive design | Focal plate controls; bounded blobs only if stable | Procedural blobs without stable identity remain procedural |
 | Desert Totem | Procedural sculpture workstation | Logical totem parts | None |
 | Industrial Lattice | Compact beginner-facing 3D example | None | Infinite repetition has no meaningful unique object identity |
+| Procedural Building System | Modular procedural-construction reference with spatial editors and typed architectural records | Massing, facade feature, and lighting handles | Technical workflow study: the renderer is the primary output and StreamDiff is an optional downstream reference, so no Group Output or preset suite is required |
 | Showcase Gallery | Seven-look release gallery and Scene Switcher reference | None | Aggregator: seven flat aesthetic groups and one final groups-mode Mux |
 
 An exemption removes only the artificial feature named above. It does not relax health, portability, preset, documentation, or visual-proof requirements.
@@ -36,6 +37,23 @@ Every aesthetic project must ship with:
 Interaction Lab replaces items 2-5 with three independently switchable, flat control-only Scene Groups and stateful node presets. It remains subject to the same runtime, persistence, documentation, and portability bar.
 
 Showcase Gallery replaces items 2-6 with seven flat imported aesthetic Scene Groups, exactly one connected Group Output inside each group, and one final groups-mode Mux whose exact allow-list matches those seven groups and enables `solo_upstream`. It has no nested groups and does not duplicate the imported projects' control or preset authority.
+
+### Technical modular-procedural examples
+
+A technical construction example may replace the final-show requirements with a teaching graph when its purpose is to expose reusable data contracts and editors rather than ship one performance look. It must still provide:
+
+1. a named semantic node for every independently reusable responsibility;
+2. typed structured-buffer links whose producer and consumer schemas agree exactly;
+3. a meaningful, live preview for every generator, plan, material, lighting, or transform node;
+4. spatial Canvas interaction only where direct manipulation is genuinely clearer than Properties;
+5. dense numeric and color tuning in ordinary Properties instead of duplicating a fragile slider rail;
+6. host selection, exact picking, durable state, and one render/pick/drag coordinate transform for spatial editors;
+7. exactly one camera owner, with Fly as the saved default unless a deliberate external camera rig is part of the lesson;
+8. explicit display-ready color and structural auxiliary outputs when a downstream consumer needs different representations;
+9. a primary non-AI output that remains useful when optional AI engines are unavailable;
+10. documentation and proof that distinguish the validated core from experimental downstream branches.
+
+The canonical reference is `projects/procedural_building_system/`, with the reusable construction contract in `knowledge/modular-procedural-systems.md`.
 
 ## Interaction Selection Rules
 

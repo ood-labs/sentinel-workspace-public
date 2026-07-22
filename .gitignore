@@ -46,3 +46,4 @@ projects/*
 !projects/showcase_gallery/
 !projects/streamdiff_workflows/
 !projects/streamdiff_collage/
+!projects/procedural_building_system/

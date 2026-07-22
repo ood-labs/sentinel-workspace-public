@@ -1,0 +1,67 @@
+version: 1
+kinds:
+  site_slab:
+    id: 0
+    display: "Stone Site Slab"
+    dimensions: { width: 18.0, height: 0.25, depth: 14.0 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.25, 0.0], normal: [0.0, 1.0, 0.0] }
+  podium:
+    id: 1
+    display: "Public Podium"
+    dimensions: { width: 12.0, height: 1.20, depth: 8.4 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 1.20, 0.0], normal: [0.0, 1.0, 0.0] }
+  gallery_volume:
+    id: 2
+    display: "Gallery Volume"
+    dimensions: { width: 10.4, height: 8.80, depth: 6.8 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      roof_center: { position: [0.0, 8.80, 0.0], normal: [0.0, 1.0, 0.0] }
+      front_center: { position: [0.0, 4.40, 3.40], normal: [0.0, 0.0, 1.0] }
+  roof_crown:
+    id: 3
+    display: "Roof Crown"
+    dimensions: { width: 7.4, height: 1.15, depth: 4.8 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      roof_center: { position: [0.0, 1.15, 0.0], normal: [0.0, 1.0, 0.0] }
+  entrance_canopy:
+    id: 4
+    display: "Entrance Canopy"
+    dimensions: { width: 5.2, height: 0.32, depth: 2.6 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.32, 0.0], normal: [0.0, 1.0, 0.0] }
+  planter:
+    id: 5
+    display: "Landscape Planter"
+    dimensions: { width: 2.5, height: 0.55, depth: 1.25 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 0.55, 0.0], normal: [0.0, 1.0, 0.0] }
+  path_lamp:
+    id: 6
+    display: "Path Lamp"
+    dimensions: { width: 0.30, height: 2.9, depth: 0.30 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      light_center: { position: [0.0, 2.65, 0.0], normal: [0.0, 0.0, 1.0] }
+  service_core:
+    id: 7
+    display: "Service Core"
+    dimensions: { width: 2.6, height: 2.2, depth: 2.4 }
+    footprint_radius: 0.0001
+    anchors:
+      base_center: { position: [0.0, 0.0, 0.0], normal: [0.0, -1.0, 0.0] }
+      surface_center: { position: [0.0, 2.2, 0.0], normal: [0.0, 1.0, 0.0] }
