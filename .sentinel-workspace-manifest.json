@@ -829,74 +829,6 @@
       "sha256": "944df808f7f2c4fbf1696a3fe5071e2eb06fa7b9554cfb2eac99464ff3be4ccb"
     },
     {
-      "path": "modules/industrial_bay_gen/bay.hlsl",
-      "sha256": "521a95b7b8b3248e469683ec78cd19e5152933bf906a3e8e6ebf9638c6374d69"
-    },
-    {
-      "path": "modules/industrial_bay_gen/manifest.yaml",
-      "sha256": "8d2a550055f968a00f7f0f426c495696328974b61007e65fabe0e495bf462ce0"
-    },
-    {
-      "path": "modules/industrial_bay_gen/preview.hlsl",
-      "sha256": "d059455b9a7fc013c2f0e9fa2365c8c1420e4d3e8e91f33f217d2aa49a745c01"
-    },
-    {
-      "path": "modules/industrial_greeble_pack/manifest.yaml",
-      "sha256": "f33841cb2183ba57d8874fdf228c33ff7b209f679768daad8b6b4a8ace1dd4e2"
-    },
-    {
-      "path": "modules/industrial_greeble_pack/pack.hlsl",
-      "sha256": "859a11dcaeb44b6c53d258158bfc655039a3a5eaf696aa667bdeacdd80472747"
-    },
-    {
-      "path": "modules/industrial_greeble_pack/preview.hlsl",
-      "sha256": "fbbf84eb1951a2af281e7ef9a1525b4b89eee6f418dfcd0648590e3a2381f884"
-    },
-    {
-      "path": "modules/industrial_greeble_place/greeble.hlsl",
-      "sha256": "d0f3e89f3a8933231c99bcf3494f9164685ef94b2b9ae99927ca8dc05b0b1a08"
-    },
-    {
-      "path": "modules/industrial_greeble_place/manifest.yaml",
-      "sha256": "6488a930cadca0382e4592ff5b461a37c4636e5680c2bd3ca0eca00ffce8f473"
-    },
-    {
-      "path": "modules/industrial_greeble_place/preview.hlsl",
-      "sha256": "5e4c97eb7003ba5c0e0f8f1b66eb3c5cae56a8c650e1461e9bdd6c024e4833ca"
-    },
-    {
-      "path": "modules/industrial_mono_post/manifest.yaml",
-      "sha256": "aa58da97bb60458dabef7c3698ba724662c3b2365ff5bb036d878b112856deea"
-    },
-    {
-      "path": "modules/industrial_mono_post/post.hlsl",
-      "sha256": "0b0841a0314b6aabed309f7dd75251d3f7591bf813b5ad089ec0a325c5d84ca4"
-    },
-    {
-      "path": "modules/industrial_struct_merge/manifest.yaml",
-      "sha256": "5be27c99e65f4227b914e330bb0974cafb3aa98bf38a6f5c3a4fbb34d02b9d89"
-    },
-    {
-      "path": "modules/industrial_struct_merge/merge.hlsl",
-      "sha256": "3e628fbbdb004da917025824e48a8400bdba2c05abdda33251d7cbdb539b632e"
-    },
-    {
-      "path": "modules/industrial_struct_merge/preview.hlsl",
-      "sha256": "3b4a9d474c614001a539552712c5db7624e2acd5ea6f5787daea6e607150e4c8"
-    },
-    {
-      "path": "modules/industrial_surface_sampler/manifest.yaml",
-      "sha256": "c2447d107f51729bb03d555853b0353715f388d64375ea918d13cab6a8b2860a"
-    },
-    {
-      "path": "modules/industrial_surface_sampler/preview.hlsl",
-      "sha256": "857d909fd77c4ae986acb13c9b9fcd8976d6422be96a012a0001821a450b932b"
-    },
-    {
-      "path": "modules/industrial_surface_sampler/surface.hlsl",
-      "sha256": "2defa28b20c028fb5a20f22ef87983e65980a1ae595fa321a2809ad32aec4838"
-    },
-    {
       "path": "modules/kidpix_comp/comp.hlsl",
       "sha256": "6e80daac05811e5e89545eba364fd9322bc9f85ea5e7c435b7339e1211106e45"
     },
@@ -1355,14 +1287,6 @@
     {
       "path": "modules/resample/resample.hlsl",
       "sha256": "56d229222f65738f57768777433cf939c064a0755c5557eb8003d7231161a4f6"
-    },
-    {
-      "path": "modules/sdf_industrial_scene_render/manifest.yaml",
-      "sha256": "dbb4ee0dd109a9e48570466afba2699d86acf6a048822a0230321756574d152d"
-    },
-    {
-      "path": "modules/sdf_industrial_scene_render/scene.hlsl",
-      "sha256": "d5089c915e29d3f8ba717fe7a2009e9c970331b6a0fc4fdd41d8d1bb2ecacf6a"
     },
     {
       "path": "modules/sdf_scene_render/manifest.yaml",
@@ -3347,10 +3271,6 @@
       "sha256": "08988ae284f389413854428d7a5b59507b04754ad6adfe249cc4a8e44a841028"
     },
     {
-      "path": "docs/devlogs/2026-07-05-industrial-steel-camera-wip.md",
-      "sha256": "5f3655bb965a0a2d7abdd347b730450afb75e24ee526396ebcfa52d826b8620b"
-    },
-    {
       "path": "docs/devlogs/2026-07-05-sdf-geometry-lane.md",
       "sha256": "b48acb244838df393e9a514574e539c8cf8f5abca72652adcc4f2ebd2a6177d7"
     },
@@ -4697,114 +4617,6 @@
     {
       "path": "projects/industrial_lattice/modules/steel_lattice/steel.hlsl",
       "sha256": "571a3e8b9eb4f719fe5603825a67a04c9328cccf5a60bcf9fda9dc01fbd10518"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/industrial_steel_greebled.sentinel",
-      "sha256": "904d0830f13508f0038a95e6b9032180d35ee476ec6d8d20dade81af67d1f3fb"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
-      "sha256": "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/_shared/fonts/scientifica_ascii.hlsli",
-      "sha256": "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/_shared/os_terminal.hlsli",
-      "sha256": "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/_shared/os_text.hlsli",
-      "sha256": "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/_shared/sdf/sdf_objects.hlsli",
-      "sha256": "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/_shared/sdf/sdf_ops.hlsli",
-      "sha256": "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/_shared/sdf/sdf_shading.hlsli",
-      "sha256": "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_bay_gen/bay.hlsl",
-      "sha256": "521a95b7b8b3248e469683ec78cd19e5152933bf906a3e8e6ebf9638c6374d69"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_bay_gen/manifest.yaml",
-      "sha256": "8d2a550055f968a00f7f0f426c495696328974b61007e65fabe0e495bf462ce0"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_bay_gen/preview.hlsl",
-      "sha256": "d059455b9a7fc013c2f0e9fa2365c8c1420e4d3e8e91f33f217d2aa49a745c01"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_greeble_pack/manifest.yaml",
-      "sha256": "f33841cb2183ba57d8874fdf228c33ff7b209f679768daad8b6b4a8ace1dd4e2"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_greeble_pack/pack.hlsl",
-      "sha256": "859a11dcaeb44b6c53d258158bfc655039a3a5eaf696aa667bdeacdd80472747"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_greeble_pack/preview.hlsl",
-      "sha256": "46ef779e3aec5def569b94e97b1049a5ca30936d376cae1b5f2db0875c3895f3"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_greeble_place/greeble.hlsl",
-      "sha256": "d0f3e89f3a8933231c99bcf3494f9164685ef94b2b9ae99927ca8dc05b0b1a08"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_greeble_place/manifest.yaml",
-      "sha256": "6488a930cadca0382e4592ff5b461a37c4636e5680c2bd3ca0eca00ffce8f473"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_greeble_place/preview.hlsl",
-      "sha256": "6a49020d9db1b85abe23786967086a6781379b6ce198dd84218f798145a769a5"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_mono_post/manifest.yaml",
-      "sha256": "aa58da97bb60458dabef7c3698ba724662c3b2365ff5bb036d878b112856deea"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_mono_post/post.hlsl",
-      "sha256": "0b0841a0314b6aabed309f7dd75251d3f7591bf813b5ad089ec0a325c5d84ca4"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_struct_merge/manifest.yaml",
-      "sha256": "5be27c99e65f4227b914e330bb0974cafb3aa98bf38a6f5c3a4fbb34d02b9d89"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_struct_merge/merge.hlsl",
-      "sha256": "3e628fbbdb004da917025824e48a8400bdba2c05abdda33251d7cbdb539b632e"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_struct_merge/preview.hlsl",
-      "sha256": "76416989fc9a20ac40142aa25e9739736e68eed10483ec289f6f786548df3c8c"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_surface_sampler/manifest.yaml",
-      "sha256": "c2447d107f51729bb03d555853b0353715f388d64375ea918d13cab6a8b2860a"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_surface_sampler/preview.hlsl",
-      "sha256": "4d7bfe083b56d8a00b1ed9011210bc87057a14628c1f762283cda481176c7633"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/industrial_surface_sampler/surface.hlsl",
-      "sha256": "2defa28b20c028fb5a20f22ef87983e65980a1ae595fa321a2809ad32aec4838"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/sdf_industrial_scene_render/manifest.yaml",
-      "sha256": "dbb4ee0dd109a9e48570466afba2699d86acf6a048822a0230321756574d152d"
-    },
-    {
-      "path": "projects/industrial_steel_greebled/modules/sdf_industrial_scene_render/scene.hlsl",
-      "sha256": "d5089c915e29d3f8ba717fe7a2009e9c970331b6a0fc4fdd41d8d1bb2ecacf6a"
     },
     {
       "path": "projects/interaction_lab/.gitignore",
