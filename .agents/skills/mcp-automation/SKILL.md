@@ -40,14 +40,28 @@ When `ENABLE_AUTOMATION=ON`:
 
 ## Launching Sentinel
 
-**ALWAYS use Bash to launch Sentinel**, not the MCP tool. Launch from the install directory (or dev build directory):
+Sentinel must run in the active interactive Windows desktop session. Never launch `sentinel.exe` from Session 0, a service, SSH background execution, or any headless or non-interactive context. A direct launch from those contexts inherits the wrong session and cannot create the DXGI swap chain.
 
-```bash
+Before every agent-managed launch, inspect the agent session and any existing Sentinel process:
+
+```powershell
+$agentSession = [Diagnostics.Process]::GetCurrentProcess().SessionId
+Get-Process -Name sentinel -ErrorAction SilentlyContinue |
+    Select-Object Id, SessionId, Path
+```
+
+- If the agent is already in the active interactive session, launch from the install directory or dev build directory with `Start-Process`.
+- If the agent is in Session 0 or another non-interactive session, reuse a user-launched Sentinel instance or create an explicitly interactive scheduled task with `schtasks /Create ... /IT`, run it, and verify the resulting `sentinel.exe` session ID before testing.
+- The MCP `launch` action and ordinary background process creation are forbidden from a non-interactive agent session.
+
+Interactive-session examples:
+
+```powershell
 # Distribution install (default)
-start "" "C:\Program Files\OODLabs\Sentinel\sentinel.exe"
+Start-Process 'C:\Program Files\OODLabs\Sentinel\sentinel.exe'
 
 # Dev build
-start "" "<repo_root>/build/bin/Release/sentinel.exe"
+Start-Process '<repo_root>\build\bin\Release\sentinel.exe'
 ```
 
 Wait 3-5 seconds for the app to initialize before sending IPC commands.
@@ -136,7 +150,7 @@ NOT display names like "Background Removal" — those won't work.
 | Action | Description |
 |--------|-------------|
 | `ping` | Test connectivity |
-| `launch` | Launch Sentinel |
+| `launch` | Launch Sentinel only from the confirmed active interactive desktop session; forbidden from Session 0 or any headless context |
 | `kill` | Terminate app |
 | `status` | Check running/crashed; also `busy`, `compiling[]`, `dirty`, `window_visible` |
 | `logs` | Get stdout/stderr |

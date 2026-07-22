@@ -43,9 +43,15 @@ A good modular scene reads as a pipeline of responsibilities:
 
 Minimum standards:
 
-- Each generator stays independently inspectable with a cheap preview and a `capture_data_port` proof. If you cannot prove a node's output on its own, it is doing too much.
+- Each generator stays independently inspectable with a cheap, meaningful preview and a `capture_data_port` proof. Open the node and verify that the preview actually decodes its current records; `has_preview_srv` alone is not proof. If you cannot understand a node's output on its own, fix its preview before continuing.
 - Save the project before any major graph or buffer-contract change. Keep a snapshot of the last working state so a failed contract change is one reload away from recovery.
 - Judge the actual image the pipeline produces. Capture the output early and often and let the picture drive the next edit.
+
+### Preview-first construction
+
+Create one semantic node at a time. After it compiles and is wired, focus it, open its pipeline window, and inspect the live preview before authoring or creating the next node. Exercise at least one structural parameter and require an obvious preview change. Generator, plan, layout, assembly, and data-transform nodes must visualize their active records and enough spatial/type/group/weight information to explain the intermediate state. A final renderer or buffer readback supplements this preview; neither replaces it.
+
+Treat a blank, constant, generic, misleading, or illegible intermediate preview as a blocking authoring defect. Fix or replace the node before downstream work hides the problem.
 
 ---
 
@@ -107,6 +113,12 @@ Use typed controls, and make every one visibly matter:
 - Avoid hidden randomness where the user needs direct control. For a "one large dash" look, expose `dash_count` (precise float range) and `dash_offset` (explicit 0..1 phase) instead of silently hashing route ids into a phase.
 - Keep experimental controls default-off when they can damage the design language. Do not apply organic sine displacement or wavy paths to a hard graphic-design reference; controlled width profiles and rounded joins are a different language from noise.
 
+### Scene Group control surfaces
+
+Expose a curated top-level interface, not member-node internals. Start with roughly four to eight high-impact creative controls, counting a compound color or XY widget as one. Open the Scene Group Properties panel and test every exposed control; remove anything inactive, redundant, confusing, or implementation-level.
+
+Never expose camera-related parameters (binding, mode, position, orbit, target, FOV, or renderer-local/internal camera rows) at Scene Group level. Choose one camera owner: internal renderer camera or explicit `camera`/`camswitch`, and operate it from that node's own preview/Properties. While externally or group-bound, local camera rows are inactive. Prove the owner in the open renderer preview with a visible before/after change.
+
 ---
 
 ## MCP iteration loop
@@ -120,9 +132,10 @@ The tight loop for multi-node contract work:
 5. `sentinel_pipeline force_reload pipeline_id=<id>` only after the compile checks pass.
 6. Poll `sentinel_pipeline compile_status` to `ok`.
 7. Confirm data schemas and element counts with `sentinel_pipeline get_data_schemas` before wiring, and after a contract change re-check that producer counts and consumer loop limits still agree.
-8. Capture the final/post node and useful intermediate nodes. Use `sentinel_pipeline capture_data_port` to prove a structured buffer's contents (record counts, ids, active flags) rather than trusting the schema alone.
-9. Profile with `sentinel_graph profile summary=true` to catch a node that dominates frame time.
-10. **Checkpoint the working state.** `sentinel_capture action=checkpoint pipeline_id=<id>` saves a bundled `.sentinel`, captures the output image, and records the graph profile in one call, writing a `summary.md` proof folder. Use it whenever a look is worth keeping.
+8. For the current node, call `sentinel_graph focus` and `sentinel_pipeline open_window`; visually inspect its live preview and exercise a structural control before creating the next node. Fix an uninformative preview immediately.
+9. Capture the final/post node and useful intermediate nodes. Use `sentinel_pipeline capture_data_port` to prove a structured buffer's contents (record counts, ids, active flags) rather than trusting the schema alone.
+10. Profile with `sentinel_graph profile summary=true` to catch a node that dominates frame time.
+11. **Checkpoint the working state.** `sentinel_capture action=checkpoint pipeline_id=<id>` saves a bundled `.sentinel`, captures the output image, and records the graph profile in one call, writing a `summary.md` proof folder. Use it whenever a look is worth keeping.
 
 After creating pipelines and wiring links, always run `sentinel_graph auto_layout` (nodes spawn at 0,0 and stack otherwise); on a hand-arranged graph prefer `layout_neighborhood`.
 

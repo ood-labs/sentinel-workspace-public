@@ -6,7 +6,7 @@
     },
     {
       "path": ".agents/skills/mcp-automation/SKILL.md",
-      "sha256": "b607b3d73837199cfd625759955361dae08a78d4cea6b522e7a7a0edf5038c45"
+      "sha256": "f30d06c9b5f337c82b530f2464bc2bef443f36487e8ccdfb044443c81d2d92e2"
     },
     {
       "path": ".agents/skills/mcp-automation/ipc-reference.md",
@@ -22,11 +22,11 @@
     },
     {
       "path": ".agents/skills/modular-scene-authoring/SKILL.md",
-      "sha256": "5545afda5395f023933c8134ab00a8028b0356bd1a242eade2d051c931e9b14c"
+      "sha256": "17bf09afdcf4405fe302d39e7a1999583ff07dd06bdf50afe9c2e143ff6d0416"
     },
     {
       "path": ".agents/skills/module-authoring/SKILL.md",
-      "sha256": "0a717ea1f6c5ab4709f575d7be8d59a7ad36c4f80a22dc65623df31d0f132589"
+      "sha256": "738a1d48b686c368d269a6c7b633db6d30b843e04e5789b2b7a731e524e4e422"
     },
     {
       "path": ".agents/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -130,7 +130,7 @@
     },
     {
       "path": ".claude/skills/mcp-automation/SKILL.md",
-      "sha256": "b607b3d73837199cfd625759955361dae08a78d4cea6b522e7a7a0edf5038c45"
+      "sha256": "f30d06c9b5f337c82b530f2464bc2bef443f36487e8ccdfb044443c81d2d92e2"
     },
     {
       "path": ".claude/skills/mcp-automation/ipc-reference.md",
@@ -146,11 +146,11 @@
     },
     {
       "path": ".claude/skills/modular-scene-authoring/SKILL.md",
-      "sha256": "5545afda5395f023933c8134ab00a8028b0356bd1a242eade2d051c931e9b14c"
+      "sha256": "17bf09afdcf4405fe302d39e7a1999583ff07dd06bdf50afe9c2e143ff6d0416"
     },
     {
       "path": ".claude/skills/module-authoring/SKILL.md",
-      "sha256": "0a717ea1f6c5ab4709f575d7be8d59a7ad36c4f80a22dc65623df31d0f132589"
+      "sha256": "738a1d48b686c368d269a6c7b633db6d30b843e04e5789b2b7a731e524e4e422"
     },
     {
       "path": ".claude/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -254,15 +254,15 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "29a830d00e8587133f0390ad300e4247e51dd99e797ad9a3d1f59133835f4b61"
+      "sha256": "a7afdcc35e5967fc6d037e55bdbdcc949b490eb3bfc09ed54580824d8223f3e9"
     },
     {
       "path": "CLAUDE.md",
-      "sha256": "29a830d00e8587133f0390ad300e4247e51dd99e797ad9a3d1f59133835f4b61"
+      "sha256": "a7afdcc35e5967fc6d037e55bdbdcc949b490eb3bfc09ed54580824d8223f3e9"
     },
     {
       "path": "GEMINI.md",
-      "sha256": "29a830d00e8587133f0390ad300e4247e51dd99e797ad9a3d1f59133835f4b61"
+      "sha256": "a7afdcc35e5967fc6d037e55bdbdcc949b490eb3bfc09ed54580824d8223f3e9"
     },
     {
       "path": "LICENSE",
@@ -306,11 +306,11 @@
     },
     {
       "path": "knowledge/graph-wiring.md",
-      "sha256": "8fb0843a9f3600b802505f334e1ea3bd625f1e595f1973bdd0ba2498356345cc"
+      "sha256": "e0286a7b26b73605266ac9ef4d729de22c8481a73347b5b73654e8cd21c700bf"
     },
     {
       "path": "knowledge/module-pipeline.md",
-      "sha256": "977e72379e7d5567f837514209cb15ef3f84b377211aab51e4193138e02fd73e"
+      "sha256": "a388faf0fb04ade8e82e40210d67458a0624948ab0c908bebcf00e89a86dfe1b"
     },
     {
       "path": "knowledge/motion-choreography.md",
@@ -326,7 +326,7 @@
     },
     {
       "path": "knowledge/scene-system.md",
-      "sha256": "3307057d5ef96b3a4e66327d23f3f2d62ee42db312da7166764336332ce33926"
+      "sha256": "882aabea26b5113eff81162db60430ac418d45ff476ca840cd438a836e22f2d2"
     },
     {
       "path": "knowledge/streamdiff.md",
@@ -6276,5 +6276,5 @@
     }
   ],
   "schema_version": 1,
-  "source_commit": "61c012e19af3ce12d57bd366fc79ae4c84da58de"
+  "source_commit": "119b3bf674c8ee4fab26f6d32c530d2530868113"
 }

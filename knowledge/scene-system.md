@@ -50,6 +50,17 @@ The `camswitch` node cuts or blends between camera nodes for show control: `came
 
 Verified MCP facts: `camera_ref` takes an entity id, and pointing a module's `camera_ref` at a `camswitch` makes it follow whichever camera the switcher selects. While bound, writes to the module's own `camera_*` parameters produce no output change (proven by pixel diff: a bound-module local fov write changed 0.0% of pixels while the same write on the referenced rig changed the render); clear `camera_ref` to regain local control. Driving the rig over MCP is just `sentinel_state set` on the camera node's `camera_pos_*` / `camera_yaw` / `camera_pitch` / `camera_fov` values.
 
+### Camera ownership and control-surface guardrail
+
+Choose exactly one owner before authoring controls:
+
+- Use the renderer's internal camera when the camera is local to that renderer and should be manipulated in its preview.
+- Use an explicit `camera` or `camswitch` when multiple consumers need a shared rig or show-level switching.
+
+Never expose camera-related parameters (binding, mode, position, orbit, target, FOV, or renderer-local camera rows) on a Scene Group or other top-level surface. Keep camera operation on the owning renderer preview or the explicit camera node's own Properties. A Scene Group containing exactly one camera binds compatible members automatically, so adding a camera can change ownership without changing the renderer's local rows; those rows then stop affecting the image.
+
+After grouping or changing `camera_ref`, reopen the renderer preview and exercise the chosen owner. Do not accept StateTree write success as interaction proof.
+
 ## Atlas (Multi-Pass Still Bank)
 
 The `atlas` pipeline collects aligned stills into a block-packed RGBA16F ring grid: per captured still it packs columns for color, segmentation, depth, and encoded data from whatever passes are wired in. Key controls: `capture_now` (manual trigger), `capture_slot`, `interval_enabled` + `interval_frames` (self-timing cycle), `settle_frames` (pad so upstream settles before commit), `slot_count`, `fit_mode`. It reports `occupied_count`, per-slot `slot_sequences`, and `cycle_state`, and publishes a `Slot Occupancy` data pin that downstream modules consume.
@@ -61,6 +72,8 @@ The proven chain: StreamDiff (held, `render_one` per still) feeds matting `Alpha
 Scene Groups snapshot everything inside them: a group preset auto-captures every parameter of every contained pipeline plus each node's bypass state, with no manual control exposure. Nested groups resolve membership innermost-wins, and an outer preset can recall each inner group's chosen preset then apply its own overrides (preset-of-presets). Recall rides the batch StateTree write, so presets restore parameters that expressions or OSC also touch.
 
 Use group presets as the scene-state layer under live switching: preset recall sets the look, the mux or Conductor decides what is visible and when.
+
+Treat exposed Scene Group parameters as a deliberately authored interface, not a convenient mirror of member parameters. Start with roughly four to eight high-impact creative controls, count compound color/XY widgets as one, open the group Properties panel, and test every exposed control. Remove inactive, redundant, confusing, or implementation-level rows.
 
 ## Snapshot, Restore, Checkpoint
 

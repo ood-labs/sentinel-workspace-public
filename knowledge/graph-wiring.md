@@ -65,3 +65,18 @@ After wiring, inspect:
 - `has_preview_srv`
 
 Real proof is a healthy node with frames climbing, not just a successful create call.
+
+## Preview-First Construction Loop
+
+Build creative graphs one semantic node at a time. After creating and wiring each pipeline node:
+
+1. wait for compile and healthy frames;
+2. focus the node with `sentinel_graph action=focus`;
+3. open it with `sentinel_pipeline action=open_window`;
+4. visually inspect its preview while changing at least one important parameter;
+5. capture the intermediate output or data port when useful; and
+6. fix the preview before adding the next node if it is blank, constant, misleading, or illegible.
+
+`has_preview_srv` only proves that the pipeline published a preview texture. It does not prove that the preview communicates useful state.
+
+Every generator, layout, plan, assembly, and data-transform node needs an independently useful preview. For structured data, show active records and enough spatial/type/group/weight information to understand what will reach the downstream consumer. A final renderer cannot substitute for the missing intermediate preview.

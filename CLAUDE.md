@@ -24,6 +24,10 @@ Use:
 
 The shipped docs are a guide, but the live MCP surface is the source of truth for this exact build.
 
+## Sentinel Launch Safety
+
+Sentinel must run in the active interactive Windows desktop. Never launch `sentinel.exe` from Windows Session 0, a service, SSH background execution, or any headless or non-interactive context. Check the agent process session ID before every launch. Reuse a user-launched Sentinel instance in the active desktop session, or use an explicitly interactive `/IT` scheduled task and verify the resulting process session ID before testing. MCP and raw localhost IPC can connect across sessions after the interactive app is running.
+
 ## First-Run Engine Setup
 
 Some pipelines need TensorRT engine packs. A fresh install may have none.
@@ -80,21 +84,23 @@ Use video links for textures and data links for structured buffers.
 
 After creating and wiring nodes, always inspect real runtime state. A successful create call is not proof that the node is processing.
 
-## Visible Incremental Node Construction
+## Visible, Preview-First Node Construction
 
-When building or extending a live graph, work one node at a time so the user can watch the graph take shape. Do not author every planned node first and then create or import them all at the end. Do not issue concurrent node-creation calls or hide multiple creations inside a batch or loop.
+When building or extending a live creative graph, work one semantic node at a time so the user can watch and evaluate the graph as it takes shape. Do not batch or concurrently create the planned nodes unless the user explicitly asks for a background/batch workflow.
 
-For each node, complete this visible cycle before starting the next node:
+For every pipeline node, complete this cycle before creating the next one:
 
-1. Author or modify only the files needed for that node and any unavoidable shared prerequisite.
-2. Create the node in the live graph immediately. Place it near the relevant node and add its currently known video or data links.
-3. Call `sentinel_graph action=focus` for the new node so it is centered and visible in the graph.
-4. Call `sentinel_pipeline action=open_window` for pipeline nodes so the node's preview/properties panel is open and visible. For entity types without a pipeline window, expose the closest applicable Properties or preview UI supported by the live capabilities.
-5. Wait for any asynchronous compile, inspect health and frames, and leave the new node focused long enough for the UI to update before authoring or creating the next node.
+1. Author or select that node, create it, place it near its neighbors, and add the currently known links.
+2. Wait for compilation, then inspect health, frames, schemas, and data counts as applicable.
+3. Call `sentinel_graph action=focus`, then `sentinel_pipeline action=open_window` and visually inspect the rendered preview/properties panel in Sentinel.
+4. Exercise the node's important controls while its window is open and confirm that the preview changes as intended. Capture the intermediate output when visual proof is useful.
+5. Fix a blank, constant, misleading, or illegible preview before continuing downstream. `stats.has_preview_srv=true` proves only that a texture exists; it does not prove that the preview communicates the node's current data.
 
-Continue through that cycle without requiring approval after every node unless the user asks for checkpoints. The goal is visible incremental construction, not a stop-and-confirm workflow.
+Generator, plan, layout, assembly, and data-transform nodes must provide a meaningful visual preview of their own intermediate state. Show active records and their spatial structure, direction, grouping, weight, or type as appropriate. A downstream renderer and `capture_data_port` are additional proof, not substitutes for an inspectable node preview.
 
-Only suspend this behavior when the user explicitly asks for a batch/background workflow or says that repeated focusing would interfere with simultaneous hands-on tweaking. Treat that exception as narrowly scoped to the requested situation, then return to visible one-node-at-a-time construction.
+For camera-capable graphs, choose exactly one camera owner: either the renderer's internal camera or an explicit `camera`/`camswitch` node. Never promote camera-related parameters (binding, mode, position, orbit, target, FOV, or other internal/local camera rows) onto a Scene Group or other top-level control surface. Operate the camera from the owning renderer preview or camera node Properties. While a renderer is bound to an external or group camera, its local camera controls are inactive. Open the renderer preview and test the chosen owner with a visible before/after change before handoff.
+
+Keep Scene Group control surfaces deliberately small. Start with roughly four to eight high-impact creative or construction controls, counting a color or XY compound as one control. Do not mirror internal implementation parameters. After exposure, open the Scene Group Properties and test every exposed control; remove controls that are redundant, inactive, confusing, or too low-level.
 
 ## Health And Proof
 
@@ -180,6 +186,8 @@ Scene Groups organize graph regions and expose selected controls without flatten
 Group presets snapshot every parameter of every contained pipeline plus per-node bypass state automatically, with innermost-wins nested membership and preset-of-presets recall (an outer preset can pick each inner group's preset then apply overrides). Use them as the scene-state layer under live switching.
 
 Scene Groups can also expose selected member parameters as first-class group controls. Exposed parameters keep their authored defaults, enums, and source sections, render as normal full-width Properties rows with reset, OSC, expressions, range editing, and undo, and authored color and XY compounds expose as one complete swatch or pad unit.
+
+Curate exposed controls as a compact user-facing interface rather than a mirror of node internals. Default to four to eight high-impact controls and verify every one in the open Scene Group Properties panel. Never expose camera ownership, binding, mode, position, orbit, target, FOV, or other camera controls there; keep camera operation on the actual owning renderer preview or `camera` node.
 
 Over MCP, use `sentinel_graph expose_scene_group_parameter` with the group's annotation `entity_id`, the member `pipeline_id`, and a `param_name`. Compound parameters live in StateTree as flattened components (`main_color_r/_g/_b`, `center_x/_y`); pass a COMPONENT name (the compound base name errors with parameter-not-found) and the whole compound promotes at once, returning every exposed path under `/sentinel/groups/<id>/parameters/`. Writes to a group path flow to the member parameter and back.
 

@@ -93,6 +93,12 @@ data_outputs:
 
 Pass inputs reference data with `source: "data:0"` (data input slot 0). The compiler generates `StructuredBuffer<T>` declarations + `_DataN_Count` cbuffer fields.
 
+## Preview Contract For Data Nodes
+
+Every generator, layout, plan, assembly, or data-transform Module must render a cheap, meaningful preview of its own current output. Read the actual output buffer in a preview pass and visualize active records plus the spatial/type/group/weight fields needed to understand downstream behavior. Structural parameter changes must produce an obvious preview change.
+
+After create or reload, focus the node, call `sentinel_pipeline action="open_window"`, and inspect the live Sentinel preview before continuing to another node. Pair that inspection with `capture_data_port` when the Module publishes structured data. `has_preview_srv` only proves that a texture exists; a blank, constant, generic, misleading, or illegible preview is a blocking defect.
+
 ## HLSL Conventions (CRITICAL — read before writing ANY Module shader)
 
 These are the compiler-injected names. Do NOT redeclare them or you get "redefinition" errors.
@@ -431,6 +437,8 @@ features: [math3d, noise, camera]
 Provides in cbuffer: `_ViewMatrix`, `_ProjMatrix`, `_ViewProjMatrix`, `_InvViewProjMatrix`, `_CameraPos`, `_CameraNear`, `_CameraFar`, `_CameraFOV`.
 
 The rig supports fly and orbit modes (`camera_mode` parameter; `Tab` toggles while the preview interaction is active). Camera-feature modules also expose a `camera_ref` parameter: point it at a `camera` node to drive this module from a shared wireless rig (local camera rows lock while bound; a group's single contained `camera` node binds members automatically). A `camswitch` node cuts or blends between camera nodes for show control.
+
+Choose exactly one camera owner: the Module's internal camera or an explicit `camera`/`camswitch`. Never expose camera-related parameters (binding, mode, position, orbit, target, FOV, or Module-local camera rows) on a Scene Group/top-level control surface. Keep camera operation on the owning renderer preview or camera node Properties. While externally or group-bound, the local camera rows are inactive. After binding or grouping, open the renderer preview and prove the owning camera with a visible before/after change; StateTree write success is not interaction proof.
 
 Declare viewport behavior in the manifest with an optional `viewport:` block:
 
