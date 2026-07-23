@@ -1,0 +1,2 @@
+RWTexture2D<float4> OutputUAV:register(u0);
+[numthreads(8,8,1)]void main(uint3 tid:SV_DispatchThreadID){if(tid.x>=(uint)_Resolution.x||tid.y>=(uint)_Resolution.y)return;float3 c=_Tex0.Load(int3(tid.xy,0)).rgb*exposure;c=c/(1+c);c=pow(saturate(c),1.0/2.2);float2 uv=((float2)tid.xy+.5)/_Resolution.xy;float vign=smoothstep(1.25,.25,length((uv-.5)*float2(_Resolution.x/_Resolution.y,1)));c*=lerp(1,vign,vignette);float grain=frac(sin(dot((float2)tid.xy,float2(12.9898,78.233)))*43758.5453)-.5;c+=grain*film_grain;OutputUAV[tid.xy]=float4(saturate(c),1);}

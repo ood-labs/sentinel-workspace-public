@@ -1,0 +1,85 @@
+name: "Zaha Gesture Loft Laboratory"
+version: "1.0"
+mode: generator
+resolution: [1280,720]
+
+panel:
+  mode: canvas
+  output: "Loft Laboratory"
+  resolution: follow_panel
+
+data_inputs:
+  - name: "Sampled Gesture"
+    slot: 0
+    element_size: 48
+    element_count: 512
+    schema:
+      - { name: pos, type: float2 }
+      - { name: dir, type: float2 }
+      - { name: depth, type: float }
+      - { name: u, type: float }
+      - { name: v, type: float }
+      - { name: weight, type: float }
+      - { name: group, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: morph_field, display: "Massing Morph Field", type: point2D, min: [0.03,0.15], max: [0.48,0.91], default: [0.30,0.48], hidden: true, group: "Spatial Fields" }
+  - { name: torsion_field, display: "Torsion Field", type: point2D, min: [0.52,0.15], max: [0.97,0.91], default: [0.75,0.52], hidden: true, group: "Spatial Fields" }
+  - { name: profile_family, display: "Profile Family", type: enum, options: [Streamline, Cocoon, Canyon, Strata], flags: button_grid, default: 1, group: "Form Language" }
+  - { name: tower_height, display: "Tower Height", type: float, min: 10.0, max: 32.0, default: 22.0, group: "Envelope" }
+  - { name: podium_height, display: "Podium Lift", type: float, min: 0.0, max: 5.0, default: 1.2, group: "Envelope" }
+  - { name: base_width, display: "Body Width", type: float, min: 2.0, max: 9.0, default: 5.8, group: "Envelope" }
+  - { name: base_depth, display: "Body Depth", type: float, min: 1.5, max: 7.0, default: 3.7, group: "Envelope" }
+  - { name: lean_gain, display: "Gesture Lean", type: float, min: 0.0, max: 5.0, default: 2.4, group: "Gesture" }
+  - { name: contour_gain, display: "Contour Lift", type: float, min: 0.0, max: 5.0, default: 1.5, group: "Gesture" }
+  - { name: depth_drift, display: "Depth Drift", type: float, min: 0.0, max: 5.0, default: 1.8, group: "Gesture" }
+  - { name: global_twist, display: "Global Twist", type: float, min: -180.0, max: 180.0, default: 48.0, group: "Gesture" }
+  - { name: taper_bias, display: "Taper Bias", type: float, min: 0.0, max: 1.0, default: 0.46, group: "Sculpt" }
+  - { name: waist_position, display: "Waist Position", type: float, min: 0.15, max: 0.85, default: 0.52, group: "Sculpt" }
+  - { name: waist_depth, display: "Waist Depth", type: float, min: 0.0, max: 0.65, default: 0.22, group: "Sculpt" }
+  - { name: crown_flare, display: "Crown Flare", type: float, min: 0.0, max: 0.8, default: 0.18, group: "Sculpt" }
+  - { name: canyon_void, display: "Canyon Void", type: float, min: 0.0, max: 1.0, default: 0.36, group: "Sculpt" }
+  - { name: floor_count, display: "Floor Bands", type: int, min: 8, max: 64, default: 32, group: "Structure" }
+  - { name: seed, display: "Variation Seed", type: int, min: 0, max: 999, default: 137, group: "Structure" }
+
+viewport:
+  hint: "Drag anywhere in either field: left shapes asymmetry and lean; right shapes torsion and depth flow."
+  interactions: [events]
+  input: { pointer: [left], gestures: [drag] }
+  # ui-label: title = GESTURE LOFT LABORATORY
+  # ui-label: subtitle = TWO SPATIAL FIELDS / ONE CONTINUOUS SHELL DNA
+  # ui-label: morph = MASSING FIELD
+  # ui-label: torsion = TORSION FIELD
+  controls:
+    - { id: morph_field, kind: xypad, param: morph_field, rect: [0.03,0.15,0.48,0.91], label: "Massing Morph Field" }
+    - { id: torsion_field, kind: xypad, param: torsion_field, rect: [0.52,0.15,0.97,0.91], label: "Torsion Field" }
+
+buffers:
+  - { name: loft_sections, structured: true, element_size: 64, element_count: 96 }
+
+passes:
+  - { name: emit, shader: emit_sections.hlsl, target: cs_5_0, dispatch: [2,1,1], thread_group_x: 64, thread_group_y: 1, inputs: [ { slot: 0, source: "data:0" } ], output: "buffer:loft_sections" }
+  - { name: preview, shader: preview.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:loft_sections" } ], output: output }
+
+outputs:
+  - { name: "Loft Laboratory", pass: preview }
+
+data_outputs:
+  - name: "Loft Sections"
+    buffer: loft_sections
+    schema:
+      - { name: center, type: float3 }
+      - { name: radius_x, type: float }
+      - { name: radius_z, type: float }
+      - { name: rotation, type: float }
+      - { name: curvature, type: float }
+      - { name: u, type: float }
+      - { name: floor_band, type: float }
+      - { name: skin_bias, type: float }
+      - { name: void_bias, type: float }
+      - { name: active, type: float }
+      - { name: tangent, type: float3 }
+      - { name: seed, type: float }
