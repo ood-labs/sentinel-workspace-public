@@ -1,0 +1,71 @@
+name: "Scientific Signal Glyphs"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+
+viewport:
+  hint: "Semantic overlays from real blob bounds, stable IDs, corners, lines, and edge phase"
+
+inputs:
+  - { name: "Spectral Program", slot: 0, required: true }
+
+data_inputs:
+  - name: "Feature Agents"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: velocity, type: float2 }
+      - { name: scale, type: float }
+      - { name: confidence, type: float }
+      - { name: angle, type: float }
+      - { name: age, type: float }
+      - { name: stable_id, type: uint }
+      - { name: kind, type: uint }
+      - { name: source_index, type: uint }
+      - { name: flags, type: uint }
+      - { name: aux, type: float4 }
+  - name: "Topology Edges"
+    slot: 1
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: weight, type: float }
+      - { name: phase, type: float }
+      - { name: distance, type: float }
+      - { name: tension, type: float }
+      - { name: source_a, type: uint }
+      - { name: source_b, type: uint }
+      - { name: kind, type: uint }
+      - { name: flags, type: uint }
+
+parameters:
+  - { name: glyph_mix, display: "Semantic Glyphs", type: float, min: 0.0, max: 2.0, default: 0.52, group: "Glyphs" }
+  - { name: glyph_scale, display: "Social Legibility", type: float, min: 0.75, max: 2.0, default: 1.30, group: "Glyphs" }
+  - { name: glyph_floor, display: "Confidence Floor", type: float, min: 0.0, max: 1.0, default: 0.08, group: "Glyphs" }
+  - { name: bounds_mix, display: "Blob Bounds", type: float, min: 0.0, max: 2.0, default: 0.45, group: "Mass Records" }
+  - { name: tick_mix, display: "Bound Ticks", type: float, min: 0.0, max: 2.0, default: 0.82, group: "Mass Records" }
+  - { name: id_mix, display: "Stable ID Bits", type: float, min: 0.0, max: 2.0, default: 0.72, group: "Mass Records" }
+  - { name: orientation_mix, display: "Corner Orientation", type: float, min: 0.0, max: 2.0, default: 0.62, group: "Point Records" }
+  - { name: corner_ring_mix, display: "Corner Response", type: float, min: 0.0, max: 2.0, default: 0.36, group: "Point Records" }
+  - { name: observed_line_mix, display: "Observed Lines", type: float, min: 0.0, max: 2.0, default: 0.58, group: "Line Records" }
+  - { name: endpoint_mix, display: "Line Endpoints", type: float, min: 0.0, max: 2.0, default: 0.82, group: "Line Records" }
+  - { name: phase_probe_mix, display: "Edge Phase Probes", type: float, min: 0.0, max: 2.0, default: 0.48, group: "Topology Records" }
+  - { name: mass_glyph_color, display: "Mass Glyph", type: color, default: [1.0, 0.25, 0.02], group: "Palette" }
+  - { name: corner_glyph_color, display: "Corner Glyph", type: color, default: [0.86, 0.84, 0.76], group: "Palette" }
+  - { name: line_glyph_color, display: "Line Glyph", type: color, default: [0.68, 0.67, 0.61], group: "Palette" }
+  - { name: phase_probe_color, display: "Phase Probe", type: color, default: [0.96, 0.93, 0.84], group: "Palette" }
+
+passes:
+  - name: glyphs
+    shader: glyphs.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+    output: output
+
+outputs:
+  - { name: "Glyph Program", pass: glyphs }

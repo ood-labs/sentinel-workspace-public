@@ -1,0 +1,114 @@
+name: "Scientific Performance Deck"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+panel:
+  mode: canvas
+  output: "Performance Deck"
+  resolution: follow_panel
+
+inputs:
+  - { name: "Glyph Program", slot: 0, required: true }
+
+parameters:
+  - { name: observe, display: "Observe Look", type: button, group: "Performance" }
+  - { name: surge, display: "Surge Look", type: button, group: "Performance" }
+  - { name: archive, display: "Archive Look", type: button, group: "Performance" }
+  - { name: balanced, display: "Balanced Look", type: button, group: "Performance" }
+
+viewport:
+  hint: "Drag the three macro pads. Q Observe, W Surge, E Archive, R Balanced."
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [q, w, e, r]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: set_macro, label: "Set Macro Pad" }
+    - { gesture: left_drag, action: perform_macro, label: "Perform Macro Pad" }
+    - { key: q, action: observe, label: "Observe Look" }
+    - { key: w, action: surge, label: "Surge Look" }
+    - { key: e, action: archive, label: "Archive Look" }
+    - { key: r, action: balanced, label: "Balanced Look" }
+  # ui-label: title = SCIENTIFIC ORGANISM / PERFORMANCE DECK
+  # ui-label: keys = Q / W / E / R PRESETS
+  # ui-label: energy = ENERGY
+  # ui-label: energy_axes = SIGNAL / WARP
+  # ui-label: structure = STRUCTURE
+  # ui-label: structure_axes = TOPOLOGY / RELIEF
+  # ui-label: memory = MEMORY
+  # ui-label: memory_axes = FILAMENT / ARCHIVE
+  # ui-label: en = EN
+  # ui-label: wp = WP
+  # ui-label: tp = TP
+  # ui-label: rf = RF
+  # ui-label: mm = MM
+  # ui-label: ar = AR
+  # ui-label: hero = HERO
+  # ui-label: perf = PERF
+  # ui-label: observe = OBSERVE
+  # ui-label: surge = SURGE
+  # ui-label: archive = ARCHIVE
+  # ui-label: balanced = BALANCED
+  controls:
+    - { id: observe, kind: button, param: observe, rect: [0.545, 0.012, 0.635, 0.061], label: "Observe Look" }
+    - { id: surge, kind: button, param: surge, rect: [0.645, 0.012, 0.720, 0.061], label: "Surge Look" }
+    - { id: archive, kind: button, param: archive, rect: [0.730, 0.012, 0.820, 0.061], label: "Archive Look" }
+    - { id: balanced, kind: button, param: balanced, rect: [0.830, 0.012, 0.950, 0.061], label: "Balanced Look" }
+
+buffers:
+  - { name: deck_state, structured: true, element_size: 64, element_count: 1, persistent: true }
+
+passes:
+  - name: interaction
+    shader: interaction.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:deck_state"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:deck_state" }
+    output: output
+
+data_outputs:
+  - name: "Performance Controls"
+    buffer: deck_state
+    schema:
+      - { name: energy, type: float }
+      - { name: warp, type: float }
+      - { name: topology, type: float }
+      - { name: relief, type: float }
+      - { name: memory, type: float }
+      - { name: archive, type: float }
+      - { name: glyphs, type: float }
+      - { name: signal_rate, type: float }
+      - { name: pulse_density, type: float }
+      - { name: quality, type: float }
+      - { name: focus_x, type: float }
+      - { name: focus_y, type: float }
+      - { name: active_pad, type: float }
+      - { name: generation, type: float }
+      - { name: initialized, type: float }
+      - { name: reserved, type: float }
+
+control_outputs:
+  - { name: energy, buffer: deck_state, element: 0, field_offset: 0, description: "Signal energy macro 0-1" }
+  - { name: warp, buffer: deck_state, element: 0, field_offset: 4, description: "Field warp macro 0-1" }
+  - { name: topology, buffer: deck_state, element: 0, field_offset: 8, description: "Topology macro 0-1" }
+  - { name: relief, buffer: deck_state, element: 0, field_offset: 12, description: "Relief macro 0-1" }
+  - { name: memory, buffer: deck_state, element: 0, field_offset: 16, description: "Filament memory macro 0-1" }
+  - { name: archive, buffer: deck_state, element: 0, field_offset: 20, description: "Spectral archive macro 0-1" }
+  - { name: glyphs, buffer: deck_state, element: 0, field_offset: 24, description: "Semantic glyph macro 0-1" }
+  - { name: signal_rate, buffer: deck_state, element: 0, field_offset: 28, description: "Signal rate macro 0-1" }
+  - { name: pulse_density, buffer: deck_state, element: 0, field_offset: 32, description: "Signal density macro 0-1" }
+  - { name: quality, buffer: deck_state, element: 0, field_offset: 36, description: "Performance or hero render mode" }
+
+outputs:
+  - { name: "Performance Deck", pass: render }

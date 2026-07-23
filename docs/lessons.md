@@ -1,12 +1,24 @@
 ---
 type: lessons
-updated: 2026-07-22
+updated: 2026-07-23
 ---
 
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-23 - Scaled feedback passes need their actual texture extent
+
+**Symptoms**: Seed Lab markers and the later amber guide line appeared at the correct normalized coordinates, but the Biotic Source deformation appeared at doubled positions and stopped responding outside the upper-left quarter.
+
+**Cause**: The `organism` feedback buffer runs at `scale: 0.5`, while its evolution pass calculated bounds, UVs, and aspect from the root 1280x720 `_Resolution` (`modules/scientific_biotic_source/evolve.hlsl:13`). The later full-resolution overlay consumed the same records correctly and concealed the upstream mismatch.
+
+**Fix**: Query the feedback texture with `_Tex0.GetDimensions`, use that extent for dispatch bounds, UV normalization, aspect, and Laplacian clamping, then prove alignment on the raw Field output with seeds beyond `0.5` on both axes (`modules/scientific_biotic_source/evolve.hlsl:18`).
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-23
 
 ## 2026-07-22 - Zero-control Canvases must not include control-state helpers
 

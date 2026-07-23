@@ -160,6 +160,12 @@ Start from a measured baseline, enable and tune one task at a time, and run `sen
 
 For quick creative builds, keep the canonical visible chain at 1280x720 or a comparable 720p resolution. When Features is too expensive, insert an explicit analysis proxy branch that downsamples only the Features input (for example to 480x270) while the full-resolution source bypasses it into the renderer. The Features preview and coordinates then use the analysis resolution; downstream consumers must normalize with that exact size. This is an external workaround until the live node advertises a verified internal analysis scale. Preview the real Features node while tuning, inspect output counts and schemas, and require the agreed performance target before adding another node. See `knowledge/tracking-suite.md` and `knowledge/performance-proof.md`.
 
+## Scaled-Pass Coordinate Discipline
+
+When a Module pass writes to a texture buffer with `scale` below `1.0`, do not assume `_Resolution` is the scaled target extent. Derive simulation bounds, UVs, and aspect from the actual input or feedback texture with `GetDimensions`, or from another verified pass-local extent. Using the root pipeline resolution for a half-resolution field can multiply normalized positions and make only one corner of the control domain effective.
+
+Prove the effect-producing pass itself. A later full-resolution overlay can draw a marker at the correct data coordinate while an upstream scaled simulation responds somewhere else. Capture the raw field or intermediate output and test records on both sides of `0.5` on each axis before declaring producer/consumer coordinates aligned.
+
 ## Async Compile
 
 Module creates with `project_dir` are atomic, but shader compilation can continue asynchronously.

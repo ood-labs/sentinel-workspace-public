@@ -1,0 +1,51 @@
+name: "Scientific Spectral Archive"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+
+viewport:
+  hint: "Three live temporal frequency bands: edge, tissue, and mass"
+
+inputs:
+  - { name: "Relief Program", slot: 0, required: true }
+
+buffers:
+  - { name: archive, format: RGBA16F, persistent: true }
+
+parameters:
+  - { name: high_gain, display: "Edge Band Gain", type: float, min: 0.0, max: 12.0, default: 5.5, group: "Analysis" }
+  - { name: mid_gain, display: "Tissue Band Gain", type: float, min: 0.0, max: 12.0, default: 4.0, group: "Analysis" }
+  - { name: low_gain, display: "Mass Band Gain", type: float, min: 0.0, max: 3.0, default: 0.78, group: "Analysis" }
+  - { name: high_persistence, display: "Edge Memory", type: float, min: 0.0, max: 0.999, default: 0.82, group: "Memory" }
+  - { name: mid_persistence, display: "Tissue Memory", type: float, min: 0.0, max: 0.999, default: 0.91, group: "Memory" }
+  - { name: low_persistence, display: "Mass Memory", type: float, min: 0.0, max: 0.999, default: 0.96, group: "Memory" }
+  - { name: archive_drift, display: "Archive Drift", type: point2D, min: [-6.0, -6.0], max: [6.0, 6.0], default: [-0.32, 0.18], group: "Memory" }
+  - { name: archive_mix, display: "Archive Mix", type: float, min: 0.0, max: 2.0, default: 0.09, group: "Render" }
+  - { name: spectral_bands, display: "Spectral Contours", type: float, min: 2.0, max: 32.0, default: 14.0, group: "Render" }
+  - { name: contour_mix, display: "Contour Mix", type: float, min: 0.0, max: 2.0, default: 0.045, group: "Render" }
+  - { name: high_ink, display: "Edge Ink", type: color, default: [0.84, 0.81, 0.73], group: "Palette" }
+  - { name: mid_ink, display: "Tissue Ink", type: color, default: [0.32, 0.31, 0.28], group: "Palette" }
+  - { name: low_ink, display: "Mass Ink", type: color, default: [0.045, 0.043, 0.038], group: "Palette" }
+  - { name: contour_ink, display: "Archive Contour", type: color, default: [0.82, 0.8, 0.72], group: "Palette" }
+
+passes:
+  - name: evolve
+    shader: evolve.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:archive" }
+    output: "buffer:archive"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:archive" }
+    output: output
+
+outputs:
+  - { name: "Spectral Program", pass: render }
