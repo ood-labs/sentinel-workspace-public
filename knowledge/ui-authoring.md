@@ -45,6 +45,10 @@ Do not hand-edit `_ui.generated.hlsli`. Validation rejects stale generated files
 
 ## Controls
 
+Do not recreate the Properties panel inside an authored Canvas. Ordinary numeric sliders, colors, toggles, and enums already have precise host controls, range editing, reset, OSC, expressions, presets, and undo. A permanent wall of shader-rendered duplicates consumes the space needed for the visual and adds no new capability.
+
+Viewport controls are justified when they are spatial, contextual, or performative: tool selection, momentary actions, transport, mode switches, an XY pad whose location is part of the visual, or controls that operate on the current selection. Keep them few and subordinate to the content.
+
 Bind shader-rendered controls to ordinary parameters:
 
 ```yaml
@@ -65,6 +69,20 @@ viewport:
 Control rectangles are normalized image coordinates and must match the rectangles rendered by HLSL. Use `_ViewportControlFlags[index]` through `suiInteraction(index)` for local down/hover state. Momentary feedback should read only that control's pressed bit. Do not let one control's rollover state alter shared structural borders or neighboring controls.
 
 Prefer value-driven visuals. A toggle thumb should derive from its value, a slider fill from its numeric value, and a selected tool from its actual mode. Keep geometry branchless where practical so both states share the same rendering path.
+
+## Direct Manipulation First
+
+Use the viewport for work that Properties cannot express well:
+
+- select, move, rotate, and scale objects;
+- add, remove, and edit points, handles, and splines;
+- paint ripple, displacement, mask, force, or erase fields;
+- manipulate regions, falloffs, attractors, flow directions, and camera gizmos;
+- trigger spatial or time-sensitive performance gestures.
+
+Toolbars should select interaction modes, not expose every implementation parameter. Make brush radius broad enough for both fine detail and frame-scale gestures, and provide several semantically distinct tools rather than one brush with many hidden meanings. Put exact gain, decay, threshold, palette, and tuning values in Properties. Show only compact, useful telemetry such as active tool, selection, feature counts, frame budget, and capture state.
+
+For a system-wide editor, publish durable structured interaction data instead of baking all interaction into a final post-process. A renderer can then consume the same points, splines, strokes, regions, or force records at its canonical output resolution.
 
 ## Events, Selection, And Durable State
 
@@ -118,6 +136,19 @@ Canvas keeps the dock tab as the identity and recovery handle. Everything below 
 A Canvas may keep `resolution: pipeline` and stretch its texture. A Standard panel may use `follow_panel`. Use Canvas plus `follow_panel` for a pixel-matched full-frame interface.
 
 Users can recover through `Panel Presentation > Follow Module | Standard | Canvas` in the graph-node context menu or selected-node View menu. Project workspaces persist docking, sizes, visibility, window identity, and per-node presentation overrides.
+
+## Canonical Program And Flexible Editor
+
+Do not use a `follow_panel` Canvas as the canonical Program renderer unless the artwork is deliberately authored for arbitrary aspect ratios. Dock dimensions are an editor concern and can change continuously; a 16:9 image sampled directly across an arbitrary panel will stretch.
+
+Prefer two responsibilities:
+
+1. A Program renderer keeps an intentional resolution such as 1280x720 and consumes scene plus interaction data.
+2. A flexible editor Canvas displays the Program inside an aspect-correct stage rectangle and publishes interaction data back to the renderer.
+
+For a fitted preview, compute a stage rectangle from the Program aspect and panel extent. Letterbox or crop intentionally, render contextual tools in the remaining gutters, and transform pointer coordinates from panel UV into stage UV before hit testing or writing strokes. Reject or clamp events outside the active stage. Render and hit-test against the same transform.
+
+This separation keeps exported imagery stable, prevents dock resizing from reallocating the entire creative pipeline, and allows the editor to use arbitrary panel space without distorting the composition.
 
 ## Runtime Proof
 

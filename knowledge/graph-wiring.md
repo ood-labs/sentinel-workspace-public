@@ -14,7 +14,7 @@ Typical flow:
 4. Place the new node relative to its neighbor, focus it, and open its pipeline window.
 5. Inspect the live preview and health before creating another node.
 
-Pattern sources are deterministic and useful for tests. Spout and NDI sources receive external live video.
+Pattern sources are deterministic and may be used for isolated non-creative diagnostics. Never feed diagnostic imagery into a visible creative, tracking, Features, or AI chain. Use meaningful media or an intentionally authored generator for creative construction. Spout and NDI sources receive external live video.
 
 ## Data Ports
 
@@ -45,13 +45,15 @@ Do not wire control outputs with `set_input`. Use `sentinel_expression action=se
 
 ## Auto Layout
 
-Whole-graph auto layout is for an explicitly requested batch workflow or a non-creative smoke test:
+Whole-graph auto layout is appropriate for an explicitly requested batch workflow, a non-creative smoke test, or a layout-only repair after later topology surgery:
 
 ```text
 sentinel_graph action=auto_layout
 ```
 
 During visible creative construction, do not build a pile and auto-layout it afterward. Place each new node as it is created with create-time `relative_to` placement or `place_relative`. Use `layout_neighborhood` for local cleanup without disturbing the evolving graph.
+
+When corrections insert a proxy between existing stages, replace a node, add a branch, or otherwise make positions contradict signal flow, inspect the whole graph. If local placement cannot restore a clear left-to-right reading, run `auto_layout`, inspect the result, then `focus` and `open_window` on the active node again. This exception repairs topology legibility; it does not authorize bulk hidden construction.
 
 ## Health Checks
 
