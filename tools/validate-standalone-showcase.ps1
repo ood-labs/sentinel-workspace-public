@@ -7,6 +7,7 @@ $root = [IO.Path]::GetFullPath((Join-Path $workspaceRoot $ProjectsRoot))
 $projects = [ordered]@{
     living_room_sdf = 'living_room_sdf.sentinel'
     face_collage = 'face_collage.sentinel'
+    fruit_atlas_scatter = 'fruit_atlas_scatter.sentinel'
     topographic_hud = 'topographic_hud.sentinel'
     strata = 'strata.sentinel'
     desert_totem = 'desert_totem.sentinel'

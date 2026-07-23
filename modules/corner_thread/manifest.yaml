@@ -19,7 +19,6 @@ data_inputs:
       - { name: pad, type: float }
 
 parameters:
-  - { name: palette_variant, display: "Palette", type: int, min: 0, max: 4, default: 0, hidden: true, group: "Thread" }
   - name: thread_mode
     display: "Thread Mode"
     type: enum

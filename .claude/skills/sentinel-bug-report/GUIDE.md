@@ -12,7 +12,7 @@ A remote submission can include:
 - A screenshot path chosen by the user or captured by the agent.
 - A `.sentinel` project file when the user approves it.
 
-The report service uploads the bundle and creates or updates a Sentinel support issue. The response should include an issue number or URL.
+With a license, the report service uploads the bundle and creates or updates a Sentinel support issue. Without a license, Sentinel sends the narrative and inline diagnostic only. The issue receives the `unlicensed` label, has no Artifacts section, and is limited to 3 submissions per machine fingerprint and 10 per IP address each day. The response states that the file bundle was omitted and includes an issue number or URL.
 
 ## Minimum Useful Report
 
@@ -23,7 +23,7 @@ Every report needs:
 - Expected and actual behavior.
 - Reproduction steps or the reason reproduction is blocked.
 - Diagnostic report.
-- Log tail.
+- Log tail when a licensed file bundle is available.
 - Clear caveats for missing files, hardware, source media, or license state.
 
 ## Recommended MCP Sequence

@@ -134,16 +134,6 @@ parameters:
   - { name: exposure,    display: "Exposure",     type: float, min: 0.2, max: 3.0, default: 1.05, group: "Environment" }
   - { name: march_dist,  display: "March Distance", type: float, min: 20.0, max: 300.0, default: 120.0, group: "Environment" }
 
-  # ---- SDF render quality (defaults preserve the existing renderer) ----
-  # AA is per axis: 2 means 2x2 = 4 rays per output pixel.
-  - { name: aa_samples,      display: "Rays Per Axis (NxN)", type: int,   min: 1,      max: 4,     default: 1,      group: "Quality" }
-  - { name: march_steps,     display: "March Steps",         type: int,   min: 32,     max: 256,   default: 140,    group: "Quality" }
-  - { name: surface_epsilon, display: "Surface Epsilon",     type: float, min: 0.0001, max: 0.003, default: 0.0007, group: "Quality" }
-  - { name: step_scale,      display: "Step Scale",          type: float, min: 0.5,    max: 1.0,   default: 1.0,    group: "Quality" }
-  - { name: normal_epsilon,  display: "Normal Epsilon",      type: float, min: 0.0002, max: 0.004, default: 0.0009, group: "Quality" }
-  - { name: shadow_steps,    display: "Shadow Steps",        type: int,   min: 8,      max: 96,    default: 48,     group: "Quality" }
-  - { name: ao_steps,        display: "AO Steps",            type: int,   min: 1,      max: 8,     default: 5,      group: "Quality" }
-
   # ---- structure (the hardcoded armature; a few exposed knobs for modularity) ----
   - { name: spine_height, display: "Spine Half-Height", type: float, min: 2.0, max: 5.0, default: 3.55, group: "Structure" }
   - { name: board_yaw,    display: "Base Board Yaw",    type: float, min: -0.6, max: 0.6, default: 0.14, group: "Structure" }

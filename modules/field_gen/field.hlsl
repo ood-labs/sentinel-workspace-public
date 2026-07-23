@@ -45,7 +45,8 @@ float fbm(float2 p, int oct, float lac, float gn)
 float elevF(float2 p)
 {
     float t = _Time * flow_speed;
-    float2 fl = flow_dir * t;
+    // UI point2D is Cartesian; this field is sampled in texture-oriented space.
+    float2 fl = float2(flow_dir.x, -flow_dir.y) * t;
 
     // domain warp
     float2 warp = float2(
@@ -89,7 +90,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float slope = length(float2(ex - e0, ey - e0)) / eps;
 
     float t = _Time * flow_speed;
-    float2 fl = flow_dir * t;
+    float2 fl = float2(flow_dir.x, -flow_dir.y) * t;
     float detail = fbm(p * frequency * 4.0 + fl * 2.0, octaves, lacunarity, gain) * detail_gain;
 
     float elev = saturate(e0 * 0.5 + 0.5);

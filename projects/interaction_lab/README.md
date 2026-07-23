@@ -6,10 +6,9 @@ Load `interaction_lab.sentinel` in Sentinel. Each example is boxed and labeled i
 
 The graph is organized as four independent, flat Scene Group stations:
 
-- `01 · SCIENTIFIC UI + TYPE SYSTEM`
-- `02 · SPLINE EDITOR + PNODE OUTPUT`
-- `03 · 3D TRANSFORM GIZMO`
-
+- `01 - SCIENTIFIC UI + TYPE SYSTEM`
+- `02 - SPLINE EDITOR + PNODE OUTPUT`
+- `03 - 3D TRANSFORM GIZMO`
 - `04 - TAILORED MOTION CONSOLE`
 
 The groups save `Reference UI`, `Default Sweep`, `Object Study`, and `Motion Reference`. They are intentionally control-only: Interaction Lab is a tool and data-flow reference, so it has no Group Output endpoint. Scene Groups are never nested.
@@ -31,8 +30,6 @@ All UI text is built from Scientifica's regular glyph data. Titles get a small s
 The host owns normalized hit rectangles and writes ordinary Module parameters. HLSL owns the complete visual treatment. Resize the output freely: the layout is authored in a 960 x 540 design space and follows the Module output.
 
 `UI_Style_Tuner` exposes the title, section, and body typography roles plus the shared padding, section gap, control height, and control gap. Its saved values are the defaults in `_shared/ui/sui_typography.hlsli` and `sui_layout.hlsli`; adjust them there only after reviewing the tuner at several panel sizes.
-
-Project presets `Dense Instrument` and `Airy Review` provide compact and spacious interface checks without changing source files.
 
 On Sentinel 0.5.32 or newer, UI Modules can opt into a full-frame authored panel:
 
@@ -71,8 +68,6 @@ Data outputs:
 
 The durable authored state is `spline_knots`; transient interaction, snapshots, headers, samples, and selection records are separate passes. Selection is intentionally local to the editor because knots are sub-object records, while drag edits still participate in Sentinel's viewport transaction and undo system.
 
-`Path Weight` is an ordinary preset-safe appearance control. Project presets `Spline Default Wave` and `Spline Offset Wave` restore both this parameter and the full durable knot buffer, so their geometry survives project reload.
-
 ## 3D Transform Gizmo Lab
 
 `Gizmo_Lab` renders twelve selectable SDF objects and publishes their durable transforms. Selection uses Module-provided ray-query descriptors and the host's standard multiple-selection state.
@@ -80,7 +75,6 @@ The durable authored state is `spline_knots`; transient interaction, snapshots, 
 Controls:
 
 - Click an object to select it; Shift-click adds or removes objects.
-- Drag a selected object body to translate it in the view plane.
 - `1` or MOVE selects translation. Drag an axis arrow.
 - In MOVE mode, the three small two-color squares are the visible XY, YZ, and ZX plane handles. A visible axis line always wins when projected handles overlap.
 - `2` or ROT selects rotation. Drag a colored screen-space ring.
@@ -98,10 +92,8 @@ Data outputs:
 - `Gizmo State`: mode, world/local state, active handle, pointer state, pivot, and active object.
 - Sentinel also exposes the declared viewport descriptors and pick result through the standard selection provider.
 
-Project presets `Gizmo Grid` and `Gizmo Offset Lead` restore the complete durable object buffer in addition to the authored transform and camera controls.
-
 ## Architecture and scope
 
 Everything in this project is authored content: YAML manifests, HLSL passes, persistent structured buffers, typed data ports, and a `.sentinel` graph. No Sentinel application source, IPC command, native widget, or engine feature was added or changed.
 
-This is a foundation rather than a full DCC toolset. It does not yet include snapping, numeric transform entry, spline segment insertion, depth-tested gizmo fading, or host-mirrored sub-object selection. Those can be layered on as additional Module passes and controls without changing the application. The compact, portable evidence set in `proof/` records the current Canvas, interaction, undo, picking, Scene Group, and preset checks.
+This is a foundation rather than a full DCC toolset. It does not yet include snapping, numeric transform entry, spline segment insertion, depth-tested gizmo fading, or host-mirrored sub-object selection. Those can be layered on as additional Module passes and controls without changing the application. Captures and machine-generated proof bundles are intentionally excluded from the public project.

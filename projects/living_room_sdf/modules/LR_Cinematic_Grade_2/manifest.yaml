@@ -1,0 +1,49 @@
+name: "Living Room Cinematic Grade"
+version: "2.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA16F
+
+inputs:
+  - { name: "HDR Scene", slot: 0, required: true }
+
+parameters:
+  - { name: exposure, display: "Exposure", type: float, min: 0.2, max: 3.0, default: 1.10, group: "Tone" }
+  - { name: contrast, display: "Contrast", type: float, min: 0.5, max: 2.0, default: 1.06, group: "Tone" }
+  - { name: saturation, display: "Saturation", type: float, min: 0.0, max: 2.0, default: 1.08, group: "Tone" }
+  - { name: split_tone, display: "Split Tone", type: float, min: 0.0, max: 1.0, default: 0.16, group: "Tone" }
+  - { name: bloom_threshold, display: "Threshold", type: float, min: 0.0, max: 4.0, default: 1.15, group: "Bloom" }
+  - { name: bloom_knee, display: "Soft Knee", type: float, min: 0.01, max: 1.0, default: 0.30, group: "Bloom" }
+  - { name: bloom_intensity, display: "Intensity", type: float, min: 0.0, max: 2.0, default: 0.42, group: "Bloom" }
+  - { name: bloom_radius, display: "Radius", type: float, min: 0.001, max: 0.06, default: 0.012, group: "Bloom" }
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 2.0, default: 0.52, group: "Lens" }
+  - { name: grain_amount, display: "Film Grain", type: float, min: 0.0, max: 0.12, default: 0.006, group: "Lens" }
+  - { name: shadow_tint, display: "Shadow Tint", type: color, default: [0.36, 0.50, 0.62], group: "Palette" }
+  - { name: highlight_tint, display: "Highlight Tint", type: color, default: [1.0, 0.78, 0.56], group: "Palette" }
+
+passes:
+  - name: bright
+    shader: bright.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+  - name: blur_h
+    shader: blur_h.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:bright" }
+  - name: blur_v
+    shader: blur_v.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:blur_h" }
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "pass:blur_v" }
+
+outputs:
+  - { name: "Final", pass: grade }

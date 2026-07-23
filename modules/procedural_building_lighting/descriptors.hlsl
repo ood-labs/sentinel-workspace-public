@@ -1,0 +1,3 @@
+#include "types.hlsli"
+StructuredBuffer<LightControlState> _Tex0:register(t0);struct ViewportObjectDescriptor{uint object_id;uint parent_id;float4x4 world_transform;float3 bounds_min;float3 bounds_max;float3 pivot;uint capability_flags;uint visible;uint selectable;};RWStructuredBuffer<ViewportObjectDescriptor> OutputBuffer:register(u0);
+[numthreads(4,1,1)]void main(uint3 tid:SV_DispatchThreadID){uint i=tid.x;if(i>=LC_OBJECT_COUNT)return;float3 p=float3(_Tex0[i].position,0);ViewportObjectDescriptor d=(ViewportObjectDescriptor)0;d.object_id=i+1u;d.world_transform=float4x4(1,0,0,0,0,1,0,0,0,0,1,0,p.x,p.y,0,1);d.bounds_min=float3(-.045,-.045,-.01);d.bounds_max=float3(.045,.045,.01);d.pivot=p;d.capability_flags=1u;d.visible=1;d.selectable=1;OutputBuffer[i]=d;}

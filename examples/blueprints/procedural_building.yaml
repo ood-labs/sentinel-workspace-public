@@ -1,0 +1,31 @@
+metadata:
+  name: procedural_building
+  bounds: { min: [-10.0, 0.0, -8.0], max: [10.0, 12.5, 8.0] }
+  instance_budget: 96
+anchors:
+  - id: building_origin
+    position: [0.0, 0.0, 0.0]
+    normal: [0.0, 1.0, 0.0]
+clearances:
+  - id: public_entry_walk
+    min: [-2.4, 0.0, 5.55]
+    max: [2.4, 3.0, 7.3]
+nodes:
+  - { id: civic_plaza, kind: site_slab, position: [0.0, 0.0, 0.0] }
+  - id: stone_podium
+    kind: podium
+    relation: { type: supported_by, target: civic_plaza, offset: [0.0, 0.0] }
+  - id: main_gallery
+    kind: gallery_volume
+    relation: { type: supported_by, target: stone_podium, offset: [0.0, -0.35] }
+  - id: lantern_crown
+    kind: roof_crown
+    relation: { type: supported_by, target: main_gallery, offset: [0.7, -0.35] }
+  - { id: arrival_canopy, kind: entrance_canopy, position: [0.0, 3.25, 4.15] }
+  - { id: roof_service, kind: service_core, position: [-2.65, 10.25, -0.75] }
+  - { id: planter_left, kind: planter, position: [-4.65, 0.25, 4.80], rotation_y: 0.08 }
+  - { id: planter_right, kind: planter, position: [4.65, 0.25, 4.80], rotation_y: -0.08 }
+  - { id: lamp_left_near, kind: path_lamp, position: [-3.55, 0.25, 6.10] }
+  - { id: lamp_right_near, kind: path_lamp, position: [3.55, 0.25, 6.10] }
+  - { id: lamp_left_far, kind: path_lamp, position: [-6.40, 0.25, 2.25] }
+  - { id: lamp_right_far, kind: path_lamp, position: [6.40, 0.25, 2.25] }

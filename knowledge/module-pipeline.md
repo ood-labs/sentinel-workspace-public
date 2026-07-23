@@ -46,6 +46,14 @@ Use data inputs for landmarks, detections, blobs, corners, lines, or records pro
 
 `sentinel_pipeline action=get_data_schemas` reports the data schema and, when the graph node exists, the matching graph pin name and slot. Use that reported pin name with `sentinel_graph action=add_link` instead of guessing singular/plural labels.
 
+## Meaningful Intermediate Previews
+
+Every Module that generates or transforms structured data must also render a cheap, legible preview of its own current output. The preview is part of the node's authoring contract, not decorative polish.
+
+At minimum, visualize active records and their spatial arrangement. Encode direction, group, weight, kind, confidence, or other defining fields when they materially affect the downstream result. Parameter changes that alter structure must produce an obvious preview change.
+
+After create or reload, focus the node, call `sentinel_pipeline action=open_window`, and inspect the actual Sentinel preview before continuing to the next node. Use `capture_data_port` to verify record values and a preview capture to verify their visual decoding. `stats.has_preview_srv=true` is insufficient: a blank, constant, generic, or unreadable texture is a failed preview and must be fixed before handoff.
+
 ## Control Outputs
 
 Modules can publish scalar values under:
@@ -69,6 +77,8 @@ For measured geometry assertions on SDF modules, `modules/_shared/sdf/sdf_audit.
 ## Viewport Interactions And Cameras
 
 A manifest can declare an optional `viewport:` block with a `hint` string and an `interactions` list drawn from `mouse`, `pan_zoom`, and `camera`. The preview shows the hint and only forwards the declared interactions, and the values publish at `/sentinel/pipelines/<id>/viewport/hint` and `/viewport/interactions`. Camera-feature modules (`features: [camera]`) get a shared fly/orbit rig plus a `camera_ref` parameter for binding to a `camera` node; see `knowledge/scene-system.md` for the camera and camera-switcher system.
+
+Choose one camera owner per graph: the Module's internal camera or an explicit `camera`/`camswitch`. Never expose camera-related parameters, including `camera_ref`, mode, position, orbit, target, and FOV, on a Scene Group/top-level interface. Keep camera operation on the owning renderer preview or camera node Properties. When bound to an external or group camera, local camera controls are intentionally inactive. Verify the owning camera through an open renderer preview and a visible before/after change.
 
 ## Authored Viewport Events
 

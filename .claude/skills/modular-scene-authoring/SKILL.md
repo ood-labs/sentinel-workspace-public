@@ -1,6 +1,6 @@
 ---
 name: modular-scene-authoring
-description: Author Sentinel scenes as a modular Module graph of separable generator, data-lane, renderer, compositor, and post nodes wired by typed data ports, instead of one monolithic shader. Use when recreating a reference image or building a complex scene, choosing a data contract from the reference's structure (routing/poster vs organic vs atlas), wiring producer/consumer structured buffers, preserving route/group ids across segment records, or running the compile-check to force-reload to capture iteration loop.
+description: Author Sentinel scenes and procedural systems as modular Module graphs of separable generators, data lanes, editors, renderers, compositors, and post nodes wired by typed data ports. Use when recreating a reference image, building a complex or architectural procedural scene, choosing a data contract from the reference's structure, wiring producer/consumer structured buffers, preserving logical ids, or running the compile-check to live-proof iteration loop.
 distribution: true
 ---
 
@@ -12,7 +12,7 @@ For manifest syntax, HLSL compiler name mappings, structured buffer I/O, and hot
 
 If one node is meant to be a complete control surface, editor, HUD, or dashboard, use the `module-ui-authoring` skill for that node. A UI Module can declare a full-bleed Canvas and `follow_panel` resolution while remaining one semantic node in the larger scene graph.
 
-In-repo modular references worth reading before starting: `modules/compositor/`, `modules/choreo_cascade/`, `modules/timeline_hud/`, and `projects/interaction_lab/interaction_lab.sentinel`.
+In-repo modular references worth reading before starting: `modules/compositor/`, `modules/choreo_cascade/`, `modules/timeline_hud/`, `projects/interaction_lab/interaction_lab.sentinel`, and `projects/procedural_building_system/`. For editable procedural construction systems, read `knowledge/modular-procedural-systems.md` before authoring.
 
 ---
 
@@ -20,7 +20,7 @@ In-repo modular references worth reading before starting: `modules/compositor/`,
 
 When a scene is mostly objects with real dimensions, anchors, clearances, and repeated instances, use the `procedural-geometry-authoring` skill and the Phase 76 blueprint compiler before writing custom generator shaders.
 
-Blueprint producers compile to generated Module projects that publish fixed 48-byte `PNodes`. Wire those records into `modules/sdf_scene_render`, run `sentinel_graph auto_layout`, then prove the graph with:
+Blueprint producers compile to generated Module projects that publish fixed 48-byte `PNodes`. During visible authoring, prove the producer in its focused/open window before creating the renderer; then place the renderer beside it, wire the records, focus/open it, and prove the graph with:
 
 - `sentinel_blueprint validate` for schema and relation errors.
 - `sentinel_blueprint solve_report` for record hashes, topology, solver stats, and warm-start stability.
@@ -43,9 +43,31 @@ A good modular scene reads as a pipeline of responsibilities:
 
 Minimum standards:
 
-- Each generator stays independently inspectable with a cheap preview and a `capture_data_port` proof. If you cannot prove a node's output on its own, it is doing too much.
+- Each generator stays independently inspectable with a cheap, meaningful preview and a `capture_data_port` proof. Open the node and verify that the preview actually decodes its current records; `has_preview_srv` alone is not proof. If you cannot understand a node's output on its own, fix its preview before continuing.
 - Save the project before any major graph or buffer-contract change. Keep a snapshot of the last working state so a failed contract change is one reload away from recovery.
 - Judge the actual image the pipeline produces. Capture the output early and often and let the picture drive the next edit.
+
+### Visible, one-node-at-a-time construction
+
+Author and create one semantic node at a time. Do not code every planned Module first, create several nodes concurrently, or hide creation inside a batch or loop. After the current node compiles and is wired, place it relative to its neighbor, call `sentinel_graph focus`, call `sentinel_pipeline open_window`, and inspect the live preview before authoring or creating the next node. Exercise at least one structural parameter and require an obvious preview change.
+
+Do not use whole-graph `auto_layout` to repair a bulk-created pile. Use create-time `relative_to`, `place_relative`, or `layout_neighborhood` as each node enters the graph. Whole-graph `auto_layout` is only for an explicitly requested batch build or non-creative smoke test.
+
+Generator, plan, layout, assembly, and data-transform nodes must visualize their active records and enough spatial/type/group/weight information to explain the intermediate state. Treat a blank, constant, generic, misleading, or illegible intermediate preview as a blocking authoring defect. A final renderer or buffer readback supplements this preview; neither replaces it.
+
+### Editable procedural-system contract
+
+For architectural and other multi-editor procedural systems:
+
+- Keep semantic structure in typed records and feed the same source records to every consumer that needs them.
+- Use Canvas for spatial manipulation and ordinary Properties for dense numeric/color tuning. Do not duplicate every parameter as a fragile authored slider rail.
+- Derive render placement, selection descriptors, picking, and drag inversion from one edit-rectangle transform. A visible handle must pick the exact object or cell it appears to control.
+- Keep logical edits in declared state buffers and preserve drag ownership through commit/cancel.
+- Choose one camera owner. Prefer the host's native Fly camera as the saved internal-camera default; do not invent Hero/Architectural Orbit shader modes.
+- Keep HDR internal if useful, but publish 8-bit sRGB color for video consumers and a separate native depth lane for structural conditioning.
+- Treat StreamDiff or other AI interpretation as optional. Prove the procedural renderer and auxiliary outputs first.
+
+Use `projects/procedural_building_system/` as the reference implementation and `knowledge/modular-procedural-systems.md` as the complete acceptance contract.
 
 ---
 
@@ -107,6 +129,12 @@ Use typed controls, and make every one visibly matter:
 - Avoid hidden randomness where the user needs direct control. For a "one large dash" look, expose `dash_count` (precise float range) and `dash_offset` (explicit 0..1 phase) instead of silently hashing route ids into a phase.
 - Keep experimental controls default-off when they can damage the design language. Do not apply organic sine displacement or wavy paths to a hard graphic-design reference; controlled width profiles and rounded joins are a different language from noise.
 
+### Scene Group control surfaces
+
+Expose a curated top-level interface, not member-node internals. Start with roughly four to eight high-impact creative controls, counting a compound color or XY widget as one. Open the Scene Group Properties panel and test every exposed control; remove anything inactive, redundant, confusing, or implementation-level.
+
+Never expose camera-related parameters (binding, mode, position, orbit, target, FOV, or renderer-local/internal camera rows) at Scene Group level. Choose one camera owner: internal renderer camera or explicit `camera`/`camswitch`, and operate it from that node's own preview/Properties. While externally or group-bound, local camera rows are inactive. Prove the owner in the open renderer preview with a visible before/after change.
+
 ---
 
 ## MCP iteration loop
@@ -120,11 +148,12 @@ The tight loop for multi-node contract work:
 5. `sentinel_pipeline force_reload pipeline_id=<id>` only after the compile checks pass.
 6. Poll `sentinel_pipeline compile_status` to `ok`.
 7. Confirm data schemas and element counts with `sentinel_pipeline get_data_schemas` before wiring, and after a contract change re-check that producer counts and consumer loop limits still agree.
-8. Capture the final/post node and useful intermediate nodes. Use `sentinel_pipeline capture_data_port` to prove a structured buffer's contents (record counts, ids, active flags) rather than trusting the schema alone.
-9. Profile with `sentinel_graph profile summary=true` to catch a node that dominates frame time.
-10. **Checkpoint the working state.** `sentinel_capture action=checkpoint pipeline_id=<id>` saves a bundled `.sentinel`, captures the output image, and records the graph profile in one call, writing a `summary.md` proof folder. Use it whenever a look is worth keeping.
+8. For the current node, call `sentinel_graph focus` and `sentinel_pipeline open_window`; visually inspect its live preview and exercise a structural control before creating the next node. Fix an uninformative preview immediately.
+9. Capture the final/post node and useful intermediate nodes. Use `sentinel_pipeline capture_data_port` to prove a structured buffer's contents (record counts, ids, active flags) rather than trusting the schema alone.
+10. Profile with `sentinel_graph profile summary=true` to catch a node that dominates frame time.
+11. **Checkpoint the working state.** `sentinel_capture action=checkpoint pipeline_id=<id>` saves a bundled `.sentinel`, captures the output image, and records the graph profile in one call, writing a `summary.md` proof folder. Use it whenever a look is worth keeping.
 
-After creating pipelines and wiring links, always run `sentinel_graph auto_layout` (nodes spawn at 0,0 and stack otherwise); on a hand-arranged graph prefer `layout_neighborhood`.
+During visible construction, place and inspect each node before proceeding. Use `layout_neighborhood` for local cleanup; reserve whole-graph `auto_layout` for explicit batch work.
 
 ---
 

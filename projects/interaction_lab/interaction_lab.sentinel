@@ -854,7 +854,6 @@
       "parameters": {
         "close_path": "0.000000",
         "delete_selected": "0.000000",
-        "path_weight": "2.000000",
         "pen_tool": "0.000000",
         "project_dir": "modules/Spline_Editor",
         "resolution_height": "1321",
@@ -977,7 +976,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1784277992078,
+  "saved_at_ms": 1784278025978,
   "sources": [],
   "statePayloads": {
     "Gizmo_Lab": {

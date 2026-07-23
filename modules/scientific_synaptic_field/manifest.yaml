@@ -1,0 +1,100 @@
+name: "Scientific Synaptic Field"
+version: "1.0"
+mode: generator
+resolution: [640, 360]
+working_format: RGBA16F
+
+viewport:
+  hint: "A live vector-and-energy field synthesized from measured agents and topology"
+
+data_inputs:
+  - name: "Feature Agents"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: velocity, type: float2 }
+      - { name: scale, type: float }
+      - { name: confidence, type: float }
+      - { name: angle, type: float }
+      - { name: age, type: float }
+      - { name: stable_id, type: uint }
+      - { name: kind, type: uint }
+      - { name: source_index, type: uint }
+      - { name: flags, type: uint }
+      - { name: aux, type: float4 }
+  - name: "Topology Edges"
+    slot: 1
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: weight, type: float }
+      - { name: phase, type: float }
+      - { name: distance, type: float }
+      - { name: tension, type: float }
+      - { name: source_a, type: uint }
+      - { name: source_b, type: uint }
+      - { name: kind, type: uint }
+      - { name: flags, type: uint }
+
+buffers:
+  - { name: phase_clock, structured: true, element_size: 16, element_count: 1, persistent: true }
+  - { name: field_texture, format: RGBA16F }
+
+parameters:
+  - { name: pulse_rate, display: "Signal Rate", type: float, min: 0.0, max: 2.0, default: 0.22, group: "Signal" }
+  - { name: pulse_density, display: "Signal Density", type: float, min: 2.0, max: 32.0, default: 11.0, group: "Signal" }
+  - { name: pulse_sharpness, display: "Signal Sharpness", type: float, min: 0.5, max: 8.0, default: 3.0, group: "Signal" }
+  - { name: pulse_energy, display: "Signal Energy", type: float, min: 0.0, max: 4.0, default: 1.35, group: "Signal" }
+  - { name: agent_radius, display: "Agent Radius", type: float, min: 0.01, max: 0.25, default: 0.075, group: "Field" }
+  - { name: edge_radius, display: "Edge Radius", type: float, min: 0.001, max: 0.08, default: 0.012, group: "Field" }
+  - { name: motion_follow, display: "Measured Motion", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Field" }
+  - { name: agent_vector_gain, display: "Agent Vector", type: float, min: 0.0, max: 4.0, default: 1.1, group: "Field" }
+  - { name: edge_vector_gain, display: "Edge Vector", type: float, min: 0.0, max: 4.0, default: 1.6, group: "Field" }
+  - { name: mass_energy, display: "Mass Energy", type: float, min: 0.2, max: 5.0, default: 2.0, group: "Field" }
+  - { name: energy_gain, display: "Energy Gain", type: float, min: 0.1, max: 5.0, default: 1.2, group: "Field" }
+  - { name: occupancy_gain, display: "Occupancy Gain", type: float, min: 0.2, max: 4.0, default: 1.4, group: "Field" }
+  - { name: background_ink, display: "Background", type: color, default: [0.002, 0.002, 0.001], group: "Preview" }
+  - { name: field_ink, display: "Field Ink", type: color, default: [0.20, 0.19, 0.16], group: "Preview" }
+  - { name: contour_ink, display: "Contour Ink", type: color, default: [0.88, 0.86, 0.78], group: "Preview" }
+  - { name: vector_ink, display: "Signal Ink", type: color, default: [1.0, 0.29, 0.035], group: "Preview" }
+  - { name: field_gain, display: "Field Visibility", type: float, min: 0.0, max: 3.0, default: 0.75, group: "Preview" }
+  - { name: contour_bands, display: "Contour Bands", type: float, min: 2.0, max: 24.0, default: 10.0, group: "Preview" }
+  - { name: contour_gain, display: "Contour Visibility", type: float, min: 0.0, max: 2.0, default: 0.75, group: "Preview" }
+  - { name: vector_frequency, display: "Vector Frequency", type: float, min: 8.0, max: 180.0, default: 68.0, group: "Preview" }
+  - { name: vector_visibility, display: "Vector Visibility", type: float, min: 0.0, max: 2.0, default: 0.7, group: "Preview" }
+
+passes:
+  - name: clock
+    shader: clock.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:phase_clock"
+
+  - name: synthesize
+    shader: synthesize.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "buffer:phase_clock" }
+    output: "buffer:field_texture"
+
+  - name: field_data
+    shader: field_data.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:field_texture" }
+
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:field_texture" }
+
+outputs:
+  - { name: "Field Preview", pass: preview }
+  - { name: "Field Data", pass: field_data }

@@ -1,0 +1,49 @@
+name: "Procedural Building Cinematic Finish"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA16F
+
+inputs:
+  - { name: "HDR Building", slot: 0, required: true }
+
+parameters:
+  - { name: exposure, display: "Exposure", type: float, min: 0.2, max: 4, default: 1.38, group: "Tone" }
+  - { name: contrast, display: "Contrast", type: float, min: 0.5, max: 2, default: 1.07, group: "Tone" }
+  - { name: saturation, display: "Saturation", type: float, min: 0, max: 2, default: 0.96, group: "Tone" }
+  - { name: split_tone, display: "Architectural Split Tone", type: float, min: 0, max: 1, default: 0.12, group: "Tone" }
+  - { name: bloom_threshold, display: "Bloom Threshold", type: float, min: 0, max: 5, default: 1.10, group: "Bloom" }
+  - { name: bloom_knee, display: "Bloom Knee", type: float, min: 0.01, max: 1, default: 0.28, group: "Bloom" }
+  - { name: bloom_intensity, display: "Bloom Intensity", type: float, min: 0, max: 2, default: 0.38, group: "Bloom" }
+  - { name: bloom_radius, display: "Bloom Radius", type: float, min: 0.001, max: 0.06, default: 0.014, group: "Bloom" }
+  - { name: vignette, display: "Vignette", type: float, min: 0, max: 2, default: 0.22, group: "Lens" }
+  - { name: grain_amount, display: "Fine Grain", type: float, min: 0, max: 0.08, default: 0.002, group: "Lens" }
+  - { name: shadow_tint, display: "Cool Shadows", type: color, default: [0.34,0.48,0.68], group: "Palette" }
+  - { name: highlight_tint, display: "Warm Highlights", type: color, default: [1.0,0.74,0.48], group: "Palette" }
+
+passes:
+  - name: bright
+    shader: bright.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+  - name: blur_h
+    shader: blur_h.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:bright" }
+  - name: blur_v
+    shader: blur_v.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:blur_h" }
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "pass:blur_v" }
+
+outputs:
+  - { name: "Final Building", pass: grade }

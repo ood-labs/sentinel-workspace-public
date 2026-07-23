@@ -1,0 +1,95 @@
+name: "Zaha Parametric Architectural Renderer"
+version: "1.0"
+mode: generator
+resolution: [960,540]
+features: [camera, noise]
+working_format: RGBA16F
+output_format: RGBA8
+
+viewport:
+  hint: "Native camera owner: RMB look, WASD fly, mouse wheel speed, Tab toggles Fly/Orbit."
+  interactions: [camera]
+
+data_inputs:
+  - name: "Loft Sections"
+    slot: 0
+    element_size: 64
+    element_count: 96
+    schema:
+      - { name: center, type: float3 }
+      - { name: radius_x, type: float }
+      - { name: radius_z, type: float }
+      - { name: rotation, type: float }
+      - { name: curvature, type: float }
+      - { name: u, type: float }
+      - { name: floor_band, type: float }
+      - { name: skin_bias, type: float }
+      - { name: void_bias, type: float }
+      - { name: active, type: float }
+      - { name: tangent, type: float3 }
+      - { name: seed, type: float }
+  - name: "Surface Instances"
+    slot: 1
+    element_size: 64
+    element_count: 512
+    schema:
+      - { name: position, type: float3 }
+      - { name: type_id, type: float }
+      - { name: scale, type: float3 }
+      - { name: rotation, type: float }
+      - { name: normal, type: float3 }
+      - { name: material_id, type: float }
+      - { name: uv, type: float2 }
+      - { name: emissive, type: float }
+      - { name: active, type: float }
+  - name: "Material Records"
+    slot: 2
+    element_size: 64
+    element_count: 12
+    schema:
+      - { name: base_color, type: float3 }
+      - { name: roughness, type: float }
+      - { name: secondary_color, type: float3 }
+      - { name: metallic, type: float }
+      - { name: texture_scale, type: float }
+      - { name: texture_strength, type: float }
+      - { name: pattern_id, type: float }
+      - { name: emissive, type: float }
+      - { name: specular, type: float }
+      - { name: normal_strength, type: float }
+      - { name: seed, type: float }
+      - { name: reserved, type: float }
+
+parameters:
+  - { name: max_steps, display: "Ray Steps", type: int, min: 48, max: 140, default: 92, group: "Quality" }
+  - { name: shell_roundness, display: "Shell Roundness", type: float, min: 0.0, max: 1.0, default: 0.64, group: "Shell" }
+  - { name: canyon_strength, display: "Atrium Canyon", type: float, min: 0.0, max: 1.0, default: 0.74, group: "Shell" }
+  - { name: floor_detail, display: "Floor Strata", type: float, min: 8.0, max: 80.0, default: 38.0, group: "Facade" }
+  - { name: helix_detail, display: "Helical Facade Drift", type: float, min: -8.0, max: 8.0, default: 2.2, group: "Facade" }
+  - { name: rib_sharpness, display: "Rib Sharpness", type: float, min: 1.0, max: 8.0, default: 4.2, group: "Facade" }
+  - { name: clone_influence, display: "Cloner Influence", type: float, min: 0.2, max: 3.0, default: 1.15, group: "Facade" }
+  - { name: glass_mix, display: "Glass / Shell Mix", type: float, min: 0.0, max: 1.0, default: 0.66, group: "Facade" }
+  - { name: sun_orbit, display: "Sun Orbit", type: point2D, min: [0,0], max: [1,1], default: [0.62,0.68], group: "Light" }
+  - { name: sun_energy, display: "Sun Energy", type: float, min: 0.0, max: 6.0, default: 2.8, group: "Light" }
+  - { name: sky_energy, display: "Sky Energy", type: float, min: 0.0, max: 3.0, default: 0.72, group: "Light" }
+  - { name: interior_gain, display: "Interior Emission", type: float, min: 0.0, max: 6.0, default: 2.7, group: "Light" }
+  - { name: fog_density, display: "Atmosphere", type: float, min: 0.0, max: 0.08, default: 0.012, group: "Atmosphere" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.3, max: 4.0, default: 1.55, group: "Finish" }
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Finish" }
+  - { name: film_grain, display: "Micro Grain", type: float, min: 0.0, max: 0.04, default: 0.004, group: "Finish" }
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+  - { name: color, shader: color_out.hlsl, target: cs_5_0, format: RGBA8, inputs: [ { slot: 0, source: "pass:render" } ] }
+  - { name: depth, shader: depth_out.hlsl, target: cs_5_0, format: RGBA8, inputs: [ { slot: 0, source: "pass:render" } ] }
+
+outputs:
+  - { name: "Architectural Color", pass: color }
+  - { name: "Native Depth", pass: depth }

@@ -1,0 +1,41 @@
+name: "Scientific Relief Chamber"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+
+viewport:
+  hint: "Selective bas-relief and terraced light derived from the live filament image"
+
+inputs:
+  - { name: "Filament Program", slot: 0, required: true }
+
+parameters:
+  - { name: relief_mix, display: "Relief Mix", type: float, min: 0.0, max: 1.0, default: 0.52, group: "Relief" }
+  - { name: relief_depth, display: "Depth", type: float, min: 0.0, max: 20.0, default: 8.0, group: "Relief" }
+  - { name: sample_span, display: "Surface Scale", type: float, min: 0.5, max: 6.0, default: 2.0, group: "Relief" }
+  - { name: normal_floor, display: "Surface Roundness", type: float, min: 0.05, max: 1.0, default: 0.28, group: "Relief" }
+  - { name: light_direction, display: "Light Direction", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [-0.55, -0.32], group: "Light" }
+  - { name: light_height, display: "Light Height", type: float, min: 0.05, max: 2.0, default: 0.72, group: "Light" }
+  - { name: shadow_offset, display: "Shadow Offset", type: float, min: 0.0, max: 16.0, default: 3.0, group: "Light" }
+  - { name: shadow_gain, display: "Self Shadow", type: float, min: 0.0, max: 12.0, default: 4.0, group: "Light" }
+  - { name: terrace_count, display: "Terraces", type: float, min: 2.0, max: 32.0, default: 11.0, group: "Strata" }
+  - { name: terrace_mix, display: "Terrace Body", type: float, min: 0.0, max: 1.0, default: 0.08, group: "Strata" }
+  - { name: edge_mix, display: "Terrace Edges", type: float, min: 0.0, max: 2.0, default: 0.24, group: "Strata" }
+  - { name: rim_power, display: "Rim Shape", type: float, min: 0.2, max: 8.0, default: 2.4, group: "Strata" }
+  - { name: rim_mix, display: "Rim Light", type: float, min: 0.0, max: 2.0, default: 0.16, group: "Strata" }
+  - { name: terrace_color, display: "Terrace Ink", type: color, default: [0.10, 0.095, 0.08], group: "Palette" }
+  - { name: edge_color, display: "Edge Ink", type: color, default: [0.72, 0.70, 0.63], group: "Palette" }
+  - { name: rim_color, display: "Rim Ink", type: color, default: [0.95, 0.92, 0.84], group: "Palette" }
+
+passes:
+  - name: relief
+    shader: relief.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Relief Program", pass: relief }

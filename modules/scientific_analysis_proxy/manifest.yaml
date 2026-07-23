@@ -1,0 +1,27 @@
+name: "Scientific Analysis Proxy"
+version: "1.0"
+mode: generator
+resolution: [480, 270]
+
+inputs:
+  - { name: "Biotic Source", slot: 0, required: true }
+
+parameters:
+  - { name: exposure, display: "Exposure", type: float, min: -0.4, max: 0.5, default: 0.08, group: "Analysis" }
+  - { name: contrast, display: "Contrast", type: float, min: 0.5, max: 3.0, default: 1.35, group: "Analysis" }
+  - { name: edge_gain, display: "Edge Gain", type: float, min: 0.0, max: 4.0, default: 1.2, group: "Analysis" }
+  - { name: binary_mix, display: "Structural Mix", type: float, min: 0.0, max: 1.0, default: 0.32, group: "Analysis" }
+  - { name: aperture_gate, display: "Specimen Apertures", type: float, min: 0.0, max: 1.0, default: 0.9, group: "Analysis" }
+  - { name: threshold_low, display: "Low Threshold", type: float, min: 0.0, max: 1.0, default: 0.28, group: "Analysis" }
+  - { name: threshold_high, display: "High Threshold", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Analysis" }
+
+passes:
+  - name: proxy
+    shader: proxy.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Analysis", pass: proxy }

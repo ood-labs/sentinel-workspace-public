@@ -37,7 +37,7 @@ Compile with `sentinel_blueprint compile`. With `create: true`, the tool creates
 {"action":"compile","path":"examples/blueprints/living_room_architecture.yaml","create":true,"pipeline_name":"Blueprint_Living_Room"}
 ```
 
-Wire `PNodes` to `modules/sdf_scene_render`, then run `sentinel_graph auto_layout`.
+During visible authoring, place/focus/open and prove the generated producer before creating the renderer. Then create and place the renderer relative to it, wire `PNodes`, focus/open the renderer, and inspect the result. Reserve whole-graph `auto_layout` for explicit batch work.
 
 The PNode schema is fixed at 48 bytes: position, scale, kind id, seed, yaw, height, width, depth, and direction. Keep scene-specific needs in blueprint data or renderer logic.
 

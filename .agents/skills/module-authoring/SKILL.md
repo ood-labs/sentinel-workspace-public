@@ -57,8 +57,9 @@ sentinel_module action="import" from_project="C:/shows/my_show/my_show.sentinel"
 ```
 
 `sentinel_module import` requires the destination project to already be saved so
-Sentinel knows where its `modules/` folder lives. After creating or importing a
-Module pipeline over MCP, run `sentinel_graph action="auto_layout"`.
+Sentinel knows where its `modules/` folder lives. During visible authoring, place,
+focus, open, and prove that one imported Module before starting the next node.
+Reserve whole-graph `auto_layout` for explicit batch work or smoke tests.
 
 ## Architecture
 
@@ -92,6 +93,12 @@ data_outputs:
 ```
 
 Pass inputs reference data with `source: "data:0"` (data input slot 0). The compiler generates `StructuredBuffer<T>` declarations + `_DataN_Count` cbuffer fields.
+
+## Visible Module Construction Contract
+
+Author, compile-check, create, place, focus, open, and visually prove one Module before beginning the next Module. Do not pre-author every planned node and then create them together, issue concurrent creates, or hide creation in a batch or loop. For data nodes, pair the open live preview with `capture_data_port`; a downstream renderer is not a substitute for an intelligible intermediate preview.
+
+Every generator, layout, plan, assembly, or data-transform Module must render a cheap, meaningful preview of its current output. Read the actual output buffer in a preview pass and visualize active records plus the spatial/type/group/weight fields needed to understand downstream behavior. `has_preview_srv` only proves that a texture exists; a blank, constant, generic, misleading, or illegible preview is a blocking defect.
 
 ## HLSL Conventions (CRITICAL — read before writing ANY Module shader)
 
@@ -251,7 +258,7 @@ Author Modules so the manifest resolution is a default target, not a hidden layo
 5. Check info for compile errors — fix shader — hot-reload happens automatically (~0.5s)
 6. If compile error persists after fix: re-set project_dir to force reload
 7. Add/remove/rename params, passes, buffers, output slots: just save the manifest. Hot-reload handles structural changes in place — graph links survive, user-tweaked param values preserved by name. Only a ping-pong buffer's pixel-format change still requires destroy+recreate.
-8. sentinel_graph auto_layout after creating new pipelines
+8. Place the new pipeline relative to its neighbor, focus it, and open its window before authoring the next node. Use whole-graph auto_layout only for explicit batch work.
 ```
 
 **Hot-reload race when authoring via tool calls**: file-watch fires the moment `manifest.yaml` is saved, then ~30 frames later async compile tries to open every shader the manifest references. If a referenced shader hasn't been written yet, the compile fails with `Cannot open shader: <path>` and the pipeline stays in the failed state until the NEXT file save retries. **Always write all shader files before saving the manifest.** Same applies to renames — write the new files first, then update the manifest.
@@ -431,6 +438,8 @@ features: [math3d, noise, camera]
 Provides in cbuffer: `_ViewMatrix`, `_ProjMatrix`, `_ViewProjMatrix`, `_InvViewProjMatrix`, `_CameraPos`, `_CameraNear`, `_CameraFar`, `_CameraFOV`.
 
 The rig supports fly and orbit modes (`camera_mode` parameter; `Tab` toggles while the preview interaction is active). Camera-feature modules also expose a `camera_ref` parameter: point it at a `camera` node to drive this module from a shared wireless rig (local camera rows lock while bound; a group's single contained `camera` node binds members automatically). A `camswitch` node cuts or blends between camera nodes for show control.
+
+Choose exactly one camera owner: the Module's internal camera or an explicit `camera`/`camswitch`. Never expose camera-related parameters (binding, mode, position, orbit, target, FOV, or Module-local camera rows) on a Scene Group/top-level control surface. Keep camera operation on the owning renderer preview or camera node Properties. While externally or group-bound, the local camera rows are inactive. After binding or grouping, open the renderer preview and prove the owning camera with a visible before/after change; StateTree write success is not interaction proof.
 
 Declare viewport behavior in the manifest with an optional `viewport:` block:
 
