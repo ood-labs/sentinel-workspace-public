@@ -1,0 +1,600 @@
+{
+  "display": {
+    "fpsLimit": 60.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 0.6209519505500793,
+    "links": [
+      {
+        "endPinId": 20,
+        "id": 10,
+        "startPinId": 14
+      },
+      {
+        "endPinId": 9,
+        "id": 2,
+        "startPinId": 2
+      },
+      {
+        "endPinId": 21,
+        "id": 11,
+        "startPinId": 6
+      },
+      {
+        "endPinId": 3,
+        "id": 3,
+        "startPinId": 10
+      },
+      {
+        "endPinId": 15,
+        "id": 6,
+        "startPinId": 2
+      },
+      {
+        "endPinId": 17,
+        "id": 7,
+        "startPinId": 14
+      },
+      {
+        "endPinId": 11,
+        "id": 8,
+        "startPinId": 6
+      },
+      {
+        "endPinId": 18,
+        "id": 9,
+        "startPinId": 16
+      },
+      {
+        "endPinId": 22,
+        "id": 12,
+        "startPinId": 7
+      },
+      {
+        "endPinId": 23,
+        "id": 13,
+        "startPinId": 19
+      }
+    ],
+    "nextLinkId": 14,
+    "nextNodeId": 8,
+    "nextPinId": 25,
+    "nodes": [
+      {
+        "displayName": "01_SIGNAL_BLOOM_SOURCE",
+        "entityId": "01_SIGNAL_BLOOM_SOURCE",
+        "id": 1,
+        "posX": 120.0,
+        "posY": 220.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "03_REAL_FEATURES",
+        "entityId": "03_REAL_FEATURES",
+        "id": 2,
+        "posX": 931.666748046875,
+        "posY": 217.25653076171875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "02_ANALYSIS_PROXY",
+        "entityId": "02_ANALYSIS_PROXY",
+        "id": 3,
+        "posX": 609.9144897460938,
+        "posY": 218.1710205078125,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "04_FEATURE_CHOREOGRAPHY",
+        "entityId": "04_FEATURE_CHOREOGRAPHY",
+        "id": 4,
+        "posX": 1166.0,
+        "posY": 220.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "05_SIGNAL_CUT_PROGRAM",
+        "entityId": "05_SIGNAL_CUT_PROGRAM",
+        "id": 5,
+        "posX": 1462.0,
+        "posY": 220.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "06_DETECTION_TELEMETRY_PRINT",
+        "entityId": "06_DETECTION_TELEMETRY_PRINT",
+        "id": 6,
+        "posX": 1742.6666259765625,
+        "posY": 220.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "07_SIGNAL_CUT_PERFORMANCE_CONSOLE",
+        "entityId": "07_SIGNAL_CUT_PERFORMANCE_CONSOLE",
+        "id": 7,
+        "posX": 2068.000244140625,
+        "posY": 220.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "Organic Field",
+        "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "kind": 0,
+        "name": "Video Input",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 4,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 5,
+        "kind": 1,
+        "name": "Edge Map",
+        "nodeId": 2,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "Blobs",
+        "nodeId": 2,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 7,
+        "kind": 1,
+        "name": "Corners",
+        "nodeId": 2,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "Lines",
+        "nodeId": 2,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 9,
+        "kind": 0,
+        "name": "Full Resolution Source",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 10,
+        "kind": 1,
+        "name": "Analysis 480×270",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 11,
+        "kind": 0,
+        "name": "Blobs 480×270",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 12,
+        "kind": 1,
+        "name": "Region Map",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 14,
+        "kind": 1,
+        "name": "Feature Glyphs",
+        "nodeId": 4,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 15,
+        "kind": 0,
+        "name": "Organic Source",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 16,
+        "kind": 1,
+        "name": "Program",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 17,
+        "kind": 0,
+        "name": "Feature Glyphs",
+        "nodeId": 5,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 18,
+        "kind": 0,
+        "name": "Signal Cut Program",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 19,
+        "kind": 1,
+        "name": "Instrument Program",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 20,
+        "kind": 0,
+        "name": "Stabilized Regions",
+        "nodeId": 6,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 21,
+        "kind": 0,
+        "name": "Raw Blobs 480x270",
+        "nodeId": 6,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 22,
+        "kind": 0,
+        "name": "Sparse Corners 480x270",
+        "nodeId": 6,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 23,
+        "kind": 0,
+        "name": "Instrument Program",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 24,
+        "kind": 1,
+        "name": "UI",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Sources]\nPos=0,914\nSize=807,663\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Outputs]\nPos=0,914\nSize=807,663\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Stats]\nPos=0,914\nSize=807,663\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Log]\nPos=0,914\nSize=807,663\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Properties]\nPos=1987,25\nSize=573,887\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=809,914\nSize=1751,663\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=590,200\nSize=566,678\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][##LoadingOverlay]\nPos=1812,1014\nSize=215,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=699,249\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Terminal]\nPos=0,914\nSize=807,663\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Loom_Features]\nPos=0,25\nSize=1804,814\nCollapsed=0\n\n[Window][Lumen_Loom]\nPos=0,25\nSize=1804,814\nCollapsed=0\n\n[Window][Feature_Constellation]\nPos=0,25\nSize=1804,814\nCollapsed=0\n\n[Window][Spectral_Signal_Mixer]\nPos=0,25\nSize=1804,814\nCollapsed=0\n\n[Window][Feature_Analysis_Proxy]\nPos=0,25\nSize=1804,814\nCollapsed=0\n\n[Window][Loom_Performance_Deck]\nPos=0,25\nSize=1804,814\nCollapsed=0\n\n[Window][Feature_Observatory]\nPos=0,25\nSize=1985,761\nCollapsed=0\n\n[Window][01_SIGNAL_BLOOM_SOURCE]\nPos=0,25\nSize=1985,887\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][02_ANALYSIS_PROXY]\nPos=0,25\nSize=1985,887\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][02_REAL_FEATURES]\nPos=0,25\nSize=1985,887\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][04_FEATURE_CHOREOGRAPHY]\nPos=0,25\nSize=1985,887\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][05_SIGNAL_CUT_PROGRAM]\nPos=0,25\nSize=1985,887\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][06_DETECTION_TELEMETRY_PRINT]\nPos=0,25\nSize=1985,887\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][07_SIGNAL_CUT_PERFORMANCE_CONSOLE]\nPos=0,25\nSize=1985,887\nCollapsed=0\nDockId=0x0000002E,6\n\n[Docking][Data]\nDockSpace                                   ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=Y\n  DockNode                                  ID=0x00000003 Parent=0xCCBD8CF7 SizeRef=1222,1399 Split=X Selected=0x376FDC27\n    DockNode                                ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n      DockNode                              ID=0x00000001 Parent=0x00000007 SizeRef=2386,1284 Split=X Selected=0x5AAC8CBA\n        DockNode                            ID=0x00000009 Parent=0x00000001 SizeRef=742,790 Selected=0x9E38CE87\n        DockNode                            ID=0x0000000A Parent=0x00000001 SizeRef=749,790 Split=X Selected=0x376FDC27\n          DockNode                          ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n            DockNode                        ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n            DockNode                        ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n              DockNode                      ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n              DockNode                      ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                DockNode                    ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                DockNode                    ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                  DockNode                  ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                    DockNode                ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                      DockNode              ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                        DockNode            ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                          DockNode          ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                          DockNode          ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                        DockNode            ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                      DockNode              ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                        DockNode            ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                          DockNode          ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                          DockNode          ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                            DockNode        ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                            DockNode        ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                        DockNode            ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                          DockNode          ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                          DockNode          ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                            DockNode        ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                            DockNode        ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                              DockNode      ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                DockNode    ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                DockNode    ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                              DockNode      ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                DockNode    ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                DockNode    ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                  DockNode  ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                  DockNode  ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 CentralNode=1 Selected=0xD6DE90A5\n                    DockNode                ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                  DockNode                  ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n          DockNode                          ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n      DockNode                              ID=0x00000002 Parent=0x00000007 SizeRef=573,1284 Selected=0x8C72BEA8\n    DockNode                                ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n  DockNode                                  ID=0x00000004 Parent=0xCCBD8CF7 SizeRef=1222,663 Split=X Selected=0xF12F3499\n    DockNode                                ID=0x00000005 Parent=0x00000004 SizeRef=808,707 Selected=0xD33228A6\n    DockNode                                ID=0x00000006 Parent=0x00000004 SizeRef=1752,707 Selected=0xF12F3499\n\n",
+  "name": "signal_cut_feature_analysis",
+  "nodePresets": [],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "02_ANALYSIS_PROXY",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "02_ANALYSIS_PROXY",
+      "inputSlotSourceIds": [
+        "01_SIGNAL_BLOOM_SOURCE"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "02_ANALYSIS_PROXY",
+      "panelOpen": true,
+      "parameters": {
+        "color_keep": "0.000000",
+        "edge_focus": "0.350000",
+        "luma_gain": "1.000000",
+        "luma_gamma": "1.000000",
+        "project_dir": "modules/02_ANALYSIS_PROXY",
+        "resolution_height": "270",
+        "resolution_width": "480",
+        "show_analysis_grid": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "01_SIGNAL_BLOOM_SOURCE",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "01_SIGNAL_BLOOM_SOURCE",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "01_SIGNAL_BLOOM_SOURCE",
+      "panelOpen": true,
+      "parameters": {
+        "contour_density": "14.000000",
+        "contour_intensity": "0.880000",
+        "contour_width": "0.050000",
+        "contrast": "0.900000",
+        "field_mode": "0.000000",
+        "field_scale": "8.000000",
+        "field_threshold": "0.664000",
+        "fill_amount": "0.120000",
+        "grain_amount": "0.004000",
+        "motion_rate": "0.320000",
+        "project_dir": "modules/01_SIGNAL_BLOOM_SOURCE",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "scanline_amount": "0.004000",
+        "secondary_contours": "0.080000",
+        "warp_amount": "1.100000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "07_SIGNAL_CUT_PERFORMANCE_CONSOLE",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "07_SIGNAL_CUT_PERFORMANCE_CONSOLE",
+      "inputSlotSourceIds": [
+        "06_DETECTION_TELEMETRY_PRINT"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "07_SIGNAL_CUT_PERFORMANCE_CONSOLE",
+      "panelOpen": true,
+      "parameters": {
+        "ascii_density": "0.750712",
+        "ascii_mode": "1.000000",
+        "network_tension": "0.855132",
+        "project_dir": "modules/07_SIGNAL_CUT_PERFORMANCE_CONSOLE"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "03_REAL_FEATURES",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "03_REAL_FEATURES",
+      "inputSlotSourceIds": [
+        "02_ANALYSIS_PROXY"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "02_REAL_FEATURES",
+      "panelOpen": true,
+      "parameters": {
+        "blob_enabled": "1",
+        "blob_invert": "0",
+        "blob_max_count": "18",
+        "blob_min_area": "92.734001",
+        "blob_threshold": "0.486000",
+        "corner_enabled": "1",
+        "corner_max_count": "109",
+        "corner_min_distance": "23.349001",
+        "corner_mode": "0",
+        "corner_quality": "0.470000",
+        "edge_blur": "0",
+        "edge_enabled": "0",
+        "edge_high_threshold": "0.300000",
+        "edge_low_threshold": "0.120000",
+        "edge_mode": "0",
+        "edge_threshold": "0.250000",
+        "line_anchor_threshold": "0.840000",
+        "line_detect_scale": "1",
+        "line_edge_threshold": "0.680000",
+        "line_enabled": "0",
+        "line_jump_distance": "3",
+        "line_max_count": "8",
+        "line_min_length": "20.000000",
+        "line_nms_angle_tol": "5.000000",
+        "line_nms_dist_tol": "4.000000",
+        "line_orientation_tol": "22.500000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "features"
+    },
+    {
+      "displayName": "04_FEATURE_CHOREOGRAPHY",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "04_FEATURE_CHOREOGRAPHY",
+      "inputSlotSourceIds": [
+        "03_REAL_FEATURES"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "04_FEATURE_CHOREOGRAPHY",
+      "panelOpen": true,
+      "parameters": {
+        "attack_rate": "4.000000",
+        "blob_area_gain": "3.200000",
+        "blob_ink_b": "0.900000",
+        "blob_ink_g": "0.920000",
+        "blob_ink_r": "0.920000",
+        "composition_bias_x": "0.000000",
+        "composition_bias_y": "0.000000",
+        "direction_gain": "1.250000",
+        "group_count": "6.000000",
+        "marker_size": "7.500000",
+        "match_radius": "0.240000",
+        "preview_exposure": "1.450000",
+        "project_dir": "modules/04_FEATURE_CHOREOGRAPHY",
+        "radial_twist": "0.440000",
+        "release_rate": "1.350000",
+        "resolution_height": "360",
+        "resolution_width": "640",
+        "shape_direction": "0.280000",
+        "tracking_response": "7.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "06_DETECTION_TELEMETRY_PRINT",
+      "enabled": true,
+      "expressions": {
+        "ascii_density": "ref(\"07_SIGNAL_CUT_PERFORMANCE_CONSOLE/parameters/ascii_density\")",
+        "ascii_mode": "ref(\"07_SIGNAL_CUT_PERFORMANCE_CONSOLE/parameters/ascii_mode\")",
+        "network_tension": "ref(\"07_SIGNAL_CUT_PERFORMANCE_CONSOLE/parameters/network_tension\")"
+      },
+      "fitMode": 1,
+      "id": "06_DETECTION_TELEMETRY_PRINT",
+      "inputSlotSourceIds": [
+        "05_SIGNAL_CUT_PROGRAM",
+        "04_FEATURE_CHOREOGRAPHY",
+        "03_REAL_FEATURES",
+        "03_REAL_FEATURES"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "06_DETECTION_TELEMETRY_PRINT",
+      "panelOpen": true,
+      "parameters": {
+        "ascii_amount": "0.900000",
+        "ascii_density": "0.750712",
+        "ascii_mode": "1.000000",
+        "ascii_radius": "0.105000",
+        "border_ticks": "0.620000",
+        "corner_accent_b": "0.025000",
+        "corner_accent_g": "0.420000",
+        "corner_accent_r": "1.000000",
+        "label_ink_b": "0.910000",
+        "label_ink_g": "0.940000",
+        "label_ink_r": "0.940000",
+        "label_opacity": "0.920000",
+        "network_ink_b": "0.820000",
+        "network_ink_g": "0.840000",
+        "network_ink_r": "0.840000",
+        "network_opacity": "0.760000",
+        "network_tension": "0.855132",
+        "network_width": "0.001150",
+        "print_levels": "7.000000",
+        "project_dir": "modules/06_DETECTION_TELEMETRY_PRINT"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "05_SIGNAL_CUT_PROGRAM",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "05_SIGNAL_CUT_PROGRAM",
+      "inputSlotSourceIds": [
+        "01_SIGNAL_BLOOM_SOURCE",
+        "04_FEATURE_CHOREOGRAPHY"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "05_SIGNAL_CUT_PROGRAM",
+      "panelOpen": true,
+      "parameters": {
+        "black_level": "0.025000",
+        "cell_edge_gain": "0.620000",
+        "cell_line_width": "0.001100",
+        "connectivity_radius": "0.085000",
+        "dash_count": "21.000000",
+        "dash_ratio": "0.420000",
+        "dash_speed": "0.240000",
+        "flow_rate": "0.180000",
+        "influence_radius": "0.190000",
+        "invert_output": "0.000000",
+        "mark_gain": "0.680000",
+        "mark_width": "0.900000",
+        "performance_pressure": "0.000000",
+        "performance_xy_x": "0.000000",
+        "performance_xy_y": "0.000000",
+        "posterize_levels": "6.000000",
+        "project_dir": "modules/05_SIGNAL_CUT_PROGRAM",
+        "red_amount": "1.000000",
+        "red_ink_b": "0.018000",
+        "red_ink_g": "0.055000",
+        "red_ink_r": "1.000000",
+        "render_mode": "0.000000",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "scanline_cut": "0.003000",
+        "slice_displacement": "0.006000",
+        "slice_rows": "92.000000",
+        "source_gain": "0.720000",
+        "tear_amount": "0.005000",
+        "tear_threshold": "0.840000",
+        "web_gain": "0.260000",
+        "web_width": "1.000000",
+        "white_level": "0.820000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1784781368909,
+  "sources": [],
+  "version": 5
+}

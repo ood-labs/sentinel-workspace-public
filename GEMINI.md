@@ -28,6 +28,20 @@ Use:
 
 The shipped docs are a guide, but the live MCP surface is the source of truth for this exact build.
 
+## Never Use Diagnostic Test Imagery As Creative Input
+
+Never create or use Sentinel's built-in Pattern source, color bars, checkerboards, test cards, or other diagnostic test imagery as input to Features, tracking, AI, or any authored visual chain. This prohibition includes temporary scaffolding and technical data-contract proofs: diagnostic imagery must not appear in visible construction, intermediate previews, captures, or final proof.
+
+When a creative build needs a source, use a meaningful user-provided or live source (camera, video, image, Spout, or NDI), or author a visually intentional generator Module as the first semantic node. If no meaningful source is available, author that generator before creating or testing downstream analysis. A technically convenient test signal is not an acceptable substitute for the requested creative composition.
+
+## Default Creative Direction And Planning
+
+When the user does not specify an aesthetic, default to a technical monochrome scientific-instrument look: black field, white and gray geometry, crisp thin strokes, legible measurement or tracking overlays, restrained typography, and one sparingly used warm accent. Prefer hard digital structure, contour lines, cells, quantization, registration marks, and precise HUD composition. Do not default to cyan/magenta/purple gradients, blue glow, soft neon bloom, glassy panels, or vague atmospheric effects unless the user asks for them.
+
+Before an ambitious creative graph, establish a short direction plan covering source semantics, analysis tasks, data-to-visual mappings, motion language, palette, interaction contract, and proof criteria. An explicitly exploratory run may stay loose, but it must still choose a meaningful source and state what each analysis or interaction node is supposed to contribute before building downstream.
+
+Every number or label must derive from real live state and remain attached to what it describes. Every authored interaction must cause an immediate, legible, creatively useful change that is meaningfully better than an ordinary Properties control. Do not add stage drags, momentary buttons, fake telemetry, or decorative controls merely to make a composition appear interactive; remove controls that prove weak, redundant, or unclear.
+
 ## Sentinel Launch Safety
 
 Sentinel must run in the active interactive Windows desktop. Never launch `sentinel.exe` from Windows Session 0, a service, SSH background execution, or any headless or non-interactive context. Check the agent process session ID before every launch. Reuse a user-launched Sentinel instance in the active desktop session, or use an explicitly interactive `/IT` scheduled task and verify the resulting process session ID before testing. MCP and raw localhost IPC can connect across sessions after the interactive app is running.
@@ -42,7 +56,7 @@ Some pipelines need TensorRT engine packs. A fresh install may have none.
 4. Poll `engine_status` until the pack is `complete`.
 5. Create the pipeline, wire input, and inspect health.
 
-For a quick first proof, install pack `auxiliary`, create `depthestimation`, connect a pattern source, and verify `stats.healthy=true` with `framesProcessed` climbing.
+For a quick first proof, install pack `auxiliary`, create `depthestimation`, connect a meaningful live/user source or an authored generator Module, and verify `stats.healthy=true` with `framesProcessed` climbing. Never use the built-in Pattern source or diagnostic test imagery for this proof.
 
 License activation is deliberately manual in the app UI.
 
@@ -103,7 +117,7 @@ Complete this entire cycle before authoring or creating the next node:
 
 Continue through the cycle without requiring approval after every node unless the user asks for checkpoints. The requirement is visible incremental construction, not stop-and-confirm gating.
 
-Do not use whole-graph `auto_layout` to repair a pile of bulk-created nodes. Preserve the graph's evolving layout with `place_relative`, explicit geometry, or `layout_neighborhood`. Whole-graph `auto_layout` is reserved for an explicitly requested batch workflow or a non-creative smoke test where the user is not watching the graph being authored.
+Do not use whole-graph `auto_layout` to repair a pile of bulk-created nodes. Preserve the graph's evolving layout with `place_relative`, explicit geometry, or `layout_neighborhood`. A whole-graph `auto_layout` is appropriate when the user explicitly requests it or when later topology surgery inserts, removes, or replaces nodes and the graph no longer reads in signal-flow order. Treat that as a layout-only checkpoint: inspect the graph first, run `auto_layout`, verify the new order, then refocus and reopen the active node. Never use it to hide bulk creation.
 
 Generator, plan, layout, assembly, and data-transform nodes must provide a meaningful visual preview of their own intermediate state. Show active records and their spatial structure, direction, grouping, weight, or type as appropriate. A downstream renderer and `capture_data_port` are additional proof, not substitutes for an inspectable node preview.
 
@@ -137,6 +151,14 @@ Use `sentinel_state action=snapshot` / `action=restore` to bracket experiments t
 Use `sentinel_vision action=eval_pipeline pipeline_id=<id> preset=render_quality` for one-call AI visual review of a live pipeline. It captures `<workspace>/captures/vision_<timestamp>/output.png`, evaluates it through the configured OpenAI-compatible provider, and returns `_meta.captured_png`. For first-time setup, run `sentinel_vision action=status`, open the returned `config_path`, paste the provider key into the selected provider profile's `api_key` field, then rerun `status` until `key_present` and `key_ok` are true. Environment setup is also supported with `SENTINEL_VISION_API_KEY` or `OPENROUTER_API_KEY` set before launching Codex/MCP. Never ask the user to paste API keys into chat or pass them as tool arguments; `sentinel_vision action=configure` only edits provider metadata. See `knowledge/vision-eval.md` for the full setup flow.
 
 For local diagnostics or support handoff, use `sentinel_app action=bug_report`. Use `sentinel_app action=submit_bug_report` only when the user explicitly wants to submit the report.
+
+## Features Performance Discipline
+
+Treat the model-free `features` node as performance-sensitive. Threshold extremes can produce dense candidate sets and abrupt CPU cost, especially with corners, lines, or edges at large input resolutions. Never sweep several feature tasks blindly or enable every task at once.
+
+Start from a measured baseline, enable and tune one task at a time, and run `sentinel_graph action=profile summary=true sort_by=wall_time_ms` before and after material changes. Keep counts bounded and use conservative thresholds: avoid very low corner quality with small minimum distance, permissive line/edge thresholds, short minimum line lengths, and blob settings that fragment most of the frame. If wall time, frame cadence, or UI responsiveness regresses sharply, immediately revert the last setting before continuing downstream.
+
+For quick creative builds, keep the canonical visible chain at 1280x720 or a comparable 720p resolution. When Features is too expensive, insert an explicit analysis proxy branch that downsamples only the Features input (for example to 480x270) while the full-resolution source bypasses it into the renderer. The Features preview and coordinates then use the analysis resolution; downstream consumers must normalize with that exact size. This is an external workaround until the live node advertises a verified internal analysis scale. Preview the real Features node while tuning, inspect output counts and schemas, and require the agreed performance target before adding another node. See `knowledge/tracking-suite.md` and `knowledge/performance-proof.md`.
 
 ## Async Compile
 
@@ -175,6 +197,12 @@ For a data-driven custom visual, prefer `sentinel_module action=scaffold_from_po
 Use `sentinel_pipeline action=get_data_schemas` before wiring data. The response includes the graph pin name and slot when available, so use that pin name with `sentinel_graph action=add_link`.
 
 Modules can declare viewport behavior in a manifest `viewport:` block: a `hint` string plus `interactions` from `mouse`, `pan_zoom`, `camera`, `events`, and `selection`. Declaring `events` with a `viewport.input` interest list and `bindings` help entries delivers ordered pointer/keyboard/gesture events to the module's shaders (installs at 0.5.30 or newer). Installs at 0.5.31 or newer also support `param_gestures`, shader-rendered `controls`, durable `state_buffers`, and host-owned object selection/picking through `sentinel_viewport`. Installs at 0.5.32 or newer support `panel: { mode: canvas, output: UI, resolution: follow_panel }` for full-bleed authored panels whose real render size follows the dock content. See `knowledge/module-pipeline.md` and `knowledge/ui-authoring.md`.
+
+## Direct-Manipulation UI Architecture
+
+Do not build authored Canvas panels that merely duplicate Properties sliders. Keep exact numeric shaping, colors, toggles, and ordinary enums in Properties. Use viewport UI for interactions Properties cannot express well: selecting and moving objects, editing points and splines, painting fields, manipulating regions and falloffs, camera/gizmo work, spatial triggers, and performance gestures. Keep telemetry compact and contextual.
+
+Separate the canonical Program renderer from the flexible editor Canvas. The renderer keeps an intentional output such as 1280x720. A `follow_panel` editor displays an aspect-correct fitted or cropped Program preview, remaps pointer coordinates into that stage rectangle, owns durable interaction state, and publishes structured control data for the renderer. Do not make the final renderer inherit an arbitrary dock aspect and do not stretch a canonical image to fill the panel. Use unused panel space for contextual tools or gutters. Prove click, drag, selection, clear, and other primary gestures with real viewport input. See `knowledge/ui-authoring.md`.
 
 ## Choreography And Sequencing
 
@@ -248,10 +276,10 @@ Use skills for authoring details:
 
 1. `sentinel_app action=ping`
 2. `sentinel_pipeline action=list_types`
-3. `sentinel_pipeline action=create_source source_type=pattern name=smoke patternWidth=640 patternHeight=360`
+3. Select a meaningful existing camera, video, image, Spout, or NDI source, or author and prove a generator Module first. Never use the built-in Pattern source or diagnostic test imagery.
 4. `sentinel_pipeline action=create type=depthestimation name=depth_smoke`
 5. If engines are missing, install `auxiliary` through `sentinel_app`.
-6. `sentinel_pipeline action=set_input pipeline_id=depth_smoke source_id=smoke`
+6. Connect the selected meaningful source or authored generator to `depth_smoke`.
 7. `sentinel_graph action=auto_layout`
 8. Poll `sentinel_pipeline action=info pipeline_id=depth_smoke` until healthy with frames climbing.
 

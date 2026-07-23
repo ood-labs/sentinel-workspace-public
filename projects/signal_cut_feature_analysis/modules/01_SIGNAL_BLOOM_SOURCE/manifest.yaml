@@ -1,0 +1,51 @@
+name: "01 / FLUID MASS FIELD"
+version: "3.0"
+mode: generator
+resolution: [1280, 720]
+features: [noise]
+
+viewport:
+  hint: "Broad advected fluid masses for stable blob extraction"
+  interactions: [mouse]
+
+parameters:
+  - { name: motion_rate, display: "Evolution Rate", type: float, min: 0.01, max: 0.8, default: 0.12, group: "Evolution" }
+  - { name: field_mode, display: "Field Family", type: enum, default: 0, options: [Membrane Flow, Wave Interference, Cellular Fold], flags: button_grid, group: "Field" }
+  - { name: field_scale, display: "Field Scale", type: float, min: 0.8, max: 8.0, default: 3.25, group: "Field" }
+  - { name: warp_amount, display: "Organic Warp", type: float, min: 0.0, max: 2.0, default: 0.82, group: "Field" }
+  - { name: field_threshold, display: "Body Threshold", type: float, min: 0.15, max: 0.85, default: 0.52, group: "Field" }
+  - { name: fill_amount, display: "Body Fill", type: float, min: 0.0, max: 0.45, default: 0.07, group: "Material" }
+  - { name: contour_density, display: "Internal Flow Density", type: float, min: 3.0, max: 34.0, default: 14.0, group: "Material" }
+  - { name: contour_width, display: "Mass Edge Width", type: float, min: 0.004, max: 0.12, default: 0.026, group: "Material" }
+  - { name: contour_intensity, display: "Mass Edge Contrast", type: float, min: 0.25, max: 1.5, default: 0.92, group: "Material" }
+  - { name: secondary_contours, display: "Internal Flow Detail", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Material" }
+  - { name: contrast, display: "Black / White Contrast", type: float, min: 0.4, max: 2.4, default: 0.72, group: "Material" }
+  - { name: scanline_amount, display: "Scanline Cut", type: float, min: 0.0, max: 0.08, default: 0.012, group: "Texture" }
+  - { name: grain_amount, display: "Sensor Grain", type: float, min: 0.0, max: 0.08, default: 0.012, group: "Texture" }
+
+buffers:
+  - name: phase_state
+    format: RGBA32F
+    scale: 0.02
+    persistent: true
+
+passes:
+  - name: phase_tick
+    shader: phase.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: "buffer:phase_state"
+
+  - name: organic_field
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: output
+
+outputs:
+  - { name: "Organic Field", pass: organic_field }
