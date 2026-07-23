@@ -10,9 +10,9 @@ This workspace is the user-writable Sentinel agent workspace. It is seeded by Se
 
 Sentinel is a GPU-accelerated live video application for performance and interactive visuals. It combines Spout/NDI/camera/image/pattern/video sources, real-time AI generation, tracking, depth, segmentation, object detection, shader modules, and Spout/NDI output.
 
-## Managed Instruction Persistence
+## Workspace Ownership
 
-Sentinel workspace repair and version refreshes can replace `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.claude/skills/`, `.agents/skills/`, and `knowledge/` from the installed workspace seed. The manuals are backed up as `.previous`, but the skill and knowledge trees are replaced. After intentionally changing agent behavior, compare any `.previous` backups and verify the live workspace again after the next launch or repair. A durable product-level change requires updating the shipped workspace seed as well as this user workspace; changing manifest hashes alone does not alter repair behavior.
+The default Sentinel workspace mirrors the installed application version. Refresh Workspace resets its managed manuals, knowledge, and skills to the installed copies. A custom workspace path is fully user-owned. Sentinel seeds an empty custom workspace once and leaves every non-empty custom workspace unchanged. Ask your agent to use the `update-workspace` skill when you want to bring a custom workspace up to date from the public workspace repository.
 
 ## First Rule: Discover Live
 

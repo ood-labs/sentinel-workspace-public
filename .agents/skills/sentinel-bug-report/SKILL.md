@@ -17,7 +17,7 @@ Use this skill for new bug reports and crash reports. For maintainers fixing an 
 Do not submit a vague report. First collect enough evidence that support can act on it.
 
 - Get user consent before submitting anything remotely.
-- Tell the user what will be included: diagnostic report, log tail, crash artifacts when requested, optional screenshot, and optional project file.
+- Tell the user what will be included. Licensed reports can include the file bundle. Unlicensed reports include the narrative and inline diagnostic only.
 - Do not attach a user project file unless the user explicitly approves it or the agent created a minimized repro project for this report.
 - Do not put license keys, private paths, emails, customer names, secrets, or venue names in the narrative.
 - Prefer a local MCP reproduction path before submission.
@@ -102,6 +102,10 @@ Keep the title specific:
 Crash: Sentinel exits while <doing action>
 Bug: <pipeline or panel> <specific failure>
 ```
+
+## License Tiers
+
+Licensed submissions upload the diagnostic file bundle and can include approved logs, crash artifacts, screenshots, and project files. When no explicit, dev-build, or active license key is available, Sentinel submits an unlicensed report containing the narrative and inline diagnostic only. The service omits the Artifacts section, applies the `unlicensed` label, and limits unlicensed submissions to 3 per machine fingerprint and 10 per IP address each day. The MCP response states that the file bundle was omitted.
 
 ## Submit Through Sentinel MCP
 
