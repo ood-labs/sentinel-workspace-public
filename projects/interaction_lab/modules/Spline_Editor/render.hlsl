@@ -49,7 +49,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
         PNode a = _Tex1[i], b = _Tex1[i + 1u];
         if (a.active < 0.5 || b.active < 0.5 || (uint)round(a.group) != (uint)round(b.group)) continue;
         float level = 0.58 + 0.06 * fmod(a.group, 4.0);
-        suiComposite(color, level.xxx, suiLinePx(c, nodeUv(a), nodeUv(b), path_weight));
+        suiComposite(color, level.xxx, suiLinePx(c, nodeUv(a), nodeUv(b), 2.0));
     }
 
     [loop] for (uint i = 0u; i < 64u; ++i) {

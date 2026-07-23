@@ -32,7 +32,7 @@ Sentinel itself is distributed separately. This repository contains authored wor
    sentinel_pipeline action=list_types
    ```
 
-5. Load any standalone project under [`projects/`](projects/), or open [`projects/interaction_lab/interaction_lab.sentinel`](projects/interaction_lab/interaction_lab.sentinel) for the authored UI, selection, spline, and gizmo feature laboratory.
+5. Load [`projects/interaction_lab/interaction_lab.sentinel`](projects/interaction_lab/interaction_lab.sentinel) to explore authored controls, responsive Canvas panels, spline editing, selection, and multi-object transform gizmos.
 
 The live MCP catalog is authoritative for the installed Sentinel build. Start with [`AGENTS.md`](AGENTS.md) or [`knowledge/FEATURE-MAP.md`](knowledge/FEATURE-MAP.md) before authoring new content.
 
@@ -68,15 +68,15 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | --- | --- |
 | [`interaction_lab`](projects/interaction_lab/) | Scientific UI controls, responsive Canvas panels, spline editing, selection, and transform gizmos |
 | [`living_room_sdf`](projects/living_room_sdf/) | A bundled, data-driven SDF interior assembled from architecture, furnishing, material, lighting, render, and grade modules |
-| [`face_collage`](projects/face_collage/) | A tracking-driven StreamDiff collage with persistent accumulation, face cutouts, clone overlays, and editorial finishing |
 | [`topographic_hud`](projects/topographic_hud/) | A 15-module topographic interface using texture lanes, structured records, and a control-output signal bus |
 | [`desert_totem`](projects/desert_totem/) | A procedural Dada totem with structured layout records and layered SDF domain warping |
+| [`fruit_atlas_scatter`](projects/fruit_atlas_scatter/) | A StreamDiff, matting, depth, atlas, and 3D card-scatter workflow; its AI nodes require the corresponding Sentinel engine packs |
 | [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
-| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene with bundled render/post modules, internal camera controls, quality settings, and extreme domain distortion |
+| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene using the shared root-level `steel_lattice` and `industrial_mono_post` modules |
 | [`streamdiff_workflows`](projects/streamdiff_workflows/) | Six focused StreamDiff studies covering 2D feedback, depth-parallax motion, video depth conditioning, procedural warp maps, and direct Mux switching |
+| [`streamdiff_collage`](projects/streamdiff_collage/) | A rapid StreamDiff poster instrument that mattes generated food and graphic elements, atomically stamps them into persistent feedback, and applies rare print interventions |
+| [`procedural_building_system`](projects/procedural_building_system/) | A modular architectural system with editable massing, facade, materials, and lighting data; an sRGB/depth renderer; and an optional depth-ControlNet StreamDiff pass |
 | [`node_examples`](projects/node_examples/) | Eighteen focused studies covering tracking, analysis, routing, control, authored modules, HLSL post-processing, cameras, and RTX Video SR |
-
-Face Collage and the StreamDiff workflow studies are engine-backed. The remaining aesthetic looks are model-free. Each example is intentionally distributed as a standalone project or focused collection so people can load only the content they want without paying the memory and startup cost of a combined gallery.
 
 ## Creating a UI Module
 

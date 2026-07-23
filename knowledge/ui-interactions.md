@@ -138,6 +138,9 @@ Press `Tab` while the preview is focused to toggle Orbit and Fly. The Camera nod
 - Right-click the grid for the terminal context menu.
 - Press `Ctrl+Shift+R` while the terminal owns focus to restart its shell session.
 - Control letters, arrows, navigation keys, function keys, Enter, Tab, Backspace, Escape, Insert, and Delete are forwarded to the terminal process.
+- The terminal's Launch command and Workspace folder are set in Settings, in matching Embedded Terminal sections on the System and Project tabs. The Project value is saved in the project file and overrides the System value.
+- Clearing the Launch command opens a plain interactive PowerShell session instead of an agent CLI.
+- Settings changes apply to the next terminal session. Use Restart Terminal in either Settings tab, or `Ctrl+Shift+R` in the grid, to apply them now.
 
 ## Panels, Docking, and Turbo Mode
 

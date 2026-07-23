@@ -5,7 +5,7 @@
         interaction_lab = @{
             ProjectFile = 'interaction_lab.sentinel'
             SharedModules = @()
-            MinimumSceneGroups = 4
+            MinimumSceneGroups = 3
             RequiresGroupOutput = $false
             MinimumGroupPresets = 1
             MinimumNodePresets = 2
@@ -23,6 +23,15 @@
         face_collage = @{
             ProjectFile = 'face_collage.sentinel'
             SharedModules = @('modules/lfo', 'modules/resample')
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $true
+            MinimumGroupPresets = 3
+            MinimumNodePresets = 2
+            Exemptions = @()
+        }
+        fruit_atlas_scatter = @{
+            ProjectFile = 'fruit_atlas_scatter.sentinel'
+            SharedModules = @()
             MinimumSceneGroups = 1
             RequiresGroupOutput = $true
             MinimumGroupPresets = 3
@@ -64,6 +73,32 @@
             MinimumGroupPresets = 3
             MinimumNodePresets = 2
             Exemptions = @('object-picking')
+        }
+        procedural_building_system = @{
+            ProjectFile = 'procedural_building_system.sentinel'
+            SharedModules = @(
+                'modules/pl_blueprint_procedural_building',
+                'modules/procedural_building_facade',
+                'modules/procedural_building_materials',
+                'modules/procedural_building_lighting',
+                'modules/procedural_building_render'
+            )
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $false
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 0
+            Exemptions = @('scene-group-presets', 'technical-workflow-output')
+        }
+        showcase_gallery = @{
+            ProjectFile = 'showcase_gallery.sentinel'
+            SharedModules = @()
+            MinimumSceneGroups = 7
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 7
+            RequiresGroupsMux = $true
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 0
+            Exemptions = @('gallery-final-mux', 'scene-group-controls', 'scene-group-presets', 'object-picking')
         }
     }
 

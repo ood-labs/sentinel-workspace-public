@@ -96,6 +96,7 @@ sentinel_pipeline action="info" pipeline_id="hlslshader_0"
 
 ## Core Agent Workflow Patterns
 
+- **Visible graph authoring**: unless the user explicitly requests batch work, author and create exactly one node at a time. Immediately place it relative to the graph, wire it, verify it, call `sentinel_graph focus`, and call `sentinel_pipeline open_window` before starting the next node. Never pre-author the planned graph, parallel-create its nodes, or rely on whole-graph `auto_layout` to repair a pile.
 - **Discovery**: `sentinel_app action="capabilities"` returns every IPC command with its accepted args. Unknown args are rejected with the expected list, so typos fail loudly.
 - **Honest health**: `list`/`info` report a bridge-computed `healthy` with `health_reasons[]` naming the exact cause (no frames, compile error, unresolved project_dir, zombie) plus a live `statusMessage`. Trust these over raw `loaded_*` flags.
 - **One-call module create**: `sentinel_pipeline create type="module" name="X" project_dir="..."` is atomic; the response carries `compile_ok`/`compile_error` and the registered params.
@@ -217,7 +218,7 @@ NOT display names like "Background Removal" — those won't work.
 | `switch_input` | Replace whatever feeds an input slot in one call; reports `{link_id, replaced, removed_link_id}`, restores the old link if the new one fails |
 | `remove_link` | Disconnect (`link_id` or entity pair + `to_slot`) |
 | `clear_links` | Remove all links |
-| `auto_layout` | Arrange the whole graph left-to-right. Run after wiring via MCP, nodes spawn at (0,0). Needs `confirm: true` past 10 positioned nodes |
+| `auto_layout` | Arrange the whole graph left-to-right. Reserve for explicit batch work or smoke tests; visible authoring uses `place_relative`/`layout_neighborhood`. Needs `confirm: true` past 10 positioned nodes |
 | `layout_neighborhood` | Arrange only the neighborhood around one node (`entity_id`, `direction`, `depth`, `anchor`, `dry_run`). Leaves the rest untouched |
 | `focus` | Center/zoom the graph view on one node |
 | `get_node_geometry` | One node's position, bounds, containment |

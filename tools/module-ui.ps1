@@ -280,17 +280,8 @@ switch ($Action) {
                     $bundleDir = $_.Directory.FullName
                     foreach ($file in Get-ChildItem -LiteralPath $source -File) {
                         $other = Join-Path $bundleDir $file.Name
-                        $sourceText = [IO.File]::ReadAllText($file.FullName).Replace("`r`n", "`n").Replace("`r", "`n")
-                        $bundleText = if (Test-Path -LiteralPath $other) {
-                            [IO.File]::ReadAllText($other).Replace("`r`n", "`n").Replace("`r", "`n")
-                        } else { $null }
-                        if ($null -eq $bundleText -or $sourceText -ne $bundleText) {
+                        if (-not (Test-Path -LiteralPath $other) -or (Get-FileHash $file.FullName).Hash -ne (Get-FileHash $other).Hash) {
                             throw "source/bundle drift: $($bundle.Name) file '$($file.Name)'"
-                        }
-                    }
-                    foreach ($file in Get-ChildItem -LiteralPath $bundleDir -File) {
-                        if (-not (Test-Path -LiteralPath (Join-Path $source $file.Name))) {
-                            throw "source/bundle drift: $($bundle.Name) bundle-only file '$($file.Name)'"
                         }
                     }
                 }

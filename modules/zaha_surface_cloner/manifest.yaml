@@ -1,0 +1,82 @@
+name: "Zaha Surface Cloner and Aperture Field"
+version: "1.0"
+mode: generator
+resolution: [1280,720]
+
+panel:
+  mode: canvas
+  output: "Surface Weave"
+  resolution: follow_panel
+
+data_inputs:
+  - name: "Loft Sections"
+    slot: 0
+    element_size: 64
+    element_count: 96
+    schema:
+      - { name: center, type: float3 }
+      - { name: radius_x, type: float }
+      - { name: radius_z, type: float }
+      - { name: rotation, type: float }
+      - { name: curvature, type: float }
+      - { name: u, type: float }
+      - { name: floor_band, type: float }
+      - { name: skin_bias, type: float }
+      - { name: void_bias, type: float }
+      - { name: active, type: float }
+      - { name: tangent, type: float3 }
+      - { name: seed, type: float }
+
+parameters:
+  - { name: attractor_field, display: "Surface Attractor", type: point2D, min: [0.035,0.155], max: [0.495,0.905], default: [0.38,0.54], hidden: true, group: "Spatial Field" }
+  - { name: aperture_field, display: "Aperture Void Field", type: point2D, min: [0.505,0.155], max: [0.965,0.905], default: [0.72,0.42], hidden: true, group: "Spatial Field" }
+  - { name: cloner_mode, display: "Cloner Grammar", type: enum, options: [Exoskeleton Ribs, Glazing Cells, Terraces, Hybrid Weave], flags: button_grid, default: 3, group: "System" }
+  - { name: clones_per_ring, display: "Clones per Ring", type: int, min: 3, max: 12, default: 8, group: "System" }
+  - { name: vertical_rings, display: "Vertical Rings", type: int, min: 20, max: 64, default: 56, group: "System" }
+  - { name: helix_turns, display: "Helix Turns", type: float, min: -4.0, max: 4.0, default: 1.35, group: "Flow" }
+  - { name: wave_depth, display: "Wave Depth", type: float, min: 0.0, max: 1.2, default: 0.28, group: "Flow" }
+  - { name: strata_frequency, display: "Strata Frequency", type: float, min: 1.0, max: 12.0, default: 5.0, group: "Flow" }
+  - { name: surface_offset, display: "Skin Offset", type: float, min: 0.0, max: 0.8, default: 0.16, group: "Geometry" }
+  - { name: panel_width, display: "Panel Width", type: float, min: 0.2, max: 1.4, default: 0.74, group: "Geometry" }
+  - { name: panel_depth, display: "Panel Depth", type: float, min: 0.03, max: 0.8, default: 0.12, group: "Geometry" }
+  - { name: rib_depth, display: "Rib Depth", type: float, min: 0.05, max: 1.2, default: 0.34, group: "Geometry" }
+  - { name: terrace_depth, display: "Terrace Cantilever", type: float, min: 0.1, max: 2.5, default: 0.76, group: "Geometry" }
+  - { name: tower_band_height, display: "Band Height", type: float, min: 0.08, max: 1.2, default: 0.32, group: "Geometry" }
+  - { name: variation, display: "Clone Variation", type: float, min: 0.0, max: 1.0, default: 0.46, group: "Variation" }
+  - { name: interior_glow, display: "Interior Glow", type: float, min: 0.0, max: 2.0, default: 0.86, group: "Variation" }
+  - { name: seed, display: "Clone Seed", type: int, min: 0, max: 999, default: 311, group: "Variation" }
+
+viewport:
+  hint: "Drag the orange attractor to bend cloner rhythm; drag the cyan void field to redistribute openings."
+  interactions: [events]
+  input: { pointer: [left], gestures: [drag] }
+  # ui-label: title = SURFACE CLONER / APERTURE WEAVER
+  # ui-label: subtitle = RIBS + CELLS + TERRACES / UNWRAPPED LIVE FACADE
+  # ui-label: map = CLONER FIELD MAP
+  controls:
+    - { id: attractor_field, kind: xypad, param: attractor_field, rect: [0.035,0.155,0.495,0.905], label: "Surface Attractor" }
+    - { id: aperture_field, kind: xypad, param: aperture_field, rect: [0.505,0.155,0.965,0.905], label: "Aperture Field" }
+
+buffers:
+  - { name: surface_instances, structured: true, element_size: 64, element_count: 512 }
+
+passes:
+  - { name: emit, shader: emit_instances.hlsl, target: cs_5_0, dispatch: [8,1,1], thread_group_x: 64, thread_group_y: 1, inputs: [ { slot: 0, source: "data:0" } ], output: "buffer:surface_instances" }
+  - { name: preview, shader: preview.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:surface_instances" } ], output: output }
+
+outputs:
+  - { name: "Surface Weave", pass: preview }
+
+data_outputs:
+  - name: "Surface Instances"
+    buffer: surface_instances
+    schema:
+      - { name: position, type: float3 }
+      - { name: type_id, type: float }
+      - { name: scale, type: float3 }
+      - { name: rotation, type: float }
+      - { name: normal, type: float3 }
+      - { name: material_id, type: float }
+      - { name: uv, type: float2 }
+      - { name: emissive, type: float }
+      - { name: active, type: float }

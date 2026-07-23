@@ -1,0 +1,213 @@
+name: "Living Room SDF Render"
+version: "2.0"
+mode: generator
+resolution: [960, 540]
+features: [camera]
+working_format: RGBA16F
+output_format: RGBA16F
+
+inputs:
+  - { name: "Artwork Texture", slot: 0, required: false }
+  - { name: "Artwork Depth", slot: 1, required: false }
+  - { name: "Artwork B Texture", slot: 2, required: false }
+  - { name: "Artwork B Depth", slot: 3, required: false }
+
+data_inputs:
+  - name: "Architecture PNodes"
+    slot: 0
+    element_size: 48
+    element_count: 96
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: scale, type: float }
+      - { name: kind_id, type: float }
+      - { name: seed, type: float }
+      - { name: yaw, type: float }
+      - { name: height, type: float }
+      - { name: width, type: float }
+      - { name: depth, type: float }
+      - { name: dir, type: float, count: 2 }
+  - name: "Furnishings PNodes"
+    slot: 1
+    element_size: 48
+    element_count: 96
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: scale, type: float }
+      - { name: kind_id, type: float }
+      - { name: seed, type: float }
+      - { name: yaw, type: float }
+      - { name: height, type: float }
+      - { name: width, type: float }
+      - { name: depth, type: float }
+      - { name: dir, type: float, count: 2 }
+  - name: "Material Records"
+    slot: 2
+    element_size: 64
+    element_count: 24
+    schema:
+      - { name: base_color, type: float, count: 3 }
+      - { name: roughness, type: float }
+      - { name: secondary_color, type: float, count: 3 }
+      - { name: metallic, type: float }
+      - { name: texture_scale, type: float }
+      - { name: texture_strength, type: float }
+      - { name: pattern_id, type: float }
+      - { name: emissive, type: float }
+      - { name: specular, type: float }
+      - { name: normal_strength, type: float }
+      - { name: seed, type: float }
+      - { name: reserved, type: float }
+  - name: "Light Records"
+    slot: 3
+    element_size: 64
+    element_count: 6
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: type_id, type: float }
+      - { name: direction, type: float, count: 3 }
+      - { name: range, type: float }
+      - { name: color, type: float, count: 3 }
+      - { name: intensity, type: float }
+      - { name: size, type: float, count: 2 }
+      - { name: softness, type: float }
+      - { name: enabled, type: float }
+
+parameters:
+  - { name: cam_mode, display: "Camera Mode", type: enum, options: [Fly, Custom Orbit, Locked View], default: 0, flags: button_grid, group: "Camera" }
+  - { name: evaluation_view, display: "Evaluation View", type: enum, options: [Conversation, Left Side, Media Corner, Reverse Media], default: 0, flags: button_grid, group: "Camera/Evaluation" }
+  - { name: orbit_phase, display: "Orbit Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Camera" }
+  - { name: orbit_azimuth, display: "Azimuth", type: float, min: -3.1416, max: 3.1416, default: 0.22, group: "Camera" }
+  - { name: orbit_elevation, display: "Elevation", type: float, min: -0.2, max: 1.2, default: 0.17, group: "Camera" }
+  - { name: orbit_distance, display: "Distance", type: float, min: 2.0, max: 14.0, default: 6.8, group: "Camera" }
+  - { name: orbit_focal, display: "Focal", type: float, min: 0.25, max: 1.5, default: 0.78, group: "Camera" }
+  - { name: orbit_target_x, display: "Target X", type: float, min: -4.0, max: 4.0, default: -0.25, group: "Camera/Target" }
+  - { name: orbit_target_y, display: "Target Y", type: float, min: 0.0, max: 3.0, default: 1.05, group: "Camera/Target" }
+  - { name: orbit_target_z, display: "Target Z", type: float, min: -4.0, max: 4.0, default: 0.0, group: "Camera/Target" }
+  - { name: quality_mode, display: "Quality Mode", type: enum, options: [Performance, Fidelity], default: 0, flags: button_grid, group: "Quality" }
+  - { name: max_steps, display: "Ray Steps", type: int, min: 48, max: 128, default: 80, group: "Quality" }
+  - { name: ao_strength, display: "Ambient Occlusion", type: float, min: 0.0, max: 4.0, default: 2.2, group: "Lighting" }
+  - { name: fog_amount, display: "Atmosphere", type: float, min: 0.0, max: 2.0, default: 0.10, group: "Lighting" }
+
+  - { name: art_texture_enabled, display: "Use Artwork Texture", type: bool, default: false, flags: button, group: "Artwork Texture" }
+  - { name: art_texture_target, display: "Target Frame", type: enum, options: [Right, Left, Both], default: 0, flags: button_grid, group: "Artwork Texture" }
+  - { name: art_texture_pan, display: "Pan", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [0.0, 0.0], group: "Artwork Texture/Framing" }
+  - { name: art_texture_zoom, display: "Zoom", type: float, min: 1.0, max: 4.0, default: 1.0, group: "Artwork Texture/Framing" }
+  - { name: art_texture_opacity, display: "Opacity", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Artwork Texture" }
+  - { name: art_depth_enabled, display: "Use Depth Relief", type: bool, default: false, flags: button, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_amount, display: "Relief Amount", type: float, min: 0.0, max: 0.6, default: 0.18, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_direction, display: "Direction", type: enum, options: [Outward, Inward], default: 0, flags: button_grid, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_recess, display: "Recess Offset", type: float, min: 0.0, max: 0.6, default: 0.12, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_invert, display: "Invert Depth", type: bool, default: false, flags: button, group: "Artwork Texture/Depth Relief" }
+  - { name: art_depth_black, display: "Black Level", type: float, min: 0.0, max: 0.95, default: 0.0, group: "Artwork Texture/Depth Relief/Range" }
+  - { name: art_depth_white, display: "White Level", type: float, min: 0.05, max: 1.0, default: 1.0, group: "Artwork Texture/Depth Relief/Range" }
+  - { name: art_depth_gamma, display: "Depth Gamma", type: float, min: 0.25, max: 4.0, default: 1.0, group: "Artwork Texture/Depth Relief/Range" }
+  - { name: art_depth_edge_fade, display: "Frame Edge Fade", type: float, min: 0.005, max: 0.25, default: 0.08, group: "Artwork Texture/Depth Relief" }
+
+  - { name: art2_texture_enabled, display: "Use Artwork B", type: bool, default: false, flags: button, group: "Artwork B" }
+  - { name: art2_texture_target, display: "Target Frame", type: enum, options: [Left, Right], default: 0, flags: button_grid, group: "Artwork B" }
+  - { name: art2_texture_pan, display: "Pan", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [0.0, 0.0], group: "Artwork B/Framing" }
+  - { name: art2_texture_zoom, display: "Zoom", type: float, min: 1.0, max: 4.0, default: 1.0, group: "Artwork B/Framing" }
+  - { name: art2_texture_opacity, display: "Opacity", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Artwork B" }
+  - { name: art2_depth_enabled, display: "Use Depth Relief", type: bool, default: false, flags: button, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_amount, display: "Relief Amount", type: float, min: 0.0, max: 0.6, default: 0.18, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_direction, display: "Direction", type: enum, options: [Outward, Inward], default: 0, flags: button_grid, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_recess, display: "Recess Offset", type: float, min: 0.0, max: 0.6, default: 0.12, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_invert, display: "Invert Depth", type: bool, default: false, flags: button, group: "Artwork B/Depth Relief" }
+  - { name: art2_depth_black, display: "Black Level", type: float, min: 0.0, max: 0.95, default: 0.0, group: "Artwork B/Depth Relief/Range" }
+  - { name: art2_depth_white, display: "White Level", type: float, min: 0.05, max: 1.0, default: 1.0, group: "Artwork B/Depth Relief/Range" }
+  - { name: art2_depth_gamma, display: "Depth Gamma", type: float, min: 0.25, max: 4.0, default: 1.0, group: "Artwork B/Depth Relief/Range" }
+  - { name: art2_depth_edge_fade, display: "Frame Edge Fade", type: float, min: 0.005, max: 0.25, default: 0.08, group: "Artwork B/Depth Relief" }
+
+  # Strata-style world-space SDF distortion. The master defaults off so the
+  # authored room, Fly camera, and live-safe presets remain unchanged.
+  - { name: fx_amount, display: "Distortion Master", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Distortion" }
+  - { name: fx_speed, display: "Time Speed", type: float, min: 0.0, max: 3.0, default: 0.6, group: "Distortion" }
+  - { name: fx_architecture, display: "Architecture", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Distortion/Routing" }
+  - { name: fx_seating, display: "Seating", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Distortion/Routing" }
+  - { name: fx_media, display: "Media + Decor", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Distortion/Routing" }
+  - { name: melt_amt, display: "Melt", type: float, min: 0.0, max: 3.0, default: 0.85, group: "Distortion" }
+
+  - { name: w1_amt, display: "Amount", type: float, min: 0.0, max: 3.0, default: 0.5, group: "Distortion/Warp 1" }
+  - name: w1_mode
+    display: "Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
+    default: 0
+    flags: button_grid
+    group: "Distortion/Warp 1"
+  - { name: w1_freq, display: "Frequency", type: float, min: 0.2, max: 4.0, default: 1.0, group: "Distortion/Warp 1" }
+  - { name: w1_speed, display: "Speed", type: float, min: 0.0, max: 3.0, default: 0.6, group: "Distortion/Warp 1" }
+  - { name: w1_yaw, display: "Yaw", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Distortion/Warp 1" }
+  - { name: w1_pitch, display: "Pitch", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Distortion/Warp 1" }
+  - { name: w1_ox, display: "Offset X", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Distortion/Warp 1" }
+  - { name: w1_oy, display: "Offset Y", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Distortion/Warp 1" }
+  - { name: w1_oz, display: "Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Distortion/Warp 1" }
+
+  - { name: w2_amt, display: "Amount", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Distortion/Warp 2" }
+  - name: w2_mode
+    display: "Mode"
+    type: enum
+    options: [Flow, Ripple, Turbulent, Fractal, Steps, Boxes, Shatter]
+    default: 2
+    flags: button_grid
+    group: "Distortion/Warp 2"
+  - { name: w2_freq, display: "Frequency", type: float, min: 0.2, max: 4.0, default: 1.8, group: "Distortion/Warp 2" }
+  - { name: w2_speed, display: "Speed", type: float, min: 0.0, max: 3.0, default: 0.9, group: "Distortion/Warp 2" }
+  - { name: w2_yaw, display: "Yaw", type: float, min: -3.15, max: 3.15, default: 1.57, group: "Distortion/Warp 2" }
+  - { name: w2_pitch, display: "Pitch", type: float, min: -3.15, max: 3.15, default: 0.0, group: "Distortion/Warp 2" }
+  - { name: w2_ox, display: "Offset X", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Distortion/Warp 2" }
+  - { name: w2_oy, display: "Offset Y", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Distortion/Warp 2" }
+  - { name: w2_oz, display: "Offset Z", type: float, min: -5.0, max: 5.0, default: 0.0, group: "Distortion/Warp 2" }
+
+  - { name: twist_amt, display: "Twist", type: float, min: -2.0, max: 2.0, default: 0.0, group: "Distortion/Deform" }
+  - { name: bend_amt, display: "Bend", type: float, min: -1.5, max: 1.5, default: 0.0, group: "Distortion/Deform" }
+  - { name: swirl_amt, display: "Swirl", type: float, min: -3.0, max: 3.0, default: 0.0, group: "Distortion/Deform" }
+  - { name: wave_amt, display: "Wave", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Distortion/Deform" }
+  - { name: wave_freq, display: "Wave Frequency", type: float, min: 0.5, max: 8.0, default: 2.0, group: "Distortion/Deform" }
+  - { name: dist_cx, display: "Center X", type: float, min: -4.0, max: 4.0, default: 0.0, group: "Distortion/Center" }
+  - { name: dist_cy, display: "Center Y", type: float, min: -1.0, max: 4.0, default: 1.0, group: "Distortion/Center" }
+  - { name: dist_cz, display: "Center Z", type: float, min: -4.0, max: 4.0, default: 0.0, group: "Distortion/Center" }
+
+passes:
+  - name: shell
+    shader: shell.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "data:3" }
+      - { slot: 4, source: "input:0" }
+      - { slot: 5, source: "input:1" }
+      - { slot: 6, source: "input:2" }
+      - { slot: 7, source: "input:3" }
+  - name: seating
+    shader: seating.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "data:3" }
+  - name: media
+    shader: media.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "data:3" }
+  - name: composite
+    shader: composite.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:shell" }
+      - { slot: 1, source: "pass:seating" }
+      - { slot: 2, source: "pass:media" }
+  - name: finish
+    shader: finish.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:composite" }
+
+outputs:
+  - { name: "HDR Scene", pass: finish }

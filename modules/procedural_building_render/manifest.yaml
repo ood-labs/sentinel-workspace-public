@@ -1,0 +1,108 @@
+name: "Procedural Building sRGB Render"
+version: "1.0"
+mode: generator
+resolution: [960,540]
+features: [camera, noise]
+working_format: RGBA16F
+output_format: RGBA8
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed"
+  interactions: [camera]
+
+data_inputs:
+  - name: "Building PNodes"
+    slot: 0
+    element_size: 48
+    element_count: 96
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: scale, type: float }
+      - { name: kind_id, type: float }
+      - { name: seed, type: float }
+      - { name: yaw, type: float }
+      - { name: height, type: float }
+      - { name: width, type: float }
+      - { name: depth, type: float }
+      - { name: dir, type: float, count: 2 }
+  - name: "Facade Elements"
+    slot: 1
+    element_size: 64
+    element_count: 160
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: type_id, type: float }
+      - { name: size, type: float, count: 3 }
+      - { name: yaw, type: float }
+      - { name: material_id, type: float }
+      - { name: seed, type: float }
+      - { name: emissive, type: float }
+      - { name: active, type: float }
+      - { name: uv, type: float, count: 2 }
+      - { name: floor_index, type: float }
+      - { name: bay_index, type: float }
+  - name: "Material Records"
+    slot: 2
+    element_size: 64
+    element_count: 12
+    schema:
+      - { name: base_color, type: float, count: 3 }
+      - { name: roughness, type: float }
+      - { name: secondary_color, type: float, count: 3 }
+      - { name: metallic, type: float }
+      - { name: texture_scale, type: float }
+      - { name: texture_strength, type: float }
+      - { name: pattern_id, type: float }
+      - { name: emissive, type: float }
+      - { name: specular, type: float }
+      - { name: normal_strength, type: float }
+      - { name: seed, type: float }
+      - { name: reserved, type: float }
+  - name: "Light Records"
+    slot: 3
+    element_size: 64
+    element_count: 8
+    schema:
+      - { name: position, type: float, count: 3 }
+      - { name: type_id, type: float }
+      - { name: direction, type: float, count: 3 }
+      - { name: range, type: float }
+      - { name: color, type: float, count: 3 }
+      - { name: intensity, type: float }
+      - { name: size, type: float, count: 2 }
+      - { name: softness, type: float }
+      - { name: enabled, type: float }
+
+parameters:
+  - { name: max_steps, display: "Ray Steps", type: int, min: 56, max: 150, default: 104, group: "Quality" }
+  - { name: ao_strength, display: "Ambient Occlusion", type: float, min: 0, max: 5, default: 2.3, group: "Quality" }
+  - { name: fog_density, display: "Atmosphere", type: float, min: 0, max: 0.12, default: 0.018, group: "Atmosphere" }
+  - { name: interior_boost, display: "Interior Glow", type: float, min: 0, max: 8, default: 3.4, group: "Atmosphere" }
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "data:3" }
+
+  - name: color
+    shader: color_out.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "pass:render" }
+
+  - name: depth
+    shader: depth_out.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "pass:render" }
+
+outputs:
+  - { name: "sRGB Building", pass: color }
+  - { name: "Native Depth", pass: depth }

@@ -30,7 +30,7 @@ Use `sentinel_pipeline set_input` for video inputs. Use `sentinel_graph add_link
 2. Create one or more pipelines with `sentinel_pipeline create`.
 3. Wire video inputs with `sentinel_pipeline set_input`.
 4. Wire data ports with `sentinel_graph add_link` when a pipeline exposes typed data inputs.
-5. Run `sentinel_graph auto_layout` after creating and wiring nodes.
+5. During visible creative authoring, place, focus, open, and verify each node before creating the next one. Use whole-graph `auto_layout` only for explicit batch work or smoke tests.
 6. Inspect each important node with `sentinel_pipeline info`.
 7. Check runtime cost with `sentinel_graph profile summary=true sort_by=wall_time_ms`.
 8. Capture proof with `sentinel_capture proof_bundle`, `capture_at`, `pipeline`, `source`, or recording actions.

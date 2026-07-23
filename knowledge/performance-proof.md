@@ -28,6 +28,30 @@ The profile returns:
 
 This is a lightweight profiler. It uses CPU wall-clock timing around graph node processing. It does not split GPU kernel time, inference time, CPU readback, queue wait, or synchronization yet.
 
+## Performance Gates For Heavy Nodes
+
+Set a target before tuning a heavy node. For an interactive 60 Hz graph, 16.7 ms is the complete frame budget, not the allowance for one detector. Assign the heavy node an explicit share of that budget and include UI responsiveness in the acceptance test. A node that remains technically healthy while making interaction lag is not acceptable.
+
+For Features, tracking, optical flow, inference, readback, or large feedback passes:
+
+1. Profile the graph before enabling the task.
+2. Enable or change one task or parameter family at a time.
+3. Wait for settled frames, then profile again.
+4. Inspect task counts, schemas, preview, and the visible UI response.
+5. Revert immediately when wall time or responsiveness jumps unexpectedly.
+6. Do not continue building downstream until the graph is back inside budget.
+
+Thresholds are workload controls as well as visual controls. Permissive corner, line, and edge settings can create dense candidate sets before the published `max_count` is applied. A small output count therefore does not by itself prove cheap processing.
+
+If resolution dominates cost, keep the canonical creative chain at its intended resolution and downsample only an analysis branch. For example:
+
+```text
+1280x720 source ─────────────────────────────→ 1280x720 renderer
+       └→ 480x270 analysis proxy → Features ─→ structured data
+```
+
+The proxy's preview must remain meaningful, Features must be previewed directly while tuning, and downstream coordinate consumers must normalize against 480x270. Measure the proxy plus Features together. Do not assume an internal analysis-scale feature exists until `list_types`, `info`, or capabilities for the live build verifies it.
+
 ## Proof Bundle
 
 For creative-task handoff, use:
