@@ -264,6 +264,8 @@ NOT display names like "Background Removal" — those won't work.
 | `set_panel` | Show/hide a panel |
 | `terminal_read` | Read embedded-terminal grid lines, cursor, and child status without injecting input |
 
+Installs at 0.5.48 or newer deliver `click` (method `mouse`), drags, and `send_key` as synthetic events injected directly into the ImGui event queue: the user's hardware cursor, keyboard state, and window focus stay untouched while automation drives the UI, and mouse-path responses report `client_pos` in main-viewport client space. Older installs drive the real OS mouse for these paths and can move the user's cursor (including across monitors), so on those builds prefer `method: button` or `select` and the `set` action, which have always been injection-free.
+
 ### `sentinel_preset` — Identity-aware node presets
 `list` / `save` / `recall` / `update` / `delete` / `rename` / `bundle` / `copy_to_library`. Presets are keyed by node identity, discoverable by pipeline or identity, saved to library or project scope (plus a bundled scope for presets that travel with a show), and support grouped compound-safe param selection, `include_engine_params`, and strict or loose recall onto compatible nodes.
 
