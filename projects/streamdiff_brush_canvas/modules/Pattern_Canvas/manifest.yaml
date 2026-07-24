@@ -36,7 +36,7 @@ parameters:
   - { name: feedback_rotation_speed, display: "Rotation Speed", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Feedback" }
   - { name: pan, display: "Drift", type: point2D, min: [-0.2, -0.2], max: [0.2, 0.2], default: [0.0, 0.0], group: "Feedback" }
   - { name: control_gain, display: "Control Gain", type: float, min: 1.0, max: 10.0, default: 5.0, group: "Feedback" }
-  - { name: feedback_kick, display: "C Kick", type: float, min: 1.0, max: 10.0, default: 5.0, group: "Feedback" }
+  - { name: feedback_kick, display: "X Kick", type: float, min: 1.0, max: 10.0, default: 5.0, group: "Feedback" }
   - { name: kick_attack, display: "Kick Attack", type: float, min: 0.01, max: 2.0, default: 0.08, group: "Feedback" }
   - { name: kick_decay, display: "Kick Decay", type: float, min: 0.01, max: 3.0, default: 0.18, group: "Feedback" }
   - { name: kick_sustain, display: "Kick Sustain", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Feedback" }
@@ -70,14 +70,14 @@ parameters:
   - { name: drop_shadow, display: "Drop Shadow", type: float, min: 0.0, max: 1.5, default: 0.28, group: "Canvas" }
 
 viewport:
-  hint: "Left-drag=drift, wheel=zoom, X=trigger spawning, C=feedback kick, Z=temporarily unhold StreamDiff. Alt=fine, Alt+Shift=ultra-fine."
+  hint: "Left-drag=drift, wheel=zoom, X=feedback kick, C=toggle auto run, Z=generate + spawn repeatedly at Seconds Per Stamp. Alt=fine, Alt+Shift=ultra-fine."
   interactions: [pan_zoom, events]
   input:
     keyboard: [x, c, z]
   bindings:
-    - { key: x, action: run_trigger, label: "Hold to Spawn (when Run Trigger is on)" }
-    - { key: c, action: feedback_kick, label: "Hold for Feedback Kick" }
-    - { key: z, action: streamdiff_unhold, label: "Hold to Unfreeze StreamDiff" }
+    - { key: x, action: feedback_kick, label: "Hold for Feedback Kick Zoom" }
+    - { key: c, action: toggle_auto_run, label: "Toggle Auto Run On / Off" }
+    - { key: z, action: generate_and_spawn, label: "Hold to Generate + Spawn at Seconds Per Stamp" }
 
 passes:
   - name: kick_envelope
@@ -98,6 +98,7 @@ passes:
     thread_group_y: 1
     inputs:
       - { slot: 0, source: "buffer:canvas_state" }
+      - { slot: 1, source: "buffer:control_state" }
     output: "buffer:canvas_state"
 
   - name: control_state_update
@@ -118,6 +119,7 @@ passes:
     thread_group_y: 1
     inputs:
       - { slot: 0, source: "buffer:diffusion_state" }
+      - { slot: 1, source: "buffer:control_state" }
     output: "buffer:diffusion_state"
 
   - name: capture_subject
@@ -233,6 +235,7 @@ data_outputs:
 control_outputs:
   - { name: diffusion_pulse, buffer: diffusion_state, element: 0, field_offset: 4, description: "One-frame pulse at the configured diffusion cadence" }
   - { name: streamdiff_unhold, buffer: control_state, element: 0, field_offset: 0, description: "1 while Z is held in the focused Pattern Canvas preview" }
+  - { name: auto_run_active, buffer: control_state, element: 0, field_offset: 4, description: "1 while C-toggled auto run is active" }
 
 outputs:
   - { name: "Pattern Canvas", pass: present }

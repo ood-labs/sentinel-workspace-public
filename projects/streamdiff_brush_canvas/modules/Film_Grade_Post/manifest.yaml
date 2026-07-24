@@ -1,0 +1,103 @@
+name: "Film Grade Post"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+time_dependent: true
+
+inputs:
+  - { name: "Spatial SDF", slot: 0, required: true }
+
+parameters:
+  - { name: exposure, display: "Exposure", type: float, min: -2.0, max: 2.0, default: 0.10, group: "Film Grade" }
+  - { name: lift, display: "Lift", type: float, min: -0.12, max: 0.12, default: 0.012, group: "Film Grade" }
+  - { name: saturation, display: "Saturation", type: float, min: 0.0, max: 2.0, default: 1.06, group: "Film Grade" }
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 1.0, default: 0.18, group: "Lens" }
+  - { name: chromatic_aberration, display: "Chromatic Aberration", type: float, min: 0.0, max: 0.025, default: 0.0025, group: "Lens" }
+  - { name: aa_strength, display: "Edge Resolve", type: float, min: 0.0, max: 1.0, default: 0.45, group: "Lens" }
+  - { name: glow_amount, display: "Glow", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Lens" }
+  - { name: glow_radius, display: "Glow Radius", type: float, min: 0.25, max: 32.0, default: 4.0, group: "Lens" }
+  - { name: glow_threshold, display: "Glow Threshold", type: float, min: 0.2, max: 1.0, default: 0.68, group: "Lens" }
+  - { name: flare_amount, display: "Flare", type: float, min: 0.0, max: 1.0, default: 0.14, group: "Lens" }
+  - { name: flare_length, display: "Flare Length", type: float, min: 1.0, max: 40.0, default: 8.0, group: "Lens" }
+  - { name: flare_threshold, display: "Flare Threshold", type: float, min: 0.3, max: 1.0, default: 0.78, group: "Lens" }
+  - { name: lens_dirt, display: "Lens Dirt", type: float, min: 0.0, max: 1.0, default: 0.20, group: "Lens" }
+  - { name: dirt_scale, display: "Dirt Scale", type: float, min: 0.5, max: 8.0, default: 2.2, group: "Lens" }
+  - { name: dirt_threshold, display: "Dirt Threshold", type: float, min: 0.2, max: 0.85, default: 0.58, group: "Lens" }
+  - { name: grain_amount, display: "Film Grain", type: float, min: 0.0, max: 0.20, default: 0.035, group: "Texture" }
+  - { name: grain_size, display: "Grain Size", type: float, min: 0.25, max: 20.0, default: 1.35, group: "Texture" }
+
+buffers:
+  - { name: grain_state, structured: true, element_size: 16, element_count: 1, persistent: true }
+  - { name: glow_extract, format: RGBA16F, scale: 0.25 }
+  - { name: glow_blur_h, format: RGBA16F, scale: 0.25 }
+  - { name: glow_blur_v, format: RGBA16F, scale: 0.25 }
+  - { name: flare_extract, format: RGBA16F, scale: 0.25 }
+  - { name: flare_soften, format: RGBA16F, scale: 0.25 }
+  - { name: flare_blur, format: RGBA16F, scale: 0.25 }
+
+passes:
+  - name: grain_clock
+    shader: grain_clock.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:grain_state" }
+    output: "buffer:grain_state"
+
+  - name: glow_extract
+    shader: glow_extract.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: "buffer:glow_extract"
+
+  - name: glow_blur_h
+    shader: glow_blur_h.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:glow_extract" }
+    output: "buffer:glow_blur_h"
+
+  - name: glow_blur_v
+    shader: glow_blur_v.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:glow_blur_h" }
+    output: "buffer:glow_blur_v"
+
+  - name: flare_extract
+    shader: flare_extract.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: "buffer:flare_extract"
+
+  - name: flare_soften
+    shader: flare_soften.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:flare_extract" }
+    output: "buffer:flare_soften"
+
+  - name: flare_blur
+    shader: flare_blur.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:flare_soften" }
+    output: "buffer:flare_blur"
+
+  - name: film_grade
+    shader: film_grade.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:glow_blur_v" }
+      - { slot: 2, source: "buffer:flare_blur" }
+      - { slot: 3, source: "buffer:grain_state" }
+    output: output
+
+outputs:
+  - { name: "Film Grade", pass: film_grade }
