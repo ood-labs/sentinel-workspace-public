@@ -7,11 +7,11 @@ updated: 2026-07-23
 
 ## Current focus
 
-Scientific Organism is complete and approved as a curated Features-driven performance example. Its persistent Seed Lab, half-resolution analysis lane, native Features data, temporal agents, topology, synaptic field, renderer, memory/post chain, performance deck, and Scene Group output form one portable modular instrument.
+AXIOM Choir is complete and saved as a curated Features-driven performance example. Its modular plate, analysis, topology, pressure, polyrhythm, kinetic, relief, frame, HUD, inspector, and randomized Feature Chase stages form one portable live instrument.
 
 ## Active sub-phase
 
-None. The Scientific Organism example and its scaled-pass coordinate contract are approved.
+None. The AXIOM Choir example is approved and saved.
 
 ## Blockers
 
@@ -24,4 +24,4 @@ None.
 
 ## Last devlog
 
-`docs/devlogs/2026-07-23-scientific-organism-example.md` - complete, approved.
+`docs/devlogs/2026-07-23-axiom-choir-example.md` - complete, approved.

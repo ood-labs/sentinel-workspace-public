@@ -1,0 +1,47 @@
+name: "Axiom Interference Mask"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+features: [noise]
+
+parameters:
+  - { name: mask_mode, display: "Mask Grammar", type: enum, default: 1, options: [Cells, Veins, Eclipses], flags: button_grid, group: "Field" }
+  - { name: field_scale, display: "Field Scale", type: float, min: 0.35, max: 7.0, default: 1.72, group: "Field" }
+  - { name: mask_threshold, display: "Pressure Threshold", type: float, min: 0.05, max: 0.95, default: 0.52, group: "Field" }
+  - { name: mask_softness, display: "Pressure Softness", type: float, min: 0.005, max: 0.3, default: 0.085, group: "Field" }
+  - { name: mask_binary, display: "Binary Pressure", type: float, min: 0.0, max: 1.0, default: 0.82, group: "Field" }
+  - { name: mask_contrast, display: "Field Contrast", type: float, min: 0.5, max: 3.0, default: 1.45, group: "Field" }
+  - { name: band_density, display: "Fault Density", type: float, min: 0.5, max: 12.0, default: 4.2, group: "Fault Bands" }
+  - { name: band_influence, display: "Fault Influence", type: float, min: 0.0, max: 1.0, default: 0.46, group: "Fault Bands" }
+  - { name: invert_mask, display: "Invert Mask", type: bool, default: false, flags: button, group: "Field" }
+  - { name: phase, display: "Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: animation_speed, display: "Travel Speed", type: float, min: 0.0, max: 0.5, default: 0.14, group: "Motion" }
+  - { name: travel_amount, display: "Travel Distance", type: float, min: 0.0, max: 1.25, default: 0.82, group: "Motion" }
+  - { name: travel_eccentricity, display: "Travel Eccentricity", type: float, min: 0.1, max: 1.0, default: 0.58, group: "Motion" }
+  - { name: evolution_rate, display: "Internal Evolution", type: float, min: 0.1, max: 3.0, default: 1.45, group: "Motion" }
+  - { name: evolution_amount, display: "Evolution Depth", type: float, min: 0.0, max: 2.0, default: 1.18, group: "Motion" }
+  - { name: band_motion, display: "Fault Travel", type: float, min: -3.0, max: 3.0, default: 1.30, group: "Motion" }
+
+buffers:
+  - { name: phase_state, structured: true, element_size: 16, element_count: 1, persistent: true }
+
+passes:
+  - name: clock
+    shader: clock.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: "buffer:phase_state"
+
+  - name: mask
+    shader: mask.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: output
+
+outputs:
+  - { name: "Interference Mask", pass: mask }

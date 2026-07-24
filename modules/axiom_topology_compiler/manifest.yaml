@@ -1,0 +1,128 @@
+name: "AXIOM 04 / TOPOLOGY COMPILER"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+data_inputs:
+  - name: "Corners"
+    slot: 0
+    schema:
+      - { name: x, type: float }
+      - { name: y, type: float }
+      - { name: response, type: float }
+      - { name: pad, type: float }
+  - name: "Blobs"
+    slot: 1
+    schema:
+      - { name: centroidX, type: float }
+      - { name: centroidY, type: float }
+      - { name: area, type: float }
+      - { name: x1, type: float }
+      - { name: y1, type: float }
+      - { name: x2, type: float }
+      - { name: y2, type: float }
+      - { name: colorR, type: float }
+      - { name: colorG, type: float }
+      - { name: colorB, type: float }
+      - { name: pad0, type: float }
+      - { name: pad1, type: float }
+
+buffers:
+  - { name: choir_nodes, structured: true, element_size: 48, element_count: 64 }
+  - { name: choir_routes, structured: true, element_size: 32, element_count: 64 }
+  - { name: compiler_stats, structured: true, element_size: 16, element_count: 1 }
+
+parameters:
+  - { name: input_width, display: "Analysis Width", type: float, min: 64.0, max: 2048.0, default: 480.0, group: "Input Contract" }
+  - { name: input_height, display: "Analysis Height", type: float, min: 64.0, max: 2048.0, default: 270.0, group: "Input Contract" }
+  - { name: node_limit, display: "Node Limit", type: int, min: 4, max: 48, default: 36, group: "Compilation" }
+  - { name: response_floor, display: "Response Floor", type: float, min: 0.0, max: 16.0, default: 5.5, group: "Compilation" }
+  - { name: response_span, display: "Response Span", type: float, min: 0.5, max: 16.0, default: 5.0, group: "Compilation" }
+  - { name: group_count, display: "Angular Choirs", type: int, min: 2, max: 8, default: 5, group: "Compilation" }
+  - { name: tangent_mix, display: "Radial / Tangent", type: float, min: -1.0, max: 1.0, default: 0.32, group: "Compilation" }
+  - { name: route_mode, display: "Routing Rule", type: enum, default: 1, options: ["Rank Chain", "Nearest Tissue", "Choir Affinity"], flags: button_grid, group: "Routing" }
+  - { name: max_connection_distance, display: "Connection Reach", type: float, min: 0.05, max: 1.0, default: 0.42, group: "Routing" }
+  - { name: route_weight, display: "Route Weight", type: float, min: 0.1, max: 2.0, default: 0.86, group: "Routing" }
+  - { name: node_size, display: "Node Size", type: float, min: 2.0, max: 18.0, default: 5.8, group: "Preview" }
+  - { name: direction_gain, display: "Direction Visibility", type: float, min: 0.0, max: 2.5, default: 1.15, group: "Preview" }
+  - { name: paper_color, display: "Paper Ink", type: color, default: [0.90, 0.89, 0.84], group: "Preview" }
+  - { name: accent_color, display: "Fault Ink", type: color, default: [1.0, 0.14, 0.025], group: "Preview" }
+  - { name: preview_exposure, display: "Preview Exposure", type: float, min: 0.4, max: 2.5, default: 1.0, group: "Preview" }
+
+passes:
+  - name: compile_nodes
+    shader: compile_nodes.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+    output: "buffer:choir_nodes"
+
+  - name: compile_routes
+    shader: compile_routes.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:choir_nodes" }
+    output: "buffer:choir_routes"
+
+  - name: measure
+    shader: stats.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:choir_nodes" }
+      - { slot: 1, source: "buffer:choir_routes" }
+    output: "buffer:compiler_stats"
+
+  - name: preview
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:choir_nodes" }
+      - { slot: 1, source: "buffer:choir_routes" }
+      - { slot: 2, source: "buffer:compiler_stats" }
+    output: output
+
+data_outputs:
+  - name: "Choir Nodes"
+    buffer: "choir_nodes"
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: weight, type: float }
+      - { name: kind, type: float }
+      - { name: group_id, type: float }
+      - { name: rank, type: float }
+      - { name: response, type: float }
+      - { name: radius, type: float }
+      - { name: active, type: float }
+      - { name: id, type: float }
+  - name: "Choir Routes"
+    buffer: "choir_routes"
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: weight, type: float }
+      - { name: group_id, type: float }
+      - { name: active, type: float }
+      - { name: id, type: float }
+
+control_outputs:
+  - { name: active_nodes, buffer: compiler_stats, element: 0, field_offset: 0, description: "Live compiled corner nodes" }
+  - { name: active_routes, buffer: compiler_stats, element: 0, field_offset: 4, description: "Live compiled topology routes" }
+  - { name: mean_weight, buffer: compiler_stats, element: 0, field_offset: 8, description: "Mean live corner response weight" }
+  - { name: group_coverage, buffer: compiler_stats, element: 0, field_offset: 12, description: "Fraction of angular choirs currently occupied" }
+
+outputs:
+  - { name: "Topology Score", pass: preview }
+
+viewport:
+  hint: "Live compiler score: circles are weighted corner records, arrows point relative to the macro blob, routes show the selected topology rule, and the lower strip is the real 64-slot buffer."

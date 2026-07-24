@@ -1,0 +1,16 @@
+RWTexture2D<float4> OutputUAV:register(u0);
+#define line lineSeg
+float lineSeg(float2 p,float2 a,float2 b,float w){float2 q=p-a,r=b-a;float h=saturate(dot(q,r)/max(dot(r,r),1e-5));return 1-smoothstep(w*.35,w,length(q-r*h));}
+float box(float2 p,float2 a,float2 b,float w){return max(line(p,a,float2(b.x,a.y),w),max(line(p,float2(b.x,a.y),b,w),max(line(p,b,float2(a.x,b.y),w),line(p,float2(a.x,b.y),a,w))));}
+float digit(float2 p,int n,float w){int m[10]={63,6,91,79,102,109,125,7,127,111};float s=0;float2 u=float2(.035,.07);if((m[n]&1)!=0)s=max(s,line(p,float2(-u.x, -u.y),float2(u.x,-u.y),w));if((m[n]&2)!=0)s=max(s,line(p,float2(u.x,-u.y),float2(u.x,0),w));if((m[n]&4)!=0)s=max(s,line(p,float2(u.x,0),float2(u.x,u.y),w));if((m[n]&8)!=0)s=max(s,line(p,float2(-u.x,u.y),float2(u.x,u.y),w));if((m[n]&16)!=0)s=max(s,line(p,float2(-u.x,0),float2(-u.x,u.y),w));if((m[n]&32)!=0)s=max(s,line(p,float2(-u.x,-u.y),float2(-u.x,0),w));if((m[n]&64)!=0)s=max(s,line(p,float2(-u.x,0),float2(u.x,0),w));return s;}
+float number(float2 p,float v,float scale,float w){v=clamp(floor(v+.5),0,99);int a=(int)v/10,b=(int)v%10;float s=0;s=max(s,digit((p-float2(-.055,0))/scale,a,w));s=max(s,digit((p-float2(.055,0))/scale,b,w));return s;}
+[numthreads(8,8,1)] void main(uint3 tid:SV_DispatchThreadID){if(tid.x>=(uint)_Resolution.x||tid.y>=(uint)_Resolution.y)return;float2 uv=((float2)tid.xy+.5)/_Resolution.xy;float3 c=_Tex0.SampleLevel(LinearSampler,uv,0).rgb;float2 L=(uv-float2(.105,.52))/float2(.15,.38);float2 R=(uv-float2(.85,.86))/float2(.20,.14);float lm=1-smoothstep(.92,1.0,max(abs(L.x),abs(L.y)));float rm=1-smoothstep(.92,1.0,max(abs(R.x),abs(R.y)));float white=0,red=0;float lw=.0022;
+// left architectural console: nested rails, datum spine, live node matrix
+white=max(white,box(L,float2(-.88,-.90),float2(.88,.90),lw));white=max(white,box(L,float2(-.76,-.76),float2(.76,.76),lw*.8));white=max(white,line(L,float2(-.55,-.62),float2(-.55,.62),lw));white=max(white,line(L,float2(-.48,.60),float2(.62,.60),lw));
+float nodeInk=number(L-float2(.22,.36),active_nodes,1.0,lw*1.6);float routeInk=number(L-float2(.22,.16),active_routes,1.0,lw*1.6);float cornerInk=number(L-float2(.22,-.06),corner_count,1.0,lw*1.6);white=max(white,max(nodeInk,max(routeInk,cornerInk)));
+white=max(white,line(L,float2(-.42,.34),float2(.40,.34),lw));white=max(white,line(L,float2(-.42,.14),float2(.40,.14),lw));white=max(white,line(L,float2(-.42,-.08),float2(.40,-.08),lw));
+// bottom-right telemetry card: event index, energy bar, precision reticle
+white=max(white,box(R,float2(-.92,-.78),float2(.92,.78),lw));white=max(white,line(R,float2(-.72,.46),float2(.72,.46),lw));white=max(white,line(R,float2(-.72,-.46),float2(.72,-.46),lw));white=max(white,number(R-float2(.22,.03),active_emitters,1.2,lw*1.7));
+float bar=saturate(mean_energy);white=max(white,line(R,float2(-.68,-.25),float2(-.68+bar*1.35,-.25),lw*2.5));white=max(white,line(R,float2(-.68,-.30),float2(-.68+bar*1.35,-.30),lw*.7));
+float2 rc=R-float2(.58,.48);white=max(white,line(rc,float2(-.10,0),float2(.10,0),lw));white=max(white,line(rc,float2(0,-.10),float2(0,.10),lw));red=max(red,mean_energy*line(R,float2(-.68,-.25),float2(-.68+bar*1.35,-.25),lw*1.3));
+float3 ink=paper_color.rgb*white*glyph_gain+accent_color.rgb*red*.9; c=saturate(c+ink*(lm+rm));OutputUAV[tid.xy]=float4(c,1);}

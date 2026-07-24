@@ -1,0 +1,134 @@
+name: "AXIOM 05 / PRESSURE DESK"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+
+inputs:
+  - { name: "Organic Program", slot: 0, required: true }
+
+data_inputs:
+  - name: "Choir Nodes"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: weight, type: float }
+      - { name: kind, type: float }
+      - { name: group_id, type: float }
+      - { name: rank, type: float }
+      - { name: response, type: float }
+      - { name: radius, type: float }
+      - { name: active, type: float }
+      - { name: id, type: float }
+
+panel:
+  mode: canvas
+  output: "Pressure Desk"
+  resolution: follow_panel
+
+parameters:
+  - { name: press_mode, display: "Pressure Tool", type: button, group: "Performance" }
+  - { name: shear_mode, display: "Shear Tool", type: button, group: "Performance" }
+  - { name: void_mode, display: "Void Tool", type: button, group: "Performance" }
+  - { name: clear_fields, display: "Clear Fields", type: button, group: "Performance" }
+  - { name: touch_strength, display: "Gesture Strength", type: float, min: 0.05, max: 2.0, default: 0.92, group: "Field Shaping" }
+  - { name: default_radius, display: "Initial Radius", type: float, min: 0.025, max: 0.35, default: 0.14, group: "Field Shaping" }
+  - { name: field_softness, display: "Falloff Softness", type: float, min: 0.05, max: 1.0, default: 0.42, group: "Field Shaping" }
+  - { name: topology_overlay, display: "Topology Overlay", type: float, min: 0.0, max: 1.5, default: 0.72, group: "Interface" }
+  - { name: program_exposure, display: "Program Exposure", type: float, min: 0.25, max: 1.5, default: 0.72, group: "Interface" }
+
+viewport:
+  hint: "P/S/V choose Pressure, Shear, or Void. Click and drag on the fitted Program stage to move the active field; wheel changes its radius; X clears."
+  interactions: [events]
+  input:
+    pointer: [left, wheel]
+    keyboard: [p, s, v, x]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: place_field, label: "Place Active Field" }
+    - { gesture: left_drag, action: perform_field, label: "Perform Active Field" }
+    - { gesture: wheel, action: resize_field, label: "Resize Active Field" }
+    - { key: p, action: pressure_tool, label: "Pressure Tool" }
+    - { key: s, action: shear_tool, label: "Shear Tool" }
+    - { key: v, action: void_tool, label: "Void Tool" }
+    - { key: x, action: clear_fields, label: "Clear Fields" }
+  # ui-label: title = AXIOM / PRESSURE DESK
+  # ui-label: subtitle = SPATIAL FORCE AUTHORING
+  # ui-label: pressure = PRESSURE
+  # ui-label: shear = SHEAR
+  # ui-label: void = VOID
+  # ui-label: clear = CLEAR
+  # ui-label: radius = RADIUS
+  # ui-label: fields = FIELDS
+  # ui-label: energy = ENERGY
+  # ui-label: keys = P / S / V / X
+  # ui-label: live = LIVE
+  controls:
+    - { id: press_mode, kind: button, param: press_mode, rect: [0.770, 0.205, 0.965, 0.280], label: "Pressure" }
+    - { id: shear_mode, kind: button, param: shear_mode, rect: [0.770, 0.315, 0.965, 0.390], label: "Shear" }
+    - { id: void_mode, kind: button, param: void_mode, rect: [0.770, 0.425, 0.965, 0.500], label: "Void" }
+    - { id: clear_fields, kind: button, param: clear_fields, rect: [0.770, 0.815, 0.965, 0.890], label: "Clear" }
+
+buffers:
+  - { name: gesture_fields, structured: true, element_size: 32, element_count: 4, persistent: true }
+  - { name: pressure_stats, structured: true, element_size: 16, element_count: 1 }
+
+state_buffers:
+  - name: gesture_fields
+    max_elements: 4
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: radius, type: float }
+      - { name: strength, type: float }
+      - { name: mode, type: float }
+      - { name: active, type: float }
+
+passes:
+  - name: interact
+    shader: interaction.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:gesture_fields"
+
+  - name: measure
+    shader: stats.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:gesture_fields" }
+    output: "buffer:pressure_stats"
+
+  - name: display
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "buffer:gesture_fields" }
+      - { slot: 3, source: "buffer:pressure_stats" }
+    output: output
+
+data_outputs:
+  - name: "Gesture Fields"
+    buffer: "gesture_fields"
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: radius, type: float }
+      - { name: strength, type: float }
+      - { name: mode, type: float }
+      - { name: active, type: float }
+
+control_outputs:
+  - { name: active_fields, buffer: pressure_stats, element: 0, field_offset: 0, description: "Number of active spatial force records" }
+  - { name: current_mode, buffer: pressure_stats, element: 0, field_offset: 4, description: "Current interaction mode: 0 pressure, 1 shear, 2 void" }
+  - { name: current_radius, buffer: pressure_stats, element: 0, field_offset: 8, description: "Current normalized gesture radius" }
+  - { name: gesture_energy, buffer: pressure_stats, element: 0, field_offset: 12, description: "Total active gesture strength" }
+
+outputs:
+  - { name: "Pressure Desk", pass: display }

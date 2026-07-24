@@ -1,0 +1,2151 @@
+{
+  "binds": [
+    [
+      "/sentinel/groups/annotation_12/parameters/AXIOM_06_POLYRHYTHM_RACK_period_seconds",
+      "/sentinel/pipelines/AXIOM_06_POLYRHYTHM_RACK/parameters/period_seconds"
+    ],
+    [
+      "/sentinel/groups/annotation_12/parameters/AXIOM_04_TOPOLOGY_COMPILER_route_mode",
+      "/sentinel/pipelines/AXIOM_04_TOPOLOGY_COMPILER/parameters/route_mode"
+    ],
+    [
+      "/sentinel/groups/annotation_12/parameters/AXIOM_08_TEMPORAL_OSSUARY_memory_mode",
+      "/sentinel/pipelines/AXIOM_08_TEMPORAL_OSSUARY/parameters/memory_mode"
+    ],
+    [
+      "/sentinel/groups/annotation_12/parameters/AXIOM_09_KINETIC_CORONA_speed_threshold",
+      "/sentinel/pipelines/AXIOM_09_KINETIC_CORONA/parameters/speed_threshold"
+    ],
+    [
+      "/sentinel/groups/annotation_12/parameters/AXIOM_10_IMPRESSION_PRESS_box_path_mode",
+      "/sentinel/pipelines/AXIOM_10_IMPRESSION_PRESS/parameters/box_path_mode"
+    ],
+    [
+      "/sentinel/groups/annotation_12/parameters/AXIOM_10_IMPRESSION_PRESS_box_operation",
+      "/sentinel/pipelines/AXIOM_10_IMPRESSION_PRESS/parameters/box_operation"
+    ],
+    [
+      "/sentinel/groups/annotation_12/parameters/AXIOM_11_RELIEF_CHAMBER_relief_mode",
+      "/sentinel/pipelines/AXIOM_11_RELIEF_CHAMBER/parameters/relief_mode"
+    ],
+    [
+      "/sentinel/groups/annotation_12/parameters/AXIOM_12_FRAME_REFINERY_frame_mode",
+      "/sentinel/pipelines/AXIOM_12_FRAME_REFINERY/parameters/frame_mode"
+    ]
+  ],
+  "display": {
+    "fpsLimit": 60.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 0.2877209186553955,
+    "links": [
+      {
+        "endPinId": 5,
+        "id": 2,
+        "startPinId": 4
+      },
+      {
+        "endPinId": 3,
+        "id": 4,
+        "startPinId": 12
+      },
+      {
+        "endPinId": 11,
+        "id": 6,
+        "startPinId": 2
+      },
+      {
+        "endPinId": 15,
+        "id": 7,
+        "startPinId": 14
+      },
+      {
+        "endPinId": 16,
+        "id": 8,
+        "startPinId": 9
+      },
+      {
+        "endPinId": 18,
+        "id": 9,
+        "startPinId": 8
+      },
+      {
+        "endPinId": 25,
+        "id": 10,
+        "startPinId": 12
+      },
+      {
+        "endPinId": 27,
+        "id": 11,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 49,
+        "id": 12,
+        "startPinId": 12
+      },
+      {
+        "endPinId": 51,
+        "id": 13,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 52,
+        "id": 14,
+        "startPinId": 20
+      },
+      {
+        "endPinId": 53,
+        "id": 15,
+        "startPinId": 28
+      },
+      {
+        "endPinId": 54,
+        "id": 16,
+        "startPinId": 50
+      },
+      {
+        "endPinId": 56,
+        "id": 17,
+        "startPinId": 55
+      },
+      {
+        "endPinId": 58,
+        "id": 18,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 63,
+        "id": 19,
+        "startPinId": 57
+      },
+      {
+        "endPinId": 65,
+        "id": 20,
+        "startPinId": 12
+      },
+      {
+        "endPinId": 66,
+        "id": 21,
+        "startPinId": 7
+      },
+      {
+        "endPinId": 67,
+        "id": 22,
+        "startPinId": 17
+      },
+      {
+        "endPinId": 68,
+        "id": 23,
+        "startPinId": 26
+      },
+      {
+        "endPinId": 69,
+        "id": 24,
+        "startPinId": 34
+      },
+      {
+        "endPinId": 70,
+        "id": 25,
+        "startPinId": 14
+      },
+      {
+        "endPinId": 71,
+        "id": 26,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 72,
+        "id": 27,
+        "startPinId": 59
+      },
+      {
+        "endPinId": 73,
+        "id": 28,
+        "startPinId": 64
+      },
+      {
+        "endPinId": 75,
+        "id": 29,
+        "startPinId": 12
+      },
+      {
+        "endPinId": 76,
+        "id": 30,
+        "startPinId": 7
+      },
+      {
+        "endPinId": 77,
+        "id": 31,
+        "startPinId": 59
+      },
+      {
+        "endPinId": 78,
+        "id": 32,
+        "startPinId": 74
+      },
+      {
+        "endPinId": 82,
+        "id": 34,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 83,
+        "id": 35,
+        "startPinId": 59
+      },
+      {
+        "endPinId": 88,
+        "id": 40,
+        "startPinId": 79
+      },
+      {
+        "endPinId": 90,
+        "id": 41,
+        "startPinId": 74
+      },
+      {
+        "endPinId": 91,
+        "id": 42,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 92,
+        "id": 43,
+        "startPinId": 59
+      },
+      {
+        "endPinId": 93,
+        "id": 46,
+        "startPinId": 79
+      },
+      {
+        "endPinId": 80,
+        "id": 47,
+        "startPinId": 94
+      }
+    ],
+    "nextLinkId": 48,
+    "nextNodeId": 20,
+    "nextPinId": 95,
+    "nodes": [
+      {
+        "displayName": "AXIOM 01 — PLATE",
+        "entityId": "AXIOM_01_PLATE",
+        "id": 1,
+        "posX": 379.0286560058594,
+        "posY": 200.33143615722656,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM 02 — ANALYSIS LENS",
+        "entityId": "AXIOM_02_ANALYSIS_LENS",
+        "id": 2,
+        "posX": 806.2351684570313,
+        "posY": 198.53616333007813,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM 03 — LIVE ENGRAVER",
+        "entityId": "AXIOM_03_LIVE_ENGRAVER",
+        "id": 3,
+        "posX": 1120.995361328125,
+        "posY": 204.16937255859375,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM 01B — ORGANIC MEMBRANE",
+        "entityId": "AXIOM_01B_ORGANIC_MEMBRANE",
+        "id": 4,
+        "posX": 602.92041015625,
+        "posY": 192.39761352539063,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM 01A — INTERFERENCE MASK",
+        "entityId": "AXIOM_01A_INTERFERENCE_MASK",
+        "id": 5,
+        "posX": 375.87542724609375,
+        "posY": 85.83235931396484,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_04_TOPOLOGY_COMPILER",
+        "entityId": "AXIOM_04_TOPOLOGY_COMPILER",
+        "id": 6,
+        "posX": 1462.516845703125,
+        "posY": 234.0450439453125,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_05_PRESSURE_DESK",
+        "entityId": "AXIOM_05_PRESSURE_DESK",
+        "id": 7,
+        "posX": 1781.5882568359375,
+        "posY": 517.8446655273438,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_06_POLYRHYTHM_RACK",
+        "entityId": "AXIOM_06_POLYRHYTHM_RACK",
+        "id": 8,
+        "posX": 102.46351623535156,
+        "posY": 561.5484008789063,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_07_RESONANCE_ENGINE",
+        "entityId": "AXIOM_07_RESONANCE_ENGINE",
+        "id": 9,
+        "posX": 2145.765380859375,
+        "posY": 440.42791748046875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_08_TEMPORAL_OSSUARY",
+        "entityId": "AXIOM_08_TEMPORAL_OSSUARY",
+        "id": 10,
+        "posX": 2456.638671875,
+        "posY": 444.6353759765625,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_09_KINETIC_CORONA",
+        "entityId": "AXIOM_09_KINETIC_CORONA",
+        "id": 11,
+        "posX": 2775.949462890625,
+        "posY": 428.5263671875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "Dark topological instrument: authored plate → moving interference mask → organic membrane → live Features → topology compiler → resonance → temporal memory → velocity-gated corona.",
+        "annotationColor": "#2B211E",
+        "annotationTitle": "AXIOM CHOIR / PERFORMANCE DECK",
+        "displayName": "AXIOM CHOIR / PERFORMANCE DECK",
+        "entityId": "annotation_12",
+        "height": 732.1043090820313,
+        "id": 12,
+        "posX": 8.715588569641113,
+        "posY": 36.523929595947266,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": true,
+        "sceneGroupActivePreset": "",
+        "sceneGroupEnabled": true,
+        "sceneGroupParameters": [
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "7.500000",
+            "description": "Master Period",
+            "displayName": "Master Period",
+            "enumValues": [],
+            "group": "Timing",
+            "maxValue": 32.0,
+            "minValue": 1.0,
+            "name": "AXIOM_06_POLYRHYTHM_RACK_period_seconds",
+            "orderIndex": 0,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/AXIOM_06_POLYRHYTHM_RACK/parameters/period_seconds",
+            "type": "float",
+            "value": "7.5",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1",
+            "description": "Routing Rule",
+            "displayName": "Routing Rule",
+            "enumValues": [
+              "Rank Chain",
+              "Nearest Tissue",
+              "Choir Affinity"
+            ],
+            "group": "Routing",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "AXIOM_04_TOPOLOGY_COMPILER_route_mode",
+            "orderIndex": 2,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/AXIOM_04_TOPOLOGY_COMPILER/parameters/route_mode",
+            "type": "enum",
+            "value": "2",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Memory Grammar",
+            "displayName": "Memory Grammar",
+            "enumValues": [
+              "Carbon Memory",
+              "Echo Plates",
+              "Dry Scan"
+            ],
+            "group": "Memory",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "AXIOM_08_TEMPORAL_OSSUARY_memory_mode",
+            "orderIndex": 4,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/AXIOM_08_TEMPORAL_OSSUARY/parameters/memory_mode",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.003500",
+            "description": "Ignition Speed",
+            "displayName": "Ignition Speed",
+            "enumValues": [],
+            "group": "Velocity Gate",
+            "maxValue": 0.03999999910593033,
+            "minValue": 0.00019999999494757503,
+            "name": "AXIOM_09_KINETIC_CORONA_speed_threshold",
+            "orderIndex": 5,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/AXIOM_09_KINETIC_CORONA/parameters/speed_threshold",
+            "type": "float",
+            "value": "0.012",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Processing Head Path",
+            "displayName": "Processing Head Path",
+            "enumValues": [
+              "Raster Scan",
+              "Lissajous Knot",
+              "Corner Relay",
+              "Feature Chase"
+            ],
+            "group": "Localized Distortion",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "AXIOM_10_IMPRESSION_PRESS_box_path_mode",
+            "orderIndex": 5,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/AXIOM_10_IMPRESSION_PRESS/parameters/box_path_mode",
+            "type": "enum",
+            "value": "3",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1",
+            "description": "Processing Operation",
+            "displayName": "Processing Operation",
+            "enumValues": [
+              "Cell Surgery",
+              "Recursive Fold",
+              "Slice Exchange"
+            ],
+            "group": "Localized Distortion",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "AXIOM_10_IMPRESSION_PRESS_box_operation",
+            "orderIndex": 6,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/AXIOM_10_IMPRESSION_PRESS/parameters/box_operation",
+            "type": "enum",
+            "value": "1",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Relief Grammar",
+            "displayName": "Relief Grammar",
+            "enumValues": [
+              "Specimen Slab",
+              "Excavated Grid",
+              "Wire Relief"
+            ],
+            "group": "Relief",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "AXIOM_11_RELIEF_CHAMBER_relief_mode",
+            "orderIndex": 6,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/AXIOM_11_RELIEF_CHAMBER/parameters/relief_mode",
+            "type": "enum",
+            "value": "1",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1",
+            "description": "Frame Grammar",
+            "displayName": "Frame Grammar",
+            "enumValues": [
+              "Quiet Instrument",
+              "Asymmetric Rails",
+              "Archival Gate"
+            ],
+            "group": "Frame",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "AXIOM_12_FRAME_REFINERY_frame_mode",
+            "orderIndex": 7,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/AXIOM_12_FRAME_REFINERY/parameters/frame_mode",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          }
+        ],
+        "sceneGroupPresets": [],
+        "type": 4,
+        "width": 4751.96533203125
+      },
+      {
+        "displayName": "AXIOM_10_IMPRESSION_PRESS",
+        "entityId": "AXIOM_10_IMPRESSION_PRESS",
+        "id": 13,
+        "posX": 3253.142822265625,
+        "posY": 84.33084106445313,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_11_RELIEF_CHAMBER",
+        "entityId": "AXIOM_11_RELIEF_CHAMBER",
+        "id": 14,
+        "posX": 3527.113525390625,
+        "posY": 84.33084106445313,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_12_FRAME_REFINERY",
+        "entityId": "AXIOM_12_FRAME_REFINERY",
+        "id": 15,
+        "posX": 3799.77978515625,
+        "posY": 84.33084869384766,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_13_LIVE_GLYPH_PLATES",
+        "entityId": "AXIOM_13_LIVE_GLYPH_PLATES",
+        "id": 16,
+        "posX": 4509.419921875,
+        "posY": 392.467041015625,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_15_LEFT_SDF_MACHINE",
+        "entityId": "AXIOM_15_LEFT_SDF_MACHINE",
+        "id": 18,
+        "posX": 4136.25,
+        "posY": 88.57553100585938,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "AXIOM_16_POLYRHYTHM_INSPECTOR",
+        "entityId": "AXIOM_16_POLYRHYTHM_INSPECTOR",
+        "id": 19,
+        "posX": 4126.1630859375,
+        "posY": 379.34979248046875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 66,
+        "kind": 0,
+        "name": "Feature Edge Map",
+        "nodeId": 13,
+        "slotIndex": 2,
+        "type": 0
+      },
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "Plate",
+        "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 67,
+        "kind": 0,
+        "name": "Topology Score",
+        "nodeId": 13,
+        "slotIndex": 3,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "kind": 0,
+        "name": "Plate",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 4,
+        "kind": 1,
+        "name": "Analysis",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 5,
+        "kind": 0,
+        "name": "Video Input",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 7,
+        "kind": 1,
+        "name": "Edge Map",
+        "nodeId": 3,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "Blobs",
+        "nodeId": 3,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 9,
+        "kind": 1,
+        "name": "Corners",
+        "nodeId": 3,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 10,
+        "kind": 1,
+        "name": "Lines",
+        "nodeId": 3,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 11,
+        "kind": 0,
+        "name": "Plate",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 12,
+        "kind": 1,
+        "name": "Organic Plate",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 14,
+        "kind": 1,
+        "name": "Interference Mask",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 15,
+        "kind": 0,
+        "name": "Interference Mask",
+        "nodeId": 4,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 16,
+        "kind": 0,
+        "name": "Corners",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 17,
+        "kind": 1,
+        "name": "Topology Score",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 18,
+        "kind": 0,
+        "name": "Blobs",
+        "nodeId": 6,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 19,
+        "kind": 1,
+        "name": "Choir Nodes",
+        "nodeId": 6,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 20,
+        "kind": 1,
+        "name": "Choir Routes",
+        "nodeId": 6,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 21,
+        "kind": 1,
+        "name": "active_nodes",
+        "nodeId": 6,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 22,
+        "kind": 1,
+        "name": "active_routes",
+        "nodeId": 6,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 23,
+        "kind": 1,
+        "name": "mean_weight",
+        "nodeId": 6,
+        "slotIndex": 5,
+        "type": 7
+      },
+      {
+        "id": 24,
+        "kind": 1,
+        "name": "group_coverage",
+        "nodeId": 6,
+        "slotIndex": 6,
+        "type": 7
+      },
+      {
+        "id": 25,
+        "kind": 0,
+        "name": "Organic Program",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 26,
+        "kind": 1,
+        "name": "Pressure Desk",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 27,
+        "kind": 0,
+        "name": "Choir Nodes",
+        "nodeId": 7,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 28,
+        "kind": 1,
+        "name": "Gesture Fields",
+        "nodeId": 7,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 29,
+        "kind": 1,
+        "name": "active_fields",
+        "nodeId": 7,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 30,
+        "kind": 1,
+        "name": "current_mode",
+        "nodeId": 7,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 31,
+        "kind": 1,
+        "name": "current_radius",
+        "nodeId": 7,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 32,
+        "kind": 1,
+        "name": "gesture_energy",
+        "nodeId": 7,
+        "slotIndex": 5,
+        "type": 7
+      },
+      {
+        "id": 34,
+        "kind": 1,
+        "name": "Polyrhythm Rack",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 35,
+        "kind": 1,
+        "name": "master_phase",
+        "nodeId": 8,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 36,
+        "kind": 1,
+        "name": "sine",
+        "nodeId": 8,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 37,
+        "kind": 1,
+        "name": "triangle",
+        "nodeId": 8,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 38,
+        "kind": 1,
+        "name": "pulse",
+        "nodeId": 8,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 39,
+        "kind": 1,
+        "name": "ramp",
+        "nodeId": 8,
+        "slotIndex": 5,
+        "type": 7
+      },
+      {
+        "id": 40,
+        "kind": 1,
+        "name": "orbit_x",
+        "nodeId": 8,
+        "slotIndex": 6,
+        "type": 7
+      },
+      {
+        "id": 41,
+        "kind": 1,
+        "name": "orbit_y",
+        "nodeId": 8,
+        "slotIndex": 7,
+        "type": 7
+      },
+      {
+        "id": 42,
+        "kind": 1,
+        "name": "accent",
+        "nodeId": 8,
+        "slotIndex": 8,
+        "type": 7
+      },
+      {
+        "id": 43,
+        "kind": 1,
+        "name": "slow_phase",
+        "nodeId": 8,
+        "slotIndex": 9,
+        "type": 7
+      },
+      {
+        "id": 44,
+        "kind": 1,
+        "name": "slow_sine",
+        "nodeId": 8,
+        "slotIndex": 10,
+        "type": 7
+      },
+      {
+        "id": 45,
+        "kind": 1,
+        "name": "odd_phase",
+        "nodeId": 8,
+        "slotIndex": 11,
+        "type": 7
+      },
+      {
+        "id": 46,
+        "kind": 1,
+        "name": "odd_triangle",
+        "nodeId": 8,
+        "slotIndex": 12,
+        "type": 7
+      },
+      {
+        "id": 47,
+        "kind": 1,
+        "name": "envelope",
+        "nodeId": 8,
+        "slotIndex": 13,
+        "type": 7
+      },
+      {
+        "id": 48,
+        "kind": 1,
+        "name": "drift",
+        "nodeId": 8,
+        "slotIndex": 14,
+        "type": 7
+      },
+      {
+        "id": 49,
+        "kind": 0,
+        "name": "Organic Plate",
+        "nodeId": 9,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 50,
+        "kind": 1,
+        "name": "Program",
+        "nodeId": 9,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 51,
+        "kind": 0,
+        "name": "Choir Nodes",
+        "nodeId": 9,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 52,
+        "kind": 0,
+        "name": "Choir Routes",
+        "nodeId": 9,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 53,
+        "kind": 0,
+        "name": "Gesture Fields",
+        "nodeId": 9,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 54,
+        "kind": 0,
+        "name": "Program",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 55,
+        "kind": 1,
+        "name": "Remembered Program",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 56,
+        "kind": 0,
+        "name": "Remembered Program",
+        "nodeId": 11,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 57,
+        "kind": 1,
+        "name": "Corona Program",
+        "nodeId": 11,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 58,
+        "kind": 0,
+        "name": "Choir Nodes",
+        "nodeId": 11,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 59,
+        "kind": 1,
+        "name": "Kinetic Events",
+        "nodeId": 11,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 60,
+        "kind": 1,
+        "name": "active_emitters",
+        "nodeId": 11,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 61,
+        "kind": 1,
+        "name": "peak_speed",
+        "nodeId": 11,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 62,
+        "kind": 1,
+        "name": "mean_energy",
+        "nodeId": 11,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 63,
+        "kind": 0,
+        "name": "Corona Program",
+        "nodeId": 13,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 64,
+        "kind": 1,
+        "name": "Master Program",
+        "nodeId": 13,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 65,
+        "kind": 0,
+        "name": "Organic Plate",
+        "nodeId": 13,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 68,
+        "kind": 0,
+        "name": "Pressure Desk",
+        "nodeId": 13,
+        "slotIndex": 4,
+        "type": 0
+      },
+      {
+        "id": 69,
+        "kind": 0,
+        "name": "Polyrhythm Rack",
+        "nodeId": 13,
+        "slotIndex": 5,
+        "type": 0
+      },
+      {
+        "id": 70,
+        "kind": 0,
+        "name": "Interference Mask",
+        "nodeId": 13,
+        "slotIndex": 6,
+        "type": 0
+      },
+      {
+        "id": 71,
+        "kind": 0,
+        "name": "Choir Nodes",
+        "nodeId": 13,
+        "slotIndex": 7,
+        "type": 6
+      },
+      {
+        "id": 72,
+        "kind": 0,
+        "name": "Kinetic Events",
+        "nodeId": 13,
+        "slotIndex": 8,
+        "type": 6
+      },
+      {
+        "id": 73,
+        "kind": 0,
+        "name": "Master Program",
+        "nodeId": 14,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 74,
+        "kind": 1,
+        "name": "Relief Program",
+        "nodeId": 14,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 75,
+        "kind": 0,
+        "name": "Organic Height",
+        "nodeId": 14,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 76,
+        "kind": 0,
+        "name": "Feature Ridges",
+        "nodeId": 14,
+        "slotIndex": 2,
+        "type": 0
+      },
+      {
+        "id": 77,
+        "kind": 0,
+        "name": "Kinetic Events",
+        "nodeId": 14,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 78,
+        "kind": 0,
+        "name": "Relief Program",
+        "nodeId": 15,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 79,
+        "kind": 1,
+        "name": "Master Program",
+        "nodeId": 15,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 80,
+        "kind": 0,
+        "name": "Refined Program",
+        "nodeId": 16,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 81,
+        "kind": 1,
+        "name": "Master Program",
+        "nodeId": 16,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 82,
+        "kind": 0,
+        "name": "Choir Nodes",
+        "nodeId": 16,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 83,
+        "kind": 0,
+        "name": "Kinetic Events",
+        "nodeId": 16,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 88,
+        "kind": 0,
+        "name": "Refined Program",
+        "nodeId": 18,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 89,
+        "kind": 1,
+        "name": "Master Program",
+        "nodeId": 18,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 90,
+        "kind": 0,
+        "name": "Relief Field",
+        "nodeId": 18,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 91,
+        "kind": 0,
+        "name": "Choir Nodes",
+        "nodeId": 18,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 92,
+        "kind": 0,
+        "name": "Kinetic Events",
+        "nodeId": 18,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 93,
+        "kind": 0,
+        "name": "Refined Program",
+        "nodeId": 19,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 94,
+        "kind": 1,
+        "name": "Master Program",
+        "nodeId": 19,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "hostPanelVisibility": {
+    "engines": false,
+    "graph": true,
+    "log": false,
+    "outputs": false,
+    "presets": false,
+    "properties": true,
+    "settings": false,
+    "sources": false,
+    "stats": true,
+    "terminal": true
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Sources]\nPos=808,914\nSize=552,663\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Outputs]\nPos=808,914\nSize=552,663\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Stats]\nPos=0,1235\nSize=545,342\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Log]\nPos=808,914\nSize=552,663\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Properties]\nPos=1987,25\nSize=573,975\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=547,1002\nSize=2013,575\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=590,200\nSize=566,678\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][##LoadingOverlay]\nPos=1812,1014\nSize=215,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=699,249\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Terminal]\nPos=0,25\nSize=545,1208\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Workshop_Motion_Desk]\nPos=633,25\nSize=1352,887\nCollapsed=0\n\n[Window][Void_Organ]\nPos=633,25\nSize=1352,887\nCollapsed=0\n\n[Window][Sculpture_Features]\nPos=633,25\nSize=1352,887\nCollapsed=0\n\n[Window][Rupture_Membrane]\nPos=633,25\nSize=1352,887\nCollapsed=0\n\n[Window][Signal_Interrogator]\nPos=633,25\nSize=1352,887\nCollapsed=0\n\n[Window][AXIOM_01_PLATE]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][AXIOM_02_ANALYSIS_LENS]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][AXIOM_03_LIVE_ENGRAVER]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][AXIOM_01B_ORGANIC_MEMBRANE]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][AXIOM_01A_INTERFERENCE_MASK]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][AXIOM_04_TOPOLOGY_COMPILER]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][AXIOM_05_PRESSURE_DESK]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][AXIOM_06_POLYRHYTHM_RACK]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][AXIOM_07_RESONANCE_ENGINE]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][AXIOM_08_TEMPORAL_OSSUARY]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][AXIOM_09_KINETIC_CORONA]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][AXIOM_10_IMPRESSION_PRESS]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,11\n\n[Window][AXIOM_11_RELIEF_CHAMBER]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,12\n\n[Window][AXIOM_12_FRAME_REFINERY]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,13\n\n[Window][AXIOM_13_LIVE_GLYPH_PLATES]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,14\n\n[Window][AXIOM_14_LEFT_SLICE_ATLAS]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,15\n\n[Window][AXIOM_16_POLYRHYTHM_INSPECTOR]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,15\n\n[Window][AXIOM_15_LEFT_SDF_MACHINE]\nPos=547,25\nSize=1438,975\nCollapsed=0\nDockId=0x0000002E,16\n\n[Docking][Data]\nDockSpace                                     ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode                                    ID=0x0000002F Parent=0xCCBD8CF7 SizeRef=545,1552 Split=Y Selected=0xD33228A6\n    DockNode                                  ID=0x00000031 Parent=0x0000002F SizeRef=806,1208 Selected=0xD33228A6\n    DockNode                                  ID=0x00000032 Parent=0x0000002F SizeRef=806,342 Selected=0x590DF097\n  DockNode                                    ID=0x00000030 Parent=0xCCBD8CF7 SizeRef=2013,1552 Split=Y\n    DockNode                                  ID=0x00000003 Parent=0x00000030 SizeRef=1222,975 Split=X Selected=0x376FDC27\n      DockNode                                ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n        DockNode                              ID=0x00000001 Parent=0x00000007 SizeRef=1438,1284 Split=X Selected=0x5AAC8CBA\n          DockNode                            ID=0x00000009 Parent=0x00000001 SizeRef=742,790 Selected=0x9E38CE87\n          DockNode                            ID=0x0000000A Parent=0x00000001 SizeRef=749,790 Split=X Selected=0x376FDC27\n            DockNode                          ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n              DockNode                        ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n              DockNode                        ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n                DockNode                      ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n                DockNode                      ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                  DockNode                    ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                  DockNode                    ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                    DockNode                  ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                      DockNode                ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                        DockNode              ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                          DockNode            ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                            DockNode          ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                            DockNode          ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                          DockNode            ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                        DockNode              ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                          DockNode            ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                            DockNode          ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                            DockNode          ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                              DockNode        ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                              DockNode        ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                          DockNode            ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                            DockNode          ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                            DockNode          ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                              DockNode        ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                              DockNode        ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                                DockNode      ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                  DockNode    ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                  DockNode    ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                                DockNode      ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                  DockNode    ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                  DockNode    ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                    DockNode  ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                    DockNode  ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 CentralNode=1 Selected=0xC7AE4AE9\n                      DockNode                ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                    DockNode                  ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n            DockNode                          ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n        DockNode                              ID=0x00000002 Parent=0x00000007 SizeRef=573,1284 Selected=0x8C72BEA8\n      DockNode                                ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n    DockNode                                  ID=0x00000004 Parent=0x00000030 SizeRef=1222,575 Split=X Selected=0xF12F3499\n      DockNode                                ID=0x00000005 Parent=0x00000004 SizeRef=808,707 Selected=0x139FDA3F\n      DockNode                                ID=0x00000006 Parent=0x00000004 SizeRef=1752,707 Selected=0xF12F3499\n\n",
+  "name": "AXIOM_CHOIR",
+  "nodePresets": [],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "AXIOM_15_LEFT_SDF_MACHINE",
+      "enabled": true,
+      "expressions": {
+        "machine_phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_phase\")"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_15_LEFT_SDF_MACHINE",
+      "inputSlotSourceIds": [
+        "AXIOM_12_FRAME_REFINERY",
+        "AXIOM_11_RELIEF_CHAMBER",
+        "AXIOM_04_TOPOLOGY_COMPILER",
+        "AXIOM_09_KINETIC_CORONA"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_15_LEFT_SDF_MACHINE",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.020000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "machine_gain": "1.350000",
+        "machine_phase": "0.377419",
+        "paper_color_b": "0.860000",
+        "paper_color_g": "0.900000",
+        "paper_color_r": "0.910000",
+        "project_dir": "modules/AXIOM_15_LEFT_SDF_MACHINE_1",
+        "relief_mix": "0.480000",
+        "resolution_height": "720",
+        "resolution_width": "1280"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM 01 — PLATE",
+      "enabled": true,
+      "expressions": {
+        "phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_phase\")",
+        "rupture": "0.24 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_sine\") * 0.34"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_01_PLATE",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_01_PLATE",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.176000",
+        "accent_color_g": "0.290000",
+        "accent_color_r": "0.894000",
+        "animation_speed": "0.000000",
+        "cell_density": "10.000000",
+        "composition_offset_x": "0.500000",
+        "composition_offset_y": "0.500000",
+        "graphite_grain": "0.240000",
+        "paper_color_b": "0.882000",
+        "paper_color_g": "0.914000",
+        "paper_color_r": "0.925000",
+        "phase": "0.377419",
+        "project_dir": "modules/AXIOM_01_PLATE_7",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "rupture": "0.528367",
+        "scan_weight": "0.780000",
+        "topology": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_12_FRAME_REFINERY",
+      "enabled": true,
+      "expressions": {
+        "activity": "ref(\"AXIOM_09_KINETIC_CORONA/control_outputs/mean_energy\")",
+        "frame_phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_phase\")"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_12_FRAME_REFINERY",
+      "inputSlotSourceIds": [
+        "AXIOM_11_RELIEF_CHAMBER"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_12_FRAME_REFINERY",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.020000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "accent_gain": "0.720000",
+        "activity": "0.732075",
+        "bottom_quiet_height": "0.065000",
+        "cleanup_strength": "0.780000",
+        "datum_gain": "0.520000",
+        "frame_gain": "0.720000",
+        "frame_inset": "0.022000",
+        "frame_mode": "0.000000",
+        "frame_phase": "0.377419",
+        "left_quiet_width": "0.105000",
+        "paper_color_b": "0.860000",
+        "paper_color_g": "0.900000",
+        "paper_color_r": "0.910000",
+        "project_dir": "modules/AXIOM_12_FRAME_REFINERY_5",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "right_quiet_width": "0.052000",
+        "tick_count": "13.000000",
+        "tick_gain": "0.480000",
+        "top_quiet_height": "0.038000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM 02 — ANALYSIS LENS",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "AXIOM_02_ANALYSIS_LENS",
+      "inputSlotSourceIds": [
+        "AXIOM_01B_ORGANIC_MEMBRANE"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_02_ANALYSIS_LENS",
+      "panelOpen": true,
+      "parameters": {
+        "contrast": "1.350000",
+        "detail_boost": "0.420000",
+        "gamma": "0.920000",
+        "graphite_shoulder": "0.220000",
+        "invert_signal": "0.000000",
+        "island_columns": "8.000000",
+        "island_rows": "5.000000",
+        "island_seam": "0.100000",
+        "islandize": "1.000000",
+        "preblur": "0.240000",
+        "project_dir": "modules/AXIOM_02_ANALYSIS_LENS_7",
+        "resolution_height": "270",
+        "resolution_width": "480",
+        "softness": "0.028000",
+        "threshold": "0.480000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM 03 — LIVE ENGRAVER",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "AXIOM_03_LIVE_ENGRAVER",
+      "inputSlotSourceIds": [
+        "AXIOM_02_ANALYSIS_LENS"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_03_LIVE_ENGRAVER",
+      "panelOpen": true,
+      "parameters": {
+        "blob_enabled": "1",
+        "blob_invert": "0",
+        "blob_max_count": "24",
+        "blob_min_area": "20.000000",
+        "blob_threshold": "0.520000",
+        "corner_enabled": "1",
+        "corner_max_count": "36",
+        "corner_min_distance": "18.000000",
+        "corner_mode": "0",
+        "corner_quality": "0.320000",
+        "edge_blur": "1",
+        "edge_enabled": "1",
+        "edge_high_threshold": "0.300000",
+        "edge_low_threshold": "0.120000",
+        "edge_mode": "0",
+        "edge_threshold": "0.420000",
+        "line_anchor_threshold": "0.860000",
+        "line_detect_scale": "2",
+        "line_edge_threshold": "0.660000",
+        "line_enabled": "0",
+        "line_jump_distance": "2",
+        "line_max_count": "12",
+        "line_min_length": "70.000000",
+        "line_nms_angle_tol": "7.000000",
+        "line_nms_dist_tol": "8.000000",
+        "line_orientation_tol": "14.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "features"
+    },
+    {
+      "displayName": "AXIOM 01B — ORGANIC MEMBRANE",
+      "enabled": true,
+      "expressions": {
+        "displacement": "0.19 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/envelope\") * 0.12",
+        "phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/odd_phase\")",
+        "tear_amount": "0.62 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/odd_triangle\") * 0.30"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_01B_ORGANIC_MEMBRANE",
+      "inputSlotSourceIds": [
+        "AXIOM_01_PLATE",
+        "AXIOM_01A_INTERFERENCE_MASK"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_01B_ORGANIC_MEMBRANE",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.176000",
+        "accent_color_g": "0.290000",
+        "accent_color_r": "0.894000",
+        "animation_speed": "0.000000",
+        "displacement": "0.226057",
+        "filament_amount": "0.420000",
+        "fold_character": "0.480000",
+        "ink_drag": "0.840000",
+        "mask_floor": "0.010000",
+        "mask_gain": "1.700000",
+        "mask_influence": "1.000000",
+        "mask_softness": "0.080000",
+        "mask_threshold": "0.460000",
+        "phase": "0.730458",
+        "pressure_ridge": "0.360000",
+        "project_dir": "modules/AXIOM_01B_ORGANIC_MEMBRANE_7",
+        "tear_amount": "0.781725",
+        "tear_softness": "0.075000",
+        "tear_threshold": "0.480000",
+        "vortex_amount": "1.700000",
+        "warp_scale": "1.820000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM 01A — INTERFERENCE MASK",
+      "enabled": true,
+      "expressions": {
+        "band_influence": "0.18 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/triangle\") * 0.46",
+        "phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/master_phase\")",
+        "travel_amount": "0.40 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/drift\") * 0.32"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_01A_INTERFERENCE_MASK",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_01A_INTERFERENCE_MASK",
+      "panelOpen": true,
+      "parameters": {
+        "animation_speed": "0.000000",
+        "band_density": "4.200000",
+        "band_influence": "0.635498",
+        "band_motion": "1.300000",
+        "evolution_amount": "1.180000",
+        "evolution_rate": "1.450000",
+        "field_scale": "1.720000",
+        "invert_mask": "0.000000",
+        "mask_binary": "0.820000",
+        "mask_contrast": "1.450000",
+        "mask_mode": "2.000000",
+        "mask_softness": "0.085000",
+        "mask_threshold": "0.480000",
+        "phase": "0.504893",
+        "project_dir": "modules/AXIOM_01A_INTERFERENCE_MASK_7",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "travel_amount": "0.466688",
+        "travel_eccentricity": "0.580000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_04_TOPOLOGY_COMPILER",
+      "enabled": true,
+      "expressions": {
+        "route_weight": "0.52 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/accent\") * 0.68",
+        "tangent_mix": "-0.15 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/orbit_x\") * 0.94"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_04_TOPOLOGY_COMPILER",
+      "inputSlotSourceIds": [
+        "AXIOM_03_LIVE_ENGRAVER",
+        "AXIOM_03_LIVE_ENGRAVER"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_04_TOPOLOGY_COMPILER",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.025000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "direction_gain": "1.150000",
+        "group_count": "5.000000",
+        "input_height": "270.000000",
+        "input_width": "480.000000",
+        "max_connection_distance": "0.420000",
+        "node_limit": "36.000000",
+        "node_size": "5.800000",
+        "paper_color_b": "0.840000",
+        "paper_color_g": "0.890000",
+        "paper_color_r": "0.900000",
+        "preview_exposure": "1.000000",
+        "project_dir": "modules/AXIOM_04_TOPOLOGY_COMPILER_7",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "response_floor": "5.500000",
+        "response_span": "5.000000",
+        "route_mode": "2.000000",
+        "route_weight": "0.520000",
+        "tangent_mix": "-0.149778"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_05_PRESSURE_DESK",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "AXIOM_05_PRESSURE_DESK",
+      "inputSlotSourceIds": [
+        "AXIOM_01B_ORGANIC_MEMBRANE",
+        "AXIOM_04_TOPOLOGY_COMPILER"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_05_PRESSURE_DESK",
+      "panelOpen": true,
+      "parameters": {
+        "clear_fields": "0.000000",
+        "default_radius": "0.140000",
+        "field_softness": "0.420000",
+        "press_mode": "1.000000",
+        "program_exposure": "0.720000",
+        "project_dir": "modules/AXIOM_05_PRESSURE_DESK_7",
+        "resolution_height": "950",
+        "resolution_width": "1438",
+        "shear_mode": "1.000000",
+        "topology_overlay": "0.720000",
+        "touch_strength": "0.920000",
+        "void_mode": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_06_POLYRHYTHM_RACK",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "AXIOM_06_POLYRHYTHM_RACK",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_06_POLYRHYTHM_RACK",
+      "panelOpen": true,
+      "parameters": {
+        "accent_sharpness": "9.000000",
+        "drift_coupling": "0.420000",
+        "period_seconds": "7.500000",
+        "phase_offset_b": "0.125000",
+        "phase_offset_c": "0.370000",
+        "project_dir": "modules/AXIOM_06_POLYRHYTHM_RACK_7",
+        "pulse_width": "0.220000",
+        "ratio_b": "0.500000",
+        "ratio_c": "1.500000",
+        "reset_phase": "0.000000",
+        "resolution_height": "950",
+        "resolution_width": "1438",
+        "scrub_phase": "0.000000",
+        "transport_run": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_07_RESONANCE_ENGINE",
+      "enabled": true,
+      "expressions": {
+        "dark_paper_gain": "0.38 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_sine\") * 0.18",
+        "echo_spacing": "0.006 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/odd_triangle\") * 0.030",
+        "fault_accent": "0.22 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/accent\") * 0.80",
+        "field_gain": "0.65 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/envelope\") * 1.25",
+        "node_overlay": "0.85 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/envelope\") * 1.35",
+        "route_overlay": "0.95 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_sine\") * 1.30",
+        "route_tension": "0.42 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_sine\") * 0.90",
+        "topology_echo": "0.008 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/odd_triangle\") * 0.034",
+        "vector_overlay": "0.38 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/triangle\") * 0.96"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_07_RESONANCE_ENGINE",
+      "inputSlotSourceIds": [
+        "AXIOM_01B_ORGANIC_MEMBRANE",
+        "AXIOM_04_TOPOLOGY_COMPILER",
+        "AXIOM_04_TOPOLOGY_COMPILER",
+        "AXIOM_05_PRESSURE_DESK"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_07_RESONANCE_ENGINE",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.020000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "composition_mode": "0.000000",
+        "dark_paper_gain": "0.532665",
+        "echo_count": "4.000000",
+        "echo_decay": "0.620000",
+        "echo_spacing": "0.022172",
+        "exposure": "1.000000",
+        "fault_accent": "0.220000",
+        "feature_radius": "0.075000",
+        "feature_warp": "0.054000",
+        "field_gain": "1.025589",
+        "gesture_gain": "0.920000",
+        "ink_color_b": "0.007000",
+        "ink_color_g": "0.008000",
+        "ink_color_r": "0.008000",
+        "node_overlay": "1.255636",
+        "paper_color_b": "0.860000",
+        "paper_color_g": "0.900000",
+        "paper_color_r": "0.910000",
+        "project_dir": "modules/AXIOM_07_RESONANCE_ENGINE_7",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "route_overlay": "2.052581",
+        "route_tension": "1.183325",
+        "threshold": "0.430000",
+        "threshold_softness": "0.065000",
+        "topology_echo": "0.026329",
+        "topology_ink": "1.100000",
+        "vector_overlay": "1.330605"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_08_TEMPORAL_OSSUARY",
+      "enabled": true,
+      "expressions": {
+        "accent_retention": "0.42 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/accent\") * 0.68",
+        "advection": "0.008 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/drift\") * 0.018",
+        "memory": "0.82 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_sine\") * 0.11",
+        "phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/master_phase\")",
+        "trail_gain": "0.78 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/envelope\") * 0.72"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_08_TEMPORAL_OSSUARY",
+      "inputSlotSourceIds": [
+        "AXIOM_07_RESONANCE_ENGINE"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_08_TEMPORAL_OSSUARY",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.020000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "accent_retention": "0.420000",
+        "advection": "0.011751",
+        "diffusion": "0.002000",
+        "memory": "0.913295",
+        "memory_mode": "0.000000",
+        "paper_color_b": "0.860000",
+        "paper_color_g": "0.900000",
+        "paper_color_r": "0.910000",
+        "phase": "0.504893",
+        "project_dir": "modules/AXIOM_08_TEMPORAL_OSSUARY_7",
+        "reset_memory": "1.000000",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "trail_gain": "0.996339",
+        "trail_threshold": "0.160000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_09_KINETIC_CORONA",
+      "enabled": true,
+      "expressions": {
+        "emission_gain": "0.85 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/envelope\") * 0.70",
+        "phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/odd_phase\")",
+        "wave_reach": "0.10 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_sine\") * 0.07"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_09_KINETIC_CORONA",
+      "inputSlotSourceIds": [
+        "AXIOM_08_TEMPORAL_OSSUARY",
+        "AXIOM_04_TOPOLOGY_COMPILER"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_09_KINETIC_CORONA",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.020000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "emission_gain": "1.060330",
+        "emission_rate": "2.800000",
+        "matching_radius": "0.110000",
+        "paper_color_b": "0.860000",
+        "paper_color_g": "0.900000",
+        "paper_color_r": "0.910000",
+        "particle_count": "4.000000",
+        "particle_reach": "0.150000",
+        "particle_size": "0.003200",
+        "phase": "0.730458",
+        "project_dir": "modules/AXIOM_09_KINETIC_CORONA_7",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "speed_softness": "0.009000",
+        "speed_threshold": "0.012000",
+        "velocity_smoothing": "0.560000",
+        "wave_count": "3.000000",
+        "wave_reach": "0.159370",
+        "wave_thickness": "0.002700"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_10_IMPRESSION_PRESS",
+      "enabled": true,
+      "expressions": {
+        "block_displacement": "0.008 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/envelope\") * 0.025 + ref(\"AXIOM_09_KINETIC_CORONA/control_outputs/peak_speed\") * 0.60",
+        "block_mask_threshold": "0.38 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/triangle\") * 0.24",
+        "box_center_x": "ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/largest_x\") / 480.0",
+        "box_center_y": "ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/largest_y\") / 270.0",
+        "box_outline_gain": "0.12 + ref(\"AXIOM_09_KINETIC_CORONA/control_outputs/mean_energy\") * 0.38",
+        "box_twist": "(-1.40 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/odd_triangle\") * 2.80) * (0.45 + ref(\"AXIOM_09_KINETIC_CORONA/control_outputs/peak_speed\") * 24.0)",
+        "carrier_warp": "0.008 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/drift\") * 0.015",
+        "contour_gain": "0.25 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/odd_triangle\") * 0.55",
+        "feature_edge_gain": "0.14 + ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/edge_density\") * 4.20",
+        "hud_edge_density": "ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/edge_density\")",
+        "operation_depth": "0.45 + ref(\"AXIOM_09_KINETIC_CORONA/control_outputs/mean_energy\") * 0.50",
+        "operation_ink": "0.30 + ref(\"AXIOM_09_KINETIC_CORONA/control_outputs/peak_speed\") * 10.0",
+        "organic_breakup": "0.52 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/envelope\") * 0.28",
+        "phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_phase\")",
+        "pressure_preview_gain": "0.08 + ref(\"AXIOM_05_PRESSURE_DESK/control_outputs/gesture_energy\") * 0.07",
+        "registration_fault": "0.004 + ref(\"AXIOM_04_TOPOLOGY_COMPILER/control_outputs/group_coverage\") * 0.010",
+        "rhythm_preview_gain": "0.26 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_sine\") * 0.38",
+        "topology_preview_gain": "0.18 + ref(\"AXIOM_04_TOPOLOGY_COMPILER/control_outputs/mean_weight\") * 0.65"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_10_IMPRESSION_PRESS",
+      "inputSlotSourceIds": [
+        "AXIOM_09_KINETIC_CORONA",
+        "AXIOM_01B_ORGANIC_MEMBRANE",
+        "AXIOM_03_LIVE_ENGRAVER",
+        "AXIOM_04_TOPOLOGY_COMPILER",
+        "AXIOM_05_PRESSURE_DESK",
+        "AXIOM_06_POLYRHYTHM_RACK",
+        "AXIOM_01A_INTERFERENCE_MASK",
+        "AXIOM_04_TOPOLOGY_COMPILER",
+        "AXIOM_09_KINETIC_CORONA"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_10_IMPRESSION_PRESS",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.020000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "block_columns": "12.000000",
+        "block_displacement": "0.030160",
+        "block_mask_softness": "0.070000",
+        "block_mask_threshold": "0.617651",
+        "block_rows": "7.000000",
+        "box_center_x": "0.482085",
+        "box_center_y": "0.508163",
+        "box_operation": "1.000000",
+        "box_outline_gain": "0.398189",
+        "box_path_mode": "3.000000",
+        "box_size_x": "0.340000",
+        "box_size_y": "0.420000",
+        "box_softness": "0.018000",
+        "box_twist": "0.113365",
+        "carrier_warp": "0.011126",
+        "chase_jump_rate": "1.029000",
+        "chase_randomness": "0.350000",
+        "chase_slew": "0.444000",
+        "contour_gain": "0.546496",
+        "edge_echo": "0.003500",
+        "edge_gain": "0.520000",
+        "edge_width": "1.100000",
+        "exposure": "1.000000",
+        "feature_edge_gain": "0.430598",
+        "frame_gain": "0.380000",
+        "halftone_gain": "0.260000",
+        "hud_edge_density": "0.069190",
+        "hud_gain": "0.000000",
+        "operation_depth": "0.816037",
+        "operation_ink": "0.544140",
+        "operation_repeats": "5.000000",
+        "organic_breakup": "0.604132",
+        "paper_color_b": "0.860000",
+        "paper_color_g": "0.900000",
+        "paper_color_r": "0.910000",
+        "phase": "0.377419",
+        "press_mode": "0.000000",
+        "pressure_preview_gain": "0.251304",
+        "preview_inset": "0.105000",
+        "project_dir": "modules/AXIOM_10_IMPRESSION_PRESS_7",
+        "registration_fault": "0.014000",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "rhythm_preview_gain": "0.582293",
+        "topology_preview_gain": "0.422622"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_11_RELIEF_CHAMBER",
+      "enabled": true,
+      "expressions": {
+        "relief_phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_phase\")",
+        "scan_gain": "0.14 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/accent\") * 0.34",
+        "specimen_gain": "0.64 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/envelope\") * 0.22",
+        "view_pitch": "0.48 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/triangle\") * 0.22",
+        "view_yaw": "-0.28 + ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_sine\") * 0.56"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_11_RELIEF_CHAMBER",
+      "inputSlotSourceIds": [
+        "AXIOM_10_IMPRESSION_PRESS",
+        "AXIOM_01B_ORGANIC_MEMBRANE",
+        "AXIOM_03_LIVE_ENGRAVER",
+        "AXIOM_09_KINETIC_CORONA"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_11_RELIEF_CHAMBER",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.020000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "base_depth": "-0.040000",
+        "chamber_center_x": "0.740000",
+        "chamber_center_y": "0.270000",
+        "chamber_dim": "0.280000",
+        "chamber_size_x": "0.340000",
+        "chamber_size_y": "0.340000",
+        "contour_count": "17.000000",
+        "contour_gain": "0.340000",
+        "contour_width": "0.052000",
+        "edge_ridge": "0.420000",
+        "grid_gain": "0.140000",
+        "height_gain": "0.480000",
+        "height_stability": "0.860000",
+        "impact_height": "0.460000",
+        "impact_ink": "0.880000",
+        "impact_radius": "0.034000",
+        "paper_color_b": "0.860000",
+        "paper_color_g": "0.900000",
+        "paper_color_r": "0.910000",
+        "project_dir": "modules/AXIOM_11_RELIEF_CHAMBER_6",
+        "relief_mode": "1.000000",
+        "relief_phase": "0.377419",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "ridge_ink": "0.380000",
+        "scan_gain": "0.140000",
+        "specimen_gain": "0.706104",
+        "terrace_mix": "0.440000",
+        "terrace_steps": "18.000000",
+        "view_pitch": "0.697847",
+        "view_yaw": "0.194958"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_13_LIVE_GLYPH_PLATES",
+      "enabled": true,
+      "expressions": {
+        "active_emitters": "ref(\"AXIOM_09_KINETIC_CORONA/control_outputs/active_emitters\")",
+        "active_nodes": "ref(\"AXIOM_04_TOPOLOGY_COMPILER/control_outputs/active_nodes\")",
+        "active_routes": "ref(\"AXIOM_04_TOPOLOGY_COMPILER/control_outputs/active_routes\")",
+        "corner_count": "ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/corner_count\")",
+        "edge_density": "ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/edge_density\")",
+        "glyph_phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/slow_phase\")",
+        "mean_energy": "ref(\"AXIOM_09_KINETIC_CORONA/control_outputs/mean_energy\")"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_13_LIVE_GLYPH_PLATES",
+      "inputSlotSourceIds": [
+        "AXIOM_16_POLYRHYTHM_INSPECTOR",
+        "AXIOM_04_TOPOLOGY_COMPILER",
+        "AXIOM_09_KINETIC_CORONA"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_13_LIVE_GLYPH_PLATES",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.020000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "active_emitters": "3.000000",
+        "active_nodes": "30.000000",
+        "active_routes": "30.000000",
+        "bevel_gain": "0.660000",
+        "corner_count": "36.000000",
+        "depth_gain": "0.720000",
+        "edge_density": "0.069190",
+        "glyph_gain": "0.000000",
+        "glyph_mode": "1.000000",
+        "glyph_phase": "0.377419",
+        "left_center_x": "0.250000",
+        "left_center_y": "0.578571",
+        "left_extent_x": "0.140000",
+        "left_extent_y": "0.340000",
+        "mean_energy": "0.732075",
+        "paper_color_b": "0.860000",
+        "paper_color_g": "0.900000",
+        "paper_color_r": "0.910000",
+        "project_dir": "modules/AXIOM_13_LIVE_GLYPH_PLATES_4",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "right_center_x": "0.855000",
+        "right_center_y": "0.865000",
+        "right_extent_x": "0.180000",
+        "right_extent_y": "0.130000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "AXIOM_16_POLYRHYTHM_INSPECTOR",
+      "enabled": true,
+      "expressions": {
+        "blob_count": "ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/blob_count\")",
+        "corner_count": "ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/corner_count\")",
+        "dominant_angle": "ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/dominant_angle\")",
+        "drift": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/drift\")",
+        "edge_density": "ref(\"AXIOM_03_LIVE_ENGRAVER/control_outputs/edge_density\")",
+        "envelope": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/envelope\")",
+        "phase": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/master_phase\")",
+        "pulse": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/pulse\")",
+        "sine": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/sine\")",
+        "tri": "ref(\"AXIOM_06_POLYRHYTHM_RACK/control_outputs/triangle\")"
+      },
+      "fitMode": 1,
+      "id": "AXIOM_16_POLYRHYTHM_INSPECTOR",
+      "inputSlotSourceIds": [
+        "AXIOM_12_FRAME_REFINERY"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "AXIOM_16_POLYRHYTHM_INSPECTOR",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.020000",
+        "accent_color_g": "0.140000",
+        "accent_color_r": "1.000000",
+        "blob_count": "1.000000",
+        "corner_count": "36.000000",
+        "dominant_angle": "0.000000",
+        "drift": "0.208399",
+        "edge_density": "0.069190",
+        "envelope": "0.300471",
+        "paper_color_b": "0.860000",
+        "paper_color_g": "0.900000",
+        "paper_color_r": "0.910000",
+        "phase": "0.504893",
+        "project_dir": "modules/AXIOM_16_POLYRHYTHM_INSPECTOR_1",
+        "pulse": "0.000000",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "sine": "0.484630",
+        "tri": "0.990214"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1784862636248,
+  "sources": [],
+  "statePayloads": {
+    "AXIOM_05_PRESSURE_DESK": {
+      "gesture_fields": {
+        "data": "b4a7d53e50ebbe3e00000000ffff7fbf295c0f3e1f856b3f000000000000803fd7a3303ff628dc3ecdcc4c3f9a9919bf26e4033e76711b3f0000803f0000803f3afb1e3f16090c3fffff7fbf00000000295c0f3e1f856bbf000000400000803f3afb1e3f16090c3fffff7fbf00000000295c0f3e1f856b3f000000400000803f",
+        "element_count": 4,
+        "element_size": 32,
+        "encoding": "hex",
+        "schema_signature": "3325355351590198086"
+      }
+    },
+    "AXIOM_06_POLYRHYTHM_RACK": {
+      "lfo_state": {
+        "data": "b7d0013f1b99f43e925e7c3f00000000b7d0013f0012023a1b99f43eaae2130e1ecdc13eae7c583f61d73b3f3e51083f9ba6973e38054e3e000000000000803f",
+        "element_count": 1,
+        "element_size": 64,
+        "encoding": "hex",
+        "schema_signature": "6513105735384530356"
+      }
+    }
+  },
+  "version": 5
+}

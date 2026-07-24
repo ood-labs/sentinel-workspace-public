@@ -1,0 +1,101 @@
+name: "AXIOM 07 / RESONANCE ENGINE"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Organic Plate", slot: 0, required: true }
+
+data_inputs:
+  - name: "Choir Nodes"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: weight, type: float }
+      - { name: kind, type: float }
+      - { name: group_id, type: float }
+      - { name: rank, type: float }
+      - { name: response, type: float }
+      - { name: radius, type: float }
+      - { name: active, type: float }
+      - { name: id, type: float }
+  - name: "Choir Routes"
+    slot: 1
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: weight, type: float }
+      - { name: group_id, type: float }
+      - { name: active, type: float }
+      - { name: id, type: float }
+  - name: "Gesture Fields"
+    slot: 2
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: radius, type: float }
+      - { name: strength, type: float }
+      - { name: mode, type: float }
+      - { name: active, type: float }
+
+buffers:
+  - { name: resonance_field, format: RGBA16F }
+  - { name: topology_plate, format: RGBA16F }
+
+parameters:
+  - { name: composition_mode, display: "Composition Grammar", type: enum, default: 0, options: ["Dark Choir", "X-Ray", "Rupture"], flags: button_grid, group: "Composition" }
+  - { name: feature_radius, display: "Feature Reach", type: float, min: 0.01, max: 0.25, default: 0.075, group: "Force Field" }
+  - { name: field_gain, display: "Feature Force", type: float, min: 0.0, max: 3.0, default: 1.05, group: "Force Field" }
+  - { name: route_tension, display: "Route Tension", type: float, min: 0.0, max: 3.0, default: 0.88, group: "Force Field" }
+  - { name: gesture_gain, display: "Gesture Authority", type: float, min: 0.0, max: 3.0, default: 0.92, group: "Force Field" }
+  - { name: feature_warp, display: "Topology Warp", type: float, min: 0.0, max: 0.16, default: 0.054, group: "Image Synthesis" }
+  - { name: echo_count, display: "Choir Echoes", type: int, min: 1, max: 7, default: 4, group: "Image Synthesis" }
+  - { name: echo_spacing, display: "Echo Spacing", type: float, min: 0.0, max: 0.08, default: 0.018, group: "Image Synthesis" }
+  - { name: echo_decay, display: "Echo Decay", type: float, min: 0.1, max: 0.95, default: 0.62, group: "Image Synthesis" }
+  - { name: threshold, display: "Print Threshold", type: float, min: 0.05, max: 0.95, default: 0.43, group: "Print" }
+  - { name: threshold_softness, display: "Print Softness", type: float, min: 0.005, max: 0.25, default: 0.065, group: "Print" }
+  - { name: topology_ink, display: "Topology Ink", type: float, min: 0.0, max: 2.5, default: 1.10, group: "Print" }
+  - { name: fault_accent, display: "Fault Accent", type: float, min: 0.0, max: 2.5, default: 0.82, group: "Print" }
+  - { name: route_overlay, display: "Route Filaments", type: float, min: 0.0, max: 3.0, default: 1.35, group: "Topology Overlay" }
+  - { name: node_overlay, display: "Node Instruments", type: float, min: 0.0, max: 3.0, default: 1.15, group: "Topology Overlay" }
+  - { name: vector_overlay, display: "Direction Vectors", type: float, min: 0.0, max: 3.0, default: 0.82, group: "Topology Overlay" }
+  - { name: topology_echo, display: "Topology Echo", type: float, min: 0.0, max: 0.08, default: 0.018, group: "Topology Overlay" }
+  - { name: dark_paper_gain, display: "Dark Paper Level", type: float, min: 0.05, max: 1.0, default: 0.58, group: "Composition" }
+  - { name: paper_color, display: "Paper", type: color, default: [0.91, 0.90, 0.86], group: "Palette" }
+  - { name: ink_color, display: "Ink", type: color, default: [0.008, 0.008, 0.007], group: "Palette" }
+  - { name: accent_color, display: "Fault", type: color, default: [1.0, 0.14, 0.02], group: "Palette" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.25, max: 2.0, default: 1.0, group: "Output" }
+
+passes:
+  - name: build_field
+    shader: field.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+    output: "buffer:resonance_field"
+
+  - name: build_topology_plate
+    shader: topology.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+    output: "buffer:topology_plate"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:resonance_field" }
+      - { slot: 2, source: "buffer:topology_plate" }
+    output: output
+
+outputs:
+  - { name: "Program", pass: render }
+
+viewport:
+  hint: "Canonical 1280x720 Program: the membrane is resampled through a force texture compiled from the live choir topology and spatial gesture records."

@@ -1,0 +1,40 @@
+name: "Axiom Plate"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+parameters:
+  - { name: topology, display: "Plate Grammar", type: enum, default: 0, options: [Monolith, Aperture, Relay], flags: button_grid, group: "Composition" }
+  - { name: cell_density, display: "Cell Count", type: int, min: 3, max: 14, default: 10, group: "Composition" }
+  - { name: composition_offset, display: "Composition Offset", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.5, 0.5], group: "Composition" }
+  - { name: rupture, display: "Rupture", type: float, min: 0.0, max: 1.0, default: 0.38, group: "Composition" }
+  - { name: scan_weight, display: "Rail Weight", type: float, min: 0.2, max: 1.4, default: 0.78, group: "Mark Language" }
+  - { name: graphite_grain, display: "Graphite Grain", type: float, min: 0.0, max: 1.0, default: 0.24, group: "Mark Language" }
+  - { name: paper_color, display: "Paper", type: color, default: [0.925, 0.914, 0.882], group: "Palette" }
+  - { name: accent_color, display: "Vermilion", type: color, default: [0.894, 0.290, 0.176], group: "Palette" }
+  - { name: phase, display: "Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: animation_speed, display: "Animation Speed", type: float, min: 0.0, max: 0.5, default: 0.055, group: "Motion" }
+
+buffers:
+  - { name: phase_state, structured: true, element_size: 16, element_count: 1, persistent: true }
+
+passes:
+  - name: clock
+    shader: clock.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: "buffer:phase_state"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: output
+
+outputs:
+  - { name: "Plate", pass: render }

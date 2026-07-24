@@ -1,0 +1,47 @@
+name: "AXIOM 08 / TEMPORAL OSSUARY"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+features: [noise]
+
+inputs:
+  - { name: "Program", slot: 0, required: true }
+
+parameters:
+  - { name: memory_mode, display: "Memory Grammar", type: enum, default: 0, options: ["Carbon Memory", "Echo Plates", "Dry Scan"], flags: button_grid, group: "Memory" }
+  - { name: memory, display: "Retention", type: float, min: 0.0, max: 0.995, default: 0.86, group: "Memory" }
+  - { name: advection, display: "Memory Advection", type: float, min: 0.0, max: 0.08, default: 0.014, group: "Memory" }
+  - { name: diffusion, display: "Memory Diffusion", type: float, min: 0.0, max: 0.02, default: 0.003, group: "Memory" }
+  - { name: trail_threshold, display: "Trail Threshold", type: float, min: 0.0, max: 1.0, default: 0.19, group: "Memory" }
+  - { name: trail_gain, display: "Trail Ink", type: float, min: 0.0, max: 2.0, default: 0.82, group: "Memory" }
+  - { name: accent_retention, display: "Accent Retention", type: float, min: 0.0, max: 1.5, default: 0.74, group: "Memory" }
+  - { name: phase, display: "Advection Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: paper_color, display: "Paper Reference", type: color, default: [0.91, 0.90, 0.86], group: "Palette" }
+  - { name: accent_color, display: "Fault Reference", type: color, default: [1.0, 0.14, 0.02], group: "Palette" }
+  - { name: reset_memory, display: "Clear Memory", type: button, group: "Memory" }
+
+buffers:
+  - { name: history, format: RGBA16F, persistent: true }
+
+passes:
+  - name: remember
+    shader: remember.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:history" }
+    output: "buffer:history"
+
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:history" }
+    output: output
+
+outputs:
+  - { name: "Remembered Program", pass: present }
+
+viewport:
+  hint: "Persistent post field: Carbon unions dark tracked ink, Echo Plates retains displaced color, and Dry Scan keeps only moving contour residue."
