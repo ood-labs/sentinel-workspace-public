@@ -18,6 +18,8 @@ buffers:
   - { name: stamp_depth, format: RGBA16F, scale: 1.0, persistent: true }
   - { name: stamp_pose, structured: true, element_size: 32, element_count: 1, persistent: true }
   - { name: canvas_state, structured: true, element_size: 16, element_count: 1, persistent: true }
+  - { name: control_state, structured: true, element_size: 16, element_count: 1, persistent: true }
+  - { name: diffusion_state, structured: true, element_size: 16, element_count: 1, persistent: true }
   - { name: kick_envelope, structured: true, element_size: 16, element_count: 1, persistent: true }
   - { name: spawn_points, structured: true, element_size: 16, element_count: 64, persistent: true }
 
@@ -25,6 +27,8 @@ parameters:
   - { name: run, display: "Run", type: bool, default: true, group: "Spawn" }
   - { name: run_trigger, display: "Run Trigger", type: bool, default: false, group: "Spawn" }
   - { name: spawn_seconds, display: "Seconds Per Stamp", type: float, min: 0.05, max: 2.0, default: 0.18, group: "Spawn" }
+  - { name: diffusion_sync, display: "Sync StreamDiff", type: bool, default: false, group: "Spawn" }
+  - { name: diffusion_every, display: "Diffusion Every N Stamps", type: int, min: 1, max: 32, default: 8, group: "Spawn" }
   - { name: clear_toggle, display: "Clear Canvas", type: bool, default: false, group: "Spawn" }
 
   - { name: feedback_enabled, display: "Feedback", type: bool, default: false, group: "Feedback" }
@@ -32,7 +36,7 @@ parameters:
   - { name: feedback_rotation_speed, display: "Rotation Speed", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Feedback" }
   - { name: pan, display: "Drift", type: point2D, min: [-0.2, -0.2], max: [0.2, 0.2], default: [0.0, 0.0], group: "Feedback" }
   - { name: control_gain, display: "Control Gain", type: float, min: 1.0, max: 10.0, default: 5.0, group: "Feedback" }
-  - { name: feedback_kick, display: "D Kick", type: float, min: 1.0, max: 10.0, default: 5.0, group: "Feedback" }
+  - { name: feedback_kick, display: "C Kick", type: float, min: 1.0, max: 10.0, default: 5.0, group: "Feedback" }
   - { name: kick_attack, display: "Kick Attack", type: float, min: 0.01, max: 2.0, default: 0.08, group: "Feedback" }
   - { name: kick_decay, display: "Kick Decay", type: float, min: 0.01, max: 3.0, default: 0.18, group: "Feedback" }
   - { name: kick_sustain, display: "Kick Sustain", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Feedback" }
@@ -66,13 +70,14 @@ parameters:
   - { name: drop_shadow, display: "Drop Shadow", type: float, min: 0.0, max: 1.5, default: 0.28, group: "Canvas" }
 
 viewport:
-  hint: "Left-drag=drift, wheel=zoom, S=trigger spawning, D=feedback kick. Alt=fine, Alt+Shift=ultra-fine."
+  hint: "Left-drag=drift, wheel=zoom, X=trigger spawning, C=feedback kick, Z=temporarily unhold StreamDiff. Alt=fine, Alt+Shift=ultra-fine."
   interactions: [pan_zoom, events]
   input:
-    keyboard: [s, d]
+    keyboard: [x, c, z]
   bindings:
-    - { key: s, action: run_trigger, label: "Hold to Spawn (when Run Trigger is on)" }
-    - { key: d, action: feedback_kick, label: "Hold for Feedback Kick" }
+    - { key: x, action: run_trigger, label: "Hold to Spawn (when Run Trigger is on)" }
+    - { key: c, action: feedback_kick, label: "Hold for Feedback Kick" }
+    - { key: z, action: streamdiff_unhold, label: "Hold to Unfreeze StreamDiff" }
 
 passes:
   - name: kick_envelope
@@ -94,6 +99,26 @@ passes:
     inputs:
       - { slot: 0, source: "buffer:canvas_state" }
     output: "buffer:canvas_state"
+
+  - name: control_state_update
+    shader: control_state.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:control_state" }
+    output: "buffer:control_state"
+
+  - name: diffusion_state_update
+    shader: diffusion_state.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:diffusion_state" }
+    output: "buffer:diffusion_state"
 
   - name: capture_subject
     shader: capture_stamp.hlsl
@@ -204,6 +229,10 @@ data_outputs:
       - { name: y, type: float }
       - { name: sequence, type: uint }
       - { name: active, type: uint }
+
+control_outputs:
+  - { name: diffusion_pulse, buffer: diffusion_state, element: 0, field_offset: 4, description: "One-frame pulse at the configured diffusion cadence" }
+  - { name: streamdiff_unhold, buffer: control_state, element: 0, field_offset: 0, description: "1 while Z is held in the focused Pattern Canvas preview" }
 
 outputs:
   - { name: "Pattern Canvas", pass: present }

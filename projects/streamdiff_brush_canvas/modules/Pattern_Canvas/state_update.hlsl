@@ -16,8 +16,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float cycleValue = (float)(cycle & 0x00ffffffu);
     bool newCycle = !wasInitialized || abs(state.x - cycleValue) > 0.25;
     // With Run Trigger enabled, the viewport's held-key snapshot replaces the
-    // ordinary Run toggle. S is key code 19 in the authored-input ABI.
-    bool effectiveRun = run_trigger != 0 ? ViewportKeyDown(19u) : (run != 0);
+    // ordinary Run toggle. X is key code 24 in the authored-input ABI.
+    bool effectiveRun = run_trigger != 0 ? ViewportKeyDown(24u) : (run != 0);
 
     int previousStage = (int)round(clamp(state.y, 0.0, 3.0));
     bool revealEnabled = reveal_sequence != 0;

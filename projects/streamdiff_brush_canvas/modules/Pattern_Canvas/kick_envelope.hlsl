@@ -12,7 +12,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float dt = clamp(_DeltaTime, 0.0, 0.1);
     float level = saturate(state.x);
     int stage = (int)round(state.y); // 0 idle, 1 attack, 2 decay, 3 sustain, 4 release
-    bool held = ViewportKeyDown(4u); // D
+    bool held = ViewportKeyDown(3u); // C
 
     if (held) {
         if (stage == 0 || stage == 4)
