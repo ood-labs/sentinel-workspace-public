@@ -1,0 +1,28 @@
+name: "Dirty Lens"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA16F
+output_format: RGBA16F
+
+inputs:
+  - { name: "Scene", slot: 0, required: true }
+
+parameters:
+  - { name: distortion, display: "Glass Distortion", type: float, min: 0.0, max: 0.08, default: 0.018, group: "Lens" }
+  - { name: aberration, display: "Chromatic Split", type: float, min: 0.0, max: 0.04, default: 0.006, group: "Lens" }
+  - { name: dirt, display: "Dirt Artifacts", type: float, min: 0.0, max: 1.0, default: 0.36, group: "Lens" }
+  - { name: streaks, display: "Etched Streaks", type: float, min: 0.0, max: 1.0, default: 0.28, group: "Lens" }
+  - { name: drift, display: "Artifact Drift", type: float, min: 0.0, max: 1.0, default: 0.12, group: "Motion" }
+  - { name: grain, display: "Micro Grain", type: float, min: 0.0, max: 0.2, default: 0.025, group: "Surface" }
+  - { name: lens_gain, display: "Lens Gain", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Output" }
+
+passes:
+  - name: filter
+    shader: lens.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+
+outputs:
+  - { name: "Lens Scene", pass: filter }

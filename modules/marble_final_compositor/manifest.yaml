@@ -1,0 +1,52 @@
+name: "Marble Final Compositor"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA16F
+output_format: RGBA16F
+
+inputs:
+  - { name: "Lattice", slot: 0, required: true }
+  - { name: "Hero", slot: 1, required: true }
+  - { name: "Grid", slot: 2, required: false }
+  - { name: "Accent", slot: 3, required: false }
+  - { name: "HUD", slot: 4, required: false }
+  - { name: "Wire", slot: 5, required: false }
+  - { name: "Particles", slot: 6, required: false }
+  - { name: "Portal", slot: 7, required: false }
+  - { name: "Particle Shell", slot: 8, required: false }
+
+parameters:
+  - { name: lattice_gain, display: "Enclosure Gain", type: float, min: 0.0, max: 2.0, default: 0.34, group: "Hierarchy" }
+  - { name: hero_gain, display: "Hero Gain", type: float, min: 0.0, max: 2.0, default: 1.15, group: "Hierarchy" }
+  - { name: wire_gain, display: "Wire Cage Gain", type: float, min: 0.0, max: 2.0, default: 0.48, group: "Hierarchy" }
+  - { name: particle_gain, display: "Particle Depth Gain", type: float, min: 0.0, max: 1.0, default: 0.18, group: "Hierarchy" }
+  - { name: shell_gain, display: "Particle Shell Gain", type: float, min: 0.0, max: 1.0, default: 0.72, group: "Hierarchy" }
+  - { name: portal_gain, display: "Portal Depth Gain", type: float, min: 0.0, max: 1.0, default: 0.24, group: "Hierarchy" }
+  - { name: hero_aperture, display: "Hero Aperture", type: float, min: 0.15, max: 0.8, default: 0.36, group: "Hierarchy" }
+  - { name: aperture_softness, display: "Aperture Softness", type: float, min: 0.01, max: 0.35, default: 0.12, group: "Hierarchy" }
+  - { name: grid_gain, display: "Grid Gain", type: float, min: 0.0, max: 1.0, default: 0.18, group: "Instrumentation" }
+  - { name: accent_gain, display: "Contour Gain", type: float, min: 0.0, max: 1.5, default: 0.42, group: "Instrumentation" }
+  - { name: hud_gain, display: "HUD Gain", type: float, min: 0.0, max: 2.0, default: 0.92, group: "Instrumentation" }
+  - { name: wire_tint, display: "Wire Tint", type: color, default: [0.38, 0.62, 0.92], group: "Color" }
+  - { name: shadow, display: "Shadow", type: float, min: 0.0, max: 1.0, default: 0.16, group: "Color" }
+  - { name: contrast, display: "Hierarchy Contrast", type: float, min: 0.5, max: 2.0, default: 1.12, group: "Color" }
+  - { name: master_mix, display: "Master Mix", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Master" }
+
+passes:
+  - name: composite
+    shader: final_composite.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "input:2" }
+      - { slot: 3, source: "input:3" }
+      - { slot: 4, source: "input:4" }
+      - { slot: 5, source: "input:5" }
+      - { slot: 6, source: "input:6" }
+      - { slot: 7, source: "input:7" }
+      - { slot: 8, source: "input:8" }
+
+outputs:
+  - { name: "Scene", pass: composite }

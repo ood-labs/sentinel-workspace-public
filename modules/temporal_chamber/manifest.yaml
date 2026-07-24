@@ -1,0 +1,39 @@
+name: "Temporal Chamber"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA16F
+output_format: RGBA16F
+
+inputs:
+  - { name: "Chamber Scene", slot: 0, required: true }
+
+parameters:
+  - { name: feedback, display: "Chamber Memory", type: float, min: 0.0, max: 0.98, default: 0.82, group: "Memory" }
+  - { name: bleed, display: "Memory Bleed", type: float, min: 0.0, max: 0.25, default: 0.035, group: "Memory" }
+  - { name: current_gain, display: "Current Gain", type: float, min: 0.0, max: 1.5, default: 0.72, group: "Output" }
+  - { name: memory_gain, display: "Memory Gain", type: float, min: 0.0, max: 1.5, default: 0.64, group: "Output" }
+  - { name: vignette, display: "Memory Vignette", type: float, min: 0.0, max: 1.0, default: 0.38, group: "Output" }
+
+buffers:
+  - name: trail
+    format: RGBA16F
+    scale: 1.0
+    persistent: true
+
+passes:
+  - name: accumulate
+    shader: accumulate.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:trail" }
+    output: "buffer:trail"
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:trail" }
+
+outputs:
+  - { name: "Temporal Scene", pass: present }

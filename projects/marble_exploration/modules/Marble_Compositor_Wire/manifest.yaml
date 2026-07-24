@@ -1,0 +1,35 @@
+name: "Compositor Wire"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA16F
+output_format: RGBA16F
+
+inputs:
+  - { name: "Atmosphere", slot: 0, required: true }
+  - { name: "Grid", slot: 1, required: false }
+  - { name: "Accent", slot: 3, required: false }
+  - { name: "HUD", slot: 6, required: false }
+  - { name: "Wire", slot: 9, required: false }
+
+parameters:
+  - { name: wire_gain, display: "Wire Gain", type: float, min: 0.0, max: 3.0, default: 0.8, group: "Layer Gain" }
+  - { name: grid_gain, display: "Grid Gain", type: float, min: 0.0, max: 2.0, default: 0.25, group: "Layer Gain" }
+  - { name: accent_gain, display: "Accent Gain", type: float, min: 0.0, max: 2.0, default: 0.55, group: "Layer Gain" }
+  - { name: hud_gain, display: "HUD Gain", type: float, min: 0.0, max: 2.0, default: 1.1, group: "Layer Gain" }
+  - { name: master_mix, display: "Master Mix", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Master" }
+  - { name: wire_tint, display: "Wire Tint", type: color, default: [0.62, 0.78, 1.0], group: "Wire" }
+
+passes:
+  - name: composite
+    shader: composite_wire.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 3, source: "input:3" }
+      - { slot: 6, source: "input:6" }
+      - { slot: 9, source: "input:9" }
+
+outputs:
+  - { name: "Scene", pass: composite }

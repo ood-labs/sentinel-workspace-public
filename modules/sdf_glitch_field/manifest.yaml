@@ -1,0 +1,39 @@
+name: "SDF Glitch Field"
+version: "0.1"
+mode: generator
+resolution: [640, 360]
+
+buffers:
+  - name: field
+    structured: true
+    element_size: 64
+    element_count: 5
+
+parameters:
+  - { name: warp_amount, display: "Warp Amount", type: float, min: 0.0, max: 1.5, default: 0.32, group: "Distortion" }
+  - { name: twist_amount, display: "Twist", type: float, min: -3.0, max: 3.0, default: 0.42, group: "Distortion" }
+  - { name: fold_amount, display: "Axis Fold", type: float, min: 0.0, max: 2.0, default: 0.28, group: "Distortion" }
+  - { name: slice_strength, display: "Slice Offset", type: float, min: 0.0, max: 1.5, default: 0.42, group: "Glitch" }
+  - { name: slice_count, display: "Slice Count", type: int, min: 2, max: 24, default: 9, group: "Glitch" }
+  - { name: slice_width, display: "Slice Width", type: float, min: 0.01, max: 0.35, default: 0.09, group: "Glitch" }
+  - { name: quantize, display: "Fracture Quantize", type: float, min: 0.0, max: 1.0, default: 0.18, group: "Glitch" }
+  - { name: motion_rate, display: "Motion Rate", type: float, min: 0.0, max: 3.0, default: 0.35, group: "Motion" }
+  - { name: pulse, display: "Sequencer Pulse", type: float, min: 0.0, max: 4.0, default: 0.0, group: "Motion" }
+  - { name: seed, display: "Seed", type: float, min: 0.0, max: 20.0, default: 3.7, group: "Motion" }
+
+passes:
+  - { name: compute, shader: compute.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, output: "buffer:field" }
+  - { name: preview, shader: preview.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "buffer:field" } ] }
+
+data_outputs:
+  - name: "Glitch Field"
+    buffer: field
+    schema:
+      - { name: global_distortion, type: float4 }
+      - { name: slice_pattern, type: float4 }
+      - { name: fracture_pattern, type: float4 }
+      - { name: temporal_motion, type: float4 }
+
+outputs:
+  - name: "Glitch Field Preview"
+    pass: preview

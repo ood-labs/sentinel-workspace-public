@@ -1,0 +1,52 @@
+name: "Marble Sculpture Plan"
+version: "0.1"
+mode: generator
+resolution: [640, 640]
+
+buffers:
+  - name: parts
+    structured: true
+    element_size: 64
+    element_count: 20
+
+parameters:
+  - name: preset
+    display: "Sculpture Preset"
+    type: enum
+    options: [Reliquary, Split Idol, Aperture]
+    default: 2
+    flags: button_grid
+    group: "Structure"
+  - { name: asymmetry, display: "Asymmetry", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Structure" }
+  - { name: torsion, display: "Torsion", type: float, min: -1.5, max: 1.5, default: 0.42, group: "Structure" }
+  - { name: void_width, display: "Central Void", type: float, min: 0.12, max: 0.52, default: 0.30, group: "Structure" }
+  - { name: crown_break, display: "Crown Break", type: float, min: 0.0, max: 1.0, default: 0.68, group: "Structure" }
+  - { name: base_spread, display: "Base Spread", type: float, min: 0.0, max: 0.7, default: 0.20, group: "Structure" }
+  - { name: detail, display: "Carving Detail", type: float, min: 0.0, max: 1.0, default: 0.7, group: "Surface Guides" }
+
+passes:
+  - name: compute
+    shader: compute.hlsl
+    target: cs_5_0
+    dispatch: [1,1,1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:parts"
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:parts" }
+
+data_outputs:
+  - name: "SDF Parts"
+    buffer: parts
+    schema:
+      - { name: transform_a, type: float4 }
+      - { name: transform_b, type: float4 }
+      - { name: rotation, type: float4 }
+      - { name: meta, type: float4 }
+
+outputs:
+  - name: "Plan Preview"
+    pass: preview
