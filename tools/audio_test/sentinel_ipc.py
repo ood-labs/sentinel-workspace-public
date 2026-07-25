@@ -106,12 +106,17 @@ class AudioRunner:
     """
 
     def __init__(self, sen: Sentinel, audio_id: str, detector_id: str,
-                 hits_port: str = "Hits", poll_s: float = 1.0):
+                 hits_port: str = "Hits", poll_s: float = 1.0,
+                 fft_size: str = "2048", hop_size: str = "256"):
         self.sen = sen
         self.audio = audio_id
         self.detector = detector_id
         self.hits_port = hits_port
         self.poll_s = poll_s
+        # Held on the runner so run_pattern's internal reconfigure cannot
+        # silently revert an explicitly requested analysis setting.
+        self.fft_size = fft_size
+        self.hop_size = hop_size
 
     def _audio_param(self, name: str) -> str:
         return f"/sentinel/pipelines/{self.audio}/parameters/{name}"
@@ -124,13 +129,17 @@ class AudioRunner:
     def generation(self) -> int:
         return int(self.sen.data_port(self.audio, "Mel Bands", max_elements=1)["generation"])
 
-    def configure_file(self, wav_path: Path, fft_size: str = "2048",
-                       hop_size: str = "256") -> None:
+    def configure_file(self, wav_path: Path, fft_size: str | None = None,
+                       hop_size: str | None = None) -> None:
+        if fft_size is not None:
+            self.fft_size = fft_size
+        if hop_size is not None:
+            self.hop_size = hop_size
         self.sen.set_many({
             self._audio_param("file_path"): str(wav_path).replace("\\", "/"),
             self._audio_param("source_mode"): "File",
-            self._audio_param("fft_size"): fft_size,
-            self._audio_param("hop_size"): hop_size,
+            self._audio_param("fft_size"): self.fft_size,
+            self._audio_param("hop_size"): self.hop_size,
         })
 
     def read_hits(self) -> list[dict]:

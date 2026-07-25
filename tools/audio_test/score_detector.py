@@ -390,22 +390,39 @@ def main() -> int:
         sys.exit("Sentinel is not reachable on tcp://127.0.0.1:5555")
 
     detector = cfg["detector"]
-    runner = AudioRunner(sen, cfg["audio"], detector, hits_port=cfg["hits_port"])
+    runner = AudioRunner(sen, cfg["audio"], detector, hits_port=cfg["hits_port"],
+                         fft_size=args.fft_size)
     polls = {"bpm": "bpm", "tempo_conf": "tempo_conf"}
 
     print(f"detector={detector}  corpus={corpus_id}  fft_size={args.fft_size}  "
           f"tolerance=+/-{cfg['tolerance_ms']:.0f} ms  "
-          f"latency_compensated={not args.no_compensate}\n")
+          f"latency_compensated={args.compensate}\n")
 
     results = []
     for meta in patterns:
         if not args.no_reset:
             reset_detector(sen, detector, cfg["audio"], mel_slot=cfg["mel_slot"])
         runner.configure_file(meta["_wav"], fft_size=args.fft_size)
+        # fft_size is an enum; reading it back returns the INDEX into
+        # ["512","1024","2048","4096"], not the value.
+        FFT_ENUM = ["512", "1024", "2048", "4096"]
+        set_fft = sen.get(f"/sentinel/pipelines/{cfg['audio']}/parameters/fft_size")
+        if isinstance(set_fft, dict):
+            set_fft = set_fft.get("value")
+        set_fft = str(set_fft).split(".")[0]
+        resolved = FFT_ENUM[int(set_fft)] if set_fft.isdigit() and int(set_fft) < 4 else set_fft
+        if resolved != str(args.fft_size):
+            sys.exit(f"fft_size did not apply: asked {args.fft_size}, param {resolved}")
         run = runner.run_pattern(meta["_wav"], meta["duration_samples"],
                                  extra_polls=polls)
         r = score_pattern(meta, run["hits"], cfg, run["samples"],
                           compensate=args.compensate)
+        live = sen.data_port(cfg["audio"], "Mel Bands", max_elements=1)["elements"]
+        live_fft = int(live[0]["fft_size"]) if live else 0
+        if live_fft != int(args.fft_size):
+            sys.exit(f"{meta['name']}: records carry fft_size {live_fft}, "
+                     f"expected {args.fft_size}")
+        r["fft_size_verified"] = live_fft
         r["n_hits_emitted"] = len(run["hits"])
         r["playback_completed"] = run["completed"]
         r["final_sample_position"] = run["final_sample_position"]
