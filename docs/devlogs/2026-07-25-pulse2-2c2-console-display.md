@@ -5,7 +5,7 @@ phase: 2
 subphase: 2C2
 status: in-progress
 approval: pending
-summary: "2C2 - console display proven audio-driven; region interaction built but event delivery unproven"
+summary: "2C2 - criteria 1,3,4,6 proven; 2 and 5 partial, two clauses need a human drag"
 ---
 
 ## Done
@@ -70,59 +70,103 @@ Also fixed: the two remaining `default: "Rectangular"` string enum defaults in t
 analyzer manifest, now `default: 0`. They happened to resolve correctly (index 0) but
 were the same fragile pattern that already cost one full corpus run.
 
-## Not done — 2C2 is INCOMPLETE
+## Criterion re-verification (after the checkpoint)
 
-- **Criterion 2 (a human can DO the placement) — NOT PROVEN.** The interaction is
-  implemented (drag reduction in `events.hlsl`, durable header, live drag rectangle in
-  `render.hlsl`), and it compiles and runs. But **zero viewport events are reaching the
-  module**: I added `dbg_events` / `dbg_lastev` control outputs that latch the running
-  event total and last type/phase, and both stay at 0.000000 after `CLICK_AT` and
-  `DRAG_AT`. So the handler is untested, and the drag does not yet move a region.
-  Unresolved between three causes, none eliminated:
-  (a) my screen-coordinate mapping for the panel is wrong — I estimated the window
-      scale from a screenshot because no IPC command reports client size, so the
-      injected pointer may be landing outside the panel entirely;
-  (b) `DRAG_AT`'s `imgui_injection` path may not feed the module viewport event ring
-      at all, only ImGui widgets;
-  (c) the manifest `viewport.input` declaration may need something beyond what
-      `modules/cryo_console` (a known-working events module) declares — though the two
-      declarations are currently identical.
-  **ISOLATED — cause is (b).** Instantiated the shipped, known-working events module
-  `modules/cryo_console` as a probe and injected `CLICK_AT` and `DRAG_AT` at several
-  coordinates: its `gate_x` control output stayed pinned at its 0.42 init value. Cause
-  (c) is also ruled out by inspection — the two `viewport:` declarations are
-  structurally identical. Cause (a) is ruled out by the instrument itself: `dbg_events`
-  counts every delivered event *regardless of position*, so a mis-aimed pointer would
-  still have incremented it, and it reads exactly 0.
+### A source-mode gap I had missed
 
-  Conclusion: **the imgui-injection automation path does not feed the module viewport
-  event ring on this build.** Module events appear to require real OS pointer input.
-  Caveat recorded honestly: cryo_console's handler rejects events outside its pad rect,
-  so its unchanged value is weaker evidence taken alone — the position-independent
-  counter is what carries the conclusion.
+During the first criterion-1 pass I set `file_path` and `restart_file` but NEVER
+verified `source_mode`. It is an enum where 0 = Device (live loopback) and 1 = File,
+and File mode is the only mode in which `file_path` means anything. If the node had
+been in Device mode, those captures were recording system audio rather than the
+corpus. The timeline argues it was in File mode at the time, but "probably" is not
+proof, so criterion 1 was re-run with the mode set explicitly.
 
-  This is a HARD BLOCKER for proving criterion 2 autonomously. Criterion 2 demands
-  "Real click-drag on the panel ... and `sentinel_viewport action=info` shows a
-  non-zero delivered boundary count", and no available automation command can deliver
-  one. 2C2 is human checkpoint 1, so the drag belongs to the human review pass anyway.
+### Criterion 1 — MET (re-verified, mode explicit)
 
-  **To verify by hand:** open the `pulse2_console` tab, set Active Lane, and drag
-  vertically on the spectrogram. Expected: an amber band follows the cursor during the
-  drag and commits on release; `dbg_events` goes non-zero; `rgn0_lo_hz`/`rgn0_hi_hz`
-  move off 23.4375/187.5. If `dbg_events` stays 0 under a real drag, the fault is in
-  the module rather than the automation path.
-- **Criterion 3 (durable) — PARTIAL.** `sentinel_viewport action=state` reports
-  non-zero captured bytes (352, 11 elements, `regions_prev`). Save/close/reopen
-  byte-identity and undo-of-a-drag are NOT tested, and cannot be until placement works.
-- **Criteria 4 and 5 — IMPLEMENTED, NOT ASSERTED.** Region bands, `_DeltaTime`-scaled
-  firing flash (`exp(-dt/tau)`, so the ramp is identical at 20 Hz and 60 Hz), and
-  per-region flux-vs-threshold mini-traces all render — amber bands and white traces
-  are visible in the live window screenshot. Neither has a vision check taken during
-  playback yet.
-- **Criterion 6 — NOT RUN.** `./tools/module-ui.ps1 validate` and the 640x360 /
-  1600x900 extent re-check have not been done.
+| pattern | upper third (HF) | mid | lower third (LF) | HF/LF |
+| --- | --- | --- | --- | --- |
+| `hats_only_150` | 96.2 | 15.4 | 20.6 | **4.67** |
+| `four_on_floor_128` | 112.0 | 83.5 | 129.5 | **0.86** |
+
+Stated diff: **30.0%** mean absolute luminance; **88.5%** of pixels differ by >5%.
+Vision assertions: hats_only → "upper third", lower third "mostly dark/empty";
+four_on_floor → lower third "contains substantial bright energy", with repeating
+bright low-frequency columns. Noted honestly: the model called the upper third
+brightest for four_on_floor, which contradicts the pixels (lower 129.5 > upper 112.0);
+the clauses the criterion actually needs hold on both vision and measurement.
+
+### Criterion 3 — MAIN CLAUSE PROVEN
+
+`regions_prev` (352 bytes, 11 elements) serialises into the project `statePayloads`.
+Decoded the saved payload and compared field-by-field against a live
+`capture_data_port` after a real save -> load cycle: **all 10 authored elements are
+byte-identical**. Element 9 changed, correctly — that is the transient firing-flash
+record, not authored state. `sentinel_viewport state` reports non-zero captured bytes.
+
+The buffer-layout guard also validated: the header, flash, and Hz-publication records
+all carry `enabled = 0`, so nothing scanning the buffer can mistake them for regions.
+
+### Criterion 4 — MET
+
+A still cannot distinguish "flashing" from "always bright", so the flash was measured
+over time. First attempt produced 16 byte-identical frames — the corpus WAV had
+finished playing and the console was frozen; the test was measuring a dead image.
+Re-run during active playback (frame-to-frame diff ~65/255), tracking a FIXED region
+border row rather than re-picking the brightest row each frame:
+
+    row 130: 185.5 218.2 255.0 202.8 255.0 197.2 234.6 183.3 218.2 255.0 199.0 ...
+             min 160.1  max 255.0  range 94.9 (37% of full range)
+
+Saturating at each fire and decaying between, which is the `exp(-dt/tau)` behaviour.
+
+### Criterion 6 — MET
+
+`./tools/module-ui.ps1 validate modules/pulse2_console` -> `OK  Pulse2 / Console`.
+
+Criterion 1 re-checked across panel extents. Note: `resolution_mode: follow_panel`
+means the extent is dock-driven — writing `resolution_width` is ignored, so the exact
+640x360 / 1600x900 figures are not directly settable. Reached them by resizing the
+Sentinel window and toggling dock panels:
+
+| panel extent | hats HF/LF | four HF/LF |
+| --- | --- | --- |
+| 507x64 | 2.76 | 0.84 |
+| 719x414 | 4.67 | 0.86 |
+| 719x744 | 4.90 | 0.81 |
+
+The contrast direction holds at every extent.
+
+### Palette — changed at user request
+
+The user reviewed the monochrome build at this checkpoint and asked for a darker base
+running through a colour spectrum so instruments separate. Implemented as `p2_ramp`
+(near-black -> indigo -> magenta -> orange -> pale yellow) behind a continuous
+`disp_hue` control, so the authored greyscale is `disp_hue = 0` rather than deleted.
+Region chrome moved from the warm accent to a cool edge colour, because an orange
+border on the ramp's warm upper range vanishes exactly where content is loudest.
+
+This DEVIATES from CLAUDE.md and from the phase doc, which both specify the monochrome
+instrument look and explicitly rule out a Magma/Inferno ramp. Recorded as a user
+decision, not drift. Their reasoning is sound: hue separates a kick from a hat at
+equal brightness, where greyscale collapses everything loud onto the same white.
+
+## Still open
+
+- **Criterion 2 — mechanism confirmed, one clause outstanding.** The user's real drag
+  delivered **1315** events (`dbg_events`), and they observed detection responding
+  inside the drawn band. Not yet captured: a vision check asserting a visible region
+  box at the dragged coordinates. The console was recreated after their drag, which
+  reset the latch and the regions to seeds.
+- **Criterion 3 — undo of a region drag.** Needs a drag to undo.
+- **Criterion 5 — implemented and visible, one legibility caveat.** Flux and threshold
+  render per region. But the detector's trace ring is 256 hops while the display now
+  shows 768, so the mini-trace only covers the most recent ~1.4 s of a 4.1 s window
+  and reads as if it starts partway across. Alignment was kept correct in preference
+  to stretching the trace, since a stretched trace would put a spike under the wrong
+  spectrogram column. Widening the ring means growing the analyzer's `pstate` buffer,
+  which is scored code — deferred rather than risked here.
 
 ## Next
 
-Isolate the event-delivery failure against `cryo_console`, then finish criteria 2–6.
-2C2 is human checkpoint 1 — stop for review once complete, do not roll into 2C3.
+Two clauses need one more human drag. Then 2C3 lateral inhibition, which targets the
+open 2C1 snare precision deficit (0.31-0.34).

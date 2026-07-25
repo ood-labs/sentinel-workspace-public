@@ -66,3 +66,44 @@ static const float3 P2_INK    = float3(0.035, 0.037, 0.040);
 static const float3 P2_GRID   = float3(0.16, 0.17, 0.18);
 static const float3 P2_TRACE  = float3(0.92, 0.94, 0.95);
 static const float3 P2_ACCENT = float3(0.98, 0.62, 0.23);
+
+// Region borders are COOL, not the warm accent, because the intensity ramp below
+// is warm through most of its upper range. An orange border on orange content
+// disappears exactly where the content is loudest, which is where you most need
+// to see the region edge.
+static const float3 P2_EDGE = float3(0.45, 0.92, 1.0);
+
+// Intensity ramp: near-black -> indigo -> magenta -> orange -> pale yellow.
+//
+// Deviation from spec, at explicit user request. Both CLAUDE.md and the phase doc
+// specify the monochrome instrument look and call out NOT using a Magma/Inferno
+// ramp; the user reviewed the monochrome build at the 2C2 checkpoint and asked for
+// a darker base running through a colour spectrum so instruments separate. This is
+// their call, so `disp_hue` blends continuously back to the authored greyscale
+// rather than replacing it — set it to 0 for the spec palette.
+//
+// Hue does real work here that luminance cannot: a kick and a hat can sit at the
+// same brightness and be told apart instantly by colour, whereas in greyscale
+// everything loud converges on the same white.
+float3 p2_ramp(float t, float hue) {
+    t = saturate(t);
+
+    float3 mono = lerp(P2_INK, float3(0.93, 0.95, 0.96), t);
+
+    // Five stops, piecewise. Dark end is deliberately near-black rather than the
+    // ink grey so quiet bins read as empty instead of as faint content.
+    static const float3 C0 = float3(0.010, 0.012, 0.030);
+    static const float3 C1 = float3(0.180, 0.090, 0.420);
+    static const float3 C2 = float3(0.640, 0.130, 0.450);
+    static const float3 C3 = float3(0.960, 0.420, 0.150);
+    static const float3 C4 = float3(0.990, 0.930, 0.700);
+
+    float s = t * 4.0;
+    float3 col;
+    if      (s < 1.0) col = lerp(C0, C1, s);
+    else if (s < 2.0) col = lerp(C1, C2, s - 1.0);
+    else if (s < 3.0) col = lerp(C2, C3, s - 2.0);
+    else              col = lerp(C3, C4, saturate(s - 3.0));
+
+    return lerp(mono, col, saturate(hue));
+}

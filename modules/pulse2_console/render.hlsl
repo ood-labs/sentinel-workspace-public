@@ -46,7 +46,7 @@ void main(uint3 DTid : SV_DispatchThreadID) {
         uint r0 = (g0 % DISP_HOPS) * DISP_BINS, r1 = (g1 % DISP_HOPS) * DISP_BINS;
         float e = lerp(lerp(Hist[r0 + b0].eq, Hist[r0 + b1].eq, bt),
                        lerp(Hist[r1 + b0].eq, Hist[r1 + b1].eq, bt), gt);
-        col = lerp(P2_INK, float3(0.93, 0.95, 0.96), saturate(e));
+        col = p2_ramp(saturate(e), disp_hue);
     }
 
     // Decade gridlines, so the frequency axis is readable rather than implied.
@@ -84,14 +84,17 @@ void main(uint3 DTid : SV_DispatchThreadID) {
 
             float fl = saturate(fv[i]);
 
-            // Fill: a faint warm wash so the band is legible over the
+            // Fill: a faint cool wash so the band is legible over the
             // spectrogram without hiding the evidence underneath it.
-            col = lerp(col, P2_ACCENT, 0.06 + 0.22 * fl);
+            col = lerp(col, P2_EDGE, 0.05 + 0.18 * fl);
 
             // Border, thickened and brightened by the firing flash.
             float edge = min(abs(uv.y - tLo), abs(uv.y - tHi));
             float wide = pxH * (1.2 + 2.5 * fl);
-            if (edge < wide) col = lerp(col, P2_ACCENT, 0.55 + 0.45 * fl);
+            // Flash drives toward white, not toward the accent: white is the one
+            // value guaranteed to stand out against every stop of the ramp.
+            float3 ec = lerp(P2_EDGE, float3(1.0, 1.0, 1.0), fl);
+            if (edge < wide) col = lerp(col, ec, 0.60 + 0.40 * fl);
 
             // ---- mini-trace: flux against threshold ------------------------
             // Plotted inside the band, over the same time axis as the
@@ -136,9 +139,9 @@ void main(uint3 DTid : SV_DispatchThreadID) {
     if (hdr.binHi > 0.5) {
         float t0 = min(hdr.hopHi, hdr.gain), t1 = max(hdr.hopHi, hdr.gain);
         if (uv.y >= t0 && uv.y <= t1) {
-            col = lerp(col, P2_ACCENT, 0.16);
+            col = lerp(col, P2_EDGE, 0.16);
             float edge = min(abs(uv.y - t0), abs(uv.y - t1));
-            if (edge < pxH * 1.5) col = lerp(col, P2_ACCENT, 0.9);
+            if (edge < pxH * 1.5) col = lerp(col, float3(1.0, 1.0, 1.0), 0.9);
         }
     }
 
