@@ -92,7 +92,10 @@ data_outputs:
       - { name: velocity, type: float3 }
 ```
 
-Pass inputs reference data with `source: "data:0"` (data input slot 0). The compiler generates `StructuredBuffer<T>` declarations + `_DataN_Count` cbuffer fields.
+Pass inputs reference data with `source: "data:0"` (data input slot 0). The
+compiler generates `StructuredBuffer<T>` declarations plus `_DataN_Count`,
+`_DataN_Generation`, `_DataN_ValueCount`, and `_DataN_HopCapacity` cbuffer
+fields.
 
 ### Audio hop-ring inputs
 
@@ -109,13 +112,15 @@ Spectrum and Mel Bands are flattened 64-hop rings. Store the next unread
 generation in a persistent buffer and consume retained hops chronologically:
 
 ```hlsl
-uint latest = _Data0[0].generation_counter;
+uint latest = _Data0_Generation;
+uint value_count = _Data0_ValueCount;
+uint hop_capacity = _Data0_HopCapacity;
 uint start = AudioRingCatchupStart(
-    read_cursor, latest, AUDIO_HOP_RING_CAPACITY);
+    read_cursor, latest, hop_capacity);
 
 for (uint generation = start; generation <= latest; ++generation) {
     uint slot = AudioRingGenerationToSlot(
-        generation, AUDIO_HOP_RING_CAPACITY);
+        generation, hop_capacity);
     uint base = slot * value_count;
     if (_Data0[base].generation_counter != generation) continue;
     // Consume _Data0[base + index].magnitude or .energy.
@@ -129,6 +134,16 @@ The audio feature also provides `SafeAmplitudeToDB`, `DBToAmplitude`,
 `AudioAttackReleaseEnvelope`. Audio In generation remains monotonic across
 source restarts. `AudioRingCatchupStart` advances a lagging consumer to the
 oldest retained hop.
+
+PCM is interleaved stereo. Mono sources are duplicated into both channels.
+Spectrum and Mel analysis use `0.5 * (left + right)`. Default endpoint
+selections follow Windows default-device changes. Named selections pin the
+endpoint GUID and become unhealthy while that endpoint is unavailable.
+
+Gate onset-driven behavior with a signal floor. Audio In exposes
+`signal_present` in its diagnostics subtree, and the stock Drum Detector
+publishes its own adaptive Mel-energy `signal_present` control output. Keep
+confidence, counters, and pulses inactive when the selected gate is false.
 
 ## Visible Module Construction Contract
 

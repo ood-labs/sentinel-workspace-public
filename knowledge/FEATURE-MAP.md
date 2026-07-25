@@ -101,7 +101,9 @@ Use `list_types` for the authoritative list in the current build.
 - Data ports: `PCM`, `Spectrum`, and `Mel Bands`.
 - Control outputs: `level` and `peak`.
 - Spectrum and Mel Bands are timestamped 64-hop rings for chronological GPU Module consumption.
+- Connected consumers receive truthful generation, value-count, and hop-capacity metadata for chronological catch-up.
 - Device selections persist by endpoint GUID, with automatic default migration and explicit-device hold-and-retry behavior.
+- Read-only diagnostics separate endpoint health, packet freshness, retries, and migrations from recent `signal_present` content.
 
 `mediapipe`:
 

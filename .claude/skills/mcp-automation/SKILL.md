@@ -104,7 +104,7 @@ sentinel_pipeline action="info" pipeline_id="hlslshader_0"
 - **Batch writes**: `sentinel_state set_many` applies many parameter writes in one call with per-path results.
 - **One-call review stills**: `sentinel_capture capture_at` applies overrides, waits for compiles, settles, captures, and restores. Use it instead of hand-rolling set / sleep / capture / set-back chains.
 - **Authored panel proof**: for a Module UI, read `sentinel_pipeline info.panel` and verify declared/effective mode, named output, resolution mode, content size, render size, recreation counts, and deferred-resource count. Canvas/follow-panel behavior ships in 0.5.32+. An immediate capture concurrent with a parameter write is not sufficient proof; require a settled frame plus live interaction/readback.
-- **Runtime proof**: `sentinel_graph profile` reports frame buckets, per-node wall time, graph link counts, PipelineStats, and hotspot reasons. `sentinel_capture proof_bundle` includes `graph_profile.json` plus a Performance section.
+- **Runtime proof**: `sentinel_graph profile` reports frame buckets, per-node wall time, rolling `cook_hz` / `cooks_in_window` / `cook_window_ms`, graph link counts, PipelineStats, and hotspot reasons. Use cook rate when comparing nodes created at different times; lifetime `frames_processed` totals are not cadence measurements. `sentinel_capture proof_bundle` includes `graph_profile.json` plus a Performance section.
 - **Project safety**: `load_project`/`new_project` refuse over unsaved changes unless `confirm: true`; `import_project` merges another .sentinel into the live project with id remap.
 
 ## Python IPC Client (dev only)

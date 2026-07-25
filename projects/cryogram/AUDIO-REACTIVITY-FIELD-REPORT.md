@@ -6,6 +6,30 @@
 
 This is a usage report, not a bug list. Severity ratings reflect impact on someone building audio-reactive work, not code correctness.
 
+## Resolution update: approved Phase 99.G, 2026-07-25
+
+This report records the original first-use observations. Sentinel Phase 99.G
+resolved the implementation and documentation findings as follows:
+
+| Finding | Current status |
+| --- | --- |
+| D1 generation semantics | Resolved. Module inputs receive `_DataN_Generation`, `_DataN_ValueCount`, and `_DataN_HopCapacity`; producer generation is truthful and monotonic. Spectrum and Mel consumers use those uniforms instead of element zero. |
+| D2 endpoint loss and signal noise | Resolved. Audio In exposes endpoint activity, packet freshness, migration, loss, retry, gap-fill, overrun, `signal_present`, and silence diagnostics. Capture health degrades for stale or unavailable endpoints. |
+| D3 cadence diagnosis | Partially resolved. `sentinel_graph profile` now reports rolling `cook_hz`, `cooks_in_window`, and `cook_window_ms`. Per-pass GPU timestamps and compile lint remain future work. |
+| D4 persistence | Resolved for the reported paths. Retained regression gates cover Features project-load values and Module internal/external Camera values across force reload. |
+| E2 latency | Completed with in-band sample-position and QPC hit records at both required FFT/hop configurations. |
+| E3 generation | Completed across PCM, Spectrum, Mel Bands, and Module structured outputs. |
+| E4 render hitch | Completed. Clean and measured-stall runs produced identical detector counters. |
+| E5 detector scoring | Completed with a deterministic self-rendered corpus, planted scorer self-test, and held-out per-lane gates. |
+| E7 signal gate | Completed in Audio In diagnostics and the stock Drum Detector. |
+
+The current stereo analysis contract is
+`0.5 * (left + right)` for Spectrum and Mel Bands; mono inputs duplicate into
+both PCM channels. Configurable long retention, complex Spectrum values,
+selectable mid/side analysis, HPSS, per-pass GPU timestamps, and Phase 99.H
+tempo integration remain deferred. `cryo_pulse` continues to be a useful
+workspace experiment for consumer-maintained tempo history.
+
 ---
 
 ## 1. What was built

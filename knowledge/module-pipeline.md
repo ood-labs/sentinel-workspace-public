@@ -46,7 +46,7 @@ Use data inputs for landmarks, detections, blobs, corners, lines, or records pro
 
 `sentinel_pipeline action=get_data_schemas` reports the data schema and, when the graph node exists, the matching graph pin name and slot. Use that reported pin name with `sentinel_graph action=add_link` instead of guessing singular/plural labels.
 
-Audio In Spectrum and Mel Bands inputs are flattened 64-hop rings. Add `features: [audio]`, store a next-unread generation in a persistent buffer, and use `AudioRingCatchupStart` plus `AudioRingGenerationToSlot` to process retained hops in chronological order. See `knowledge/audio-reactivity.md`.
+Audio In Spectrum and Mel Bands inputs are flattened 64-hop rings. Add `features: [audio]`, store a next-unread generation in a persistent buffer, and use `_DataN_Generation`, `_DataN_ValueCount`, `_DataN_HopCapacity`, `AudioRingCatchupStart`, and `AudioRingGenerationToSlot` to process retained hops in chronological order. Spectrum and Mel Bands have no standalone header record, so `_DataN[0].generation_counter` is not the latest-generation source. See `knowledge/audio-reactivity.md`.
 
 ## Meaningful Intermediate Previews
 

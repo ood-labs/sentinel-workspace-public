@@ -28,6 +28,8 @@ Important parameters:
 | `hop_size` | 128, 256, 512 | Samples advanced per analysis hop. |
 | `window` | Hann, Hamming, Blackman-Harris | FFT window. |
 | `dc_highpass` | boolean | Remove DC before spectral analysis. |
+| `signal_floor_db` | -90 to -20 dBFS | RMS threshold for recent signal presence. Default: -55 dBFS. |
+| `no_signal_timeout_s` | 1 to 60 seconds | Delay before Streaming status reports a no-signal warning. Default: 5 seconds. |
 
 The normal live configuration is `source_mode=Device`, `device_flow=Loopback`, FFT 2048, hop 256, Hann window, and DC high-pass enabled.
 
@@ -61,6 +63,17 @@ At 48 kHz, the PCM ring retains about 341 ms. Spectrum and Mel Bands retain 64 c
 
 The scalar `level` and `peak` outputs are ordinary control pins. Use them for simple amplitude reactivity without a data-consuming Module.
 
+Every connected data input also receives compiler-generated metadata:
+
+- `_DataN_Count`: total records currently bound to the slot.
+- `_DataN_Generation`: latest generation published by the producer.
+- `_DataN_ValueCount`: records in one logical generation or hop.
+- `_DataN_HopCapacity`: retained generation count.
+
+Use these uniforms for indexing and dirty propagation. Spectrum and Mel Bands
+have no separate header record, so reading `_DataN[0].generation_counter` only
+observes slot zero and becomes stale until the 64-hop ring wraps.
+
 ## CPU And GPU Ownership
 
 The CPU owns:
@@ -92,6 +105,35 @@ Audio In keeps endpoint identity by Windows device GUID.
 - A format change on the active endpoint triggers a controlled stream restart.
 
 The endpoint notification listener runs asynchronously. Device callbacks enqueue migration, loss, or format events; capture teardown and restart occur away from the Windows notification thread.
+
+### Capture and signal diagnostics
+
+Audio In publishes read-only values under:
+
+```text
+/sentinel/pipelines/<audio_id>/diagnostics/
+```
+
+Useful fields include:
+
+| Field | Meaning |
+| --- | --- |
+| `capture_state` | Current capture lifecycle state, such as Streaming or DeviceLost. |
+| `resolved_endpoint_id`, `resolved_endpoint_name` | Endpoint actually in use. |
+| `endpoint_active` | Whether Windows still reports the resolved endpoint active. |
+| `last_packet_age_ms` | Age of the newest real capture packet. |
+| `real_packets_captured` | Lifetime real-packet count for the node. |
+| `migration_count` | Default-endpoint migrations. |
+| `device_lost_count` | Endpoint-loss recoveries. |
+| `format_invalidation_count` | Audio-client format invalidations. |
+| `retry_count` | Capture restart retries. |
+| `gap_fill_frames`, `overrun_count` | Synthesized continuity and subscriber pressure. |
+| `signal_present`, `silence_seconds` | Recent content relative to the configured signal floor. |
+
+Capture health and content presence are separate. A healthy silent endpoint
+stays Streaming with `endpoint_active=true` and `signal_present=false`. A lost
+or stale endpoint degrades pipeline health even when timestamped silence keeps
+the data timeline advancing.
 
 ## Module Wiring
 
@@ -136,13 +178,15 @@ The injected audio helpers include safe dB conversion, Hz/Mel conversion, Spectr
 Store the next unread generation in a persistent buffer and consume retained hops in order:
 
 ```hlsl
-uint latest = _Data0[0].generation_counter;
+uint latest = _Data0_Generation;
+uint value_count = _Data0_ValueCount;
+uint hop_capacity = _Data0_HopCapacity;
 uint start = AudioRingCatchupStart(
-    read_cursor, latest, AUDIO_HOP_RING_CAPACITY);
+    read_cursor, latest, hop_capacity);
 
 for (uint generation = start; generation <= latest; ++generation) {
     uint slot = AudioRingGenerationToSlot(
-        generation, AUDIO_HOP_RING_CAPACITY);
+        generation, hop_capacity);
     uint base = slot * value_count;
     if (_Data0[base].generation_counter != generation) continue;
 
@@ -154,6 +198,13 @@ read_cursor = latest + 1u;
 
 Generation remains monotonic across Audio In source and file restarts. A consumer that falls more than 64 hops behind resumes at the oldest retained generation.
 
+Adaptive thresholds normalize to whatever reaches them, including steady
+noise. Gate onset-driven behavior with a signal floor. Audio In exposes
+`signal_present` for the captured stream, while the stock Drum Detector
+publishes an adaptive Mel-energy `signal_present` control output for detector
+logic. Keep BPM confidence, counters, and pulse outputs inactive below that
+gate.
+
 ## Runtime Proof
 
 For live device proof:
@@ -161,10 +212,20 @@ For live device proof:
 1. Confirm `list_types` includes `audio`.
 2. Create Audio In and select the intended flow and endpoint.
 3. Inspect `sentinel_pipeline action=info` for a healthy Streaming status.
-4. Verify frames and data generations advance.
-5. Read a small sample from each wired port with `capture_data_port`.
-6. Confirm `level` and `peak` respond to audio and decay during silence.
-7. Exercise the reactive Module and verify its output and counters.
-8. Record a short segment and listen for the expected audio.
+4. Read the diagnostics subtree and confirm `endpoint_active`, packet age, and
+   signal presence agree with the physical setup.
+5. Verify frames and data generations advance.
+6. Read a small sample from each wired port with `capture_data_port`.
+7. Confirm `level` and `peak` respond to audio and decay during silence.
+8. Exercise the reactive Module and verify its output and counters.
+9. Run `sentinel_graph action=profile sort_by=cook_hz` and compare rolling
+   `cook_hz`, `cooks_in_window`, and `cook_window_ms`, rather than comparing
+   lifetime `frames_processed` totals between nodes created at different times.
+10. Record a short segment and listen for the expected audio.
 
 For a device-loss proof, remove or disable the explicitly selected endpoint, verify device-lost status with advancing timestamped silence, then reconnect it and confirm automatic recovery.
+
+The Phase 99 retained battery also verifies exact in-band hit counts at FFT
+1024/hop 128 and FFT 2048/hop 256, plus identical detector counters across a
+measured render hitch. MCP transports the completed records; sample positions
+and QPC timestamps inside those records define latency.
