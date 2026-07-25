@@ -76,12 +76,21 @@ whether a change helped, produces circular work and undetected regressions.
 
 | Sub-phase | Outcome | Primary capability | Status |
 | --- | --- | --- | --- |
-| 2A | Scoring harness and synthetic corpus | deterministic File-mode playback, onset F1, BPM error | Planned |
+| 2A1 | Frozen corpus and onset-export contract | seeded synthesis, hash manifest, `Hits` data output | Planned |
+| 2A2 | Scorer and committed baseline | File-mode playback, onset F1, BPM error, CMLc/AMLc | Planned |
 | 2B | `pulse2_analyzer` core detector | adaptive whitening, SuperFlux, lookahead peak-picking | Planned |
-| 2C | Region masks and spectrogram console | Canvas panel, click-to-place regions, lateral inhibition | Planned |
+| 2C1 | Region masks and evaluation | programmatic regions, scorable without UI | Planned |
+| 2C2 | Spectrogram console | Canvas panel, click-to-place regions, durable state | Planned |
+| 2C3 | Lateral inhibition | cross-lane contamination suppression | Planned |
 | 2D | Multi-feature classifier | centroid, flatness, decay; coincident-hit separation | Planned |
-| 2E | Comb Filter Matrix tempo and beat PLL | 2D dispatch, tempo prior, honest confidence | Planned |
+| 2E1 | Comb Filter Matrix and tempo | 2D dispatch, tempo prior, harmonic suppression | Planned |
+| 2E2 | Dual-loop PLL, confidence, free-wheel | beat phase, honest uncertainty, soak stability | Planned |
 | 2F | Project, documentation, portability | bundling, clean-path load, reproducible scores | Planned |
+
+Audited before implementation by four parallel agents (spec-alignment, acceptance-bar,
+toolchain-feasibility, decomposition). The audit found that the original 2A was silently blocked:
+`modules/cryo_pulse` publishes no `data_outputs`, so MCP-polled counters cannot supply the per-hit
+timestamps a +/-25 ms F1 window requires. See the phase doc's Plan Audit Findings section.
 
 ### MCP And Runtime Surfaces
 
@@ -102,12 +111,16 @@ whether a change helped, produces circular work and undetected regressions.
 
 ### Implementation Order
 
-1. Corpus generator, scorer, and committed baseline scores. Nothing else begins first.
-2. Core detector, scored against that baseline.
-3. Regions and console; first human taste checkpoint.
-4. Multi-feature classifier.
-5. Tempo and beat PLL; second human taste checkpoint.
-6. Project assembly and portability proof.
+1. 2A1 corpus and onset-export contract.
+2. 2A2 scorer and committed baseline. Nothing else begins first.
+3. 2B core detector.
+4. 2C1 region masks and evaluation.
+5. 2C2 spectrogram console; first human taste checkpoint.
+6. 2C3 lateral inhibition.
+7. 2D multi-feature classifier.
+8. 2E1 comb matrix and tempo.
+9. 2E2 PLL, confidence, free-wheel; second human taste checkpoint.
+10. 2F project assembly and portability proof.
 
 The detailed phase doc is the acceptance contract. A sub-phase is not complete because a shader
 compiles or a capture exists; its measured and behavioral criteria must hold in the running

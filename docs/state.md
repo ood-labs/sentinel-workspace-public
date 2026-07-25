@@ -17,7 +17,11 @@ defects tracked separately (see Blockers).
 
 ## Active sub-phase
 
-None started. Next is 2A - Scoring harness and synthetic corpus.
+None started. Next is 2A1 - Frozen corpus and onset-export contract.
+
+Phase 2 has been audited before implementation by four parallel agents. Ten sub-phases (2A1, 2A2,
+2B, 2C1, 2C2, 2C3, 2D, 2E1, 2E2, 2F). Five judgement calls are recorded in the phase doc's Plan
+Audit Findings section and are individually revertible.
 
 ## Blockers
 
