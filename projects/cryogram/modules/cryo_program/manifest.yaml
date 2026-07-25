@@ -1,0 +1,79 @@
+name: "CRYO / Program"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+viewport:
+  hint: "Final program plate. Presentation only; every readout is live measurement state."
+
+inputs:
+  - { name: "Relief", slot: 0, required: true }
+  - { name: "Plan", slot: 1, required: false }
+
+data_inputs:
+  - name: "Tracks"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: velocity, type: float2 }
+      - { name: age, type: float }
+      - { name: confidence, type: float }
+      - { name: id, type: float }
+      - { name: active, type: float }
+  - name: "Filaments"
+    slot: 1
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: idA, type: float }
+      - { name: idB, type: float }
+      - { name: len, type: float }
+      - { name: strain, type: float }
+      - { name: weight, type: float }
+      - { name: age, type: float }
+      - { name: pad, type: float2 }
+  - name: "Probes"
+    slot: 2
+    schema:
+      - { name: pos, type: float2 }
+      - { name: radius, type: float }
+      - { name: strength, type: float }
+      - { name: kind, type: float }
+      - { name: age, type: float }
+      - { name: id, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: exposure,          display: "Exposure",        group: "Grade", type: float, min: 0.2,  max: 2.5,  default: 1.0 }
+  - { name: contrast_s,        display: "Contrast S",      group: "Grade", type: float, min: 0.0,  max: 1.0,  default: 0.28 }
+  - { name: gamma_out,         display: "Gamma",           group: "Grade", type: float, min: 0.4,  max: 2.2,  default: 1.02 }
+  - { name: lift,              display: "Black Lift",      group: "Grade", type: float, min: 0.0,  max: 0.10, default: 0.006 }
+  - { name: grain,             display: "Grain",           group: "Grade", type: float, min: 0.0,  max: 0.20, default: 0.030 }
+  - { name: vignette,          display: "Vignette",        group: "Grade", type: float, min: 0.0,  max: 1.0,  default: 0.26 }
+
+  - { name: halation,          display: "Halation",        group: "Halation", type: float, min: 0.0, max: 1.5,  default: 0.30 }
+  - { name: halation_radius,   display: "Halation Radius", group: "Halation", type: float, min: 1.0, max: 24.0, default: 5.0 }
+  - { name: halation_threshold, display: "Halation Threshold", group: "Halation", type: float, min: 0.2, max: 1.0, default: 0.66 }
+
+  - { name: frame_inset,       display: "Frame Inset",     group: "Instrument", type: float, min: 6.0, max: 60.0, default: 22.0 }
+  - { name: frame_gain,        display: "Frame Gain",      group: "Instrument", type: float, min: 0.0, max: 1.5,  default: 0.80 }
+  - { name: title_gain,        display: "Title Block",     group: "Instrument", type: float, min: 0.0, max: 1.5,  default: 1.0 }
+
+  - { name: inset_gain,        display: "Plan Inset Gain", group: "Plan Inset", type: float, min: 0.0, max: 2.0,  default: 0.85 }
+  - { name: inset_mix,         display: "Plan Inset Mix",  group: "Plan Inset", type: float, min: 0.0, max: 1.0,  default: 0.92 }
+  - { name: inset_scale,       display: "Plan Inset Size", group: "Plan Inset", type: float, min: 0.08, max: 0.42, default: 0.20 }
+
+passes:
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "data:1" }
+      - { slot: 4, source: "data:2" }
+    output: output
+
+outputs:
+  - { name: "Program", pass: grade }
