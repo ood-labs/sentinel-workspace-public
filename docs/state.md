@@ -85,3 +85,22 @@ Trap defused: the console publishes region edges as control outputs and
 expressions are deliberately CLEARED — with them bound, a panel drag would silently
 override the scorer's writes and change scoring configuration. Re-apply only for
 interactive use; clear before any corpus run.
+
+### 2C2 update - blocker RESOLVED by human verification
+
+The user performed a real drag on the `pulse2_console` panel. `dbg_events` read
+**1315**, and region placement visibly affected detection inside the drawn band. The
+module was correct all along; `CLICK_AT` / `DRAG_AT` / `viewport pick` simply do not
+feed the module viewport event ring on this build. Criterion 2's mechanism is
+confirmed live. Do NOT re-litigate this — use real input, not injection, to test
+Module viewport events.
+
+Remaining for 2C2: criterion 3 (save/close/reopen byte-identity + undo of a drag),
+4 (firing flash asserted in a capture during playback), 5 (mini-trace legibility),
+6 (`module-ui.ps1 validate` + criterion 1 at 640x360 and 1600x900).
+
+USER DECISION PENDING - palette. The user finds black->white hard to read and wants a
+darker base through a colour spectrum to separate instruments. This OVERRIDES the
+monochrome look specified in both CLAUDE.md and the phase doc (which explicitly says
+not Magma/Inferno); CLAUDE.md permits it because the user asked. Awaiting their choice
+of ordering: colour ramp first, or finish criteria 3-6 first.
