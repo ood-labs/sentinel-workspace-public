@@ -358,6 +358,8 @@ def main() -> int:
     ap.add_argument("--baseline", help="compare against a committed score table")
     ap.add_argument("--patterns", nargs="*", help="restrict to named patterns")
     ap.add_argument("--detector", help="override detector pipeline id")
+    ap.add_argument("--lane-map", default="lane_map.json",
+                    help="lane/detector config to score against")
     ap.add_argument("--fft-size", default="2048")
     # Committed tables are RAW by design. The ~12 ms analysis latency is a real,
     # measured property of the front end, but subtracting it is a knob, and the
@@ -372,7 +374,10 @@ def main() -> int:
                     help="skip the per-pattern force_reload")
     args = ap.parse_args()
 
-    cfg = json.loads(LANE_MAP.read_text(encoding="utf-8"))
+    lm = Path(args.lane_map)
+    if not lm.is_absolute():
+        lm = HERE / lm
+    cfg = json.loads(lm.read_text(encoding="utf-8"))
     if args.detector:
         cfg["detector"] = args.detector
     lane_names = list(cfg["lanes"])

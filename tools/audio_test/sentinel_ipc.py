@@ -157,6 +157,18 @@ class AudioRunner:
         self.configure_file(wav_path)
         time.sleep(settle_s)
         gen_before = self.generation()
+
+        # Serial watermark. The detector's onset serial is monotonic and
+        # survives across playthroughs, so any record at or below the serial
+        # standing just before restart belongs to a PREVIOUS run. This is exact,
+        # unlike inferring the boundary from a backwards step in
+        # sample_position, which breaks as soon as the ring wraps within a run.
+        try:
+            watermark = max((int(h["onset_serial"]) for h in self.read_hits()),
+                            default=0)
+        except SentinelError:
+            watermark = 0
+
         self.sen.set(self._audio_param("restart_file"), 1)
 
         # Assert the producer is advancing generations into the detector before
@@ -180,7 +192,9 @@ class AudioRunner:
             pos_trace.append(pos)
 
             for h in self.read_hits():
-                by_serial[int(h["onset_serial"])] = h
+                serial = int(h["onset_serial"])
+                if serial > watermark:
+                    by_serial[serial] = h
 
             if extra_polls:
                 row = {"sample_position": pos}
@@ -210,17 +224,18 @@ class AudioRunner:
 
         # Final sweep so the last hits before end-of-file are not missed.
         for h in self.read_hits():
-            by_serial[int(h["onset_serial"])] = h
+            serial = int(h["onset_serial"])
+            if serial > watermark:
+                by_serial[serial] = h
 
         hits = [by_serial[s] for s in sorted(by_serial)]
 
-        # The detector keeps firing between configure_file and restart_file, so
-        # the ring can still hold records from the PREVIOUS playthrough. Those
-        # carry lower serials but HIGHER sample positions. Playback within one
-        # run is monotonic, so the last backwards step in sample_position marks
-        # the restart; drop everything before it.
+        # A few records can still land between reading the watermark and the
+        # restart taking effect. Those carry the PREVIOUS playthrough's high
+        # sample positions, so drop any leading records that sit above where the
+        # run actually settles.
         cut = 0
-        for i in range(1, len(hits)):
+        for i in range(1, min(len(hits), 12)):
             if int(hits[i]["sample_position"]) < int(hits[i - 1]["sample_position"]):
                 cut = i
         dropped, hits = cut, hits[cut:]
