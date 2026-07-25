@@ -125,6 +125,7 @@ Use these exact strings with `sentinel_pipeline action="create"`. Run `sentinel_
 - `"depthestimation"` — Depth Anything V2 depth estimation
 - `"opticalflow"` — Optical Flow (NVOF hardware accelerator)
 - `"features"` — Geometric Features (model-free classic CV)
+- `"audio"` - Audio In (WASAPI loopback, microphone, or paced WAV with PCM, Spectrum, and Mel Bands outputs; require a live `list_types` entry)
 - `"mux"` — Mux (N-way wired input switcher or wireless Scene Group collector; solo variant switching)
 - `"groupoutput"` — Group Output (Scene Group endpoint for the Scene Switcher)
 - `"atlas"` — Atlas (multi-slot still atlas with texture and data columns)

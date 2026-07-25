@@ -70,6 +70,7 @@ Call `list_types` for the exact current list. A normal DIST build includes:
 | `mediapipe` | yes | Composable face and hand tracking, landmarks, gesture control outputs. |
 | `facemesh` | hidden | Compatibility alias for old face-only projects. Prefer `mediapipe`. |
 | `features` | yes | Model-free blob, corner, and line feature extraction. |
+| `audio` | yes | Audio In for WASAPI loopback, microphone, or paced WAV sources, with PCM, Spectrum, and Mel Bands data outputs. |
 | `detection` | yes | YOLOX-S object detections. Requires `auxiliary-detection`. |
 | `personseg` | yes | Person segmentation masks. Requires personseg engines. |
 | `pose` | yes | Human pose keypoints. Requires pose engines. |
@@ -196,6 +197,26 @@ Example expression:
 
 Do not use a plain StateTree `set` to write `=ref(...)`. Use the expression command so the driver is compiled and evaluated every frame. See `knowledge/expressions-and-drivers.md`.
 
+## Audio Reactivity
+
+Audio In is pipeline type `audio` on builds whose live `list_types` response includes it. Published builds at or below 0.5.48 may omit this feature, so discover the running catalog before creating the node.
+
+Use `source_mode=Device` for live WASAPI capture or `source_mode=File` for deterministic paced PCM WAV playback. Device flow `Loopback` captures a Windows playback endpoint, while `Microphone` captures a recording endpoint. For a virtual audio cable, route the producing application's playback into the cable and select the corresponding endpoint under the appropriate flow.
+
+Audio In publishes three typed data ports:
+
+- `PCM`: circular stereo waveform history for oscilloscopes and time-domain processing.
+- `Spectrum`: a 64-hop ring of linear FFT magnitudes for exact frequency-bin analysis.
+- `Mel Bands`: a 64-hop ring of 138 perceptual bands for musical analysis and onset detection.
+
+Scalar `level` and `peak` control outputs can drive parameters directly. Stock audio Modules provide kick, snare, hi-hat, band-energy, count, spectrum-bar, oscilloscope, and starter-reactive behavior.
+
+The WASAPI capture, format conversion, FFT, Mel aggregation, timestamps, and ring maintenance run on CPU threads. D3D11 structured buffers carry the completed rings to GPU HLSL Modules for detection and rendering.
+
+Default endpoint selections migrate when the Windows default changes. Explicit endpoint selections stay pinned by device GUID. If a pinned device disappears, Audio In publishes timestamped silence and retries that endpoint until it returns. Use `Rescan Devices` to refresh the dropdown after adding hardware; an unrelated new device never replaces the active selection automatically.
+
+See `knowledge/audio-reactivity.md` for wiring recipes, frozen data contracts, hot-plug behavior, virtual-cable routing, authoring helpers, and proof guidance.
+
 ## Creative Module Authoring
 
 For a data-driven custom visual, prefer `sentinel_module action=scaffold_from_ports` after creating or inspecting the upstream tracker. It creates a user-writable Module under `modules/<name>/`, copies the upstream data schema into `data_inputs`, generates HLSL accessors, and includes modern controls (`color`, `point2D`, grouped toggles, and `enum` button grids).
@@ -256,6 +277,7 @@ Start with:
 - `knowledge/first-run-engines.md`
 - `knowledge/graph-wiring.md`
 - `knowledge/expressions-and-drivers.md`
+- `knowledge/audio-reactivity.md`
 - `knowledge/tracking-suite.md`
 - `knowledge/module-pipeline.md`
 - `knowledge/ui-authoring.md`

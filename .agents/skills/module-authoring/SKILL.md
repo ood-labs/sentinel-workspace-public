@@ -94,6 +94,42 @@ data_outputs:
 
 Pass inputs reference data with `source: "data:0"` (data input slot 0). The compiler generates `StructuredBuffer<T>` declarations + `_DataN_Count` cbuffer fields.
 
+### Audio hop-ring inputs
+
+Audio In publishes PCM, Spectrum, and Mel Bands as typed data ports. Start with
+`sentinel_module action="scaffold_from_ports"` so the live schema generates the
+correct record declaration. Add the audio feature for ring and frequency
+helpers:
+
+```yaml
+features: [audio]
+```
+
+Spectrum and Mel Bands are flattened 64-hop rings. Store the next unread
+generation in a persistent buffer and consume retained hops chronologically:
+
+```hlsl
+uint latest = _Data0[0].generation_counter;
+uint start = AudioRingCatchupStart(
+    read_cursor, latest, AUDIO_HOP_RING_CAPACITY);
+
+for (uint generation = start; generation <= latest; ++generation) {
+    uint slot = AudioRingGenerationToSlot(
+        generation, AUDIO_HOP_RING_CAPACITY);
+    uint base = slot * value_count;
+    if (_Data0[base].generation_counter != generation) continue;
+    // Consume _Data0[base + index].magnitude or .energy.
+}
+read_cursor = latest + 1u;
+```
+
+The audio feature also provides `SafeAmplitudeToDB`, `DBToAmplitude`,
+`FreqToMel`, `MelToFreq`, `AudioSpectrumBinForHz`,
+`AudioSpectrumBinRange`, `AudioMelBandForHz`, `AudioMelBandRange`, and
+`AudioAttackReleaseEnvelope`. Audio In generation remains monotonic across
+source restarts. `AudioRingCatchupStart` advances a lagging consumer to the
+oldest retained hop.
+
 ## Visible Module Construction Contract
 
 Author, compile-check, create, place, focus, open, and visually prove one Module before beginning the next Module. Do not pre-author every planned node and then create them together, issue concurrent creates, or hide creation in a batch or loop. For data nodes, pair the open live preview with `capture_data_port`; a downstream renderer is not a substitute for an intelligible intermediate preview.
@@ -188,6 +224,7 @@ _Output[id.xy] = float4(col, 1.0);  // COMPILE ERROR
 - **`sdf` feature** provides: `sdSphere`, `sdBox`, `sdRoundBox`, `sdTorus`, `sdCylinder`, `sdCapsule`, `sdPlane`, `opUnion`, `opIntersect`, `opSubtract`, `opSmoothUnion`, `opSmoothSubtract`, `opSmoothIntersect`, `opRound`, `opRepeat`, `opRepeatLimited`, `opTwist`, `CALC_NORMAL` macro
 - **`camera` feature** provides: `_ViewMatrix`, `_ProjMatrix`, `_ViewProjMatrix`, `_InvViewProjMatrix`, `_CameraPos`, `_CameraNear`, `_CameraFar`, `_CameraFOV`, `_RayDirection(uv)` helper
 - **`math3d` feature** provides: common 3D math utilities
+- **`audio` feature** provides: safe dB conversion, Hz/Mel conversion, Spectrum and Mel range lookup, chronological 64-hop ring catch-up, and asymmetric attack/release envelope following
 
 If you need a function like `smax` (smooth max) that ISN'T in the built-in library, define it yourself. But check first — redefining a built-in causes instant compile failure.
 
