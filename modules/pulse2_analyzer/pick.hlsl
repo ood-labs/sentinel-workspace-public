@@ -22,6 +22,117 @@ StructuredBuffer<PS> Prev : register(t1);
 StructuredBuffer<SP> Spec : register(t3);
 RWStructuredBuffer<PS> Out : register(u0);
 
+// ---- lateral inhibition (2C3) ---------------------------------------------
+//
+// The 2C1 snare lane has recall 1.000 but precision 0.31-0.34: on
+// four_on_floor_128 it emits 61 detections for 21 true snares, because a kick's
+// broadband click deposits real energy across 200-2400 Hz and the snare region
+// reduces it as a genuine onset. No threshold fixes this — the event IS there in
+// that band; it just belongs to another instrument.
+//
+// So instead of a per-lane threshold, lanes COMPETE. Each lane subtracts a share
+// of its strongest simultaneous rival:
+//
+//     O'_i[n] = max(0, O_i[n] - g * max_{j != i} O_j[n])
+//
+// A kick transient raises the kick lane far above the snare lane's leakage, so
+// the snare's copy is cancelled while a real snare — which dominates its own
+// band — survives. One knob, not a per-pair matrix, because six weights tuned on
+// eight patterns would fit the corpus rather than the physics.
+//
+// The FIRST version of this was instantaneous: it subtracted a share of the
+// rival lanes' flux AT THE SAME HOP. Measured on `hats_under_loud_kick_150`
+// (zero true snares, so every snare firing is by construction leakage), that
+// removed nothing -- snare FP went 284 -> 288 -> 285 -> 279 across
+// g = 0 -> 0.15 -> 0.3 -> 0.5. `diag_inhibit.py` shows why:
+//
+//   at the hops where the snare falsely fires, kick flux is 0.0021 (median)
+//   against snare flux 0.1955 -- the rival is SILENT, and the gain needed to
+//   suppress would be 8.8, far outside [0,1].
+//
+//   but within +/-8 hops the kick reaches 0.322, and the distance from each
+//   snare FP to the nearest active kick hop is median 8 hops with p25 = p75 = 8.
+//
+// So the interference is not simultaneous, it is DELAYED by a fixed ~43 ms: the
+// kick's decay sweeping up into 200-2400 Hz well after its own transient has
+// passed. Flux spikes at the transient, so a same-hop comparison structurally
+// cannot see it.
+//
+// The fix is forward masking, which is also what real hearing does -- a loud
+// transient masks quieter events for ~100 ms AFTER it, not just during it:
+//
+//     R_i[n] = max_{d=0..W} ( exp(-d/tau) * max_{j!=i} O_j[n-d] )
+//     O'_i[n] = max(0, O_i[n] - g * R_i[n])
+//
+// Stateless: the Lane ring already holds 64 hops (341 ms), so the window is
+// read directly rather than carried as persistent envelope state.
+//
+// TWO DELIBERATE CHOICES:
+//
+// 1. The moving-median BACKGROUND is computed from RAW flux, never from O'.
+//    The first version routed both through the same helper "so background and
+//    peak agree", which was self-defeating: thr = alpha + lambda*median(O')
+//    falls with the signal, so a near-uniform subtraction cancels out of
+//    (o - thr) and changes almost nothing. The threshold now stays exactly the
+//    2C1 threshold and the inhibited signal has to clear that unchanged bar.
+//
+// 2. One gain and one time constant, not a per-pair matrix. Six weights tuned
+//    on eight patterns would fit the corpus rather than the physics.
+//
+// Default gain 0.0 = disabled = bit-identical to the scored 2C1 detector
+// (verified: every per-lane delta +0.000 across 11 patterns, aggregate 0.7972).
+static const uint INHIB_MAXW = 16u;   // 85 ms, spans the measured 43 ms lag
+
+float lane_raw(uint slot, uint lane) {
+    return Lane[slot * MAXLANES + lane].flux;
+}
+
+// Decaying envelope of the strongest RIVAL lane over the preceding window.
+float rival_env(uint gen, uint lane, uint capacity, uint oldest) {
+    if (inhibit_gain <= 0.0) return 0.0;
+    float tau = max(inhibit_tau_hops, 0.5);
+    uint W = min((uint)ceil(3.0 * tau), INHIB_MAXW);
+
+    float R = 0.0;
+    [loop] for (uint d = 0u; d <= W; ++d) {
+        if (d > gen) break;
+        uint g2 = gen - d;
+        if (g2 < oldest) break;
+        uint s2 = g2 % capacity;
+
+        // DIRECTIONAL: only LOWER-frequency lanes may mask this one.
+        //
+        // Symmetric masking was measured and rejected. It reaches the target
+        // (snare FP 284 -> 174) but destroys the kick lane doing it: hat flux
+        // p99 is 1.0359 against kick 0.4984, and hats at 150 BPM fire
+        // continuously, so at tau=12 the hat envelope never decays and lays a
+        // permanent masking floor over the sparse kick lane. Kick recall fell
+        // 0.948 -> 0.063.
+        //
+        // The measured leak is one-way and cannot run the other way: hats
+        // occupy 2400-20000 Hz and have NO energy in the kick's 25-200 Hz
+        // region, so a hat physically cannot mask a kick. Restricting rivals to
+        // j < lane makes lane 0 unmaskable by construction, which preserves
+        // kick recall exactly rather than by tuning.
+        //
+        // ASSUMPTION: regions are authored in ascending frequency order
+        // (0 kick, 1 snare, 2 hat), which is the 2C1 seed contract. Reordering
+        // regions to be non-monotonic in frequency would invalidate this.
+        float rv = 0.0;
+        [loop] for (uint j = 0u; j < lane; ++j) {
+            rv = max(rv, lane_raw(s2, j));
+        }
+        R = max(R, exp(-(float)d / tau) * rv);
+    }
+    return R;
+}
+
+float lane_flux(uint gen, uint slot, uint lane, uint capacity, uint oldest) {
+    float o = lane_raw(slot, lane);
+    if (inhibit_gain <= 0.0) return o;
+    return max(0.0, o - inhibit_gain * rival_env(gen, lane, capacity, oldest));
+}
+
 [numthreads(1, 1, 1)]
 void main(uint3 tid : SV_DispatchThreadID) {
     // pstate is persistent and commit mirrors it into pstate_prev, so there is
@@ -83,9 +194,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
         uint nextSlot = (gen + 1u) % capacity;
 
         [loop] for (uint lane = 0u; lane < NLANES; ++lane) {
-            float o = Lane[slot * MAXLANES + lane].flux;
-            float oPrev = Lane[prevSlot * MAXLANES + lane].flux;
-            float oNext = Lane[nextSlot * MAXLANES + lane].flux;
+            float o = lane_flux(gen, slot, lane, capacity, oldest);
+            float oPrev = lane_flux((gen == 0u) ? gen : (gen - 1u),
+                                    prevSlot, lane, capacity, oldest);
+            float oNext = lane_flux(gen + 1u, nextSlot, lane, capacity, oldest);
 
             // ---- moving median over the last M hops ----------------------
             float w[32];
@@ -95,7 +207,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
             [loop] for (uint m = 0u; m < M; ++m) {
                 if (m > gen) break;
                 uint s2 = (gen - m) % capacity;
-                w[cnt] = Lane[s2 * MAXLANES + lane].flux;
+                // RAW, not inhibited -- see choice (1) above. This keeps thr
+                // exactly the 2C1 threshold instead of letting it sag with the
+                // signal and cancel the inhibition out.
+                w[cnt] = lane_raw(s2, lane);
                 cnt++;
             }
             // insertion sort, bounded by M <= 32

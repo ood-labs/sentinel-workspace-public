@@ -21,7 +21,12 @@ from sentinel_ipc import Sentinel, AudioRunner, reset_detector
 
 HERE = Path(__file__).resolve().parent
 PATTERN = "four_on_floor_128"
-TRACE_BASE, MAXLANES, HOPS, NLANES = 528, 16, 64, 3
+# Layout MUST track modules/pulse2_analyzer/common.hlsli. The ring is
+# TRACE_BASE + (gen % TRACE_SLOTS) * NLANES + lane. It was previously read here
+# with stride MAXLANES=16 over 64 hops, which silently returned garbage rows
+# after the ring was widened to 256 slots at stride NLANES.
+TRACE_BASE, NLANES, HOPS = 528, 3, 256
+MAXLANES = NLANES  # stride of the trace ring, NOT the Lane buffer's 16
 LANES = ["kick", "snare", "hat"]
 
 

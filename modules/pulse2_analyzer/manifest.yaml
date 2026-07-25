@@ -74,6 +74,18 @@ parameters:
   # defaults reproduce the 2B bands exactly (25-200 / 200-2400 / 2400-20000 with
   # rectangular unit-gain profiles), so the region path is proven against the 2B
   # numbers rather than against a differently-tuned detector.
+  # 2C3 lateral inhibition. Each lane subtracts this share of its strongest
+  # simultaneous rival before thresholding, so a kick's broadband click cannot
+  # also register as a snare. 0.0 disables it and reproduces the scored 2C1
+  # detector exactly. Swept on non-held-out patterns only.
+  - { name: inhibit_gain, display: "Lateral Inhibition", group: "Picking", type: float, min: 0.0, max: 1.0, default: 0.0 }
+  # Forward-masking time constant, in ANALYSIS HOPS (5.33 ms each), not seconds
+  # or cooks. Measured on hats_under_loud_kick_150, the snare lane's false
+  # positives sit a median 8 hops (43 ms) after the kick transient, so an
+  # instantaneous rival term sees nothing. tau shapes exp(-d/tau) back over at
+  # most INHIB_MAXW = 16 hops (85 ms). Inert while inhibit_gain = 0.
+  - { name: inhibit_tau_hops, display: "Inhibition Decay (hops)", group: "Picking", type: float, min: 0.5, max: 16.0, default: 6.0 }
+
   - { name: rgn0_lo_hz,   display: "Region 0 Low (Hz)",   group: "Region 0 - Kick",  type: float, min: 10.0,  max: 2000.0,  default: 25.0 }
   - { name: rgn0_hi_hz,   display: "Region 0 High (Hz)",  group: "Region 0 - Kick",  type: float, min: 20.0,  max: 4000.0,  default: 200.0 }
   # ENUM DEFAULTS MUST BE THE INDEX, NOT THE LABEL. `default: "Gaussian"`
