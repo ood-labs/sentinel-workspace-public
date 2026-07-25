@@ -1,0 +1,75 @@
+name: "Pulse2 / Console"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+# Spectrogram console for the Pulse2 detector. Displays the audio the detector
+# analyses and owns the detection regions the detector reduces, so region
+# placement is direct manipulation rather than a wall of Hz parameters.
+#
+# The DISPLAY chain (log rebin -> per-bin running-peak equalisation -> gamma
+# 0.45) is deliberately separate from the detector's whitening: whitening is
+# tuned for onset separation and reads as flat grey to a human.
+#
+# Palette is the workspace monochrome scientific-instrument look with one warm
+# accent, NOT Magma/Inferno. Perceptual contrast comes from the equalisation and
+# gamma stages rather than from hue.
+
+panel:
+  mode: canvas
+  output: "Console"
+  resolution: follow_panel
+
+data_inputs:
+  - name: "Spectrum"
+    slot: 0
+    schema:
+      - { name: hop_index, type: uint }
+      - { name: sample_position, type: uint }
+      - { name: generation_counter, type: uint }
+      - { name: qpc_ticks_lo, type: uint }
+      - { name: qpc_ticks_hi, type: uint }
+      - { name: sample_rate, type: uint }
+      - { name: fft_size, type: uint }
+      - { name: hop_size, type: uint }
+      - { name: value_count, type: uint }
+      - { name: magnitude, type: float }
+
+parameters:
+  # Half-life ~7 s. A fast decay makes the peak track the content itself, so
+  # everything sits at its own peak and the image flattens to white.
+  - { name: eq_decay,   display: "Equalisation Decay", group: "Display", type: float, min: 0.90, max: 0.99999, default: 0.9995 }
+  - { name: eq_floor,   display: "Equalisation Floor", group: "Display", type: float, min: 0.000000001, max: 0.01, default: 0.00005 }
+  # Power-law shaping applied AFTER the dB map. Near 1.0 because the decibel
+  # map is already the perceptual compression: at gamma 0.45 a -20 dB bin
+  # renders at 79% brightness, so the image collapses to near-binary white on
+  # black. Values below ~0.8 are a deliberate "lift the noise floor" choice.
+  - { name: disp_gamma, display: "Display Gamma",      group: "Display", type: float, min: 0.1,  max: 1.0,    default: 1.0 }
+  - { name: disp_range, display: "Display Range (dB)",  group: "Display", type: float, min: 12.0, max: 96.0,   default: 60.0 }
+  - { name: hist_hops,  display: "History (hops)",     group: "Display", type: float, min: 32.0, max: 768.0,  default: 768.0 }
+
+buffers:
+  # DISP_HOPS*DISP_BINS history + DISP_BINS running peaks + 1 cursor element.
+  # 768*192 + 192 + 1 = 147649. Keep in step with types.hlsli.
+  - { name: spechist, structured: true, element_size: 16, element_count: 147649, persistent: true }
+
+passes:
+  - name: spechist
+    shader: spechist.hlsl
+    target: cs_5_0
+    dispatch: [3, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:spechist"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:spechist" }
+    output: output
+
+outputs:
+  - { name: "Console", pass: render }

@@ -67,16 +67,16 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // from the region buffer rather than a hard frequency split, so a
     // programmatic region and a console-drawn one take the identical path.
     // Only this lane's regions are visited, and only over their own bin spans.
-    [loop] for (uint ri = 0u; ri < MAXREGIONS; ++ri) {
+    [loop] for (uint ri = 0u; ri < P2_MAXREGIONS; ++ri) {
         RG r = Rgn[ri];
         if (r.enabled < 0.5 || (uint)r.lane != lane) continue;
 
-        float pad = region_bin_pad(r);
+        float pad = p2_region_bin_pad(r);
         int k0 = (int)max(r.binLo - pad, 0.0);
         int k1 = (int)min(r.binHi + pad, (float)(vcount - 1u));
 
         [loop] for (int k = k0; k <= k1; ++k) {
-            float w = region_weight(r, 0.0, (float)k);
+            float w = p2_region_weight(r, 0.0, (float)k);
             if (w <= 0.0) continue;
 
             float y = compress(Spec[slotIdx * NBINS + (uint)k].y, g);

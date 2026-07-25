@@ -17,7 +17,7 @@ RWStructuredBuffer<RG> Rgn : register(u0);
 [numthreads(8, 1, 1)]
 void main(uint3 tid : SV_DispatchThreadID) {
     uint i = tid.x;
-    if (i >= MAXREGIONS) return;
+    if (i >= P2_MAXREGIONS) return;
 
     uint capacity = max(_Data0_HopCapacity, 1u);
     uint latest = _Data0_Generation;
@@ -46,7 +46,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // evaluated. 2C2 narrows this on the time axis interactively.
     r.hopLo   = 0.0;
     r.hopHi   = (float)(TRACE_SLOTS - 1u);
-    r.profile = (prof >= 0.5) ? PROFILE_GAUSS : PROFILE_RECT;
+    r.profile = (prof >= 0.5) ? P2_PROFILE_GAUSS : P2_PROFILE_RECT;
     r.gain    = gain;
     r.enabled = (r.binHi > r.binLo) ? on : 0.0;
     r.lane    = lane;
