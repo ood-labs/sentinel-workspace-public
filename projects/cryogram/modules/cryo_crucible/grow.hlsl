@@ -35,6 +35,10 @@ struct Probe {
 };
 StructuredBuffer<Probe> Probes : register(t1);
 
+#include "shock.hlsli"
+StructuredBuffer<Shock> Shocks : register(t2);
+#include "shock_apply.hlsli"
+
 static const float TAU = 6.28318530718;
 
 // Integer bit-mix hash. The injected sin-based hash21 collapses toward zero for
@@ -64,7 +68,11 @@ void main(uint3 id : SV_DispatchThreadID) {
     if (id.x >= res.x || id.y >= res.y) return;
     int2 px = int2(id.xy);
 
-    float dt = clamp(_DeltaTime, 0.0, 0.0333);
+    // MASTER CLOCK. Scales growth, ageing, resorption and nucleation together,
+    // so the whole specimen genuinely runs faster or slower. Previously the
+    // perceived rate was pinned by anneal_life and no amount of tweaking the
+    // individual speeds could move it.
+    float dt = clamp(_DeltaTime, 0.0, 0.0333) * sim_speed;
 
     float4 st = _Tex0.Load(int3(px, 0));
     float s   = st.r;
@@ -112,6 +120,14 @@ void main(uint3 id : SV_DispatchThreadID) {
     }
 
     if (anchorForce > 0.35) age = min(age, anneal_life * 0.92);   // protected
+
+    // ---- snare strike: instantaneous liquefaction --------------------------
+    float melt = cryoShockMelt(cuv, aspect, _Time);
+    if (melt > 0.25 && anchorForce < 0.35) {
+        s = 0.0; th = 0.0; gid = 0.0; age = 0.0;
+        OutputUAV[id.xy] = float4(s, th, gid, age);
+        return;
+    }
 
     if (annealForce > 0.03 && s > 0.0) {
         s -= probe_anneal_rate * annealForce * dt;

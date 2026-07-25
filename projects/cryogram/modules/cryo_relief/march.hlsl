@@ -10,9 +10,10 @@
 
 RWTexture2D<float4> OutputUAV : register(u0);
 
+// _Tex0 is now the COMBINED height field: .g is already world height with the
+// kick swells composited in, so it must not be scaled again here.
 float cryoHeight(float2 uv) {
-    float4 f = cryoFieldBilinear(_Tex0, uv);
-    return f.g * height_scale;
+    return cryoFieldBilinear(_Tex0, uv).g;
 }
 
 [numthreads(8, 8, 1)]
@@ -42,8 +43,10 @@ void main(uint3 id : SV_DispatchThreadID) {
     [loop] for (int i = 0; i < steps; ++i) {
         float3 p = ro + rd * t;
 
-        // escape upward once above the tallest possible surface
-        if (rd.y > 0.0 && p.y > height_scale + 0.02) break;
+        // escape upward once above the tallest possible surface — the ceiling
+        // has to allow for an active swell, not just the base relief
+        float ceiling = height_scale + pulse_amp * 1.15 + 0.03;
+        if (rd.y > 0.0 && p.y > ceiling) break;
 
         float h = cryoHeight(cryoUvFromWorld(p));
         float gap = p.y - h;

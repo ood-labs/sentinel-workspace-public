@@ -25,6 +25,10 @@ struct Probe {
 };
 StructuredBuffer<Probe> Probes : register(t1);
 
+#include "shock.hlsli"
+StructuredBuffer<Shock> Shocks : register(t2);
+#include "shock_apply.hlsli"
+
 static const float3 PROBE_SEED   = float3(1.00, 0.66, 0.22);
 static const float3 PROBE_ANNEAL = float3(0.88, 0.28, 0.24);
 static const float3 PROBE_ANCHOR = float3(0.94, 0.94, 0.96);
@@ -37,6 +41,7 @@ float4 loadState(int2 p, uint2 res) {
 void main(uint3 id : SV_DispatchThreadID) {
     uint2 res = (uint2)_Resolution.xy;
     if (id.x >= res.x || id.y >= res.y) return;
+
     int2 px = int2(id.xy);
 
     float4 st = loadState(px, res);

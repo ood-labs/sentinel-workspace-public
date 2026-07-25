@@ -51,21 +51,16 @@ void main(uint3 tid : SV_DispatchThreadID) {
     PS C = Prev[HDR_C];
     PS D = Prev[HDR_D];
 
-    uint vcount = min(_Data0[0].value_count, MAXBAND);
+    // Sentinel 0.5.49 injects generation metadata per data input, so the
+    // latest generation no longer has to be inferred. Element zero of Spectrum
+    // and Mel Bands is ring slot zero, NOT a header, and reading its generation
+    // goes stale until the 64-hop ring wraps (~341ms) — which is what made this
+    // detector appear to run at 3fps. These uniforms remove the ambiguity.
+    uint vcount = min(_Data0_ValueCount, MAXBAND);
     if (vcount == 0u) return;
 
-    // The Mel Bands port has NO header element: 8832 = 64 hops x 138 bands
-    // exactly. _Data0[0] is therefore ring slot 0 band 0, not metadata, and its
-    // generation only changes when the ring wraps back to slot 0 — once every
-    // 64 hops (~0.34s). Taking it as "latest" made the detector idle and then
-    // swallow 64 hops in one burst about three times a second.
-    // The true latest generation is the max across all slots.
-    uint slots = min((uint)_Data0_Count / max(vcount, 1u), RING_CAP);
-    uint latest = 0u;
-    [loop] for (uint s = 0u; s < slots; ++s) {
-        uint g = _Data0[s * vcount].generation_counter;
-        if (g > latest) latest = g;
-    }
+    uint capacity = max(_Data0_HopCapacity, 1u);
+    uint latest = _Data0_Generation;
     if (latest == 0u) return;
 
     uint sampleRate = max(_Data0[0].sample_rate, 1u);
@@ -77,8 +72,17 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float hopCount = A.b;
 
     // chronological catch-up over retained hops
-    uint oldest = (latest >= RING_CAP) ? (latest - RING_CAP + 1u) : 0u;
+    uint oldest = (latest >= capacity) ? (latest - capacity + 1u) : 0u;
     uint start = max(cursor, oldest);
+
+    // ---- signal gate -------------------------------------------------------
+    // Adaptive thresholds normalise to whatever reaches them, so on a noise
+    // floor they will happily manufacture confident onsets — this detector
+    // previously reported BPM 96 at 99% confidence on a dead endpoint. Gate on
+    // the engine's own capture level (driven in via expression), not on our own
+    // normalised energy, which cannot tell noise from music by construction.
+    bool gated = (gate_level < signal_floor);
+    D.h = gated ? 0.0 : 1.0;
 
     float lowSplit = clamp(low_split, 1.0, (float)vcount - 2.0);
     float midSplit = clamp(mid_split, lowSplit + 1.0, (float)vcount - 1.0);
@@ -130,15 +134,19 @@ void main(uint3 tid : SV_DispatchThreadID) {
         float refH = refractory_high * hopsPerSec;
 
         float hitLow = 0.0, hitMid = 0.0, hitHigh = 0.0;
-        if (fluxLow > thrLow && (hopCount - D.b) > refL) {
+        if (gated) {
+            // still advance history and thresholds so the detector re-acquires
+            // instantly when signal returns, but accept no onsets
+        }
+        else if (fluxLow > thrLow && (hopCount - D.b) > refL) {
             hitLow = saturate((fluxLow - thrLow) / max(thrLow, 1e-4));
             D.b = hopCount; B.d += 1.0; B.g += 1.0;
         }
-        if (fluxMid > thrMid && (hopCount - D.c) > refM) {
+        if (!gated && fluxMid > thrMid && (hopCount - D.c) > refM) {
             hitMid = saturate((fluxMid - thrMid) / max(thrMid, 1e-4));
             D.c = hopCount; B.e += 1.0; B.g += 1.0;
         }
-        if (fluxHigh > thrHigh && (hopCount - D.d) > refH) {
+        if (!gated && fluxHigh > thrHigh && (hopCount - D.d) > refH) {
             hitHigh = saturate((fluxHigh - thrHigh) / max(thrHigh, 1e-4));
             D.d = hopCount; B.f += 1.0; B.g += 1.0;
         }
@@ -178,8 +186,12 @@ void main(uint3 tid : SV_DispatchThreadID) {
     }
 
     // ---- tempo: autocorrelate our own onset history --------------------------
+    // Tempo confidence decays toward zero while gated, so a silent or dead
+    // endpoint reports "I don't know" instead of a confident wrong answer.
+    if (gated) A.g = max(A.g - 0.02, 0.0);
+
     float since = hopCount - A.e;
-    if (since >= tempo_interval && hopCount > 200.0) {
+    if (!gated && since >= tempo_interval && hopCount > 200.0) {
         A.e = hopCount;
 
         float lagMin = floor(60.0 * hopsPerSec / max(bpm_max, 40.0));

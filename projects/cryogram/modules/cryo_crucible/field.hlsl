@@ -13,6 +13,10 @@
 
 RWTexture2D<float4> OutputUAV : register(u0);
 
+#include "shock.hlsli"
+StructuredBuffer<Shock> Shocks : register(t1);
+#include "shock_apply.hlsli"
+
 static const float TAU = 6.28318530718;
 
 [numthreads(8, 8, 1)]

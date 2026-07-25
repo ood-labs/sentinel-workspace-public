@@ -19,7 +19,9 @@ RWTexture2D<float4> OutputUAV : register(u0);
 static const float3 CRYO_AMBER = float3(1.00, 0.66, 0.22);
 static const float TAU = 6.28318530718;
 
-float cryoH(float2 uv) { return cryoFieldBilinear(_Tex1, uv).g * height_scale; }
+// _Tex1 is the combined height field: .g is already world height (base relief
+// plus kick swells), so wires and markers land on the swollen surface too.
+float cryoH(float2 uv) { return cryoFieldBilinear(_Tex1, uv).g; }
 
 [numthreads(8, 8, 1)]
 void main(uint3 id : SV_DispatchThreadID) {
@@ -139,6 +141,61 @@ void main(uint3 id : SV_DispatchThreadID) {
             lum = 0.010 + gline * stage_gain * (0.25 + 0.75 * plate);
         }
 
+        // ---- snare: volumetric noise burst ---------------------------------
+        // A sphere placed in 3D near the impact, tested against the pixel's real
+        // WORLD hit position — so the corruption wraps over the terrain and sits
+        // in the scene rather than floating as a flat screen disc. Inside it,
+        // world-space voxel cells are re-randomised at burst_rate, which is what
+        // makes it read as a snappy block of noise instead of a ripple.
+        float burst = 0.0;
+        uint sN = min(_Data2_Count, 8u);
+        [loop] for (uint bi = 0u; bi < sN; ++bi) {
+            if (_Data2[bi].active < 0.5) continue;
+
+            float bage = _Time - _Data2[bi].birth;
+            if (bage < 0.0 || bage > burst_life) continue;
+
+            float2 cuv = _Data2[bi].center;
+            float3 wc = cryoWorldFromUv(cuv, cryoH(cuv) + burst_lift);
+
+            // drift so successive snares wander through the volume
+            float da = _Data2[bi].seed * 6.28318530718;
+            wc += float3(cos(da), 0.42, sin(da)) * bage * burst_drift;
+
+            // Radius is NOT scaled by strength. It used to be, and combined
+            // with lifting the sphere centre above the surface it shrank the
+            // ground intersection to a ~0.1-unit speck on a 3.55-unit plate —
+            // the burst was effectively invisible. Strength drives intensity
+            // only; the radius is what the user authored.
+            float r = max(burst_radius * (1.0 + bage * burst_grow), 1e-3);
+            float d = distance(hp, wc);
+            float m = 1.0 - smoothstep(r * saturate(burst_soft), r, d);
+
+            float env = (bage < burst_attack)
+                      ? (bage / max(burst_attack, 1e-3))
+                      : exp(-(bage - burst_attack) / max(burst_decay, 0.02));
+
+            burst = max(burst, m * saturate(env) * max(_Data2[bi].strength, 0.25));
+        }
+
+        if (burst > 0.002) {
+            float cs = max(burst_cell, 0.002);
+            int3 cell = (int3)floor(hp / cs) + 8192;
+            uint tstep = (uint)max(floor(_Time * burst_rate), 0.0);
+
+            uint3 uc = (uint3)cell;
+            uint hh = uc.x * 73856093u ^ uc.y * 19349663u ^ uc.z * 83492791u;
+            hh ^= tstep * 2654435761u;
+            hh ^= hh >> 13u; hh *= 1274126177u; hh ^= hh >> 16u;
+
+            float n1 = (float)(hh & 0xFFFFu) / 65535.0;
+            float n2 = (float)((hh >> 16u) & 0xFFFFu) / 65535.0;
+
+            float amt = saturate(burst * burst_amount);
+            lum = lerp(lum, n1 * burst_level, amt);
+            lum = lerp(lum, step(0.5, n2) * burst_level, amt * saturate(burst_hard));
+        }
+
         // ---- distance fade -------------------------------------------------
         float fog = exp(-tHit * fog_density);
         lum *= fog;
@@ -201,6 +258,59 @@ void main(uint3 id : SV_DispatchThreadID) {
         bool occ = segDepth > depth + 0.02;
         float a = max(stem * 0.75, head) * marker_gain * (occ ? xray_gain : 1.0);
         col = lerp(col, CRYO_AMBER, saturate(a));
+    }
+
+    // ---- snare strikes: a burst thrown up from the impact point ------------
+    // The shock records come from the specimen itself, so the burst stands
+    // exactly where the plate was struck rather than at an invented coordinate.
+    uint sCount = min(_Data2_Count, 8u);
+    [loop] for (uint si = 0u; si < sCount; ++si) {
+        if (_Data2[si].active < 0.5) continue;
+
+        float age = _Time - _Data2[si].birth;
+        if (age < 0.0 || age > strike_life) continue;
+
+        float2 suv = _Data2[si].center;
+        float fade = exp(-age / max(strike_decay, 0.02));
+        float grow = saturate(age / max(strike_rise, 0.01));
+
+        float baseH = cryoH(suv);
+        float3 wbase = cryoWorldFromUv(suv, baseH);
+
+        float2 pbase; float dbase;
+        if (!cryoProject(wbase, _Resolution.xy, pbase, dbase)) continue;
+
+        uint rays = (uint)clamp(strike_rays, 1, 12);
+        [loop] for (uint r = 0u; r < rays; ++r) {
+            float a = (float)r / (float)rays * 6.28318530718
+                    + _Data2[si].seed * 6.28318530718;
+            float spread = strike_spread * grow;
+            float len = strike_height * grow * _Data2[si].strength;
+
+            float3 wtip = cryoWorldFromUv(
+                suv + float2(cos(a), sin(a)) * spread,
+                baseH + len);
+
+            float2 ptip; float dtip;
+            if (!cryoProject(wtip, _Resolution.xy, ptip, dtip)) continue;
+
+            float2 lo = min(pbase, ptip) - 4.0, hi = max(pbase, ptip) + 4.0;
+            if (P.x < lo.x || P.x > hi.x || P.y < lo.y || P.y > hi.y) continue;
+
+            float tt;
+            float d = cryoSegDist(P, pbase, ptip, tt);
+            // taper: heavy at the root, fine at the tip
+            float w = lerp(strike_weight, strike_weight * 0.25, tt);
+            float cov = 1.0 - smoothstep(w, w + 1.2, d);
+            if (cov <= 0.002) continue;
+
+            float segDepth = lerp(dbase, dtip, tt);
+            bool occ = segDepth > depth + 0.02;
+
+            float3 sc = lerp(float3(0.96, 0.96, 0.97), CRYO_AMBER, tt * strike_tint);
+            float a2 = cov * fade * strike_gain * (occ ? xray_gain : 1.0) * (1.0 - tt * 0.35);
+            col = lerp(col, sc, saturate(a2));
+        }
     }
 
     // ---- frame vignette -----------------------------------------------------

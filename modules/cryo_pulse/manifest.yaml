@@ -34,6 +34,12 @@ parameters:
   - { name: energy_smooth,    display: "Energy Smoothing",  group: "Analysis", type: float, min: 0.005, max: 0.5,   default: 0.08 }
   - { name: level_gain,       display: "Level Gain",        group: "Analysis", type: float, min: 0.1,   max: 8.0,    default: 1.6 }
 
+  # Driven by expression from the Audio In node's own capture level. Detection
+  # is suppressed below the floor so a silent or dead endpoint cannot produce
+  # confident onsets — adaptive thresholds otherwise always find "beats" in noise.
+  - { name: gate_level,       display: "Capture Level (driven)", group: "Signal Gate", type: float, min: 0.0, max: 1.0, default: 0.0 }
+  - { name: signal_floor,     display: "Signal Floor",      group: "Signal Gate", type: float, min: 0.0, max: 0.20, default: 0.0025 }
+
   - { name: threshold_adapt,  display: "Threshold Adapt",   group: "Detection", type: float, min: 0.002, max: 0.4,  default: 0.045 }
   - { name: threshold_floor,  display: "Threshold Floor",   group: "Detection", type: float, min: 0.0,   max: 4.0,   default: 0.12 }
   - { name: sensitivity_low,  display: "Kick Sensitivity",  group: "Detection", type: float, min: 0.3,   max: 8.0,   default: 2.1 }
@@ -115,6 +121,7 @@ control_outputs:
   - { name: bass,         buffer: pstate, element: 652, field_offset: 0,  description: "Smoothed low energy" }
   - { name: mid,          buffer: pstate, element: 652, field_offset: 4,  description: "Smoothed mid energy" }
   - { name: treble,       buffer: pstate, element: 652, field_offset: 8,  description: "Smoothed high energy" }
+  - { name: signal_present, buffer: pstate, element: 653, field_offset: 28, description: "1 when capture level exceeds the signal floor" }
 
 outputs:
   - { name: "Pulse", pass: preview }

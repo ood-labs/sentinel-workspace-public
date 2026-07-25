@@ -12,6 +12,10 @@
 
 RWTexture2D<float4> OutputUAV : register(u0);
 
+#include "shock.hlsli"
+StructuredBuffer<Shock> Shocks : register(t1);
+#include "shock_apply.hlsli"
+
 float4 loadState(int2 p, uint2 res) {
     return _Tex0.Load(int3(clamp(p, int2(0, 0), int2(res) - 1), 0));
 }
@@ -20,6 +24,12 @@ float4 loadState(int2 p, uint2 res) {
 void main(uint3 id : SV_DispatchThreadID) {
     uint2 res = (uint2)_Resolution.xy;
     if (id.x >= res.x || id.y >= res.y) return;
+
+    // NOT displaced. The shock is a presentation effect; feeding it to the
+    // detector made every corner lurch on each snare, so no track could stay
+    // confirmed long enough to bond and the whole measurement layer collapsed
+    // to zero. The instrument measures the material, which has not moved —
+    // survey markers stay put while the plate visibly shudders under them.
     int2 px = int2(id.xy);
 
     float4 st = loadState(px, res);

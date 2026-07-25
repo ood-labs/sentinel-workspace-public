@@ -5,6 +5,9 @@ resolution: [1280, 720]
 features: [noise]
 
 parameters:
+  # Master clock: scales growth, ageing, resorption and nucleation together.
+  # This is the control that actually changes how fast the specimen lives.
+  - { name: sim_speed,        display: "Sim Speed",         group: "Solidification", type: float, min: 0.05, max: 12.0, default: 1.0 }
   - { name: growth_rate,      display: "Front Speed (px/s)", group: "Solidification", type: float, min: 0.5, max: 300.0, default: 42.0 }
   - { name: symmetry,         display: "Symmetry",          group: "Solidification", type: enum,  default: 2, options: [3-fold, 4-fold, 6-fold, 8-fold], flags: button_grid }
   - { name: facet_bias,       display: "Facet Bias",        group: "Solidification", type: float, min: 0.0,  max: 1.0,   default: 0.88 }
@@ -36,6 +39,16 @@ parameters:
   - { name: probe_lifetime,    display: "Probe Lifetime (s, 0=hold)", group: "Probes", type: float, min: 0.0, max: 240.0, default: 0.0 }
   - { name: probe_overlay,     display: "Show Probes",        group: "Probes", type: bool,  default: true, flags: button }
 
+  # Snare shocks. One per accepted onset, triggered on the counter.
+  - { name: snare_count_in,    display: "Snare Count (driven)", group: "Snare Shock", type: float, min: 0.0, max: 10000000.0, default: 0.0 }
+  - { name: snare_level_in,    display: "Snare Level (driven)", group: "Snare Shock", type: float, min: 0.0, max: 1.0,  default: 0.0 }
+  - { name: shock_life,        display: "Shock Life (s)",     group: "Snare Shock", type: float, min: 0.05, max: 3.0,  default: 0.60 }
+  - { name: shock_min_strength, display: "Minimum Shock",     group: "Snare Shock", type: float, min: 0.05, max: 1.0,  default: 0.70 }
+  - { name: shock_strength_gain, display: "Shock Strength Gain", group: "Snare Shock", type: float, min: 0.2, max: 6.0, default: 2.4 }
+
+  - { name: shock_melt_radius, display: "Strike Melt Radius", group: "Snare Shock", type: float, min: 0.0,  max: 0.40, default: 0.075 }
+  - { name: shock_melt_time,   display: "Strike Melt Time (s)", group: "Snare Shock", type: float, min: 0.0, max: 0.50, default: 0.05 }
+
   - { name: reset,            display: "Reset Field",       group: "Anneal",   type: bool,  default: false, flags: button }
 
 viewport:
@@ -57,6 +70,8 @@ buffers:
   - { name: state, format: RGBA32F, persistent: true }
   - { name: probes,      structured: true, element_size: 32, element_count: 33 }
   - { name: probes_prev, structured: true, element_size: 32, element_count: 33, persistent: true }
+  - { name: shocks,      structured: true, element_size: 32, element_count: 9 }
+  - { name: shocks_prev, structured: true, element_size: 32, element_count: 9, persistent: true }
 
 state_buffers:
   - name: probes_prev
@@ -81,12 +96,23 @@ passes:
       - { slot: 0, source: "buffer:probes_prev" }
     output: "buffer:probes"
 
+  - name: shockspawn
+    shader: shockspawn.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:shocks_prev" }
+    output: "buffer:shocks"
+
   - name: grow
     shader: grow.hlsl
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:state" }
       - { slot: 1, source: "buffer:probes" }
+      - { slot: 2, source: "buffer:shocks" }
     output: "buffer:state"
 
   - name: render
@@ -95,6 +121,7 @@ passes:
     inputs:
       - { slot: 0, source: "buffer:state" }
       - { slot: 1, source: "buffer:probes" }
+      - { slot: 2, source: "buffer:shocks" }
     output: output
 
   - name: structure
@@ -102,6 +129,7 @@ passes:
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "buffer:shocks" }
     output: "output:1"
 
   - name: field
@@ -109,7 +137,18 @@ passes:
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "buffer:shocks" }
     output: "output:2"
+
+  - name: shockcommit
+    shader: shockcommit.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 9
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:shocks" }
+    output: "buffer:shocks_prev"
 
   - name: probecommit
     shader: probecommit.hlsl
@@ -122,6 +161,17 @@ passes:
     output: "buffer:probes_prev"
 
 data_outputs:
+  # Published so the 3D layer can throw a strike at the point the snare hit.
+  - name: "Shocks"
+    buffer: "shocks"
+    schema:
+      - { name: center, type: float2 }
+      - { name: birth, type: float }
+      - { name: strength, type: float }
+      - { name: seed, type: float }
+      - { name: active, type: float }
+      - { name: pad, type: float2 }
+
   - name: "Probes"
     buffer: "probes"
     schema:
