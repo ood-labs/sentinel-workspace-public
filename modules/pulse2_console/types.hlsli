@@ -8,6 +8,13 @@
 
 #include "../_shared/pulse2/regions.hlsli"
 
+// Region buffer: 0..7 regions, 8 = drag header, 9 = firing flash,
+// 10 = lane spans in Hz published to the control outputs.
+static const uint P2_HDR_IDX   = 8u;
+static const uint P2_FLASH_IDX = 9u;
+static const uint P2_PUB_IDX   = 10u;   // lane spans in Hz for control outputs
+static const uint P2_MAXFLASH  = 6u;
+
 static const uint DISP_BINS = 192u;   // log-spaced rows, 25 Hz .. 20 kHz
 static const uint DISP_HOPS = 768u;   // ~4.1 s of history at 187.5 hops/s
 // 2 s across a ~2000 px panel is a 5 px/hop magnification: individual hits fill

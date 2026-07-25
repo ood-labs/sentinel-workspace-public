@@ -94,12 +94,12 @@ parameters:
 
   - { name: rgn1_lo_hz,   display: "Region 1 Low (Hz)",   group: "Region 1 - Snare", type: float, min: 40.0,  max: 4000.0,  default: 200.0 }
   - { name: rgn1_hi_hz,   display: "Region 1 High (Hz)",  group: "Region 1 - Snare", type: float, min: 200.0, max: 12000.0, default: 2400.0 }
-  - { name: rgn1_profile, display: "Region 1 Profile",    group: "Region 1 - Snare", type: enum, options: ["Rectangular", "Gaussian"], default: "Rectangular" }
+  - { name: rgn1_profile, display: "Region 1 Profile",    group: "Region 1 - Snare", type: enum, options: ["Rectangular", "Gaussian"], default: 0 }
   - { name: rgn1_gain,    display: "Region 1 Gain",       group: "Region 1 - Snare", type: float, min: 0.0,   max: 4.0,     default: 1.0 }
 
   - { name: rgn2_lo_hz,   display: "Region 2 Low (Hz)",   group: "Region 2 - Hat",   type: float, min: 200.0, max: 16000.0, default: 2400.0 }
   - { name: rgn2_hi_hz,   display: "Region 2 High (Hz)",  group: "Region 2 - Hat",   type: float, min: 800.0, max: 24000.0, default: 20000.0 }
-  - { name: rgn2_profile, display: "Region 2 Profile",    group: "Region 2 - Hat",   type: enum, options: ["Rectangular", "Gaussian"], default: "Rectangular" }
+  - { name: rgn2_profile, display: "Region 2 Profile",    group: "Region 2 - Hat",   type: enum, options: ["Rectangular", "Gaussian"], default: 0 }
   - { name: rgn2_gain,    display: "Region 2 Gain",       group: "Region 2 - Hat",   type: float, min: 0.0,   max: 4.0,     default: 1.0 }
 
   # Peak picking. No per-lane threshold floor exists by design: whitening

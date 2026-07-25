@@ -20,6 +20,22 @@ static const uint  P2_MAXREGIONS = 8u;
 static const float P2_PROFILE_RECT  = 0.0;
 static const float P2_PROFILE_GAUSS = 1.0;
 
+// Layout of the detector's pstate buffer, exposed on its "Trace" data output.
+// It lives HERE rather than only in the analyzer because the console consumes
+// the same ring for mini-traces and firing flashes; two private copies of these
+// offsets would be a silent drift waiting to happen.
+//
+// Trace record fields: f0 = flux O_i[n], f1 = threshold delta_i[n],
+// f2 = fired, f3 = sample position. Header record 0: f0 = judged cursor,
+// f2 = latest generation, f3 = hops per second.
+static const uint P2_TRACE_BASE  = 528u;
+static const uint P2_TRACE_SLOTS = 256u;
+static const uint P2_NLANES      = 3u;
+
+uint p2_trace_index(uint gen, uint lane) {
+    return P2_TRACE_BASE + (gen % P2_TRACE_SLOTS) * P2_NLANES + lane;
+}
+
 // Display frequency axis. The console's vertical axis is logarithmic because a
 // linear bin axis spends three quarters of its height on 5-20 kHz, where almost
 // nothing distinguishing happens, and crushes the kick band into a few pixels.
