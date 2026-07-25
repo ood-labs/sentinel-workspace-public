@@ -1,0 +1,63 @@
+name: "AU Grade"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+viewport:
+  hint: "Final plate. Look: Impression / Inspection / Register / Sectioned."
+
+inputs:
+  - { name: "Relief", slot: 0, required: true }
+  - { name: "Rack", slot: 1, required: true }
+  - { name: "Plate", slot: 2, required: true }
+
+parameters:
+  - name: look_mode
+    display: "Composite Look"
+    type: enum
+    values: ["Impression", "Inspection", "Register", "Sectioned"]
+    default: 2
+    group: "Composite"
+  - { name: layer_mix, display: "Layer Mix", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Composite" }
+  - { name: ghost_gain, display: "Ghost", type: float, min: 0.0, max: 1.5, default: 0.46, group: "Composite" }
+  - { name: register_offset, display: "Registration Slip", type: float, min: 0.0, max: 0.03, default: 0.006, group: "Composite" }
+  - { name: band_height, display: "Band Height", type: float, min: 0.01, max: 0.8, default: 0.22, group: "Composite" }
+  - { name: band_tear, display: "Band Tear", type: float, min: 0.0, max: 0.05, default: 0.006, group: "Composite" }
+  - { name: section_count, display: "Section Count", type: float, min: 2.0, max: 80.0, default: 22.0, group: "Composite" }
+  - { name: sweep_rate, display: "Sweep Rate", type: float, min: 0.0, max: 1.0, default: 0.075, group: "Composite" }
+  - { name: sweep_phase, display: "Sweep Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Composite" }
+
+  - { name: halation, display: "Halation", type: float, min: 0.0, max: 1.5, default: 0.30, group: "Print" }
+  - { name: halation_radius, display: "Halation Radius", type: float, min: 0.5, max: 12.0, default: 3.2, group: "Print" }
+  - { name: grain, display: "Grain", type: float, min: 0.0, max: 0.2, default: 0.026, group: "Print" }
+  - { name: split_tone, display: "Split Tone", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Print" }
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 1.0, default: 0.30, group: "Print" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.2, max: 3.0, default: 1.00, group: "Print" }
+  - { name: gamma_out, display: "Gamma", type: float, min: 0.5, max: 3.0, default: 2.2, group: "Print" }
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Print" }
+
+buffers:
+  - { name: clock, structured: true, element_size: 16, element_count: 1, persistent: true }
+
+passes:
+  - name: clock
+    shader: clock.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:clock"
+
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "input:2" }
+      - { slot: 3, source: "buffer:clock" }
+    output: output
+
+outputs:
+  - { name: "Plate", pass: grade }
