@@ -20,6 +20,8 @@ StructuredBuffer<PS> Prev : register(t1);
 // Bound only to reach the producer header the whitening pass verified; the
 // spectrum itself is not used here.
 StructuredBuffer<SP> Spec : register(t3);
+// 2D features, computed in the parallel `features` pass. Read-only here.
+StructuredBuffer<FS> Feat : register(t4);
 RWStructuredBuffer<PS> Out : register(u0);
 
 // ---- lateral inhibition (2C3) ---------------------------------------------
@@ -133,6 +135,48 @@ float lane_flux(uint gen, uint slot, uint lane, uint capacity, uint oldest) {
     return max(0.0, o - inhibit_gain * rival_env(gen, lane, capacity, oldest));
 }
 
+// ---- 2D weighted decision --------------------------------------------------
+//
+// A linear score over the parallel pass's feature vector:
+//
+//     s = bias + w_cent*cent + w_flat*flatness + w_decay*decay + w_energy*energy
+//     keep the detection when s > 0
+//
+// This is what replaces bare flux thresholding, and it is the only thing that
+// CAN work here: 2C3 proved the kick's decay is a real onset in the snare's
+// band, equal in level and offset in time, so it differs from a snare only in
+// timbre.
+//
+// The weights are MEASURED, not chosen. `diag_features.py` collects the feature
+// vector at every snare firing on the eight non-held-out patterns and labels it
+// against ground truth; `fit_classifier.py` fits this model to that data. On
+// 115 true / 255 false firings the unclassified lane scores F1 0.474 and the
+// fitted decision 0.766. Re-run both to change these numbers; do not hand-edit
+// them, and do not fit them on a held-out pattern.
+//
+// Mode 0 = Off reproduces the scored 2C1 detector exactly.
+float classify_score(FS fv) {
+    return classify_bias
+         + w_cent   * fv.cent
+         + w_flat   * fv.flatness
+         + w_decay  * fv.decay
+         + w_energy * fv.energy
+         + w_centD  * fv.centD
+         + w_flatD  * fv.flatD;
+}
+
+// Applies to the snare lane only at mode 1. The weights were fitted on snare
+// firings, so applying them to kick or hat would be extrapolation, not
+// generalisation -- those lanes already score 0.91 and 0.96 and have nothing to
+// gain and everything to lose. Mode 2 exists to TEST that claim, not to be a
+// default.
+bool classify_ok(uint lane, FS fv) {
+    if (classify_mode < 0.5) return true;
+    bool applies = (classify_mode < 1.5) ? (lane == 1u) : true;
+    if (!applies) return true;
+    return classify_score(fv) > 0.0;
+}
+
 [numthreads(1, 1, 1)]
 void main(uint3 tid : SV_DispatchThreadID) {
     // pstate is persistent and commit mirrors it into pstate_prev, so there is
@@ -228,8 +272,15 @@ void main(uint3 tid : SV_DispatchThreadID) {
             float lastHop = (lane == 0u) ? E.e : ((lane == 1u) ? E.f : E.g);
             bool refOk = (hopCount - lastHop) > refHops;
 
+            // The 2D verdict. Deliberately gates ACCEPTANCE only, and does not
+            // touch the refractory: a rejected candidate must not consume the
+            // lane's refractory window, or suppressing one false positive would
+            // block the real onset arriving a few hops later.
+            FS fv = Feat[slot * MAXLANES + lane];
+            bool classOk = classify_ok(lane, fv);
+
             float strength = 0.0;
-            if (!gated && isPeak && refOk) {
+            if (!gated && isPeak && refOk && classOk) {
                 strength = saturate((o - thr) / max(thr, 1e-4));
                 if (lane == 0u) { E.e = hopCount; C.a += 1.0; }
                 else if (lane == 1u) { E.f = hopCount; C.b += 1.0; }
@@ -250,10 +301,18 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
             // Record the trace so the preview shows the SAME threshold the
             // picker used, rather than a second implementation that could drift.
+            // The 2D feature vector rides along in the spare fields: it is what
+            // the console renders as the per-hit verdict, and what the offline
+            // separability study reads, so display, study and decision are all
+            // looking at one set of numbers.
             PS tr;
             tr.a = o; tr.b = thr; tr.c = (strength > 0.0) ? 1.0 : 0.0;
             tr.d = Lane[slot * MAXLANES + lane].spos;
-            tr.e = 0.0; tr.f = 0.0; tr.g = 0.0; tr.h = 0.0;
+            tr.e = fv.cent; tr.f = fv.flatness; tr.g = fv.decay;
+            // The verdict itself, so the console renders the SAME number the
+            // picker decided on rather than recomputing it from the weights and
+            // risking a display that disagrees with the detector.
+            tr.h = classify_score(fv);
             Out[trace_index(gen, lane)] = tr;
 
             // Envelopes: instant attack, per-hop release.

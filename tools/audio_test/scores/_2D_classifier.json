@@ -1,0 +1,28 @@
+{
+ "features": [
+  "cent",
+  "flatness",
+  "decay",
+  "energy"
+ ],
+ "bias": -13.592056575801559,
+ "weights": {
+  "cent": 31.204560500541202,
+  "flatness": -4.085922779466041,
+  "decay": -2.196060416628454e-06,
+  "energy": 2.185169978285716
+ },
+ "l2": 1.0,
+ "n_true": 115,
+ "n_false": 255,
+ "patterns": [
+  "four_on_floor_128",
+  "hats_only_150",
+  "dense_140",
+  "breakbeat_170",
+  "sparse_90",
+  "syncopated_funk_105",
+  "hats_under_loud_kick_150",
+  "quiet_intro_drop_128"
+ ]
+}

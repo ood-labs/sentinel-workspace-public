@@ -43,6 +43,8 @@ buffers:
   # [slot*16 + lane] : per-hop per-lane flux, threshold, accepted flag, sample pos
   - { name: lstate,      structured: true, element_size: 16, element_count: 1024, persistent: true }
   # header 0..15, hits ring 16..527, trace ring 528..1551
+  # 2D feature vector, [slot*16 + lane], mirroring lstate's indexing.
+  - { name: fstate,      structured: true, element_size: 32, element_count: 1024, persistent: true }
   - { name: pstate,      structured: true, element_size: 32, element_count: 1552, persistent: true }
   - { name: pstate_prev, structured: true, element_size: 32, element_count: 1552, persistent: true }
   - { name: hits,        structured: true, element_size: 16, element_count: 512 }
@@ -85,6 +87,53 @@ parameters:
   # instantaneous rival term sees nothing. tau shapes exp(-d/tau) back over at
   # most INHIB_MAXW = 16 hops (85 ms). Inert while inhibit_gain = 0.
   - { name: inhibit_tau_hops, display: "Inhibition Decay (hops)", group: "Picking", type: float, min: 0.5, max: 16.0, default: 6.0 }
+
+  # ---- 2D multi-feature classifier ----------------------------------------
+  # A weighted decision over the parallel features pass, replacing bare flux
+  # thresholding. 2C3 proved by measurement that the snare lane's false
+  # positives are the kick's DECAY: a real onset, equal in level to a snare and
+  # offset a fixed 43 ms, differing only in timbre. Nothing level- or
+  # timing-based can separate them; centroid and flatness can.
+  #
+  # WEIGHTS ARE MEASURED, NOT CHOSEN. diag_features.py collects the feature
+  # vector at every snare firing on the eight non-held-out patterns and labels
+  # each against ground truth; fit_classifier.py fits a logistic model to those
+  # 115 true / 255 false firings. Unclassified F1 0.474 -> fitted 0.766.
+  # Re-run both scripts to change these; never hand-tune them, and never fit on
+  # a held-out pattern.
+  #
+  # ENUM DEFAULT IS THE INDEX, NOT THE LABEL (see the note further down; the
+  # label form cost a full corpus run). 0 = Off = the scored 2C1 detector.
+  - { name: classify_mode, display: "Classifier", group: "Picking", type: enum, options: ["Off", "Snare Only", "All Lanes"], default: 0 }
+  # MODEL IS cent + flatness ONLY. All four features were fitted first; adding
+  # energy and decay measurably made it WORSE on the tuning sample -- pooled
+  # F1 0.767 with recall 0.817, against 0.773 / 0.843 for the two-feature model.
+  # Recall is the binding constraint (the criterion allows almost no loss), so
+  # the smaller model wins on the metric that matters and carries less
+  # overfitting risk into the held-out evaluation. w_decay and w_energy are kept
+  # as live parameters at 0.0 so the comparison can be re-run without a rebuild.
+  #
+  # Both surviving weights are POSITIVE, which is the physically expected sign:
+  # a real snare is a noise burst, so it sits higher in the band (centroid) and
+  # is flatter than the kick tail it competes with. The earlier four-feature fit
+  # gave flatness a NEGATIVE weight, an artefact of its correlation with
+  # centroid, and that model generalised worse.
+  #
+  # OPERATING POINT. The frontier has a cliff: shift +1.00 gives P 0.713 and
+  # +1.25 gives P 0.503, for the same recall. The default sits one step BACK
+  # from that edge at +0.75 (P 0.725, R 0.826, F1 0.772 versus 0.773 at the
+  # knee) -- an all-but-identical score with margin, rather than the nominal
+  # optimum balanced on a discontinuity.
+  - { name: classify_bias, display: "Verdict Bias",  group: "Picking", type: float, min: -60.0, max: 10.0, default: -28.8753 }
+  - { name: w_cent,        display: "Weight Centroid", group: "Picking", type: float, min: -80.0, max: 80.0, default: 25.5723 }
+  - { name: w_flat,        display: "Weight Flatness", group: "Picking", type: float, min: -80.0, max: 80.0, default: 18.9192 }
+  - { name: w_decay,       display: "Weight Decay",    group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
+  - { name: w_energy,      display: "Weight Energy",   group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
+  # Moments over ARRIVING energy (SuperFlux) rather than total energy. Defaults
+  # 0.0 until the refit measures them, so adding these features cannot change
+  # the scored model by merely existing.
+  - { name: w_centD,       display: "Weight Centroid (flux)", group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
+  - { name: w_flatD,       display: "Weight Flatness (flux)", group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
 
   - { name: rgn0_lo_hz,   display: "Region 0 Low (Hz)",   group: "Region 0 - Kick",  type: float, min: 10.0,  max: 2000.0,  default: 25.0 }
   - { name: rgn0_hi_hz,   display: "Region 0 High (Hz)",  group: "Region 0 - Kick",  type: float, min: 20.0,  max: 4000.0,  default: 200.0 }
@@ -169,6 +218,20 @@ passes:
       - { slot: 3, source: "buffer:regions" }
     output: "buffer:lstate"
 
+  # Pass B2 - 2D per-region feature vector. PARALLEL by construction: these are
+  # per-bin reductions and must not run inside the single-threaded picker.
+  - name: features
+    shader: features.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:spec" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:regions" }
+    output: "buffer:fstate"
+
   # Pass C - peak picking, single thread, bounded to at most 16 lanes.
   - name: pick
     shader: pick.hlsl
@@ -182,6 +245,7 @@ passes:
       - { slot: 2, source: "data:0" }
       # Only for the verified producer header captured by the whitening pass.
       - { slot: 3, source: "buffer:spec" }
+      - { slot: 4, source: "buffer:fstate" }
     output: "buffer:pstate"
 
   - name: commit
@@ -226,6 +290,21 @@ data_outputs:
       - { name: f5, type: float }
       - { name: f6, type: float }
       - { name: f7, type: float }
+
+  # 2D feature vector, [slot*16 + lane] over the 64-hop spectrum ring. Exposed
+  # so the offline separability study and the console verdict read the SAME
+  # numbers the picker decided on, rather than each re-deriving them.
+  - name: "Features"
+    buffer: "fstate"
+    schema:
+      - { name: cent,     type: float }
+      - { name: flatness, type: float }
+      - { name: decay,    type: float }
+      - { name: energy,   type: float }
+      - { name: gen,      type: float }
+      - { name: spos,     type: float }
+      - { name: centD,    type: float }
+      - { name: flatD,    type: float }
 
   - name: "Hits"
     buffer: "hits"

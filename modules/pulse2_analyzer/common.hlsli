@@ -26,6 +26,20 @@ struct SP { float y, p, d, spare; };   // whitened, peak, superflux
 // the picker's own threshold and accept flag live in the pstate trace ring.
 struct LS { float flux, gen, rsvd, spos; };
 
+// 2D feature vector, one per (hop slot, lane), computed in a PARALLEL pass.
+// The peak-picker is single-threaded, so per-bin reductions must not live there.
+//
+//   cent : region-normalised spectral centre of mass, 0 = low edge of the
+//              lane's own span, 1 = high edge. Lane-independent by construction
+//              so one weight set can serve every lane.
+//   flatness : exp(mean(log Y)) / mean(Y) over the region, the geometric-to-
+//              arithmetic mean ratio. ~1 for noise, ~0 for a tonal peak.
+//   decay    : E[n] / E[n-2], the temporal decay ratio. > 1 while energy is
+//              arriving, < 1 on a tail.
+//   energy   : the region-weighted mean of whitened magnitude, kept so the
+//              ratio above can be audited rather than trusted.
+struct FS { float cent, flatness, decay, energy, gen, spos, centD, flatD; };
+
 static const uint NBINS    = 1024u;
 static const uint HOPS     = 64u;     // Spectrum ring capacity
 static const uint PEAKBASE = 65536u;  // spec[PEAKBASE + k] holds the running peak
