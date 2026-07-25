@@ -1,0 +1,33 @@
+{
+  "_comment": [
+    "Maps corpus lane labels to detector lane ids. Lane naming is NOT hardcoded",
+    "in score_detector.py, so later user-named spectral regions score without",
+    "code changes: repoint `lanes` at whatever ids the detector emits.",
+    "",
+    "analysis_latency_ms is the MEASURED constant delay between a ground-truth",
+    "onset and the hop the detector reports it on. It is a property of the",
+    "analysis front end (2048-point FFT filling at hop 256), not of the",
+    "detector, and it is declared here rather than hidden inside the scorer.",
+    "Scores are reported BOTH raw and latency-compensated so the compensation",
+    "can never quietly manufacture a better number."
+  ],
+  "detector": "pulse_baseline",
+  "hits_port": "Hits",
+  "audio": "pulse2_audio",
+  "mel_slot": 2,
+  "lanes": {
+    "kick": 0,
+    "snare": 1,
+    "hat": 2
+  },
+  "beat_lane": 3,
+  "tolerance_ms": 25.0,
+  "analysis_latency_ms": {
+    "kick": 12.06,
+    "snare": 11.98,
+    "hat": 11.81,
+    "beat": 12.0
+  },
+  "hop_size": 256,
+  "sample_rate": 48000
+}

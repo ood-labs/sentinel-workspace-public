@@ -1,0 +1,396 @@
+{
+  "name": "sparse_90",
+  "sample_rate": 48000,
+  "channels": 2,
+  "bit_depth": 16,
+  "duration_samples": 960000,
+  "duration_seconds": 20.0,
+  "role": "pattern",
+  "held_out": false,
+  "targets": "low onset density; tempo stability",
+  "tempo": {
+    "kind": "constant",
+    "bpm_start": 90.0,
+    "bpm_end": 90.0
+  },
+  "grid": {
+    "steps_per_beat": 4,
+    "bar_steps": 16
+  },
+  "levels_dbfs": {
+    "kick": -6.0,
+    "snare": -9.0,
+    "hat": -18.0
+  },
+  "lane_counts": {
+    "kick": 8,
+    "snare": 7,
+    "hat": 15
+  },
+  "beat_count": 30,
+  "hits": [
+    {
+      "lane": "hat",
+      "sample": 0,
+      "time": 0.0,
+      "gain_db": -18.0,
+      "step": 0
+    },
+    {
+      "lane": "kick",
+      "sample": 0,
+      "time": 0.0,
+      "gain_db": -6.0,
+      "step": 0
+    },
+    {
+      "lane": "hat",
+      "sample": 64000,
+      "time": 1.333333333,
+      "gain_db": -18.0,
+      "step": 8
+    },
+    {
+      "lane": "snare",
+      "sample": 64000,
+      "time": 1.333333333,
+      "gain_db": -9.0,
+      "step": 8
+    },
+    {
+      "lane": "hat",
+      "sample": 128000,
+      "time": 2.666666667,
+      "gain_db": -18.0,
+      "step": 16
+    },
+    {
+      "lane": "kick",
+      "sample": 128000,
+      "time": 2.666666667,
+      "gain_db": -6.0,
+      "step": 16
+    },
+    {
+      "lane": "hat",
+      "sample": 192000,
+      "time": 4.0,
+      "gain_db": -18.0,
+      "step": 24
+    },
+    {
+      "lane": "snare",
+      "sample": 192000,
+      "time": 4.0,
+      "gain_db": -9.0,
+      "step": 24
+    },
+    {
+      "lane": "hat",
+      "sample": 256000,
+      "time": 5.333333333,
+      "gain_db": -18.0,
+      "step": 32
+    },
+    {
+      "lane": "kick",
+      "sample": 256000,
+      "time": 5.333333333,
+      "gain_db": -6.0,
+      "step": 32
+    },
+    {
+      "lane": "hat",
+      "sample": 320000,
+      "time": 6.666666667,
+      "gain_db": -18.0,
+      "step": 40
+    },
+    {
+      "lane": "snare",
+      "sample": 320000,
+      "time": 6.666666667,
+      "gain_db": -9.0,
+      "step": 40
+    },
+    {
+      "lane": "hat",
+      "sample": 384000,
+      "time": 8.0,
+      "gain_db": -18.0,
+      "step": 48
+    },
+    {
+      "lane": "kick",
+      "sample": 384000,
+      "time": 8.0,
+      "gain_db": -6.0,
+      "step": 48
+    },
+    {
+      "lane": "hat",
+      "sample": 448000,
+      "time": 9.333333333,
+      "gain_db": -18.0,
+      "step": 56
+    },
+    {
+      "lane": "snare",
+      "sample": 448000,
+      "time": 9.333333333,
+      "gain_db": -9.0,
+      "step": 56
+    },
+    {
+      "lane": "hat",
+      "sample": 512000,
+      "time": 10.666666667,
+      "gain_db": -18.0,
+      "step": 64
+    },
+    {
+      "lane": "kick",
+      "sample": 512000,
+      "time": 10.666666667,
+      "gain_db": -6.0,
+      "step": 64
+    },
+    {
+      "lane": "hat",
+      "sample": 576000,
+      "time": 12.0,
+      "gain_db": -18.0,
+      "step": 72
+    },
+    {
+      "lane": "snare",
+      "sample": 576000,
+      "time": 12.0,
+      "gain_db": -9.0,
+      "step": 72
+    },
+    {
+      "lane": "hat",
+      "sample": 640000,
+      "time": 13.333333333,
+      "gain_db": -18.0,
+      "step": 80
+    },
+    {
+      "lane": "kick",
+      "sample": 640000,
+      "time": 13.333333333,
+      "gain_db": -6.0,
+      "step": 80
+    },
+    {
+      "lane": "hat",
+      "sample": 704000,
+      "time": 14.666666667,
+      "gain_db": -18.0,
+      "step": 88
+    },
+    {
+      "lane": "snare",
+      "sample": 704000,
+      "time": 14.666666667,
+      "gain_db": -9.0,
+      "step": 88
+    },
+    {
+      "lane": "hat",
+      "sample": 768000,
+      "time": 16.0,
+      "gain_db": -18.0,
+      "step": 96
+    },
+    {
+      "lane": "kick",
+      "sample": 768000,
+      "time": 16.0,
+      "gain_db": -6.0,
+      "step": 96
+    },
+    {
+      "lane": "hat",
+      "sample": 832000,
+      "time": 17.333333333,
+      "gain_db": -18.0,
+      "step": 104
+    },
+    {
+      "lane": "snare",
+      "sample": 832000,
+      "time": 17.333333333,
+      "gain_db": -9.0,
+      "step": 104
+    },
+    {
+      "lane": "hat",
+      "sample": 896000,
+      "time": 18.666666667,
+      "gain_db": -18.0,
+      "step": 112
+    },
+    {
+      "lane": "kick",
+      "sample": 896000,
+      "time": 18.666666667,
+      "gain_db": -6.0,
+      "step": 112
+    }
+  ],
+  "beats": [
+    {
+      "index": 0,
+      "sample": 0,
+      "time": 0.0
+    },
+    {
+      "index": 1,
+      "sample": 32000,
+      "time": 0.666666667
+    },
+    {
+      "index": 2,
+      "sample": 64000,
+      "time": 1.333333333
+    },
+    {
+      "index": 3,
+      "sample": 96000,
+      "time": 2.0
+    },
+    {
+      "index": 4,
+      "sample": 128000,
+      "time": 2.666666667
+    },
+    {
+      "index": 5,
+      "sample": 160000,
+      "time": 3.333333333
+    },
+    {
+      "index": 6,
+      "sample": 192000,
+      "time": 4.0
+    },
+    {
+      "index": 7,
+      "sample": 224000,
+      "time": 4.666666667
+    },
+    {
+      "index": 8,
+      "sample": 256000,
+      "time": 5.333333333
+    },
+    {
+      "index": 9,
+      "sample": 288000,
+      "time": 6.0
+    },
+    {
+      "index": 10,
+      "sample": 320000,
+      "time": 6.666666667
+    },
+    {
+      "index": 11,
+      "sample": 352000,
+      "time": 7.333333333
+    },
+    {
+      "index": 12,
+      "sample": 384000,
+      "time": 8.0
+    },
+    {
+      "index": 13,
+      "sample": 416000,
+      "time": 8.666666667
+    },
+    {
+      "index": 14,
+      "sample": 448000,
+      "time": 9.333333333
+    },
+    {
+      "index": 15,
+      "sample": 480000,
+      "time": 10.0
+    },
+    {
+      "index": 16,
+      "sample": 512000,
+      "time": 10.666666667
+    },
+    {
+      "index": 17,
+      "sample": 544000,
+      "time": 11.333333333
+    },
+    {
+      "index": 18,
+      "sample": 576000,
+      "time": 12.0
+    },
+    {
+      "index": 19,
+      "sample": 608000,
+      "time": 12.666666667
+    },
+    {
+      "index": 20,
+      "sample": 640000,
+      "time": 13.333333333
+    },
+    {
+      "index": 21,
+      "sample": 672000,
+      "time": 14.0
+    },
+    {
+      "index": 22,
+      "sample": 704000,
+      "time": 14.666666667
+    },
+    {
+      "index": 23,
+      "sample": 736000,
+      "time": 15.333333333
+    },
+    {
+      "index": 24,
+      "sample": 768000,
+      "time": 16.0
+    },
+    {
+      "index": 25,
+      "sample": 800000,
+      "time": 16.666666667
+    },
+    {
+      "index": 26,
+      "sample": 832000,
+      "time": 17.333333333
+    },
+    {
+      "index": 27,
+      "sample": 864000,
+      "time": 18.0
+    },
+    {
+      "index": 28,
+      "sample": 896000,
+      "time": 18.666666667
+    },
+    {
+      "index": 29,
+      "sample": 928000,
+      "time": 19.333333333
+    }
+  ],
+  "peak_full_scale": 0.581301
+}
