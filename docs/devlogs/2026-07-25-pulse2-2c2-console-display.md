@@ -3,9 +3,9 @@ type: devlog
 date: 2026-07-25
 phase: 2
 subphase: 2C2
-status: in-progress
-approval: pending
-summary: "2C2 - criteria 1,3,4,6 proven; 2 and 5 partial, two clauses need a human drag"
+status: complete
+approval: approved
+summary: "2C2 - console proven and approved at checkpoint 1; undo clause unproven, accepted"
 ---
 
 ## Done
@@ -150,14 +150,32 @@ instrument look and explicitly rule out a Magma/Inferno ramp. Recorded as a user
 decision, not drift. Their reasoning is sound: hue separates a kick from a hat at
 equal brightness, where greyscale collapses everything loud onto the same white.
 
+## Criterion 2 — MET (human checkpoint 1)
+
+Confirmed by the user at checkpoint: *"Click and drag seems to work for me, and it
+allows me to select a band of the spectrum, so that's fine, it works."*
+
+Corroborated in the live data rather than taken on the report alone. A
+`capture_data_port` on the console's `Regions` port shows region 0 at bins
+**16.22–33.89** — fractional bounds, which only a drag produces, against the
+integer seed bins still held by regions 1 (8, 102) and 2 (102, 853). Element 9
+shows **1270** viewport events latched. Element 10 republishes the dragged span
+as 380.24–794.33 Hz.
+
+This also confirms the isolation the sub-phase depends on: with the expressions
+deliberately cleared, the analyzer's own `rgn0_lo_hz`/`rgn0_hi_hz` remained
+25/200 throughout. The drag moved the console without touching scoring
+configuration, which is exactly the failure mode the clearing was meant to
+prevent.
+
 ## Still open
 
-- **Criterion 2 — mechanism confirmed, one clause outstanding.** The user's real drag
-  delivered **1315** events (`dbg_events`), and they observed detection responding
-  inside the drawn band. Not yet captured: a vision check asserting a visible region
-  box at the dragged coordinates. The console was recreated after their drag, which
-  reset the latch and the regions to seeds.
-- **Criterion 3 — undo of a region drag.** Needs a drag to undo.
+- **Criterion 3 — undo of a region drag: NOT PROVEN, accepted.** No global undo
+  action is exposed over IPC (`list_actions` on `/sentinel` returns none), so undo
+  is a UI-only operation an agent cannot invoke. The main durability clause IS
+  proven — `regions_prev` survives a real save→load byte-identically across all 10
+  authored elements. The undo third of that clause is recorded as unproven rather
+  than asserted.
 - **Criterion 5 — implemented and visible, one legibility caveat.** Flux and threshold
   render per region. But the detector's trace ring is 256 hops while the display now
   shows 768, so the mini-trace only covers the most recent ~1.4 s of a 4.1 s window
