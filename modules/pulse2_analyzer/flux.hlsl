@@ -18,6 +18,7 @@
 
 StructuredBuffer<SP> Spec : register(t0);
 StructuredBuffer<PS> Prev : register(t1);
+StructuredBuffer<RG> Rgn  : register(t3);
 RWStructuredBuffer<LS> Lane : register(u0);
 
 [numthreads(64, 1, 1)]
@@ -58,43 +59,46 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // hops in steady state.
     if ((uint)Lane[slotIdx * MAXLANES + lane].gen == myGen) return;
 
-    // Bin width comes from the header the whitening pass captured off a
-    // VERIFIED slot, never from _Data0[0]. Reading the unvalidated element 0
-    // was measured returning zeros, which made binHz 1.0 and silently
-    // reinterpreted bin indices as Hz: the kick lane became bins 25..199
-    // (~0.6-4.7 kHz) and the hat lane emptied entirely.
-    float binHz = hdr_sample_rate(Spec, slotIdx) / hdr_fft_size(Spec, slotIdx);
-    if (!(binHz > 0.0) || binHz > 1000.0) return;   // keep the previous value
-
-    float lowHz = lane_low_hz;
-    float sK = split_kick_hz;
-    float sS = max(split_snare_hz, sK + binHz);
-    float highHz = min(lane_high_hz, (float)(vcount - 1u) * binHz);
-
     float g = gamma_comp;
     float acc = 0.0;
-    float n = 0.0;
+    float wsum = 0.0;
 
-    [loop] for (uint k = 0u; k < vcount; ++k) {
-        if (lane_of_bin(k, binHz, lowHz, sK, sS, highHz) != lane) continue;
+    // Region-weighted reduction (2C1). The lane's bins and their weights come
+    // from the region buffer rather than a hard frequency split, so a
+    // programmatic region and a console-drawn one take the identical path.
+    // Only this lane's regions are visited, and only over their own bin spans.
+    [loop] for (uint ri = 0u; ri < MAXREGIONS; ++ri) {
+        RG r = Rgn[ri];
+        if (r.enabled < 0.5 || (uint)r.lane != lane) continue;
 
-        float y = compress(Spec[slotIdx * NBINS + k].y, g);
+        float pad = region_bin_pad(r);
+        int k0 = (int)max(r.binLo - pad, 0.0);
+        int k1 = (int)min(r.binHi + pad, (float)(vcount - 1u));
 
-        // max over the previous frame's k-2 .. k+2
-        float mx = 0.0;
-        [unroll] for (int m = -2; m <= 2; ++m) {
-            int kk = (int)k + m;
-            if (kk < 0 || kk >= (int)vcount) continue;
-            mx = max(mx, compress(Spec[prevSlot * NBINS + (uint)kk].y, g));
+        [loop] for (int k = k0; k <= k1; ++k) {
+            float w = region_weight(r, 0.0, (float)k);
+            if (w <= 0.0) continue;
+
+            float y = compress(Spec[slotIdx * NBINS + (uint)k].y, g);
+
+            // max over the previous frame's k-2 .. k+2
+            float mx = 0.0;
+            [unroll] for (int m = -2; m <= 2; ++m) {
+                int kk = k + m;
+                if (kk < 0 || kk >= (int)vcount) continue;
+                mx = max(mx, compress(Spec[prevSlot * NBINS + (uint)kk].y, g));
+            }
+
+            acc += w * max(0.0, y - mx);   // half-wave rectified: arriving energy only
+            wsum += w;
         }
-
-        acc += max(0.0, y - mx);        // half-wave rectified: only energy ARRIVING
-        n += 1.0;
     }
 
-    // Mean rather than sum, so a lane spanning 900 bins is not automatically
-    // louder than one spanning 8 and the lanes share one threshold scale.
-    float flux = acc / max(n, 1.0);
+    // Weighted MEAN rather than sum, so a lane spanning 900 bins is not
+    // automatically louder than one spanning 8 and the lanes share one
+    // threshold scale. With a rectangular region of unit gain this is exactly
+    // the 2B fixed-lane mean.
+    float flux = acc / max(wsum, 1e-6);
 
     // Hits export timebase. Taken from the whitening pass's guarded capture,
     // NOT re-read from the producer ring: the ring is written continuously by

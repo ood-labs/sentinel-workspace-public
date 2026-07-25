@@ -370,6 +370,8 @@ def main() -> int:
     ap.add_argument("--compensate", action="store_true",
                     help="subtract the declared constant analysis latency "
                          "(analysis only; committed tables are raw)")
+    ap.add_argument("--set", nargs="*", default=[], metavar="NAME=VALUE",
+                    help="detector parameter overrides, re-applied after every reload")
     ap.add_argument("--no-reset", action="store_true",
                     help="skip the per-pattern force_reload")
     args = ap.parse_args()
@@ -397,6 +399,7 @@ def main() -> int:
     detector = cfg["detector"]
     runner = AudioRunner(sen, cfg["audio"], detector, hits_port=cfg["hits_port"],
                          fft_size=args.fft_size)
+    overrides = dict(kv.split("=", 1) for kv in args.set)
     polls = {"bpm": "bpm", "tempo_conf": "tempo_conf"}
 
     print(f"detector={detector}  corpus={corpus_id}  fft_size={args.fft_size}  "
@@ -406,7 +409,13 @@ def main() -> int:
     results = []
     for meta in patterns:
         if not args.no_reset:
-            reset_detector(sen, detector, cfg["audio"], mel_slot=cfg["mel_slot"])
+            # force_reload resets parameters to manifest defaults, so an
+            # override has to be re-applied for EVERY pattern rather than set
+            # once before the run. Editing the manifest default instead does
+            # NOT take on an already-created pipeline: it silently scores the
+            # old value and prints a table that looks like a real result.
+            reset_detector(sen, detector, cfg["audio"], mel_slot=cfg["mel_slot"],
+                           params=overrides)
         runner.configure_file(meta["_wav"], fft_size=args.fft_size)
         # fft_size is an enum; reading it back returns the INDEX into
         # ["512","1024","2048","4096"], not the value.

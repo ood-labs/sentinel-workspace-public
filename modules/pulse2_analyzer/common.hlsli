@@ -13,6 +13,20 @@
 // the whole buffer on a single thread each cook. commit mirrors it into
 // pstate_prev so passes A/B/C read a stable snapshot.
 
+// A detection region, stored in SPECTROGRAM COORDINATES (hop index, bin index)
+// and never in panel UV. Panel space is a rendering concern that changes with
+// dock size; the analysis must not. `spec_to_panel` below is the single
+// conversion, shared by the reduction, the render, and later by 2C2's pick/drag.
+//
+//   binLo/binHi : inclusive bin span
+//   hopLo/hopHi : inclusive span in hops-back-from-newest (0 = newest hop)
+//   profile     : 0 = rectangular, 1 = Gaussian across the BIN axis
+//   lane        : which output lane this region feeds
+struct RG { float binLo, binHi, hopLo, hopHi, profile, gain, enabled, lane; };
+static const uint MAXREGIONS = 8u;
+static const float PROFILE_RECT = 0.0;
+static const float PROFILE_GAUSS = 1.0;
+
 struct PS { float a, b, c, d, e, f, g, h; };
 struct SP { float y, p, d, spare; };   // whitened, peak, superflux
 // `gen` is the hop this lane slot's flux was computed FROM, so pass B can skip
@@ -61,14 +75,43 @@ float compress(float x, float gamma) {
     return log(1.0 + gamma * max(x, 0.0));
 }
 
-// Which lane does bin k belong to? Returns 0xFFFFFFFF for bins outside the
-// analysed span. Splits are authored in Hz and converted with the producer's
-// own reported bin width, never assumed.
-uint lane_of_bin(uint k, float binHz, float lowHz, float splitKick,
-                 float splitSnare, float highHz) {
-    float f = (float)k * binHz;
-    if (f < lowHz || f > highHz) return 0xFFFFFFFFu;
-    if (f < splitKick)  return 0u;
-    if (f < splitSnare) return 1u;
-    return 2u;
+// Gaussian sigma for a region: the authored span is treated as +/-2 sigma, so
+// the profile has fallen to ~0.14 at the region edge instead of being cut off.
+float region_sigma(RG r) { return max((r.binHi - r.binLo) * 0.25, 0.5); }
+
+// How far outside the authored span a Gaussian still contributes meaningfully.
+float region_bin_pad(RG r) {
+    return (r.profile == PROFILE_GAUSS) ? (2.0 * region_sigma(r)) : 0.0;
+}
+
+// Weight of bin `bin` at `hopsBack` hops behind the newest hop.
+//
+// The profile shapes the BIN axis only; the hop axis is always a rectangular
+// gate. A Gaussian across time would weight a hop by how old it is, which is a
+// property of the display and not of the audio, and would make the same onset
+// score differently depending on when it was looked at.
+float region_weight(RG r, float hopsBack, float bin) {
+    if (r.enabled < 0.5) return 0.0;
+    if (hopsBack < r.hopLo || hopsBack > r.hopHi) return 0.0;
+
+    if (r.profile == PROFILE_GAUSS) {
+        float c = 0.5 * (r.binLo + r.binHi);
+        float s = region_sigma(r);
+        if (bin < r.binLo - 2.0 * s || bin > r.binHi + 2.0 * s) return 0.0;
+        float t = (bin - c) / s;
+        return r.gain * exp(-0.5 * t * t);
+    }
+    if (bin < r.binLo || bin > r.binHi) return 0.0;
+    return r.gain;
+}
+
+// The ONE spectrogram <-> panel transform. `hopsBack` grows to the left so the
+// newest hop sits at the right edge; bin 0 sits at the bottom.
+float2 spec_to_panel(float hopsBack, float bin, float nHops, float nBins) {
+    return float2(1.0 - hopsBack / max(nHops - 1.0, 1.0),
+                  bin / max(nBins - 1.0, 1.0));
+}
+float2 panel_to_spec(float2 uv, float nHops, float nBins) {
+    return float2((1.0 - uv.x) * max(nHops - 1.0, 1.0),
+                  uv.y * max(nBins - 1.0, 1.0));
 }

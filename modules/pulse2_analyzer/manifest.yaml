@@ -46,6 +46,9 @@ buffers:
   - { name: pstate,      structured: true, element_size: 32, element_count: 1552, persistent: true }
   - { name: pstate_prev, structured: true, element_size: 32, element_count: 1552, persistent: true }
   - { name: hits,        structured: true, element_size: 16, element_count: 512 }
+  # Detection regions in spectrogram coordinates. 2C1 authors these from the
+  # parameters below; 2C2 will author them from the console instead.
+  - { name: regions,     structured: true, element_size: 32, element_count: 8, persistent: true }
 
 parameters:
   - { name: whiten_decay,   display: "Whitening Decay",   group: "Whitening", type: float, min: 0.90, max: 0.9999, default: 0.992 }
@@ -66,10 +69,38 @@ parameters:
   - { name: peak_floor,     display: "Peak Floor",        group: "Whitening", type: float, min: 0.000000001, max: 0.001, default: 0.00005 }
   - { name: gamma_comp,     display: "Log Compression",   group: "Whitening", type: float, min: 0.5,  max: 40.0,   default: 8.0 }
 
-  - { name: split_kick_hz,  display: "Kick/Snare Split (Hz)",  group: "Lanes", type: float, min: 60.0,   max: 600.0,   default: 200.0 }
-  - { name: split_snare_hz, display: "Snare/Hat Split (Hz)",   group: "Lanes", type: float, min: 800.0,  max: 8000.0,  default: 2400.0 }
-  - { name: lane_low_hz,    display: "Lane Low Cutoff (Hz)",   group: "Lanes", type: float, min: 10.0,   max: 120.0,   default: 25.0 }
-  - { name: lane_high_hz,   display: "Lane High Cutoff (Hz)",  group: "Lanes", type: float, min: 8000.0, max: 24000.0, default: 20000.0 }
+  # Regions replace the 2B fixed frequency split. Authored in Hz because that is
+  # the meaningful unit, but STORED as bin indices by regionsetup.hlsl. The
+  # defaults reproduce the 2B bands exactly (25-200 / 200-2400 / 2400-20000 with
+  # rectangular unit-gain profiles), so the region path is proven against the 2B
+  # numbers rather than against a differently-tuned detector.
+  - { name: rgn0_lo_hz,   display: "Region 0 Low (Hz)",   group: "Region 0 - Kick",  type: float, min: 10.0,  max: 2000.0,  default: 25.0 }
+  - { name: rgn0_hi_hz,   display: "Region 0 High (Hz)",  group: "Region 0 - Kick",  type: float, min: 20.0,  max: 4000.0,  default: 200.0 }
+  # ENUM DEFAULTS MUST BE THE INDEX, NOT THE LABEL. `default: "Gaussian"`
+  # parses without error and then silently resolves to index 0, so the
+  # module runs rectangular while the manifest reads Gaussian. This cost a
+  # full corpus run that produced a plausible-looking but wrong table.
+  # Editing a default also does NOT reach an already-created pipeline:
+  # destroy and recreate, or override the parameter explicitly.
+  #
+  # Gaussian by default for the kick region only, measured on non-held-out
+  # patterns: kick F1 breakbeat_170 0.659 -> 0.857, dense_140 0.868 -> 0.974,
+  # syncopated_funk_105 0.800 -> 0.971. Tapering the edges suppresses the
+  # click and harmonic bleed that a hard band boundary lets in. The same
+  # profile on the snare and hat regions did NOT help (dense_140 snare
+  # -0.017, hat unchanged), so those stay rectangular.
+  - { name: rgn0_profile, display: "Region 0 Profile",    group: "Region 0 - Kick",  type: enum, options: ["Rectangular", "Gaussian"], default: 1 }
+  - { name: rgn0_gain,    display: "Region 0 Gain",       group: "Region 0 - Kick",  type: float, min: 0.0,   max: 4.0,     default: 1.0 }
+
+  - { name: rgn1_lo_hz,   display: "Region 1 Low (Hz)",   group: "Region 1 - Snare", type: float, min: 40.0,  max: 4000.0,  default: 200.0 }
+  - { name: rgn1_hi_hz,   display: "Region 1 High (Hz)",  group: "Region 1 - Snare", type: float, min: 200.0, max: 12000.0, default: 2400.0 }
+  - { name: rgn1_profile, display: "Region 1 Profile",    group: "Region 1 - Snare", type: enum, options: ["Rectangular", "Gaussian"], default: "Rectangular" }
+  - { name: rgn1_gain,    display: "Region 1 Gain",       group: "Region 1 - Snare", type: float, min: 0.0,   max: 4.0,     default: 1.0 }
+
+  - { name: rgn2_lo_hz,   display: "Region 2 Low (Hz)",   group: "Region 2 - Hat",   type: float, min: 200.0, max: 16000.0, default: 2400.0 }
+  - { name: rgn2_hi_hz,   display: "Region 2 High (Hz)",  group: "Region 2 - Hat",   type: float, min: 800.0, max: 24000.0, default: 20000.0 }
+  - { name: rgn2_profile, display: "Region 2 Profile",    group: "Region 2 - Hat",   type: enum, options: ["Rectangular", "Gaussian"], default: "Rectangular" }
+  - { name: rgn2_gain,    display: "Region 2 Gain",       group: "Region 2 - Hat",   type: float, min: 0.0,   max: 4.0,     default: 1.0 }
 
   # Peak picking. No per-lane threshold floor exists by design: whitening
   # normalises every bin to 0..1 against its own running peak, which is what
@@ -100,6 +131,18 @@ passes:
       - { slot: 1, source: "buffer:pstate_prev" }
     output: "buffer:spec"
 
+  # Region authoring: parameters -> region buffer, in spectrogram coordinates.
+  - name: regionsetup
+    shader: regionsetup.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 8
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:spec" }
+      - { slot: 1, source: "data:0" }
+    output: "buffer:regions"
+
   # Pass B - SuperFlux, reading ONLY the completed buffer from pass A.
   - name: flux
     shader: flux.hlsl
@@ -111,6 +154,7 @@ passes:
       - { slot: 0, source: "buffer:spec" }
       - { slot: 1, source: "buffer:pstate_prev" }
       - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:regions" }
     output: "buffer:lstate"
 
   # Pass C - peak picking, single thread, bounded to at most 16 lanes.
