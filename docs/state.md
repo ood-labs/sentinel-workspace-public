@@ -49,3 +49,39 @@ Tracked separately, out of Phase 2 scope:
 ## Last devlog
 
 `docs/devlogs/2026-07-23-axiom-choir-example.md` - complete, approved.
+
+## Phase 2 - Audio Analysis v2 (in progress, 2026-07-25)
+
+Complete and committed: 2A1 corpus + onset contract, 2A2 scorer/baseline, 2B core
+detector (aggregate F1 0.774 vs 0.706 baseline), 2C1 region masks (kick 0.909,
+aggregate 0.797).
+
+**2C2 is BLOCKED at criterion 2 and is human checkpoint 1.**
+
+Proven: criterion 1 (display audio-driven and legible) — see
+`docs/devlogs/2026-07-25-pulse2-2c2-console-display.md`.
+
+Blocker: no available automation command delivers viewport pointer events to a
+Module. Tried `CLICK_AT`, `DRAG_AT` (both report ok, `method: imgui_injection`) and
+`sentinel_viewport pick` (rejected — needs a `selection` interaction). A
+position-independent event counter in the module (`dbg_events` control output) reads
+exactly 0 throughout, and the shipped `cryo_console` events module behaves the same
+way when probed, so the fault is the injection path and not the module.
+
+Two ways forward, user's call:
+1. Hand-verify the drag (open the `pulse2_console` tab, set Active Lane, drag
+   vertically). If `dbg_events` goes non-zero, criteria 2-5 close quickly.
+2. Redesign the interaction onto the host-owned selection path — declare regions as
+   selectable objects with `viewport.interactions: [selection]` and drive them via
+   `sentinel_viewport edit` four-phase transactions, which IS synthetically
+   automatable. Larger change; abandons raw pointer events.
+
+Not started: 2C3 lateral inhibition (the designed fix for the open 2C1 snare
+precision deficit, 0.31-0.34 — kick click bleeding into 200-2400 Hz), 2D, 2E1,
+2E2, 2F.
+
+Trap defused: the console publishes region edges as control outputs and
+`sentinel_expression` can bind them onto the analyzer's `rgn*_hz` parameters. Those
+expressions are deliberately CLEARED — with them bound, a panel drag would silently
+override the scorer's writes and change scoring configuration. Re-apply only for
+interactive use; clear before any corpus run.
