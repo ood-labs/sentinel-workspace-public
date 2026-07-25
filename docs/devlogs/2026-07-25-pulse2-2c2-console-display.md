@@ -87,7 +87,30 @@ were the same fragile pattern that already cost one full corpus run.
   (c) the manifest `viewport.input` declaration may need something beyond what
       `modules/cryo_console` (a known-working events module) declares — though the two
       declarations are currently identical.
-  The next step is to compare against `cryo_console` live to isolate (b) from (a)/(c).
+  **ISOLATED — cause is (b).** Instantiated the shipped, known-working events module
+  `modules/cryo_console` as a probe and injected `CLICK_AT` and `DRAG_AT` at several
+  coordinates: its `gate_x` control output stayed pinned at its 0.42 init value. Cause
+  (c) is also ruled out by inspection — the two `viewport:` declarations are
+  structurally identical. Cause (a) is ruled out by the instrument itself: `dbg_events`
+  counts every delivered event *regardless of position*, so a mis-aimed pointer would
+  still have incremented it, and it reads exactly 0.
+
+  Conclusion: **the imgui-injection automation path does not feed the module viewport
+  event ring on this build.** Module events appear to require real OS pointer input.
+  Caveat recorded honestly: cryo_console's handler rejects events outside its pad rect,
+  so its unchanged value is weaker evidence taken alone — the position-independent
+  counter is what carries the conclusion.
+
+  This is a HARD BLOCKER for proving criterion 2 autonomously. Criterion 2 demands
+  "Real click-drag on the panel ... and `sentinel_viewport action=info` shows a
+  non-zero delivered boundary count", and no available automation command can deliver
+  one. 2C2 is human checkpoint 1, so the drag belongs to the human review pass anyway.
+
+  **To verify by hand:** open the `pulse2_console` tab, set Active Lane, and drag
+  vertically on the spectrogram. Expected: an amber band follows the cursor during the
+  drag and commits on release; `dbg_events` goes non-zero; `rgn0_lo_hz`/`rgn0_hi_hz`
+  move off 23.4375/187.5. If `dbg_events` stays 0 under a real drag, the fault is in
+  the module rather than the automation path.
 - **Criterion 3 (durable) — PARTIAL.** `sentinel_viewport action=state` reports
   non-zero captured bytes (352, 11 elements, `regions_prev`). Save/close/reopen
   byte-identity and undo-of-a-drag are NOT tested, and cannot be until placement works.
