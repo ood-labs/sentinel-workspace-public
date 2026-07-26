@@ -22,6 +22,11 @@ projects/*/proof/
 *.log
 # compiled shader caches (regenerated on load; build/GPU-specific)
 **/shader_cache/
+# Python caches and disposable audio-scoring sweeps are regenerated locally.
+**/__pycache__/
+*.py[cod]
+tools/audio_test/scores/_sweep_*.json
+tools/audio_test/scores/_sweep_*.txt
 # scratch: throwaway experiments + archived legacy modules. Never shipped.
 scratch/
 
