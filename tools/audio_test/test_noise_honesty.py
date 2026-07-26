@@ -16,6 +16,14 @@ Asserted on both:
   - tempo_conf decays below 0.1
   - BPM holds its last trusted value rather than wandering
   - kick/snare/hihat counts and beat_count do not advance
+  - the detector was genuinely locked beforehand, and is still cooking after
+
+The phase doc names `beat_pulse` for the third clause; this asserts on
+`beat_count` instead, which is strictly stronger. `beat_pulse` is a per-cook
+transient set from the same emission path as the counter (`Q.h = pulse` beside
+`Q.g = beats` in pll.hlsl), so polling it every 0.25 s would miss almost every
+pulse it was meant to catch. A `beat_count` that has not moved over the whole
+window proves no cook emitted a beat, hence `beat_pulse` was never raised.
 
     python test_noise_honesty.py
 """
@@ -68,6 +76,8 @@ def main() -> int:
         locked_bpm = gv("bpm")
         locked_conf = gv("tempo_conf")
 
+        frames_start = float(sen.pipeline_info(d)["stats"]["framesProcessed"])
+
         play(stem, SETTLE_S)
         base = {k: gv(k) for k in COUNTERS}
         confs, bpms = [], []
@@ -97,10 +107,19 @@ def main() -> int:
         offset = abs(bpms[-1] - locked_bpm)
         advanced = {k: after[k] - base[k] for k in COUNTERS if after[k] != base[k]}
 
+        # LIVENESS. Frozen confidence, a frozen BPM and flat counters are also
+        # exactly what a dead detector produces, so without this the test cannot
+        # tell "it gave up honestly" from "it stopped running". Two things are
+        # asserted: that it was genuinely locked before the silence (otherwise
+        # there was no tempo to give up), and that it is still cooking after.
+        frames_end = float(sen.pipeline_info(d)["stats"]["framesProcessed"])
+        alive = frames_end > frames_start
+        was_locked = locked_conf >= 0.25 and abs(locked_bpm - 128.0) < 2.0
+
         c1 = conf_max < 0.1
         c2 = spread == 0.0 and offset < 1.0
         c3 = not advanced
-        ok &= c1 and c2 and c3
+        ok &= c1 and c2 and c3 and alive and was_locked
 
         print(f"=== {stem} (locked on four_on_floor_128 at {locked_bpm:.2f} BPM, "
               f"conf {locked_conf:.3f})")
@@ -110,6 +129,8 @@ def main() -> int:
               f"{'PASS' if c2 else 'FAIL'} (spread 0, offset < 1)")
         print(f"    counters advanced           : {advanced or 'none'}   "
               f"{'PASS' if c3 else 'FAIL'}")
+        print(f"    still cooking / was locked  : "
+              f"{'PASS' if alive else 'FAIL'} / {'PASS' if was_locked else 'FAIL'}")
 
     print(f"\ncriterion 2: {'PASS' if ok else 'FAIL'}")
     return 0 if ok else 1

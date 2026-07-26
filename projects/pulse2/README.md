@@ -87,13 +87,18 @@ compensation). Full table in `tools/audio_test/scores/2E2.json`.
 | snare | 0.782 |
 | hat | 0.969 |
 
+Each figure is the mean across the patterns that actually contain that lane;
+patterns with no reference hits in a lane are excluded rather than scored as
+zero. Averaging all eleven patterns regardless gives 0.921 / 0.731 / 0.969, so
+the aggregation rule matters when comparing against other tables.
+
 Tempo is within 2 BPM on every pattern that locks. On a −44 dBFS noise floor and
 on digital silence, `tempo_conf` falls to 0.0000, BPM freezes at its last trusted
 value, and no counter advances — the failure this project exists to not repeat.
 A 30-minute continuous run held F1 to +0.000 and BPM within 127.55–127.77.
 
 **Known limitation.** Beat *continuity* (CMLc/AMLc) is well below target at
-roughly 0.02–0.83 depending on material. The clock itself is sound — intervals
+0.00–0.78 depending on material. The clock itself is sound — intervals
 are regular and no beats are dropped — but beat *placement* carries a
 pattern-dependent residual from the comb's phase argmax. Use `bpm` /
 `beat_period` / `beat_pulse` for tempo-locked motion; do not rely on individual

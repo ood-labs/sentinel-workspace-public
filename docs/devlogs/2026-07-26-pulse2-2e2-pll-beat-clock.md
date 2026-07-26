@@ -25,8 +25,13 @@ clock manufactures nothing from a −44 dBFS floor.
 
 **Criterion 3 — CMLc ≥ 0.75 steady / AMLc ≥ 0.85 corpus-wide: FAIL.** See below.
 
-**Criterion 4 — 30-minute soak: PASS.** `test_soak.py` (the run log is
-gitignored, so the progress samples are reproduced here):
+**Criterion 4 — 30-minute soak: PASS as specified; a stronger check added
+afterwards FAILS.** The criterion as written (BPM, phase and counters finite,
+F1 within 0.02 of the first minute) passed on the full 30-minute run recorded
+below. A post-audit hardening pass then added liveness and consistency
+assertions to the same test, and one of them fails — see Issues. The original
+clauses still pass; the new one describes a defect the criterion never asked
+about.
 
 ```
     t+  5.0 min  laps   14  bpm 127.74  conf 0.372  beats 3646  issues 0
@@ -100,11 +105,65 @@ period (a PI loop). With an observation whose phase scatters by a quarter beat
 the integral is a noise amplifier — dense_140's continuity fell 0.32 → 0.10. The
 parameter was removed rather than left at zero.
 
+## Post-landing audit + fixes
+
+Three parallel agents audited the landed work (code correctness, spec alignment,
+test coverage). No ship-blocking defect. Fixes applied:
+
+- **`_continuity` normalised by `len(est)`** (`tools/audio_test/metrics.py`).
+  Three beats against a hundred reference beats scored a perfect 1.0. Now
+  `max(len(ref), len(est))`, matching mir_eval. This moved every continuity
+  number in `scores/2E2.json` **down**; lane F1 is untouched.
+- **Loop gains were scaled by the wrong span** (`pll.hlsl`). `advanced` used
+  `judged - start` while the accumulator advances `start - limit`; with a snap
+  window open that inflated both gains by roughly an order of magnitude per
+  cook. Identical at the shipped `beat_snap = 0`, so no default behaviour
+  changed. Retesting the snap with it fixed helped one pattern (dense_140
+  0.43 → 0.55) and left the rest worse, so the snap stays disabled — but its
+  most likely mechanical cause is now ruled out.
+- **Cold-start guard was dead code** (`pll.hlsl`). `clamp(periodObs, 1.0, ...)`
+  then `if (period < 1.0)` can never fire, so a comb period of zero on the first
+  cooks became a period of 1.0 — one beat per hop, ~187 a second, flooding the
+  ring. Now gated on the observation being sane.
+- **Unsigned underflow if `judged` regresses below the persisted resume point**
+  (`pll.hlsl`). `beats` is persistent and `judged` is not derived from it, so an
+  asymmetric clear could wrap the span to ~4.3e9 and stall the accumulator
+  permanently. One-line `start = min(start, judged)`.
+- **Three tempo defects were invisible to the regression gate**, which only
+  covered lane F1 — every 2E2 bug left all three F1s at +0.000. The gate now
+  also fails on BPM error worsening by more than 0.5 or a metrical level
+  regressing from ok. Continuity is deliberately **not** gated: repeat runs on
+  unchanged code swing by 0.3 CMLc, so any useful threshold would fire on noise.
+- **Two new app-free test suites**, 18 tests, no running app required:
+  `test_metrics.py` and `test_ipc_cut.py`. The restart cut was extracted from
+  inside `run_pattern` into `cut_pre_restart()` so it could be tested at all;
+  one test asserts the exact failure mode that produced this session's false
+  twelve-lane regression failure.
+- **Both live tests could pass while dead.** `test_noise_honesty.py` now asserts
+  the detector was genuinely locked beforehand and is still cooking after, since
+  frozen confidence and flat counters are also what a crash produces.
+  `test_soak.py` now asserts the beat count keeps advancing while locked, since
+  its lane scores never included beats at all.
+
+Considered and rejected: gating continuity in the regression table (too noisy,
+above); a behavioural test for the disabled `beat_snap` path (inert at default,
+better written when it is enabled).
+
 ## Issues
 
-**Criterion 3 fails and I stopped rather than keep tuning.** Steady-pattern CMLc
-lands ~0.37–0.83 against ≥ 0.75, and AMLc ~0.02–0.83 against ≥ 0.85. Best
-corpus-wide figures are in `scores/2E2.json`.
+**Criterion 3 fails and I stopped rather than keep tuning.** CMLc lands
+**0.00–0.78** against ≥ 0.75, and AMLc 0.02–0.78 against ≥ 0.85. Only
+`hats_under_loud_kick_150` (0.78) comes close; `breakbeat_170` scores 0.02 and
+`four_on_floor_128` 0.19. Per-pattern figures in `scores/2E2.json`.
+
+An earlier draft of this entry quoted a floor of 0.37, which was wrong twice
+over: it silently excluded the two steady-tempo patterns that score near zero,
+and it predated a metric fix. `_continuity` normalised the longest correct run
+by `len(est)` alone, so a tracker emitting three beats against a hundred
+reference beats scored a perfect 1.0. The denominator is now
+`max(len(ref), len(est))`, matching mir_eval. Lane F1 is unaffected and the
+regression gate still passes at +0.000; only the continuity columns moved, and
+they moved down.
 
 What the beat train looks like after the fixes, on four_on_floor_128: 100% of
 intervals normal (458.7–506.7 ms, spread ±5%), **zero spacing rejections**, and
@@ -135,6 +194,25 @@ loosen the criterion, and did not tune against the two held-out patterns.
 deficit and carry it, re-scope the criterion, or authorise work on the comb's
 phase estimator itself (a finer theta grid, or anchoring emission to the nearest
 picked onset instead of the accumulator crossing).
+
+**NEW, found by the hardened soak test: the PLL's period does not converge to
+the tempo it is tracking.** On four_on_floor_128 the tempo stage publishes
+88.14 hops (127.6 BPM, correct) while the PLL settles at 93.09 hops (120.8 BPM),
+5.6% longer, with `free_wheeling` at 0.00 for the whole run — so the loop is
+locked and correcting every cook, and still sits away from its own target. The
+update is a plain exponential tracker toward `periodObs`, whose only fixed point
+is `periodObs`, so something else is acting on `period` and I did not find it
+before stopping.
+
+This is the same class of defect as the `tempo.hlsl` period/BPM inconsistency
+fixed earlier in this sub-phase, and it is very likely a direct contributor to
+the criterion 3 failure: a beat clock running 5.6% slow accumulates a quarter of
+a beat of drift every four or five beats, which is more than the continuity
+tolerance allows. **This is the first thing to chase when continuity is picked
+up again**, ahead of the snapping work.
+
+It was not caught earlier because nothing compared the two published tempi. The
+assertion is now in `test_soak.py` and is left FAILING rather than loosened.
 
 `drop_signal` / `drop_ring` / `beat_cycles` control outputs were added and kept —
 they are what proved no beat was ever being suppressed, which is invisible in any

@@ -178,10 +178,17 @@ parameters:
   # to ten. CMLc 0.36 -> 0.05 on four_on_floor and 0.43 -> 0.05 on
   # quiet_intro_drop, measured by toggling this one parameter.
   #
-  # The residual offset is almost exactly twice the window width, which points at
-  # the held-back accumulator's phase reference rather than at the snapping
-  # itself -- the loop appears to settle with a standing error of 2*skew. That is
-  # where to resume; the mechanism is left in place and off rather than deleted.
+  # A post-audit fix ruled out the most likely mechanical cause. The loop gains
+  # were being scaled by the span judged-start while the accumulator only
+  # advanced start-limit, which with a window open inflated them by roughly an
+  # order of magnitude every cook. Correcting that helped one pattern
+  # (dense_140 0.43 -> 0.55 with snapping on) and left the rest still worse
+  # (four_on_floor_128 0.40 -> 0.05, quiet_intro_drop_128 0.47 -> 0.16), so the
+  # over-gained loop was not the explanation and the default stays at 0.
+  #
+  # What remains suspect is the held-back accumulator's phase reference rather
+  # than the snapping itself. That is where to resume; the mechanism is left in
+  # place and off rather than deleted.
   - { name: beat_snap, display: "Beat Onset Snap", group: "Beat", type: float, min: 0.0, max: 0.4, default: 0.0 }
   # Confidence below which the loop stops correcting and free-wheels on its own
   # period. Free-wheeling holds the grid through a quiet bar or a breakdown; it

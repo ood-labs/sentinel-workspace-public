@@ -100,6 +100,47 @@ class Sentinel:
 # ---------------------------------------------------------------------------
 
 
+def cut_pre_restart(by_serial: dict) -> tuple[int, list[dict]]:
+    """Drop records left over from the previous playthrough, then order by time.
+
+    A few records land between reading the watermark and the restart taking
+    effect. Those carry the PREVIOUS playthrough's high sample positions, so the
+    restart boundary is found as a backwards step in sample position and
+    everything before it is dropped.
+
+    THE SCAN MUST RUN IN DETECTION ORDER, PER LANE, WHICH IS WHY THIS IS A
+    SEPARATE FUNCTION WITH ITS OWN TEST. A backwards step only exists while
+    records are ordered by serial. Sorting by sample position first makes one
+    impossible, so the scan silently becomes a no-op and every stale record
+    survives as a false positive near the end of the file. Measured when the
+    beat ring's separate serial sequence forced a sort: twelve per-lane F1 drops
+    between 0.011 and 0.022, the whole regression gate, from a harness change
+    with no detector change behind it.
+
+    Per lane because the two rings carry independent serial sequences, so their
+    restart boundaries are found separately and only then merged. `by_serial` is
+    keyed (lane_id, onset_serial); tuple ordering sorts by lane then serial,
+    which is exactly the order the scan needs.
+
+    Returns (records_dropped, hits_ordered_by_sample_position).
+    """
+    dropped = 0
+    kept: list[dict] = []
+    for lane in sorted({k[0] for k in by_serial}):
+        seq = [h for k, h in sorted(by_serial.items()) if k[0] == lane]
+        cut = 0
+        for i in range(1, min(len(seq), 12)):
+            if int(seq[i]["sample_position"]) < int(seq[i - 1]["sample_position"]):
+                cut = i
+        dropped += cut
+        kept.extend(seq[cut:])
+
+    # Only now ordered by sample position: two independent serial sequences do
+    # not interleave into one meaningful order, and the scorer times everything
+    # by sample position anyway.
+    return dropped, sorted(kept, key=lambda h: int(h["sample_position"]))
+
+
 class AudioRunner:
     """Drives an Audio In node through one corpus pattern and collects Hits.
 
@@ -274,36 +315,7 @@ class AudioRunner:
             if key[1] > watermark.get(key[0], 0):
                 by_serial[key] = h
 
-        # A few records can still land between reading the watermark and the
-        # restart taking effect. Those carry the PREVIOUS playthrough's high
-        # sample positions, so drop any leading records that sit above where the
-        # run actually settles.
-        #
-        # THE CUT MUST RUN IN DETECTION ORDER, PER LANE. It finds the restart by
-        # looking for a backwards step in sample position, which only exists
-        # while records are ordered by serial -- sorting by sample position first
-        # makes a backwards step impossible, so the cut silently becomes a no-op
-        # and every stale record survives as a false positive near the end of the
-        # file. Measured when the beat ring's separate serial sequence forced a
-        # sort: twelve per-lane F1 drops between 0.011 and 0.022, the whole
-        # regression gate, from a harness change with no detector change behind
-        # it. Per lane because the two rings carry independent serials, so their
-        # restart boundaries are found separately and only then merged.
-        dropped = 0
-        kept: list[dict] = []
-        for lane in sorted({k[0] for k in by_serial}):
-            seq = [h for k, h in sorted(by_serial.items()) if k[0] == lane]
-            cut = 0
-            for i in range(1, min(len(seq), 12)):
-                if int(seq[i]["sample_position"]) < int(seq[i - 1]["sample_position"]):
-                    cut = i
-            dropped += cut
-            kept.extend(seq[cut:])
-
-        # Only now ordered by sample position: two independent serial sequences
-        # do not interleave into one meaningful order, and the scorer times
-        # everything by sample position anyway.
-        hits = sorted(kept, key=lambda h: int(h["sample_position"]))
+        dropped, hits = cut_pre_restart(by_serial)
 
         return {
             "hits": hits,

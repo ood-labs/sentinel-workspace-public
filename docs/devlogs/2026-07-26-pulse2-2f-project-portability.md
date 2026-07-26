@@ -58,11 +58,22 @@ repo's standing `projects/*/proof/` rule.
 
 ## Issues
 
-None in 2F. Phase 2's outstanding item is 2E2 criterion 3 (beat continuity),
-which is recorded in that sub-phase's devlog and stated as a known limitation in
-the project README rather than left implicit.
+None in 2F itself. **Two Phase 2 gates remain open, not one**, and an earlier
+draft of this entry named only the first:
+
+1. **2E2 criterion 3** — beat continuity. CMLc 0.00–0.78 against ≥ 0.75.
+2. **2E1 criterion 3** — correct metrical level on 11/11 patterns. Still 8/11:
+   `sparse_90`, `hats_only_150` and `halftime_shuffle_88` carry
+   `metrical_level_ok: false` in `scores/2E2.json`. `hats_only_150` was proven
+   unachievable from magnitude-only data in 2E1; the other two were carried
+   forward by decision.
+
+The project README names all three unresolved patterns, so the two are
+consistent now.
 
 ## Next
 
-Phase 2 complete pending approval. Beat continuity is the open thread — the
-`beat_snap` mechanism is in place and disabled, with the measured lead recorded.
+Phase 2 is code-complete but **not criteria-complete**, and approval should be
+read against both open gates above rather than 2E2 criterion 3 alone. Beat
+continuity is the live thread; the `beat_snap` mechanism is in place and
+disabled, with the measured lead recorded in the manifest.

@@ -71,7 +71,7 @@ def main() -> int:
     print(f"soaking {a.minutes:.0f} minutes ...")
     t_end = time.time() + a.minutes * 60.0
     last = {k: gv(k) for k in COUNTERS}
-    laps, bad = 0, []
+    laps, bad, stalled_beats = 0, [], 0
     next_report = time.time() + 300.0
 
     runner.configure_file(wav)
@@ -90,6 +90,31 @@ def main() -> int:
                 bad.append(f"{k} out of range: {v}")
 
         cur = {k: gv(k) for k in COUNTERS}
+
+        # LIVENESS, not just monotonicity. A counter that stops advancing is
+        # still monotonic, and `score_once` only reports kick/snare/hat -- beats
+        # go to a separate list and never reach the lane scores -- so a beat
+        # clock that died completely would pass every other check in this file.
+        # Only asserted while the detector claims to be locked on real audio.
+        if gv("tempo_conf") >= 0.25:
+            if cur["beat_count"] <= last["beat_count"]:
+                stalled_beats += 1
+                if stalled_beats >= 5:
+                    bad.append("beat_count stopped advancing while locked")
+                    stalled_beats = 0
+            else:
+                stalled_beats = 0
+            # The signature of the circular-smoothing defect was coherence
+            # pinned near 0.15 on every pattern, which no other check sees.
+            coh = gv("phase_coherence")
+            if math.isfinite(coh) and coh < 0.2:
+                bad.append(f"phase_coherence collapsed while locked: {coh:.3f}")
+            # The signature of the period/BPM inconsistency was a reported tempo
+            # and a published period describing different tempi (127.6 vs 120.1).
+            bl, bp = gv("bpm_locked"), gv("bpm")
+            if math.isfinite(bl) and math.isfinite(bp) and abs(bl - bp) > 3.0:
+                bad.append(f"bpm_locked {bl:.1f} disagrees with bpm {bp:.1f}")
+
         for k in COUNTERS:
             if not math.isfinite(cur[k]):
                 bad.append(f"{k} non-finite: {cur[k]}")

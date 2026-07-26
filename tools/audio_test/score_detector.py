@@ -42,6 +42,12 @@ HELD_OUT = {"halftime_shuffle_88", "kick_snare_coincident_124"}
 # No sub-phase may reduce any previously committed per-lane F1 by more than this.
 REGRESSION_TOLERANCE = 0.01
 
+# Tempo may not get materially worse either. Repeat runs on unchanged code hold
+# BPM to about 0.1, so 0.5 is comfortably above the noise and far below the 2 BPM
+# accuracy target. `bpm_error` is NaN on patterns with no reference tempo, and a
+# NaN comparison is False, so those are skipped without a special case.
+BPM_TOLERANCE = 0.5
+
 
 # ---------------------------------------------------------------------------
 # Corpus integrity
@@ -338,6 +344,26 @@ def check_regression(results: list[dict], baseline: dict, lane_names: list[str])
             drop = b["lanes"][ln]["f1"] - r["lanes"][ln]["f1"]
             if drop > REGRESSION_TOLERANCE:
                 breaches.append(f"{r['pattern']}/{ln}: -{drop:.3f}")
+
+        # Tempo is gated too. Onset F1 alone cannot see a beat-tracking
+        # regression: every defect fixed in 2E2 left all three lane F1s at
+        # +0.000 while the tempo or the beat train was wrong, so a table that
+        # gates only F1 would have accepted all of them.
+        #
+        # BPM error and metrical level are gated because they are stable to
+        # about 0.1 BPM across repeat runs. CONTINUITY IS DELIBERATELY NOT
+        # GATED: measured run-to-run swings on unchanged code reach 0.3 CMLc
+        # (syncopated_funk_105 scored 0.06 and 0.46 on two consecutive passes),
+        # so any threshold tight enough to catch a real regression would fire
+        # constantly on noise. Continuity is reported and reviewed, not gated,
+        # until it is stable enough to mean something.
+        if b.get("bpm_error") is not None and r.get("bpm_error") is not None:
+            worse = r["bpm_error"] - b["bpm_error"]
+            if worse > BPM_TOLERANCE:
+                breaches.append(f"{r['pattern']}/bpm: +{worse:.2f} BPM error")
+        if b.get("metrical_level_ok") and not r.get("metrical_level_ok"):
+            breaches.append(f"{r['pattern']}/metrical_level: was ok, now "
+                            f"{r.get('metrical_level', '?')}")
     if breaches:
         print(f"\nREGRESSION GATE FAILED (tolerance {REGRESSION_TOLERANCE}):")
         for b in breaches:

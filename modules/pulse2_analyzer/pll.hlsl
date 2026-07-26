@@ -77,16 +77,29 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float beats  = Q.g;
 
     // Cold start, and recovery from a period that never became sane.
+    //
+    // Gated on the OBSERVATION being sane, not on the clamped result. Clamping
+    // with a floor of 1.0 and then testing `period < 1.0` is dead code, and the
+    // case it was meant to catch is real: the comb publishes a period of zero on
+    // the first cooks while its ring is still empty, which clamps to 1.0 and
+    // means one beat PER HOP -- roughly 187 a second -- flooding the 512-slot
+    // ring and the beat counter until the tempo loop drags it back.
     if (period < 1.0) {
+        if (periodObs <= 1.0) { Q.f = (float)judged; Out[BHDR] = Q; return; }
         period = clamp(periodObs, 1.0, 1000.0);
         phase  = phaseObs;
         Q.f    = (float)judged;
-        if (period < 1.0) { Out[BHDR] = Q; return; }
     }
 
     uint start  = (uint)max(Q.f, 0.0);
     uint oldest = (judged > ORING) ? (judged - ORING) : 0u;
     start = max(start, oldest);
+    // `beats` is persistent and `judged` is not derived from it, so an
+    // asymmetric clear can leave a resume point ahead of the producer. Every
+    // span below is UNSIGNED: one hop of that and `judged - start` wraps to
+    // ~4.3e9, saturating both loop gains, and `Q.f` latches the stale value so
+    // the accumulator stalls for good rather than recovering.
+    start = min(start, judged);
 
     // ---- onset-anchored emission -------------------------------------------
     // An emitted beat is timed by the hop its cycle landed on, and that hop
@@ -255,7 +268,14 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // Scaling by the beats actually elapsed this cook makes both gains mean what
     // their names say -- fraction of the error corrected per BEAT -- and makes
     // the loop independent of cook rate.
-    float advanced = saturate((float)(judged - start) / max(period, 1.0));
+    // The span the accumulator ACTUALLY advanced, which is start -> limit, not
+    // start -> judged. The two are equal only while the snap window is zero.
+    // With a window open, `start` is the previous cook's `limit`, so
+    // `judged - start` is about three hops plus the whole window -- at a window
+    // of 32 hops that inflates both loop gains by an order of magnitude every
+    // cook, which is a fair description of a loop that settles with a standing
+    // phase error.
+    float advanced = saturate((float)(limit - start) / max(period, 1.0));
 
     bool locked = (conf >= lock_conf) && (present >= 0.5);
     if (locked) {
