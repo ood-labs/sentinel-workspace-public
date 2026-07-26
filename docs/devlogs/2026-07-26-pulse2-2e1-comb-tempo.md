@@ -213,14 +213,87 @@ This is a corpus/criterion conflict, and resolving it is a human decision:
 regenerating the corpus is a Hard Blocker without an explicit recorded decision,
 and so is loosening a pass criterion.
 
+## Attempt 3 (authorized) — picked onsets. breakbeat_170 FIXED
+
+Three decisions were taken at the block, and all three are recorded here:
+criterion 3 is recast as **10/10 excluding `hats_only_150`**; the comb may be
+fed picked onsets as an authorized third attempt; `sparse_90` carries into 2E2.
+
+The comb now correlates against the picker's accepted onsets rather than the
+summed flux envelope. `scores/2E1f.json`:
+
+| pattern | 2E1 (flux) | now | |
+| --- | --- | --- | --- |
+| **`breakbeat_170`** | 113.3 | **170.4** | err 0.4, **ok** |
+| `dense_140` | 111.8 | 140.3 | ok |
+| `four_on_floor_128` | 127.7 | 127.6 | ok |
+| `hats_under_loud_kick_150` | 150.0 | 149.7 | ok |
+| `kick_snare_coincident_124` | 124.2 | 124.1 | ok (held-out) |
+| `quiet_intro_drop_128` | 127.7 | 127.7 | ok |
+| `syncopated_funk_105` | 105.0 | 105.0 | ok |
+| `tempo_ramp_120_132` | 128.3 | 127.8 | ok |
+| `sparse_90` | 111.9 | 135.9 | off — **carried to 2E2** |
+| `halftime_shuffle_88` | 105.2 | 153.9 | off — held-out |
+| `hats_only_150` | 100.1 | 100.0 | excluded by decision |
+
+Metrical level 6/11 -> **8/11**. Per-lane onset F1 unchanged at +0.000 across
+the whole corpus: this changes only what the comb reads, never what the picker
+decides.
+
+**Criterion 4 is met on every pattern that locks.** Maximum BPM error across all
+eight correct-level patterns is **0.4**, against a 2 BPM target.
+
+### Three defects found by measuring rather than reasoning
+
+- **The hits ring is keyed by `hop_index`, which is not the generation the onset
+  ring is indexed by.** They sit a constant 3 apart, which rejected every
+  deposit and left the ring empty — surfacing not as an error but as a comb
+  pinned to `BPM_MIN`. The generation now rides in a spare field of the hit
+  record, so the 4-field 2A1 export contract is untouched.
+- **Depositing detection strength re-imports the amplitude hierarchy the comb
+  does not want.** Weighting an ideal onset train by true amplitude moves
+  breakbeat_170's 170-vs-113 ratio from 0.853 to 0.750 — away from the right
+  answer. Each accepted onset now counts 1.0, which is what the offline study
+  actually measured (the Hits export declares no strength field).
+- **A width chosen from hits arrays did not survive contact with the live ring.**
+  The offline study called half-width 1 an interior optimum at 8/8; on the live
+  ring breakbeat_170 resolves 170.75 unwidened and collapses to 85.37 widened.
+  Smearing is now a swept parameter (`onset_smear`), shipped at 0. The lesson is
+  that a single 4.27 s window is too noisy to choose a constant on — the live
+  scored median disagreed with it on `syncopated_funk_105` too.
+
+### Criterion 3 still not met: `halftime_shuffle_88`
+
+The remaining failure is the other named octave trap, at 153.9 against a
+reference 88. It is **held-out**, so it may only be improved by a generic change
+validated on permitted patterns, never tuned against.
+
+One principled candidate was tested and rejected: the smear kernel is a fixed
+number of hops, so it is 1.5% of a beat at 170 BPM but 0.8% at 88, which is
+inconsistent with the ratio-based reasoning that makes the tau grid geometric.
+A kernel held constant as a fraction of the beat is the consistent form, and it
+changes **nothing** — 6/8 at every width from 0 to 5% of a beat on the live
+rings. With no measured benefit on permitted data there is no honest case for
+shipping it, and adopting it because it happened to move a held-out pattern
+would be exactly the tuning the rails forbid.
+
+Stopped rather than making an unauthorized fourth attempt.
+
 ## Next
 
-Blocked pending a decision on three points:
+All three original questions were decided and acted on. One failure remains
+against the recast criterion 3 (10/10 excluding `hats_only_150`, with
+`sparse_90` carried to 2E2): **`halftime_shuffle_88` at 153.9 against 88**, so
+the required set stands at 8 of 9.
 
-1. Whether criterion 3 should read 10/10 excluding `hats_only_150` (no tempo
-   content) or the corpus should gain an accented variant. Either is a recorded
-   decision, not something to assume.
-2. Whether `breakbeat_170` justifies feeding the comb picked onsets instead of
-   raw flux — a 2E1 design change with its own re-proof, beyond a constant sweep.
-3. Whether `sparse_90` may be carried into 2E2, whose PLL is the designed fix
-   for precisely its failure mode, in the way 2C3's deficit was carried to 2D.
+It is held-out, which constrains what may honestly be done about it:
+
+1. Proceed to 2E2 and re-test it there. Its sibling failure `sparse_90` is
+   already carried on the grounds that per-frame argmax cannot be stable on
+   sparse evidence, and a shuffle's triplet grid is the same class of problem —
+   a PLL with free-wheel is the designed fix for both. This is the recommended
+   path, and it matches the 2C3 -> 2D precedent.
+2. Or authorize a fourth 2E1 attempt aimed at it specifically. This is worth
+   naming as the risky option: the only remaining lever is a design change
+   judged against a pattern that exists to be the evaluation, and the one
+   principled generic idea available has already been measured at zero effect.
