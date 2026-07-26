@@ -42,13 +42,18 @@ FEAT_ELEMS = 1024   # fstate: [slot*16 + lane], 64 slots x 16 lanes
 
 def collect(sen, runner, pattern, cfg, seconds=16.0):
     """Play one pattern and return every trace record it emitted."""
+    # w_centD/w_flatD non-zero switch ON the flux-moment computation in
+    # features.hlsl, which the shipped model skips for cost. They cannot affect
+    # any decision here because classify_mode is 0 and classify_score() is
+    # therefore never consulted.
+    #
     # classify_mode MUST be 0 here. With the classifier on, the picker only
     # emits firings it already accepted, so the study would collect a filtered
     # sample of its own decisions and any refit would chase its own tail. This
     # is set explicitly rather than trusted from live state, which at this point
     # still carries classify_mode=1 from the last scored run.
     reset_detector(sen, cfg["detector"], cfg["audio"], mel_slot=cfg["mel_slot"],
-                   params={"classify_mode": 0.0})
+                   params={"classify_mode": 0.0, "w_centD": 1.0, "w_flatD": 1.0})
     runner.configure_file(HERE / "corpus" / f"{pattern}.wav")
     time.sleep(0.6)
     sen.set(f"/sentinel/pipelines/{cfg['audio']}/parameters/restart_file", 1)

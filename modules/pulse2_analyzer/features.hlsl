@@ -46,7 +46,15 @@ static const float FLAT_EPS = 1e-6;
 // so what remains is rejecting genuine snares. A decaying kick contributes
 // almost no new energy, while a snare onset contributes nearly all of it, so
 // moments over .d describe the snare alone rather than the sum.
-void region_moments(uint slotIdx, uint lane, uint vcount, float g, bool useFlux,
+//
+// SUPERFLUX IS RECOMPUTED HERE, not read from SP.d. The buffer comment calls
+// `.d` "SuperFlux", but nothing writes it per-bin: flux.hlsl computes the
+// difference and reduces it straight into the lane buffer, and `.d` on bins
+// 0..2 is reused to carry the producer header (see hdr_fft_size). Reading it
+// yielded exactly 0.0 for every bin, giving two dead features with AUC 0.362 --
+// a wrong assumption that measured as a flat line rather than an error.
+void region_moments(uint slotIdx, uint prevSlot, uint lane, uint vcount,
+                    float g, bool useFlux,
                     out float sy, out float sw, out float syk, out float slog,
                     out float lo, out float hi) {
     sy = 0.0; sw = 0.0; syk = 0.0; slog = 0.0;
@@ -66,8 +74,18 @@ void region_moments(uint slotIdx, uint lane, uint vcount, float g, bool useFlux,
             float w = p2_region_weight(r, 0.0, (float)k);
             if (w <= 0.0) continue;
 
-            SP s = Spec[slotIdx * NBINS + (uint)k];
-            float y = compress(useFlux ? s.d : s.y, g);
+            float y = compress(Spec[slotIdx * NBINS + (uint)k].y, g);
+            if (useFlux) {
+                // D[n,k] = max(0, Y[n,k] - max_{m in [-2,2]} Y[n-1,k+m]),
+                // identical to flux.hlsl so the two cannot drift apart.
+                float mx = 0.0;
+                [unroll] for (int m = -2; m <= 2; ++m) {
+                    int kk = k + m;
+                    if (kk < 0 || kk >= (int)vcount) continue;
+                    mx = max(mx, compress(Spec[prevSlot * NBINS + (uint)kk].y, g));
+                }
+                y = max(0.0, y - mx);
+            }
             sy   += w * y;
             sw   += w;
             syk  += w * y * (float)k;
@@ -97,8 +115,15 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
     float g = gamma_comp;
 
+    // The hop immediately before this one, for the SuperFlux lookback. Same
+    // guard as flux.hlsl: the previous hop must genuinely be present, or the
+    // difference is taken against an unrelated frame a full ring old.
+    uint prevSlot = (myGen - 1u) % capacity;
+    bool havePrev = (myGen >= 1u) && (hdr_gen(Spec, prevSlot) == myGen - 1u);
+
     float sy, sw, syk, slog, lo, hi;
-    region_moments(slotIdx, lane, vcount, g, false, sy, sw, syk, slog, lo, hi);
+    region_moments(slotIdx, prevSlot, lane, vcount, g, false,
+                   sy, sw, syk, slog, lo, hi);
     if (sw <= 0.0 || hi < lo) return;
 
     float meanY = sy / sw;
@@ -114,13 +139,27 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // The same two moments over ARRIVING energy rather than total energy. Kept
     // as separate features instead of replacing the pair above, so the fit
     // decides between them on measured evidence rather than on this comment.
-    float f_sy, f_sw, f_syk, f_slog, f_lo, f_hi;
-    region_moments(slotIdx, lane, vcount, g, true,
-                   f_sy, f_sw, f_syk, f_slog, f_lo, f_hi);
-    float meanD = (f_sw > 0.0) ? (f_sy / f_sw) : 0.0;
-    float geoD  = (f_sw > 0.0) ? exp(f_slog / f_sw) : 0.0;
-    float flatD = (meanD > 1e-9) ? saturate(geoD / meanD) : 0.0;
-    float centD = (f_sy > 1e-9) ? saturate(((f_syk / f_sy) - lo) / span) : 0.0;
+    // PAY FOR WHAT IS USED. The flux moments need a second full region sweep
+    // with a 5-tap max filter, and the hat region alone is 751 bins: measured,
+    // that took this node from 0.6 ms to 1.39 ms and broke the budget 2B
+    // criterion 5 had met. The shipped model does not use them (w_centD =
+    // w_flatD = 0), so they are skipped entirely and the budget is restored.
+    //
+    // The separability study re-enables them by setting w_centD non-zero. That
+    // is safe precisely because the study runs at classify_mode = 0, where
+    // classify_score() is never consulted -- the weight acts purely as a
+    // "compute this feature" switch there.
+    float centD = 0.0, flatD = 0.0;
+    bool wantFlux = (abs(w_centD) > 0.0) || (abs(w_flatD) > 0.0);
+    if (havePrev && wantFlux) {
+        float f_sy, f_sw, f_syk, f_slog, f_lo, f_hi;
+        region_moments(slotIdx, prevSlot, lane, vcount, g, true,
+                       f_sy, f_sw, f_syk, f_slog, f_lo, f_hi);
+        float meanD = (f_sw > 0.0) ? (f_sy / f_sw) : 0.0;
+        float geoD  = (f_sw > 0.0) ? exp(f_slog / f_sw) : 0.0;
+        flatD = (meanD > 1e-9) ? saturate(geoD / meanD) : 0.0;
+        centD = (f_sy > 1e-9) ? saturate(((f_syk / f_sy) - lo) / span) : 0.0;
+    }
 
     // Temporal decay ratio, two hops back (10.7 ms) rather than one: at one hop
     // the difference between an attack and a tail is inside the noise.
@@ -132,15 +171,21 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // (AUC 0.647). The bounded form carries identical information -- > 0.5 means
     // energy arriving, < 0.5 a tail, 0.5 steady -- on a scale that can actually
     // be combined with the other features.
+    // The earlier hop's energy is READ from fstate, not recomputed. It was
+    // produced by an earlier cook and its slot is not rewritten this cook (the
+    // idempotent gen check above skips it), so the read is stable. Recomputing
+    // it meant a second full region sweep and measured 0.73 ms against the
+    // 0.6 ms budget of 2B criterion 5; reading it is a single load.
+    //
+    // The .gen check is what makes this safe: a slot whose stamp is not exactly
+    // myGen-2 holds an unrelated hop from a previous lap of the ring, and using
+    // it would compare this hop against audio 341 ms away.
     float decay = 0.5;
     if (myGen >= 2u) {
         uint pslot = (myGen - 2u) % capacity;
-        if (hdr_gen(Spec, pslot) == myGen - 2u) {
-            float p_sy, p_sw, p_syk, p_slog, p_lo, p_hi;
-            region_moments(pslot, lane, vcount, g, false,
-                           p_sy, p_sw, p_syk, p_slog, p_lo, p_hi);
-            float prevE = (p_sw > 0.0) ? (p_sy / p_sw) : 0.0;
-            float den = meanY + prevE;
+        FS pf = Feat[pslot * MAXLANES + lane];
+        if ((uint)pf.gen == myGen - 2u) {
+            float den = meanY + pf.energy;
             decay = (den > 1e-9) ? saturate(meanY / den) : 0.5;
         }
     }

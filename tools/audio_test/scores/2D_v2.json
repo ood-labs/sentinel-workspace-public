@@ -1,5 +1,5 @@
 {
-  "subphase": "2D",
+  "subphase": "2D_v2",
   "detector": "pulse2_analyzer",
   "corpus_id": "50e89b594f08b41a",
   "fft_size": "2048",
@@ -11,8 +11,8 @@
     "hat": 11.81,
     "beat": 12.0
   },
-  "generated": "2026-07-25T17:15:13",
-  "aggregate_f1": 0.8648347249111389,
+  "generated": "2026-07-25T17:08:52",
+  "aggregate_f1": 0.8675983805761038,
   "results": [
     {
       "pattern": "breakbeat_170",
@@ -30,15 +30,15 @@
           "offset_ms": 8.166666666664213
         },
         "snare": {
-          "f1": 0.782608695652174,
-          "precision": 1.0,
-          "recall": 0.6428571428571429,
-          "tp": 27,
-          "fp": 0,
-          "fn": 15,
+          "f1": 0.951219512195122,
+          "precision": 0.975,
+          "recall": 0.9285714285714286,
+          "tp": 39,
+          "fp": 1,
+          "fn": 3,
           "n_ref": 42,
-          "n_est": 27,
-          "offset_ms": 9.104166666666913
+          "n_est": 40,
+          "offset_ms": 10.354166666667552
         },
         "hat": {
           "f1": 0.919831223628692,
@@ -52,7 +52,7 @@
           "offset_ms": 9.562499999999474
         }
       },
-      "aggregate_f1": 0.8531942588079077,
+      "aggregate_f1": 0.9093978643222237,
       "bpm_ref": 170.0,
       "bpm_est": 0.0,
       "bpm_error": 170.0,
@@ -64,9 +64,9 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 184,
+      "n_hits_emitted": 197,
       "playback_completed": true,
-      "final_sample_position": 931584
+      "final_sample_position": 942848
     },
     {
       "pattern": "dense_140",
@@ -84,14 +84,14 @@
           "offset_ms": 10.81249999999967
         },
         "snare": {
-          "f1": 0.8292682926829268,
-          "precision": 0.7083333333333334,
+          "f1": 0.8607594936708861,
+          "precision": 0.7555555555555555,
           "recall": 1.0,
           "tp": 34,
-          "fp": 14,
+          "fp": 11,
           "fn": 0,
           "n_ref": 34,
-          "n_est": 48,
+          "n_est": 45,
           "offset_ms": 10.197916666666806
         },
         "hat": {
@@ -106,7 +106,7 @@
           "offset_ms": 10.187500000000343
         }
       },
-      "aggregate_f1": 0.9280359222262996,
+      "aggregate_f1": 0.9385329892222861,
       "bpm_ref": 140.0,
       "bpm_est": 0.0,
       "bpm_error": 140.0,
@@ -118,9 +118,9 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 284,
+      "n_hits_emitted": 281,
       "playback_completed": true,
-      "final_sample_position": 942080
+      "final_sample_position": 936960
     },
     {
       "pattern": "four_on_floor_128",
@@ -138,15 +138,15 @@
           "offset_ms": 8.249999999999869
         },
         "snare": {
-          "f1": 0.8,
+          "f1": 0.6,
           "precision": 1.0,
-          "recall": 0.6666666666666666,
-          "tp": 14,
+          "recall": 0.42857142857142855,
+          "tp": 9,
           "fp": 0,
-          "fn": 7,
+          "fn": 12,
           "n_ref": 21,
-          "n_est": 14,
-          "offset_ms": 7.750000000000146
+          "n_est": 9,
+          "offset_ms": 8.249999999999869
         },
         "hat": {
           "f1": 0.9761904761904763,
@@ -160,7 +160,7 @@
           "offset_ms": 9.000000000000341
         }
       },
-      "aggregate_f1": 0.9174603174603174,
+      "aggregate_f1": 0.8507936507936509,
       "bpm_ref": 128.0,
       "bpm_est": 0.0,
       "bpm_error": 128.0,
@@ -172,9 +172,9 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 137,
+      "n_hits_emitted": 132,
       "playback_completed": true,
-      "final_sample_position": 936192
+      "final_sample_position": 931072
     },
     {
       "pattern": "halftime_shuffle_88",
@@ -192,14 +192,14 @@
           "offset_ms": 7.447916666667442
         },
         "snare": {
-          "f1": 0.7000000000000001,
-          "precision": 0.5384615384615384,
+          "f1": 0.7777777777777778,
+          "precision": 0.6363636363636364,
           "recall": 1.0,
           "tp": 7,
-          "fp": 6,
+          "fp": 4,
           "fn": 0,
           "n_ref": 7,
-          "n_est": 13,
+          "n_est": 11,
           "offset_ms": 6.062500000002302
         },
         "hat": {
@@ -214,7 +214,7 @@
           "offset_ms": 9.270833333332007
         }
       },
-      "aggregate_f1": 0.8201288244766506,
+      "aggregate_f1": 0.8460547504025765,
       "bpm_ref": 88.0,
       "bpm_est": 0.0,
       "bpm_error": 88.0,
@@ -226,9 +226,9 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 147,
+      "n_hits_emitted": 145,
       "playback_completed": true,
-      "final_sample_position": 930304
+      "final_sample_position": 941568
     },
     {
       "pattern": "hats_only_150",
@@ -282,7 +282,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 96,
       "playback_completed": true,
-      "final_sample_position": 940800
+      "final_sample_position": 935680
     },
     {
       "pattern": "hats_under_loud_kick_150",
@@ -336,7 +336,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 289,
       "playback_completed": true,
-      "final_sample_position": 934656
+      "final_sample_position": 929024
     },
     {
       "pattern": "kick_snare_coincident_124",
@@ -354,15 +354,15 @@
           "offset_ms": 8.770833333333172
         },
         "snare": {
-          "f1": 0.7761194029850745,
+          "f1": 0.7575757575757575,
           "precision": 1.0,
-          "recall": 0.6341463414634146,
-          "tp": 26,
+          "recall": 0.6097560975609756,
+          "tp": 25,
           "fp": 0,
-          "fn": 15,
+          "fn": 16,
           "n_ref": 41,
-          "n_est": 26,
-          "offset_ms": 10.281249999999908
+          "n_est": 25,
+          "offset_ms": 10.374999999999801
         },
         "hat": {
           "f1": 0.9753086419753086,
@@ -376,7 +376,7 @@
           "offset_ms": 9.333333333333194
         }
       },
-      "aggregate_f1": 0.9047970026411153,
+      "aggregate_f1": 0.8986157875046764,
       "bpm_ref": 124.0,
       "bpm_est": 0.0,
       "bpm_error": 124.0,
@@ -388,9 +388,9 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 144,
+      "n_hits_emitted": 143,
       "playback_completed": true,
-      "final_sample_position": 928768
+      "final_sample_position": 939264
     },
     {
       "pattern": "quiet_intro_drop_128",
@@ -408,15 +408,15 @@
           "offset_ms": 8.249999999999869
         },
         "snare": {
-          "f1": 0.8108108108108109,
-          "precision": 0.9375,
-          "recall": 0.7142857142857143,
-          "tp": 15,
+          "f1": 0.6666666666666667,
+          "precision": 0.9166666666666666,
+          "recall": 0.5238095238095238,
+          "tp": 11,
           "fp": 1,
-          "fn": 6,
+          "fn": 10,
           "n_ref": 21,
-          "n_est": 16,
-          "offset_ms": 7.916666666666572
+          "n_est": 12,
+          "offset_ms": 8.249999999999869
         },
         "hat": {
           "f1": 0.9761904761904763,
@@ -430,7 +430,7 @@
           "offset_ms": 9.374999999999911
         }
       },
-      "aggregate_f1": 0.9210639210639212,
+      "aggregate_f1": 0.8730158730158731,
       "bpm_ref": 128.0,
       "bpm_est": 0.0,
       "bpm_error": 128.0,
@@ -442,9 +442,9 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 139,
+      "n_hits_emitted": 135,
       "playback_completed": true,
-      "final_sample_position": 939264
+      "final_sample_position": 933120
     },
     {
       "pattern": "sparse_90",
@@ -462,14 +462,14 @@
           "offset_ms": 5.333333333332746
         },
         "snare": {
-          "f1": 0.6666666666666666,
-          "precision": 0.5,
+          "f1": 1.0,
+          "precision": 1.0,
           "recall": 1.0,
           "tp": 7,
-          "fp": 7,
+          "fp": 0,
           "fn": 0,
           "n_ref": 7,
-          "n_est": 14,
+          "n_est": 7,
           "offset_ms": 5.333333333332746
         },
         "hat": {
@@ -484,7 +484,7 @@
           "offset_ms": 5.333333333332746
         }
       },
-      "aggregate_f1": 0.7454545454545455,
+      "aggregate_f1": 0.8565656565656564,
       "bpm_ref": 90.0,
       "bpm_est": 0.0,
       "bpm_error": 90.0,
@@ -496,9 +496,9 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 43,
+      "n_hits_emitted": 36,
       "playback_completed": true,
-      "final_sample_position": 933376
+      "final_sample_position": 927232
     },
     {
       "pattern": "syncopated_funk_105",
@@ -516,14 +516,14 @@
           "offset_ms": 8.57291666666704
         },
         "snare": {
-          "f1": 0.7234042553191489,
-          "precision": 0.5666666666666667,
+          "f1": 0.7727272727272727,
+          "precision": 0.6296296296296297,
           "recall": 1.0,
           "tp": 17,
-          "fp": 13,
+          "fp": 10,
           "fn": 0,
           "n_ref": 17,
-          "n_est": 30,
+          "n_est": 27,
           "offset_ms": 8.3749999999998
         },
         "hat": {
@@ -538,7 +538,7 @@
           "offset_ms": 8.77083333333334
         }
       },
-      "aggregate_f1": 0.8531163185933263,
+      "aggregate_f1": 0.8695573243960341,
       "bpm_ref": 105.0,
       "bpm_est": 0.0,
       "bpm_error": 105.0,
@@ -550,49 +550,49 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 148,
+      "n_hits_emitted": 145,
       "playback_completed": true,
-      "final_sample_position": 927488
+      "final_sample_position": 937728
     },
     {
       "pattern": "tempo_ramp_120_132",
       "held_out": false,
       "lanes": {
         "kick": {
-          "f1": 0.9879518072289156,
+          "f1": 0.975609756097561,
           "precision": 1.0,
-          "recall": 0.9761904761904762,
-          "tp": 41,
-          "fp": 0,
-          "fn": 1,
-          "n_ref": 42,
-          "n_est": 41,
-          "offset_ms": 8.124999999999716
-        },
-        "snare": {
-          "f1": 0.8333333333333333,
-          "precision": 1.0,
-          "recall": 0.7142857142857143,
-          "tp": 15,
-          "fp": 0,
-          "fn": 6,
-          "n_ref": 21,
-          "n_est": 15,
-          "offset_ms": 7.916666666666572
-        },
-        "hat": {
-          "f1": 0.9879518072289156,
-          "precision": 1.0,
-          "recall": 0.9761904761904762,
-          "tp": 82,
+          "recall": 0.9523809523809523,
+          "tp": 40,
           "fp": 0,
           "fn": 2,
+          "n_ref": 42,
+          "n_est": 40,
+          "offset_ms": 8.312499999999723
+        },
+        "snare": {
+          "f1": 0.6451612903225806,
+          "precision": 1.0,
+          "recall": 0.47619047619047616,
+          "tp": 10,
+          "fp": 0,
+          "fn": 11,
+          "n_ref": 21,
+          "n_est": 10,
+          "offset_ms": 8.312499999999723
+        },
+        "hat": {
+          "f1": 0.9818181818181818,
+          "precision": 1.0,
+          "recall": 0.9642857142857143,
+          "tp": 81,
+          "fp": 0,
+          "fn": 3,
           "n_ref": 84,
-          "n_est": 82,
-          "offset_ms": 8.833333333332583
+          "n_est": 81,
+          "offset_ms": 8.83333333333347
         }
       },
-      "aggregate_f1": 0.9364123159303882,
+      "aggregate_f1": 0.8675297427461078,
       "bpm_ref": 126.0,
       "bpm_est": 0.0,
       "bpm_error": 126.0,
@@ -604,9 +604,9 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 138,
+      "n_hits_emitted": 131,
       "playback_completed": true,
-      "final_sample_position": 954368
+      "final_sample_position": 931840
     }
   ]
 }
