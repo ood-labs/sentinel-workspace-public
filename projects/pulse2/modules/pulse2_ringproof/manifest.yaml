@@ -1,0 +1,77 @@
+name: "Pulse2 / Ring Proof"
+version: "1.0"
+mode: generator
+resolution: [800, 360]
+
+# 2E1 STEP 0 MICRO-PROOF. Throwaway, and deliberately separate from
+# pulse2_analyzer so a failed assumption cannot damage the scored detector.
+#
+# It answers two questions that 2E1's design depends on, BEFORE 800 hops of
+# onset history and a comb matrix are built on top of them:
+#
+#   1. PARTIAL-WRITE PERSISTENCE. Does a `persistent: true` structured buffer
+#      keep the elements a dispatch did NOT write? The onset ring writes exactly
+#      one slot per hop and reads 800 hops back, so if the runtime cleared or
+#      re-initialised untouched elements the ring would silently hold one live
+#      value and 799 zeros -- and a comb filter over that returns a confident
+#      tempo derived from nothing. The fallback is a banked commit copy (the
+#      pattern pulse2_console already uses for regions_prev), which costs a full
+#      800-element copy per cook.
+#
+#   2. 2D DISPATCH. Does a (tau, theta) grid dispatch and guard correctly? The
+#      1D-flattened `tau * NTHETA + theta` index is written into every record so
+#      the reserve fallback is proven by the same run rather than assumed.
+
+buffers:
+  # 800 ring slots + one header element carrying the cook cursor.
+  - { name: ring,   structured: true, element_size: 16, element_count: 801,   persistent: true }
+  # Rectangular (tau, theta) allocation, 100 x 160.
+  - { name: comb2d, structured: true, element_size: 16, element_count: 16000, persistent: true }
+
+data_outputs:
+  - name: "Ring"
+    buffer: "ring"
+    schema:
+      - { name: stamp, type: float }   # 1-based cook index that wrote this slot
+      - { name: slot,  type: float }
+      - { name: wtime, type: float }
+      - { name: spare, type: float }
+  - name: "Comb"
+    buffer: "comb2d"
+    schema:
+      - { name: tau,   type: float }
+      - { name: theta, type: float }
+      - { name: flat,  type: float }   # the 1D fallback index, written by the 2D pass
+      - { name: wtime, type: float }
+
+passes:
+  # One thread. Writes exactly ONE ring slot (plus the header) per cook: that
+  # narrowness is the whole experiment.
+  - name: ringwrite
+    shader: ringwrite.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ring"
+
+  # 13 x 20 groups of 8 x 8 = 104 x 160 threads over a 100 x 160 domain, so the
+  # out-of-range guard is genuinely exercised rather than being dead code.
+  - name: comb2d
+    shader: comb2d.hlsl
+    target: cs_5_0
+    dispatch: [13, 20, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    output: "buffer:comb2d"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:ring" }
+      - { slot: 1, source: "buffer:comb2d" }
+    output: output
+
+outputs:
+  - { name: "Proof", pass: render }

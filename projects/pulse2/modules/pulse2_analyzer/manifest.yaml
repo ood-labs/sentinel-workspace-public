@@ -1,0 +1,582 @@
+name: "Pulse2 / Analyzer"
+version: "1.0"
+mode: generator
+resolution: [1280, 480]
+features: [audio]
+
+# Phase 2 core detector. Consumes Audio In's Spectrum port (64 hops x 1024
+# linear FFT bins) and emits the 2A1 `Hits` contract.
+#
+# COVERAGE TRAP: Spectrum is always 1024 bins and bin width is
+# sample_rate / fft_size, so fft_size 4096 covers only 0-12 kHz at 48 kHz.
+# Nothing in the port metadata reveals this. 2A2 measured 2048 as the better
+# choice (aggregate F1 0.706 vs 0.692); it is re-confirmed here on Spectrum.
+#
+# Pass split is MANDATORY, not stylistic. SuperFlux reads Y[n-1, k+/-2], so a
+# pass fused with whitening would have thread k read values produced by other
+# threads, crossing thread-group boundaries at four seams with no available
+# sync, and would be silently wrong exactly there.
+
+viewport:
+  hint: "Per-lane SuperFlux of the whitened spectrum (white), the adaptive threshold the picker used (amber), accepted onsets (ticks). ~1.4 s of hop history, newest on the right."
+
+data_inputs:
+  - name: "Spectrum"
+    slot: 0
+    schema:
+      - { name: hop_index, type: uint }
+      - { name: sample_position, type: uint }
+      - { name: generation_counter, type: uint }
+      - { name: qpc_ticks_lo, type: uint }
+      - { name: qpc_ticks_hi, type: uint }
+      - { name: sample_rate, type: uint }
+      - { name: fft_size, type: uint }
+      - { name: hop_size, type: uint }
+      # NOTE: the Spectrum port's value field is `magnitude`, not `energy`.
+      - { name: value_count, type: uint }
+      - { name: magnitude, type: float }
+
+buffers:
+  # [slot*1024 + k] for slot 0..63 : .y whitened, .d SuperFlux
+  # [65536 + k]                    : .p per-bin running peak (persistent recursion)
+  - { name: spec,        structured: true, element_size: 16, element_count: 66560, persistent: true }
+  # [slot*16 + lane] : per-hop per-lane flux, threshold, accepted flag, sample pos
+  - { name: lstate,      structured: true, element_size: 16, element_count: 1024, persistent: true }
+  # header 0..15, hits ring 16..527, trace ring 528..1551
+  # 2D feature vector, [slot*16 + lane], mirroring lstate's indexing.
+  - { name: fstate,      structured: true, element_size: 32, element_count: 1024, persistent: true }
+  - { name: pstate,      structured: true, element_size: 32, element_count: 1552, persistent: true }
+  - { name: pstate_prev, structured: true, element_size: 32, element_count: 1552, persistent: true }
+  # 0..511 the picker's onsets, 512..1023 the PLL's beats.
+  - { name: hits,        structured: true, element_size: 16, element_count: 1024 }
+  # Detection regions in spectrogram coordinates. 2C1 authors these from the
+  # parameters below; 2C2 will author them from the console instead.
+  - { name: regions,     structured: true, element_size: 32, element_count: 8, persistent: true }
+
+  # ---- 2E1 tempo ---------------------------------------------------------
+  # Onset envelope ring: 800 hops = 4.267 s at 187.5 hops/s, which is four beats
+  # at the slowest tempo the comb searches (60 BPM). Element 800 is the header,
+  # kept INSIDE this buffer rather than in pstate so the ring and its cursor are
+  # written by the same pass and cannot disagree about how far it has advanced.
+  #
+  # Partial-write persistence is what makes a ring viable here at all: one slot
+  # is written per cook and the other 799 must survive. Proven by the 2E1 step-0
+  # micro-proof (modules/pulse2_ringproof) -- 91 slots changed across exactly 91
+  # cooks -- so the banked-commit fallback is NOT needed.
+  - { name: onsets,      structured: true, element_size: 32, element_count: 801,   persistent: true }
+  # Comb filter matrix, 100 candidate periods x 160 candidate phases.
+  - { name: comb,        structured: true, element_size: 32, element_count: 16000, persistent: true }
+  # Per-period reduction over phase, so the single-threaded tempo pass reads 100
+  # elements instead of 16000. 128 rather than 100 to keep the dispatch tidy.
+  - { name: tmax,        structured: true, element_size: 32, element_count: 128,   persistent: true }
+  # Tempo state. Its OWN buffer rather than pstate element 3: pstate is written
+  # by the picker, and two passes writing one buffer would make the tempo result
+  # depend on pass ordering for no benefit.
+  - { name: tstate,      structured: true, element_size: 32, element_count: 4,     persistent: true }
+
+  # ---- 2E2 beat clock ----------------------------------------------------
+  # The PLL's OWN buffer: ring 0..511, state and serial in element 512.
+  #
+  # It emphatically does not share `pstate` with the picker. Two passes writing
+  # one buffer get ping-ponged onto separate physical sides, and the failure is
+  # silent and confusing: the PLL's state element survived and read back
+  # correctly through both Trace and its control outputs, while its writes to
+  # the shared serial counter and the shared hits ring vanished every cook
+  # because `commit` and `hitsexport` were reading the picker's side. Beats
+  # counted up to 23 with not one beat record anywhere in the ring.
+  # 0..511 the beat ring, 512 the PLL state, 513 auxiliary state (the circular
+  # phase-average phasor, which needs two floats the eight-field state element
+  # has no room left for).
+  - { name: beats,       structured: true, element_size: 32, element_count: 514,   persistent: true }
+
+parameters:
+  - { name: whiten_decay,   display: "Whitening Decay",   group: "Whitening", type: float, min: 0.90, max: 0.9999, default: 0.992 }
+  # MEASURED, not inherited, and NOT chosen from the magnitude median. Sentinel
+  # Spectrum magnitudes run ~1e-8..2e-2 with a ~2e-7 median, which argues for a
+  # floor far below the research's 1e-4 - but that reasoning is wrong, because
+  # the floor's job is not to sit near typical energy. It is what stops a band
+  # containing NO signal from normalising its own dither to full scale: with P
+  # decayed to the floor, Y = mag/P saturates and the lane manufactures
+  # confident onsets out of silence. On hats_only_150 the kick and snare lanes
+  # did exactly that and scored 0.000.
+  #
+  # Swept on non-held-out patterns (four_on_floor_128, hats_only_150,
+  # dense_140): 1e-6 -> 0.639, 1e-5 -> 0.694, 5e-5 -> 0.859, 2e-4 -> 0.859,
+  # with per-lane F1 on the signal-bearing patterns unchanged throughout. 5e-5
+  # is taken over the tied 2e-4 to leave more headroom for genuinely quiet
+  # passages (quiet_intro_drop_128).
+  - { name: peak_floor,     display: "Peak Floor",        group: "Whitening", type: float, min: 0.000000001, max: 0.001, default: 0.00005 }
+  - { name: gamma_comp,     display: "Log Compression",   group: "Whitening", type: float, min: 0.5,  max: 40.0,   default: 8.0 }
+
+  # Regions replace the 2B fixed frequency split. Authored in Hz because that is
+  # the meaningful unit, but STORED as bin indices by regionsetup.hlsl. The
+  # defaults reproduce the 2B bands exactly (25-200 / 200-2400 / 2400-20000 with
+  # rectangular unit-gain profiles), so the region path is proven against the 2B
+  # numbers rather than against a differently-tuned detector.
+  # 2C3 lateral inhibition. Each lane subtracts this share of its strongest
+  # simultaneous rival before thresholding, so a kick's broadband click cannot
+  # also register as a snare. 0.0 disables it and reproduces the scored 2C1
+  # detector exactly. Swept on non-held-out patterns only.
+  # ---- 2E1 tempo ---------------------------------------------------------
+  # Width of the log-Gaussian tempo prior, in OCTAVES about 120 BPM.
+  # The research specified 0.8. Swept offline against the real onset rings of
+  # the nine non-held-out patterns, 1.2 scores 7/8 against 0.8's 6/8: at 0.8 the
+  # 0.415-octave penalty on a genuine 90 BPM outweighs sparse_90's evidence and
+  # the tracker reports 121.5. Adopted under Tier 2 with both values recorded.
+  # An interior optimum, not an edge -- 1.6 collapses dense_140 and
+  # tempo_ramp_120_132 to 62 BPM.
+  - { name: tempo_sigma, display: "Tempo Prior Width (oct)", group: "Tempo", type: float, min: 0.3, max: 2.0, default: 1.2 }
+  # How far each accepted onset is spread before the comb correlates against it:
+  # 0 = a bare impulse on its own hop, 1 = a full [1 2 1]/4 triangle. The ring
+  # holds discrete picked onsets while tau is fractional, so some widening keeps
+  # the score from depending on where the beat grid falls against the 5.33 ms
+  # hop grid; too much fills the gaps that distinguish a period from its
+  # harmonic. Swept live because a single 4.27 s window is too noisy to choose on.
+  - { name: onset_smear, display: "Onset Smear", group: "Tempo", type: float, min: 0.0, max: 1.0, default: 0.0 }
+  # Harmonic suppression strength: C'(tau) = C(tau) - gamma*(C(tau/2) + C(2tau)).
+  #
+  # DEFAULT 0, WHICH DISABLES IT. Implemented and exposed as the research
+  # specifies, but measured to hurt: every non-zero gamma cost two patterns at
+  # every sigma tested, taking a correct dense_140 (140.6) to 111.6 and a
+  # correct sparse_90 (89.6) to 115.7. The formula is symmetric, so it punishes
+  # a true tempo whose half also scores well exactly as hard as it punishes a
+  # spurious harmonic. Adopted under Tier 2 with both values recorded.
+  - { name: tempo_gamma, display: "Harmonic Suppression", group: "Tempo", type: float, min: 0.0, max: 1.0, default: 0.0 }
+  # Comb peak-to-average ratio treated as fully locked. A flat landscape gives
+  # par = 1 (no periodicity at all), so confidence is (par-1)/(conf_full-1),
+  # clamped at both ends.
+  - { name: conf_full,   display: "Confidence Full Scale", group: "Tempo", type: float, min: 1.5, max: 20.0, default: 4.0 }
+
+  # ---- 2E2 PLL -----------------------------------------------------------
+  # Two loops at deliberately different speeds. The phase loop is fast because a
+  # beat in the wrong PLACE is heard immediately; the tempo loop is an order of
+  # magnitude slower because tempo is a property of the music, and a tracker
+  # that revises it every frame is exactly the instability 2E1 ended with. The
+  # ratio matters more than either value: it is what converts a per-frame
+  # estimate that is right 24% of the time into a clock.
+  - { name: mu_phase,  display: "PLL Phase Gain", group: "Beat", type: float, min: 0.0, max: 1.0, default: 0.15 }
+  # Both gains are fractions of the error corrected PER BEAT, not per cook -- the
+  # shader scales them by the beats actually elapsed. 0.02 was a per-cook value
+  # and would now mean fifty beats to re-acquire a tempo, which is the whole of
+  # most patterns.
+  - { name: mu_tempo,  display: "PLL Tempo Gain", group: "Beat", type: float, min: 0.0, max: 1.0, default: 0.2 }
+  # How fast the CIRCULAR average of the observed phase follows the comb. The
+  # comb re-picks its argmax phase every cook and that pick jumps between
+  # several defensible phases on dense material, so the loop is fed the smoothed
+  # phasor rather than the raw pick. Lower = steadier and slower to re-acquire.
+  - { name: phase_smooth, display: "Phase Smoothing", group: "Beat", type: float, min: 0.01, max: 1.0, default: 0.08 }
+  # How far, as a fraction of a beat, an emitted beat may be snapped onto a
+  # picked onset, so beats inherit the picker's timing accuracy rather than the
+  # comb phase argmax's scatter. Costs emission latency of the same width,
+  # because the search must see onsets on both sides of the beat.
+  #
+  # SHIPPED AT 0, WHICH DISABLES IT. The idea is sound and the onsets really are
+  # that much more accurate (+8.2 ms from truth, kick F1 0.976), but as
+  # implemented it makes placement strictly worse: four_on_floor_128 went from
+  # 61.9% of beats inside the continuity tolerance to 23.8%, its mean offset
+  # swung +0.122 -> -0.164 of a beat, and spacing rejections returned from zero
+  # to ten. CMLc 0.36 -> 0.05 on four_on_floor and 0.43 -> 0.05 on
+  # quiet_intro_drop, measured by toggling this one parameter.
+  #
+  # The residual offset is almost exactly twice the window width, which points at
+  # the held-back accumulator's phase reference rather than at the snapping
+  # itself -- the loop appears to settle with a standing error of 2*skew. That is
+  # where to resume; the mechanism is left in place and off rather than deleted.
+  - { name: beat_snap, display: "Beat Onset Snap", group: "Beat", type: float, min: 0.0, max: 0.4, default: 0.0 }
+  # Confidence below which the loop stops correcting and free-wheels on its own
+  # period. Free-wheeling holds the grid through a quiet bar or a breakdown; it
+  # does NOT gate beat emission, which is gated on signal presence instead, so a
+  # noise floor can never produce beats however confident the comb looks.
+  - { name: lock_conf, display: "Lock Confidence", group: "Beat", type: float, min: 0.0, max: 1.0, default: 0.25 }
+
+  - { name: inhibit_gain, display: "Lateral Inhibition", group: "Picking", type: float, min: 0.0, max: 1.0, default: 0.0 }
+  # Forward-masking time constant, in ANALYSIS HOPS (5.33 ms each), not seconds
+  # or cooks. Measured on hats_under_loud_kick_150, the snare lane's false
+  # positives sit a median 8 hops (43 ms) after the kick transient, so an
+  # instantaneous rival term sees nothing. tau shapes exp(-d/tau) back over at
+  # most INHIB_MAXW = 16 hops (85 ms). Inert while inhibit_gain = 0.
+  - { name: inhibit_tau_hops, display: "Inhibition Decay (hops)", group: "Picking", type: float, min: 0.5, max: 16.0, default: 6.0 }
+
+  # ---- 2D multi-feature classifier ----------------------------------------
+  # A weighted decision over the parallel features pass, replacing bare flux
+  # thresholding. 2C3 proved by measurement that the snare lane's false
+  # positives are the kick's DECAY: a real onset, equal in level to a snare and
+  # offset a fixed 43 ms, differing only in timbre. Nothing level- or
+  # timing-based can separate them; centroid and flatness can.
+  #
+  # WEIGHTS ARE MEASURED, NOT CHOSEN. diag_features.py collects the feature
+  # vector at every snare firing on the eight non-held-out patterns and labels
+  # each against ground truth; fit_classifier.py fits a logistic model to those
+  # 115 true / 255 false firings. Unclassified F1 0.474 -> fitted 0.766.
+  # Re-run both scripts to change these; never hand-tune them, and never fit on
+  # a held-out pattern.
+  #
+  # ENUM DEFAULT IS THE INDEX, NOT THE LABEL (see the note further down; the
+  # label form cost a full corpus run). 0 = Off = the scored 2C1 detector.
+  - { name: classify_mode, display: "Classifier", group: "Picking", type: enum, options: ["Off", "Snare Only", "All Lanes"], default: 0 }
+  # MODEL IS cent + flatness ONLY. All four features were fitted first; adding
+  # energy and decay measurably made it WORSE on the tuning sample -- pooled
+  # F1 0.767 with recall 0.817, against 0.773 / 0.843 for the two-feature model.
+  # Recall is the binding constraint (the criterion allows almost no loss), so
+  # the smaller model wins on the metric that matters and carries less
+  # overfitting risk into the held-out evaluation. w_decay and w_energy are kept
+  # as live parameters at 0.0 so the comparison can be re-run without a rebuild.
+  #
+  # Both surviving weights are POSITIVE, which is the physically expected sign:
+  # a real snare is a noise burst, so it sits higher in the band (centroid) and
+  # is flatter than the kick tail it competes with. The earlier four-feature fit
+  # gave flatness a NEGATIVE weight, an artefact of its correlation with
+  # centroid, and that model generalised worse.
+  #
+  # OPERATING POINT. The frontier has a cliff: shift +1.00 gives P 0.713 and
+  # +1.25 gives P 0.503, for the same recall. The default sits one step BACK
+  # from that edge at +0.75 (P 0.725, R 0.826, F1 0.772 versus 0.773 at the
+  # knee) -- an all-but-identical score with margin, rather than the nominal
+  # optimum balanced on a discontinuity.
+  - { name: classify_bias, display: "Verdict Bias",  group: "Picking", type: float, min: -60.0, max: 10.0, default: -28.8753 }
+  - { name: w_cent,        display: "Weight Centroid", group: "Picking", type: float, min: -80.0, max: 80.0, default: 25.5723 }
+  - { name: w_flat,        display: "Weight Flatness", group: "Picking", type: float, min: -80.0, max: 80.0, default: 18.9192 }
+  - { name: w_decay,       display: "Weight Decay",    group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
+  - { name: w_energy,      display: "Weight Energy",   group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
+  # Moments over ARRIVING energy (SuperFlux) rather than total energy. Defaults
+  # 0.0 until the refit measures them, so adding these features cannot change
+  # the scored model by merely existing.
+  - { name: w_centD,       display: "Weight Centroid (flux)", group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
+  - { name: w_flatD,       display: "Weight Flatness (flux)", group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
+
+  - { name: rgn0_lo_hz,   display: "Region 0 Low (Hz)",   group: "Region 0 - Kick",  type: float, min: 10.0,  max: 2000.0,  default: 25.0 }
+  - { name: rgn0_hi_hz,   display: "Region 0 High (Hz)",  group: "Region 0 - Kick",  type: float, min: 20.0,  max: 4000.0,  default: 200.0 }
+  # ENUM DEFAULTS MUST BE THE INDEX, NOT THE LABEL. `default: "Gaussian"`
+  # parses without error and then silently resolves to index 0, so the
+  # module runs rectangular while the manifest reads Gaussian. This cost a
+  # full corpus run that produced a plausible-looking but wrong table.
+  # Editing a default also does NOT reach an already-created pipeline:
+  # destroy and recreate, or override the parameter explicitly.
+  #
+  # Gaussian by default for the kick region only, measured on non-held-out
+  # patterns: kick F1 breakbeat_170 0.659 -> 0.857, dense_140 0.868 -> 0.974,
+  # syncopated_funk_105 0.800 -> 0.971. Tapering the edges suppresses the
+  # click and harmonic bleed that a hard band boundary lets in. The same
+  # profile on the snare and hat regions did NOT help (dense_140 snare
+  # -0.017, hat unchanged), so those stay rectangular.
+  - { name: rgn0_profile, display: "Region 0 Profile",    group: "Region 0 - Kick",  type: enum, options: ["Rectangular", "Gaussian"], default: 1 }
+  - { name: rgn0_gain,    display: "Region 0 Gain",       group: "Region 0 - Kick",  type: float, min: 0.0,   max: 4.0,     default: 1.0 }
+
+  - { name: rgn1_lo_hz,   display: "Region 1 Low (Hz)",   group: "Region 1 - Snare", type: float, min: 40.0,  max: 4000.0,  default: 200.0 }
+  - { name: rgn1_hi_hz,   display: "Region 1 High (Hz)",  group: "Region 1 - Snare", type: float, min: 200.0, max: 12000.0, default: 2400.0 }
+  - { name: rgn1_profile, display: "Region 1 Profile",    group: "Region 1 - Snare", type: enum, options: ["Rectangular", "Gaussian"], default: 0 }
+  - { name: rgn1_gain,    display: "Region 1 Gain",       group: "Region 1 - Snare", type: float, min: 0.0,   max: 4.0,     default: 1.0 }
+
+  - { name: rgn2_lo_hz,   display: "Region 2 Low (Hz)",   group: "Region 2 - Hat",   type: float, min: 200.0, max: 16000.0, default: 2400.0 }
+  - { name: rgn2_hi_hz,   display: "Region 2 High (Hz)",  group: "Region 2 - Hat",   type: float, min: 800.0, max: 24000.0, default: 20000.0 }
+  - { name: rgn2_profile, display: "Region 2 Profile",    group: "Region 2 - Hat",   type: enum, options: ["Rectangular", "Gaussian"], default: 0 }
+  - { name: rgn2_gain,    display: "Region 2 Gain",       group: "Region 2 - Hat",   type: float, min: 0.0,   max: 4.0,     default: 1.0 }
+
+  # Peak picking. No per-lane threshold floor exists by design: whitening
+  # normalises every bin to 0..1 against its own running peak, which is what
+  # removes the starvation a single global floor caused.
+  - { name: pick_lambda,    display: "Threshold Lambda",  group: "Peak Picking", type: float, min: 0.5, max: 8.0,  default: 2.2 }
+  - { name: pick_alpha,     display: "Threshold Alpha",   group: "Peak Picking", type: float, min: 0.0, max: 2.0,  default: 0.08 }
+  - { name: median_window,  display: "Median Window (hops)", group: "Peak Picking", type: float, min: 4.0, max: 32.0, default: 16.0 }
+  - { name: refractory_s,   display: "Refractory (s)",    group: "Peak Picking", type: float, min: 0.01, max: 0.40, default: 0.055 }
+
+  - { name: gate_level,     display: "Capture Level (driven)", group: "Signal Gate", type: float, min: 0.0, max: 1.0, default: 0.0 }
+  # MEASURED against the two things it has to separate, not chosen.
+  # A -44 dBFS white-noise floor peaks at 0.0068 linear on this capture path;
+  # quiet_intro_drop_128's intro, whose loudest onsets are -30 dBFS kicks,
+  # peaks at 0.021 and clears 0.012 once per beat. 0.012 therefore sits 1.76x
+  # above the noise it must reject and 1.8x below the quiet music it must pass.
+  # The old 0.0025 (-52 dBFS) was BELOW the noise floor, which is why counters
+  # kept advancing on it -- 2E2 criterion 2's exact failure.
+  - { name: signal_floor,   display: "Signal Floor",      group: "Signal Gate", type: float, min: 0.0, max: 0.20, default: 0.012 }
+  # Must span the longest gap between above-floor moments in real music.
+  # In quiet_intro_drop_128's intro that gap is 0.47 s -- one kick per beat at
+  # 128 BPM -- so the old 0.5 s left 30 ms of margin and would chatter on any
+  # slower or sparser material. 0.75 s covers it with room.
+  - { name: gate_hold_s,    display: "Gate Hold (s)",     group: "Signal Gate", type: float, min: 0.0, max: 3.0,  default: 0.75 }
+
+  - { name: trace_hops,     display: "Trace Hops",        group: "Readout", type: float, min: 32.0, max: 256.0, default: 256.0 }
+  - { name: trace_scale,    display: "Trace Scale",       group: "Readout", type: float, min: 0.2,  max: 20.0, default: 3.0 }
+
+passes:
+  # Pass A - whitening ONLY. One thread per bin; the running-peak recursion
+  # over hops is thread-local and therefore safe.
+  - name: whiten
+    shader: whiten.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:pstate_prev" }
+    output: "buffer:spec"
+
+  # Region authoring: parameters -> region buffer, in spectrogram coordinates.
+  - name: regionsetup
+    shader: regionsetup.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 8
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:spec" }
+      - { slot: 1, source: "data:0" }
+    output: "buffer:regions"
+
+  # Pass B - SuperFlux, reading ONLY the completed buffer from pass A.
+  - name: flux
+    shader: flux.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:spec" }
+      - { slot: 1, source: "buffer:pstate_prev" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:regions" }
+    output: "buffer:lstate"
+
+  # Pass B2 - 2D per-region feature vector. PARALLEL by construction: these are
+  # per-bin reductions and must not run inside the single-threaded picker.
+  - name: features
+    shader: features.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:spec" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:regions" }
+    output: "buffer:fstate"
+
+  # Pass C - peak picking, single thread, bounded to at most 16 lanes.
+  - name: pick
+    shader: pick.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:lstate" }
+      - { slot: 1, source: "buffer:pstate_prev" }
+      - { slot: 2, source: "data:0" }
+      # Only for the verified producer header captured by the whitening pass.
+      - { slot: 3, source: "buffer:spec" }
+      - { slot: 4, source: "buffer:fstate" }
+    output: "buffer:pstate"
+
+  - name: commit
+    shader: commit.hlsl
+    target: cs_5_0
+    dispatch: [25, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:pstate" }
+    output: "buffer:pstate_prev"
+
+  # ---- 2E1 tempo chain ---------------------------------------------------
+  # Runs after commit, so it reads the picker's stable snapshot rather than a
+  # pstate that the picker may still be writing this cook.
+  - name: onsets
+    shader: onsets.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:pstate_prev" }
+      - { slot: 1, source: "buffer:lstate" }
+      - { slot: 2, source: "data:0" }
+    output: "buffer:onsets"
+
+  - name: comb
+    shader: comb.hlsl
+    target: cs_5_0
+    dispatch: [13, 20, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "buffer:onsets" }
+    output: "buffer:comb"
+
+  - name: tmax
+    shader: tmax.hlsl
+    target: cs_5_0
+    dispatch: [13, 1, 1]
+    thread_group_x: 8
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:comb" }
+    output: "buffer:tmax"
+
+  - name: tempo
+    shader: tempo.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:tmax" }
+      - { slot: 1, source: "buffer:pstate_prev" }
+    output: "buffer:tstate"
+
+  # ---- 2E2 beat clock ----------------------------------------------------
+  # Runs after `tempo`, whose estimate it corrects against, and writes only its
+  # OWN buffer so nothing here depends on how the engine schedules two writers
+  # of one buffer.
+  - name: pll
+    shader: pll.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:tstate" }
+      - { slot: 1, source: "buffer:onsets" }
+    output: "buffer:beats"
+
+  # Publishes onsets and beats through one typed port so the harness stays
+  # detector-agnostic: slots 0..511 are the picker's onsets, 512..1023 the
+  # PLL's beats. The two carry independent serial sequences, which is why the
+  # harness keys records by (lane, serial) rather than by serial alone.
+  - name: hitsexport
+    shader: hitsexport.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:pstate" }
+      - { slot: 1, source: "buffer:beats" }
+    output: "buffer:hits"
+
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 1, source: "buffer:pstate" }
+    output: output
+
+data_outputs:
+  # Diagnostic view of pstate: header 0..15, hits 16..527, trace 528..1551.
+  # Exposes the picker's OWN flux and threshold so over/under-triggering can be
+  # read as numbers, not inferred from the preview.
+  - name: "Trace"
+    buffer: "pstate"
+    schema:
+      - { name: f0, type: float }
+      - { name: f1, type: float }
+      - { name: f2, type: float }
+      - { name: f3, type: float }
+      - { name: f4, type: float }
+      - { name: f5, type: float }
+      - { name: f6, type: float }
+      - { name: f7, type: float }
+
+  # 2D feature vector, [slot*16 + lane] over the 64-hop spectrum ring. Exposed
+  # so the offline separability study and the console verdict read the SAME
+  # numbers the picker decided on, rather than each re-deriving them.
+  - name: "Features"
+    buffer: "fstate"
+    schema:
+      - { name: cent,     type: float }
+      - { name: flatness, type: float }
+      - { name: decay,    type: float }
+      - { name: energy,   type: float }
+      - { name: gen,      type: float }
+      - { name: spos,     type: float }
+      - { name: centD,    type: float }
+      - { name: flatD,    type: float }
+
+  # 2E1 diagnostics. The comb matrix itself is deliberately NOT exposed: 16000
+  # elements per read is a large readback for something the per-period reduction
+  # already summarises, and tmax carries the winning phase alongside each score.
+  - name: "Tempo"
+    buffer: "tstate"
+    schema:
+      - { name: bpm,        type: float }
+      - { name: beat_phase, type: float }
+      - { name: conf,       type: float }
+      - { name: period_hops, type: float }
+      - { name: tau_index,  type: float }
+      - { name: par,        type: float }
+      - { name: peak,       type: float }
+      - { name: signal,     type: float }
+
+  - name: "CombMax"
+    buffer: "tmax"
+    schema:
+      - { name: score,      type: float }
+      - { name: bpm,        type: float }
+      - { name: period_hops, type: float }
+      - { name: phase,      type: float }
+      - { name: row_mean,   type: float }
+      - { name: spare0,     type: float }
+      - { name: spare1,     type: float }
+      - { name: spare2,     type: float }
+
+  - name: "Onsets"
+    buffer: "onsets"
+    schema:
+      - { name: strength,  type: float }
+      - { name: stamp,     type: float }
+      - { name: spos,      type: float }
+      - { name: spare0,    type: float }
+      - { name: spare1,    type: float }
+      - { name: spare2,    type: float }
+      - { name: spare3,    type: float }
+      - { name: spare4,    type: float }
+
+  - name: "Hits"
+    buffer: "hits"
+    schema:
+      # lane_id: 0=kick, 1=snare, 2=hat
+      - { name: lane_id,         type: uint }
+      - { name: onset_serial,    type: uint }
+      - { name: hop_index,       type: uint }
+      - { name: sample_position, type: uint }
+
+control_outputs:
+  - { name: kick_count,     buffer: pstate, element: 1, field_offset: 0,  description: "Accepted kick onsets" }
+  - { name: snare_count,    buffer: pstate, element: 1, field_offset: 4,  description: "Accepted snare onsets" }
+  - { name: hihat_count,    buffer: pstate, element: 1, field_offset: 8,  description: "Accepted hat onsets" }
+  - { name: onset_count,    buffer: pstate, element: 1, field_offset: 12, description: "All accepted onsets" }
+  - { name: kick,           buffer: pstate, element: 2, field_offset: 0,  description: "Kick envelope 0..1" }
+  - { name: snare,          buffer: pstate, element: 2, field_offset: 4,  description: "Snare envelope 0..1" }
+  - { name: hihat,          buffer: pstate, element: 2, field_offset: 8,  description: "Hat envelope 0..1" }
+  - { name: signal_present, buffer: pstate, element: 0, field_offset: 28, description: "1 when capture level exceeds the signal floor" }
+  - { name: dbg_cursor,     buffer: pstate, element: 0, field_offset: 0,  description: "Next unread generation" }
+  - { name: dbg_hopcount,   buffer: pstate, element: 0, field_offset: 4,  description: "Hops processed" }
+  - { name: dbg_latest,     buffer: pstate, element: 0, field_offset: 8,  description: "Newest generation seen" }
+  # 2E1. Read from tstate, not pstate element 3: the tempo stage owns its own
+  # buffer so the value cannot depend on which pass wrote pstate last.
+  - { name: bpm,            buffer: tstate, element: 0, field_offset: 0,  description: "Estimated tempo (2E1)" }
+  - { name: beat_phase,     buffer: tstate, element: 0, field_offset: 4,  description: "Beat phase, fraction of a beat (2E1)" }
+  - { name: tempo_conf,     buffer: tstate, element: 0, field_offset: 8,  description: "Tempo confidence 0..1 (2E1)" }
+  - { name: beat_period,    buffer: tstate, element: 0, field_offset: 12, description: "Beat period in analysis hops (2E1)" }
+  - { name: dbg_tempo_par,  buffer: tstate, element: 0, field_offset: 20, description: "Comb peak-to-average ratio (2E1)" }
+  # 2E2. Read from the PLL's own header element, so the beat clock reports the
+  # phase it is actually running on rather than the comb's per-frame estimate.
+  - { name: pll_phase,      buffer: beats, element: 512, field_offset: 0,  description: "PLL beat phase, 0..1 (2E2)" }
+  - { name: pll_period,     buffer: beats, element: 512, field_offset: 4,  description: "PLL beat period in hops (2E2)" }
+  - { name: bpm_locked,     buffer: beats, element: 512, field_offset: 8,  description: "PLL tempo, smoothed and free-wheeling (2E2)" }
+  - { name: beat_conf,      buffer: beats, element: 512, field_offset: 12, description: "Smoothed tempo confidence (2E2)" }
+  - { name: free_wheeling,  buffer: beats, element: 512, field_offset: 16, description: "1 while the PLL is coasting uncorrected (2E2)" }
+  # The criterion-2 witness: a monotonic count that must NOT advance on a noise
+  # floor or on digital silence.
+  - { name: beat_count,     buffer: beats, element: 512, field_offset: 24, description: "Beats emitted (2E2)" }
+  - { name: beat_pulse,     buffer: beats, element: 512, field_offset: 28, description: "1 on a cook that emitted a beat (2E2)" }
+  # Why a beat cycle completed without emitting a record. A dropped beat leaves
+  # tempo and confidence looking healthy and shows up only in continuity, so the
+  # two suppression paths are counted separately and readable live.
+  - { name: phase_coherence, buffer: beats, element: 513, field_offset: 8,  description: "Circular vector strength of the observed phase, 0..1 (2E2)" }
+  - { name: drop_signal,     buffer: beats, element: 513, field_offset: 12, description: "Beats suppressed by the signal gate (2E2)" }
+  - { name: drop_ring,       buffer: beats, element: 513, field_offset: 16, description: "Beats suppressed by a missing ring hop (2E2)" }
+  - { name: beat_cycles,     buffer: beats, element: 513, field_offset: 20, description: "Phase cycles completed, emitted or not (2E2)" }
+
+outputs:
+  - { name: "Analyzer", pass: preview }

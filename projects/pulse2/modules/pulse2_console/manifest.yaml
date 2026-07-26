@@ -1,0 +1,210 @@
+name: "Pulse2 / Console"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+# Spectrogram console for the Pulse2 detector. Displays the audio the detector
+# analyses and OWNS the detection regions the detector reduces, so region
+# placement is direct manipulation on the spectrogram rather than six Hz
+# parameters typed against an image you cannot see.
+#
+# The DISPLAY chain (log rebin -> per-bin running-peak equalisation -> dB ->
+# gamma) is deliberately separate from the detector's whitening: whitening is
+# tuned for onset separation and reads as flat grey to a human.
+#
+# Palette is the workspace monochrome scientific-instrument look with one warm
+# accent, NOT Magma/Inferno. Perceptual contrast comes from the equalisation and
+# gamma stages rather than from hue.
+#
+# Division of labour per CLAUDE.md: the SPATIAL choice (which frequency span is
+# a kick) is a drag on the image, because no slider expresses it well. The
+# discrete choices (which lane, which profile) stay ordinary Properties enums.
+
+panel:
+  mode: canvas
+  output: "Console"
+  resolution: follow_panel
+
+viewport:
+  hint: "Drag vertically on the spectrogram to set the active lane's frequency span. The band you draw is the band the detector reduces."
+  interactions: [events]
+  input:
+    pointer: [left]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag,  action: draw_region, label: "Draw Lane Region" }
+    - { gesture: left_click, action: draw_region, label: "Draw Lane Region" }
+
+data_inputs:
+  - name: "Spectrum"
+    slot: 0
+    schema:
+      - { name: hop_index, type: uint }
+      - { name: sample_position, type: uint }
+      - { name: generation_counter, type: uint }
+      - { name: qpc_ticks_lo, type: uint }
+      - { name: qpc_ticks_hi, type: uint }
+      - { name: sample_rate, type: uint }
+      - { name: fft_size, type: uint }
+      - { name: hop_size, type: uint }
+      - { name: value_count, type: uint }
+      - { name: magnitude, type: float }
+
+  # The detector's own flux and threshold, so the mini-traces show what the
+  # PICKER actually decided rather than a display-only re-derivation that could
+  # silently disagree with it.
+  - name: "Trace"
+    slot: 1
+    schema:
+      - { name: f0, type: float }
+      - { name: f1, type: float }
+      - { name: f2, type: float }
+      - { name: f3, type: float }
+      - { name: f4, type: float }
+      - { name: f5, type: float }
+      - { name: f6, type: float }
+      - { name: f7, type: float }
+
+# Regions reach the detector as CONTROL OUTPUTS driving its Hz parameters
+# through expressions, not as a data link.
+#
+# A data link cannot work here: the console already consumes the analyzer's
+# Trace, so publishing regions back the other way is a graph cycle and Sentinel
+# rejects it ("type mismatch or cycle detected"). Expressions are evaluated by
+# the host outside the graph, so the loop closes without one.
+#
+# This is also the better division. The console keeps reading the picker's OWN
+# flux and threshold for its mini-traces, instead of re-deriving them and
+# risking a display that quietly disagrees with the detector it is meant to
+# explain. And the analyzer's Hz parameters remain the single region source, so
+# the corpus scorer keeps driving them directly from Python.
+control_outputs:
+  - { name: rgn0_lo_hz, buffer: regions, element: 10, field_offset: 0,  description: "Kick region low edge (Hz)" }
+  - { name: rgn0_hi_hz, buffer: regions, element: 10, field_offset: 4,  description: "Kick region high edge (Hz)" }
+  - { name: rgn1_lo_hz, buffer: regions, element: 10, field_offset: 8,  description: "Snare region low edge (Hz)" }
+  - { name: rgn1_hi_hz, buffer: regions, element: 10, field_offset: 12, description: "Snare region high edge (Hz)" }
+  - { name: rgn2_lo_hz, buffer: regions, element: 10, field_offset: 16, description: "Hat region low edge (Hz)" }
+  - { name: rgn2_hi_hz, buffer: regions, element: 10, field_offset: 20, description: "Hat region high edge (Hz)" }
+  # Diagnostics: total viewport events ever delivered, and the last event's
+  # type*100 + phase. Without these, a handler that never fires is
+  # indistinguishable from events that never arrive.
+  - { name: dbg_events, buffer: regions, element: 9, field_offset: 24, description: "Total viewport events delivered" }
+  - { name: dbg_lastev, buffer: regions, element: 9, field_offset: 28, description: "Last event type*100+phase" }
+
+data_outputs:
+  - name: "Regions"
+    buffer: "regions"
+    schema:
+      - { name: binLo,   type: float }
+      - { name: binHi,   type: float }
+      - { name: hopLo,   type: float }
+      - { name: hopHi,   type: float }
+      - { name: profile, type: float }
+      - { name: gain,    type: float }
+      - { name: enabled, type: float }
+      - { name: lane,    type: float }
+
+parameters:
+  - { name: active_lane, display: "Active Lane", group: "Regions", type: enum, options: ["Kick", "Snare", "Hat"], default: 0 }
+  - { name: region_profile, display: "Profile", group: "Regions", type: enum, options: ["Rectangular", "Gaussian"], default: 0 }
+  - { name: region_gain, display: "Gain", group: "Regions", type: float, min: 0.0, max: 4.0, default: 1.0 }
+  - { name: clear_regions, display: "Clear Regions", group: "Regions", type: float, min: 0.0, max: 1.0, default: 0.0 }
+  # Seconds for the firing flash to fall to 1/e. Scaled by _DeltaTime, so the
+  # decay is the same wall-clock ramp at 20 Hz and at 60 Hz.
+  - { name: flash_tau, display: "Flash Decay (s)", group: "Regions", type: float, min: 0.02, max: 1.0, default: 0.18 }
+
+  # The classifier only runs on one lane in the shipped mode, so the readout
+  # names which lane it is reporting rather than implying it covers all three.
+  - { name: verdict_lane, display: "Verdict Lane", group: "Verdict", type: enum, options: ["Kick", "Snare", "Hat"], default: 1 }
+  - { name: show_verdict, display: "Show Verdict", group: "Verdict", type: float, min: 0.0, max: 1.0, default: 1.0 }
+
+  # Half-life ~7 s. A fast decay makes the peak track the content itself, so
+  # everything sits at its own peak and the image flattens to white.
+  - { name: eq_decay,   display: "Equalisation Decay", group: "Display", type: float, min: 0.90, max: 0.99999, default: 0.9995 }
+  - { name: eq_floor,   display: "Equalisation Floor", group: "Display", type: float, min: 0.000000001, max: 0.01, default: 0.00005 }
+  # Power-law shaping applied AFTER the dB map. Near 1.0 because the decibel
+  # map is already the perceptual compression: at gamma 0.45 a -20 dB bin
+  # renders at 79% brightness, so the image collapses to near-binary white on
+  # black. Values below ~0.8 are a deliberate "lift the noise floor" choice.
+  - { name: disp_gamma, display: "Display Gamma",      group: "Display", type: float, min: 0.1,  max: 1.0,    default: 1.0 }
+  - { name: disp_range, display: "Display Range (dB)",  group: "Display", type: float, min: 12.0, max: 96.0,   default: 60.0 }
+  - { name: hist_hops,  display: "History (hops)",     group: "Display", type: float, min: 32.0, max: 768.0,  default: 768.0 }
+  # 0 = the authored monochrome instrument palette that CLAUDE.md and the phase
+  # doc specify; 1 = the colour ramp the user asked for at the 2C2 checkpoint so
+  # instruments separate by hue rather than by brightness alone. Continuous, so
+  # the spec look is always one slider away rather than deleted.
+  - { name: disp_hue,   display: "Colour Amount",      group: "Display", type: float, min: 0.0,  max: 1.0,    default: 1.0 }
+
+buffers:
+  # DISP_HOPS*DISP_BINS history + DISP_BINS running peaks + 1 cursor element.
+  # 768*192 + 192 + 1 = 147649. Keep in step with types.hlsli.
+  - { name: spechist, structured: true, element_size: 16, element_count: 147649, persistent: true }
+  # 0..7 regions, 8 = drag header, 9 = flash state. Element layout is RG from
+  # modules/_shared/pulse2/regions.hlsli so the detector and the console cannot
+  # drift on what a region record means.
+  # 0..7 regions, 8 = drag header, 9 = flash state, 10 = Hz publication for the
+  # control outputs above, 11 = latched classifier verdict. Keep in step with
+  # P2_RGN_ELEMS in types.hlsli.
+  - { name: regions,      structured: true, element_size: 32, element_count: 12 }
+  - { name: regions_prev, structured: true, element_size: 32, element_count: 12, persistent: true }
+
+# Durable across save/load, presets and undo. This is what makes a placed
+# region survive a close-and-reopen rather than being re-seeded from defaults.
+state_buffers:
+  - name: regions_prev
+    max_elements: 12
+    schema:
+      - { name: binLo,   type: float }
+      - { name: binHi,   type: float }
+      - { name: hopLo,   type: float }
+      - { name: hopHi,   type: float }
+      - { name: profile, type: float }
+      - { name: gain,    type: float }
+      - { name: enabled, type: float }
+      - { name: lane,    type: float }
+
+passes:
+  - name: events
+    shader: events.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:regions_prev" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+    output: "buffer:regions"
+
+  - name: commit
+    shader: commit.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 16
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:regions" }
+    output: "buffer:regions_prev"
+
+  - name: spechist
+    shader: spechist.hlsl
+    target: cs_5_0
+    dispatch: [3, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:spechist"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:spechist" }
+      - { slot: 1, source: "buffer:regions" }
+      - { slot: 2, source: "data:1" }
+      - { slot: 3, source: "data:0" }
+    output: output
+
+outputs:
+  - { name: "Console", pass: render }
