@@ -3,21 +3,24 @@
 
 // Shared layout for Style Authority.
 //
-// WHY THIS FILE EXISTS. The render pass draws the pad, toggle and bank; the
-// events pass has to hit-test the same three rects. If each computed its own
-// geometry they would drift the moment a layout constant changed, and the
-// symptom -- a click landing a few pixels off the control it visibly hit -- is
-// the single most confusing bug class in an authored UI. One function, two
-// consumers, no possibility of disagreement.
+// THE FOUR CONTROL RECTS ARE NOT COMPUTED HERE. They come from
+// `_ui.generated.hlsli`, which `tools/module-ui.ps1 generate` compiles from the
+// `viewport.controls` block in manifest.yaml -- the same rects the HOST uses for
+// hit-testing. Drawing from the host's own numbers is what makes "the click
+// landed where I aimed" true by construction instead of by careful maintenance,
+// and `module-ui.ps1 validate` fails the build if the generated file drifts
+// from the manifest.
 //
-// Both passes get the same numbers because the published theme is a straight
-// copy of the parameters: `state.hlsl` writes params into the Theme buffer, so
-// the events pass reading params and the render pass reading the buffer are
-// reading the same values one frame apart at worst.
+// Everything else -- captions, the meters strip, the primitives grid -- is
+// derived from those rects and from the published metrics, and stays here.
 //
 // Pixel space throughout, matching the kit.
 #include "../_shared/ui/sui3_core.hlsli"
 #include "../_shared/ui/sui3_text.hlsli"
+#include "_ui.generated.hlsli"
+
+// Normalized manifest rect -> pixels.
+float4 saPx(float4 n, float2 R) { return float4(n.x * R.x, n.y * R.y, n.z * R.x, n.w * R.y); }
 
 struct SaLayout {
     float2 R;
@@ -52,57 +55,34 @@ SaLayout saLayout(float2 R, float titleScale, float sectionScale,
 
     L.showGrid = (R.y >= 520.0);
     float gTopPlanned = L.showGrid ? (R.y * 0.60) : (R.y - L.pad);
-    float band = max(gTopPlanned - 30.0 * L.sB - L.bodyTop, 60.0);
     L.capH = 11.0 * L.sB;
+    L.cg   = max(ctlG, 2.0);
 
-    float wantCh  = max(ctlH, 8.0);
-    float wantCg  = max(ctlG, 2.0);
-    float wantPad = wantCh * 5.0;
-    float wantM   = wantCh * 1.2;
+    // THE HOST'S RECTS, verbatim.
+    L.rPad  = saPx(UI_RECT_PAD,    R);
+    L.rRail = saPx(UI_RECT_RAIL,   R);
+    L.rTog  = saPx(UI_RECT_TOGGLE, R);
+    float4 rBank = saPx(UI_RECT_BANK, R);
 
-    float textTotal = L.capH * 4.0;
-    float boxAvail  = max(band - textTotal, 40.0);
-    float boxWant   = wantPad + wantCh * 2.0 + wantM + wantCg * 3.0;
-    float fit       = min(1.0, boxAvail / max(boxWant, 1.0));
+    L.ch   = L.rTog.w - L.rTog.y;
+    L.rowY = L.rTog.y;
+    L.bx0  = rBank.x;
+    L.bw   = ((rBank.z - rBank.x) - L.cg * 3.0) / 4.0;
 
-    L.ch   = wantCh  * fit;
-    L.cg   = wantCg  * fit;
-    L.mH   = wantM   * fit;
-    float padH = wantPad * fit;
-
-    L.rPad = float4(L.colL, L.bodyTop + L.capH, L.colR - L.pad,
-                    L.bodyTop + L.capH + padH);
-
-    float railY = L.rPad.w + L.cg + 11.0 * L.sB;
-    L.rRail = float4(L.colL, railY,
-                     L.colR - L.pad - sui3FixedWidth(L.sB, 2) - 8.0 * L.sB,
-                     railY + L.ch);
-
-    L.rowY = L.rRail.w + L.cg + 11.0 * L.sB;
-    float tw = L.ch * 2.6;
-    L.rTog = float4(L.colL, L.rowY, L.colL + tw, L.rowY + L.ch);
-
-    L.bx0 = L.colL + max(tw + L.cg * 3.0, sui3TextWidth(6, L.sS) + L.cg * 2.0);
-    L.bw  = (L.colR - L.pad - L.bx0 - L.cg * 3.0) / 4.0;
-
-    L.mY = L.rowY + L.ch + L.cg + 11.0 * L.sB;
+    L.mH = L.ch * 1.15;
+    L.mY = rBank.w + L.cg + 11.0 * L.sB;
     L.mw = L.ch * 0.72;
 
     L.gTop = gTopPlanned;
     return L;
 }
 
+// One cell of the bank. The bank is a single host slider spanning four cells,
+// so a click at a cell's centre resolves to that cell's index; the cells are a
+// drawing of the slider's discrete positions, not four separate controls.
 float4 saBankCell(SaLayout L, int i) {
     float x = L.bx0 + (float)i * (L.bw + L.cg);
     return float4(x, L.rowY, x + L.bw, L.rowY + L.ch);
-}
-
-// Hit tests are FORGIVING by a few pixels. A 1px-hairline instrument draws
-// exact boundaries, but a pointer is not exact; requiring a click inside the
-// literal stroke makes a correct control feel broken.
-bool saHit(float2 p, float4 r, float slopPx) {
-    return p.x >= r.x - slopPx && p.x <= r.z + slopPx
-        && p.y >= r.y - slopPx && p.y <= r.w + slopPx;
 }
 
 #endif

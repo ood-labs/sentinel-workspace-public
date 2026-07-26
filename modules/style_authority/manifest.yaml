@@ -12,21 +12,45 @@ resolution: [1280, 720]
 #
 # The TYPE AND LAYOUT values are numeric shaping and stay in Properties, per
 # CLAUDE.md -- an authored canvas duplicating those sliders would add nothing.
-# But the pad, toggle and bank are drawn as controls, and at the 3B taste
+# But the pad, rail, toggle and bank are DRAWN as controls, and at the 3B taste
 # checkpoint the operator tried to click them and nothing happened. Drawing
 # something that looks like a control and ignores the pointer is the
 # "decorative controls merely to make a composition appear interactive" that
-# CLAUDE.md forbids, so they are now real. Direct manipulation for the spatial
-# and selection controls; Properties for the exact numbers.
+# CLAUDE.md forbids, so all four are now real. Direct manipulation for the
+# spatial and selection controls; Properties for the exact numbers.
+#
+# HOST-OWNED CONTROLS, not a hand-rolled event pass.
+#
+# The first interactive version decoded the raw event stream itself into a
+# persistent buffer. It worked, and it was the wrong architecture: a raw
+# persistent buffer gets no undo, no project save/restore, no presets, no OSC,
+# and no expressions, because the values were not parameters. It also re-picked
+# the drag target on every event, which `ui-authoring.md:99` warns against --
+# a fast drag leaving the pad rect silently dropped the edit.
+#
+# `viewport.controls` binds a normalized hit region to an ORDINARY PARAMETER and
+# the host owns capture, live preview, and commit. One drag becomes one undo
+# entry. Everything a parameter already gets -- Properties row, reset, range
+# editing, OSC, expressions, presets, project serialization -- comes for free.
+#
+# Rects live here and are compiled into _ui.generated.hlsli by
+# `tools/module-ui.ps1 generate`; the renderer draws from those same constants,
+# so the hit region and the drawn control cannot disagree. `validate` fails if
+# the generated file goes stale.
+#
+# Consequence, deliberate: the four control rects are DECLARED, not derived from
+# control_height/control_gap. Those metrics are now purely values this station
+# publishes for the others to consume, which is its actual job.
 viewport:
-  hint: "Drag the pad, click the toggle, click a bank cell"
-  interactions: [events]
-  input:
-    pointer: [left]
-    gestures: [click, drag]
-  bindings:
-    - { gesture: left_drag, action: set_pad, label: "Set Specimen Pad" }
-    - { gesture: left_click, action: hit_control, label: "Toggle / Select Bank" }
+  hint: "Drag the pad, drag the rail, click the toggle, pick a bank cell"
+  # No `interactions:` line. `controls` is a SIBLING block, not an interaction
+  # kind -- the valid kinds are mouse, pan_zoom, camera, events and selection.
+  # Listing it there fails the manifest parse.
+  controls:
+    - { id: pad,    kind: xypad,  param: demo_pad,    rect: [0.015625, 0.120833, 0.559375, 0.315278], label: "PAD" }
+    - { id: rail,   kind: slider, param: demo_value,  rect: [0.015625, 0.341667, 0.520313, 0.388889], label: "RAIL" }
+    - { id: toggle, kind: toggle, param: demo_toggle, rect: [0.015625, 0.415278, 0.073438, 0.462500], label: "STATE" }
+    - { id: bank,   kind: slider, param: demo_bank,   rect: [0.092188, 0.415278, 0.559375, 0.462500], label: "BANK" }
 
 parameters:
   - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Theme" }
@@ -38,7 +62,7 @@ parameters:
 
   - { name: outer_padding, display: "Outer Padding", type: float, min: 4.0, max: 48.0, default: 20.0, group: "Layout" }
   - { name: section_gap, display: "Section Gap", type: float, min: 2.0, max: 40.0, default: 14.0, group: "Layout" }
-  - { name: control_height, display: "Control Height", type: float, min: 12.0, max: 64.0, default: 28.0, group: "Layout" }
+  - { name: control_height, display: "Control Height", type: float, min: 32.0, max: 64.0, default: 34.0, group: "Layout" }
   - { name: control_gap, display: "Control Gap", type: float, min: 2.0, max: 32.0, default: 8.0, group: "Layout" }
 
   - { name: demo_value, display: "Specimen Value", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Specimen" }
@@ -47,30 +71,17 @@ parameters:
   - { name: demo_bank, display: "Specimen Bank", type: int, min: 0, max: 3, default: 2, group: "Specimen" }
 
 buffers:
-  # PERSISTENT: interaction state has to survive the frame that set it.
-  # [0] live state, [1] magic + event counter, [2] last-seen Properties values
-  - { name: ui, structured: true, element_size: 16, element_count: 3, persistent: true }
   - { name: theme, structured: true, element_size: 16, element_count: 4, persistent: false }
 
 passes:
-  # events -> state -> render. The hit-test runs first so a click is reflected
-  # in the same frame it lands, rather than one frame late.
-  - name: events
-    shader: events.hlsl
-    target: cs_5_0
-    dispatch: [1, 1, 1]
-    thread_group_x: 1
-    thread_group_y: 1
-    output: "buffer:ui"
-
+  # No events pass. The host writes the parameters; this pass just publishes
+  # them. Deleting the hand-rolled hit-testing IS the improvement.
   - name: state
     shader: state.hlsl
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 1
     thread_group_y: 1
-    inputs:
-      - { slot: 0, source: "buffer:ui" }
     output: "buffer:theme"
 
   - name: render
@@ -98,11 +109,6 @@ control_outputs:
   - { name: pad_y, buffer: theme, element: 3, field_offset: 4, description: "Specimen pad Y, up = more" }
   - { name: toggle, buffer: theme, element: 3, field_offset: 8, description: "Specimen toggle, live" }
   - { name: bank, buffer: theme, element: 3, field_offset: 12, description: "Specimen bank selection, live" }
-  # Position-independent proof that the event stream is reaching the shader.
-  # Phase 2 settled an identical question this way: a counter that reads 0 while
-  # a control looks dead separates "no events delivered" from "events delivered
-  # and the hit-test missed". Those need opposite fixes.
-  - { name: events_seen, buffer: ui, element: 1, field_offset: 4, description: "Pointer events consumed since load" }
 
 data_outputs:
   - name: "Theme"
