@@ -1,23 +1,23 @@
 ---
 type: state
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 
 # Workspace State
 
 ## Current focus
 
-Phase 2 - Audio Analysis v2 (`pulse2`) is planned and awaiting implementation. It builds a reusable
-GPU audio analysis system: adaptive-whitened SuperFlux onset detection, click-to-place spectral
-region isolation, a multi-feature classifier for coincident hits, and comb-filter tempo with a
-dual-loop beat PLL. The scoring harness is sub-phase 2A and is blocking.
+Phase 2 - Audio Analysis v2 (`pulse2`) is implemented and committed, awaiting approval. It built a
+reusable GPU audio analysis system: adaptive-whitened SuperFlux onset detection, click-to-place
+spectral region isolation, a multi-feature classifier for coincident hits, and comb-filter tempo
+with a dual-loop beat PLL. Two measured criteria gates are open (see below).
 
 CRYOGRAM is committed and working as a measured-crystal audio-reactive example, with two known
 defects tracked separately (see Blockers).
 
 ## Active sub-phase
 
-None started. Next is 2A1 - Frozen corpus and onset-export contract.
+None. All ten sub-phases (2A1 through 2F) are closed. Phase 2 is at its approval boundary.
 
 Phase 2 has been audited before implementation by four parallel agents. Ten sub-phases (2A1, 2A2,
 2B, 2C1, 2C2, 2C3, 2D, 2E1, 2E2, 2F). Five judgement calls are recorded in the phase doc's Plan
@@ -41,66 +41,61 @@ Tracked separately, out of Phase 2 scope:
 
 - Cold-load Scientific Organism from a clean checkout before public-workspace or official-gallery promotion.
 - Keep raw intermediate effect captures in coordinate-contract proof; a correct later overlay is not sufficient.
-- Phase 2 sub-phase 2A must settle `fft_size` 4096 versus 2048 by measurement. The source research
-  recommends 4096 (11.7 Hz/bin, 0-12 kHz); the alternative is 2048 (23.4 Hz/bin, full 0-24 kHz).
-  Adopt whichever scores higher and record the numbers.
-- Whether the generated corpus WAV files are committed or regenerated on demand.
+Settled during Phase 2, kept here as the record:
+
+- `fft_size` is **2048**, not the 4096 the source research recommended. 4096
+  truncates Spectrum coverage to 0-12 kHz while still publishing 1024 bins, and
+  nothing in the port metadata reveals it. Every committed score table records
+  the `fft_size` in force.
+- Corpus WAVs **are committed**, hash-frozen by `corpus.sha256`; the scorer
+  refuses to run if any file drifts.
+
+## Phase 2 - Audio Analysis v2 (complete, approval pending, 2026-07-26)
+
+All ten sub-phases are implemented and committed. `projects/pulse2/` is bundled,
+loads from a clean path with relative `project_dir` values, and reproduces its
+committed score table from that load.
+
+Onset detection is the solid part: kick 0.913, snare 0.782, hat 0.969 mean F1 on
+the frozen corpus `50e89b594f08b41a` at +/-25 ms, raw. Tempo lands within 2 BPM
+on every pattern that locks. The detector is honest under a -44 dBFS noise floor
+and under digital silence, and held F1 to +0.000 across a 30-minute soak.
+
+**TWO MEASURED CRITERIA GATES ARE OPEN AND NOT AUTHORIZED.** Both are recorded,
+neither is loosened, and both need a human call:
+
+1. **2E1 criterion 3** - correct metrical level on 11/11 patterns. Actual 8/11.
+   `hats_only_150` was proven unachievable from magnitude-only data (100
+   byte-identical hats at exactly 9600-sample spacing; no phase information
+   exists in it). `sparse_90` and `halftime_shuffle_88` remain off.
+2. **2E2 criterion 3** - CMLc >= 0.75 on steady patterns, AMLc >= 0.85
+   corpus-wide. Actual CMLc 0.00-0.78, AMLc 0.02-0.78.
+
+The beat clock itself is sound - intervals regular, no dropped beats, zero
+spacing rejections. What fails is beat PLACEMENT.
+
+**Lead on the continuity failure, found by a post-audit test and left failing
+rather than loosened:** the PLL's period settles 5.6% above the tempo it tracks
+(93.09 vs 88.14 hops on `four_on_floor_128`) while locked and correcting every
+cook. The update is an exponential tracker whose only fixed point is the
+observation, so something else is acting on `period`. A clock running 5.6% slow
+drifts a quarter beat every four or five beats, which is more than the
+continuity tolerance allows. **Chase this before resuming the snapping work.**
+
+The `beat_snap` onset-anchoring mechanism is implemented and shipped disabled;
+enabling it measured strictly worse even after a gain-scaling bug was fixed.
+
+## Decisions pending for Phase 2 approval
+
+- Accept the two open gates and approve Phase 2, re-scope them, or authorize
+  further work on the PLL period defect above.
+- `mu_tempo` ships at 0.2 rather than the phase doc's 0.02, because normalising
+  the loop gains to per-beat changed their units. Recorded in the manifest and
+  the 2E2 devlog as a Tier 2 adoption; the doc's Tier 2 clause does not name
+  `mu_tempo` explicitly, so it is authorization by analogy.
 
 ## Last devlog
 
-`docs/devlogs/2026-07-23-axiom-choir-example.md` - complete, approved.
-
-## Phase 2 - Audio Analysis v2 (in progress, 2026-07-25)
-
-Complete and committed: 2A1 corpus + onset contract, 2A2 scorer/baseline, 2B core
-detector (aggregate F1 0.774 vs 0.706 baseline), 2C1 region masks (kick 0.909,
-aggregate 0.797).
-
-**2C2 is BLOCKED at criterion 2 and is human checkpoint 1.**
-
-Proven: criterion 1 (display audio-driven and legible) — see
-`docs/devlogs/2026-07-25-pulse2-2c2-console-display.md`.
-
-Blocker: no available automation command delivers viewport pointer events to a
-Module. Tried `CLICK_AT`, `DRAG_AT` (both report ok, `method: imgui_injection`) and
-`sentinel_viewport pick` (rejected — needs a `selection` interaction). A
-position-independent event counter in the module (`dbg_events` control output) reads
-exactly 0 throughout, and the shipped `cryo_console` events module behaves the same
-way when probed, so the fault is the injection path and not the module.
-
-Two ways forward, user's call:
-1. Hand-verify the drag (open the `pulse2_console` tab, set Active Lane, drag
-   vertically). If `dbg_events` goes non-zero, criteria 2-5 close quickly.
-2. Redesign the interaction onto the host-owned selection path — declare regions as
-   selectable objects with `viewport.interactions: [selection]` and drive them via
-   `sentinel_viewport edit` four-phase transactions, which IS synthetically
-   automatable. Larger change; abandons raw pointer events.
-
-Not started: 2C3 lateral inhibition (the designed fix for the open 2C1 snare
-precision deficit, 0.31-0.34 — kick click bleeding into 200-2400 Hz), 2D, 2E1,
-2E2, 2F.
-
-Trap defused: the console publishes region edges as control outputs and
-`sentinel_expression` can bind them onto the analyzer's `rgn*_hz` parameters. Those
-expressions are deliberately CLEARED — with them bound, a panel drag would silently
-override the scorer's writes and change scoring configuration. Re-apply only for
-interactive use; clear before any corpus run.
-
-### 2C2 update - blocker RESOLVED by human verification
-
-The user performed a real drag on the `pulse2_console` panel. `dbg_events` read
-**1315**, and region placement visibly affected detection inside the drawn band. The
-module was correct all along; `CLICK_AT` / `DRAG_AT` / `viewport pick` simply do not
-feed the module viewport event ring on this build. Criterion 2's mechanism is
-confirmed live. Do NOT re-litigate this — use real input, not injection, to test
-Module viewport events.
-
-Remaining for 2C2: criterion 3 (save/close/reopen byte-identity + undo of a drag),
-4 (firing flash asserted in a capture during playback), 5 (mini-trace legibility),
-6 (`module-ui.ps1 validate` + criterion 1 at 640x360 and 1600x900).
-
-USER DECISION PENDING - palette. The user finds black->white hard to read and wants a
-darker base through a colour spectrum to separate instruments. This OVERRIDES the
-monochrome look specified in both CLAUDE.md and the phase doc (which explicitly says
-not Magma/Inferno); CLAUDE.md permits it because the user asked. Awaiting their choice
-of ordering: colour ramp first, or finish criteria 3-6 first.
+`docs/devlogs/2026-07-26-pulse2-2f-project-portability.md` - complete, approval
+pending. Preceded by `2026-07-26-pulse2-2e2-pll-beat-clock.md`, which carries the
+audit record.

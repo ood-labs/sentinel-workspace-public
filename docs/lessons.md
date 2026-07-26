@@ -1,12 +1,124 @@
 ---
 type: lessons
-updated: 2026-07-23
+updated: 2026-07-26
 ---
 
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-26 - Control-loop gains applied per cook are frame-rate dependent
+
+**Symptoms**: A beat-tracking PLL reported the correct period (80.9 hops = 140
+BPM, confirmed by control output) yet completed only 28 phase cycles where that
+period implied 46, with not one beat suppressed by either gate. Continuity
+scores stayed low no matter how the gains were tuned; lowering one traded jitter
+for drift and raising it traded back.
+
+**Cause**: `modules/pulse2_analyzer/pll.hlsl` applied its correction once per
+COOK. A cook covers roughly three analysis hops while a beat spans eighty-odd,
+so a nominal gain of 0.15 acted as a loop gain near 3.0 per beat. The loop
+became overdamped, parked the accumulator on the observation, and resisted
+advancing past it, which changes the emitted beat RATE rather than merely its
+smoothness. Cooks-per-beat depends on frame rate, so the same code tracked
+differently at 60 fps than at 30.
+
+**Fix**: Scale every gain by the fraction of a beat actually elapsed during that
+cook (`advanced = (limit - start) / period`), making the gains mean "fraction of
+the error corrected per beat" and removing the cook-rate dependency. Note the
+span must be the range the accumulator actually advanced, not the range of new
+hops available.
+
+**Frequency**: always, for any control loop in a per-cook shader pass
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - Circular smoothing of a quantity that rotates by construction
+
+**Symptoms**: Circular (phasor) averaging was added to smooth a noisy phase
+estimate. The resulting vector strength sat at 0.14-0.16 on EVERY pattern,
+steady four-on-the-floor and dense breakbeat alike. Identical numbers across
+material that differs wildly is the tell.
+
+**Cause**: The comb filter reports phase as an offset measured backwards from
+the newest analysis hop. As the newest hop advances, a perfectly stationary beat
+grid still makes that offset sweep through a full turn. The quantity rotates by
+construction, so its circular mean is uniform and averaging it destroys the
+signal rather than the noise.
+
+**Fix**: Smooth the phase ERROR (observation minus accumulator), which is the
+stationary quantity while locked. Coherence went from 0.15 to 0.997 on steady
+patterns. General rule: before circularly averaging, confirm the quantity is
+stationary in the frame you are averaging it in.
+
+**Frequency**: one-time, but the class recurs wherever a value is measured
+relative to a moving reference
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - A cut that depends on ordering breaks silently when you re-sort
+
+**Symptoms**: A twelve-lane regression-gate failure (per-lane F1 drops of
+0.011-0.022) appeared after a harness change with no detector change behind it.
+The obvious suspect was a detector parameter that had been raised in the same
+session; it was innocent.
+
+**Cause**: `tools/audio_test/sentinel_ipc.py` drops records left over from the
+previous playthrough by scanning for a BACKWARDS STEP in sample position, which
+only exists while records are in detection (serial) order. Adding a second data
+ring with its own independent serial sequence prompted sorting the merged list
+by sample position first, which makes a backwards step impossible. The scan
+silently became a no-op and stale records survived as false positives.
+
+**Fix**: Cut per lane in serial order, then merge and sort by position. The
+function was extracted to `cut_pre_restart()` specifically so it could be unit
+tested without a running app; `tools/audio_test/test_ipc_cut.py` asserts the
+failure mode directly.
+
+**Frequency**: one-time
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - Continuity metrics that divide by the estimate count reward silence
+
+**Symptoms**: Beat continuity scores looked implausibly healthy on some
+patterns while the beat train was visibly wrong.
+
+**Cause**: `tools/audio_test/metrics.py` normalised the longest correct run by
+`len(est)` alone. A tracker emitting three beats against a hundred reference
+beats scored a perfect 1.0, indistinguishable from one that got all hundred
+right, because its three beats happened to be consecutive and correct.
+Under-emission is the most likely silent failure of a beat clock and the metric
+was paying a bonus for it.
+
+**Fix**: Normalise by `max(len(ref), len(est))`, matching mir_eval. Unit tests
+in `tools/audio_test/test_metrics.py` pin the behaviour.
+
+**Frequency**: one-time
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - A regression gate on one metric blesses defects in every other
+
+**Symptoms**: Five separate beat-tracking defects landed and were caught only by
+manual inspection. Every one of them left all three onset-lane F1 scores at
+exactly +0.000 against the committed baseline, so the regression gate passed
+each time.
+
+**Cause**: `score_detector.py`'s gate iterated lane F1 only, while the table it
+guards also carries BPM error, metrical level and continuity. Onset detection
+and beat tracking are independent subsystems sharing one score table; gating one
+says nothing about the other.
+
+**Fix**: Extend the gate to BPM error and metrical level. Continuity was
+deliberately left ungated: repeat runs on unchanged code swing by 0.3 CMLc, so
+any threshold tight enough to catch a real regression fires constantly on noise.
+Gate what is stable, report what is not, and say which is which.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-26
 
 ## 2026-07-23 - Scaled feedback passes need their actual texture extent
 

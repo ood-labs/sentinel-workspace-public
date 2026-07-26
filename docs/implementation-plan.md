@@ -9,7 +9,7 @@ This plan governs work in the user-writable Sentinel workspace and its curated p
 | Phase | Title | Status | Detailed plan |
 | --- | --- | --- | --- |
 | 1 | Official Examples Modernization | Complete; approval pending | [Phase 1](phases/phase-1-official-examples-modernization.md) |
-| 2 | Audio Analysis v2 (`pulse2`) | Planned | [Phase 2](phases/phase-2-audio-analysis-v2.md) |
+| 2 | Audio Analysis v2 (`pulse2`) | Complete, approval pending | [Phase 2](phases/phase-2-audio-analysis-v2.md) |
 
 ## Phase 1 - Official Examples Modernization
 
@@ -76,16 +76,16 @@ whether a change helped, produces circular work and undetected regressions.
 
 | Sub-phase | Outcome | Primary capability | Status |
 | --- | --- | --- | --- |
-| 2A1 | Frozen corpus and onset-export contract | seeded synthesis, hash manifest, `Hits` data output | Planned |
-| 2A2 | Scorer and committed baseline | File-mode playback, onset F1, BPM error, CMLc/AMLc | Planned |
-| 2B | `pulse2_analyzer` core detector | adaptive whitening, SuperFlux, lookahead peak-picking | Planned |
-| 2C1 | Region masks and evaluation | programmatic regions, scorable without UI | Planned |
-| 2C2 | Spectrogram console | Canvas panel, click-to-place regions, durable state | Planned |
-| 2C3 | Lateral inhibition | cross-lane contamination suppression | Planned |
-| 2D | Multi-feature classifier | centroid, flatness, decay; coincident-hit separation | Planned |
-| 2E1 | Comb Filter Matrix and tempo | 2D dispatch, tempo prior, harmonic suppression | Planned |
-| 2E2 | Dual-loop PLL, confidence, free-wheel | beat phase, honest uncertainty, soak stability | Planned |
-| 2F | Project, documentation, portability | bundling, clean-path load, reproducible scores | Planned |
+| 2A1 | Frozen corpus and onset-export contract | seeded synthesis, hash manifest, `Hits` data output | Complete |
+| 2A2 | Scorer and committed baseline | File-mode playback, onset F1, BPM error, CMLc/AMLc | Complete |
+| 2B | `pulse2_analyzer` core detector | adaptive whitening, SuperFlux, lookahead peak-picking | Complete |
+| 2C1 | Region masks and evaluation | programmatic regions, scorable without UI | Complete |
+| 2C2 | Spectrogram console | Canvas panel, click-to-place regions, durable state | Complete |
+| 2C3 | Lateral inhibition | cross-lane contamination suppression | Complete (criterion failed, carried) |
+| 2D | Multi-feature classifier | centroid, flatness, decay; coincident-hit separation | Complete |
+| 2E1 | Comb Filter Matrix and tempo | 2D dispatch, tempo prior, harmonic suppression | Complete (metrical level 8/11, gate open) |
+| 2E2 | Dual-loop PLL, confidence, free-wheel | beat phase, honest uncertainty, soak stability | Complete (continuity gate open) |
+| 2F | Project, documentation, portability | bundling, clean-path load, reproducible scores | Complete |
 
 Audited before implementation by four parallel agents (spec-alignment, acceptance-bar,
 toolchain-feasibility, decomposition). The audit found that the original 2A was silently blocked:
