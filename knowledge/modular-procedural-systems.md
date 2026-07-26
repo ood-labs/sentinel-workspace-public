@@ -64,11 +64,11 @@ Use a dark monochrome baseline with one restrained accent unless the project cal
 
 Derive stroke, label, and handle sizes from `_Resolution`. Re-evaluate the canvas at multiple aspect ratios, but do not invent a second responsive-layout system inside HLSL if Sentinel's hit rectangles cannot follow it.
 
-## 7. Choose exactly one camera owner
+## 7. Use the internal camera by default
 
-Use either the renderer's native camera or a deliberate external `camera`/`camswitch` node. Do not add renderer-authored Hero, Architectural Orbit, or alternate ray modes when the host already provides Fly and Orbit navigation.
+Read `internal-camera-template.md` before authoring a 3D renderer. A normal renderer uses the native internal camera, declares `features: [camera]` and `viewport.interactions: [camera]`, keeps `camera_ref` empty, saves Fly as the default, and constructs every camera-dependent pass from `_InvViewProjMatrix`, `_ViewProjMatrix`, and `_CameraPos`.
 
-For an internal camera, save Fly as the default unless the example specifically teaches another owner. Construct rays from `_InvViewProjMatrix` and `_CameraPos`; do not maintain a parallel camera equation in the shader. Never expose camera rows on the Scene Group.
+Do not add renderer-authored Hero, Architectural Orbit, alternate ray modes, or an external `camera`/`camswitch` for a single renderer, multiple passes inside one Module, or a renderer plus post-processing. An external camera is allowed only when multiple separate 3D renderer nodes require the same synchronized viewpoint or show-level switching. Never expose camera rows on the Scene Group, and prove real internal-camera movement in the renderer preview before continuing downstream.
 
 ## 8. Publish consumer-specific output lanes
 
