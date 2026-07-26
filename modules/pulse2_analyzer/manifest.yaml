@@ -276,8 +276,16 @@ parameters:
   - { name: w_centD,       display: "Weight Centroid (flux)", group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
   - { name: w_flatD,       display: "Weight Flatness (flux)", group: "Picking", type: float, min: -80.0, max: 80.0, default: 0.0 }
 
-  - { name: rgn0_lo_hz,   display: "Region 0 Low (Hz)",   group: "Region 0 - Kick",  type: float, min: 10.0,  max: 2000.0,  default: 25.0 }
-  - { name: rgn0_hi_hz,   display: "Region 0 High (Hz)",  group: "Region 0 - Kick",  type: float, min: 20.0,  max: 4000.0,  default: 200.0 }
+  # RANGES SPAN THE WHOLE CONSOLE AXIS, not each lane's expected home.
+  # These were originally narrowed per lane (kick low capped at 2 kHz, and so
+  # on), which is a reasonable prior when the numbers are typed by hand and a
+  # silent lie once the console drives them: the console lets a band be drawn
+  # anywhere on its 25 Hz - 20 kHz axis, so a kick region dragged to 2.9 kHz was
+  # accepted by the UI, clamped to 2 kHz by the parameter, and the picture no
+  # longer described the detector. Defaults are unchanged, so every committed
+  # score table still reproduces.
+  - { name: rgn0_lo_hz,   display: "Region 0 Low (Hz)",   group: "Region 0 - Kick",  type: float, min: 20.0,  max: 24000.0,  default: 25.0 }
+  - { name: rgn0_hi_hz,   display: "Region 0 High (Hz)",  group: "Region 0 - Kick",  type: float, min: 20.0,  max: 24000.0,  default: 200.0 }
   # ENUM DEFAULTS MUST BE THE INDEX, NOT THE LABEL. `default: "Gaussian"`
   # parses without error and then silently resolves to index 0, so the
   # module runs rectangular while the manifest reads Gaussian. This cost a
@@ -294,13 +302,13 @@ parameters:
   - { name: rgn0_profile, display: "Region 0 Profile",    group: "Region 0 - Kick",  type: enum, options: ["Rectangular", "Gaussian"], default: 1 }
   - { name: rgn0_gain,    display: "Region 0 Gain",       group: "Region 0 - Kick",  type: float, min: 0.0,   max: 4.0,     default: 1.0 }
 
-  - { name: rgn1_lo_hz,   display: "Region 1 Low (Hz)",   group: "Region 1 - Snare", type: float, min: 40.0,  max: 4000.0,  default: 200.0 }
-  - { name: rgn1_hi_hz,   display: "Region 1 High (Hz)",  group: "Region 1 - Snare", type: float, min: 200.0, max: 12000.0, default: 2400.0 }
+  - { name: rgn1_lo_hz,   display: "Region 1 Low (Hz)",   group: "Region 1 - Snare", type: float, min: 20.0,  max: 24000.0,  default: 200.0 }
+  - { name: rgn1_hi_hz,   display: "Region 1 High (Hz)",  group: "Region 1 - Snare", type: float, min: 20.0,  max: 24000.0, default: 2400.0 }
   - { name: rgn1_profile, display: "Region 1 Profile",    group: "Region 1 - Snare", type: enum, options: ["Rectangular", "Gaussian"], default: 0 }
   - { name: rgn1_gain,    display: "Region 1 Gain",       group: "Region 1 - Snare", type: float, min: 0.0,   max: 4.0,     default: 1.0 }
 
-  - { name: rgn2_lo_hz,   display: "Region 2 Low (Hz)",   group: "Region 2 - Hat",   type: float, min: 200.0, max: 16000.0, default: 2400.0 }
-  - { name: rgn2_hi_hz,   display: "Region 2 High (Hz)",  group: "Region 2 - Hat",   type: float, min: 800.0, max: 24000.0, default: 20000.0 }
+  - { name: rgn2_lo_hz,   display: "Region 2 Low (Hz)",   group: "Region 2 - Hat",   type: float, min: 20.0,  max: 24000.0, default: 2400.0 }
+  - { name: rgn2_hi_hz,   display: "Region 2 High (Hz)",  group: "Region 2 - Hat",   type: float, min: 20.0,  max: 24000.0, default: 20000.0 }
   - { name: rgn2_profile, display: "Region 2 Profile",    group: "Region 2 - Hat",   type: enum, options: ["Rectangular", "Gaussian"], default: 0 }
   - { name: rgn2_gain,    display: "Region 2 Gain",       group: "Region 2 - Hat",   type: float, min: 0.0,   max: 4.0,     default: 1.0 }
 
