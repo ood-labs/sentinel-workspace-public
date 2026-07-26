@@ -10,6 +10,7 @@
 // the v1 stations, which are normalized throughout, going illegible at their
 // real dock extents.
 #include "../_shared/ui/sui3_controls.hlsli"
+#include "layout.hlsli"
 
 RWTexture2D<float4> Out : register(u0);
 StructuredBuffer<float4> Theme : register(t0);
@@ -29,17 +30,16 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
     Sui3Theme T = sui3ThemeExposed(t2.rgb, t0.w);
 
-    // Integer glyph scale keeps the bitmap face crisp. Two steps only, chosen
-    // so 640x360 and 1600x900 both land on a legible size.
-    float sB = (R.y >= 800.0) ? 2.0 : 1.0;          // body
-    float sT = sB * max(1.0, floor(t0.x));           // title, from published scale
-    float sS = sB * max(1.0, floor(t0.y));           // section
-
-    float pad = t1.x * (sB);                          // published padding, scaled
+    // Layout comes from layout.hlsli so the events pass hit-tests EXACTLY the
+    // rects drawn here. Integer glyph scale keeps the bitmap face crisp; two
+    // steps only, chosen so 640x360 and 1600x900 both land on a legible size.
+    SaLayout L = saLayout(R, t0.x, t0.y, t1.x, t1.y, t1.z, t1.w);
+    float sB = L.sB, sT = L.sT, sS = L.sS;
+    float pad = L.pad;
     float3 col = T.field;
 
     // ---- header ------------------------------------------------------------
-    float headY = pad + 2.0 * sB;
+    float headY = L.headY;
     col += T.ink * sui3TextLong(P, float2(pad, headY), sT,
         S_S,S_T,S_Y,S_L,S_E,S_SP,S_A,S_U,S_T,S_H,S_O,S_R,
         S_I,S_T,S_Y, 0,0,0,0,0,0,0,0,0);
@@ -47,7 +47,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
         S_L,S_I,S_V,S_E,S_SP,S_T,S_H,S_E,S_M,S_E,S_SP,S_S,
         S_O,S_U,S_R,S_C,S_E, 0,0,0,0,0,0,0);
 
-    float ruleY = headY + 13.0 * sT + 14.0 * sB;
+    float ruleY = L.ruleY;
     col += sui3Rule(P, R, ruleY, pad, T);
 
     // ---- specimen column (left 58%) ----------------------------------------
@@ -59,40 +59,17 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // 640x360 capture. The published metrics still drive the layout -- that is
     // what makes this station load-bearing -- but they are clamped into the
     // band that actually exists, and the pad absorbs the remainder.
-    float bodyTop = ruleY + t1.y * sB;
-    float colL = pad;
-    float colR = R.x * 0.575;
+    // All of these now come from saLayout(). The reasoning that produced them
+    // lives in layout.hlsli; the important property is that the events pass
+    // computes the identical numbers, so a click cannot land off a control.
+    float bodyTop = L.bodyTop;
+    float colL = L.colL;
+    float colR = L.colR;
+    bool  showGrid = L.showGrid;
+    float capH = L.capH;
+    float ch = L.ch, cg = L.cg, mH = L.mH;
 
-    // The primitives grid is a REFERENCE, and a reference needs room. Below
-    // ~520px of height there is not enough canvas for both it and a legible
-    // specimen column, so it is dropped and the specimens take the whole body.
-    // Responsive content, not a squeezed copy of the large layout.
-    bool showGrid = (R.y >= 520.0);
-    float gTopPlanned = showGrid ? (R.y * 0.60) : (R.y - pad);
-    float band = max(gTopPlanned - 30.0 * sB - bodyTop, 60.0);
-    float capH = 11.0 * sB;
-
-    // LAYOUT BOXES USE THE PUBLISHED PIXELS DIRECTLY -- they are NOT multiplied
-    // by the glyph scale sB. Doubling boxes along with text at 1600x900 blew the
-    // band, drove the fit factor to 0.39, and shrank every control until the
-    // STATE and BANK captions collided. Glyphs scale for legibility; boxes are
-    // already specified in pixels by the authority itself.
-    float wantCh  = max(t1.z, 8.0);
-    float wantCg  = max(t1.w, 2.0);
-    float wantPad = wantCh * 5.0;      // the pad is the dominant specimen
-    float wantM   = wantCh * 1.2;
-
-    float textTotal = capH * 4.0;
-    float boxAvail  = max(band - textTotal, 40.0);
-    float boxWant   = wantPad + wantCh * 2.0 + wantM + wantCg * 3.0;
-    float fit       = min(1.0, boxAvail / max(boxWant, 1.0));
-
-    float ch    = wantCh  * fit;
-    float cg    = wantCg  * fit;
-    float padH  = wantPad * fit;
-    float mH    = wantM   * fit;
-
-    float4 rPad = float4(colL, bodyTop + capH, colR - pad, bodyTop + capH + padH);
+    float4 rPad = L.rPad;
     col += T.dim * sui3Text(P, float2(colL, bodyTop), sS, S_P,S_A,S_D,0,0,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rPad) > 0.5 || sui3Frame(P, rPad) > 0.0) {
         col = lerp(col, float3(0,0,0), sui3RectIn(P, rPad));
@@ -105,8 +82,8 @@ void main(uint3 tid : SV_DispatchThreadID) {
                                           bodyTop), sB, t3.y, 2);
 
     // rail specimen
-    float railY = rPad.w + cg + 11.0 * sB;
-    float4 rRail = float4(colL, railY, colR - pad - sui3FixedWidth(sB,2) - 8.0 * sB, railY + ch);
+    float4 rRail = L.rRail;
+    float railY = rRail.y;
     col += T.dim * sui3Text(P, float2(colL, railY - 11.0 * sB), sS,
         S_R,S_A,S_I,S_L,0,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rRail) > 0.5 || sui3Frame(P, rRail) > 0.0) {
@@ -116,9 +93,9 @@ void main(uint3 tid : SV_DispatchThreadID) {
     col += T.ink * sui3Fixed(P, float2(rRail.z + 8.0 * sB, railY + ch * 0.5 - 5.0 * sB), sB, t2.w, 2);
 
     // toggle + bank row
-    float rowY = rRail.w + cg + 11.0 * sB;
+    float rowY = L.rowY;
     float tw = ch * 2.6;
-    float4 rTog = float4(colL, rowY, colL + tw, rowY + ch);
+    float4 rTog = L.rTog;
     col += T.dim * sui3Text(P, float2(colL, rowY - 11.0 * sB), sS,
         S_S,S_T,S_A,S_T,S_E,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rTog) > 0.5 || sui3Frame(P, rTog) > 0.0) {
@@ -135,15 +112,15 @@ void main(uint3 tid : SV_DispatchThreadID) {
     int bank = (int)round(clamp(t3.w, 0.0, 3.0));
     // Must clear the STATE caption, not just the toggle box: at a small ch the
     // two captions ran together and printed "STATEBANK".
-    float bx0 = colL + max(tw + cg * 3.0, sui3TextWidth(6, sS) + cg * 2.0);
+    float bx0 = L.bx0;
     col += T.rule * 0.6 * sui3HairAt(P.x, colL + tw + cg * 1.5)
          * step(rowY - 11.0 * sB, P.y) * step(P.y, rowY + ch);
     col += T.dim * sui3Text(P, float2(bx0, rowY - 11.0 * sB), sS,
         S_B,S_A,S_N,S_K,0,0,0,0,0,0,0,0);
-    float bw = (colR - pad - bx0 - cg * 3.0) / 4.0;
+    float bw = L.bw;
     [loop] for (int b = 0; b < 4; ++b) {
-        float x = bx0 + (float)b * (bw + cg);
-        float4 rc = float4(x, rowY, x + bw, rowY + ch);
+        float4 rc = saBankCell(L, b);
+        float x = rc.x;
         if (sui3RectIn(P, rc) > 0.5 || sui3Frame(P, rc) > 0.0) {
             col = lerp(col, float3(0,0,0), sui3RectIn(P, rc));
             col += sui3BankCell(P, rc, b == bank, T);
@@ -153,8 +130,8 @@ void main(uint3 tid : SV_DispatchThreadID) {
     }
 
     // meters
-    float mY = rowY + ch + cg + 11.0 * sB;
-    float mw = ch * 0.72;
+    float mY = L.mY;
+    float mw = L.mw;
     col += T.dim * sui3Text(P, float2(colL, mY - 11.0 * sB), sS,
         S_M,S_E,S_T,S_E,S_R,S_S,0,0,0,0,0,0);
     [loop] for (int m = 0; m < 6; ++m) {
@@ -245,7 +222,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // theme value visibly retunes the reference itself.
     // Derived from the specimen column's actual bottom, not a fixed fraction:
     // a fraction put the PRIMITIVES caption straight through the meters.
-    float gTop = max(gTopPlanned, mY + mH + 30.0 * sB);
+    float gTop = max(L.gTop, mY + mH + 30.0 * sB);
     if (showGrid) {
     col += sui3Rule(P, R, gTop - 26.0 * sB, pad, T);
     col += T.dim * sui3Text(P, float2(pad, gTop - 19.0 * sB), sS,

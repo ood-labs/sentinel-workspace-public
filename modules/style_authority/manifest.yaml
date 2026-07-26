@@ -10,9 +10,23 @@ resolution: [1280, 720]
 # render at extents where their layout cannot work (100x132 in one case) and why
 # resolution_width/height writes are ignored.
 #
-# This station has no editing surface: its values are numeric shaping, which
-# CLAUDE.md puts in Properties, not in an authored canvas that duplicates
-# sliders. The render is a live specimen sheet of what it publishes.
+# The TYPE AND LAYOUT values are numeric shaping and stay in Properties, per
+# CLAUDE.md -- an authored canvas duplicating those sliders would add nothing.
+# But the pad, toggle and bank are drawn as controls, and at the 3B taste
+# checkpoint the operator tried to click them and nothing happened. Drawing
+# something that looks like a control and ignores the pointer is the
+# "decorative controls merely to make a composition appear interactive" that
+# CLAUDE.md forbids, so they are now real. Direct manipulation for the spatial
+# and selection controls; Properties for the exact numbers.
+viewport:
+  hint: "Drag the pad, click the toggle, click a bank cell"
+  interactions: [events]
+  input:
+    pointer: [left]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: set_pad, label: "Set Specimen Pad" }
+    - { gesture: left_click, action: hit_control, label: "Toggle / Select Bank" }
 
 parameters:
   - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Theme" }
@@ -33,15 +47,30 @@ parameters:
   - { name: demo_bank, display: "Specimen Bank", type: int, min: 0, max: 3, default: 2, group: "Specimen" }
 
 buffers:
+  # PERSISTENT: interaction state has to survive the frame that set it.
+  # [0] live state, [1] magic + event counter, [2] last-seen Properties values
+  - { name: ui, structured: true, element_size: 16, element_count: 3, persistent: true }
   - { name: theme, structured: true, element_size: 16, element_count: 4, persistent: false }
 
 passes:
+  # events -> state -> render. The hit-test runs first so a click is reflected
+  # in the same frame it lands, rather than one frame late.
+  - name: events
+    shader: events.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ui"
+
   - name: state
     shader: state.hlsl
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 1
     thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:ui" }
     output: "buffer:theme"
 
   - name: render
@@ -67,6 +96,13 @@ control_outputs:
   - { name: specimen_value, buffer: theme, element: 2, field_offset: 12, description: "Specimen scalar" }
   - { name: pad_x, buffer: theme, element: 3, field_offset: 0, description: "Specimen pad X" }
   - { name: pad_y, buffer: theme, element: 3, field_offset: 4, description: "Specimen pad Y, up = more" }
+  - { name: toggle, buffer: theme, element: 3, field_offset: 8, description: "Specimen toggle, live" }
+  - { name: bank, buffer: theme, element: 3, field_offset: 12, description: "Specimen bank selection, live" }
+  # Position-independent proof that the event stream is reaching the shader.
+  # Phase 2 settled an identical question this way: a counter that reads 0 while
+  # a control looks dead separates "no events delivered" from "events delivered
+  # and the hit-test missed". Those need opposite fixes.
+  - { name: events_seen, buffer: ui, element: 1, field_offset: 4, description: "Pointer events consumed since load" }
 
 data_outputs:
   - name: "Theme"
