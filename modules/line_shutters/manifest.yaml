@@ -1,0 +1,56 @@
+name: "Line Shutters"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+output_format: RGBA16F
+
+inputs:
+  - { name: "Relayed Specimen", slot: 0, required: true }
+
+data_inputs:
+  - name: "Lines"
+    slot: 0
+    schema:
+      - { name: x1, type: float }
+      - { name: y1, type: float }
+      - { name: x2, type: float }
+      - { name: y2, type: float }
+      - { name: angle, type: float }
+      - { name: length, type: float }
+      - { name: pad0, type: float }
+      - { name: pad1, type: float }
+
+parameters:
+  - { name: blade_count, display: "Active Blades", type: int, min: 1, max: 5, default: 2, group: "Geometry" }
+  - { name: blade_width, display: "Blade Width", type: float, min: 0.004, max: 0.06, default: 0.032, group: "Geometry" }
+  - { name: blade_reach, display: "Blade Reach", type: float, min: 0.15, max: 1.2, default: 1.000000, group: "Geometry" }
+  - { name: attack, display: "Persistence Test", type: float, min: 0.03, max: 0.5, default: 0.28, group: "Memory" }
+  - { name: retention, display: "Blade Memory", type: float, min: 0.75, max: 0.995, default: 0.86, group: "Memory" }
+  - { name: cut_depth, display: "Black Depth", type: float, min: 0.0, max: 1.0, default: 0.98, group: "Composition" }
+
+buffers:
+  - name: shutter_memory
+    format: RGBA16F
+    scale: 1.0
+    persistent: true
+
+passes:
+  - name: accumulate
+    shader: accumulate.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "buffer:shutter_memory" }
+    output: "buffer:shutter_memory"
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:shutter_memory" }
+    output: output
+
+outputs:
+  - { name: "Shuttered Specimen", pass: present }

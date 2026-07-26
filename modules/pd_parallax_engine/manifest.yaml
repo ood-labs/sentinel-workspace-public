@@ -1,0 +1,95 @@
+name: "PD / Parallax Engine"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Obligation Field", slot: 0, required: true }
+
+data_inputs:
+  - name: "Debt Quanta"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: axis, type: float2 }
+      - { name: mass, type: float }
+      - { name: radius, type: float }
+      - { name: kind, type: uint }
+      - { name: sourceIndex, type: uint }
+      - { name: ledgerId, type: uint }
+      - { name: active, type: uint }
+      - { name: phase, type: float }
+      - { name: age, type: float }
+
+viewport:
+  hint: "Canonical Program: macro liabilities bend depth, hinge quanta fold local plates, and rail quanta impose directional shear."
+
+parameters:
+  - { name: phase, display: "Settlement Phase", type: float, min: 0.0, max: 1.0, default: 0.13, group: "Time" }
+  - { name: topology_mode, display: "Counterparty Topology", type: enum, default: 0, options: [Mutual, Predatory, Defaulted], flags: button_grid, group: "Time" }
+  - { name: leverage_focus, display: "Leverage Focus", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [0.16, -0.09], group: "Time" }
+
+  - { name: field_gain, display: "Liability Field", type: float, min: 0.0, max: 3.0, default: 1.0, group: "Field/Master" }
+  - { name: warp_gain, display: "Spatial Leverage", type: float, min: 0.0, max: 0.35, default: 0.082, group: "Field/Master" }
+  - { name: parallax_depth, display: "Parallax Debt", type: float, min: 0.0, max: 0.4, default: 0.11, group: "Field/Master" }
+
+  - { name: macro_radius_scale, display: "Macro Radius", type: float, min: 0.2, max: 2.5, default: 1.0, group: "Field/Macro Liability" }
+  - { name: macro_repulsion, display: "Macro Repulsion", type: float, min: -1.0, max: 2.0, default: 0.78, group: "Field/Macro Liability" }
+  - { name: macro_depth, display: "Macro Depth", type: float, min: 0.0, max: 3.0, default: 1.15, group: "Field/Macro Liability" }
+
+  - { name: hinge_radius_scale, display: "Hinge Radius", type: float, min: 0.2, max: 3.0, default: 1.0, group: "Field/Hinges" }
+  - { name: hinge_fold, display: "Hinge Fold", type: float, min: -1.0, max: 1.0, default: 0.16, group: "Field/Hinges" }
+  - { name: hinge_drift, display: "Hinge Drift", type: float, min: 0.0, max: 1.0, default: 0.08, group: "Field/Hinges" }
+  - { name: hinge_depth, display: "Hinge Depth", type: float, min: 0.0, max: 3.0, default: 1.0, group: "Field/Hinges" }
+
+  - { name: rail_length_scale, display: "Rail Reach", type: float, min: 0.5, max: 4.0, default: 2.2, group: "Field/Rails" }
+  - { name: rail_width, display: "Rail Influence", type: float, min: 0.002, max: 0.12, default: 0.028, group: "Field/Rails" }
+  - { name: rail_shear, display: "Rail Shear", type: float, min: -1.0, max: 1.0, default: 0.12, group: "Field/Rails" }
+  - { name: rail_depth, display: "Rail Depth", type: float, min: 0.0, max: 3.0, default: 0.9, group: "Field/Rails" }
+
+  - { name: slice_count, display: "Debt Slices", type: int, min: 1, max: 8, default: 6, group: "Program/Parallax Stack" }
+  - { name: slice_falloff, display: "Slice Falloff", type: float, min: 0.0, max: 6.0, default: 2.1, group: "Program/Parallax Stack" }
+  - { name: slice_gain, display: "Slice Body", type: float, min: 0.0, max: 2.5, default: 0.82, group: "Program/Parallax Stack" }
+  - { name: source_gain, display: "Original Obligation", type: float, min: 0.0, max: 1.5, default: 0.24, group: "Program/Parallax Stack" }
+  - { name: source_edge_gain, display: "Borrowed Edge", type: float, min: 0.0, max: 5.0, default: 1.8, group: "Program/Parallax Stack" }
+  - { name: depth_body_gain, display: "Depth Body", type: float, min: 0.0, max: 1.5, default: 0.2, group: "Program/Parallax Stack" }
+
+  - { name: macro_mark_scale, display: "Macro Mark Scale", type: float, min: 0.2, max: 2.5, default: 0.92, group: "Program/Quanta Geometry" }
+  - { name: macro_gain, display: "Macro Marks", type: float, min: 0.0, max: 2.5, default: 1.0, group: "Program/Quanta Geometry" }
+  - { name: hinge_scale, display: "Hinge Scale", type: float, min: 0.2, max: 3.0, default: 1.0, group: "Program/Quanta Geometry" }
+  - { name: hinge_torsion, display: "Hinge Torsion", type: float, min: -2.0, max: 2.0, default: 0.46, group: "Program/Quanta Geometry" }
+  - { name: hinge_body_gain, display: "Hinge Bodies", type: float, min: 0.0, max: 1.5, default: 0.68, group: "Program/Quanta Geometry" }
+  - { name: hinge_line_gain, display: "Hinge Lines", type: float, min: 0.0, max: 2.5, default: 1.2, group: "Program/Quanta Geometry" }
+  - { name: rail_scale, display: "Rail Scale", type: float, min: 0.5, max: 5.0, default: 2.6, group: "Program/Quanta Geometry" }
+  - { name: rail_separation, display: "Rail Separation", type: float, min: 0.001, max: 0.04, default: 0.007, group: "Program/Quanta Geometry" }
+  - { name: rail_gain, display: "Rail Marks", type: float, min: 0.0, max: 3.0, default: 1.25, group: "Program/Quanta Geometry" }
+  - { name: relation_gain, display: "Counterparty Relations", type: float, min: 0.0, max: 2.0, default: 0.58, group: "Program/Quanta Geometry" }
+
+  - { name: current_gain, display: "Current Quanta", type: float, min: 0.0, max: 3.0, default: 1.1, group: "Program/Liability" }
+  - { name: field_current_gain, display: "Stress Current", type: float, min: 0.0, max: 2.0, default: 0.18, group: "Program/Liability" }
+  - { name: liability_color, display: "Liability Color", type: color, default: [1.0, 0.31, 0.025], group: "Program/Liability" }
+
+  - { name: tone_steps, display: "Settlement Steps", type: float, min: 2.0, max: 16.0, default: 7.0, group: "Program/Print" }
+  - { name: tone_quantize, display: "Settlement Quantize", type: float, min: 0.0, max: 1.0, default: 0.38, group: "Program/Print" }
+  - { name: registration_gain, display: "Registration Debt", type: float, min: 0.0, max: 1.5, default: 0.3, group: "Program/Print" }
+
+passes:
+  - name: liability_field
+    shader: liability_field.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "data:0" }
+  - name: parallax_program
+    shader: parallax_program.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "pass:liability_field" }
+      - { slot: 2, source: "data:0" }
+    output: output
+
+outputs:
+  - { name: "Program", pass: parallax_program }
+  - { name: "Liability Field", pass: liability_field }

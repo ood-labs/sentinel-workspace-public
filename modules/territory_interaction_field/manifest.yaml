@@ -1,0 +1,44 @@
+name: "Territory Interaction Field"
+version: "1.0"
+mode: filter
+
+inputs:
+  - { name: "Loom", slot: 0 }
+  - { name: "Seismic", slot: 1 }
+  - { name: "Towers", slot: 2 }
+
+parameters:
+  - { name: master_phase, display: "Master Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Clock" }
+  - { name: master_envelope, display: "Master Envelope", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Clock" }
+  - { name: master_pulse, display: "Master Pulse", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Clock" }
+  - { name: impact_center, display: "Impact Center", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.58, 0.46], group: "Interaction" }
+  - { name: interaction_mode, display: "Interaction", type: enum, options: ["Push", "Shear", "Fold"], default: 0, flags: button_grid, group: "Interaction" }
+  - { name: displacement, display: "Displacement", type: float, min: 0.0, max: 0.18, default: 0.092, group: "Interaction" }
+  - { name: lens_radius, display: "Lens Radius", type: float, min: 0.08, max: 0.72, default: 0.38, group: "Interaction" }
+  - { name: response, display: "Force Response", type: float, min: 0.25, max: 4.0, default: 2.15, group: "Interaction" }
+  - { name: seismic_gain, display: "Seismic Gain", type: float, min: 0.25, max: 4.0, default: 1.65, group: "Field Mapping" }
+  - { name: frame_tension, display: "Loom Frame Tension", type: float, min: 0.0, max: 1.0, default: 0.72, group: "Field Mapping" }
+  - { name: tower_contrast, display: "Tower Contrast", type: float, min: 0.6, max: 2.4, default: 1.26, group: "Field Mapping" }
+  - { name: accent, display: "Seismic Accent", type: color, default: [1.0, 0.18, 0.025], group: "Palette" }
+
+viewport:
+  hint: "Drag inside DISPLACED STAGE to move the seismic force lens."
+  interactions: [mouse]
+  controls:
+    - { id: impact_center, kind: xypad, param: impact_center, rect: [0.305, 0.105, 0.965, 0.735], label: "Impact Center" }
+
+passes:
+  - name: interaction
+    shader: interaction.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "input:2" }
+    output: output
+
+# ui-label: title = TERRITORY INTERACTION FIELD
+# ui-label: loom = LOOM TENSION
+# ui-label: seismic = SEISMIC FORCE
+# ui-label: displaced_stage = DISPLACED STAGE
+# ui-label: force_trace = LIVE FORCE TRACE

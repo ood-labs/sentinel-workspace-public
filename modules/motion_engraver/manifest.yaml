@@ -1,0 +1,46 @@
+name: "Motion Engraver"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Program", slot: 0, required: true }
+  - { name: "Motion Flow", slot: 1, required: true }
+
+parameters:
+  - { name: memory, display: "Memory", type: float, min: 0.86, max: 0.94, default: 0.91, group: "Motion" }
+  - { name: advection, display: "Flow Advection", type: float, min: 0.0, max: 4.0, default: 1.000000, group: "Motion" }
+  - { name: motion_gain, display: "Motion Gain", type: float, min: 2.0, max: 80.0, default: 14.000000, group: "Motion" }
+  - { name: injection, display: "Edge Injection", type: float, min: 0.02, max: 1.5, default: 0.18, group: "Etching" }
+  - { name: etch_width, display: "Etch Width", type: float, min: 0.2, max: 3.0, default: 0.55, group: "Etching" }
+  - { name: trail_gain, display: "Trail Gain", type: float, min: 0.1, max: 2.0, default: 0.76, group: "Balance" }
+  - { name: substrate, display: "Program Substrate", type: float, min: 0.0, max: 0.7, default: 0.14, group: "Balance" }
+  - { name: warm_gain, display: "Warm Motion", type: float, min: 0.0, max: 2.0, default: 1.1, group: "Signal" }
+  - { name: warm_signal, display: "Warm Signal", type: color, default: [1.000000, 0.16, 0.02], group: "Signal" }
+
+buffers:
+  - name: trail
+    format: RGBA16F
+    scale: 1.0
+    persistent: true
+
+passes:
+  - name: accumulate
+    shader: accumulate.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "buffer:trail" }
+    output: "buffer:trail"
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "buffer:trail" }
+    output: output
+
+outputs:
+  - { name: "Engraved", pass: present }

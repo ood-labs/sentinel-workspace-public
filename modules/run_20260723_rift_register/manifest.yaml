@@ -1,0 +1,43 @@
+name: "Run 20260723 Rift Register"
+version: "1.0"
+mode: filter
+
+inputs:
+  - { name: "Sutured Program", slot: 0 }
+
+data_inputs:
+  - name: "Suture Records"
+    slot: 0
+    schema:
+      - { name: x, type: float }
+      - { name: y, type: float }
+      - { name: strength, type: float }
+      - { name: polarity, type: float }
+
+parameters:
+  - { name: phase, display: "Phase", type: float, min: 0.0, max: 1.0, default: 0.08, group: "Performance" }
+  - { name: energy, display: "Energy", type: float, min: 0.0, max: 1.0, default: 0.5, group: "Performance" }
+  - { name: rift_mode, display: "Rift Structure", type: enum, default: 0, options: [Fault, Registers, Interleave], flags: button_grid, group: "Structure" }
+  - { name: route_count, display: "Route Anchors", type: int, min: 2, max: 12, default: 7, group: "Structure" }
+  - { name: register_count, display: "Register Count", type: int, min: 3, max: 24, default: 9, group: "Structure" }
+  - { name: parallax, display: "Domain Parallax", type: float, min: 0.0, max: 0.12, default: 0.016, group: "Structure" }
+  - { name: rift_width, display: "Negative Rift", type: float, min: 0.001, max: 0.08, default: 0.008, group: "Structure" }
+  - { name: shear, display: "Route Shear", type: float, min: 0.0, max: 1.0, default: 0.42, group: "Motion" }
+  - { name: breath, display: "Rift Breath", type: float, min: 0.0, max: 1.0, default: 0.38, group: "Motion" }
+  - { name: polarity_influence, display: "Polarity Bias", type: float, min: 0.0, max: 1.0, default: 0.58, group: "Motion" }
+  - { name: echo_amount, display: "Plate Echo", type: float, min: 0.0, max: 1.0, default: 0.20, group: "Material" }
+  - { name: echo_extent, display: "Echo Reach", type: float, min: 0.0, max: 2.0, default: 0.72, group: "Material" }
+  - { name: void_depth, display: "Void Depth", type: float, min: 0.0, max: 1.0, default: 0.84, group: "Material" }
+  - { name: edge_weight, display: "Registration Edge", type: float, min: 0.0, max: 1.0, default: 0.34, group: "Material" }
+  - { name: mix_amount, display: "Rift Mix", type: float, min: 0.0, max: 1.0, default: 0.92, group: "Material" }
+  - { name: seam_color, display: "Cold Registration", type: color, default: [0.74, 0.76, 0.72], group: "Palette" }
+  - { name: accent_color, display: "Warm Registration", type: color, default: [1.0, 0.11, 0.01], group: "Palette" }
+
+passes:
+  - name: register
+    shader: rift_register.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+    output: output

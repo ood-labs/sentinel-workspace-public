@@ -1,0 +1,86 @@
+name: "Phase Lattice Memory"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA16F
+
+inputs:
+  - { name: "Live Contours", slot: 0, required: true }
+
+buffers:
+  - { name: memory_field, format: RGBA16F, scale: 1.0, persistent: true }
+
+parameters:
+  - name: memory_mode
+    display: "Memory Geometry"
+    type: enum
+    default: 0
+    options: [Flow, Mirror, Scar]
+    flags: button_grid
+    group: "Memory"
+
+  - name: memory
+    display: "Retention"
+    type: float
+    min: 0.65
+    max: 0.995
+    default: 0.93
+    group: "Memory"
+
+  - name: transport
+    display: "Contour Transport"
+    type: float
+    min: 0.0
+    max: 5.0
+    default: 1.8
+    group: "Memory"
+
+  - name: erosion
+    display: "Erosion"
+    type: float
+    min: 0.0
+    max: 0.04
+    default: 0.006
+    group: "Memory"
+
+  - name: deposit_gate
+    display: "Deposit Gate"
+    type: float
+    min: 0.05
+    max: 0.72
+    default: 0.18
+    group: "Memory"
+
+  - name: memory_core
+    display: "Memory Core"
+    type: point2D
+    min: [-0.42, -0.38]
+    max: [0.42, 0.38]
+    default: [0.0, 0.0]
+    group: "Transport"
+
+  - name: rotation_bias
+    display: "Rotational Bias"
+    type: float
+    min: -2.0
+    max: 2.0
+    default: 0.55
+    group: "Transport"
+
+passes:
+  - name: accumulate
+    shader: accumulate.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:memory_field" }
+    output: "buffer:memory_field"
+
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:memory_field" }
+    output: output

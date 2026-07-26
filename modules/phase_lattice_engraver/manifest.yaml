@@ -1,0 +1,80 @@
+name: "Phase Lattice Adaptive Engraver"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+
+inputs:
+  - { name: "Lensed Specimen", slot: 0, required: true }
+
+parameters:
+  - name: edge_threshold
+    display: "Etch Threshold"
+    type: float
+    min: 0.025
+    max: 0.42
+    default: 0.18
+    group: "Engraving"
+
+  - name: edge_gain
+    display: "Etch Gain"
+    type: float
+    min: 0.5
+    max: 6.0
+    default: 1.8
+    group: "Engraving"
+
+  - name: body_threshold
+    display: "Body Threshold"
+    type: float
+    min: 0.08
+    max: 0.72
+    default: 0.56
+    group: "Engraving"
+
+  - name: center_clarity
+    display: "Core Clarity"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.9
+    group: "Engraving"
+
+  - name: accent_gate
+    display: "Accent Gate"
+    type: float
+    min: 0.02
+    max: 0.72
+    default: 0.16
+    group: "Accent"
+
+  - name: accent_radius
+    display: "Accent Orbit"
+    type: float
+    min: 0.18
+    max: 0.72
+    default: 0.46
+    group: "Accent"
+
+  - name: accent_width
+    display: "Accent Band"
+    type: float
+    min: 0.025
+    max: 0.32
+    default: 0.14
+    group: "Accent"
+
+  - name: engrave_core
+    display: "Engraving Core"
+    type: point2D
+    min: [-0.42, -0.38]
+    max: [0.42, 0.38]
+    default: [0.0, 0.0]
+    group: "Placement"
+
+passes:
+  - name: engrave
+    shader: engrave.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output

@@ -1,0 +1,37 @@
+name: "Phase Lattice Analysis Proxy"
+version: "1.0"
+mode: generator
+resolution: [480, 270]
+working_format: RGBA16F
+
+inputs:
+  - { name: "Mounted Specimen", slot: 0, required: true }
+
+parameters:
+  - name: analysis_gain
+    display: "Analysis Gain"
+    type: float
+    min: 0.60
+    max: 1.80
+    default: 1.06
+    group: "Analysis Contract"
+
+  - name: analysis_gamma
+    display: "Analysis Gamma"
+    type: float
+    min: 0.60
+    max: 1.60
+    default: 0.94
+    group: "Analysis Contract"
+
+passes:
+  - name: downsample_specimen
+    shader: proxy.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Analysis 480x270", pass: downsample_specimen }

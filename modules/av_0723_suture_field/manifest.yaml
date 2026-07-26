@@ -1,0 +1,25 @@
+name: "AV 0723 Suture Field"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+parameters:
+  - { name: phase_driver, type: float, min: 0.0, max: 1.0, default: 0.0, hidden: true, group: "Drivers" }
+  - { name: sine_driver, type: float, min: 0.0, max: 1.0, default: 0.5, hidden: true, group: "Drivers" }
+  - { name: quadrature_driver, type: float, min: 0.0, max: 1.0, default: 1.0, hidden: true, group: "Drivers" }
+  - { name: accent_driver, type: float, min: 0.0, max: 1.0, default: 0.0, hidden: true, group: "Drivers" }
+  - { name: strand_count, type: int, min: 12, max: 96, default: 34, group: "Construction" }
+  - { name: stitch_count, type: int, min: 4, max: 24, default: 9, group: "Construction" }
+  - { name: warp_amount, type: float, min: 0.0, max: 0.12, default: 0.028, group: "Construction" }
+  - { name: aperture_base, type: float, min: 0.05, max: 0.28, default: 0.135, group: "Construction" }
+  - { name: aperture_range, type: float, min: 0.0, max: 0.22, default: 0.095, group: "Construction" }
+  - { name: seam_width, type: float, min: 0.0, max: 0.08, default: 0.026, group: "Construction" }
+  - { name: stroke_px, type: float, min: 0.5, max: 3.5, default: 1.1, group: "Material" }
+  - { name: ink_color, type: color, default: [0.90, 0.92, 0.88], group: "Material" }
+  - { name: scar_color, type: color, default: [1.0, 0.25, 0.055], group: "Material" }
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    output: output

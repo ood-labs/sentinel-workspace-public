@@ -1,0 +1,23 @@
+name: "Harvest - Orbital Field Overlay"
+version: "1.0"
+mode: filter
+
+parameters:
+  - { name: master_phase, display: "Master Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Clock" }
+  - { name: master_envelope, display: "Master Envelope", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Clock" }
+  - { name: master_pulse, display: "Master Pulse", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Clock" }
+  - { name: master_play, display: "Master Play", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Clock" }
+  - { name: field_density, display: "Field Lines", type: int, min: 3, max: 12, default: 6, group: "Harvested Field" }
+  - { name: line_weight, display: "Field Weight", type: float, min: 0.0, max: 1.0, default: 0.24, group: "Harvested Field" }
+  - { name: field_opacity, display: "Field Opacity", type: float, min: 0.0, max: 0.75, default: 0.32, group: "Harvested Field" }
+  - { name: fault_bias, display: "Fault Position", type: float, min: -0.52, max: 0.52, default: 0.31, group: "Harvested Fault" }
+  - { name: fault_weight, display: "Fault Weight", type: float, min: 0.0, max: 1.0, default: 0.30, group: "Harvested Fault" }
+  - { name: fault_opacity, display: "Fault Opacity", type: float, min: 0.0, max: 1.0, default: 0.82, group: "Harvested Fault" }
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: input }
+    output: output

@@ -1,0 +1,166 @@
+name: "Phase Lattice Live Registration"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+
+inputs:
+  - { name: "Engraved Specimen", slot: 0, required: true }
+
+buffers:
+  - { name: orientation_state, format: RGBA16F, scale: 0.0625, persistent: true }
+  - { name: azimuth_control, structured: true, element_size: 16, element_count: 1 }
+
+parameters:
+  - name: overlay_gain
+    display: "Registration Gain"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.70
+    group: "Registration"
+
+  - name: measure_radius
+    display: "Measured Radius"
+    type: float
+    min: 0.18
+    max: 0.72
+    default: 0.46
+    group: "Registration"
+
+  - name: ring_width
+    display: "Ring Stroke"
+    type: float
+    min: 0.5
+    max: 4.0
+    default: 1.15
+    group: "Registration"
+
+  - name: tick_count
+    display: "Angular Divisions"
+    type: float
+    min: 4.0
+    max: 36.0
+    default: 16.0
+    group: "Registration"
+
+  - name: tick_length
+    display: "Tick Length"
+    type: float
+    min: 0.004
+    max: 0.08
+    default: 0.024
+    group: "Registration"
+
+  - name: ring_continuity
+    display: "Ring Continuity"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.72
+    group: "Registration"
+
+  - name: probe_radius
+    display: "Field Probe Radius"
+    type: float
+    min: 0.05
+    max: 0.42
+    default: 0.22
+    group: "Live Azimuth"
+
+  - name: azimuth_smoothing
+    display: "Azimuth Stability"
+    type: float
+    min: 0.72
+    max: 0.995
+    default: 0.965
+    group: "Live Azimuth"
+
+  - name: signal_floor
+    display: "Signal Floor"
+    type: float
+    min: 0.0
+    max: 0.65
+    default: 0.10
+    group: "Live Azimuth"
+
+  - name: needle_length
+    display: "Azimuth Length"
+    type: float
+    min: 0.08
+    max: 0.66
+    default: 0.27
+    group: "Live Azimuth"
+
+  - name: needle_width
+    display: "Azimuth Stroke"
+    type: float
+    min: 0.5
+    max: 5.0
+    default: 1.35
+    group: "Live Azimuth"
+
+  - name: needle_gain
+    display: "Azimuth Gain"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.46
+    group: "Live Azimuth"
+
+  - name: registration_core
+    display: "Registration Core"
+    type: point2D
+    min: [-0.42, -0.38]
+    max: [0.42, 0.38]
+    default: [0.0, 0.0]
+    group: "Placement"
+
+passes:
+  - name: stabilize_orientation
+    shader: orientation.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:orientation_state" }
+    output: "buffer:orientation_state"
+
+  - name: publish_azimuth
+    shader: publish.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:orientation_state" }
+    output: "buffer:azimuth_control"
+
+  - name: live_registration
+    shader: registration.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:orientation_state" }
+    output: output
+
+control_outputs:
+  - name: azimuth_x
+    buffer: azimuth_control
+    element: 0
+    field_offset: 0
+    description: "Temporally stabilized live field azimuth X"
+  - name: azimuth_y
+    buffer: azimuth_control
+    element: 0
+    field_offset: 4
+    description: "Temporally stabilized live field azimuth Y"
+  - name: azimuth_confidence
+    buffer: azimuth_control
+    element: 0
+    field_offset: 8
+    description: "Confidence of the stabilized field azimuth"
+  - name: measured_radius
+    buffer: azimuth_control
+    element: 0
+    field_offset: 12
+    description: "Live measured registration radius"

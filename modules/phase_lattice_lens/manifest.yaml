@@ -1,0 +1,64 @@
+name: "Phase Lattice Gravitational Lens"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+
+inputs:
+  - { name: "Aperture Composition", slot: 0, required: true }
+
+parameters:
+  - name: ring_radius
+    display: "Lens Radius"
+    type: float
+    min: 0.18
+    max: 0.72
+    default: 0.46
+    group: "Lens"
+
+  - name: lens_strength
+    display: "Radial Gravity"
+    type: float
+    min: -0.10
+    max: 0.10
+    default: 0.034
+    group: "Lens"
+
+  - name: ring_falloff
+    display: "Gravity Falloff"
+    type: float
+    min: 0.025
+    max: 0.22
+    default: 0.095
+    group: "Lens"
+
+  - name: torsion
+    display: "Orbital Torsion"
+    type: float
+    min: -0.06
+    max: 0.06
+    default: 0.014
+    group: "Lens"
+
+  - name: rim_gain
+    display: "Event Rim"
+    type: float
+    min: 0.0
+    max: 0.45
+    default: 0.10
+    group: "Lens"
+
+  - name: lens_core
+    display: "Lens Core"
+    type: point2D
+    min: [-0.42, -0.38]
+    max: [0.42, 0.38]
+    default: [0.0, 0.0]
+    group: "Placement"
+
+passes:
+  - name: lens
+    shader: lens.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output

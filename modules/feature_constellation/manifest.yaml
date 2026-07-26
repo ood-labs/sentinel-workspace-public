@@ -1,0 +1,40 @@
+name: "feature_constellation"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+data_inputs:
+  - name: "Analysis Data"
+    slot: 0
+    schema:
+      - { name: centroidX, type: float }
+      - { name: centroidY, type: float }
+      - { name: area, type: float }
+      - { name: x1, type: float }
+      - { name: y1, type: float }
+      - { name: x2, type: float }
+      - { name: y2, type: float }
+      - { name: colorR, type: float }
+      - { name: colorG, type: float }
+      - { name: colorB, type: float }
+      - { name: pad0, type: float }
+      - { name: pad1, type: float }
+
+parameters:
+  - { name: palette_a, display: "Palette A", group: "Look/Palette", type: color, default: [0.1, 0.7, 1.0] }
+  - { name: palette_b, display: "Palette B", group: "Look/Palette", type: color, default: [1.0, 0.25, 0.55] }
+  - { name: center_bias, display: "Center Bias", group: "Look/Composition", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [0.0, 0.0] }
+  - { name: curve_mode, display: "Curve Mode", group: "Look/Geometry", type: enum, default: 0, options: [Points, Ribbons, Field], flags: button_grid }
+  - { name: draw_points, display: "Draw Points", group: "Look/Geometry", type: bool, default: true, flags: button }
+  - { name: draw_background, display: "Draw Background", group: "Look/Geometry", type: bool, default: true, flags: button }
+  - { name: point_radius, display: "Point Radius", group: "Look/Geometry", type: float, min: 1.0, max: 48.0, default: 7.0 }
+  - { name: field_gain, display: "Field Gain", group: "Motion", type: float, min: 0.0, max: 8.0, default: 2.0 }
+  - { name: pulse_speed, display: "Pulse Speed", group: "Motion", type: float, min: 0.0, max: 6.0, default: 1.0 }
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: output

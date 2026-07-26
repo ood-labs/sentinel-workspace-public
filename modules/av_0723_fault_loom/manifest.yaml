@@ -1,0 +1,26 @@
+name: "AV 0723 Fault Loom"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+parameters:
+  - { name: phase_driver, type: float, min: 0.0, max: 1.0, default: 0.0, hidden: true, group: "Drivers" }
+  - { name: triangle_driver, type: float, min: 0.0, max: 1.0, default: 0.0, hidden: true, group: "Drivers" }
+  - { name: orbit_driver, type: float, min: 0.0, max: 1.0, default: 1.0, hidden: true, group: "Drivers" }
+  - { name: accent_driver, type: float, min: 0.0, max: 1.0, default: 0.0, hidden: true, group: "Drivers" }
+  - { name: layer_count, type: int, min: 12, max: 64, default: 24, group: "Construction" }
+  - { name: column_count, type: int, min: 8, max: 48, default: 14, group: "Construction" }
+  - { name: shear_amount, type: float, min: 0.0, max: 0.10, default: 0.026, group: "Construction" }
+  - { name: fault_gap, type: float, min: 0.015, max: 0.16, default: 0.078, group: "Construction" }
+  - { name: fault_travel, type: float, min: 0.0, max: 0.28, default: 0.11, group: "Construction" }
+  - { name: bridge_length, type: float, min: 0.0, max: 0.18, default: 0.054, group: "Construction" }
+  - { name: line_width_px, type: float, min: 0.5, max: 3.0, default: 1.0, group: "Material" }
+  - { name: vertical_weight, type: float, min: 0.0, max: 1.0, default: 0.22, group: "Material" }
+  - { name: ink_color, type: color, default: [0.88, 0.90, 0.86], group: "Material" }
+  - { name: fault_color, type: color, default: [1.0, 0.22, 0.045], group: "Material" }
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    output: output

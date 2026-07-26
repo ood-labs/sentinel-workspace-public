@@ -1,0 +1,87 @@
+name: "Forensic Performance Cartography"
+version: "1.0"
+mode: generator
+resolution: [1280, 800]
+
+panel:
+  mode: canvas
+  output: "Performance Cartography"
+  resolution: follow_panel
+
+inputs:
+  - { name: "Final Program", slot: 0, required: true }
+
+data_inputs:
+  - name: "Evidence Agents"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: weight, type: float }
+      - { name: radius, type: float }
+      - { name: kind, type: uint }
+      - { name: sourceIndex, type: uint }
+      - { name: groupId, type: uint }
+      - { name: active, type: uint }
+      - { name: phase, type: float }
+      - { name: pad, type: float }
+
+parameters:
+  - { name: performance_pad, display: "Tension / Memory", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.74, 0.68], group: "Performance" }
+  - { name: energy, display: "Master Energy", type: float, min: 0.0, max: 1.0, default: 0.79, group: "Performance" }
+  - { name: topology, display: "Topology", type: int, min: 0, max: 2, default: 2, group: "Performance" }
+  - { name: archive_cut, display: "Archive Cut", type: button, group: "Performance" }
+  - { name: hold_memory, display: "Hold Memory", type: button, group: "Performance" }
+  - { name: current_color, display: "Current Color", type: color, default: [1.0, 0.28, 0.035], group: "Look" }
+
+buffers:
+  - { name: performance_macros, structured: true, element_size: 32, element_count: 1 }
+
+control_outputs:
+  - { name: tension, buffer: performance_macros, element: 0, field_offset: 0, description: "Elastic tension macro" }
+  - { name: memory, buffer: performance_macros, element: 0, field_offset: 4, description: "Memory retention macro" }
+  - { name: energy, buffer: performance_macros, element: 0, field_offset: 8, description: "Master energy macro" }
+  - { name: topology, buffer: performance_macros, element: 0, field_offset: 12, description: "Topology mode" }
+  - { name: archive_cut, buffer: performance_macros, element: 0, field_offset: 16, description: "Momentary archive cut" }
+  - { name: hold_memory, buffer: performance_macros, element: 0, field_offset: 20, description: "Momentary memory hold" }
+  - { name: active_agents, buffer: performance_macros, element: 0, field_offset: 24, description: "Live active evidence count" }
+  - { name: mean_weight, buffer: performance_macros, element: 0, field_offset: 28, description: "Live mean evidence weight" }
+
+viewport:
+  hint: "XY=Tension/Memory, Energy=macro intensity, Topology=mode, Cut/Hold=momentary performance gestures."
+  # ui-label: title = FORENSIC CHOIR / PERFORMANCE CARTOGRAPHY
+  # ui-label: stage = LIVE PROGRAM / EVIDENCE FIELD
+  # ui-label: macros = PERFORMANCE MACROS
+  # ui-label: execute = MOMENTARY EXECUTION
+  # ui-label: mode_choir = CHOIR
+  # ui-label: mode_excavation = EXCAVATION
+  # ui-label: mode_severed = SEVERED
+  controls:
+    - { id: performance_pad, kind: xypad, param: performance_pad, rect: [0.705, 0.225, 0.948, 0.515], label: "Tension / Memory Field" }
+    - { id: energy, kind: slider, param: energy, rect: [0.705, 0.665, 0.948, 0.715], label: "Master Energy" }
+    - { id: topology, kind: slider, param: topology, min: 0, max: 2, rect: [0.705, 0.775, 0.948, 0.825], label: "Topology Mode" }
+    - { id: archive_cut, kind: button, param: archive_cut, rect: [0.705, 0.885, 0.818, 0.932], label: "Archive Cut" }
+    - { id: hold_memory, kind: button, param: hold_memory, rect: [0.835, 0.885, 0.948, 0.932], label: "Hold Memory" }
+
+passes:
+  - name: macros
+    shader: macros.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:performance_macros"
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "buffer:performance_macros" }
+    output: output
+
+outputs:
+  - { name: "Performance Cartography", pass: render }

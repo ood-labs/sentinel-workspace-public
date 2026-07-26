@@ -1,0 +1,29 @@
+name: "02 / ANALYSIS PROXY"
+version: "1.0"
+mode: generator
+resolution: [480, 270]
+
+inputs:
+  - { name: "Full Resolution Source", slot: 0, required: true }
+
+viewport:
+  hint: "480×270 analysis branch — full-resolution Program bypasses this node"
+  interactions: [mouse]
+
+parameters:
+  - { name: edge_focus, display: "Edge Focus", type: float, min: 0.0, max: 3.0, default: 1.15, group: "Analysis Shaping" }
+  - { name: luma_gain, display: "Luma Gain", type: float, min: 0.3, max: 2.5, default: 1.28, group: "Analysis Shaping" }
+  - { name: luma_gamma, display: "Luma Gamma", type: float, min: 0.35, max: 2.5, default: 0.78, group: "Analysis Shaping" }
+  - { name: color_keep, display: "Color Keep", type: float, min: 0.0, max: 1.0, default: 0.42, group: "Preview" }
+  - { name: show_analysis_grid, display: "Analysis Grid", type: bool, default: false, flags: button, group: "Preview" }
+
+passes:
+  - name: analysis_proxy
+    shader: proxy.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Analysis 480×270", pass: analysis_proxy }

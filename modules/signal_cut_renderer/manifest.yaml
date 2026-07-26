@@ -1,0 +1,80 @@
+name: "05 / SIGNAL CUT PROGRAM"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Organic Source", slot: 0, required: true }
+
+data_inputs:
+  - name: "Feature Glyphs"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: weight, type: float }
+      - { name: kind, type: float }
+      - { name: group_id, type: float }
+      - { name: active, type: float }
+
+viewport:
+  hint: "Feature-driven Voronoi cuts, directional tearing, and record topology"
+  interactions: [mouse]
+
+parameters:
+  - { name: flow_rate, display: "System Rate", type: float, min: 0.01, max: 1.0, default: 0.18, group: "Transport" }
+  - { name: render_mode, display: "Topology Operator", type: enum, default: 0, options: [Scan Slice, Vector Shear, Group Tear], flags: button_grid, group: "Operator" }
+  - { name: slice_displacement, display: "Slice Displacement", type: float, min: 0.0, max: 0.08, default: 0.018, group: "Operator" }
+  - { name: influence_radius, display: "Feature Radius", type: float, min: 0.03, max: 0.5, default: 0.19, group: "Operator" }
+  - { name: slice_rows, display: "Slice Rows", type: float, min: 8.0, max: 240.0, default: 92.0, group: "Operator/Tear" }
+  - { name: tear_threshold, display: "Tear Threshold", type: float, min: 0.15, max: 0.95, default: 0.72, group: "Operator/Tear" }
+  - { name: tear_amount, display: "Tear Amount", type: float, min: 0.0, max: 0.15, default: 0.024, group: "Operator/Tear" }
+  - { name: source_gain, display: "Source Gain", type: float, min: 0.0, max: 2.0, default: 0.72, group: "Image" }
+  - { name: black_level, display: "Black Level", type: float, min: 0.0, max: 0.4, default: 0.025, group: "Image" }
+  - { name: white_level, display: "White Level", type: float, min: 0.2, max: 1.0, default: 0.82, group: "Image" }
+  - { name: posterize_levels, display: "Signal Levels", type: float, min: 2.0, max: 16.0, default: 6.0, group: "Image" }
+  - { name: cell_line_width, display: "Cell Boundary", type: float, min: 0.0005, max: 0.02, default: 0.0032, group: "Topology" }
+  - { name: cell_edge_gain, display: "Cell Edge Gain", type: float, min: 0.0, max: 1.5, default: 0.48, group: "Topology" }
+  - { name: connectivity_radius, display: "Connection Radius", type: float, min: 0.03, max: 0.8, default: 0.26, group: "Topology/Web" }
+  - { name: web_width, display: "Web Width", type: float, min: 0.2, max: 4.0, default: 1.0, group: "Topology/Web" }
+  - { name: dash_count, display: "Dash Count", type: float, min: 2.0, max: 60.0, default: 21.0, group: "Topology/Web" }
+  - { name: dash_ratio, display: "Dash Ratio", type: float, min: 0.0, max: 0.95, default: 0.42, group: "Topology/Web" }
+  - { name: dash_speed, display: "Dash Flow", type: float, min: -2.0, max: 2.0, default: 0.24, group: "Topology/Web" }
+  - { name: web_gain, display: "Web Gain", type: float, min: 0.0, max: 1.5, default: 0.62, group: "Topology/Web" }
+  - { name: mark_width, display: "Record Width", type: float, min: 0.2, max: 6.0, default: 0.9, group: "Topology/Records" }
+  - { name: mark_gain, display: "Record Gain", type: float, min: 0.0, max: 1.5, default: 0.68, group: "Topology/Records" }
+  - { name: red_ink, display: "Accent Ink", type: color, default: [1.0, 0.055, 0.018], group: "Accent" }
+  - { name: red_amount, display: "Accent Amount", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Accent" }
+  - { name: performance_xy, display: "Performance Knife", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.5, 0.5], group: "Performance" }
+  - { name: performance_pressure, display: "Knife Pressure", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Performance" }
+  - { name: scanline_cut, display: "Scanline Cut", type: float, min: 0.0, max: 0.08, default: 0.012, group: "Output" }
+  - { name: invert_output, display: "Invert Output", type: bool, default: false, flags: button, group: "Output" }
+
+buffers:
+  - name: phase_state
+    format: RGBA32F
+    scale: 0.02
+    persistent: true
+
+passes:
+  - name: phase_tick
+    shader: phase.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: "buffer:phase_state"
+
+  - name: signal_cut
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+      - { slot: 1, source: "input:0" }
+      - { slot: 2, source: "data:0" }
+    output: output
+
+outputs:
+  - { name: "Program", pass: signal_cut }

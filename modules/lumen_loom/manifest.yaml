@@ -1,0 +1,38 @@
+name: "Lumen Loom"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+features: [noise]
+
+viewport:
+  hint: "Drag across the preview to inject light into the flow field."
+  interactions: [mouse]
+
+parameters:
+  - { name: palette_mode, display: "Palette", type: enum, default: 0, options: [Ultraviolet, Biolume, Ember], flags: button_grid, group: "Performance" }
+  - { name: speed, display: "Flow Rate", type: float, min: 0.05, max: 2.5, default: 0.72, group: "Performance" }
+  - { name: density, display: "Filament Density", type: float, min: 0.0, max: 1.0, default: 0.58, group: "Shape" }
+  - { name: curl, display: "Curl", type: float, min: 0.0, max: 1.5, default: 0.82, group: "Shape" }
+  - { name: feedback, display: "Persistence", type: float, min: 0.88, max: 0.999, default: 0.976, group: "Shape" }
+  - { name: bloom, display: "Radiance", type: float, min: 0.0, max: 2.0, default: 1.18, group: "Color" }
+  - { name: center, display: "Vortex Center", type: point2D, min: [0.1, 0.1], max: [0.9, 0.9], default: [0.5, 0.5], group: "Shape" }
+
+buffers:
+  - { name: field, format: RGBA16F, persistent: true }
+
+passes:
+  - name: evolve
+    shader: evolve.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:field" }
+    output: "buffer:field"
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:field" }
+    output: output
+
+outputs:
+  - { name: "Loom", pass: render }

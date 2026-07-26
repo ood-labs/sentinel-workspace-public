@@ -1,0 +1,51 @@
+name: "Chrono Sections"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+output_format: RGBA16F
+
+inputs:
+  - { name: "Relief", slot: 0, required: true }
+  - { name: "Engraving Guide", slot: 1, required: true }
+
+parameters:
+  - { name: retention, display: "Section Retention", type: float, min: 0.970, max: 0.9997, default: 0.995, group: "Archive" }
+  - { name: band_width, display: "Section Width", type: float, min: 0.004, max: 0.12, default: 0.045, group: "Archive" }
+  - { name: section_angle, display: "Section Angle", type: float, min: -1.2, max: 1.2, default: -0.34, group: "Archive" }
+  - { name: guide_warp, display: "Engraving Warp", type: float, min: 0.0, max: 1.4, default: 0.38, group: "Archive" }
+  - { name: write_strength, display: "Write Strength", type: float, min: 0.1, max: 1.0, default: 0.86, group: "Archive" }
+  - { name: archive_gain, display: "Archive Gain", type: float, min: 0.2, max: 2.5, default: 1.1, group: "Balance" }
+  - { name: current_ghost, display: "Engraving Ghost", type: float, min: 0.0, max: 0.8, default: 0.42, group: "Balance" }
+  - { name: void_depth, display: "Black Block Depth", type: float, min: 0.0, max: 1.0, default: 0.96, group: "Structure" }
+  - { name: registration, display: "Guide Registration", type: float, min: 0.0, max: 0.8, default: 0.000000, group: "Balance" }
+  - { name: seam_gain, display: "Section Seams", type: float, min: 0.0, max: 8.0, default: 0.000000, group: "Balance" }
+  - { name: warm_hold, display: "Warm Retention", type: float, min: 0.0, max: 3.0, default: 0.8, group: "Signal" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.4, max: 3.0, default: 1.45, group: "Signal" }
+
+buffers:
+  - name: archive
+    format: RGBA16F
+    scale: 1.0
+    persistent: true
+
+passes:
+  - name: accumulate
+    shader: accumulate.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "buffer:archive" }
+    output: "buffer:archive"
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:archive" }
+      - { slot: 1, source: "input:0" }
+      - { slot: 2, source: "input:1" }
+    output: output
+
+outputs:
+  - { name: "Temporal Specimen", pass: present }

@@ -70,14 +70,14 @@ parameters:
   - { name: drop_shadow, display: "Drop Shadow", type: float, min: 0.0, max: 1.5, default: 0.28, group: "Canvas" }
 
 viewport:
-  hint: "Left-drag=drift, wheel=zoom, X=feedback kick, C=toggle auto run, Z=generate + spawn repeatedly at Seconds Per Stamp. Alt=fine, Alt+Shift=ultra-fine."
+  hint: "Left-drag=drift, wheel=zoom, X=feedback kick, C=toggle auto run, Z=maximum-rate generate + spawn override. Alt=fine, Alt+Shift=ultra-fine."
   interactions: [pan_zoom, events]
   input:
     keyboard: [x, c, z]
   bindings:
     - { key: x, action: feedback_kick, label: "Hold for Feedback Kick Zoom" }
     - { key: c, action: toggle_auto_run, label: "Toggle Auto Run On / Off" }
-    - { key: z, action: generate_and_spawn, label: "Hold to Generate + Spawn at Seconds Per Stamp" }
+    - { key: z, action: generate_and_spawn_fast, label: "Hold for Maximum-Rate Generate + Spawn" }
 
 passes:
   - name: kick_envelope
