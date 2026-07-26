@@ -175,6 +175,29 @@ Record the live Sentinel version, and confirm `audio`-era capabilities are irrel
    that. If it behaves correctly, 3C's fix is dropped and the reversal is recorded.
 4. The `xypad` Y direction is stated as measured, with the readback.
 
+## Amendment 1 - Extent testing mechanism (recorded 2026-07-26, after 3A)
+
+3A proved that `follow_panel` pins a module's render size to its dock content size, that
+`resolution_width`/`resolution_height` writes are ignored while it is active, and that no
+dock-resize mechanism exists anywhere in the MCP surface. The Sentinel window is also
+unreachable from the agent session, so **full-window screenshots are unavailable for this
+entire phase**; pipeline texture capture is the proof mechanism.
+
+Every current station is `follow_panel` with no canonical output, which violates
+`CLAUDE.md`'s Direct-Manipulation UI Architecture rule: a canonical Program renderer must
+keep an intentional fixed resolution, and only the editor Canvas follows the panel.
+
+**Therefore every v3 station MUST declare two outputs**: a canonical renderer output at a
+fixed resolution, and (where the station has an editing surface) a `follow_panel` editor
+Canvas that fits the canonical image aspect-correctly into its stage rectangle. This is a
+new hard requirement, not a preference.
+
+Wherever a criterion below says "at 640x360 and 1600x900", it is satisfied by writing
+`resolution_width`/`resolution_height` on the **canonical output** and capturing. This is
+the same legibility assertion at the same two extents by a mechanism that executes, and it
+additionally enforces a `CLAUDE.md` compliance the current lab lacks. It is not a
+loosening. The clause was dropped only for 3A, whose subjects are the unrebuilt originals.
+
 ## Sub-Phase 3B - The `sui3_*` Kit And The Style Authority
 
 The kit lands first, then the one station that proves it. **This is the taste checkpoint.** If the
@@ -238,14 +261,23 @@ stream, following `modules/au_deck/state.hlsl`.
 1. **The console RUNS and its output changes.** Four control outputs are read live across ten
    seconds and each is non-constant, with the recorded value ranges. A console that renders but
    publishes frozen scalars fails.
-2. **`burst` FIRES.** Triggering burst produces a visible transient in the rendered waveform lane
-   and a measurable step in the `pulse` control output, recorded as before/after values. If 3A found
-   `burst` healthy, this criterion still applies - only the implementation route changes.
-3. Every lane displays its live rate, amplitude and shape numerically, and the number matches the
+2. **`burst` FIRES *and RELEASES*.** Triggering burst produces a visible transient in the rendered
+   waveform lane and a measurable step in the `pulse` control output, and the lane then **returns
+   to its cycling range** — recorded as a three-point before/during/after readback. 3A proved the
+   current button is a one-way latch that survives `force_reload`, so a fired-but-stuck result is
+   a failure, not a pass.
+3. **Cost.** The rebuilt console measures **at or below 2.0 ms** wall time in a five-sample
+   profile. 3A measured the current console at 14.66 ms mean — 98% of all pipeline time — so the
+   3F "at or below the 3A ceiling" bar is meaningless here and this explicit number replaces it
+   for this station.
+4. Every lane displays its live rate, amplitude and shape numerically, and the number matches the
    parameter it describes.
-4. The XY bias pad's published value moves **up** when the reticle moves up, proving the Y flip is
-   applied exactly once. Recorded as a readback pair.
-5. Criterion 1 holds at 640x360 and 1600x900; `module-ui.ps1 validate` exits clean.
+5. The XY bias pad's published value moves **up** when the reticle moves up, proving the Y flip is
+   applied exactly once. 3A measured the current renderer at "down = more" (`pad_y` 0.05 -> row 69,
+   0.95 -> row 94), so this is a required inversion, verified as a readback pair against marker
+   position.
+6. Criterion 1 holds at 640x360 and 1600x900 on the canonical output per Amendment 1;
+   `module-ui.ps1 validate` exits clean.
 
 ## Sub-Phase 3D - Spline Editor
 
