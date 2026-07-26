@@ -1,0 +1,110 @@
+name: "Pulse2 / Hit Timeline"
+version: "1.0"
+mode: generator
+resolution: [1280, 480]
+
+# A scrolling strip chart of what the detector actually DECIDED, one row per
+# lane, so a hit can be seen as an event in time rather than inferred from a
+# flash on a spectrogram.
+#
+# The console answers "what does the audio look like and which band is this
+# lane". This answers a different question: "did it fire, when, and does the
+# beat clock agree with the drums". Those need opposite layouts -- the console
+# is frequency against time, this is LANE against time -- which is why it is a
+# separate node instead of another overlay stacked on the spectrogram, where
+# marks land on top of the spectral energy that produced them and become
+# unreadable exactly when the material is busy.
+#
+# Time runs left (past) to right (now). The newest events are at the right edge
+# under the cursor line.
+#
+# Palette is the workspace monochrome instrument look: black field, white and
+# grey geometry, with the single warm accent reserved for the beat lane so beat
+# against kick is legible at a glance. That comparison is the main thing this
+# view exists to make visible, since beat PLACEMENT is the detector's known
+# weak spot.
+
+data_inputs:
+  # The detector's decisions, not its intermediate signals. Slots 0..511 are the
+  # picker's onsets (lanes 0..2) and 512..1023 are the beat clock's beats
+  # (lane 3); the two rings carry INDEPENDENT serial sequences, so records are
+  # keyed by (lane_id, onset_serial) and never by serial alone.
+  - name: "Hits"
+    slot: 0
+    schema:
+      - { name: lane_id, type: uint }
+      - { name: onset_serial, type: uint }
+      - { name: hop_index, type: uint }
+      - { name: sample_position, type: uint }
+
+buffers:
+  # Per-lane, per-column occupancy. Resolved once per frame by a thread per
+  # column rather than per pixel: a per-pixel search over 1024 records would be
+  # ~940 million iterations at this resolution, and the answer is constant down
+  # each column anyway.
+  #
+  # .x hit present (0/1)   .y sample_position of that hit
+  # .z onset_serial        .w unused
+  - { name: cols, structured: true, element_size: 16, element_count: 6400 }
+  # Scroll clock. Persistent because the view has to keep moving between hits:
+  # a timeline that only advances when something fires reads as a freeze, and
+  # cannot show a GAP, which is the thing you most want to see when a lane
+  # stops detecting.
+  - { name: tstate, structured: true, element_size: 16, element_count: 4, persistent: true }
+
+parameters:
+  - { name: window_s, display: "Time Window (s)", group: "View", type: float, min: 0.5, max: 30.0, default: 6.0 }
+  # Not read from the stream: the Hits contract carries sample_position but no
+  # sample rate, and inventing one from hop_index would bake in a hop size this
+  # node has no way to check. Wrong only if the source is not 48 kHz, and then
+  # visibly so -- the scroll rate is off, which is a legible failure rather
+  # than a silent one.
+  - { name: sample_rate, display: "Sample Rate", group: "View", type: float, min: 8000.0, max: 192000.0, default: 48000.0 }
+  - { name: mark_width, display: "Mark Width (px)", group: "View", type: float, min: 1.0, max: 8.0, default: 2.0 }
+  # Vertical persistence trail behind each mark. Pure legibility: at a 6 s
+  # window a single hop is under a pixel wide, and a bare 1 px tick on a black
+  # field is genuinely hard to see in motion.
+  - { name: mark_glow, display: "Mark Bloom", group: "View", type: float, min: 0.0, max: 1.0, default: 0.35 }
+  - { name: show_grid, display: "Second Grid", group: "View", type: float, min: 0.0, max: 1.0, default: 1.0 }
+  # Draws a vertical rule through ALL lanes at each beat, so beat-against-drum
+  # alignment is a straight-line comparison instead of an eye-traverse between
+  # two rows. This is the view's whole reason for existing.
+  - { name: beat_rules, display: "Beat Rules", group: "View", type: float, min: 0.0, max: 1.0, default: 1.0 }
+  - { name: label_size, display: "Label Size", group: "View", type: float, min: 1.0, max: 4.0, default: 2.0 }
+
+passes:
+  # Advance the scroll clock. One thread: it is a reduction plus a recursion,
+  # and both have to agree about the same frame.
+  - name: clock
+    shader: clock.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:tstate"
+
+  # One thread per (lane, column). Each writes only its own slot, so no clear
+  # pass and no atomics are needed.
+  - name: scatter
+    shader: scatter.hlsl
+    target: cs_5_0
+    dispatch: [25, 4, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:tstate" }
+    output: "buffer:cols"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:cols" }
+      - { slot: 1, source: "buffer:tstate" }
+    output: output
+
+outputs:
+  - { name: "Timeline", pass: render }
