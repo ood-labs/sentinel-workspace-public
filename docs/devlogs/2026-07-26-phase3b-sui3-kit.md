@@ -212,7 +212,65 @@ one at matched width, each annotated with its measured numbers:
 (`captures/` is gitignored, so the sheet is not committed; it is regenerable from the
 captures listed above.)
 
+## Checkpoint outcome (2026-07-26)
+
+**Look approved** - "this is actually looking pretty good now". **Gestures confirmed landing**
+by the operator: pad, rail, state and bank all respond. That satisfies both halves of what the
+phase doc asks the checkpoint for. 3B.3 (hover specifically) remains open and is carried into
+the 3F hands-on pass.
+
+The operator caught a real defect at the checkpoint, which is what it exists for: nothing on
+the sheet was clickable. See the two commits below.
+
+### The interaction rework, and the architecture lesson
+
+First attempt decoded the raw event stream into a persistent buffer (`28126d6`). It worked and
+was **wrong**: a persistent buffer is not a parameter, so it had no undo, no project
+save/restore, no presets, no OSC, no expressions. It also re-picked the hit target every event
+instead of holding a drag handle, which `ui-authoring.md:99` warns against - a fast drag
+leaving the rect silently dropped the edit.
+
+Replaced with host-owned `viewport.controls` (`d52f6f9`), which binds a normalized hit region
+to an **ordinary parameter**; the host owns capture, preview and commit, so one drag is one
+undo entry. **Net -204/+127 lines.** Everything the hand-rolled version was building came free.
+
+**Carry into 3C-3E: reach for `viewport.controls` before `events`.** Use raw events only for
+gestures no control kind expresses. The kinds are `slider`, `button`, `toggle`, `xypad`.
+
+Rects now live in the manifest, compile to `_ui.generated.hlsli`, and the renderer draws from
+those same constants, so the host's hit region and the drawn control cannot disagree.
+`validate` enforces freshness - it caught one stale generation during the change - and it also
+caught two real defects: 28px hit targets below the 32px minimum, and the station publishing
+`control_height 28` while drawing 34.
+
+## MEASURED: synthetic input works after all, with caveats
+
+3A recorded pointer injection as dead, forcing "every gesture criterion needs a hand on the
+mouse". That is **too pessimistic**. Re-measured:
+
+`sentinel_ui action=click method=mouse` **works**. It flipped `demo_toggle` false -> true,
+confirmed in the StateTree, returning `method: imgui_injection`.
+
+Three traps, all of which produce a false pass:
+
+1. The widget path needs the **window prefix**: `Properties/Specimen/##demo_toggle`. The bare
+   `Specimen/...` form from `get_tree` errors with "Window not found: Specimen".
+2. `action=set` and `action=click` **without** `method: mouse` both returned success and
+   changed nothing. A `"method": "direct_activation"` response is NOT proof - verify with a
+   StateTree readback every time.
+3. It targets a widget by path only. There is **no MCP route to click an arbitrary point inside
+   a module preview**: the preview window reports `items: []`, `sentinel_viewport pick` is
+   rejected without a `selection` interaction, `edit` needs object descriptors controls do not
+   produce, and `CLICK_AT`/`DRAG_AT` appear in `capabilities` with x/y args but have no MCP
+   wrapper.
+
+**What this means for 3C-3F.** Because `viewport.controls` binds to parameters, the viewport
+and Properties write the SAME state. Everything downstream of a value - publish, render,
+control outputs - is automatable through parameters and `capture_at`. Only the hit-region
+mapping itself still needs a human. That is a far smaller gap than 3A assumed, and 3C should
+retest `method: mouse` against Motion Console's `burst`: if a Properties-side button click
+injects correctly, the burst latch becomes automatable too.
+
 ## Next
 
-Hard stop at the taste checkpoint. Two things are wanted from it: the look itself, and the
-hover pass that closes 3B.3.
+3C - Motion Console.

@@ -33,14 +33,19 @@ Phase 3 has six sub-phases (3A, 3B, 3C, 3D, 3E, 3F) and has **not** been plan-au
 
 ## Blockers
 
-**Phase 3 is stopped at the 3B taste checkpoint.** Two things are wanted from it: approval of the
-look, and the hover pass that closes 3B.3.
+**3B taste checkpoint PASSED (2026-07-26).** Look approved; pad, rail, state and bank confirmed
+responding by the operator. 3B.3 (hover specifically) stays open and is carried into the 3F
+hands-on pass.
 
-Phase 3 also carries a known constraint rather than a blocker: viewport event injection does not
-work on this build, so every pointer-gesture criterion needs a hand on the mouse. The phase is
-ordered to batch that into two hands-on sessions. 3A additionally found the Sentinel window
-unreachable from the agent session (`list_windows` empty, `sentinel_screenshot` "No window found"),
-so full-window screenshots are unavailable for the whole phase; pipeline texture capture works.
+**Injection constraint REVISED.** 3A recorded pointer injection as dead. That was too pessimistic:
+`sentinel_ui action=click method=mouse` works and was proven by flipping a bool and reading it
+back. Caveats that produce a false pass: the widget path needs the window prefix
+(`Properties/Specimen/##demo_toggle`), and both `action=set` and `click` WITHOUT `method: mouse`
+report success while changing nothing - always confirm with a StateTree readback. There is still no
+MCP route to click an arbitrary point inside a module preview. Because `viewport.controls` binds to
+parameters, though, everything downstream of a value is automatable; only hit-region mapping needs
+a human. 3A's other finding stands: the Sentinel window is unreachable from the agent session, so
+full-window screenshots are unavailable for the phase; pipeline texture capture works.
 
 Nothing blocking Phase 2.
 
