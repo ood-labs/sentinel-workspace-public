@@ -2,6 +2,8 @@
 
 This folder is the shipped agent reference for Sentinel. Start here when a user asks what Sentinel can create, how nodes connect, or how one feature can drive another.
 
+Reusable existing-state creative continuation prompts and the hybrid workflow vocabulary live in `knowledge/creative-exploration-goals.md`.
+
 ## Discover The Current Build
 
 Use live discovery before assuming a pipeline exists:
@@ -43,6 +45,7 @@ AI generation:
 
 Tracking and analysis:
 
+- `audio`: WASAPI loopback, microphone, or paced WAV capture. Emits PCM, Spectrum, and Mel Bands data plus `level` and `peak` control outputs. See `audio-reactivity.md`.
 - `mediapipe`: face and hand tracking in one composable node. Emits landmarks plus gesture control outputs.
 - `facemesh`: hidden compatibility alias for old face-only projects.
 - `features`: model-free blob, corner, and line feature extraction. Emits data ports and control outputs.
@@ -92,6 +95,15 @@ Utility and output:
 Use `list_types` for the authoritative list in the current build.
 
 ## What Nodes Emit
+
+`audio`:
+
+- Data ports: `PCM`, `Spectrum`, and `Mel Bands`.
+- Control outputs: `level` and `peak`.
+- Spectrum and Mel Bands are timestamped 64-hop rings for chronological GPU Module consumption.
+- Connected consumers receive truthful generation, value-count, and hop-capacity metadata for chronological catch-up.
+- Device selections persist by endpoint GUID, with automatic default migration and explicit-device hold-and-retry behavior.
+- Read-only diagnostics separate endpoint health, packet freshness, retries, and migrations from recent `signal_present` content.
 
 `mediapipe`:
 
@@ -151,6 +163,7 @@ The shipped example `examples/tracking_ripple.sentinel` uses the same driver pat
 - [UI Interactions and Shortcuts](ui-interactions.md)
 - [Graph Wiring](graph-wiring.md)
 - [Expressions And Drivers](expressions-and-drivers.md)
+- [Audio Reactivity](audio-reactivity.md)
 - [Tracking Suite](tracking-suite.md)
 - [Module Pipeline](module-pipeline.md)
 - [Authored Module UI](ui-authoring.md)

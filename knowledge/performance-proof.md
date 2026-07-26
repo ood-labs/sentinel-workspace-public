@@ -13,6 +13,7 @@ sentinel_graph action=profile summary=true sort_by=wall_time_ms
 Useful `sort_by` values:
 
 - `wall_time_ms`: per-node CPU wall time around the latest graph `process()` call.
+- `cook_hz`: rolling node process rate over a window of up to one second.
 - `avg_frame_ms`: the pipeline's own rolling average from `PipelineStats`.
 - `frame_time_ms`: the pipeline's latest reported frame time.
 - `frames_processed`: nodes that are actually advancing.
@@ -22,11 +23,18 @@ The profile returns:
 
 - frame breakdown: input, pipeline graph, output, UI/present, total
 - per-node wall time
+- per-node `cook_hz`, `cooks_in_window`, and `cook_window_ms`
 - pipeline health and frame stats
 - graph link counts, including data links
 - hotspot reasons such as unhealthy, no frames, process failure, or high wall time
 
 This is a lightweight profiler. It uses CPU wall-clock timing around graph node processing. It does not split GPU kernel time, inference time, CPU readback, queue wait, or synchronization yet.
+
+Cook rate is measured over a rolling window of up to one second. New nodes
+warm up across that window, and inactive windows expire after five seconds.
+Use `cook_hz` to compare current cadence. `frames_processed` is a lifetime
+counter, so nodes created at different times naturally have different totals
+even when they cook at the same rate.
 
 ## Performance Gates For Heavy Nodes
 

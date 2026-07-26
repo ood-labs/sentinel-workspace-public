@@ -19,7 +19,7 @@ For simple one-file post-processing, `hlslshader` may be enough.
 
 ## Fast Scaffold From Tracking Data
 
-Use `sentinel_module action=scaffold_from_ports` when a Module should consume tracking, detection, blob, corner, line, or landmark data. Pass the upstream pipeline id and optional data port name. The tool writes `modules/<module_name>/manifest.yaml` and `render.hlsl` in the launched workspace, using the live schema from `get_data_schemas`.
+Use `sentinel_module action=scaffold_from_ports` when a Module should consume tracking, detection, blob, corner, line, landmark, PCM, Spectrum, or Mel Bands data. Pass the upstream pipeline id and optional data port name. The tool writes `modules/<module_name>/manifest.yaml` and `render.hlsl` in the launched workspace, using the live schema from `get_data_schemas`.
 
 The generated Module starts with modern controls: color palette pickers, a `point2D` composition pad, grouped toggles, and an `enum` button grid. Treat it as the starting point for creative shaping, then run `sentinel_pipeline action=compile_check project_dir=<generated_dir>` before creating the Module node.
 
@@ -45,6 +45,8 @@ Modules can declare `data_inputs` and `data_outputs`. These are structured buffe
 Use data inputs for landmarks, detections, blobs, corners, lines, or records produced by another module.
 
 `sentinel_pipeline action=get_data_schemas` reports the data schema and, when the graph node exists, the matching graph pin name and slot. Use that reported pin name with `sentinel_graph action=add_link` instead of guessing singular/plural labels.
+
+Audio In Spectrum and Mel Bands inputs are flattened 64-hop rings. Add `features: [audio]`, store a next-unread generation in a persistent buffer, and use `_DataN_Generation`, `_DataN_ValueCount`, `_DataN_HopCapacity`, `AudioRingCatchupStart`, and `AudioRingGenerationToSlot` to process retained hops in chronological order. Spectrum and Mel Bands have no standalone header record, so `_DataN[0].generation_counter` is not the latest-generation source. See `knowledge/audio-reactivity.md`.
 
 ## Meaningful Intermediate Previews
 

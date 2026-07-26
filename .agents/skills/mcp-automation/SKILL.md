@@ -104,7 +104,7 @@ sentinel_pipeline action="info" pipeline_id="hlslshader_0"
 - **Batch writes**: `sentinel_state set_many` applies many parameter writes in one call with per-path results.
 - **One-call review stills**: `sentinel_capture capture_at` applies overrides, waits for compiles, settles, captures, and restores. Use it instead of hand-rolling set / sleep / capture / set-back chains.
 - **Authored panel proof**: for a Module UI, read `sentinel_pipeline info.panel` and verify declared/effective mode, named output, resolution mode, content size, render size, recreation counts, and deferred-resource count. Canvas/follow-panel behavior ships in 0.5.32+. An immediate capture concurrent with a parameter write is not sufficient proof; require a settled frame plus live interaction/readback.
-- **Runtime proof**: `sentinel_graph profile` reports frame buckets, per-node wall time, graph link counts, PipelineStats, and hotspot reasons. `sentinel_capture proof_bundle` includes `graph_profile.json` plus a Performance section.
+- **Runtime proof**: `sentinel_graph profile` reports frame buckets, per-node wall time, rolling `cook_hz` / `cooks_in_window` / `cook_window_ms`, graph link counts, PipelineStats, and hotspot reasons. Use cook rate when comparing nodes created at different times; lifetime `frames_processed` totals are not cadence measurements. `sentinel_capture proof_bundle` includes `graph_profile.json` plus a Performance section.
 - **Project safety**: `load_project`/`new_project` refuse over unsaved changes unless `confirm: true`; `import_project` merges another .sentinel into the live project with id remap.
 
 ## Python IPC Client (dev only)
@@ -125,6 +125,7 @@ Use these exact strings with `sentinel_pipeline action="create"`. Run `sentinel_
 - `"depthestimation"` — Depth Anything V2 depth estimation
 - `"opticalflow"` — Optical Flow (NVOF hardware accelerator)
 - `"features"` — Geometric Features (model-free classic CV)
+- `"audio"` - Audio In (WASAPI loopback, microphone, or paced WAV with PCM, Spectrum, and Mel Bands outputs; require a live `list_types` entry)
 - `"mux"` — Mux (N-way wired input switcher or wireless Scene Group collector; solo variant switching)
 - `"groupoutput"` — Group Output (Scene Group endpoint for the Scene Switcher)
 - `"atlas"` — Atlas (multi-slot still atlas with texture and data columns)
@@ -263,6 +264,8 @@ NOT display names like "Background Removal" — those won't work.
 | `get_panels` | List all panels and visibility |
 | `set_panel` | Show/hide a panel |
 | `terminal_read` | Read embedded-terminal grid lines, cursor, and child status without injecting input |
+
+Installs at 0.5.48 or newer deliver `click` (method `mouse`), drags, and `send_key` as synthetic events injected directly into the ImGui event queue: the user's hardware cursor, keyboard state, and window focus stay untouched while automation drives the UI, and mouse-path responses report `client_pos` in main-viewport client space. Older installs drive the real OS mouse for these paths and can move the user's cursor (including across monitors), so on those builds prefer `method: button` or `select` and the `set` action, which have always been injection-free.
 
 ### `sentinel_preset` — Identity-aware node presets
 `list` / `save` / `recall` / `update` / `delete` / `rename` / `bundle` / `copy_to_library`. Presets are keyed by node identity, discoverable by pipeline or identity, saved to library or project scope (plus a bundled scope for presets that travel with a show), and support grouped compound-safe param selection, `include_engine_params`, and strict or loose recall onto compatible nodes.
