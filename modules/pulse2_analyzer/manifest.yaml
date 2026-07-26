@@ -165,6 +165,24 @@ parameters:
   # several defensible phases on dense material, so the loop is fed the smoothed
   # phasor rather than the raw pick. Lower = steadier and slower to re-acquire.
   - { name: phase_smooth, display: "Phase Smoothing", group: "Beat", type: float, min: 0.01, max: 1.0, default: 0.08 }
+  # How far, as a fraction of a beat, an emitted beat may be snapped onto a
+  # picked onset, so beats inherit the picker's timing accuracy rather than the
+  # comb phase argmax's scatter. Costs emission latency of the same width,
+  # because the search must see onsets on both sides of the beat.
+  #
+  # SHIPPED AT 0, WHICH DISABLES IT. The idea is sound and the onsets really are
+  # that much more accurate (+8.2 ms from truth, kick F1 0.976), but as
+  # implemented it makes placement strictly worse: four_on_floor_128 went from
+  # 61.9% of beats inside the continuity tolerance to 23.8%, its mean offset
+  # swung +0.122 -> -0.164 of a beat, and spacing rejections returned from zero
+  # to ten. CMLc 0.36 -> 0.05 on four_on_floor and 0.43 -> 0.05 on
+  # quiet_intro_drop, measured by toggling this one parameter.
+  #
+  # The residual offset is almost exactly twice the window width, which points at
+  # the held-back accumulator's phase reference rather than at the snapping
+  # itself -- the loop appears to settle with a standing error of 2*skew. That is
+  # where to resume; the mechanism is left in place and off rather than deleted.
+  - { name: beat_snap, display: "Beat Onset Snap", group: "Beat", type: float, min: 0.0, max: 0.4, default: 0.0 }
   # Confidence below which the loop stops correcting and free-wheels on its own
   # period. Free-wheeling holds the grid through a quiet bar or a breakdown; it
   # does NOT gate beat emission, which is gated on signal presence instead, so a

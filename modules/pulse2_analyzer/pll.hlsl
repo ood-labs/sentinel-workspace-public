@@ -88,6 +88,31 @@ void main(uint3 tid : SV_DispatchThreadID) {
     uint oldest = (judged > ORING) ? (judged - ORING) : 0u;
     start = max(start, oldest);
 
+    // ---- onset-anchored emission -------------------------------------------
+    // An emitted beat is timed by the hop its cycle landed on, and that hop
+    // inherits every bit of scatter in the comb's phase argmax -- measured as a
+    // placement residual that is neither a fixed time nor a fixed phase offset
+    // (+0.154 beat on four_on_floor_128, -0.084 on syncopated_funk_105) and that
+    // moved 56 -> 72 ms between two identical runs. The picked onsets do not
+    // have that problem: they sit +8.2 ms from ground truth with a kick F1 of
+    // 0.976. So a beat is snapped onto the nearest picked onset and inherits the
+    // picker's accuracy instead of the argmax's scatter.
+    //
+    // THE SEARCH HAS TO SEE BOTH SIDES, WHICH COSTS LATENCY. Beats are decided
+    // for generations up to `judged`, so an onset LATER than the beat has not
+    // been stamped yet -- searching only what exists would snap exclusively
+    // backwards and replace a symmetric scatter with a systematic early bias.
+    // Holding the decision back by the window width makes the window whole.
+    //
+    // The cost is real and is the reason this is a parameter: beat records are
+    // published `win` hops later in wall-clock than they would otherwise be.
+    // Their sample positions are unaffected -- the timestamp gets MORE accurate,
+    // not later -- so anything scoring or rendering by sample position gains,
+    // and only a live pulse used as an instantaneous trigger pays.
+    int win = (int)clamp(beat_snap * period, 0.0, 60.0);
+    uint limit = (judged > (uint)win) ? (judged - (uint)win) : 0u;
+    limit = max(limit, start);
+
     // ---- advance the accumulator hop by hop --------------------------------
     // Per hop, not per cook. A cook covers about three hops and a beat lands on
     // one particular hop; advancing per cook would quantise every beat to the
@@ -103,7 +128,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
     PS dbg = Out[BAUX];
     float dropSig = dbg.d, dropRing = dbg.e, cycles = dbg.f;
 
-    [loop] for (uint gen = start; gen < judged; ++gen) {
+    [loop] for (uint gen = start; gen < limit; ++gen) {
         phase += inc;
         if (phase < 1.0) continue;
         phase -= 1.0;
@@ -122,16 +147,36 @@ void main(uint3 tid : SV_DispatchThreadID) {
         // place it at the start of the file rather than lose it, which is worse.
         if ((uint)s.b != gen + 1u || s.c <= 0.0) { dropRing += 1.0; continue; }
 
+        // Snap to the NEAREST picked onset inside the window. Nearest rather
+        // than strongest: the accumulator already decided which beat this is,
+        // and the only question left is which hop timestamps it best.
+        //
+        // A miss is not a failure. With no onset in the window the beat keeps
+        // the accumulator's own hop, which is what free-wheeling through a
+        // quiet bar or a syncopated gap has to do.
+        uint bestG = gen;
+        int  bestD = win + 1;
+        [loop] for (int k = -win; k <= win; ++k) {
+            int g2 = (int)gen + k;
+            if (g2 < 0 || (uint)g2 >= judged) continue;
+            uint gu = (uint)g2;
+            PS c = On[gu % ORING];
+            if ((uint)c.b != gu + 1u) continue;   // stale or unwritten hop
+            if (c.a <= 0.0 || c.c <= 0.0) continue;   // no onset landed here
+            int dd = abs(k);
+            if (dd < bestD) { bestD = dd; bestG = gu; }
+        }
+        PS anchor = On[bestG % ORING];
+
         beats += 1.0;
         PS hr;
         hr.a = (float)BEAT_LANE;
         hr.b = beats;                 // this ring's own serial, 1-based
-        // Generation, where an onset record carries hopCount. The two differ by
-        // a small constant and the scorer times everything by sample_position,
-        // so this stays informational -- but it is the honest number for a beat
-        // that was decided on a generation.
-        hr.c = (float)gen;
-        hr.d = s.c;
+        // The hop the TIMESTAMP came from, which after snapping is the onset's
+        // hop rather than the accumulator's. The decision generation is kept
+        // separately in .f so the two stay distinguishable.
+        hr.c = (float)bestG;
+        hr.d = anchor.c;
         hr.e = 1.0;
         hr.f = (float)gen;
         hr.g = 0.0; hr.h = 0.0;
@@ -167,9 +212,14 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // worse -- with an observation this noisy the integral is a noise amplifier
     // and dense_140's continuity fell from 0.32 to 0.10.
     //
-    // The one-hop skew is deliberate: phaseObs describes hop `judged-1` while
-    // the accumulator has been advanced through `judged`.
-    float errRaw = frac(phaseObs - (phase - inc) + 0.5) - 0.5;
+    // The skew is deliberate and must track the snap window. `phaseObs`
+    // describes hop `judged-1`, while the accumulator has only been advanced to
+    // `limit` so that the snap search can see both sides of a beat. Comparing
+    // the two without carrying the accumulator forward across that gap would
+    // feed the loop a standing error of the window's width and make the beat
+    // clock chase its own emission latency.
+    float skew = (float)(int)(judged - 1u - limit);
+    float errRaw = frac(phaseObs - (phase + skew * inc) + 0.5) - 0.5;
 
     PS aux = Out[BAUX];
     aux.d = dropSig; aux.e = dropRing; aux.f = cycles;
@@ -253,7 +303,9 @@ void main(uint3 tid : SV_DispatchThreadID) {
     Q.c = (period > 1.0) ? (60.0 * max(oh.c, 1.0) / period) : 0.0;   // locked BPM
     Q.d = confS;
     Q.e = locked ? 0.0 : 1.0;      // free-wheeling
-    Q.f = (float)judged;
+    // Resume where the accumulator actually stopped, not at `judged` -- the held
+    // back hops have not been advanced through and must not be skipped.
+    Q.f = (float)limit;
     Q.g = beats;
     Q.h = pulse;
     Out[BHDR] = Q;
