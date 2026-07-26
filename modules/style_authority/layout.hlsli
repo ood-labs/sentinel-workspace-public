@@ -31,9 +31,15 @@ struct SaLayout {
     float4 rPad, rRail, rTog;
     float  rowY, bx0, bw;   // bank origin and cell width
     float  mY, mw;
-    bool   showGrid;
+    bool   showGrid, showSub;
     float  gTop;
 };
+
+// A caption is a fixed number of PIXELS tall sitting in a NORMALIZED gap, so the
+// gap shrinks with the panel while the caption does not. Callers pass the real
+// gap; a caption that cannot fit is dropped rather than printed across the
+// control above it. Same rule as modules/motion_console/layout.hlsli.
+bool saCapFits(float gapPx, float sB) { return gapPx >= 12.0 * sB; }
 
 // `titleScale`/`sectionScale` are the published type scales; the four layout
 // metrics are the published pixel metrics. See render.hlsl for why the boxes
@@ -42,14 +48,16 @@ SaLayout saLayout(float2 R, float titleScale, float sectionScale,
                   float outerPad, float sectionGap, float ctlH, float ctlG) {
     SaLayout L;
     L.R  = R;
-    L.sB = (R.y >= 800.0) ? 2.0 : 1.0;
-    L.sT = L.sB * max(1.0, floor(titleScale));
+    // Scale from the SMALLER axis ratio, not from height alone. Height alone
+    // picks 2x on a canvas only 1.25x bigger and on a wide-and-short dock puts
+    // giant glyphs in bands too thin to hold them. Same fix as
+    // modules/motion_console/render.hlsl; see phase doc Amendment 3.
+    float kS = min(R.x / 1280.0, R.y / 720.0);
+    L.sB = kS >= 2.6 ? 3.0 : kS >= 1.7 ? 2.0 : 1.0;
     L.sS = L.sB * max(1.0, floor(sectionScale));
 
     L.pad     = outerPad * L.sB;
     L.headY   = L.pad + 2.0 * L.sB;
-    L.ruleY   = L.headY + 13.0 * L.sT + 14.0 * L.sB;
-    L.bodyTop = L.ruleY + sectionGap * L.sB;
     L.colL    = L.pad;
     L.colR    = R.x * 0.575;
 
@@ -63,6 +71,30 @@ SaLayout saLayout(float2 R, float titleScale, float sectionScale,
     L.rRail = saPx(UI_RECT_RAIL,   R);
     L.rTog  = saPx(UI_RECT_TOGGLE, R);
     float4 rBank = saPx(UI_RECT_BANK, R);
+
+    // TITLE SCALE IS COMPUTED AFTER THE RECTS, because the header has to fit in
+    // the space above the first control and that space is normalized while the
+    // header is in pixels. At 640x360 the pad's top edge is 43px down and the
+    // published 2x title plus its subtitle needed more than that, so the title
+    // was drawn straight through the pad frame.
+    //
+    // `titleScale` stays the ceiling, never the floor: the published metric is
+    // what the operator asked for, and this only ever gives back less when the
+    // panel cannot hold it. The subtitle is surrendered before the title shrinks.
+    float wantT = L.sB * max(1.0, floor(titleScale));
+    float under = sectionGap * L.sB;
+    float withSub = L.rPad.y - L.headY - 14.0 * L.sB - under;
+    float t1 = floor(withSub / 13.0);
+    if (t1 >= L.sB) {
+        L.showSub = true;
+        L.sT = min(t1, wantT);
+    } else {
+        L.showSub = false;
+        float noSub = L.rPad.y - L.headY - 3.0 * L.sB - under;
+        L.sT = clamp(floor(noSub / 13.0), 1.0, wantT);
+    }
+    L.ruleY   = L.headY + 13.0 * L.sT + (L.showSub ? 14.0 : 3.0) * L.sB;
+    L.bodyTop = L.ruleY + under;
 
     L.ch   = L.rTog.w - L.rTog.y;
     L.rowY = L.rTog.y;

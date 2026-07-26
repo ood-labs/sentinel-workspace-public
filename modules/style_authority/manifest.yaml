@@ -1,14 +1,28 @@
 name: "Style Authority"
 version: "1.0"
 mode: generator
+# Fallback extent for a hidden or not-yet-sized panel, and the resolution the
+# forced-extent layout sweep proves against.
 resolution: [1280, 720]
 
-# NO `panel: follow_panel` block, deliberately. Phase 3A Amendment 1: every v3
-# station keeps a canonical renderer at an intentional fixed resolution, per
-# CLAUDE.md's Direct-Manipulation UI Architecture rule. Every current lab
-# station is follow_panel with no canonical output, which is why five of seven
-# render at extents where their layout cannot work (100x132 in one case) and why
-# resolution_width/height writes are ignored.
+# FULL-BLEED PANEL, per phase doc Amendment 3, which supersedes 3A's Amendment 1.
+#
+# This file previously carried a comment insisting on NO panel block, on the
+# grounds that Amendment 1 required a canonical fixed extent everywhere. That
+# amendment mistook the symptom for the cause: the old lab stations broke at odd
+# extents because their layouts were hard-coded to one design size, not because
+# they followed the dock. A fixed extent hid the bug.
+#
+# Style Authority is a live theme source and control reference -- it IS an
+# interface, with no program image to letterbox -- so ui-authoring.md:136 applies
+# and it takes the whole dock. Its layout already derives from the host's own
+# control rects and the published pixel metrics; the remaining fix was the text
+# scale, which came from height alone and now comes from min(W/1280, H/720).
+
+panel:
+  mode: canvas
+  output: "Style Authority"
+  resolution: follow_panel
 #
 # The TYPE AND LAYOUT values are numeric shaping and stay in Properties, per
 # CLAUDE.md -- an authored canvas duplicating those sliders would add nothing.

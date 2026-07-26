@@ -83,6 +83,31 @@ regions scale proportionally and cannot reflow at breakpoints. Below roughly 100
 console stays legible but its hit targets fall under the 32px comfort minimum. Reflowing would
 mean giving up host-owned controls and with them undo/redo, presets and OSC.
 
+## Follow-on - Style Authority converted to match
+
+Amendment 3 would have left the lab incoherent with one station full-bleed and one pinned to a
+fixed extent, so Style Authority was converted in the same slice at the user's direction. It is a
+live theme source and control reference - an interface, not artwork - so the same exemption
+applies.
+
+Its layout already derived from the host's control rects and the published pixel metrics, so the
+conversion was small and the same three fixes applied:
+
+- text scale from `min(W/1280, H/720)` instead of `R.y` alone;
+- the title scale computed **after** the host rects, against the headroom above the pad, with the
+  subtitle surrendered before the title shrinks. `titleScale` stays a ceiling: the published metric
+  is what the operator asked for, and the layout only ever gives back less than the panel can hold;
+- `saCapFits` guarding the PAD / RAIL / STATE / BANK captions.
+
+Verified unchanged where it matters: the 1280x720 capture is identical to the pre-conversion
+station - 2x title, subtitle, every caption present. At 640x360 it degrades to a 1x title with the
+subtitle and crowded captions dropped, and at 1920x403 nothing overlaps. Live: `open true`,
+`content == render == [1375, 809]`.
+
+Before the panel was opened it reported `open false`, `content [0, 0]`, `render [1280, 720]` -
+the documented fallback to the root resolution for an unsized panel, and the reason that root
+`resolution:` is kept rather than removed.
+
 ## Next
 
 3D, the Spline Editor - the heaviest interaction surface (selection, marquee, tangent modes, path

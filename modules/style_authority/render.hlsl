@@ -43,9 +43,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     col += T.ink * sui3TextLong(P, float2(pad, headY), sT,
         S_S,S_T,S_Y,S_L,S_E,S_SP,S_A,S_U,S_T,S_H,S_O,S_R,
         S_I,S_T,S_Y, 0,0,0,0,0,0,0,0,0);
-    col += T.dim * sui3TextLong(P, float2(pad, headY + 13.0 * sT), sB,
-        S_L,S_I,S_V,S_E,S_SP,S_T,S_H,S_E,S_M,S_E,S_SP,S_S,
-        S_O,S_U,S_R,S_C,S_E, 0,0,0,0,0,0,0);
+    if (L.showSub)
+        col += T.dim * sui3TextLong(P, float2(pad, headY + 13.0 * sT), sB,
+            S_L,S_I,S_V,S_E,S_SP,S_T,S_H,S_E,S_M,S_E,S_SP,S_S,
+            S_O,S_U,S_R,S_C,S_E, 0,0,0,0,0,0,0);
 
     float ruleY = L.ruleY;
     col += sui3Rule(P, R, ruleY, pad, T);
@@ -70,7 +71,9 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float ch = L.ch, cg = L.cg, mH = L.mH;
 
     float4 rPad = L.rPad;
-    col += T.dim * sui3Text(P, float2(colL, bodyTop), sS, S_P,S_A,S_D,0,0,0,0,0,0,0,0,0);
+    // Caption only if the header actually left room for it above the pad.
+    if (bodyTop + 11.0 * sS <= rPad.y)
+        col += T.dim * sui3Text(P, float2(colL, bodyTop), sS, S_P,S_A,S_D,0,0,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rPad) > 0.5 || sui3Frame(P, rPad) > 0.0) {
         col = lerp(col, float3(0,0,0), sui3RectIn(P, rPad));
         col += sui3Pad(P, rPad, t3.xy, T);
@@ -84,8 +87,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // rail specimen
     float4 rRail = L.rRail;
     float railY = rRail.y;
-    col += T.dim * sui3Text(P, float2(colL, railY - 11.0 * sB), sS,
-        S_R,S_A,S_I,S_L,0,0,0,0,0,0,0,0);
+    bool railCap = saCapFits(rRail.y - rPad.w, sB);
+    if (railCap)
+        col += T.dim * sui3Text(P, float2(colL, railY - 11.0 * sB), sS,
+            S_R,S_A,S_I,S_L,0,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rRail) > 0.5 || sui3Frame(P, rRail) > 0.0) {
         col = lerp(col, float3(0,0,0), sui3RectIn(P, rRail));
         col += sui3Rail(P, rRail, t2.w, T);
@@ -96,8 +101,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float rowY = L.rowY;
     float tw = ch * 2.6;
     float4 rTog = L.rTog;
-    col += T.dim * sui3Text(P, float2(colL, rowY - 11.0 * sB), sS,
-        S_S,S_T,S_A,S_T,S_E,0,0,0,0,0,0,0);
+    bool rowCap = saCapFits(rTog.y - rRail.w, sB);
+    if (rowCap)
+        col += T.dim * sui3Text(P, float2(colL, rowY - 11.0 * sB), sS,
+            S_S,S_T,S_A,S_T,S_E,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rTog) > 0.5 || sui3Frame(P, rTog) > 0.0) {
         col = lerp(col, float3(0,0,0), sui3RectIn(P, rTog));
         col += sui3Toggle(P, rTog, t3.z > 0.5, T);
@@ -114,9 +121,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // two captions ran together and printed "STATEBANK".
     float bx0 = L.bx0;
     col += T.rule * 0.6 * sui3HairAt(P.x, colL + tw + cg * 1.5)
-         * step(rowY - 11.0 * sB, P.y) * step(P.y, rowY + ch);
-    col += T.dim * sui3Text(P, float2(bx0, rowY - 11.0 * sB), sS,
-        S_B,S_A,S_N,S_K,0,0,0,0,0,0,0,0);
+         * step(rowY - (rowCap ? 11.0 * sB : 0.0), P.y) * step(P.y, rowY + ch);
+    if (rowCap)
+        col += T.dim * sui3Text(P, float2(bx0, rowY - 11.0 * sB), sS,
+            S_B,S_A,S_N,S_K,0,0,0,0,0,0,0,0);
     float bw = L.bw;
     [loop] for (int b = 0; b < 4; ++b) {
         float4 rc = saBankCell(L, b);
