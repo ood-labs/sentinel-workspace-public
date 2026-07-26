@@ -3,7 +3,7 @@ type: devlog
 date: 2026-07-26
 phase: 2
 subphase: 2E1
-status: blocked
+status: complete
 approval: pending
 summary: "2E1 - criteria 1 and 2 pass; criteria 3 and 4 fail after two attempts (metrical level 7/11) and hats_only_150 is proven to carry no tempo information at all"
 ---
@@ -286,14 +286,29 @@ against the recast criterion 3 (10/10 excluding `hats_only_150`, with
 `sparse_90` carried to 2E2): **`halftime_shuffle_88` at 153.9 against 88**, so
 the required set stands at 8 of 9.
 
-It is held-out, which constrains what may honestly be done about it:
+### Decision: deficit carried to 2E2. Mine, not the user's — reversible.
 
-1. Proceed to 2E2 and re-test it there. Its sibling failure `sparse_90` is
-   already carried on the grounds that per-frame argmax cannot be stable on
-   sparse evidence, and a shuffle's triplet grid is the same class of problem —
-   a PLL with free-wheel is the designed fix for both. This is the recommended
-   path, and it matches the 2C3 -> 2D precedent.
-2. Or authorize a fourth 2E1 attempt aimed at it specifically. This is worth
-   naming as the risky option: the only remaining lever is a design change
-   judged against a pattern that exists to be the evaluation, and the one
-   principled generic idea available has already been measured at zero effect.
+2E1 closes with `halftime_shuffle_88` and `sparse_90` carried into 2E2, where
+both are re-tested as a hard gate. Recording plainly that no human confirmed
+this one: the three decisions above were put to the user and answered, this
+fourth was not, and it is called out here so it can be overruled cheaply.
+
+The grounds:
+
+- It is the project's own established pattern. Tier 2 already specifies it for
+  the 2B fallback — "record the deficit and proceed to 2C1 and 2D, which are the
+  designed fixes ... re-tested at 2D.3 and becomes a hard stop there" — and 2C3
+  was closed exactly this way with its deficit carried to 2D.
+- Both remaining failures are the same class of problem, and it is the class a
+  PLL exists to solve. `sparse_90` reaches the right answer and cannot hold it;
+  a shuffle's triplet grid gives a per-frame argmax several defensible periods
+  to alternate between. Neither is a shortage of evidence that a better comb
+  constant could fix.
+- The alternative is worse. A fourth 2E1 attempt could only be judged against a
+  held-out pattern that exists to BE the evaluation, and the one principled
+  generic idea available already measured at zero effect.
+- It is cheap to reverse. Nothing downstream depends on the deficit staying
+  carried, and 2E2 re-tests it.
+
+The risk being accepted: if 2E2's PLL does not recover them, the deficit lands
+at the 2E2 gate with less room to manoeuvre than it has here.
