@@ -198,6 +198,48 @@ the same legibility assertion at the same two extents by a mechanism that execut
 additionally enforces a `CLAUDE.md` compliance the current lab lacks. It is not a
 loosening. The clause was dropped only for 3A, whose subjects are the unrebuilt originals.
 
+## Amendment 3 - Amendment 1 was the wrong diagnosis (recorded 2026-07-26, during 3C)
+
+Amendment 1's *mechanism* stands: `follow_panel` still ignores resolution writes, there is
+still no dock-resize command anywhere in the MCP surface, and `windows-control` returns an
+empty window list from this session, so full-window screenshots remain unavailable.
+
+Its *conclusion* was wrong, and the user corrected it during 3C. Amendment 1 read v1 Motion
+Console's breakage as evidence that `follow_panel` is unsafe and made a canonical fixed
+extent a hard requirement for every v3 station. But v1 did not break because it followed
+the dock; it broke because its layout was hard-coded to 960x540. A fixed extent hid that
+bug rather than fixing it.
+
+`knowledge/ui-authoring.md:142` forbids a `follow_panel` Canvas as the Program renderer
+"unless the artwork is deliberately authored for arbitrary aspect ratios", and `:136`
+recommends "Canvas plus `follow_panel` for a pixel-matched full-frame interface". A station
+whose product is control outputs has **no program image to letterbox** - the console *is*
+the interface - so the exemption applies and the station takes the whole dock.
+
+**Revised requirement.** A station that renders an image for downstream consumption keeps a
+canonical fixed output (Amendment 1 unchanged). A station that IS an interface declares
+`panel: {mode: canvas, output: <name>, resolution: follow_panel}` and its layout must be
+authored for arbitrary extents:
+
+- geometry normalized, never pixel-anchored to one design size;
+- text at integer scales chosen from `min(W/1280, H/720)`, not from height alone;
+- every label positioned from the rect it belongs to, and **dropped when the gap it lives
+  in cannot hold it** - a fixed-pixel label in a normalized gap is the recurring defect;
+- the root `resolution:` retained as the fallback extent for a hidden or unsized panel.
+
+**Extent proof for a follow_panel station** is in two parts, because no single mechanism
+covers both: (a) `info.panel` showing `effective_mode: canvas`, `resolution_mode:
+follow_panel`, and `render_size == content_size` at the live dock extent; (b) the layout
+swept at forced extents with the panel block temporarily lifted, which exercises identical
+shader code. Part (b) is a layout proof, not a plumbing proof, and must be recorded as such.
+A live dock-drag reflow stays gesture-dependent and batches into 3F.
+
+**Known limit, not a defect:** host `viewport.controls` rects are static normalized values,
+so hit regions scale proportionally and cannot reflow at breakpoints. Below roughly 1000px
+wide the console stays legible but its hit targets fall under the 32px comfort minimum the
+validator enforces at the nominal 1280x720. Reflowing would mean giving up host-owned
+controls, and with them undo/redo, presets and OSC - not a trade worth making.
+
 ## Sub-Phase 3B - The `sui3_*` Kit And The Style Authority
 
 The kit lands first, then the one station that proves it. **This is the taste checkpoint.** If the
@@ -308,8 +350,12 @@ stream, following `modules/au_deck/state.hlsl`.
    applied exactly once. 3A measured the current renderer at "down = more" (`pad_y` 0.05 -> row 69,
    0.95 -> row 94), so this is a required inversion, verified as a readback pair against marker
    position.
-6. Criterion 1 holds at 640x360 and 1600x900 on the canonical output per Amendment 1;
-   `module-ui.ps1 validate` exits clean.
+6. **Extent survival, restated by Amendment 3.** The station is a `follow_panel` Canvas, so this
+   criterion is met by both parts of Amendment 3's two-part proof: `info.panel` reporting
+   `effective_mode: canvas` / `resolution_mode: follow_panel` with `render_size == content_size` at
+   the live dock extent and criterion 1 holding there, **and** the layout swept at forced extents
+   spanning 640x360 up to 1920x403 (4.8:1) with no label crossing another element. `module-ui.ps1
+   validate` exits clean.
 
 ## Sub-Phase 3D - Spline Editor
 

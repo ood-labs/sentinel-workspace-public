@@ -73,10 +73,29 @@ float sui3Glyph(float2 P, float2 anchorPx, float scalePx, int code) {
 
 static const float SUI3_ADVANCE = 7.0;
 
+// WHOLE-RUN BOUNDING REJECT.
+//
+// A text run occupies ONE 11*s-tall row, but without this guard every call site
+// evaluates its full glyph loop -- twelve font-table lookups -- for every pixel
+// on the panel, including the ~95% of rows the run cannot possibly touch. On a
+// desk with twenty-odd labels that is the dominant cost, and it is the same
+// class of waste 3A measured as v1 Motion Console's 14.66 ms.
+//
+// The bounds are deliberately loose. `sui3Glyph` maps P to a cell via
+// (P - anchor)/s - 0.5, so a run covers y in [anchor.y + 0.5s, anchor.y + 11.5s)
+// and x out to (glyphs*7 + 8.5)*s. Padding to 12 and +9 keeps the reject
+// strictly outside every lit pixel: this is an early-out, not a clip, and it
+// must never change what the function returns.
+bool sui3RunMiss(float2 P, float2 anchor, float s, int glyphs) {
+    return P.y < anchor.y || P.y >= anchor.y + 12.0 * s
+        || P.x < anchor.x || P.x >= anchor.x + ((float)glyphs * SUI3_ADVANCE + 9.0) * s;
+}
+
 // Up to 12 glyphs; pass 0 to terminate early. [loop], never [unroll].
 float sui3Text(float2 P, float2 anchor, float s,
                int c0, int c1, int c2, int c3, int c4, int c5,
                int c6, int c7, int c8, int c9, int c10, int c11) {
+    if (sui3RunMiss(P, anchor, s, 12)) return 0.0;
     int cs[12] = { c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 };
     float cov = 0.0;
     [loop] for (int i = 0; i < 12; ++i) {
@@ -106,6 +125,7 @@ float sui3TextLong(float2 P, float2 anchor, float s,
 }
 
 float sui3Digits(float2 P, float2 anchor, float s, int value, int digits) {
+    if (sui3RunMiss(P, anchor, s, digits)) return 0.0;
     float cov = 0.0;
     int v = max(value, 0);
     [loop] for (int i = 0; i < digits; ++i) {
@@ -130,6 +150,7 @@ float sui3DigitsRight(float2 P, float rightPx, float yPx, float s, int value, in
 // integer digit silently truncated any value >= 10, so an age of 30.98 printed
 // as 0.98 -- a readout that lies is worse than no readout.
 float sui3Fixed(float2 P, float2 anchor, float s, float value, int dec) {
+    if (sui3RunMiss(P, anchor, s, 4 + clamp(dec, 1, 3))) return 0.0;
     float cov = 0.0;
     int d = clamp(dec, 1, 3);
     float scale = (d == 1) ? 10.0 : ((d == 2) ? 100.0 : 1000.0);
