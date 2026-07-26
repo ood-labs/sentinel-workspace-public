@@ -69,6 +69,44 @@ static const float BPM_MAX = 200.0;
 // `back` stays under 4 * 187.5 = 750, where float32 ulp is 6e-5 hops, so
 // splitting IT into whole and fractional parts is safe; only the absolute
 // generation number is dangerous.
+// One hop's value, or 0 if that slot does not currently hold that generation.
+// Stamp guard: a slot holding a different generation is a lap-old value, so it
+// contributes nothing rather than a stale onset at a plausible time. (The stamp
+// is a float too, but it only has to stay integer-exact, which float32 is up to
+// 2^24 = 16.7e6 generations, ~24 hours.)
+float ring_raw(StructuredBuffer<PS> R, uint newest, uint gen) {
+    if (gen > newest) return 0.0;      // not written yet; also catches wraparound
+    PS s = R[gen % ORING];
+    return ((uint)s.b == gen + 1u) ? s.a : 0.0;
+}
+
+// One hop, widened by a [1 2 1]/4 triangle.
+//
+// The ring now holds the picker's accepted onsets, so a hop is either an
+// impulse or exactly zero. `tau` is fractional, so an unwidened impulse makes
+// the score depend on where the beat grid happens to fall relative to the hop
+// grid rather than on rhythm: a pulse landing half a hop away collects half the
+// energy, and 5.33 ms of quantisation is 1.5% of a beat at 170 BPM.
+//
+// The amount is a PARAMETER, not a constant, because the two candidate widths
+// each fix one pattern and break another and the choice has to be settled by a
+// scored run rather than by a single-window snapshot. `onset_smear` blends
+// continuously from a bare impulse (0) to the full [1 2 1]/4 triangle (1), so
+// the sweep costs a parameter write instead of a recompile.
+//
+// Widening helps a sparse pattern survive hop quantisation and hurts a dense
+// one by filling the very gaps that separate a period from its harmonic --
+// measured on the live rings, breakbeat_170 resolves 170.75 unwidened and
+// collapses to 85.37 at full width, while syncopated_funk_105 goes the other
+// way.
+float ring_smooth(StructuredBuffer<PS> R, uint newest, uint gen) {
+    float c = ring_raw(R, newest, gen);
+    if (onset_smear <= 0.0) return c;
+    float u = ring_raw(R, newest, gen + 1u);
+    float d = (gen >= 1u) ? ring_raw(R, newest, gen - 1u) : 0.0;
+    return lerp(c, 0.25 * d + 0.5 * c + 0.25 * u, saturate(onset_smear));
+}
+
 float ring_at(StructuredBuffer<PS> R, uint newest, float back) {
     if (back < 0.0) return 0.0;
 
@@ -82,15 +120,10 @@ float ring_at(StructuredBuffer<PS> R, uint newest, float back) {
     uint gHi = newest - ib;
     uint gLo = (gHi >= 1u) ? (gHi - 1u) : gHi;
 
-    PS a = R[gHi % ORING];
-    PS b = R[gLo % ORING];
-    // Stamp guard: a slot holding a different generation is a lap-old value, so
-    // it contributes nothing rather than a stale onset at a plausible time.
-    // (The stamp is a float too, but it only has to stay integer-exact, which
-    // float32 is up to 2^24 = 16.7e6 generations, ~24 hours.)
-    float va = ((uint)a.b == gHi + 1u) ? a.a : 0.0;
-    float vb = ((uint)b.b == gLo + 1u) ? b.a : 0.0;
-    return lerp(va, vb, t);
+    // Widen first, then interpolate between the widened hops -- the same order
+    // the offline study measured. Interpolating raw impulses and widening the
+    // result would smear across the interpolation rather than around the onset.
+    return lerp(ring_smooth(R, newest, gHi), ring_smooth(R, newest, gLo), t);
 }
 
 [numthreads(8, 8, 1)]

@@ -110,6 +110,13 @@ parameters:
   # An interior optimum, not an edge -- 1.6 collapses dense_140 and
   # tempo_ramp_120_132 to 62 BPM.
   - { name: tempo_sigma, display: "Tempo Prior Width (oct)", group: "Tempo", type: float, min: 0.3, max: 2.0, default: 1.2 }
+  # How far each accepted onset is spread before the comb correlates against it:
+  # 0 = a bare impulse on its own hop, 1 = a full [1 2 1]/4 triangle. The ring
+  # holds discrete picked onsets while tau is fractional, so some widening keeps
+  # the score from depending on where the beat grid falls against the 5.33 ms
+  # hop grid; too much fills the gaps that distinguish a period from its
+  # harmonic. Swept live because a single 4.27 s window is too noisy to choose on.
+  - { name: onset_smear, display: "Onset Smear", group: "Tempo", type: float, min: 0.0, max: 1.0, default: 0.0 }
   # Harmonic suppression strength: C'(tau) = C(tau) - gamma*(C(tau/2) + C(2tau)).
   #
   # DEFAULT 0, WHICH DISABLES IT. Implemented and exposed as the research

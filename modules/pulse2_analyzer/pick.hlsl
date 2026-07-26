@@ -295,7 +295,20 @@ void main(uint3 tid : SV_DispatchThreadID) {
                 hr.c = hopCount;
                 hr.d = Lane[slot * MAXLANES + lane].spos;
                 hr.e = strength;
-                hr.f = 0.0; hr.g = 0.0; hr.h = 0.0;
+                // The PRODUCER GENERATION, which is not hopCount. hop_index is
+                // the 2A1 export contract and counts hops the picker has
+                // processed; `gen` is the generation the producer stamped, and
+                // the two diverge whenever catch-up clamps to the ring's oldest
+                // reachable hop. The onset ring is indexed by generation, so it
+                // needs this one -- indexing it by hop_index silently matches
+                // nothing and leaves the ring empty, which reads downstream as
+                // a flat comb pinned to BPM_MIN rather than as an error.
+                //
+                // Rides in a spare field: the Hits data output declares only
+                // four (lane_id, onset_serial, hop_index, sample_position), so
+                // the exported contract is unchanged.
+                hr.f = (float)gen;
+                hr.g = 0.0; hr.h = 0.0;
                 Out[HITS_BASE + (((uint)C.e - 1u) % HITCAP)] = hr;
             }
 
