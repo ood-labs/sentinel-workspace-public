@@ -184,6 +184,34 @@ is direct support for the single-tap-glyph decision recorded in `sui3_text.hlsli
 - No file under `projects/interaction_lab/` modified. The three retired modules remain on
   disk for side-by-side comparison at the checkpoint, per criterion 7.
 
+**Correction.** The first version of this entry claimed the lab was clean after the
+governance test. It was not. **Clearing an expression does not restore the parameter's
+prior value** — it leaves the last value the driver wrote. `UI_Style_Tuner` was therefore
+left at the test values (`control_height` 56, `title_scale` 3, …), which is why the
+checkpoint sheet initially showed its title overflowing as "SCIENTIFIC CONTR". Caught
+while building the comparison sheet, and it mattered: the checkpoint would have compared
+the new station against an old one I had accidentally detuned. All five parameters were
+explicitly written back and verified by readback.
+
+Worth carrying into 3C-3F: `sentinel_expression clear` is not an undo. Snapshot the target
+with `sentinel_state snapshot` before binding a driver to a station you intend to keep, or
+write the originals back by hand afterwards.
+
+## Checkpoint material
+
+`captures/phase3b/CHECKPOINT_old_vs_new.png` — the three retired stations against the new
+one at matched width, each annotated with its measured numbers:
+
+| station | lit runs exactly 1px | mid-grey widget fill | amber |
+| --- | --- | --- | --- |
+| OLD `UI_Kit` | 0.7% | 37.64% | 0.000% |
+| OLD `Font_Sampler` | 1.9% | 4.10% | 0.000% |
+| OLD `UI_Style_Tuner` | 0.2% | 15.46% | 0.000% |
+| NEW `Style_Authority` | **60.9%** | **2.68%** | **0.169%** |
+
+(`captures/` is gitignored, so the sheet is not committed; it is regenerable from the
+captures listed above.)
+
 ## Next
 
 Hard stop at the taste checkpoint. Two things are wanted from it: the look itself, and the
