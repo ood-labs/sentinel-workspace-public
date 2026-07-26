@@ -52,6 +52,27 @@ buffers:
   # parameters below; 2C2 will author them from the console instead.
   - { name: regions,     structured: true, element_size: 32, element_count: 8, persistent: true }
 
+  # ---- 2E1 tempo ---------------------------------------------------------
+  # Onset envelope ring: 800 hops = 4.267 s at 187.5 hops/s, which is four beats
+  # at the slowest tempo the comb searches (60 BPM). Element 800 is the header,
+  # kept INSIDE this buffer rather than in pstate so the ring and its cursor are
+  # written by the same pass and cannot disagree about how far it has advanced.
+  #
+  # Partial-write persistence is what makes a ring viable here at all: one slot
+  # is written per cook and the other 799 must survive. Proven by the 2E1 step-0
+  # micro-proof (modules/pulse2_ringproof) -- 91 slots changed across exactly 91
+  # cooks -- so the banked-commit fallback is NOT needed.
+  - { name: onsets,      structured: true, element_size: 32, element_count: 801,   persistent: true }
+  # Comb filter matrix, 100 candidate periods x 160 candidate phases.
+  - { name: comb,        structured: true, element_size: 32, element_count: 16000, persistent: true }
+  # Per-period reduction over phase, so the single-threaded tempo pass reads 100
+  # elements instead of 16000. 128 rather than 100 to keep the dispatch tidy.
+  - { name: tmax,        structured: true, element_size: 32, element_count: 128,   persistent: true }
+  # Tempo state. Its OWN buffer rather than pstate element 3: pstate is written
+  # by the picker, and two passes writing one buffer would make the tempo result
+  # depend on pass ordering for no benefit.
+  - { name: tstate,      structured: true, element_size: 32, element_count: 4,     persistent: true }
+
 parameters:
   - { name: whiten_decay,   display: "Whitening Decay",   group: "Whitening", type: float, min: 0.90, max: 0.9999, default: 0.992 }
   # MEASURED, not inherited, and NOT chosen from the magnitude median. Sentinel
@@ -80,6 +101,29 @@ parameters:
   # simultaneous rival before thresholding, so a kick's broadband click cannot
   # also register as a snare. 0.0 disables it and reproduces the scored 2C1
   # detector exactly. Swept on non-held-out patterns only.
+  # ---- 2E1 tempo ---------------------------------------------------------
+  # Width of the log-Gaussian tempo prior, in OCTAVES about 120 BPM.
+  # The research specified 0.8. Swept offline against the real onset rings of
+  # the nine non-held-out patterns, 1.2 scores 7/8 against 0.8's 6/8: at 0.8 the
+  # 0.415-octave penalty on a genuine 90 BPM outweighs sparse_90's evidence and
+  # the tracker reports 121.5. Adopted under Tier 2 with both values recorded.
+  # An interior optimum, not an edge -- 1.6 collapses dense_140 and
+  # tempo_ramp_120_132 to 62 BPM.
+  - { name: tempo_sigma, display: "Tempo Prior Width (oct)", group: "Tempo", type: float, min: 0.3, max: 2.0, default: 1.2 }
+  # Harmonic suppression strength: C'(tau) = C(tau) - gamma*(C(tau/2) + C(2tau)).
+  #
+  # DEFAULT 0, WHICH DISABLES IT. Implemented and exposed as the research
+  # specifies, but measured to hurt: every non-zero gamma cost two patterns at
+  # every sigma tested, taking a correct dense_140 (140.6) to 111.6 and a
+  # correct sparse_90 (89.6) to 115.7. The formula is symmetric, so it punishes
+  # a true tempo whose half also scores well exactly as hard as it punishes a
+  # spurious harmonic. Adopted under Tier 2 with both values recorded.
+  - { name: tempo_gamma, display: "Harmonic Suppression", group: "Tempo", type: float, min: 0.0, max: 1.0, default: 0.0 }
+  # Comb peak-to-average ratio treated as fully locked. A flat landscape gives
+  # par = 1 (no periodicity at all), so confidence is (par-1)/(conf_full-1),
+  # clamped at both ends.
+  - { name: conf_full,   display: "Confidence Full Scale", group: "Tempo", type: float, min: 1.5, max: 20.0, default: 4.0 }
+
   - { name: inhibit_gain, display: "Lateral Inhibition", group: "Picking", type: float, min: 0.0, max: 1.0, default: 0.0 }
   # Forward-masking time constant, in ANALYSIS HOPS (5.33 ms each), not seconds
   # or cooks. Measured on hats_under_loud_kick_150, the snare lane's false
@@ -268,6 +312,52 @@ passes:
       - { slot: 0, source: "buffer:pstate" }
     output: "buffer:hits"
 
+  # ---- 2E1 tempo chain ---------------------------------------------------
+  # Runs after commit, so it reads the picker's stable snapshot rather than a
+  # pstate that pass C may still be writing this cook.
+  - name: onsets
+    shader: onsets.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:pstate_prev" }
+      - { slot: 1, source: "buffer:lstate" }
+      - { slot: 2, source: "data:0" }
+    output: "buffer:onsets"
+
+  - name: comb
+    shader: comb.hlsl
+    target: cs_5_0
+    dispatch: [13, 20, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "buffer:onsets" }
+    output: "buffer:comb"
+
+  - name: tmax
+    shader: tmax.hlsl
+    target: cs_5_0
+    dispatch: [13, 1, 1]
+    thread_group_x: 8
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:comb" }
+    output: "buffer:tmax"
+
+  - name: tempo
+    shader: tempo.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:tmax" }
+      - { slot: 1, source: "buffer:pstate_prev" }
+    output: "buffer:tstate"
+
   - name: preview
     shader: preview.hlsl
     target: cs_5_0
@@ -306,6 +396,45 @@ data_outputs:
       - { name: centD,    type: float }
       - { name: flatD,    type: float }
 
+  # 2E1 diagnostics. The comb matrix itself is deliberately NOT exposed: 16000
+  # elements per read is a large readback for something the per-period reduction
+  # already summarises, and tmax carries the winning phase alongside each score.
+  - name: "Tempo"
+    buffer: "tstate"
+    schema:
+      - { name: bpm,        type: float }
+      - { name: beat_phase, type: float }
+      - { name: conf,       type: float }
+      - { name: period_hops, type: float }
+      - { name: tau_index,  type: float }
+      - { name: par,        type: float }
+      - { name: peak,       type: float }
+      - { name: signal,     type: float }
+
+  - name: "CombMax"
+    buffer: "tmax"
+    schema:
+      - { name: score,      type: float }
+      - { name: bpm,        type: float }
+      - { name: period_hops, type: float }
+      - { name: phase,      type: float }
+      - { name: row_mean,   type: float }
+      - { name: spare0,     type: float }
+      - { name: spare1,     type: float }
+      - { name: spare2,     type: float }
+
+  - name: "Onsets"
+    buffer: "onsets"
+    schema:
+      - { name: strength,  type: float }
+      - { name: stamp,     type: float }
+      - { name: spos,      type: float }
+      - { name: spare0,    type: float }
+      - { name: spare1,    type: float }
+      - { name: spare2,    type: float }
+      - { name: spare3,    type: float }
+      - { name: spare4,    type: float }
+
   - name: "Hits"
     buffer: "hits"
     schema:
@@ -327,8 +456,13 @@ control_outputs:
   - { name: dbg_cursor,     buffer: pstate, element: 0, field_offset: 0,  description: "Next unread generation" }
   - { name: dbg_hopcount,   buffer: pstate, element: 0, field_offset: 4,  description: "Hops processed" }
   - { name: dbg_latest,     buffer: pstate, element: 0, field_offset: 8,  description: "Newest generation seen" }
-  - { name: bpm,            buffer: pstate, element: 3, field_offset: 0,  description: "Estimated tempo (2E1)" }
-  - { name: tempo_conf,     buffer: pstate, element: 3, field_offset: 8,  description: "Tempo confidence 0..1 (2E1)" }
+  # 2E1. Read from tstate, not pstate element 3: the tempo stage owns its own
+  # buffer so the value cannot depend on which pass wrote pstate last.
+  - { name: bpm,            buffer: tstate, element: 0, field_offset: 0,  description: "Estimated tempo (2E1)" }
+  - { name: beat_phase,     buffer: tstate, element: 0, field_offset: 4,  description: "Beat phase, fraction of a beat (2E1)" }
+  - { name: tempo_conf,     buffer: tstate, element: 0, field_offset: 8,  description: "Tempo confidence 0..1 (2E1)" }
+  - { name: beat_period,    buffer: tstate, element: 0, field_offset: 12, description: "Beat period in analysis hops (2E1)" }
+  - { name: dbg_tempo_par,  buffer: tstate, element: 0, field_offset: 20, description: "Comb peak-to-average ratio (2E1)" }
 
 outputs:
   - { name: "Analyzer", pass: preview }
