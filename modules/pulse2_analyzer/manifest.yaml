@@ -47,7 +47,8 @@ buffers:
   - { name: fstate,      structured: true, element_size: 32, element_count: 1024, persistent: true }
   - { name: pstate,      structured: true, element_size: 32, element_count: 1552, persistent: true }
   - { name: pstate_prev, structured: true, element_size: 32, element_count: 1552, persistent: true }
-  - { name: hits,        structured: true, element_size: 16, element_count: 512 }
+  # 0..511 the picker's onsets, 512..1023 the PLL's beats.
+  - { name: hits,        structured: true, element_size: 16, element_count: 1024 }
   # Detection regions in spectrogram coordinates. 2C1 authors these from the
   # parameters below; 2C2 will author them from the console instead.
   - { name: regions,     structured: true, element_size: 32, element_count: 8, persistent: true }
@@ -72,6 +73,21 @@ buffers:
   # by the picker, and two passes writing one buffer would make the tempo result
   # depend on pass ordering for no benefit.
   - { name: tstate,      structured: true, element_size: 32, element_count: 4,     persistent: true }
+
+  # ---- 2E2 beat clock ----------------------------------------------------
+  # The PLL's OWN buffer: ring 0..511, state and serial in element 512.
+  #
+  # It emphatically does not share `pstate` with the picker. Two passes writing
+  # one buffer get ping-ponged onto separate physical sides, and the failure is
+  # silent and confusing: the PLL's state element survived and read back
+  # correctly through both Trace and its control outputs, while its writes to
+  # the shared serial counter and the shared hits ring vanished every cook
+  # because `commit` and `hitsexport` were reading the picker's side. Beats
+  # counted up to 23 with not one beat record anywhere in the ring.
+  # 0..511 the beat ring, 512 the PLL state, 513 auxiliary state (the circular
+  # phase-average phasor, which needs two floats the eight-field state element
+  # has no room left for).
+  - { name: beats,       structured: true, element_size: 32, element_count: 514,   persistent: true }
 
 parameters:
   - { name: whiten_decay,   display: "Whitening Decay",   group: "Whitening", type: float, min: 0.90, max: 0.9999, default: 0.992 }
@@ -130,6 +146,30 @@ parameters:
   # par = 1 (no periodicity at all), so confidence is (par-1)/(conf_full-1),
   # clamped at both ends.
   - { name: conf_full,   display: "Confidence Full Scale", group: "Tempo", type: float, min: 1.5, max: 20.0, default: 4.0 }
+
+  # ---- 2E2 PLL -----------------------------------------------------------
+  # Two loops at deliberately different speeds. The phase loop is fast because a
+  # beat in the wrong PLACE is heard immediately; the tempo loop is an order of
+  # magnitude slower because tempo is a property of the music, and a tracker
+  # that revises it every frame is exactly the instability 2E1 ended with. The
+  # ratio matters more than either value: it is what converts a per-frame
+  # estimate that is right 24% of the time into a clock.
+  - { name: mu_phase,  display: "PLL Phase Gain", group: "Beat", type: float, min: 0.0, max: 1.0, default: 0.15 }
+  # Both gains are fractions of the error corrected PER BEAT, not per cook -- the
+  # shader scales them by the beats actually elapsed. 0.02 was a per-cook value
+  # and would now mean fifty beats to re-acquire a tempo, which is the whole of
+  # most patterns.
+  - { name: mu_tempo,  display: "PLL Tempo Gain", group: "Beat", type: float, min: 0.0, max: 1.0, default: 0.2 }
+  # How fast the CIRCULAR average of the observed phase follows the comb. The
+  # comb re-picks its argmax phase every cook and that pick jumps between
+  # several defensible phases on dense material, so the loop is fed the smoothed
+  # phasor rather than the raw pick. Lower = steadier and slower to re-acquire.
+  - { name: phase_smooth, display: "Phase Smoothing", group: "Beat", type: float, min: 0.01, max: 1.0, default: 0.08 }
+  # Confidence below which the loop stops correcting and free-wheels on its own
+  # period. Free-wheeling holds the grid through a quiet bar or a breakdown; it
+  # does NOT gate beat emission, which is gated on signal presence instead, so a
+  # noise floor can never produce beats however confident the comb looks.
+  - { name: lock_conf, display: "Lock Confidence", group: "Beat", type: float, min: 0.0, max: 1.0, default: 0.25 }
 
   - { name: inhibit_gain, display: "Lateral Inhibition", group: "Picking", type: float, min: 0.0, max: 1.0, default: 0.0 }
   # Forward-masking time constant, in ANALYSIS HOPS (5.33 ms each), not seconds
@@ -223,8 +263,19 @@ parameters:
   - { name: refractory_s,   display: "Refractory (s)",    group: "Peak Picking", type: float, min: 0.01, max: 0.40, default: 0.055 }
 
   - { name: gate_level,     display: "Capture Level (driven)", group: "Signal Gate", type: float, min: 0.0, max: 1.0, default: 0.0 }
-  - { name: signal_floor,   display: "Signal Floor",      group: "Signal Gate", type: float, min: 0.0, max: 0.20, default: 0.0025 }
-  - { name: gate_hold_s,    display: "Gate Hold (s)",     group: "Signal Gate", type: float, min: 0.0, max: 3.0,  default: 0.5 }
+  # MEASURED against the two things it has to separate, not chosen.
+  # A -44 dBFS white-noise floor peaks at 0.0068 linear on this capture path;
+  # quiet_intro_drop_128's intro, whose loudest onsets are -30 dBFS kicks,
+  # peaks at 0.021 and clears 0.012 once per beat. 0.012 therefore sits 1.76x
+  # above the noise it must reject and 1.8x below the quiet music it must pass.
+  # The old 0.0025 (-52 dBFS) was BELOW the noise floor, which is why counters
+  # kept advancing on it -- 2E2 criterion 2's exact failure.
+  - { name: signal_floor,   display: "Signal Floor",      group: "Signal Gate", type: float, min: 0.0, max: 0.20, default: 0.012 }
+  # Must span the longest gap between above-floor moments in real music.
+  # In quiet_intro_drop_128's intro that gap is 0.47 s -- one kick per beat at
+  # 128 BPM -- so the old 0.5 s left 30 ms of margin and would chatter on any
+  # slower or sparser material. 0.75 s covers it with room.
+  - { name: gate_hold_s,    display: "Gate Hold (s)",     group: "Signal Gate", type: float, min: 0.0, max: 3.0,  default: 0.75 }
 
   - { name: trace_hops,     display: "Trace Hops",        group: "Readout", type: float, min: 32.0, max: 256.0, default: 256.0 }
   - { name: trace_scale,    display: "Trace Scale",       group: "Readout", type: float, min: 0.2,  max: 20.0, default: 3.0 }
@@ -309,19 +360,9 @@ passes:
       - { slot: 0, source: "buffer:pstate" }
     output: "buffer:pstate_prev"
 
-  - name: hitsexport
-    shader: hitsexport.hlsl
-    target: cs_5_0
-    dispatch: [8, 1, 1]
-    thread_group_x: 64
-    thread_group_y: 1
-    inputs:
-      - { slot: 0, source: "buffer:pstate" }
-    output: "buffer:hits"
-
   # ---- 2E1 tempo chain ---------------------------------------------------
   # Runs after commit, so it reads the picker's stable snapshot rather than a
-  # pstate that pass C may still be writing this cook.
+  # pstate that the picker may still be writing this cook.
   - name: onsets
     shader: onsets.hlsl
     target: cs_5_0
@@ -364,6 +405,36 @@ passes:
       - { slot: 0, source: "buffer:tmax" }
       - { slot: 1, source: "buffer:pstate_prev" }
     output: "buffer:tstate"
+
+  # ---- 2E2 beat clock ----------------------------------------------------
+  # Runs after `tempo`, whose estimate it corrects against, and writes only its
+  # OWN buffer so nothing here depends on how the engine schedules two writers
+  # of one buffer.
+  - name: pll
+    shader: pll.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:tstate" }
+      - { slot: 1, source: "buffer:onsets" }
+    output: "buffer:beats"
+
+  # Publishes onsets and beats through one typed port so the harness stays
+  # detector-agnostic: slots 0..511 are the picker's onsets, 512..1023 the
+  # PLL's beats. The two carry independent serial sequences, which is why the
+  # harness keys records by (lane, serial) rather than by serial alone.
+  - name: hitsexport
+    shader: hitsexport.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:pstate" }
+      - { slot: 1, source: "buffer:beats" }
+    output: "buffer:hits"
 
   - name: preview
     shader: preview.hlsl
@@ -470,6 +541,24 @@ control_outputs:
   - { name: tempo_conf,     buffer: tstate, element: 0, field_offset: 8,  description: "Tempo confidence 0..1 (2E1)" }
   - { name: beat_period,    buffer: tstate, element: 0, field_offset: 12, description: "Beat period in analysis hops (2E1)" }
   - { name: dbg_tempo_par,  buffer: tstate, element: 0, field_offset: 20, description: "Comb peak-to-average ratio (2E1)" }
+  # 2E2. Read from the PLL's own header element, so the beat clock reports the
+  # phase it is actually running on rather than the comb's per-frame estimate.
+  - { name: pll_phase,      buffer: beats, element: 512, field_offset: 0,  description: "PLL beat phase, 0..1 (2E2)" }
+  - { name: pll_period,     buffer: beats, element: 512, field_offset: 4,  description: "PLL beat period in hops (2E2)" }
+  - { name: bpm_locked,     buffer: beats, element: 512, field_offset: 8,  description: "PLL tempo, smoothed and free-wheeling (2E2)" }
+  - { name: beat_conf,      buffer: beats, element: 512, field_offset: 12, description: "Smoothed tempo confidence (2E2)" }
+  - { name: free_wheeling,  buffer: beats, element: 512, field_offset: 16, description: "1 while the PLL is coasting uncorrected (2E2)" }
+  # The criterion-2 witness: a monotonic count that must NOT advance on a noise
+  # floor or on digital silence.
+  - { name: beat_count,     buffer: beats, element: 512, field_offset: 24, description: "Beats emitted (2E2)" }
+  - { name: beat_pulse,     buffer: beats, element: 512, field_offset: 28, description: "1 on a cook that emitted a beat (2E2)" }
+  # Why a beat cycle completed without emitting a record. A dropped beat leaves
+  # tempo and confidence looking healthy and shows up only in continuity, so the
+  # two suppression paths are counted separately and readable live.
+  - { name: phase_coherence, buffer: beats, element: 513, field_offset: 8,  description: "Circular vector strength of the observed phase, 0..1 (2E2)" }
+  - { name: drop_signal,     buffer: beats, element: 513, field_offset: 12, description: "Beats suppressed by the signal gate (2E2)" }
+  - { name: drop_ring,       buffer: beats, element: 513, field_offset: 16, description: "Beats suppressed by a missing ring hop (2E2)" }
+  - { name: beat_cycles,     buffer: beats, element: 513, field_offset: 20, description: "Phase cycles completed, emitted or not (2E2)" }
 
 outputs:
   - { name: "Analyzer", pass: preview }

@@ -129,13 +129,36 @@ void main(uint3 tid : SV_DispatchThreadID) {
     if (signalPresent < 0.5) conf = 0.0;
 
     PS o = T[0];
-    // Hold the last trusted BPM instead of reporting a low-confidence one. A
-    // tracker that swings wildly while unsure is worse than one that admits it
-    // is unsure and stays put; 2E2 builds the free-wheel on top of this.
-    o.a = (conf > 0.0) ? bpm : o.a;
+    // Hold the last TRUSTED BPM, where trusted means it met the lock threshold
+    // -- not merely that confidence was non-zero.
+    //
+    // `conf > 0.0` is too weak, and the difference is what 2E2 criterion 2
+    // measures. When music stops, the comb's ring drains over the next four
+    // seconds and confidence falls gradually; every frame of that decay still
+    // has conf > 0, so the reported BPM tracked the garbage all the way down
+    // and froze wherever it happened to end. Measured drift from the last
+    // confident value: 42 BPM into digital silence, 102 BPM into a noise floor.
+    // Freezing at the last value that cleared `lock_conf` holds it to zero.
+    o.a = (conf >= lock_conf) ? bpm : o.a;
     o.b = M[bi].d;              // beat phase, fraction of a beat
     o.c = conf;
-    o.d = M[bi].c;              // period in hops
+    // The period OF THE BPM THIS STAGE ACTUALLY REPORTS, derived from o.a rather
+    // than from the current argmax.
+    //
+    // Publishing the raw grid tau throws away the sub-grid refinement for every
+    // consumer that works in periods -- measured as a PLL running at 124.6 BPM
+    // while its own emitted beats averaged 128.6. But refining the CURRENT
+    // argmax is not enough either, because o.a is HELD at the last value that
+    // cleared lock_conf while the argmax keeps moving. The two then describe
+    // different tempi: measured on four_on_floor_128, a reported 127.6 BPM
+    // alongside a published period of 93.7 hops, which is 120.1 BPM. The phase
+    // loop spent the whole pattern pushing against that gap, which is exactly
+    // what a continuity score punishes.
+    //
+    // hps is recovered from the grid's own relation tau = 60*hps/bpm, so it
+    // needs no extra plumbing from the producer.
+    float hps = M[bi].c * max(M[bi].b, 1.0) / 60.0;
+    o.d = 60.0 * hps / max(o.a, 1.0);
     o.e = (float)bi;
     o.f = par;
     o.g = raw[bi];

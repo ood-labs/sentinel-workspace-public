@@ -134,8 +134,16 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // a previous run's records are always older than `start`. Never-written
     // slots read as generation 0, strength 0, and contribute nothing even when
     // `start` is 0.
+    // ONSET LANES ONLY. Since 2E2 moved `commit` to the end of the cook, this
+    // ring shares its hits ring with the PLL's emitted beats (lane 3), and
+    // depositing those would close a feedback loop: beats would enter the onset
+    // envelope, the comb would find the period it just published, the PLL would
+    // lock harder onto it and emit more. Measured before the guard: a correct
+    // four_on_floor_128 fell from 127.6 to 85.4 BPM while confidence stayed
+    // high, which is the signature of a tracker agreeing with itself.
     [loop] for (uint i = 0u; i < HITCAP; ++i) {
         PS hr = P[HITS_BASE + i];
+        if ((uint)max(hr.a, 0.0) >= NLANES) continue;
         uint hgen = (uint)max(hr.f, 0.0);
         if (hgen < start || hgen >= judged) continue;
         On[hgen % ORING].a += 1.0;

@@ -147,7 +147,10 @@ class AudioRunner:
         })
 
     def read_hits(self) -> list[dict]:
-        d = self.sen.data_port(self.detector, self.hits_port, max_elements=512)
+        # 1024, not 512: since 2E2 the port carries the picker's onsets in slots
+        # 0..511 and the PLL's beats in 512..1023. Reading only the first half
+        # would silently return zero beats and score CMLc/AMLc as 0.
+        d = self.sen.data_port(self.detector, self.hits_port, max_elements=1024)
         return [e for e in (d.get("elements") or []) if int(e.get("onset_serial", 0)) > 0]
 
     def run_pattern(self, wav_path: Path, duration_samples: int,
@@ -183,11 +186,16 @@ class AudioRunner:
         # standing just before restart belongs to a PREVIOUS run. This is exact,
         # unlike inferring the boundary from a backwards step in
         # sample_position, which breaks as soon as the ring wraps within a run.
+        # PER LANE. Onsets and beats carry independent serial sequences, so one
+        # global maximum would be the larger of the two and would discard every
+        # record of the other stream for the whole run.
+        watermark: dict[int, int] = {}
         try:
-            watermark = max((int(h["onset_serial"]) for h in self.read_hits()),
-                            default=0)
+            for h in self.read_hits():
+                ln = int(h["lane_id"])
+                watermark[ln] = max(watermark.get(ln, 0), int(h["onset_serial"]))
         except SentinelError:
-            watermark = 0
+            watermark = {}
 
         self.sen.set(self._audio_param("restart_file"), 1)
 
@@ -199,7 +207,7 @@ class AudioRunner:
                 f"{self.audio}: generation not advancing after restart_file "
                 f"({gen_before}); playback did not start")
 
-        by_serial: dict[int, dict] = {}
+        by_serial: dict[tuple[int, int], dict] = {}
         samples: list[dict] = []
         pos_trace: list[int] = []
         t0 = time.time()
@@ -213,9 +221,9 @@ class AudioRunner:
             pos_trace.append(pos)
 
             for h in self.read_hits():
-                serial = int(h["onset_serial"])
-                if serial > watermark:
-                    by_serial[serial] = h
+                key = (int(h["lane_id"]), int(h["onset_serial"]))
+                if key[1] > watermark.get(key[0], 0):
+                    by_serial[key] = h
 
             if extra_polls:
                 row = {"sample_position": pos}
@@ -262,21 +270,40 @@ class AudioRunner:
 
         # Final sweep so the last hits before end-of-file are not missed.
         for h in self.read_hits():
-            serial = int(h["onset_serial"])
-            if serial > watermark:
-                by_serial[serial] = h
-
-        hits = [by_serial[s] for s in sorted(by_serial)]
+            key = (int(h["lane_id"]), int(h["onset_serial"]))
+            if key[1] > watermark.get(key[0], 0):
+                by_serial[key] = h
 
         # A few records can still land between reading the watermark and the
         # restart taking effect. Those carry the PREVIOUS playthrough's high
         # sample positions, so drop any leading records that sit above where the
         # run actually settles.
-        cut = 0
-        for i in range(1, min(len(hits), 12)):
-            if int(hits[i]["sample_position"]) < int(hits[i - 1]["sample_position"]):
-                cut = i
-        dropped, hits = cut, hits[cut:]
+        #
+        # THE CUT MUST RUN IN DETECTION ORDER, PER LANE. It finds the restart by
+        # looking for a backwards step in sample position, which only exists
+        # while records are ordered by serial -- sorting by sample position first
+        # makes a backwards step impossible, so the cut silently becomes a no-op
+        # and every stale record survives as a false positive near the end of the
+        # file. Measured when the beat ring's separate serial sequence forced a
+        # sort: twelve per-lane F1 drops between 0.011 and 0.022, the whole
+        # regression gate, from a harness change with no detector change behind
+        # it. Per lane because the two rings carry independent serials, so their
+        # restart boundaries are found separately and only then merged.
+        dropped = 0
+        kept: list[dict] = []
+        for lane in sorted({k[0] for k in by_serial}):
+            seq = [h for k, h in sorted(by_serial.items()) if k[0] == lane]
+            cut = 0
+            for i in range(1, min(len(seq), 12)):
+                if int(seq[i]["sample_position"]) < int(seq[i - 1]["sample_position"]):
+                    cut = i
+            dropped += cut
+            kept.extend(seq[cut:])
+
+        # Only now ordered by sample position: two independent serial sequences
+        # do not interleave into one meaningful order, and the scorer times
+        # everything by sample position anyway.
+        hits = sorted(kept, key=lambda h: int(h["sample_position"]))
 
         return {
             "hits": hits,
