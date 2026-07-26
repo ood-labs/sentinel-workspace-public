@@ -1,0 +1,123 @@
+name: "Gizmo Desk"
+version: "3.0"
+mode: generator
+
+# Fallback extent for a hidden or unsized panel; the layout is authored for
+# arbitrary extents per phase doc Amendment 3.
+resolution: [1280, 720]
+
+panel:
+  mode: canvas
+  output: "Gizmo Desk"
+  resolution: follow_panel
+
+features: [camera, math3d]
+
+viewport:
+  hint: "Click objects, Shift-click to extend. Drag the gizmo. 1/2/3 translate/rotate/scale, 4 world/local, Escape cancel."
+  interactions: [events, selection]
+  selection: { mode: multiple, provider: ray_query, result_buffer: pick_result, object_buffer: viewport_objects }
+  input:
+    pointer: [left, right]
+    keyboard: ["1", "2", "3", "4", escape, shift]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: transform_selection, label: "Transform Selection" }
+    - { gesture: shift_left_click, action: add_selection, label: "Add Object" }
+    - { key: "1", action: translate_mode, label: "Translate" }
+    - { key: "2", action: rotate_mode, label: "Rotate" }
+    - { key: "3", action: scale_mode, label: "Scale" }
+  controls:
+    # Mode is a THREE-CELL BANK on one int parameter, not three `type: button`
+    # controls as v1 had. A transform mode is a mode: backing it with an ordinary
+    # parameter gets undo, presets, project save and OSC, and sidesteps the
+    # button latch 3C measured entirely.
+    - { id: mode,  kind: slider, param: transform_mode, rect: [0.016, 0.038, 0.230, 0.086], label: "Transform Mode" }
+    - { id: local, kind: toggle, param: local_space,    rect: [0.246, 0.038, 0.360, 0.086], label: "World / Local" }
+
+parameters:
+  - { name: transform_mode, display: "Mode", type: int, min: 0, max: 2, default: 0, group: "Transform" }
+  - { name: local_space, display: "Local Space", type: bool, default: false, group: "Transform" }
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Transform" }
+
+  # NUMERIC TRANSFORM. Every 3D tool has exact numeric entry alongside its
+  # gizmo, and it is the only way to transform the selection without a pointer
+  # drag -- `sentinel_viewport action=edit` drives the host object-edit path,
+  # which this module does not use because it renders its own gizmo from raw
+  # events. That makes this the door 3E's multi-selection criterion goes
+  # through, as well as the door OSC and cues go through.
+  - { name: do_orbit, display: "Apply Orbit (edge)", type: bool, default: false, group: "Numeric" }
+  - { name: orbit_axis, display: "Orbit Axis", type: int, min: 0, max: 2, default: 1, group: "Numeric" }
+  - { name: orbit_degrees, display: "Orbit Degrees", type: float, min: -180.0, max: 180.0, default: 40.0, group: "Numeric" }
+
+buffers:
+  - { name: gizmo_state, structured: true, element_size: 96, element_count: 1, persistent: true }
+  - { name: drag_snapshot, structured: true, element_size: 64, element_count: 16, persistent: true }
+  - { name: scene_state, structured: true, element_size: 64, element_count: 16, persistent: true }
+  - { name: viewport_objects, structured: true, element_size: 120, element_count: 16, persistent: true }
+  - { name: pick_result, structured: true, element_size: 40, element_count: 1, persistent: true }
+
+# Durable authored transforms, schema unchanged from v1.
+state_buffers:
+  - name: scene_state
+    max_elements: 16
+    schema:
+      - { name: position, type: float3 }
+      - { name: pad0, type: float }
+      - { name: rotation, type: float3 }
+      - { name: pad1, type: float }
+      - { name: scale, type: float3 }
+      - { name: object_id, type: uint }
+      - { name: kind, type: uint }
+      - { name: flags, type: uint }
+      - { name: marker, type: float }
+      - { name: pad2, type: float }
+
+passes:
+  - { name: interaction, shader: interaction.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:scene_state" } ], output: "buffer:gizmo_state" }
+  - { name: snapshot, shader: snapshot.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:gizmo_state" }, { slot: 1, source: "buffer:scene_state" } ], output: "buffer:drag_snapshot" }
+  - { name: update, shader: update.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:gizmo_state" }, { slot: 1, source: "buffer:drag_snapshot" } ], output: "buffer:scene_state" }
+  - { name: descriptors, shader: descriptors.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 16, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:scene_state" } ], output: "buffer:viewport_objects" }
+  - { name: pick, shader: pick.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:scene_state" }, { slot: 1, source: "buffer:gizmo_state" } ], output: "buffer:pick_result" }
+  - { name: render, shader: render.hlsl, target: cs_5_0, format: RGBA8, inputs: [ { slot: 0, source: "buffer:scene_state" }, { slot: 1, source: "buffer:gizmo_state" } ], output: output }
+
+data_outputs:
+  - name: "Gizmo State"
+    buffer: gizmo_state
+    schema:
+      - { name: mode, type: float }
+      - { name: local_space, type: float }
+      - { name: active_handle, type: float }
+      - { name: command, type: float }
+      - { name: pointer, type: float2 }
+      - { name: drag_start, type: float2 }
+      - { name: pivot, type: float3 }
+      - { name: last_local_param, type: float }
+      - { name: active_id, type: float }
+      - { name: start_angle, type: float }
+      - { name: start_radius, type: float }
+      - { name: selection_mask, type: float }
+      - { name: dragging, type: float }
+      - { name: drag_pad, type: float3 }
+  - name: "Scene Objects"
+    buffer: scene_state
+    schema:
+      - { name: position, type: float3 }
+      - { name: pad0, type: float }
+      - { name: rotation, type: float3 }
+      - { name: pad1, type: float }
+      - { name: scale, type: float3 }
+      - { name: object_id, type: uint }
+      - { name: kind, type: uint }
+      - { name: flags, type: uint }
+      - { name: marker, type: float }
+      - { name: pad2, type: float }
+
+outputs:
+  - { name: "Gizmo Desk", pass: render }
+
+control_outputs:
+  - { name: mode, buffer: gizmo_state, element: 0, field_offset: 0, description: "0 translate / 1 rotate / 2 scale" }
+  - { name: local_space, buffer: gizmo_state, element: 0, field_offset: 4, description: "1 when transforming in local space" }
+  - { name: active_handle, buffer: gizmo_state, element: 0, field_offset: 8, description: "Gizmo handle under the current edit" }
+  - { name: selection_mask, buffer: gizmo_state, element: 0, field_offset: 60, description: "Bitmask of selected object ids" }

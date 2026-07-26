@@ -1,18 +1,89 @@
-name: "Motion Control Desk"
-version: "1.0"
+name: "Motion Console"
+version: "3.0"
 mode: generator
-resolution: [960, 540]
+
+# FULL-BLEED PANEL, and Phase 3A's Amendment 1 is superseded here (see the phase
+# doc's Amendment 3). Amendment 1 read v1's breakage as "follow_panel is unsafe"
+# and required a canonical fixed extent. That diagnosis was wrong: v1 broke
+# because its layout was hard-coded to 960x540, not because it followed the dock.
+#
+# ui-authoring.md:142 forbids a follow_panel Canvas as the Program renderer
+# "unless the artwork is deliberately authored for arbitrary aspect ratios", and
+# :136 recommends "Canvas plus follow_panel for a pixel-matched full-frame
+# interface." A motion console has no program image to letterbox -- the console
+# IS the interface -- so it takes the whole dock, and the layout is authored for
+# arbitrary extents: normalized geometry, integer text scales chosen from the
+# smaller axis ratio, and every label positioned from the rect it belongs to.
+#
+# The root resolution below stays as the fallback extent for a hidden or
+# not-yet-sized panel, and as the resolution capture_at proves against.
+resolution: [1280, 720]
 
 panel:
   mode: canvas
   output: "Motion Console"
   resolution: follow_panel
 
+# SPLIT INTERACTION MODEL, and the split is forced rather than chosen.
+#
+# 3B's rule is "reach for viewport.controls before raw events" -- the host owns
+# capture, preview and commit, so every control gets undo, presets, OSC and
+# project save for free. Sliders, the toggle and the XY pad all follow it.
+#
+# BURST CANNOT. The `button` control kind is backed by `type: button`, and 3C
+# measured that parameter kind fires and never releases: burst=1 pins lfo4,
+# energy and pulse to 1.000, burst=0 does not clear it, and force_reload does
+# not either -- only a project reload does. The StateTree value DOES clear while
+# the shader-side injected global stays 1, so it is a binding defect and no
+# amount of correct clicking fixes it. Burst is therefore a raw hit-tested
+# click against the event stream, following modules/au_deck/state.hlsl, and is
+# deliberately NOT declared as a parameter.
+viewport:
+  hint: "Drag lane rate/amp/shape, master rate, mute, bias pad. Click BURST to fire the pulse envelope."
+  interactions: [events]
+  input:
+    pointer: [left]
+    gestures: [click, drag]
+  controls:
+    - { id: master_rate, kind: slider, param: master_rate, rect: [0.360, 0.030, 0.580, 0.0750], label: "Master Rate" }
+    - { id: mute,        kind: toggle, param: mute,        rect: [0.600, 0.030, 0.680, 0.0750], label: "Mute" }
+    - { id: bias,        kind: xypad,  param: motion_bias, rect: [0.820, 0.020, 0.970, 0.130], label: "Motion Bias" }
+
+    - { id: l1_speed, kind: slider, param: lfo1_speed, rect: [0.620, 0.155, 0.780, 0.2000], label: "Prompt Rate" }
+    - { id: l1_amp,   kind: slider, param: lfo1_amp,   rect: [0.800, 0.155, 0.960, 0.2000], label: "Prompt Amp" }
+    - { id: l1_shape, kind: slider, param: lfo1_shape, rect: [0.620, 0.215, 0.960, 0.2600], label: "Prompt Shape" }
+
+    - { id: l2_speed, kind: slider, param: lfo2_speed, rect: [0.620, 0.335, 0.780, 0.3800], label: "Energy Rate" }
+    - { id: l2_amp,   kind: slider, param: lfo2_amp,   rect: [0.800, 0.335, 0.960, 0.3800], label: "Energy Amp" }
+    - { id: l2_shape, kind: slider, param: lfo2_shape, rect: [0.620, 0.395, 0.960, 0.4400], label: "Energy Shape" }
+
+    - { id: l3_speed, kind: slider, param: lfo3_speed, rect: [0.620, 0.515, 0.780, 0.5600], label: "Camera Rate" }
+    - { id: l3_amp,   kind: slider, param: lfo3_amp,   rect: [0.800, 0.515, 0.960, 0.5600], label: "Camera Amp" }
+    - { id: l3_shape, kind: slider, param: lfo3_shape, rect: [0.620, 0.575, 0.960, 0.6200], label: "Camera Shape" }
+
+    - { id: l4_speed, kind: slider, param: lfo4_speed, rect: [0.620, 0.695, 0.780, 0.7400], label: "Pulse Rate" }
+    - { id: l4_amp,   kind: slider, param: lfo4_amp,   rect: [0.800, 0.695, 0.960, 0.7400], label: "Pulse Amp" }
+    - { id: l4_shape, kind: slider, param: lfo4_shape, rect: [0.620, 0.755, 0.960, 0.8000], label: "Pulse Shape" }
+
 parameters:
   - { name: master_rate, display: "Master Rate", type: float, min: 0.10, max: 3.0, default: 1.0, group: "Master" }
   - { name: motion_bias, display: "Motion Bias", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.52, 0.64], group: "Master" }
   - { name: mute, display: "Mute", type: bool, default: false, group: "Master" }
-  - { name: burst, display: "Burst", type: button, group: "Master" }
+  - { name: burst_decay, display: "Burst Decay", type: float, min: 0.05, max: 2.0, default: 0.45, group: "Master" }
+  # RISING-EDGE trigger, deliberately `bool` and NOT `type: button`.
+  #
+  # The first cut of this module made burst click-only, which was wrong twice
+  # over: a performance console must be able to fire a burst from an OSC message
+  # or a Conductor cue, not only from a mouse; and 3B established there is no MCP
+  # route to click inside a module preview, so click-only made criterion 2
+  # unprovable without a human.
+  #
+  # A bool edge gets all of that back -- expressions, OSC, cues, and automated
+  # proof -- while avoiding the `type: button` latch entirely, because the shader
+  # never reads a button global; it compares this frame's bool against the
+  # last-seen one held in the ui buffer.
+  - { name: burst_trigger, display: "Burst Trigger", type: bool, default: false, group: "Master" }
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Master" }
 
   - { name: lfo1_speed, display: "Speed", type: float, min: 0.05, max: 4.0, default: 1.50, group: "01 Prompt" }
   - { name: lfo1_amp, display: "Amplitude", type: float, min: 0.0, max: 1.0, default: 1.0, group: "01 Prompt" }
@@ -30,67 +101,51 @@ parameters:
   - { name: lfo4_amp, display: "Amplitude", type: float, min: 0.0, max: 1.0, default: 0.50, group: "04 Pulse" }
   - { name: lfo4_shape, display: "Shape", type: float, min: 0.0, max: 3.0, default: 3.0, group: "04 Pulse" }
 
-viewport:
-  hint: "Reference task-specific modulation desk: four semantic lanes, live waveforms, shape banks, meters, XY bias, mute, and burst."
-  # ui-label: title = MOTION CONTROL DESK
-  # ui-label: subtitle = FOUR-LANE MODULATION FIELD
-  # ui-label: prompt = PROMPT
-  # ui-label: energy = ENERGY
-  # ui-label: camera = CAMERA
-  # ui-label: pulse = PULSE
-  # ui-label: rate = RATE
-  # ui-label: amp = AMP
-  # ui-label: shape = SHAPE
-  # ui-label: bias = MOTION BIAS
-  # ui-label: burst = BURST
-  # ui-label: muted = MUTED
-  # ui-label: live = LIVE
-  controls:
-    - { id: master_rate, kind: slider, param: master_rate, rect: [0.600, 0.080, 0.820, 0.145], label: "Master Rate" }
-    - { id: mute, kind: toggle, param: mute, rect: [0.840, 0.080, 0.950, 0.145], label: "Mute" }
-    - { id: motion_bias, kind: xypad, param: motion_bias, rect: [0.800, 0.280, 0.950, 0.485], label: "Motion Bias" }
-    - { id: burst, kind: button, param: burst, rect: [0.800, 0.535, 0.950, 0.600], label: "Burst" }
-    - { id: lfo1_speed, kind: slider, param: lfo1_speed, rect: [0.535, 0.235, 0.620, 0.330], label: "Prompt Rate" }
-    - { id: lfo1_amp, kind: slider, param: lfo1_amp, rect: [0.640, 0.235, 0.725, 0.330], label: "Prompt Amplitude" }
-    - { id: lfo1_shape, kind: slider, param: lfo1_shape, rect: [0.135, 0.305, 0.505, 0.365], label: "Prompt Shape" }
-    - { id: lfo2_speed, kind: slider, param: lfo2_speed, rect: [0.535, 0.425, 0.620, 0.520], label: "Energy Rate" }
-    - { id: lfo2_amp, kind: slider, param: lfo2_amp, rect: [0.640, 0.425, 0.725, 0.520], label: "Energy Amplitude" }
-    - { id: lfo2_shape, kind: slider, param: lfo2_shape, rect: [0.135, 0.495, 0.505, 0.555], label: "Energy Shape" }
-    - { id: lfo3_speed, kind: slider, param: lfo3_speed, rect: [0.535, 0.615, 0.620, 0.710], label: "Camera Rate" }
-    - { id: lfo3_amp, kind: slider, param: lfo3_amp, rect: [0.640, 0.615, 0.725, 0.710], label: "Camera Amplitude" }
-    - { id: lfo3_shape, kind: slider, param: lfo3_shape, rect: [0.135, 0.685, 0.505, 0.745], label: "Camera Shape" }
-    - { id: lfo4_speed, kind: slider, param: lfo4_speed, rect: [0.535, 0.805, 0.620, 0.900], label: "Pulse Rate" }
-    - { id: lfo4_amp, kind: slider, param: lfo4_amp, rect: [0.640, 0.805, 0.725, 0.900], label: "Pulse Amplitude" }
-    - { id: lfo4_shape, kind: slider, param: lfo4_shape, rect: [0.135, 0.875, 0.505, 0.935], label: "Pulse Shape" }
-
 buffers:
-  - { name: lfo_buf, structured: true, element_size: 32, element_count: 1 }
+  # [0] = (burst_env, last_fire_time, fire_count, magic)
+  - { name: ui, structured: true, element_size: 16, element_count: 1, persistent: true }
+  - { name: lfo, structured: true, element_size: 32, element_count: 1, persistent: false }
 
 passes:
+  - name: events
+    shader: events.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ui"
+
   - name: compute
     shader: lfo_compute.hlsl
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 1
     thread_group_y: 1
-    output: "buffer:lfo_buf"
-  - name: display
-    shader: lfo_display.hlsl
+    inputs:
+      - { slot: 0, source: "buffer:ui" }
+    output: "buffer:lfo"
+
+  - name: render
+    shader: render.hlsl
     target: cs_5_0
+    format: RGBA8
     time_dependent: true
     inputs:
-      - { slot: 0, source: "buffer:lfo_buf" }
+      - { slot: 0, source: "buffer:lfo" }
+      - { slot: 1, source: "buffer:ui" }
     output: output
 
 outputs:
-  - { name: "Motion Console", pass: display }
+  - { name: "Motion Console", pass: render }
 
 control_outputs:
-  - { name: lfo1, buffer: lfo_buf, element: 0, field_offset: 0, description: "Prompt-position modulation (0-1)" }
-  - { name: lfo2, buffer: lfo_buf, element: 0, field_offset: 4, description: "Motion-energy modulation (0-1)" }
-  - { name: lfo3, buffer: lfo_buf, element: 0, field_offset: 8, description: "Camera-drift modulation (0-1)" }
-  - { name: lfo4, buffer: lfo_buf, element: 0, field_offset: 12, description: "Rhythmic pulse modulation (0-1)" }
-  - { name: bias_x, buffer: lfo_buf, element: 0, field_offset: 16, description: "Horizontal motion bias (0-1)" }
-  - { name: bias_y, buffer: lfo_buf, element: 0, field_offset: 20, description: "Vertical motion bias (0-1)" }
-  - { name: energy, buffer: lfo_buf, element: 0, field_offset: 24, description: "Combined modulation energy (0-1)" }
-  - { name: pulse, buffer: lfo_buf, element: 0, field_offset: 28, description: "Fast pulse lane (0-1)" }
+  - { name: lfo1, buffer: lfo, element: 0, field_offset: 0, description: "Prompt-position modulation (0-1)" }
+  - { name: lfo2, buffer: lfo, element: 0, field_offset: 4, description: "Motion-energy modulation (0-1)" }
+  - { name: lfo3, buffer: lfo, element: 0, field_offset: 8, description: "Camera-drift modulation (0-1)" }
+  - { name: lfo4, buffer: lfo, element: 0, field_offset: 12, description: "Rhythmic pulse modulation (0-1)" }
+  - { name: bias_x, buffer: lfo, element: 0, field_offset: 16, description: "Horizontal motion bias (0-1)" }
+  - { name: bias_y, buffer: lfo, element: 0, field_offset: 20, description: "Vertical motion bias, up = more (0-1)" }
+  - { name: energy, buffer: lfo, element: 0, field_offset: 24, description: "Combined modulation energy (0-1)" }
+  - { name: pulse, buffer: lfo, element: 0, field_offset: 28, description: "Pulse lane with burst envelope (0-1)" }
+  - { name: burst_env, buffer: ui, element: 0, field_offset: 0, description: "Burst envelope, decays to 0 (0-1)" }
+  - { name: burst_fires, buffer: ui, element: 0, field_offset: 8, description: "Burst fire count since load" }

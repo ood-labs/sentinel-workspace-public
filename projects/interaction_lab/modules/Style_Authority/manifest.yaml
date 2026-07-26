@@ -1,0 +1,137 @@
+name: "Style Authority"
+version: "1.0"
+mode: generator
+# Fallback extent for a hidden or not-yet-sized panel, and the resolution the
+# forced-extent layout sweep proves against.
+resolution: [1280, 720]
+
+# FULL-BLEED PANEL, per phase doc Amendment 3, which supersedes 3A's Amendment 1.
+#
+# This file previously carried a comment insisting on NO panel block, on the
+# grounds that Amendment 1 required a canonical fixed extent everywhere. That
+# amendment mistook the symptom for the cause: the old lab stations broke at odd
+# extents because their layouts were hard-coded to one design size, not because
+# they followed the dock. A fixed extent hid the bug.
+#
+# Style Authority is a live theme source and control reference -- it IS an
+# interface, with no program image to letterbox -- so ui-authoring.md:136 applies
+# and it takes the whole dock. Its layout already derives from the host's own
+# control rects and the published pixel metrics; the remaining fix was the text
+# scale, which came from height alone and now comes from min(W/1280, H/720).
+
+panel:
+  mode: canvas
+  output: "Style Authority"
+  resolution: follow_panel
+#
+# The TYPE AND LAYOUT values are numeric shaping and stay in Properties, per
+# CLAUDE.md -- an authored canvas duplicating those sliders would add nothing.
+# But the pad, rail, toggle and bank are DRAWN as controls, and at the 3B taste
+# checkpoint the operator tried to click them and nothing happened. Drawing
+# something that looks like a control and ignores the pointer is the
+# "decorative controls merely to make a composition appear interactive" that
+# CLAUDE.md forbids, so all four are now real. Direct manipulation for the
+# spatial and selection controls; Properties for the exact numbers.
+#
+# HOST-OWNED CONTROLS, not a hand-rolled event pass.
+#
+# The first interactive version decoded the raw event stream itself into a
+# persistent buffer. It worked, and it was the wrong architecture: a raw
+# persistent buffer gets no undo, no project save/restore, no presets, no OSC,
+# and no expressions, because the values were not parameters. It also re-picked
+# the drag target on every event, which `ui-authoring.md:99` warns against --
+# a fast drag leaving the pad rect silently dropped the edit.
+#
+# `viewport.controls` binds a normalized hit region to an ORDINARY PARAMETER and
+# the host owns capture, live preview, and commit. One drag becomes one undo
+# entry. Everything a parameter already gets -- Properties row, reset, range
+# editing, OSC, expressions, presets, project serialization -- comes for free.
+#
+# Rects live here and are compiled into _ui.generated.hlsli by
+# `tools/module-ui.ps1 generate`; the renderer draws from those same constants,
+# so the hit region and the drawn control cannot disagree. `validate` fails if
+# the generated file goes stale.
+#
+# Consequence, deliberate: the four control rects are DECLARED, not derived from
+# control_height/control_gap. Those metrics are now purely values this station
+# publishes for the others to consume, which is its actual job.
+viewport:
+  hint: "Drag the pad, drag the rail, click the toggle, pick a bank cell"
+  # No `interactions:` line. `controls` is a SIBLING block, not an interaction
+  # kind -- the valid kinds are mouse, pan_zoom, camera, events and selection.
+  # Listing it there fails the manifest parse.
+  controls:
+    - { id: pad,    kind: xypad,  param: demo_pad,    rect: [0.015625, 0.120833, 0.559375, 0.315278], label: "PAD" }
+    - { id: rail,   kind: slider, param: demo_value,  rect: [0.015625, 0.341667, 0.520313, 0.388889], label: "RAIL" }
+    - { id: toggle, kind: toggle, param: demo_toggle, rect: [0.015625, 0.415278, 0.073438, 0.462500], label: "STATE" }
+    - { id: bank,   kind: slider, param: demo_bank,   rect: [0.092188, 0.415278, 0.559375, 0.462500], label: "BANK" }
+
+parameters:
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Theme" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.2, max: 1.6, default: 1.0, group: "Theme" }
+
+  - { name: title_scale, display: "Title Scale", type: float, min: 1.0, max: 4.0, default: 2.0, group: "Typography" }
+  - { name: section_scale, display: "Section Scale", type: float, min: 1.0, max: 3.0, default: 1.0, group: "Typography" }
+  - { name: body_scale, display: "Body Scale", type: float, min: 1.0, max: 3.0, default: 1.0, group: "Typography" }
+
+  - { name: outer_padding, display: "Outer Padding", type: float, min: 4.0, max: 48.0, default: 20.0, group: "Layout" }
+  - { name: section_gap, display: "Section Gap", type: float, min: 2.0, max: 40.0, default: 14.0, group: "Layout" }
+  - { name: control_height, display: "Control Height", type: float, min: 32.0, max: 64.0, default: 34.0, group: "Layout" }
+  - { name: control_gap, display: "Control Gap", type: float, min: 2.0, max: 32.0, default: 8.0, group: "Layout" }
+
+  - { name: demo_value, display: "Specimen Value", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Specimen" }
+  - { name: demo_pad, display: "Specimen Pad", type: point2D, min: [0, 0], max: [1, 1], default: [0.34, 0.68], group: "Specimen" }
+  - { name: demo_toggle, display: "Specimen Toggle", type: bool, default: true, group: "Specimen" }
+  - { name: demo_bank, display: "Specimen Bank", type: int, min: 0, max: 3, default: 2, group: "Specimen" }
+
+buffers:
+  - { name: theme, structured: true, element_size: 16, element_count: 4, persistent: false }
+
+passes:
+  # No events pass. The host writes the parameters; this pass just publishes
+  # them. Deleting the hand-rolled hit-testing IS the improvement.
+  - name: state
+    shader: state.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:theme"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:theme" }
+    output: output
+
+control_outputs:
+  - { name: title_scale, buffer: theme, element: 0, field_offset: 0, description: "Published title type scale" }
+  - { name: section_scale, buffer: theme, element: 0, field_offset: 4, description: "Published section type scale" }
+  - { name: body_scale, buffer: theme, element: 0, field_offset: 8, description: "Published body type scale" }
+  - { name: exposure, buffer: theme, element: 0, field_offset: 12, description: "Published non-accent level exposure" }
+  - { name: outer_padding, buffer: theme, element: 1, field_offset: 0, description: "Published outer padding, px" }
+  - { name: section_gap, buffer: theme, element: 1, field_offset: 4, description: "Published section gap, px" }
+  - { name: control_height, buffer: theme, element: 1, field_offset: 8, description: "Published control height, px" }
+  - { name: control_gap, buffer: theme, element: 1, field_offset: 12, description: "Published control gap, px" }
+  - { name: accent_r, buffer: theme, element: 2, field_offset: 0, description: "Published accent red" }
+  - { name: accent_g, buffer: theme, element: 2, field_offset: 4, description: "Published accent green" }
+  - { name: accent_b, buffer: theme, element: 2, field_offset: 8, description: "Published accent blue" }
+  - { name: specimen_value, buffer: theme, element: 2, field_offset: 12, description: "Specimen scalar" }
+  - { name: pad_x, buffer: theme, element: 3, field_offset: 0, description: "Specimen pad X" }
+  - { name: pad_y, buffer: theme, element: 3, field_offset: 4, description: "Specimen pad Y, up = more" }
+  - { name: toggle, buffer: theme, element: 3, field_offset: 8, description: "Specimen toggle, live" }
+  - { name: bank, buffer: theme, element: 3, field_offset: 12, description: "Specimen bank selection, live" }
+
+data_outputs:
+  - name: "Theme"
+    buffer: theme
+    schema:
+      - { name: a, type: float }
+      - { name: b, type: float }
+      - { name: c, type: float }
+      - { name: d, type: float }
+
+outputs:
+  - { name: "Style Authority", pass: render }

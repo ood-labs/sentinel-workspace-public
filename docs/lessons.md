@@ -334,3 +334,137 @@ files). Verify the bundle compiles standalone before treating it as portable.
 **Frequency**: recurring (any bundled show using shared includes)
 
 **Discovered**: 2026-07-05
+
+## 2026-07-26 — A `follow_panel` layout must be authored for arbitrary extents, and one defect class causes most of the failures
+
+**Symptoms**: Six separate layout bugs across three rebuilt stations, all the same shape — a caption
+printed straight through the control above it, a title crossing a lane band, a label landing on a
+neighbouring plate. Each appeared only at one particular panel size.
+
+**Cause**: A caption is a fixed number of PIXELS tall sitting in a NORMALIZED gap. The gap shrinks
+with the panel; the caption does not. Everything looks right at the extent you authored at.
+
+**Fix**: Give every station a `capFits(gapPx, scale)` helper and **drop** any label whose gap cannot
+hold it, rather than drawing it. Demand real clearance, not a coincidence: 12px for an 11px glyph
+run left a title sitting one pixel off a frame; 15px is clearance. Derive text scale from
+`min(W/1280, H/720)` — height alone picks 2x on a canvas only 1.25x bigger, and puts giant glyphs in
+a wide, short dock. Related: to test a forced extent you need a throwaway node, because an open
+panel owns its module's render size and editing `resolution:` then reloading does nothing.
+
+**Frequency**: recurring (every `follow_panel` module)
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 — `type: button` parameters are a dead end for anything that must be recalled
+
+**Symptoms**: A `type: button` parameter global reads as a permanent `1.0` once fired and survives
+`force_reload`. Separately, `expose_scene_group_parameter` refuses them outright:
+`Error: Button parameters cannot be exposed`.
+
+**Cause**: The button global is a latch, not an impulse, and a Scene Group control surface is built
+from ordinary parameter rows.
+
+**Fix**: Never drive an action from a `type: button` parameter. Use a `bool` read as a rising edge,
+or an `int` on a bank for anything that is really a mode. Those undo, preset, save with the project,
+take OSC and expose on a group. Where a module draws its own clickable plate, read that control's
+`down` bit from the interaction-flags array instead of the parameter. A mode backed by an ordinary
+`int` also sidesteps the latch entirely.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 — In a cyclic pass graph, snapshot-for-undo on the command frame records the wrong state
+
+**Symptoms**: Undo fires — the command is observably emitted — and nothing moves.
+
+**Cause**: `snapshot` reads the durable buffer and `update` writes it, while `update` reads the
+snapshot and `snapshot` writes it. The scheduler runs `update` first, so a snapshot taken on the
+command frame captures the state AFTER the edit. Undo then restores the document to where it
+already is. A drag-only editor never exposes this, because it snapshots at drag-begin where pre and
+post happen to be equal; the accident does not survive a discrete edit like "delete" or "close".
+
+**Fix**: Arm on one cook, execute on the next, and snapshot on the arm cook — which mutates nothing,
+so it is order-independent by construction rather than by scheduler luck. Second, related trap: if
+undo preserves a whole flags word to protect the selection, any document state packed into those
+same flags becomes un-undoable. Preserve only the selection bit.
+
+**Frequency**: recurring (any module with a feedback pass cycle and undo)
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 — `sentinel_graph action=profile` is CPU wall-clock; per-node numbers track the active panel, not drawing cost
+
+**Symptoms**: A 2D UI station reported 0.58 ms early in a session and 8.7 ms later with no code
+change. Disabling roughly forty percent of its drawing changed the number by nothing. Closing its
+floating window changed nothing either.
+
+**Cause**: It is a CPU wall-clock profiler for graph triage, exactly as documented. For a
+`follow_panel` canvas the dominant term follows whichever station currently owns the active panel.
+
+**Fix**: Use the profile to find a node that has fallen over, not to tune a shader. Before
+attributing cost to a code path, bisect by disabling that path and re-measuring — and never quote a
+per-node figure without saying what extent and panel state it was measured under. A profile taken
+while nodes report `framesProcessed = 0` is not a measurement; confirm frames are climbing across
+the sample window.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 — A "live source" node must consume its own published values
+
+**Symptoms**: A station whose whole purpose was publishing theme metrics had a control that moved
+4 pixels. The value was published, printed in its own readout table, and correct everywhere it was
+displayed.
+
+**Cause**: The metric was never passed into the layout function. Nothing was wrong with the
+publishing path, which is exactly why it survived review — the readout proved the value existed,
+not that anything used it.
+
+**Fix**: For any node claiming to be a source of truth, assert that changing each published value
+changes the node's own render by a substantial pixel count. A readback proves a value exists; only
+a render diff proves it is consumed. Watch for quantization masking this too: integer glyph scales
+mean `1.8` renders identically to `1.0`, so test at values that must cross a step.
+
+**Frequency**: recurring (any parameter-publishing module)
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 — Sphere tracing with a fixed step floor makes overshooting rays miss forever
+
+**Symptoms**: A scatter of single black pixels, one near the centre of every raymarched object —
+precisely where the surface faces the camera dead-on.
+
+**Cause**: `if (abs(d) < 0.0018)` paired with `travel += max(d, 0.004)`. A ray that overshoots lands
+inside the surface at `d = -0.004`, the floor keeps pushing it deeper, `abs(d)` grows, and the hit
+test never fires again.
+
+**Fix**: Scale the hit epsilon with distance and tie the step floor to it, and test `d < eps` rather
+than `abs(d) < eps` so crossing the surface counts as a hit. Detect it by counting near-black pixels
+whose four neighbours are all lit, rather than by eye. Related palette trap: an additive coloured
+rim on an already-lit body clips the brightest channel first and drifts the hue — blend toward the
+colour instead of adding it.
+
+**Frequency**: recurring (any SDF raymarcher)
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 — `bundle_modules` never reuses an existing bundled directory
+
+**Symptoms**: Re-saving a bundled project produces `Motion_Console_1`, `Spline_Output_1`, and on the
+next save `_2`, while the `.sentinel` points at the newest suffix and the earlier folders become
+orphans.
+
+**Cause**: Each save copies module folders in fresh and de-duplicates by renaming rather than
+overwriting.
+
+**Fix**: Delete every bundled station directory (keeping `_shared/`) before a re-save, then save
+once. Verify afterwards that the `project_dir` values in the saved file are relative and that the
+directory list matches the node list exactly. Note `_shared/` is still not copied by the bundler —
+see the 2026-07-05 entry — so check its contents are current against the workspace copy before
+treating the bundle as portable.
+
+**Frequency**: recurring (every re-save of a bundled show)
+
+**Discovered**: 2026-07-26

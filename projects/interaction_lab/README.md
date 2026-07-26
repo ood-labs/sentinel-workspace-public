@@ -1,99 +1,189 @@
 # Interaction Lab
 
-Interaction Lab is a bundled Module-only example project for authored viewport tools. It combines a reusable monochrome scientific UI gallery, a live UI style tuner, a font-style sampler, a tightly tailored four-lane motion console, a GPU spline editor, a downstream spline renderer, and a multi-object 3D transform gizmo.
+Interaction Lab is a bundled Module-only example project for authored viewport tools. It is four
+stations, each a full-panel authored interface that follows its dock, plus one downstream renderer
+that exists to prove a data contract.
 
-Load `interaction_lab.sentinel` in Sentinel. Each example is boxed and labeled in the graph; double-click a Module node to use its viewport.
+Load `interaction_lab.sentinel` in Sentinel. Each station is boxed and labeled in the graph;
+double-click a Module node to use its viewport.
 
-The graph is organized as four independent, flat Scene Group stations:
+| Scene Group | Station | What it is for |
+| --- | --- | --- |
+| `01 - SPLINE DESK` | `Spline_Desk`, `Spline_Output` | Direct point/handle editing, and the data contract that survives a rebuild |
+| `02 - GIZMO DESK` | `Gizmo_Desk` | Host-owned selection and a 3D transform gizmo over lit geometry |
+| `03 - MOTION CONSOLE` | `Motion_Console` | A compact interface designed around one operator workflow |
+| `04 - STYLE AUTHORITY` | `Style_Authority` | The live theme source: every v3 primitive drawn at the published values |
 
-- `01 - SCIENTIFIC UI + TYPE SYSTEM`
-- `02 - SPLINE EDITOR + PNODE OUTPUT`
-- `03 - 3D TRANSFORM GIZMO`
-- `04 - TAILORED MOTION CONSOLE`
+Scene Groups are flat, never nested, and control-only: the lab is a tool and data-flow reference,
+so it has no Group Output endpoint. Each group exposes five to seven curated controls rather than
+mirroring its node's internals.
 
-The groups save `Reference UI`, `Default Sweep`, `Object Study`, and `Motion Reference`. They are intentionally control-only: Interaction Lab is a tool and data-flow reference, so it has no Group Output endpoint. Scene Groups are never nested.
+## The v3 language
 
-## Tailored Motion Console
+Every station is built on `_shared/ui/sui3_*.hlsli` and follows the same rules. They are worth
+reading as a set, because each one is a decision that was measured rather than assumed.
 
-`Motion_Console` is the canonical reference for a compact interface designed around one operator workflow rather than a generic dashboard template. Its four semantic lanes—Prompt, Energy, Camera, and Pulse—place live waveforms, numeric state, rate, amplitude, and shape selection together. The master strip, motion-bias XY pad, burst, mute, and output meters occupy a narrow side rail because they affect or summarize the whole modulation system.
+**Full-panel, extent-driven.** Every station declares
+`panel: { mode: canvas, output: <name>, resolution: follow_panel }`, so the render size is whatever
+the dock gives it. That means no layout may assume an extent. Geometry is proportional, strokes and
+glyphs are in pixels, and text scale steps on integers derived from `min(W/1280, H/720)` — the
+smaller axis ratio, because height alone puts giant glyphs in a wide, short dock. The root
+`resolution:` remains as a fallback for a hidden or unsized panel.
 
-The reusable lesson is not “make every UI monochrome” or “always use four lanes.” It is that every region earns its space by changing the system or explaining live state. New interfaces should reuse the shared UI primitives while deriving their own grouping, labels, ranges, feedback, and density from the requested tool.
+**Captions are dropped, never overlapped.** A caption is a fixed pixel height sitting in a
+normalized gap, so the gap shrinks with the panel while the caption does not. Every station has a
+`*CapFits`/`*LabelFits` helper, and a label that cannot fit its gap is not drawn. This single defect
+class — a fixed-pixel label placed in a normalized gap — accounted for six separate layout bugs
+across the rebuild.
 
-Control outputs publish the four LFO lanes, XY bias, combined energy, and pulse under the normal Module control-output paths so the console can drive other examples through expressions.
+**The host owns the hit rects.** Control rectangles come from `_ui.generated.hlsli`, compiled from
+the manifest's `viewport.controls` block by `tools/module-ui.ps1 generate`. The shader draws from
+the same numbers the host hit-tests against, so a click cannot land off a control by construction.
+`tools/module-ui.ps1 validate` fails if the generated file drifts from the manifest.
 
-## Scientific UI Kit
+**Amber means something.** The accent marks the active selection and established live values, never
+hover and never decoration. The only other chroma in the lab is red/green/blue on the gizmo's axis
+handles, where the colour carries direction. A hue audit of Gizmo Desk's output finds 0.23%
+chromatic pixels, all amber or axis, with the remaining 63 pixels being antialiasing blends between
+two palette colours.
 
-`UI_Kit` demonstrates a slider, momentary button, toggle, XY pad, readouts, and Scientifica typography. Its reusable source is `_shared/ui/scientific_ui.hlsli` inside the bundled modules directory. The shared chrome is deliberately black, white, and neutral gray. Every control has a constant symmetric 1.5-pixel inset frame. The Pulse button reads only its own pressed bit and flashes only its own face while held; slider fill, toggle value, and selected tool mode show their own meaningful state. None of those visuals depend on rollover flags.
+**Actions are ordinary parameters, not buttons.** No station drives an action from a `type: button`
+parameter global, because that global is a one-way latch that survives `force_reload` — and because
+button parameters **cannot be exposed on a Scene Group at all**. Every action is either a bool read
+as a rising edge or an `int` on a bank, so it undoes, presets, saves with the project, and takes
+OSC. Where a station renders its own clickable plate, the shader reads that control's `down` bit
+from the interaction flags rather than the parameter.
 
-All UI text is built from Scientifica's regular glyph data. Titles get a small synthetic edge weight from the same regular face instead of switching to the bold font. `Font_Sampler` shows Regular, Light Edge, Clean Edge, and Full Edge side by side; `Custom Edge` can be dragged from 0 to 1 for finer comparison. The current Interaction Lab recommendation is Clean Edge at `0.28`.
+**Numbers are attached to what they describe.** Every station prints its live values next to the
+control that produces them, read back from the same buffer the control outputs are taken from, so a
+readout cannot drift from what the graph receives.
 
-The host owns normalized hit rectangles and writes ordinary Module parameters. HLSL owns the complete visual treatment. Resize the output freely: the layout is authored in a 960 x 540 design space and follows the Module output.
+## Spline Desk
 
-`UI_Style_Tuner` exposes the title, section, and body typography roles plus the shared padding, section gap, control height, and control gap. Its saved values are the defaults in `_shared/ui/sui_typography.hlsli` and `sui_layout.hlsli`; adjust them there only after reviewing the tuner at several panel sizes.
+`Spline_Desk` edits knots directly: anchors, both handles, tangent continuity, per-lane selection,
+marquee, and undo. Selection is amber brackets on the anchor; tangent mode is the terminal's
+*shape* — free is an open ring, aligned is a ring plus bar, mirrored is a filled disc — so the mode
+is readable without the label.
 
-On Sentinel 0.5.32 or newer, UI Modules can opt into a full-frame authored panel:
+Controls: `V`/SELECT and `P`/PEN choose the tool; drag an anchor to move it with its handles as a
+rigid set, or a handle to shape the segment; drag empty space to marquee-select, Shift adds and
+Control subtracts; `T` cycles free/aligned/mirrored; `O` toggles the path closed; Backspace deletes
+the selection; Enter advances through eight lanes; Escape cancels; `Ctrl+Z` undoes.
 
-```yaml
-panel:
-  mode: canvas
-  output: UI
-  resolution: follow_panel
-```
+Data outputs — `Spline Headers`, `Spline Knots`, `Sampled Path` (512 PNode-compatible records),
+`Editor Selection` — are unchanged from the previous editor.
 
-Canvas keeps the dock tab and removes Sentinel chrome below it. `follow_panel` independently makes the real Module resolution track the panel content. The graph and View menus retain a Standard/Canvas override for recovery. See `knowledge/ui-authoring.md` for the complete contract and proof workflow.
+`Spline_Output` is deliberately unchanged from before the rebuild and is byte-identical to
+`modules/spline_render`. It consumes the desk's `Sampled Path` port and is the proof the contract
+survived: a downstream consumer written against the old editor still works against the new one.
 
-## Spline Editor
+Undo is worth understanding before you copy it. An edit that undo must reverse is **armed on one
+cook and executed on the next**, and the snapshot is taken on the arm cook. This is not caution: the
+pass graph is a cycle — `snapshot` reads the knots and `update` writes them, while `update` reads
+the snapshot and `snapshot` writes it — and the scheduler runs `update` first. A snapshot taken on
+the command frame therefore records the state *after* the edit, and undo restores the desk to where
+it already is. The arm cook mutates nothing, so it is order-independent by construction.
 
-`Spline_Editor` starts with a four-knot cubic path and publishes four typed data outputs. Its `Sampled Path` output is already linked to `Spline_Output`, showing how an authored editing tool can feed another Module.
+Undo also restores everything except the selection bit. Selection is view state; a closed path is
+document state. Keeping the whole flags word to protect the selection is what made closing a path
+the one edit undo could never reverse.
 
-Controls:
+## Gizmo Desk
 
-- `V` or SELECT: selection tool.
-- `P` or PEN: pen tool; click the canvas to append a knot.
-- Drag an anchor to move it. Its handles follow as a rigid set.
-- Drag either handle to shape the cubic segment.
-- Drag empty canvas space to marquee-select. Shift adds and Control subtracts.
-- `T` or TANGENT cycles the selected knot between free, aligned, and mirrored behavior.
-- `O` or CLOSE toggles the active path between open and closed.
-- Backspace or DELETE removes selected knots.
-- Enter advances to the next of eight spline lanes.
-- Escape cancels an active edit. `Ctrl+Z` undoes and `Ctrl+Shift+Z` redoes committed drags.
+`Gizmo_Desk` places twelve selectable objects — sphere, box, torus, capsule — on a lit ground plane
+and transforms them with a translate/rotate/scale gizmo. Selection is host-owned through a
+`ray_query` provider, so `sentinel_viewport action=pick` drives the same path a real click does and
+reports `source: User`; shift extends. Multi-selection transforms use one shared pivot, so two
+selected objects orbit together while each keeps its own orientation.
 
-Data outputs:
+Controls: click to select, Shift-click to extend; `1`/`2`/`3` choose move, rotate and scale; `4`
+switches world/local; drag an axis arrow, a rotation ring, or the amber centre for uniform scale;
+Escape cancels. Handle acquisition happens on mouse-down and is held until commit or cancel, so a
+fast drag or a pause mid-gesture cannot lose the handle.
 
-- `Spline Headers`: first knot, count, closed flag, and active flag for eight paths.
-- `Spline Knots`: anchors, handles, ids, tangent modes, selection flags, and activity.
-- `Sampled Path`: 512 PNode-compatible records for downstream renderers.
-- `Editor Selection`: compact selection and tangent metadata.
+The objects are **raymarched lit solids, not screen-space outlines**. A transform gizmo can only be
+judged against shaded geometry, because a rotation and a non-uniform scale are both invisible on a
+flat silhouette. Shading is strictly greyscale so the axis colours stay the only chroma.
 
-The durable authored state is `spline_knots`; transient interaction, snapshots, headers, samples, and selection records are separate passes. Selection is intentionally local to the editor because knots are sub-object records, while drag edits still participate in Sentinel's viewport transaction and undo system.
+Two raymarching details generalize. The hit epsilon scales with distance and the step floor is tied
+to it, testing `d < eps` rather than `abs(d) < eps`: with a fixed floor, a ray that overshoots the
+surface lands inside at a negative distance and marches inward forever, which prints a scatter of
+black pixels exactly where a surface faces the camera dead-on. And the selection rim is *blended*
+toward amber rather than added — an additive rim on an already-lit body clips the red channel first
+and drifts the hue to yellow.
 
-## 3D Transform Gizmo Lab
+Numeric orbit (`do_orbit` / `orbit_axis` / `orbit_degrees`) applies an exact rotation about the same
+shared pivot the drag uses. Every 3D tool has numeric entry beside its gizmo, and it is also the
+only way to transform a selection from OSC, a Conductor cue, or an expression.
 
-`Gizmo_Lab` renders twelve selectable SDF objects and publishes their durable transforms. Selection uses Module-provided ray-query descriptors and the host's standard multiple-selection state.
+Data outputs: `Scene Objects` (durable transforms for sixteen slots) and `Gizmo State`, plus the
+declared viewport descriptors and pick result through the standard selection provider.
 
-Controls:
+## Motion Console
 
-- Click an object to select it; Shift-click adds or removes objects.
-- `1` or MOVE selects translation. Drag an axis arrow.
-- In MOVE mode, the three small two-color squares are the visible XY, YZ, and ZX plane handles. A visible axis line always wins when projected handles overlap.
-- `2` or ROT selects rotation. Drag a colored screen-space ring.
-- `3` or SCALE selects scaling. Drag an axis or the amber center for uniform scale.
-- `4` or LOCAL switches world/local axes.
-- Escape cancels the active transform. `Ctrl+Z` undoes and `Ctrl+Shift+Z` redoes a committed transform.
+`Motion_Console` is the reference for an interface designed around one operator workflow rather
+than a generic dashboard. Four semantic lanes — Prompt, Energy, Camera, Pulse — place live
+waveform, numeric state, rate, amplitude and shape together. The master strip, bias pad, burst,
+mute and meters sit in a narrow rail because they affect or summarize the whole system.
 
-Multi-selection transforms use the average selected-object pivot. Translation applies one shared delta, rotation orbits every object around the shared pivot while updating its orientation, and scaling expands or contracts both positions and object scale around that pivot. The gizmo is screen-space sized for stable handles at any camera distance. Axis motion follows the camera-projected line that is actually drawn, with fixed screen-space sensitivity so near-view-aligned axes cannot jump. Handle acquisition occurs on mouse-down and remains owned until commit or cancel, including fast pointer motion and pauses while the button is held.
+The reusable lesson is not "make every UI monochrome" or "always use four lanes." It is that every
+region earns its space by changing the system or explaining live state.
 
-The scene, toolbar, and objects use the shared monochrome theme. X/Y/Z handles remain red, green, and blue because those colors carry directional meaning. The blue Z ring uses the corrected screen-space sign, while red X and green Y retain their existing direction.
+The XY bias pad applies the host's Y flip exactly once: the host pad increases downward, and the
+published `bias_y` increases upward, so `pad_y 0.10` publishes `0.900`. If you copy the pad, verify
+that direction rather than assuming it.
 
-Data outputs:
+Control outputs publish the four lanes, XY bias, combined energy, pulse, the burst envelope and a
+burst-fire count, so the console can drive other nodes through expressions.
 
-- `Scene Objects`: durable position, rotation, scale, object id, shape kind, and flags for sixteen slots.
-- `Gizmo State`: mode, world/local state, active handle, pointer state, pivot, and active object.
-- Sentinel also exposes the declared viewport descriptors and pick result through the standard selection provider.
+## Style Authority
+
+`Style_Authority` merges what were three separate stations — a UI kit gallery, a font sampler, and
+a style tuner — into one live specimen sheet. It draws every v3 primitive at the currently
+published theme and prints the exact values leaving the node beside them.
+
+It is a *source*, not a mock-up: the specimens read the same buffer the control outputs are taken
+from. That claim only holds if every published metric actually drives the sheet, which is precisely
+what went wrong once — `body_scale` was published, printed in the readout table, and never passed
+into the layout function at all. If you add a metric here, make the sheet consume it, or it is a
+label rather than a value.
+
+Two honest limits. Glyph scales are integers because the face is a bitmap, so `1.8` renders as `1x`
+while the readout prints `1.80`. And `control_height` is published for downstream use but does not
+resize this station's own controls, because those rects belong to the host — the same property that
+makes clicks land correctly. It is deliberately not on the group's control surface.
+
+All UI text is built from Scientifica's regular glyph data; titles take a small synthetic edge
+weight from the same regular face rather than switching to a bold font.
+
+## Extents
+
+Every station is verified legible at 640x360, 1600x900 and 1920x403 in addition to its live dock
+extent. Testing a forced extent requires a throwaway node: a panel that is open owns its module's
+render size, so editing `resolution:` and reloading does not change it.
+
+One known limit: host control rects are static normalized values, so hit regions scale with the
+panel and fall below the 32px minimum somewhere under 1000px wide. The drawn controls remain
+correct and aligned; they simply become small targets.
+
+## Performance
+
+Five-sample profile of the whole lab: **10.09 ms** mean, against a 14.88 ms ceiling measured on the
+seven-station predecessor.
+
+Read that profile carefully. `sentinel_graph action=profile` is a CPU wall-clock profiler, and the
+dominant per-node number tracks *which station currently owns the active canvas panel*, not how much
+that station draws. Disabling Style Authority's entire primitives grid — roughly forty percent of
+its drawing — changed its number by nothing. Use it to spot a node that has fallen over, not to
+tune a shader.
 
 ## Architecture and scope
 
-Everything in this project is authored content: YAML manifests, HLSL passes, persistent structured buffers, typed data ports, and a `.sentinel` graph. No Sentinel application source, IPC command, native widget, or engine feature was added or changed.
+Everything here is authored content: YAML manifests, HLSL passes, persistent structured buffers,
+typed data ports, and a `.sentinel` graph. No Sentinel application source, IPC command, native
+widget, or engine feature was added or changed.
 
-This is a foundation rather than a full DCC toolset. It does not yet include snapping, numeric transform entry, spline segment insertion, depth-tested gizmo fading, or host-mirrored sub-object selection. Those can be layered on as additional Module passes and controls without changing the application. Captures and machine-generated proof bundles are intentionally excluded from the public project.
+This is a foundation rather than a full DCC toolset. It does not include snapping, spline segment
+insertion, depth-tested gizmo fading, or host-mirrored sub-object selection. Those can be layered on
+as additional Module passes and controls without changing the application. Captures and
+machine-generated proof bundles are intentionally excluded from the public project.
