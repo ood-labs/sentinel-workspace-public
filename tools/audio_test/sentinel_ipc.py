@@ -328,15 +328,50 @@ class AudioRunner:
         }
 
 
+def manifest_defaults(sen: Sentinel, detector_id: str) -> dict:
+    """Every writable numeric parameter's manifest default, from the module dir.
+
+    Read from the manifest on disk rather than the live `default` field so the
+    committed file is the authority and a drifted tree cannot vote. `project_dir`
+    is a string and `gate_level` is expression-driven, so both are skipped.
+    """
+    import yaml
+
+    pdir = sen.get(f"/sentinel/pipelines/{detector_id}/parameters/project_dir")
+    if isinstance(pdir, dict):
+        pdir = pdir.get("value")
+    path = Path(str(pdir)) / "manifest.yaml"
+    if not path.is_file():
+        raise SentinelError(f"{detector_id}: no manifest at {path}")
+
+    man = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    out = {}
+    for p in man.get("parameters") or []:
+        name, dflt = p.get("name"), p.get("default")
+        if name in (None, "project_dir", "gate_level") or dflt is None:
+            continue
+        if isinstance(dflt, (int, float)) and not isinstance(dflt, bool):
+            out[name] = float(dflt)
+    return out
+
+
 def reset_detector(sen: Sentinel, detector_id: str, audio_id: str,
                    mel_slot: int = 2, gate_expr: bool = True,
                    params: dict | None = None, timeout_s: float = 30.0) -> None:
-    """force_reload the detector and put back everything reload drops.
+    """force_reload the detector, force it to manifest defaults, put back what
+    reload drops.
 
-    force_reload drops data-port links, clears ref() drivers and resets params
-    to manifest defaults (docs/lessons.md, 2026-07-08). Video links survive.
-    The harness therefore re-adds the link, re-applies the expression, restores
-    non-default params, and asserts the generation is advancing again.
+    force_reload drops data-port links and clears ref() drivers; video links
+    survive. It does NOT reset parameters to manifest defaults, whatever
+    docs/lessons.md said on 2026-07-08 -- a live `beat_snap` of 0.15 survived a
+    reload with a manifest default of 0.0 and silently scored the whole corpus
+    against a mechanism that ships disabled, dropping mean kick F1 by 0.3 and
+    reading ~103 BPM on every pattern. The table looked like a real regression
+    from the change under test.
+
+    So defaults are now WRITTEN, not assumed. Every scored run starts from the
+    committed manifest plus an explicit `params` override, and nothing a
+    previous experiment left in the tree can reach the numbers.
     """
     sen.call("FORCE_RELOAD", pipeline_id=detector_id)
 
@@ -353,6 +388,11 @@ def reset_detector(sen: Sentinel, detector_id: str, audio_id: str,
 
     sen.call("ADD_LINK", from_entity=audio_id, from_slot=mel_slot,
              to_entity=detector_id, to_slot=0)
+
+    defaults = manifest_defaults(sen, detector_id)
+    if defaults:
+        sen.set_many({f"/sentinel/pipelines/{detector_id}/parameters/{k}": v
+                      for k, v in defaults.items()})
 
     if gate_expr:
         sen.call("SET_EXPRESSION",

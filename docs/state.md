@@ -69,26 +69,43 @@ neither is loosened, and both need a human call:
    byte-identical hats at exactly 9600-sample spacing; no phase information
    exists in it). `sparse_90` and `halftime_shuffle_88` remain off.
 2. **2E2 criterion 3** - CMLc >= 0.75 on steady patterns, AMLc >= 0.85
-   corpus-wide. Actual CMLc 0.00-0.78, AMLc 0.02-0.78.
+   corpus-wide. Actual after the outlier-rejection fix: CMLc 0.00-0.90,
+   AMLc 0.03-0.90. Improved on seven of eleven patterns, still short.
 
 The beat clock itself is sound - intervals regular, no dropped beats, zero
 spacing rejections. What fails is beat PLACEMENT.
 
-**Lead on the continuity failure, found by a post-audit test and left failing
-rather than loosened:** the PLL's period settles 5.6% above the tempo it tracks
-(93.09 vs 88.14 hops on `four_on_floor_128`) while locked and correcting every
-cook. The update is an exponential tracker whose only fixed point is the
-observation, so something else is acting on `period`. A clock running 5.6% slow
-drifts a quarter beat every four or five beats, which is more than the
-continuity tolerance allows. **Chase this before resuming the snapping work.**
+**The PLL period defect is RESOLVED and continuity improved, but not enough.**
+It was never a PLL bug: an exponential tracker converges to the MEAN of its
+input and every summary compared it against the MEDIAN. The comb intermittently
+returns a metrical relative (131.8 hops against a true 88.2, a 3:2 dotted
+quarter, about one cook in six) and those excursions dragged the mean 6% off.
+The tempo loop now rejects outliers instead of averaging them, with a NET
+disagreement counter so rejection cannot become a trap. Four of five patterns
+now converge onto their observation exactly.
+
+Continuity rose on seven of eleven patterns (breakbeat 0.02 -> 0.65, quiet_intro
+0.09 -> 0.60, four_on_floor 0.19 -> 0.44, hats_under_loud_kick 0.78 -> 0.90,
+tempo_ramp 0.71 -> 0.83) with onset F1 unchanged at +0.000 on every lane. It is
+still short of the criterion: four_on_floor 0.44, dense_140 0.08,
+syncopated_funk 0.00 against CMLc >= 0.75. Post-fix table: `scores/2E2fix.json`.
 
 The `beat_snap` onset-anchoring mechanism is implemented and shipped disabled;
 enabling it measured strictly worse even after a gain-scaling bug was fixed.
 
 ## Decisions pending for Phase 2 approval
 
-- Accept the two open gates and approve Phase 2, re-scope them, or authorize
-  further work on the PLL period defect above.
+- Accept the two open gates and approve Phase 2, or re-scope them. The PLL
+  period defect that was the standing lead is now fixed and is no longer a
+  candidate explanation for the remaining continuity shortfall.
+- The harness scored the WRONG DETECTOR for six consecutive full-corpus runs
+  because `score_detector.py --lane-map` defaulted to `lane_map.json`
+  (`pulse_baseline`, the Phase 1 module). The flag is now required, the map is
+  recorded in every written table, and a baseline scored on a different detector
+  is a hard error. No committed table was affected -- `scores/2E2.json`
+  reproduces at +0.000 on every lane -- but any score table produced outside
+  this workspace before that fix should be re-checked for which detector it
+  actually measured.
 - `mu_tempo` ships at 0.2 rather than the phase doc's 0.02, because normalising
   the loop gains to per-beat changed their units. Recorded in the manifest and
   the 2E2 devlog as a Tier 2 adoption; the doc's Tier 2 clause does not name

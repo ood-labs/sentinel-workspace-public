@@ -5,7 +5,7 @@ phase: 2
 subphase: 2E2
 status: complete
 approval: pending
-summary: "PLL beat clock: five structural fixes, criteria 1/2/4 pass, criterion 3 (CMLc/AMLc) fails and is a hard stop"
+summary: "PLL beat clock: structural fixes plus tempo outlier rejection; criteria 1/2/4 pass, criterion 3 (CMLc/AMLc) improves but still fails"
 ---
 
 ## Done
@@ -195,30 +195,123 @@ deficit and carry it, re-scope the criterion, or authorise work on the comb's
 phase estimator itself (a finer theta grid, or anchoring emission to the nearest
 picked onset instead of the accumulator crossing).
 
-**NEW, found by the hardened soak test: the PLL's period does not converge to
-the tempo it is tracking.** On four_on_floor_128 the tempo stage publishes
-88.14 hops (127.6 BPM, correct) while the PLL settles at 93.09 hops (120.8 BPM),
-5.6% longer, with `free_wheeling` at 0.00 for the whole run — so the loop is
-locked and correcting every cook, and still sits away from its own target. The
-update is a plain exponential tracker toward `periodObs`, whose only fixed point
-is `periodObs`, so something else is acting on `period` and I did not find it
-before stopping.
-
-This is the same class of defect as the `tempo.hlsl` period/BPM inconsistency
-fixed earlier in this sub-phase, and it is very likely a direct contributor to
-the criterion 3 failure: a beat clock running 5.6% slow accumulates a quarter of
-a beat of drift every four or five beats, which is more than the continuity
-tolerance allows. **This is the first thing to chase when continuity is picked
-up again**, ahead of the snapping work.
-
-It was not caught earlier because nothing compared the two published tempi. The
-assertion is now in `test_soak.py` and is left FAILING rather than loosened.
+**The "PLL period does not converge" defect is RESOLVED — see the follow-up
+section below.** It was not a PLL bug at all. The entry that stood here reported
+the loop settling 5.6% above its target as unexplained; the explanation is that
+an exponential tracker converges to the MEAN of its input and I had compared it
+against the MEDIAN.
 
 `drop_signal` / `drop_ring` / `beat_cycles` control outputs were added and kept —
 they are what proved no beat was ever being suppressed, which is invisible in any
 summary statistic.
 
+## Follow-up: tempo-loop outlier rejection
+
+The period defect reported above is fixed, and the fix moved continuity
+substantially — but **not far enough to pass criterion 3**.
+
+**The defect was in the observation, not the loop.** An exponential tracker
+converges to the mean of its input; every summary I had written compared it to
+the median. Measured on four_on_floor_128:
+
+```
+beat_period  median  88.16  mean  95.83  min  87.95  max 131.77
+pll_period   median  93.66  mean  93.56
+obs samples: [88.1, 131.8, 88.2, 88.2, 88.2, 131.7, 88.2, 88.2, 88.2, 88.0,
+              88.2, 88.2, 88.2, 131.7, 88.1, 88.1, 88.1]
+```
+
+The PLL's 93.56 tracks the observation's mean of 95.83 almost exactly. It was
+averaging correctly the whole time. The real fault is that the comb
+intermittently returns a metrical RELATIVE instead of the beat — 131.8 hops
+against a true 88.2, a 3:2 dotted quarter, on about one cook in six — and those
+excursions drag the mean 6% away from a period that looked perfect in every
+median-based summary.
+
+**Fix: reject outliers instead of averaging them** (`tempo_reject`, default
+0.18). A 3:2 relative is 50% away and a 2:1 is 100%, so the window rejects every
+metrical neighbour while leaving room for real drift, and it travels with the
+period so a ramp is still tracked normally.
+
+**The counter decays, it does not reset** (`tempo_reacquire_cooks`, default 60,
+counted as NET disagreement). A consecutive-run test turns rejection into a trap:
+the loop needs only one agreeing sample now and then to hold a wrong period
+forever. syncopated_funk_105 did exactly that — parked at 80.3 hops while the
+comb reported 107.2 for the majority of the run, its counter climbing to 146 and
+being knocked to zero before it could ever re-acquire. The threshold also has to
+be reachable on sparse material, where the counter only advances while locked: at
+200, sparse_90 peaked at 102 and stayed frozen on the *previous pattern's*
+period, because `beats` is persistent and a period outlives the pattern that
+produced it.
+
+Period convergence afterwards, PLL median against observed median:
+
+| pattern | observed | PLL | coherence |
+| --- | --- | --- | --- |
+| four_on_floor_128 | 88.19 | 88.31 | 0.996 |
+| dense_140 | 80.14 | 80.15 | 0.660 |
+| syncopated_funk_105 | 107.16 | 107.17 | 0.929 |
+| breakbeat_170 | 65.96 | 66.12 | 0.698 |
+| sparse_90 | 125.52 | 102.80 | 0.389 |
+
+Four of five converge onto their observation. sparse_90 does not, and it is
+already one of the patterns failing 2E1's metrical-level criterion.
+
+**Onset F1 is untouched: +0.000 on every lane of all eleven patterns**
+(`scores/2E2fix.json`), mean kick 0.913 / snare 0.782 / hat 0.969.
+
+**Continuity improved on seven of eleven patterns and criterion 3 still fails:**
+
+| pattern | CMLc before | after |
+| --- | --- | --- |
+| breakbeat_170 | 0.02 | 0.65 |
+| quiet_intro_drop_128 | 0.09 | 0.60 |
+| four_on_floor_128 | 0.19 | 0.44 |
+| hats_under_loud_kick_150 | 0.78 | 0.90 |
+| tempo_ramp_120_132 | 0.71 | 0.83 |
+| kick_snare_coincident_124 [held-out] | 0.02 | 0.67 |
+| dense_140 | 0.03 | 0.08 |
+| syncopated_funk_105 | 0.09 | 0.00 |
+
+Criterion 3 asks CMLc >= 0.75 on steady patterns and AMLc >= 0.85 corpus-wide.
+four_on_floor_128 reaches 0.44, dense_140 0.08, syncopated_funk_105 0.00. **The
+criterion is not met and is not loosened.** Per the standing rail this is the
+second failed attempt at it, so I stopped rather than continue tuning.
+
+The one regression the gate flagged, `sparse_90/bpm +5.73`, is run-to-run noise
+rather than a change in behaviour: three identical runs of that pattern gave
+89.6 BPM (error 0.4, metrical level **ok**), 111.5 (21.5, off) and 117.2 (27.2,
+off). It never locks, so its reported tempo is whatever the argmax last held.
+
+## The measurement that was not a regression
+
+Before the above landed, six consecutive full-corpus runs showed every lane
+collapsing — kick down 0.24, hat down 0.32, BPM reading ~103 on all eleven
+patterns — and survived reverting the change under test, a clean project reload,
+`--no-reset`, and byte-comparing both module copies. It looked like the committed
+table had stopped being reproducible.
+
+**`score_detector.py --lane-map` defaulted to `lane_map.json`, which names
+`pulse_baseline`.** Every one of those runs measured the Phase 1 detector and
+printed the result under a pulse2 subphase heading. The numbers were entirely
+plausible for that detector, which is what made it survive four rounds of
+bisection. The flag is now **required**, the chosen map is recorded in every
+written table, and comparing against a baseline scored on a different detector is
+a hard error rather than a table.
+
+Two real defects fell out of chasing it:
+
+- **`classify_mode` defaulted to Off while the shipped project runs it at 1.**
+  A module whose own default does not reproduce its own published numbers is a
+  trap — scoring from manifest defaults drops snare F1 by 0.33 while kick and hat
+  reproduce at +0.000, which reads as a snare-specific regression. Default is
+  now 1.
+- **`force_reload` does not reset parameters to manifest defaults**, contrary to
+  what `reset_detector` documented. A live `beat_snap` of 0.15, left behind by
+  the earlier snap experiments, survived every reload. `reset_detector` now
+  WRITES the manifest defaults rather than assuming them.
+
 ## Next
 
-Blocked on human checkpoint 2 (criterion 3). 2F — bundled project, README,
-portability — is unblocked and independent.
+Blocked on human checkpoint 2 (criterion 3), with the continuity numbers above
+as the current position rather than the ones this entry originally carried.

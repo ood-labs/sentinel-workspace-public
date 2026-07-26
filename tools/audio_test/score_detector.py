@@ -384,8 +384,17 @@ def main() -> int:
     ap.add_argument("--baseline", help="compare against a committed score table")
     ap.add_argument("--patterns", nargs="*", help="restrict to named patterns")
     ap.add_argument("--detector", help="override detector pipeline id")
-    ap.add_argument("--lane-map", default="lane_map.json",
-                    help="lane/detector config to score against")
+    # REQUIRED, and deliberately without a default. It used to default to
+    # lane_map.json, which names `pulse_baseline` -- so omitting the flag while
+    # scoring pulse2 silently measured the Phase 1 detector and printed the
+    # result under the pulse2 subphase heading. The numbers were plausible
+    # (lower F1, wrong BPM on dense material, near-zero continuity) and read
+    # exactly like a catastrophic regression in the change under test. Two
+    # detectors exist; the caller has to say which one.
+    ap.add_argument("--lane-map", required=True,
+                    help="lane/detector config to score against "
+                         "(lane_map.json = pulse_baseline, "
+                         "lane_map_pulse2.json = pulse2_analyzer)")
     ap.add_argument("--fft-size", default="2048")
     # Committed tables are RAW by design. The ~12 ms analysis latency is a real,
     # measured property of the front end, but subtracting it is a knob, and the
@@ -479,12 +488,23 @@ def main() -> int:
         if not bp.is_absolute():
             bp = HERE / bp
         baseline = json.loads(bp.read_text(encoding="utf-8"))
+        # Comparing two different detectors is never a regression measurement,
+        # and the resulting table is worse than useless: it looks like one.
+        base_det = baseline.get("detector")
+        if base_det and base_det != detector:
+            sys.exit(f"baseline {bp.name} was scored on detector "
+                     f"'{base_det}', this run scored '{detector}'. "
+                     f"Pass the matching --lane-map.")
         print(f"\nversus {bp.name} (corpus {baseline.get('corpus_id')}):\n")
         print_table(results, baseline, lane_names)
 
     table = {
         "subphase": args.subphase,
         "detector": detector,
+        # Recorded so a committed table states which map produced it. A table
+        # carrying only a detector id cannot be checked against the config that
+        # actually selected that detector.
+        "lane_map": args.lane_map,
         "corpus_id": corpus_id,
         "fft_size": args.fft_size,
         "tolerance_ms": cfg["tolerance_ms"],

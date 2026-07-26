@@ -8,6 +8,94 @@ updated: 2026-07-26
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
 
+## 2026-07-26 - A tool that defaults to one of two targets will silently measure the wrong one
+
+**Symptoms**: Six consecutive full-corpus runs showed every lane collapsing
+(kick -0.24, hat -0.32, BPM ~103 on all eleven patterns). It survived reverting
+the change under test, a clean project reload, `--no-reset`, and byte-comparing
+both module copies against the committed sources. It read as the committed score
+table having stopped being reproducible.
+
+**Cause**: `tools/audio_test/score_detector.py` had
+`--lane-map default="lane_map.json"`, and that map names `pulse_baseline` -- the
+Phase 1 detector. Every run measured the wrong module and printed the result
+under a pulse2 subphase heading. The numbers were entirely plausible *for that
+detector*, which is exactly why it survived four rounds of bisection: nothing
+looked corrupt, it just looked worse.
+
+**Fix**: `--lane-map` is now required with no default; the chosen map is written
+into every score table; and comparing against a baseline whose `detector` field
+differs from the current run is a hard error rather than a table.
+
+**This was already known and written down, which is the actual lesson.** The 2C3
+devlog records the same trap, and `sweep_inhibit.py` carries a shouting header
+about it ("LANE MAP IS EXPLICIT AND NOT OPTIONAL"). Both documented the footgun
+and neither removed it, so it fired again and cost six full-corpus runs plus a
+clean project reload. A documented footgun is still a footgun; if the fix is a
+one-line `required=True`, write the fix rather than the warning.
+
+**The transferable part**: when two similar targets exist and a tool picks one by
+default, a wrong answer is indistinguishable from a real result. Before
+bisecting a surprising measurement, confirm WHAT was measured -- the provenance
+fields, not the numbers.
+
+**Frequency**: one-time (fixed), but the class is recurring
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - An exponential tracker converges to the mean; summaries report the median
+
+**Symptoms**: A dual-loop PLL settled at 93.6 hops while the tempo it tracked
+published 88.2 -- 6% slow, while locked and correcting every cook. Reported as
+an unexplained defect, since an exponential tracker's only fixed point is its
+observation.
+
+**Cause**: Both things were true and neither was a bug. The observation's median
+was 88.16 but its **mean was 95.83**: the comb intermittently returned a
+metrical relative (131.8 hops, a 3:2 dotted quarter) on about one cook in six.
+The loop tracked the mean faithfully. Every summary I had written -- and the
+`diag_tempo_stability` output -- reported medians, which are precisely the
+statistic that hides this.
+
+**Fix**: `modules/pulse2_analyzer/pll.hlsl` -- reject observations outside a
+relative window (`tempo_reject`, 0.18) rather than averaging them. Counter
+decays on agreement instead of resetting, or one agreeing sample in a wrong
+period holds the loop there forever (measured: syncopated_funk_105 parked at
+80.3 hops against an observed 107.2, counter climbing to 146 and being knocked
+to zero repeatedly).
+
+**The transferable part**: when a filter's output disagrees with its input,
+compare it against the same statistic the filter computes. A median-vs-mean gap
+IS the finding, not noise around it.
+
+**Frequency**: recurring (any smoothing over a multi-modal estimator)
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - force_reload does not reset module parameters to manifest defaults
+
+**Symptoms**: A live `beat_snap` of 0.15, left behind by an earlier experiment,
+survived every `force_reload` and silently scored a whole corpus against a
+mechanism that ships disabled.
+
+**Cause**: `reset_detector` in `tools/audio_test/sentinel_ipc.py` documented that
+force_reload "resets params to manifest defaults" (attributed to a 2026-07-08
+lesson). It does not. It drops data-port links and clears `ref()` drivers;
+parameter values persist.
+
+**Fix**: `reset_detector` now reads the manifest from the module's `project_dir`
+and WRITES every numeric default before applying overrides. Defaults are no
+longer assumed.
+
+**Related**: this also surfaced that `classify_mode` defaulted to Off while the
+shipped project ran it at 1, so scoring from manifest defaults dropped snare F1
+by 0.33 while kick and hat reproduced at +0.000. A module whose own default does
+not reproduce its own published numbers is a trap; the default was corrected.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-26
+
 ## 2026-07-26 - Control-loop gains applied per cook are frame-rate dependent
 
 **Symptoms**: A beat-tracking PLL reported the correct period (80.9 hops = 140

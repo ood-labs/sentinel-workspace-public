@@ -248,8 +248,11 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // capture at all.
     float coh = saturate(length(pv));
     aux.c = coh;
-    Out[BAUX] = aux;
     float errSm = atan2(pv.y, pv.x) / TAU_2PI;
+
+    // Consecutive cooks whose period observation disagreed with the tracked
+    // period. Lives in the aux record because it has to survive the cook.
+    float outliers = aux.g;
 
     // THE GAINS ARE PER BEAT, NOT PER COOK, AND THE DIFFERENCE IS A FACTOR OF
     // ABOUT TWENTY-EIGHT. The correction runs once per cook; a cook covers
@@ -315,8 +318,52 @@ void main(uint3 tid : SV_DispatchThreadID) {
         // by a quarter of a beat, an integral term is a noise amplifier, and it
         // cost dense_140 two thirds of its continuity. The period is measured
         // directly and well; the phase is what needed the smoothing.
-        if (periodObs > 1.0) period += mu_tempo * (periodObs - period) * advanced;
+        //
+        // OUTLIERS ARE REJECTED, NOT AVERAGED. The comb intermittently picks a
+        // metrical RELATIVE rather than the beat -- on four_on_floor_128 the
+        // published period is 88.2 hops most of the time and jumps to 131.8 (a
+        // 3:2 dotted quarter) on roughly one cook in six. An exponential tracker
+        // converges to the MEAN of its input, so those excursions pulled the
+        // tracked period to 93.6 against a true 88.2: six percent slow, which
+        // drifts a quarter of a beat every four or five beats and is more than
+        // the continuity tolerance allows. The period looked healthy in every
+        // median-based summary, which is why this survived so long.
+        //
+        // A jump to a different metrical level is not weak evidence about this
+        // tempo, it is evidence about a different one, and averaging the two
+        // produces a number that describes neither.
+        if (periodObs > 1.0) {
+            float rel = abs(periodObs - period) / max(period, 1e-3);
+            if (rel <= tempo_reject) {
+                period += mu_tempo * (periodObs - period) * advanced;
+                // DECREMENTED, NOT RESET. A reset makes the rejection a trap:
+                // the loop only has to be fed one agreeing sample now and then
+                // to hold a wrong period forever, and syncopated_funk_105 did
+                // exactly that -- parked at 80.3 hops while the comb reported
+                // 107.2 for the majority of the run, with the disagreement
+                // counter climbing to 146 and being knocked back to zero before
+                // it could ever re-acquire. Counting net evidence instead means
+                // a genuine minority of outliers still decays away (a one-in-six
+                // excursion nets -4 every six cooks and never trips) while a
+                // sustained majority accumulates and wins.
+                outliers = max(outliers - 1.0, 0.0);
+            } else {
+                // Held, not discarded outright. A genuine tempo change also
+                // reads as a sustained outlier, so once the observation has
+                // disagreed for long enough to be a fact rather than a glitch,
+                // the loop re-acquires. The window travels with the period, so a
+                // ramp stays inside it and is tracked normally.
+                outliers += 1.0;
+                if (outliers > tempo_reacquire_cooks) {
+                    period = periodObs;
+                    outliers = 0.0;
+                }
+            }
+        }
     }
+
+    aux.g = outliers;
+    Out[BAUX] = aux;
 
     Q.a = frac(phase + 1.0);
     Q.b = period;

@@ -97,12 +97,18 @@ on digital silence, `tempo_conf` falls to 0.0000, BPM freezes at its last truste
 value, and no counter advances — the failure this project exists to not repeat.
 A 30-minute continuous run held F1 to +0.000 and BPM within 127.55–127.77.
 
-**Known limitation.** Beat *continuity* (CMLc/AMLc) is well below target at
-0.00–0.78 depending on material. The clock itself is sound — intervals
-are regular and no beats are dropped — but beat *placement* carries a
-pattern-dependent residual from the comb's phase argmax. Use `bpm` /
-`beat_period` / `beat_pulse` for tempo-locked motion; do not rely on individual
-beat timestamps being sample-accurate.
+**Known limitation.** Beat *continuity* (CMLc/AMLc) is below target and varies
+sharply with material: 0.90 on `hats_under_loud_kick_150` and 0.83 on
+`tempo_ramp_120_132`, but 0.44 on `four_on_floor_128`, 0.08 on `dense_140` and
+0.00 on `syncopated_funk_105`. The clock itself is sound — intervals are regular
+and no beats are dropped — but beat *placement* carries a pattern-dependent
+residual from the comb's phase argmax. Use `bpm` / `beat_period` / `beat_pulse`
+for tempo-locked motion; do not rely on individual beat timestamps being
+sample-accurate.
+
+Continuity is also unstable run to run (repeat runs on unchanged code swing by
+roughly 0.3 CMLc), so a single measurement of it means little. The regression
+gate deliberately does not cover it for that reason.
 
 Three patterns do not resolve their tempo and are known-off: `sparse_90`,
 `hats_only_150` (100 byte-identical hats at exactly 9600-sample spacing — no
