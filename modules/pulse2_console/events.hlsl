@@ -190,4 +190,41 @@ void main(uint3 tid : SV_DispatchThreadID) {
     pub.hopHi = hz[3]; pub.profile = hz[4]; pub.gain = hz[5];
     pub.enabled = 0.0; pub.lane = 0.0;
     Out[P2_PUB_IDX] = pub;
+
+    // ---- latch the newest classifier verdict ------------------------------
+    // Held rather than sampled, because the card must survive a STILL capture:
+    // a snare arrives every ~0.5 s and a frame grabbed between two of them would
+    // otherwise show an empty panel and prove nothing.
+    //
+    // The age counter is what keeps that honest. A held card with no elapsed
+    // time is indistinguishable from a frozen one, so the seconds since the
+    // latch are displayed next to it.
+    RG vd = Prev[P2_VERDICT_IDX];
+    vd.gain += max(_DeltaTime, 0.0);
+
+    uint vlane = (uint)clamp(verdict_lane, 0.0, 2.0);
+    // Newest first, so the first hit found is the most recent one. 16 hops is
+    // 85 ms of audio against a ~16 ms cook, so no candidate can pass through the
+    // window unseen even if a cook runs long.
+    [loop] for (uint b2 = 0u; b2 < 16u; ++b2) {
+        if (tcursor < b2 + 1u) break;
+        uint idx2 = p2_trace_index(tcursor - b2 - 1u, vlane);
+        if (idx2 >= (uint)_Data1_Count) continue;
+
+        // f2 is the picker's own verdict flag: +1 fired, -1 rejected by the
+        // classifier, 0 never a candidate. Only the first two are events.
+        float st = _Data1[idx2].f2;
+        if (abs(st) < 0.5) continue;
+
+        vd.binLo   = _Data1[idx2].f4;   // centroid
+        vd.binHi   = _Data1[idx2].f5;   // flatness
+        vd.hopLo   = _Data1[idx2].f6;   // decay
+        vd.hopHi   = _Data1[idx2].f7;   // classifier score
+        vd.profile = (st > 0.5) ? 1.0 : -1.0;
+        vd.gain    = 0.0;
+        vd.lane    = (float)vlane;
+        break;
+    }
+    vd.enabled = 0.0;   // must never read as a region
+    Out[P2_VERDICT_IDX] = vd;
 }

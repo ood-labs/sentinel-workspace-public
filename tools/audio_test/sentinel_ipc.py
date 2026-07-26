@@ -22,6 +22,10 @@ ENDPOINT = "tcp://127.0.0.1:5555"
 # 64-hop wrap (16384 samples), so the last observable position legitimately
 # trails the true end of file.
 EOF_SLACK_SAMPLES = 32768
+# Seconds of throwaway playback before the scored run, so the detector's
+# persistent whitening peaks adapt to THIS pattern instead of inheriting the
+# previous one's. See the note in run_pattern.
+PREROLL_S = 2.0
 
 # Lane ids emitted by the `Hits` export contract (see
 # modules/cryo_pulse_baseline/manifest.yaml).
@@ -156,6 +160,22 @@ class AudioRunner:
         """
         self.configure_file(wav_path)
         time.sleep(settle_s)
+
+        # WHITENING PRE-ROLL. force_reload does not clear `persistent: true`
+        # buffers, so the detector's per-bin running peaks arrive carrying
+        # whatever the PREVIOUS pattern left in them. Measured: sparse_90 scored
+        # 0.636/0.636/0.933 on the run that followed syncopated_funk_105 and
+        # 0.609/0.667/0.903 on two consecutive runs that followed itself --
+        # identical settings, identical code, ~0.03 apart on every lane, purely
+        # from inherited state.
+        #
+        # Playing the pattern once before the scored run lets the peaks adapt to
+        # its own spectrum, so the scored pass starts from the same place no
+        # matter what ran before it. whiten_decay 0.992 at 187.5 hops/s is a
+        # 0.67 s time constant, so PREROLL_S is three of them.
+        self.sen.set(self._audio_param("restart_file"), 1)
+        time.sleep(PREROLL_S)
+
         gen_before = self.generation()
 
         # Serial watermark. The detector's onset serial is monotonic and
@@ -185,6 +205,7 @@ class AudioRunner:
         t0 = time.time()
         last_pos, stalled = -1, 0
         started = False
+        reached_eof = False
 
         while True:
             time.sleep(self.poll_s)
@@ -213,11 +234,28 @@ class AudioRunner:
                 stalled = 0
             last_pos = pos
 
-            # Completion: playback head reached the end of the WAV, or stopped
-            # advancing for several consecutive polls after it had started.
+            # Completion: the playback head must STOP, not merely get close.
+            #
+            # Breaking the moment a poll lands inside the EOF window silently
+            # truncated the run. The window is EOF_SLACK_SAMPLES (0.68 s at
+            # 48 kHz) and the poll cadence is 1 s, so the break point fell
+            # anywhere in the last second of audio, and every onset after it was
+            # simply never analysed. Measured on tempo_ramp_120_132: two
+            # otherwise identical runs broke 13312 samples apart and differed by
+            # exactly one beat -- one kick, one snare, one hat -- moving snare F1
+            # by 0.033 with ZERO change in false positives. That is three times
+            # the standing 0.01 regression tolerance, arriving from nothing but
+            # poll phase, and it lands hardest on the pattern whose onsets get
+            # densest at the end.
+            #
+            # File mode goes Inactive at end of file, so the head freezes and the
+            # stall path fires. Two stalled polls after entering the EOF window
+            # is enough for the remaining audio to play out and the analyser to
+            # drain; the pre-EOF stall threshold stays at 4 to keep tolerating a
+            # transient hiccup mid-pattern.
             if started and pos >= duration_samples - EOF_SLACK_SAMPLES:
-                break
-            if started and stalled >= 4:
+                reached_eof = True
+            if started and stalled >= (2 if reached_eof else 4):
                 break
             if time.time() - t0 > timeout_s:
                 break

@@ -4,10 +4,48 @@
 // user sees and the coordinates the detector reduces are the same mapping.
 
 #include "types.hlsli"
+// Pixel-space Scientifica text. The full scientific_ui kit is deliberately not
+// used: it pulls in viewport-control bindings this module does not declare.
+#include "../_shared/au_hud/au_text.hlsli"
 
 StructuredBuffer<DH> Hist : register(t0);
 StructuredBuffer<RG> Rgn  : register(t1);
 RWTexture2D<float4> OutputUAV : register(u0);
+
+// ---- verdict card primitives ----------------------------------------------
+// Pixel space, not UV: the panel is `follow_panel`, so a UV-sized card would
+// change proportions with the dock and the text would stretch with it.
+static const float VD_S    = 2.0;    // glyph scale; cell 8x11 -> 16x22 px
+static const float VD_ADV  = 14.0;   // 7 * VD_S, one glyph advance
+static const float VD_ROW  = 26.0;   // row pitch
+static const float VD_VALX = 84.0;   // label column width (6 glyphs)
+static const float VD_BX0  = 174.0;  // bar start, relative to card x
+static const float VD_BX1  = 330.0;
+
+// Horizontal 0..1 bar. Drawn beside every normalised feature because a number
+// alone does not show where it sits in its range, and "is this centroid high?"
+// is the whole question the card exists to answer.
+void vd_bar(float2 p, float x0, float rowY, float v, inout float3 col) {
+    float bx0 = x0 + VD_BX0, bx1 = x0 + VD_BX1;
+    float by0 = rowY + 5.0,  by1 = rowY + 17.0;
+    if (p.x < bx0 || p.x > bx1 || p.y < by0 || p.y > by1) return;
+    float t = (p.x - bx0) / max(bx1 - bx0, 1.0);
+    bool on = (t <= saturate(v));
+    // Outline the empty part rather than leaving it black, so the full range is
+    // visible and a value of zero still reads as "measured 0", not "no data".
+    col = lerp(col, on ? P2_TRACE : P2_GRID, on ? 0.95 : 0.55);
+}
+
+void vd_text(float2 p, float2 anchor, float3 tint, inout float3 col,
+             int c0, int c1, int c2, int c3, int c4, int c5) {
+    float cov = auText(p, anchor, VD_S, c0, c1, c2, c3, c4, c5, 0, 0, 0, 0, 0, 0);
+    if (cov > 0.0) col = lerp(col, tint, cov);
+}
+
+void vd_value(float2 p, float2 anchor, float v, inout float3 col) {
+    float cov = auFixed(p, anchor, VD_S, v);
+    if (cov > 0.0) col = lerp(col, P2_TRACE, cov);
+}
 
 [numthreads(8, 8, 1)]
 void main(uint3 DTid : SV_DispatchThreadID) {
@@ -131,6 +169,41 @@ void main(uint3 DTid : SV_DispatchThreadID) {
                     }
                 }
             }
+
+            // ---- verdict strip ---------------------------------------------
+            // A tick per classifier decision, on the same time axis as the
+            // spectrogram, so accept and reject can be read against the audio
+            // that caused them. Suppressed candidates are drawn too: without
+            // them a classifier that rejects everything and one that does
+            // nothing at all look identical on screen.
+            uint vlane = (uint)clamp(verdict_lane, 0.0, 2.0);
+            uint tcur = (uint)max(_Data1[0].f0, 0.0);
+            float stripHi = tHi - pxH * 2.0;
+            float stripLo = stripHi - pxH * 13.0;
+            if (show_verdict > 0.5 && tcur > 1u
+                && (uint)clamp(r.lane, 0.0, 2.0) == vlane
+                && uv.y >= stripLo && uv.y <= stripHi) {
+                float hopsBack = (1.0 - uv.x) * max(nHops - 1.0, 1.0);
+                if (hopsBack < min(nHops, (float)P2_TRACE_SLOTS - 1.0)) {
+                    int g = (int)max((float)tcur - 1.0 - hopsBack, 0.0);
+
+                    // Widened to +/-1 hop. A single hop is under two pixels at
+                    // this history depth, which survives on screen but vanishes
+                    // in a downscaled capture -- and the capture is the proof.
+                    float st = 0.0;
+                    [unroll] for (int dg = -1; dg <= 1; ++dg) {
+                        int gg = g + dg;
+                        if (gg < 0 || gg >= (int)tcur) continue;
+                        uint ti2 = p2_trace_index((uint)gg, vlane);
+                        if (ti2 >= (uint)_Data1_Count) continue;
+                        float s = _Data1[ti2].f2;
+                        if (s > 0.5) st = 1.0;                   // accept wins
+                        else if (s < -0.5 && st == 0.0) st = -1.0;
+                    }
+                    if (st > 0.5)       col = float3(1.0, 1.0, 1.0);
+                    else if (st < -0.5) col = P2_ACCENT;
+                }
+            }
         }
     }
 
@@ -142,6 +215,95 @@ void main(uint3 DTid : SV_DispatchThreadID) {
             col = lerp(col, P2_EDGE, 0.16);
             float edge = min(abs(uv.y - t0), abs(uv.y - t1));
             if (edge < pxH * 1.5) col = lerp(col, float3(1.0, 1.0, 1.0), 0.9);
+        }
+    }
+
+    // ---- verdict card ------------------------------------------------------
+    // Reports the newest classifier decision on the selected lane: the three
+    // features it weighed, the score it produced, and whether the hit was kept.
+    //
+    // ALL of it is gated behind the card rectangle. Each label is a 12-iteration
+    // loop over the font table, and running that per-pixel across the whole
+    // panel is a large cost for a region occupying 7% of it.
+    float2 p = float2((float)px.x + 0.5, (float)px.y + 0.5);
+    float X0 = 18.0, Y0 = 16.0;
+    float CW = 342.0, CH = 196.0;
+
+    if (show_verdict > 0.5
+        && p.x >= X0 - 8.0 && p.x <= X0 + CW && p.y >= Y0 - 8.0 && p.y <= Y0 + CH) {
+
+        RG vd = Rgn[P2_VERDICT_IDX];
+
+        // Panel: darken rather than fill flat, so the spectrogram stays faintly
+        // visible behind the card and the card cannot hide evidence.
+        col = lerp(col, P2_INK, 0.86);
+        float ex = min(min(p.x - (X0 - 8.0), (X0 + CW) - p.x),
+                       min(p.y - (Y0 - 8.0), (Y0 + CH) - p.y));
+        if (ex < 1.5) col = lerp(col, P2_GRID * 2.2, 0.9);
+
+        bool none   = (abs(vd.profile) < 0.5);
+        bool accept = (vd.profile > 0.5);
+
+        // Title. The lane is NAMED, not implied: in the shipped mode the
+        // classifier gates lane 1 only, and a card that silently reported one
+        // lane while looking like it covered all three would be a lie.
+        vd_text(p, float2(X0, Y0), P2_TRACE, col, G_V, G_E, G_R, G_D, G_I, G_C);
+        vd_text(p, float2(X0 + 6.0 * VD_ADV, Y0), P2_TRACE, col, G_T, 0, 0, 0, 0, 0);
+
+        uint vl = (uint)clamp(vd.lane, 0.0, 2.0);
+        float2 lp = float2(X0, Y0 + VD_ROW);
+        if (vl == 0u)      vd_text(p, lp, P2_EDGE, col, G_K, G_I, G_C, G_K, 0, 0);
+        else if (vl == 1u) vd_text(p, lp, P2_EDGE, col, G_S, G_N, G_A, G_R, G_E, 0);
+        else               vd_text(p, lp, P2_EDGE, col, G_H, G_A, G_T, 0, 0, 0);
+
+        // Three feature rows. Values are the picker's own numbers, read from the
+        // trace it wrote when it decided -- not recomputed here, which could
+        // disagree with the detector this card is meant to explain.
+        float rows[3] = { vd.binLo, vd.binHi, vd.hopLo };
+        float y1 = Y0 + VD_ROW * 2.0;
+        float y2 = Y0 + VD_ROW * 3.0;
+        float y3 = Y0 + VD_ROW * 4.0;
+
+        vd_text(p, float2(X0, y1), P2_TRACE, col, G_C, G_E, G_N, G_T, 0, 0);
+        vd_text(p, float2(X0, y2), P2_TRACE, col, G_F, G_L, G_A, G_T, 0, 0);
+        vd_text(p, float2(X0, y3), P2_TRACE, col, G_D, G_E, G_C, G_A, G_Y, 0);
+
+        if (!none) {
+            vd_value(p, float2(X0 + VD_VALX, y1), rows[0], col);
+            vd_value(p, float2(X0 + VD_VALX, y2), rows[1], col);
+            vd_value(p, float2(X0 + VD_VALX, y3), rows[2], col);
+            vd_bar(p, X0, y1, rows[0], col);
+            vd_bar(p, X0, y2, rows[1], col);
+            vd_bar(p, X0, y3, rows[2], col);
+        }
+
+        // Score and outcome. ACCEPT/REJECT is exactly the sign of the score, so
+        // the two together are self-checking: a word that disagrees with its own
+        // number would be visible immediately.
+        float y4 = Y0 + VD_ROW * 5.0;
+        float y5 = Y0 + VD_ROW * 6.0;
+        vd_text(p, float2(X0, y4), P2_TRACE, col, G_S, G_C, G_O, G_R, G_E, 0);
+        if (!none) vd_value(p, float2(X0 + VD_VALX, y4), vd.hopHi, col);
+
+        if (none) {
+            vd_text(p, float2(X0, y5), P2_GRID * 3.0, col, G_MI, G_MI, G_MI, G_MI, 0, 0);
+        } else if (accept) {
+            // Same colours as the timeline strip above, so the card doubles as
+            // that strip's legend: white kept, accent suppressed.
+            vd_text(p, float2(X0, y5), float3(1.0, 1.0, 1.0), col,
+                    G_A, G_C, G_C, G_E, G_P, G_T);
+        } else {
+            vd_text(p, float2(X0, y5), P2_ACCENT, col,
+                    G_R, G_E, G_J, G_E, G_C, G_T);
+        }
+
+        // Seconds since the latch. The card HOLDS its last verdict so a still
+        // capture is not blank between hits; the age is what stops a held card
+        // from being mistaken for a live one.
+        if (!none) {
+            vd_text(p, float2(X0 + 7.0 * VD_ADV, y5), P2_GRID * 3.2, col,
+                    G_A, G_G, G_E, 0, 0, 0);
+            vd_value(p, float2(X0 + 10.0 * VD_ADV, y5), vd.gain, col);
         }
     }
 

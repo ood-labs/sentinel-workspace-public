@@ -305,8 +305,22 @@ void main(uint3 tid : SV_DispatchThreadID) {
             // the console renders as the per-hit verdict, and what the offline
             // separability study reads, so display, study and decision are all
             // looking at one set of numbers.
+            // A candidate is a hop the picker WOULD have fired on if the
+            // classifier had not vetoed it: past threshold, a local maximum, and
+            // clear of the refractory. Tracing it is what lets the console show
+            // what the verdict SUPPRESSED rather than only what it passed --
+            // without it, a classifier doing nothing and a classifier rejecting
+            // everything look identical on screen.
+            //
+            // Encoded as -1, not 2, so every existing reader that tests
+            // `f2 > 0.5` (the console's firing flash, diag_features.py) keeps
+            // meaning exactly "fired" and cannot silently start counting
+            // rejections as detections.
+            bool candidate = (!gated && isPeak && refOk);
+
             PS tr;
-            tr.a = o; tr.b = thr; tr.c = (strength > 0.0) ? 1.0 : 0.0;
+            tr.a = o; tr.b = thr;
+            tr.c = (strength > 0.0) ? 1.0 : (candidate ? -1.0 : 0.0);
             tr.d = Lane[slot * MAXLANES + lane].spos;
             tr.e = fv.cent; tr.f = fv.flatness; tr.g = fv.decay;
             // The verdict itself, so the console renders the SAME number the

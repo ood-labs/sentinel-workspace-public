@@ -12,6 +12,6 @@ RWStructuredBuffer<RG> Prev : register(u0);
 [numthreads(16, 1, 1)]
 void main(uint3 tid : SV_DispatchThreadID) {
     uint i = tid.x;
-    if (i > P2_PUB_IDX) return;
+    if (i >= P2_RGN_ELEMS) return;
     Prev[i] = Cur[i];
 }

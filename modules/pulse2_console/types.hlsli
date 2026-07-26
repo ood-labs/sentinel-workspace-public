@@ -9,11 +9,24 @@
 #include "../_shared/pulse2/regions.hlsli"
 
 // Region buffer: 0..7 regions, 8 = drag header, 9 = firing flash,
-// 10 = lane spans in Hz published to the control outputs.
-static const uint P2_HDR_IDX   = 8u;
-static const uint P2_FLASH_IDX = 9u;
-static const uint P2_PUB_IDX   = 10u;   // lane spans in Hz for control outputs
-static const uint P2_MAXFLASH  = 6u;
+// 10 = lane spans in Hz published to the control outputs,
+// 11 = latched classifier verdict for the readout card.
+static const uint P2_HDR_IDX     = 8u;
+static const uint P2_FLASH_IDX   = 9u;
+static const uint P2_PUB_IDX     = 10u;  // lane spans in Hz for control outputs
+static const uint P2_VERDICT_IDX = 11u;  // newest classifier verdict, latched
+static const uint P2_RGN_ELEMS   = 12u;  // keep in step with manifest buffers
+static const uint P2_MAXFLASH    = 6u;
+
+// The verdict record reuses RG's eight floats rather than adding a buffer,
+// because it is latched by the same single-threaded events pass that already
+// owns this table and a second output would need a second pass.
+//
+//   binLo = spectral centroid      hopHi   = classifier score
+//   binHi = spectral flatness      profile = +1 accept, -1 reject, 0 none yet
+//   hopLo = temporal decay ratio   gain    = seconds since the latch
+//   enabled = 0 ALWAYS, so a buffer scan can never mistake this for a region.
+//   lane    = which lane the verdict belongs to.
 
 static const uint DISP_BINS = 192u;   // log-spaced rows, 25 Hz .. 20 kHz
 static const uint DISP_HOPS = 768u;   // ~4.1 s of history at 187.5 hops/s
