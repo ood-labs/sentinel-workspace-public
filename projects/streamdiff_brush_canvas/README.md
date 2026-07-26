@@ -43,13 +43,15 @@ The viewport follows the panel size without stretching. The persistent poster st
 ## Pattern Canvas controls
 
 - **Run** starts or pauses timed stamping; **Seconds Per Stamp** controls cadence.
-- **Run Trigger** replaces the Run toggle with a held-key gate: focus the Pattern Canvas and hold `S` to spawn at the current Seconds Per Stamp cadence; release `S` to stop immediately.
+- **Run Trigger** replaces the Run toggle with a held-key gate: focus the Pattern Canvas and hold `X` to spawn at the current Seconds Per Stamp cadence; release `X` to stop immediately.
 - **Clear Canvas** is a one-shot toggle: every click clears once, whether the checkbox turns on or off.
 - **Feedback** transforms the accumulated canvas continuously between stamps.
 - **Zoom Speed**, **Rotation Speed**, and the **Drift** XY pad create fly-through, spiral, and lateral motion.
 - Left-drag directly steers Drift using relative pointer movement; each mouse-wheel notch moves Zoom Speed by 2% of its full control range.
 - **Control Gain** multiplies both Drift and Zoom response and defaults to 5x.
-- Hold `D` for a feedback kick. **D Kick** controls the multiplier, while Kick Attack, Decay, Sustain, and Release shape its ADSR envelope. Drift, Zoom, Rotation, and the published Spawn Points all consume the same envelope, so the tracer remains registered to the transformed canvas through the kick and release tail.
+- Hold `X` for the feedback kick/zoom. **X Kick** controls the multiplier, while Kick Attack, Decay, Sustain, and Release shape its ADSR envelope. Drift, Zoom, Rotation, and the published Spawn Points all consume the same envelope, so the tracer remains registered to the transformed canvas through the kick and release tail.
+- Hold `Z` to release StreamDiff hold and spawn immediately, then continue spawning at **Seconds Per Stamp** until release. Press `C` to toggle persistent auto-run on or off. With **Sync StreamDiff** enabled, auto-run also publishes a one-frame `diffusion_pulse` every **Diffusion Every N Stamps**.
+- `Film Grade Post` sits after `Pattern Spatial SDF` as a separate filter with filmic tone, organic per-frame grain, broad lens dirt, chromatic aberration, edge resolve, quarter-resolution separable Gaussian glow, and a separately softened anamorphic flare convolution. Grain Size reaches 20, and the frame counter reseeds the grain every cooked frame instead of translating it.
 - Hold Alt for fine drag/wheel adjustment or Alt+Shift for ultra-fine adjustment. Double-click resets Drift and Zoom Speed.
 - **Pivot** chooses the transform center; **Trail Fade** dissolves older imagery toward the canvas background.
 - **Edges** chooses Background, Clamp, Repeat, or Mirror behavior when transformed pixels move beyond the canvas.

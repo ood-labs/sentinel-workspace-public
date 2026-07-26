@@ -92,7 +92,58 @@ data_outputs:
       - { name: velocity, type: float3 }
 ```
 
-Pass inputs reference data with `source: "data:0"` (data input slot 0). The compiler generates `StructuredBuffer<T>` declarations + `_DataN_Count` cbuffer fields.
+Pass inputs reference data with `source: "data:0"` (data input slot 0). The
+compiler generates `StructuredBuffer<T>` declarations plus `_DataN_Count`,
+`_DataN_Generation`, `_DataN_ValueCount`, and `_DataN_HopCapacity` cbuffer
+fields.
+
+### Audio hop-ring inputs
+
+Audio In publishes PCM, Spectrum, and Mel Bands as typed data ports. Start with
+`sentinel_module action="scaffold_from_ports"` so the live schema generates the
+correct record declaration. Add the audio feature for ring and frequency
+helpers:
+
+```yaml
+features: [audio]
+```
+
+Spectrum and Mel Bands are flattened 64-hop rings. Store the next unread
+generation in a persistent buffer and consume retained hops chronologically:
+
+```hlsl
+uint latest = _Data0_Generation;
+uint value_count = _Data0_ValueCount;
+uint hop_capacity = _Data0_HopCapacity;
+uint start = AudioRingCatchupStart(
+    read_cursor, latest, hop_capacity);
+
+for (uint generation = start; generation <= latest; ++generation) {
+    uint slot = AudioRingGenerationToSlot(
+        generation, hop_capacity);
+    uint base = slot * value_count;
+    if (_Data0[base].generation_counter != generation) continue;
+    // Consume _Data0[base + index].magnitude or .energy.
+}
+read_cursor = latest + 1u;
+```
+
+The audio feature also provides `SafeAmplitudeToDB`, `DBToAmplitude`,
+`FreqToMel`, `MelToFreq`, `AudioSpectrumBinForHz`,
+`AudioSpectrumBinRange`, `AudioMelBandForHz`, `AudioMelBandRange`, and
+`AudioAttackReleaseEnvelope`. Audio In generation remains monotonic across
+source restarts. `AudioRingCatchupStart` advances a lagging consumer to the
+oldest retained hop.
+
+PCM is interleaved stereo. Mono sources are duplicated into both channels.
+Spectrum and Mel analysis use `0.5 * (left + right)`. Default endpoint
+selections follow Windows default-device changes. Named selections pin the
+endpoint GUID and become unhealthy while that endpoint is unavailable.
+
+Gate onset-driven behavior with a signal floor. Audio In exposes
+`signal_present` in its diagnostics subtree, and the stock Drum Detector
+publishes its own adaptive Mel-energy `signal_present` control output. Keep
+confidence, counters, and pulses inactive when the selected gate is false.
 
 ## Visible Module Construction Contract
 
@@ -188,6 +239,7 @@ _Output[id.xy] = float4(col, 1.0);  // COMPILE ERROR
 - **`sdf` feature** provides: `sdSphere`, `sdBox`, `sdRoundBox`, `sdTorus`, `sdCylinder`, `sdCapsule`, `sdPlane`, `opUnion`, `opIntersect`, `opSubtract`, `opSmoothUnion`, `opSmoothSubtract`, `opSmoothIntersect`, `opRound`, `opRepeat`, `opRepeatLimited`, `opTwist`, `CALC_NORMAL` macro
 - **`camera` feature** provides: `_ViewMatrix`, `_ProjMatrix`, `_ViewProjMatrix`, `_InvViewProjMatrix`, `_CameraPos`, `_CameraNear`, `_CameraFar`, `_CameraFOV`, `_RayDirection(uv)` helper
 - **`math3d` feature** provides: common 3D math utilities
+- **`audio` feature** provides: safe dB conversion, Hz/Mel conversion, Spectrum and Mel range lookup, chronological 64-hop ring catch-up, and asymmetric attack/release envelope following
 
 If you need a function like `smax` (smooth max) that ISN'T in the built-in library, define it yourself. But check first — redefining a built-in causes instant compile failure.
 

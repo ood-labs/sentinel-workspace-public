@@ -1,0 +1,105 @@
+name: "AU Specimen"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+
+viewport:
+  hint: "The living specimen. Contour topography of an evolving mass field."
+
+data_inputs:
+  - name: "Stimuli"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: radius, type: float }
+      - { name: strength, type: float }
+      - { name: age, type: float }
+      - { name: mode, type: float }
+      - { name: id, type: uint }
+      - { name: flags, type: uint }
+      - { name: pad, type: float2 }
+
+parameters:
+  - { name: phase, display: "Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: drift_speed, display: "Drift Speed", type: float, min: 0.0, max: 0.25, default: 0.028, group: "Motion" }
+
+  - { name: mass_scale, display: "Mass Scale", type: float, min: 0.6, max: 8.0, default: 2.35, group: "Field" }
+  - { name: occupancy, display: "Occupancy", type: float, min: 0.20, max: 0.80, default: 0.5, group: "Field" }
+  - { name: framing, display: "Plate Framing", type: float, min: 0.0, max: 1.0, default: 0.78, group: "Field" }
+  - { name: warp_amount, display: "Domain Warp", type: float, min: 0.0, max: 1.6, default: 0.52, group: "Field" }
+  - { name: warp_scale, display: "Warp Scale", type: float, min: 0.2, max: 3.0, default: 0.78, group: "Field" }
+  - { name: contrast, display: "Mass Contrast", type: float, min: 0.4, max: 3.5, default: 1.30, group: "Field" }
+  - { name: ridge_gain, display: "Ridge Structure", type: float, min: 0.0, max: 0.8, default: 0.22, group: "Field" }
+  - { name: cell_density, display: "Cell Density", type: float, min: 0.5, max: 14.0, default: 5.2, group: "Cells" }
+  - { name: cell_amp, display: "Cell Amplitude", type: float, min: 0.0, max: 1.2, default: 0.62, group: "Cells" }
+  - { name: cell_sharp, display: "Cell Sharpness", type: float, min: 1.0, max: 40.0, default: 11.0, group: "Cells" }
+
+  - { name: reaction, display: "Reaction Rate", type: float, min: 0.05, max: 2.0, default: 0.55, group: "Field" }
+  - { name: diffusion, display: "Diffusion", type: float, min: 0.0, max: 0.24, default: 0.055, group: "Field" }
+  - { name: stim_gain, display: "Stimulus Gain", type: float, min: 0.0, max: 1.5, default: 0.62, group: "Field" }
+
+  - { name: contour_bands, display: "Contour Levels", type: float, min: 4.0, max: 48.0, default: 20.000000, group: "Inscription" }
+  - { name: contour_weight, display: "Contour Weight", type: float, min: 0.15, max: 2.5, default: 0.50, group: "Inscription" }
+  - { name: contour_gain, display: "Contour Ink", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Inscription" }
+  - { name: body_gain, display: "Body Fill", type: float, min: 0.0, max: 2.0, default: 0.85, group: "Inscription" }
+  - { name: membrane_gain, display: "Membrane", type: float, min: 0.0, max: 2.0, default: 0.72, group: "Inscription" }
+  - { name: nucleus_level, display: "Nucleus Threshold", type: float, min: 0.35, max: 0.92, default: 0.62, group: "Inscription" }
+  - { name: nucleus_gain, display: "Nucleus Ink", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Inscription" }
+  - { name: grid_gain, display: "Registration", type: float, min: 0.0, max: 1.5, default: 0.55, group: "Inscription" }
+  - { name: exposure, display: "Plate Exposure", type: float, min: 0.3, max: 3.0, default: 1.15, group: "Inscription" }
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Inscription" }
+  - { name: accent_gain, display: "Accent Gain", type: float, min: 0.0, max: 3.0, default: 1.0, group: "Inscription" }
+
+buffers:
+  - { name: clock, structured: true, element_size: 16, element_count: 1, persistent: true }
+  - { name: stim, structured: true, element_size: 48, element_count: 16, persistent: true }
+  - { name: field, format: RGBA16F, scale: 0.5, persistent: true }
+
+passes:
+  - name: compact
+    shader: compact.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:stim"
+
+  - name: clock
+    shader: clock.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:clock"
+
+  - name: evolve
+    shader: evolve.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:field" }
+      - { slot: 1, source: "buffer:clock" }
+      - { slot: 2, source: "buffer:stim" }
+    output: "buffer:field"
+
+  - name: plate
+    shader: plate.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:field" }
+      - { slot: 1, source: "buffer:stim" }
+
+  - name: field_out
+    shader: field_out.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:field" }
+
+outputs:
+  - { name: "Plate", pass: plate }
+  - { name: "Field", pass: field_out }

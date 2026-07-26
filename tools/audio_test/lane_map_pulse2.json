@@ -1,0 +1,28 @@
+{
+  "_comment": [
+    "Lane map for pulse2_analyzer. Same contract as lane_map.json; the detector id",
+    "and the producer data slot differ because pulse2_analyzer consumes Spectrum",
+    "(audio data output 1), not Mel Bands (2).",
+    "analysis_latency_ms is measured for THIS detector and is reported only, never",
+    "applied to committed tables (see score_detector.py --compensate)."
+  ],
+  "detector": "pulse2_analyzer",
+  "hits_port": "Hits",
+  "audio": "pulse2_audio",
+  "mel_slot": 1,
+  "lanes": {
+    "kick": 0,
+    "snare": 1,
+    "hat": 2
+  },
+  "beat_lane": -1,
+  "tolerance_ms": 25.0,
+  "analysis_latency_ms": {
+    "kick": 12.06,
+    "snare": 11.98,
+    "hat": 11.81,
+    "beat": 12.0
+  },
+  "hop_size": 256,
+  "sample_rate": 48000
+}

@@ -1,0 +1,107 @@
+name: "AXIOM 09 / KINETIC CORONA"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Remembered Program", slot: 0, required: true }
+
+data_inputs:
+  - name: "Choir Nodes"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: weight, type: float }
+      - { name: kind, type: float }
+      - { name: group_id, type: float }
+      - { name: rank, type: float }
+      - { name: response, type: float }
+      - { name: radius, type: float }
+      - { name: active, type: float }
+      - { name: id, type: float }
+
+buffers:
+  - { name: velocity_state, format: RGBA16F, persistent: true }
+  - { name: kinetic_events, structured: true, element_size: 32, element_count: 64 }
+  - { name: kinetic_stats, structured: true, element_size: 16, element_count: 1 }
+
+parameters:
+  - { name: speed_threshold, display: "Ignition Speed", type: float, min: 0.0002, max: 0.04, default: 0.0035, group: "Velocity Gate" }
+  - { name: speed_softness, display: "Ignition Softness", type: float, min: 0.0002, max: 0.04, default: 0.006, group: "Velocity Gate" }
+  - { name: matching_radius, display: "Tracking Radius", type: float, min: 0.01, max: 0.30, default: 0.11, group: "Velocity Gate" }
+  - { name: velocity_smoothing, display: "Velocity Smoothing", type: float, min: 0.05, max: 1.0, default: 0.56, group: "Velocity Gate" }
+  - { name: emission_gain, display: "Emission Authority", type: float, min: 0.0, max: 3.0, default: 1.15, group: "Emission" }
+  - { name: wave_count, display: "Wave Multiplicity", type: int, min: 1, max: 4, default: 3, group: "Emission" }
+  - { name: wave_reach, display: "Wave Reach", type: float, min: 0.01, max: 0.30, default: 0.12, group: "Emission" }
+  - { name: wave_thickness, display: "Wave Thickness", type: float, min: 0.0005, max: 0.02, default: 0.0032, group: "Emission" }
+  - { name: particle_count, display: "Splinters Per Node", type: int, min: 1, max: 6, default: 4, group: "Emission" }
+  - { name: particle_reach, display: "Splinter Reach", type: float, min: 0.01, max: 0.35, default: 0.15, group: "Emission" }
+  - { name: particle_size, display: "Splinter Size", type: float, min: 0.0005, max: 0.02, default: 0.0036, group: "Emission" }
+  - { name: emission_rate, display: "Emission Rate", type: float, min: 0.25, max: 8.0, default: 2.4, group: "Motion" }
+  - { name: phase, display: "Emission Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: paper_color, display: "Wave Ink", type: color, default: [0.91, 0.90, 0.86], group: "Palette" }
+  - { name: accent_color, display: "Splinter Ink", type: color, default: [1.0, 0.14, 0.02], group: "Palette" }
+
+passes:
+  - name: track_velocity
+    shader: track_velocity.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:velocity_state" }
+    output: "buffer:velocity_state"
+
+  - name: compile_events
+    shader: compile_events.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:velocity_state" }
+    output: "buffer:kinetic_events"
+
+  - name: measure
+    shader: stats.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:kinetic_events" }
+    output: "buffer:kinetic_stats"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:kinetic_events" }
+    output: output
+
+data_outputs:
+  - name: "Kinetic Events"
+    buffer: "kinetic_events"
+    schema:
+      - { name: position, type: float2 }
+      - { name: velocity, type: float2 }
+      - { name: speed, type: float }
+      - { name: energy, type: float }
+      - { name: active, type: float }
+      - { name: id, type: float }
+
+control_outputs:
+  - { name: active_emitters, buffer: kinetic_stats, element: 0, field_offset: 0, description: "Nodes currently above the real velocity gate" }
+  - { name: peak_speed, buffer: kinetic_stats, element: 0, field_offset: 4, description: "Fastest matched node this frame" }
+  - { name: mean_energy, buffer: kinetic_stats, element: 0, field_offset: 8, description: "Mean gated kinetic energy" }
+
+outputs:
+  - { name: "Corona Program", pass: render }
+
+viewport:
+  hint: "Velocity-reactive layer: compiled nodes are nearest-neighbor matched against persistent prior positions. Only nodes crossing Ignition Speed emit measured waves and splinters."

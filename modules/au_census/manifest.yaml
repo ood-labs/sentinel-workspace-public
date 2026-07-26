@@ -1,0 +1,65 @@
+name: "AU Census"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+viewport:
+  hint: "Measurement rack. Population history, age distribution, heading rose, colony census."
+
+data_inputs:
+  - name: "Agents"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: velocity, type: float2 }
+      - { name: scale, type: float }
+      - { name: confidence, type: float }
+      - { name: angle, type: float }
+      - { name: age, type: float }
+      - { name: stable_id, type: uint }
+      - { name: kind, type: uint }
+      - { name: source_index, type: uint }
+      - { name: flags, type: uint }
+      - { name: aux, type: float4 }
+
+parameters:
+  - { name: establish_conf, display: "Establish Confidence", type: float, min: 0.0, max: 1.0, default: 0.88, group: "Census" }
+  - { name: establish_time, display: "Establish Time", type: float, min: 0.0, max: 20.0, default: 4.0, group: "Census" }
+  - { name: age_span, display: "Age Axis Span", type: float, min: 1.0, max: 120.0, default: 30.0, group: "Census" }
+  - { name: sample_interval, display: "Sample Interval", type: float, min: 0.02, max: 2.0, default: 0.18, group: "Census" }
+  - { name: pop_scale, display: "Population Axis", type: float, min: 4.0, max: 64.0, default: 40.0, group: "Census" }
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Census" }
+
+buffers:
+  - { name: census, structured: true, element_size: 16, element_count: 320, persistent: true }
+
+passes:
+  - name: census
+    shader: census.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:census"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:census" }
+    output: output
+
+data_outputs:
+  - name: "Census"
+    buffer: census
+    schema:
+      - { name: a, type: float }
+      - { name: b, type: float }
+      - { name: c, type: float }
+      - { name: d, type: float }
+
+outputs:
+  - { name: "Rack", pass: render }

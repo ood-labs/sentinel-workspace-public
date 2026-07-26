@@ -1,0 +1,129 @@
+name: "CRYO / Console"
+version: "1.0"
+mode: generator
+resolution: [1440, 810]
+
+panel:
+  mode: canvas
+  output: UI
+  resolution: follow_panel
+
+viewport:
+  hint: "Drag the GATE pad to set bond radius (X) against eligibility (Y). Probes are painted on the Crucible preview."
+  interactions: [events]
+  input:
+    pointer: [left]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: set_gate,  label: "Set Tension Gate" }
+    - { gesture: left_drag,  action: drag_gate, label: "Drag Tension Gate" }
+
+inputs:
+  - { name: "Plan (Specimen)", slot: 0, required: true }
+  - { name: "Witness (Relief)", slot: 1, required: false }
+
+data_inputs:
+  - name: "Tracks"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: velocity, type: float2 }
+      - { name: age, type: float }
+      - { name: confidence, type: float }
+      - { name: id, type: float }
+      - { name: active, type: float }
+  - name: "Filaments"
+    slot: 1
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: idA, type: float }
+      - { name: idB, type: float }
+      - { name: len, type: float }
+      - { name: strain, type: float }
+      - { name: weight, type: float }
+      - { name: age, type: float }
+      - { name: pad, type: float2 }
+  - name: "Probes"
+    slot: 2
+    schema:
+      - { name: pos, type: float2 }
+      - { name: radius, type: float }
+      - { name: strength, type: float }
+      - { name: kind, type: float }
+      - { name: age, type: float }
+      - { name: id, type: float }
+      - { name: active, type: float }
+
+buffers:
+  - { name: probes,      structured: true, element_size: 32, element_count: 33 }
+  - { name: probes_prev, structured: true, element_size: 32, element_count: 33, persistent: true }
+
+state_buffers:
+  - name: probes_prev
+    max_elements: 33
+    schema:
+      - { name: pos, type: float2 }
+      - { name: radius, type: float }
+      - { name: strength, type: float }
+      - { name: kind, type: float }
+      - { name: age, type: float }
+      - { name: id, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: plan_exposure,    display: "Plan Exposure",   group: "Surface", type: float, min: 0.1, max: 2.0, default: 0.72 }
+  - { name: witness_exposure, display: "Witness Exposure", group: "Surface", type: float, min: 0.1, max: 2.0, default: 1.0 }
+  - { name: overlay_gain,     display: "Overlay Gain",    group: "Surface", type: float, min: 0.0, max: 1.5, default: 1.0 }
+
+passes:
+  - name: events
+    shader: events.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:probes_prev" }
+    output: "buffer:probes"
+
+  - name: commit
+    shader: commit.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 33
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:probes" }
+    output: "buffer:probes_prev"
+
+  - name: UI
+    shader: ui.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:probes" }
+      - { slot: 1, source: "input:0" }
+      - { slot: 2, source: "input:1" }
+      - { slot: 3, source: "data:0" }
+      - { slot: 4, source: "data:1" }
+      - { slot: 5, source: "data:2" }
+    output: output
+
+data_outputs:
+  - name: "Probes"
+    buffer: "probes"
+    schema:
+      - { name: pos, type: float2 }
+      - { name: radius, type: float }
+      - { name: strength, type: float }
+      - { name: kind, type: float }
+      - { name: age, type: float }
+      - { name: id, type: float }
+      - { name: active, type: float }
+
+control_outputs:
+  - { name: gate_x, buffer: probes, element: 32, field_offset: 12, description: "Tension pad X -> lattice bond radius, 0..1" }
+  - { name: gate_y, buffer: probes, element: 32, field_offset: 16, description: "Tension pad Y -> lattice eligibility, 0..1" }
+
+outputs:
+  - { name: "UI", pass: UI }

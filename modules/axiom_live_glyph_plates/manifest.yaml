@@ -1,0 +1,60 @@
+name: "AXIOM 13 / LIVE GLYPH PLATES"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+inputs:
+  - { name: "Refined Program", slot: 0, required: true }
+data_inputs:
+  - name: "Choir Nodes"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: weight, type: float }
+      - { name: kind, type: float }
+      - { name: group_id, type: float }
+      - { name: rank, type: float }
+      - { name: response, type: float }
+      - { name: radius, type: float }
+      - { name: active, type: float }
+      - { name: id, type: float }
+  - name: "Kinetic Events"
+    slot: 1
+    schema:
+      - { name: position, type: float2 }
+      - { name: velocity, type: float2 }
+      - { name: speed, type: float }
+      - { name: energy, type: float }
+      - { name: active, type: float }
+      - { name: id, type: float }
+parameters:
+  - { name: active_nodes, display: "Active Nodes", type: float, min: 0.0, max: 64.0, default: 32.0, group: "Live Telemetry" }
+  - { name: active_routes, display: "Active Routes", type: float, min: 0.0, max: 64.0, default: 27.0, group: "Live Telemetry" }
+  - { name: corner_count, display: "Detected Corners", type: float, min: 0.0, max: 512.0, default: 36.0, group: "Live Telemetry" }
+  - { name: edge_density, display: "Edge Density", type: float, min: 0.0, max: 1.0, default: 0.06, group: "Live Telemetry" }
+  - { name: active_emitters, display: "Active Emitters", type: float, min: 0.0, max: 64.0, default: 5.0, group: "Live Telemetry" }
+  - { name: mean_energy, display: "Mean Energy", type: float, min: 0.0, max: 1.0, default: 0.7, group: "Live Telemetry" }
+  - { name: glyph_mode, display: "Glyph Grammar", type: enum, default: 2, options: ["Node Monogram", "Event Index", "Split Plates"], flags: button_grid, group: "Art Deco Plates" }
+  - { name: left_center, display: "Left Plate Center", type: point2D, default: [0.095, 0.57], group: "Art Deco Plates" }
+  - { name: right_center, display: "Index Plate Center", type: point2D, default: [0.855, 0.865], group: "Art Deco Plates" }
+  - { name: left_extent, display: "Left Plate Extent", type: point2D, default: [0.14, 0.34], group: "Art Deco Plates" }
+  - { name: right_extent, display: "Index Plate Extent", type: point2D, default: [0.18, 0.13], group: "Art Deco Plates" }
+  - { name: depth_gain, display: "Extrusion Depth", type: float, min: 0.0, max: 1.5, default: 0.72, group: "Art Deco Plates" }
+  - { name: bevel_gain, display: "Bevel Highlight", type: float, min: 0.0, max: 1.5, default: 0.66, group: "Art Deco Plates" }
+  - { name: glyph_gain, display: "Glyph Ink", type: float, min: 0.0, max: 2.0, default: 0.92, group: "Art Deco Plates" }
+  - { name: glyph_phase, display: "Glyph Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: paper_color, display: "Instrument White", type: color, default: [0.91, 0.90, 0.86], group: "Palette" }
+  - { name: accent_color, display: "Kinetic Vermilion", type: color, default: [1.0, 0.14, 0.02], group: "Palette" }
+passes:
+  - name: render_glyphs
+    shader: glyph_plates.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+    output: output
+outputs:
+  - { name: "Master Program", pass: render_glyphs }
+viewport:
+  hint: "Art deco live typography: beveled monogram and event index plates driven by Choir Nodes and Kinetic Events. No mouse controls."

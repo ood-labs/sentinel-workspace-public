@@ -1,4 +1,5 @@
 RWStructuredBuffer<float4> OutputBuffer : register(u0);
+StructuredBuffer<float4> ControlState : register(t1);
 
 [numthreads(1, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
@@ -15,9 +16,20 @@ void main(uint3 DTid : SV_DispatchThreadID)
     uint cycle = (uint)max(floor(_Time / seconds + seed * 0.31), 0.0);
     float cycleValue = (float)(cycle & 0x00ffffffu);
     bool newCycle = !wasInitialized || abs(state.x - cycleValue) > 0.25;
-    // With Run Trigger enabled, the viewport's held-key snapshot replaces the
-    // ordinary Run toggle. S is key code 19 in the authored-input ABI.
-    bool effectiveRun = run_trigger != 0 ? ViewportKeyDown(19u) : (run != 0);
+    bool zHeld = ViewportKeyDown(26u);
+    bool zPressed = false;
+    uint eventCount = min(_ViewportEventCount, 64u);
+    for (uint eventIndex = 0u; eventIndex < eventCount; ++eventIndex)
+    {
+        ViewportEvent eventItem = _ViewportEvents[eventIndex];
+        bool keyPress = eventItem.type == 4u && eventItem.phase == 1u;
+        if (keyPress && eventItem.code == 26u) zPressed = true;
+    }
+    bool autoRun = ControlState[0].y > 0.5;
+    // C owns persistent auto-run. Z is immediate on press and repeats at
+    // Seconds Per Stamp for the full duration of the hold.
+    bool effectiveRun = autoRun || zHeld;
+    bool shouldSpawn = zPressed || (effectiveRun && newCycle);
 
     int previousStage = (int)round(clamp(state.y, 0.0, 3.0));
     bool revealEnabled = reveal_sequence != 0;
@@ -34,7 +46,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         action = 0.0;
         state.x = cycleValue;
     }
-    else if (newCycle) {
+    else if (shouldSpawn) {
         action = 1.0;
         state.x = cycleValue;
     }

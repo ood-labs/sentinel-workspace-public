@@ -1,0 +1,460 @@
+ 
+
+ Production-Grade GPU Audio Analysis, Region-Based Onset Detection, and Beat Tracking Architecture 
+
+Source: https://gemini.google.com/share/bcf35fa41aea?skid=a4bf9db6-b043-4be7-acfc-0bae5064c8af 
+
+Exported: 2026-07-25T10:05:46.239Z 
+
+# Production-Grade GPU Audio Analysis, Region-Based Onset Detection, and Beat Tracking Architecture
+
+The deployment of real-time audio analysis within a high-performance compute shader pipeline imposes rigid constraints on signal processing design. In a live performance environment operating at display refresh rates (~60 Hz) fed by asynchronous audio hops (~187 Hz), audio reactivity must be deterministic, surgically isolated, and immune to dynamic drift. The existing cryo_pulse module established a baseline for spectral flux, adaptive thresholding, and autocorrelation tempo tracking. However, its structural reliance on fixed Mel-band splits, global threshold floors, and uncalibrated adaptive thresholding revealed critical limitations—most notably the inability to isolate broadband percussive instruments such as snares and the occurrence of tempo tracking hallucinations during quiet passages. 
+This report formulates the definitive architectural specification for the next-generation audio analysis engine within Sentinel. By evaluating signal representations, magnitude-only onset detection functions (ODFs), multi-feature region-based instrument isolation, parallelized GPU tempo induction, and causal beat-phase tracking, this specification establishes a mathematically grounded and computationally efficient roadmap. 
+
+## Input Representation Strategy and Signal Preprocessing
+
+### Spectral Representation: Linear Spectrum versus Perceptual Mel Bands
+
+The selection of the input representation dictates the upper bound of instrument discrimination. Sentinel provides two primary spectral representations: a 1024-bin linear magnitude Spectrum and a 138-band Mel Bands array. 
+The physical parameters measured on Sentinel 0.5.49 establish that the Fast Fourier Transform (FFT) bin width is governed by f res ​ = N fft ​ f s ​ ​ , where f s ​ = 48000  Hz . At N fft ​ = 4096 , the linear bin resolution is exactly 11.71875  Hz/bin , but the 1024 reported bins span only 0  to  12  kHz . At N fft ​ = 2048 , the linear bin resolution widens to 23.4375  Hz/bin , covering 0  to  24  kHz . 
+
+ | 
+| | Representation | Bin Count / Bands | Frequency Coverage ( N fft ​ = 4096 ) | Frequency Coverage ( N fft ​ = 2048 ) | Frequency Resolution | Primary Utility 
+| | Linear Spectrum | 1024 bins | 0 − 12  kHz | 0 − 24  kHz | Uniform ( 11.7  Hz or 23.4  Hz ) | Surgical instrument isolation, narrow-band notch/region filtering, centroid analysis 
+| | Mel Bands | 138 bands | Perceptual ( 0 − 12  kHz ) | Perceptual ( 0 − 24  kHz ) | Logarithmic / Non-uniform | Broadband onset strength aggregation, multi-band energy tracking 
+ 
+The trade-off between N fft ​ = 4096 and N fft ​ = 2048 represents a fundamental limit in time-frequency localization: 
+- 
+ Low-Frequency Discrimination ( 0 − 500  Hz ): Resolving the fundamental frequencies of a kick drum ( 40 − 80  Hz ) versus the low-mid body of a snare drum ( 150 − 250  Hz ) or floor tom ( 90 − 140  Hz ) requires fine spectral resolution. At N fft ​ = 4096 , the kick drum fundamental spans 3 to 4 discrete linear bins, permitting precise regional bounding. On the 138-band Mel scale, low frequencies are heavily compressed; the entire range from 40  Hz to 250  Hz occupies fewer than 15 bands, causing severe spectral smearing between kick and snare energy. 
+- 
+ High-Frequency Air Band ( 12 − 24  kHz ): Percussive transients (such as hi-hat attacks, cymbal sizzle, and snare wire snap) release significant energy above 12  kHz . Truncating the spectrum at 12  kHz ( N fft ​ = 4096 ) eliminates the upper harmonic air band. However, the fundamental transient energy of hi-hats sits between 5  kHz and 10  kHz , and snare wire crispness peaks between 3  kHz and 7  kHz . 
+For drum-oriented onset detection and instrument isolation, N fft ​ = 4096 with 1024 linear bins is the superior representation. The gain in low-frequency separation ( 11.7  Hz/bin ) is essential for separating low-mid percussive elements, whereas the loss of energy above 12  kHz does not materially degrade percussive onset detection, as the dominant transient energy resides well within the 0 − 12  kHz envelope. 
+A dual-path architecture is recommended: 
+- 
+ Path A (Surgical Isolation): Employs the 1024-bin linear Spectrum for user-defined 2D region masks and multi-feature instrument classification. 
+- 
+ Path B (Broadband Tempo Induction): Aggregates linear bins into a log-spaced or Mel-scaled representation to calculate global onset strength signals across perceptual critical bands. 
+
+### Role of Time-Domain PCM Data
+
+The PCM port exposes 16384 stereo frames (~341 ms at 48 kHz). While Short-Time Fourier Transforms (STFT) suffer from a windowing latency governed by N fft ​ ( 85.3  ms for N fft ​ = 4096 ), the time-domain waveform contains instantaneous amplitude information. 
+Time-domain processing cannot replace spectral analysis for instrument isolation because it lacks frequency selectivity. However, a parallel time-domain path operating on the raw PCM buffer provides a zero-latency micro-transient trigger. Computing a short-term root-mean-square (RMS) energy derivative over a 64-sample sliding window ( 1.33  ms ) yields a high-precision temporal mark. When a spectral region detector fires, its timestamp can be sharpened by snapping it to the nearest time-domain energy peak within the current audio frame, reducing temporal jitter from ± 5.33  ms (the hop size) down to sub-millisecond precision. 
+
+### Window and Hop Dynamics
+
+The hop size is fixed by the producer at M hop ​ = 256  samples ( 5.33  ms at 48  kHz , or ∼ 187.5  hops/second ). An N fft ​ = 4096 window corresponds to 85.3  ms of audio data. This temporal overlap means that a sharp percussive transient will spread across approximately 16 consecutive STFT frames in magnitude. 
+While window length dictates frequency resolution and time-smearing of the magnitude response, the onset timing accuracy is bound by the hop size ( 5.33  ms ). To overcome window-induced time-smearing, onset detection functions must evaluate first-order temporal differences across consecutive hops rather than static frame energy. 
+
+## Onset Detection Functions and Spectral Normalization
+
+### Magnitude-Only Onset Detection Functions
+
+In the absence of complex FFT outputs (phase information), onset detection functions must rely entirely on magnitude dynamics across time and frequency. The processing pipeline transforms input magnitude frames through dynamic whitening, max-filtering differential calculation, feature extraction, and competitive thresholding. 
+
+ | 
+| | ODF Variant | Formulation / Mechanics | Percussive Quality | Robustness to Dynamic Range | Phase Absence Sensitivity 
+| | 1. Adaptive Whitened Log Spectral Flux (AW-SF) | ∑ k ​ max ( 0 , lo g ( 1 + γ Y n , k ​ ) − lo g ( 1 + γ Y n − 1 , k ​ ) ) where Y n , k ​ is whitened | Exceptional | Maximum (Equalizes high/low energy bands) | Minimal loss 
+| | 2. SuperFlux (Frequency-Filtered Flux) | ∑ k ​ max ( 0 , Y n , k ​ − max m ∈ [ − M , M ] ​ Y n − 1 , k + m ​ ) | Superior | High | Minimal loss 
+| | 3. High-Frequency Content (HFC) | ∑ k ​ k ⋅ ∣ X n , k ​ ∣ 2 | Excellent for hats/cymbals; poor for kicks | Low (dominated by volume) | None 
+| | 4. Rectified Spectral Flux (Standard SF) | ∑ k ​ max ( 0 , ∣ X n , k ​ ∣ − ∣ X n − 1 , k ​ ∣ ) | Moderate | Poor (low frequencies dominate) | Minimal loss 
+| | 5. Energy Derivative / RMS Difference | max ( 0 , E n ​ − E n − 1 ​ ) | Poor (no frequency breakdown) | Very Low | None 
+ 
+ Phase information, if available, enables Phase Deviation (PD), Weighted Phase Deviation (WPD), and Complex Domain (CD) distance measures 1 . Phase information is crucial for detecting soft tonal onsets (e.g., legato bowed strings or flute transitions) where energy variation is negligible but phase alignment changes 3 . However, for percussive material (drums, claps, plucks), magnitude-only methods—specifically when augmented by adaptive whitening and frequency filtering—achieve over 92% of the F 1 ​ -score of complex-domain methods without requiring phase computation 3 . 
+
+### Adaptive Spectral Whitening
+
+ The failure of fixed global thresholds and static band splits stems from spectral roll-off: low-frequency energy in audio mixes is orders of magnitude larger than high-frequency energy. A threshold low enough to pick up a hi-hat transient will over-trigger on kick drum rumble 4 . 
+ Adaptive whitening scales each spectral bin dynamically based on its recent peak history, allowing quiet high-frequency events to compete equally with loud low-frequency events 4 . The formulation, adapted for real-time execution from Stowell & Plumbley (2007), updates a running peak profile P n , k ​ for frame n and bin k 4 : 
+
+ P n , k ​ = max ( r ⋅ P n − 1 , k ​ , ∣ X n , k ​ ∣ ) 
+ where r ∈ ( 0 , 1 ) is a memory decay factor (typically set to r ≈ 0.992 , yielding a relaxation half-life of approximately 80 hops or ∼ 420  ms ) 6 . The whitened spectrum Y n , k ​ is calculated as: 
+
+ Y n , k ​ = max ( P n , k ​ , ϵ ) ∣ X n , k ​ ∣ ​ 
+ where ϵ = 1 0 − 4 prevents division by zero in silent bands 6 . 
+ Adaptive whitening compresses the dynamic range per bin to [ 0.0 , 1.0 ] . It eliminates the need for manual per-lane threshold floors, prevents bass dominance, and normalizes the onset strength signal across tracks recorded at different master loudness levels 4 . 
+
+### SuperFlux Mechanics
+
+ Standard spectral flux computes frame-to-frame differences per bin. When an instrument exhibits vibrato or pitch bends, spectral energy shifts across neighboring bins, generating false positive flux spikes 3 . The SuperFlux algorithm proposed by Böck et al. solves this by tracking local spectral trajectories using a maximum filter over neighboring bins in the previous frame 1 : 
+
+ D n , k ​ = max ( 0 , Y n , k ​ − m ∈ [ − M , M ] max ​ Y n − 1 , k + m ​ ) 
+ where M is the filter radius (typically M = 2 bins) 3 . If energy at bin k simply drifted from bin k − 1 due to vibrato, max m ​ Y n − 1 , k + m ​ accounts for it, resulting in D n , k ​ ≈ 0 . If a genuine percussive attack occurs, new energy floods all bins simultaneously, producing a strong positive differential across D n , k ​ 3 . 
+
+### Peak-Picking and Latency Mechanics
+
+ Peak-picking converts a continuous 1D Onset Detection Function O [ n ] into binary trigger events. Simple fixed thresholding fails due to local dynamic shifts. The optimal causal peak-picking strategy uses a moving median combined with a local mean threshold 3 : 
+
+ δ [ n ] = Median ( O [ n − K … n ] ) + λ ⋅ Mean ( O [ n − K … n ] ) + α 
+An onset event is registered at frame n if and only if: 
+- 
+ O [ n ] > δ [ n ] (Exceeds dynamic adaptive threshold) 
+- 
+ O [ n ] ≥ O [ n − 1 ] and O [ n ] ≥ O [ n + 1 ] (Local maximum condition) 
+- 
+ n − n last ​ > τ refractory ​ (Refractory lockout period) 
+ To evaluate local maximum condition O [ n ] ≥ O [ n + 1 ] , a causal lookahead of exactly 1 hop ( 5.33  ms ) is introduced. This single-hop delay is imperceptible for live visual performance (well below the 16.6  ms frame budget of a 60  Hz display) but eliminates over 80% of double-trigger artifacts 3 . Refractory periods τ refractory ​ are maintained independently per instrument lane (e.g., 120  ms for kick, 80  ms for snare, 40  ms for hi-hats). 
+
+## Region-Based Instrument Isolation Architecture
+
+### 2D Spectrogram Region Masking
+
+A core defect of conventional band-splitting is treating spectral selection as contiguous 1D frequency slices. In complex audio mixes, percussive instruments are rarely confined to a single band, nor do they occupy the entirety of a contiguous frequency range. 
+The visual configuration interface allows users to define arbitrary 2D Regions of Interest (ROIs) directly on the scrolling spectrogram. Regions isolate specific spectral phenomena: hi-hats in high-frequency broad bands, snare wire snap in mid-high bands, snare body in tonal mid-frequency peaks, and kick drum energy in low-frequency blocks. A region R i ​ is defined by a 2D bounding structure over frequency bins k ∈ [ k min ​ , k max ​ ] and a weighted spectral kernel W i ​ ( k ) : 
+
+ O i ​ [ n ] = k = k min ​ ∑ k max ​ ​ W i ​ ( k ) ⋅ D n , k ​ 
+To isolate complex instruments, regions support four profile shapes: 
+- 
+ Rectangular Mask: Standard uniform weighting W i ​ ( k ) = 1.0 . 
+- 
+ Gaussian Kernel Mask: Centered at fundamental frequency k 0 ​ with bandwidth σ : W i ​ ( k ) = exp ( − 2 σ 2 ( k − k 0 ​ ) 2 ​ ) . 
+- 
+ Comb Harmonic Mask: Series of sparse Gaussian peaks at integer multiples m ⋅ k 0 ​ for isolating tonal percussion (toms, cowbells, woodblocks). 
+- 
+ Freeform Multi-Band Mask: Bitmask buffer enabling disjoint frequency selection (e.g., selecting 150 − 250  Hz AND 3 − 5  kHz simultaneously for snare body + snare snap). 
+
+### Beyond Band-Limiting: Harmonic-Percussive Source Separation
+
+When a snare drum and a bass guitar overlap in the 150 − 250  Hz region, band-limiting alone fails because the sustained bass note keeps the regional flux high. Harmonic-Percussive Source Separation (HPSS) isolates transient percussive events from sustained harmonic sounds by exploiting their orthogonal spatial orientation on a spectrogram: harmonic elements form horizontal lines across time, while percussive attacks form vertical lines across frequency. 
+ In a real-time HLSL compute shader operating over a 64-hop rolling buffer, HPSS is implemented via 2D median filtering 8 : 
+- 
+ Harmonic Spectrum ( H n , k ​ ): Apply a 1D median filter along the time axis (e.g., median over 9 consecutive hops at bin k ). 
+- 
+ Percussive Spectrum ( P n , k ​ ): Apply a 1D median filter along the frequency axis (e.g., median over 17 consecutive bins at frame n ). 
+- 
+ Mask Generation: Compute a soft percussive mask M P ​ ( n , k ) = P n , k 2 ​ + H n , k 2 ​ + ϵ P n , k 2 ​ ​ . 
+Multiplying the whitened differential spectrum D n , k ​ by M P ​ ( n , k ) strips away sustained bass guitar notes and vocal pads, leaving only percussive transients within the selected region. 
+
+### Multi-Feature Classifier for Overlapping Instruments
+
+To distinguish a snare drum hit from a simultaneously occurring kick drum or synth pluck within an overlapping frequency region, the detector extracts a 4D feature vector F i ​ [ n ] per region at each hop: 
+- 
+ Log Energy Differential ( F 1 ​ ): Magnitude of the whitened flux within the region. 
+- 
+ Spectral Centroid ( F 2 ​ ): Center of mass of regional energy: 
+
+ F 2 ​ = ∑ k ​ Y n , k ​ ∑ k ​ k ⋅ Y n , k ​ ​ 
+- 
+ Spectral Flatness / Wiener Entropy ( F 3 ​ ): Ratio of geometric mean to arithmetic mean, measuring noise-like (snare wires) versus tonal (kick drum) character: 
+
+ F 3 ​ = K 1 ​ ∑ Y n , k ​ exp ( K 1 ​ ∑ lo g ( Y n , k ​ + ϵ ) ) ​ 
+- 
+ Temporal Decay Rate ( F 4 ​ ): Ratio of regional energy at frame n + 2 to frame n , measuring transient sharpness. 
+A snare drum exhibits high spectral flatness ( F 3 ​ → 1.0 ), a high spectral centroid ( F 2 ​ ), and rapid decay ( F 4 ​ ). A kick drum exhibits low spectral flatness ( F 3 ​ → 0.0 ) and a low centroid ( F 2 ​ ). Evaluating a weighted dot product W snare ​ ⋅ F i ​ [ n ] > θ discriminates snare attacks even when kick and snare land on the exact same frame. 
+
+### Lateral Competitive Inhibition Network
+
+When 8 to 16 region detectors run concurrently, a loud transient (such as a full-kit crash/snare impact) can cause energy to spill across adjacent frequency regions, causing false positive triggers across multiple lanes simultaneously. 
+To eliminate cross-lane contamination, an Inhibitory Cross-Talk Network is applied prior to peak-picking. Given N active regions with raw onset strengths O 1 ​ , O 2 ​ , … , O N ​ , an updated strength O ^ i ​ is computed via lateral inhibition: 
+
+ O ^ i ​ = max ​ 0 , O i ​ − j  = i ∑ ​ β j , i ​ ⋅ O j ​ ​ 
+where β j , i ​ ∈ [ 0 , 1 ] represents the overlap matrix coefficient between region j and region i . If a primary kick region ( j = 1 ) fires with massive energy, it suppresses secondary leakage in the adjacent low-mid snare body region ( i = 2 ), ensuring that only the dominant, intended instrument fires its output trigger. 
+
+## Real-Time Tempo Estimation and Metrical Disambiguation
+
+### Evaluation of Real-Time Tempo Algorithms
+
+Tempo estimation converts a continuous 1D global Onset Strength Signal (OSS)—derived from the sum of whitened spectral flux across all bands—into an accurate measure of Beats Per Minute (BPM). 
+Four algorithmic families were evaluated for GPU implementation: 
+
+ | 
+| | Algorithm Family | Mathematical Principle | Parallel Suitability | Metrical Stability | Computational Complexity 
+| | Autocorrelation (ACF) | R ( τ ) = ∑ n ​ O [ n ] O [ n − τ ] | High ( 1  thread/lag ) | Poor (Prone to harmonic octave leaps) | O ( N ⋅ L ) 
+| | 
+ Comb Filter Resonators (CFM) 
+[cite: 9] | y t ​ ( τ ) = α y t − τ ​ ( τ ) + ( 1 − α ) x t ​ | Highest ( 1  thread/lag ) | Superior (Resonates selectively at exact period) | O ( L ) per hop 
+| | Fourier Tempogram | STFT over OSS envelope | High ( 1  thread/frequency ) | Moderate (Window edge artifacts) | O ( L lo g L ) 
+| | Predominant Local Pulse (PLP) | Phase-aligned sinusoidal filterbank | Moderate | High | High ( O ( L ⋅ P ) ) 
+ 
+ The Comb Filter Matrix (CFM) , popularized by Scheirer and refined by Adam Stark (BTrack) 9 , is selected as the optimal GPU architecture. Unlike autocorrelation—which measures simple lag similarity and suffers during syncopated rhythms—a bank of comb filter resonators actively reinforces periodic pulse trains while attenuating non-periodic off-beat events 9 . 
+
+### Octave and Metrical Disambiguation
+
+ The dominant failure mode in automated tempo tracking is the "octave error"—selecting half-time (e.g., 60 BPM) or double-time (e.g., 240 BPM) instead of the true tempo (120 BPM) 11 . CFM output exhibits secondary resonance peaks at integer multiples ( τ , 2 τ , 3 τ ) and sub-multiples ( 2 τ ​ , 3 τ ​ ) of the true beat period 9 . 
+To enforce metrical stability, two corrective layers are applied: 
+- 
+ Log-Gaussian Tempo Prior: A perceptual preference curve P ( bpm ) peaked at 120  BPM (representing the human motor-preference cadence for rhythmic tapping) weights the raw comb filter energy C ( τ ) 12 :
+
+ P ( τ ) = exp ( − 2 σ tempo 2 ​ ( lo g 2 ​ ( bpm ( τ )) − lo g 2 ​ ( 120 ) ) 2 ​ ) 
+ 
+where σ tempo ​ = 0.8 octaves 12 . 
+- 
+ Harmonic Peak Suppression Matrix: For each candidate lag τ , its resonant energy C ( τ ) is adjusted by evaluating its harmonic sub-lags 12 :
+
+ C ^ ( τ ) = C ( τ ) − γ ( C ( 2 τ ​ ) + C ( 2 τ ) ) 
+This suppresses double-time and half-time false resonances, isolating the primary tempo node. 
+
+### Onset History Buffer Sizing
+
+To establish an accurate tempo estimate, the history ring buffer must capture sufficient rhythmic repetitions. At 187.5  hops/second ( M hop ​ = 256 , f s ​ = 48000 ), the memory footprint and frequency resolution scale as follows: 
+
+ | 
+| | Buffer Duration | Frame Count ( N ring ​ ) | Memory (FP32 Buffer) | Min Detectable BPM ( 2  full cycles ) | Tempo Stability / Drift Responsiveness 
+| | 1.72 Seconds | 320 hops | 1.28  KB | 70  BPM | Hyper-reactive; unstable on syncopation 
+| | 4.26 Seconds | 800 hops | 3.20  KB | 30  BPM | Optimal balance for live performance tracking 
+| | 8.53 Seconds | 1600 hops | 6.40  KB | 15  BPM | High stability; sluggish during tempo ramps 
+| | 30.00 Seconds | 5625 hops | 22.50  KB | < 5  BPM | Unusable for live tracking; extreme lag 
+ 
+An onset history length of 800 hops (~4.26 seconds) is recommended. This window accommodates at least two full bar measures down to 30  BPM while responding smoothly to DJ pitch bends within 1–2 bars. 
+
+### Dynamic Tracking, Tempo Shifts, and Confidence Collapse
+
+Live DJ sets feature pitch-bending, gradual tempo ramps, and sudden breakdown sections. The tempo estimation engine tracks these dynamics through two metrics: 
+- 
+ Agility Parameter ( α comb ​ ): The feedback parameter in the recursive comb update equation governs memory retention 9 :
+
+ y t ​ ( τ ) = α comb ​ ⋅ y t − τ ​ ( τ ) + ( 1 − α comb ​ ) ⋅ O [ t ] 
+ 
+Setting α comb ​ = 0.88 provides rapid tracking of live pitch bends ( ± 5  BPM over 2 seconds) 9 . 
+- 
+ Honest Confidence Metric ( Q tempo ​ ): Calculated as the Normalized Peak-to-Average Ratio (NPAR) of the comb filter output vector C ^ : 
+
+ Q tempo ​ = StdDev ( C ^ ) max τ ​ C ^ ( τ ) − Mean ( C ^ ) ​ 
+During quiet breakdowns, ambient noise, or non-rhythmic passages, Q tempo ​ drops toward zero. When Q tempo ​ < θ conf ​ , the module transitions into a Free-Wheel Hold State , freezing the estimated BPM at its last trusted value rather than decaying into uncalibrated noise or hallucinating incorrect tempos. 
+
+## Beat Tracking, Phase Alignment, and Predictive Scheduling
+
+### Evaluation of Causal Beat Tracking Architectures
+
+ Tempo estimation provides the rate (BPM), but driving synchronised visuals requires tracking the precise beat phase ϕ ( t ) ∈ [ 0.0 , 1.0 ) —determining exactly when the next beat will occur 9 . Non-causal beat trackers (such as offline Viterbi dynamic programming) inspect future audio frames to place beats, making them unsuitable for live processing 15 . 
+Four causal beat-tracking architectures were evaluated: 
+- 
+ Coupled Oscillator / Phase-Locked Loop (PLL): Continuous phase accumulator driven by predicted tempo, phase-corrected by weighted onset triggers 14 . 
+- 
+ Adam Stark Comb Filter Matrix (BTrack): Maintains a 2D matrix X ( τ , θ ) representing tempo period τ and phase offset θ simultaneously 9 . 
+- 
+ Multi-Agent Tracking (BeatRoot IBT): Tracks multiple competing tempo/phase hypothesis threads 12 . 
+- 
+ Bounded-Horizon Causal Dynamic Programming (Ellis Adaptation): Forward-only Viterbi pass over a sliding 2-second onset buffer 12 . 
+
+ | 
+| | Architecture | Latency | GPU Pass Mapping | Syncopation Resilience | Phase Recovery Speed 
+| | 1. Dual-Loop Beat PLL | 0 ms (Predictive) | Single-Thread / Uniform Pass | Moderate | Immediate ( 1 − 2  beats ) 
+| | 
+ 2. Comb Filter Matrix (BTrack) 
+[cite: 9, 10] | 1  hop ( 5.3  ms ) | 2D Thread Grid ( τ , θ ) | Superior | Smooth ( 2 − 4  beats ) 
+| | 
+ 3. Multi-Agent (IBT) 
+[cite: 12] | 1  hop | Complex branching (Poor) | High | Variable 
+| | 
+ 4. Causal Dynamic Programming 
+[cite: 17] | 1  hop | Sequential pass (Slow) | High | Sluggish ( 4 − 8  beats ) 
+ 
+The Dual-Loop Beat Phase-Locked Loop (PLL) , augmented by continuous phase alignment from the Comb Filter Matrix , provides the optimal combination of minimal execution overhead and robust phase stability. 
+
+### Comb Filter Matrix Mechanics on GPU
+
+ The Comb Filter Matrix X ( τ , θ ) represents tempo period τ ∈ [ τ min ​ , τ max ​ ] along the vertical axis and phase offset θ ∈ [ 0 , τ − 1 ] along the horizontal axis 9 . At each audio hop t , the matrix state is updated in parallel across a 2D GPU execution grid 9 : 
+
+ X ( τ , θ τ , t ​ ) ← α cfm ​ ⋅ O [ t ] + ( 1 − α cfm ​ ) ⋅ m , n max ​ ( c τ ​ ( τ m ​ ) ⋅ c θ ​ ( θ n ​ ) ⋅ X ( τ m ​ , θ n ​ ) ) 
+ where c τ ​ and c θ ​ are Gaussian transition weights that allow energy to propagate smoothly across adjacent tempo and phase bins as speed varies 9 . The location of the absolute maximum in X ( τ , θ ) explicitly defines both the dominant tempo period τ ∗ and the exact current phase alignment θ ∗ . 
+
+### Dual-Loop PLL Law and Predictive Visual Scheduling
+
+To drive visual rendering engines, the module must output a continuous 60 Hz phase variable ϕ ( t ) ∈ [ 0.0 , 1.0 ) that increments steadily between beats and reaches 1.0 (wrapping to 0.0 ) exactly on the beat point. 
+The PLL maintains an internal phase state ϕ pll ​ and an internal beat period T pll ​ (in seconds). At each cook frame Δ t : 
+
+ ϕ pll ​ ← ϕ pll ​ + T pll ​ Δ t ​ 
+When a strong onset trigger arrives from a designated primary rhythm lane (e.g., kick drum or isolated snare) at observed phase ϕ obs ​ , a phase error is calculated: 
+
+ Δ ϕ = Wrap [ − 0.5 , 0.5 ] ​ ( ϕ obs ​ − ϕ pll ​ ) 
+The error corrects both the phase state and the underlying period through two feedback loops: 
+- 
+ Immediate Phase Correction: ϕ pll ​ ← ϕ pll ​ + μ phase ​ ⋅ Δ ϕ 
+- 
+ Subtle Period Correction: T pll ​ ← T pll ​ + μ tempo ​ ⋅ Δ ϕ 
+ Setting μ phase ​ = 0.15 and μ tempo ​ = 0.02 ensures that single spurious onsets (e.g., syncopated drum fills) cause minimal disruption, while sustained tempo or phase shifts pull the oscillator lock within two bars 14 . 
+
+## HLSL Compute Shader Architecture and Execution Pipeline
+
+### Multi-Pass Execution Decomposition
+
+To achieve real-time performance on modern GPU hardware without stalling the visual render loop, computation is partitioned across 5 dedicated HLSL compute passes. 
+
+ | 
+| | Pass Name | Dispatch Dimensions | Input Structured Buffers | Output Structured Buffers | Computational Cost / Frame 
+| | Pass 1: Whitening | [4, 1, 1] (1024 threads) | SpectrumBuffer (Magnitude) | WhitenedSpectrumRW | ∼ 0.03  ms 
+| | Pass 2: Region Flux | [N_regions, 1, 1] | WhitenedSpectrumRW , RegionMasks | RegionFluxRW , FeatureMatrixRW | ∼ 0.04  ms 
+| | Pass 3: Peak-Picking | [1, 1, 1] (Single thread) | RegionFluxRW | OnsetTriggersRW , OnsetHistoryRW | ∼ 0.01  ms 
+| | Pass 4: Comb Matrix | [N_lags, N_phases, 1] | OnsetHistoryRW | CombMatrixRW , TempoEstimateRW | ∼ 0.12  ms 
+| | Pass 5: Beat PLL | [1, 1, 1] (Single thread) | TempoEstimateRW , OnsetTriggersRW | ModuleControlOutputsRW | ∼ 0.01  ms 
+ 
+Total estimated compute cost per frame is ∼ 0.21  ms on standard modern GPU hardware, easily fitting within the 16.6  ms budget of a 60 Hz cook cycle. 
+
+### Inter-Cook State Persistence and Asynchronous Hop Handling
+
+Modules cook at display rate ( f cook ​ ≈ 60  Hz ), while audio hops arrive from the engine at f hop ​ ≈ 187.5  Hz . Consequently, each cook cycle must process a variable number of incoming audio hops—typically Δ N hops ​ = ⌊ 60 187.5 ​ ⌋ = 3 hops, with an occasional 4-hop burst. 
+To prevent double-counting or losing hops, state management relies on tracking an engine generation counter: 
+- 
+ Generation Delta Tracking: Uniform inputs provide _DataN_Generation . The shader maintains LastProcessedGeneration in a persistent structured buffer. 
+- 
+ Loop Iteration: Compute Pass 1 through Pass 3 execute an inner loop over h = 0 … ( CurrentGen − LastProcessedGen − 1 ) . 
+- 
+ Ring Buffer Pointer Management: The onset history ring buffer uses atomic modulo math: 
+
+ WriteIndex = ( HistoryHead + h ) ( mod 800 ) 
+No memory copying of historical data is ever performed; updates write directly to the circular write head. 
+During render hitches or frame drops (e.g., cook rate dropping to 20 Hz), Δ N hops ​ may increase to 10–12 hops. The inner loop processes all backlogged hops sequentially in a single cook, maintaining complete phase continuity without temporal drift. 
+
+### Precision and Numerical Stability
+
+Long-running compute passes operating over days of continuous live performance encounter float32 precision breakdown if counters or phase accumulators grow unbounded. 
+- 
+ Phase Wrapping: Beat phase variables are strictly wrapped using fractional bounds: ϕ ← frac ( ϕ ) . 
+- 
+ Running Peak Relaxation: Bin peaks P n , k ​ are clamped to a minimum lower floor ϵ floor ​ = 1 0 − 4 and an absolute upper ceiling 1 0 4 . 
+- 
+ Logarithmic Stabilization: All dynamic range log transforms utilize lo g ( 1.0 + γ ⋅ X ) to prevent negative infinity evaluations near zero magnitude. 
+
+## Spectrogram User Interface and Interactive Configuration
+
+### Visual Display Transform and Dynamic Range Mapping
+
+The spectrogram interface serves as the visual control deck for configuring region masks. Rendering raw magnitude STFT data directly results in an unusable interface: low-frequency rumble blooms into a solid block, while high-frequency hi-hats remain invisible. 
+To make all instruments simultaneously visible and clickable, the display pipeline transforms raw magnitude X ( n , k ) through three successive stages: 
+- 
+ Logarithmic Frequency Rebinning: The vertical display axis maps linearly to perceptual pitch: 
+
+ y pixel ​ ( k ) = lo g 2 ​ ( k max ​ ) − lo g 2 ​ ( k min ​ ) lo g 2 ​ ( k ) − lo g 2 ​ ( k min ​ ) ​ 
+- 
+ Per-Bin Dynamic Peak Equalization: Bins are normalized by their running peak P n , k ​ , elevating hi-hats and cymbal snap to equal visual prominence with the bass drum. 
+- 
+ Power-Law Dynamic Compression: Magnitude values are mapped to visual brightness via S disp ​ = ( Y n , k ​ ) γ , where γ = 0.45 expands quiet transient details above the background noise floor. 
+Color mapping utilizes high-perceptual-contrast palettes (such as Magma or Inferno ), where black represents silence, deep red represents sustained harmonic background, bright yellow represents percussive transients, and pure white marks active onset detection triggers. 
+
+### Interactive Region Selection and Real-Time Feedback Overlay
+
+Users configure instrument isolation by interacting directly with the spectrogram canvas: 
+- 
+ 2D Region Selection: Click-and-drag interaction creates rectangular or elliptical 2D bounds over the 64-hop log-frequency display. A context menu allows assigning selected regions to specific control output channels (e.g., Kick_Trigger , Snare_Trigger , Hat_Trigger ). 
+- 
+ Live Waveform & Threshold Overlay: Suspended inside or adjacent to each region box, a mini-trace renders the real-time regional flux signal O i ​ [ n ] alongside the dynamic threshold line δ i ​ [ n ] . 
+- 
+ Trigger Flash Feedback: When a region fires a valid onset, its border flashes white, and an animated trigger pulse fires across the output bus, providing immediate visual verification without requiring audio monitoring. 
+- 
+ Interactive "Learn Region" Affordance: The user clicks a "Learn Instrument" button and taps an instrument hit on the live input. The system captures a 3-frame STFT snapshot around the hit, isolates bins whose flux spikes > 3 σ above the mean, and automatically generates a fitted 2D multi-band region mask around the target instrument. 
+
+## Evaluation, Ground Truth, and Automated Scoring
+
+### Quantitative Evaluation Metrics
+
+ To eliminate subjective manual tuning, algorithm changes must be evaluated against standardized mathematical criteria 1 . 
+
+#### 1. Onset Detection Metrics
+
+ Given ground-truth onset timestamps T gt ​ and detected onset timestamps T det ​ , an onset is classified as a True Positive ( TP ) if ∣ t det ​ − t gt ​ ∣ ≤ Δ w , where Δ w = ± 25  ms is the standard evaluation window 1 . Unmatched detections are False Positives ( FP ), and missed ground-truth hits are False Negatives ( FN ) 1 . 
+
+ Precision  ( P ) = TP + FP TP ​ , Recall  ( R ) = TP + FN TP ​ 
+
+ F 1 ​ -Measure = 2 ⋅ P + R P ⋅ R ​ 
+
+#### 2. Beat Tracking Metrics
+
+Beat accuracy is evaluated using continuity metrics: 
+- 
+ CMLc (Correct Metrical Level continuous): Percentage of beats tracked continuously within a ± 17.5% phase window at the correct tempo. 
+- 
+ AMLc (Allowed Metrical Level continuous): Percentage of beats tracked continuously allowing for half/double-time metrical variations. 
+
+### Corpus Sizing and Synthetic Ground-Truth Harness
+
+A comprehensive test corpus of 50 test tracks across diverse genres is established: 
+- 
+ Acoustic / Jazz / Rock Drums (15 Tracks): Focuses on live feel, timing drift, and natural snare bleed. 
+- 
+ Electronic / Club Music (20 Tracks): Focuses on quantized rhythms, heavy sub-bass overlap, and high track density. 
+- 
+ Highly Syncopated / Latin / Funk (15 Tracks): Focuses on off-beat accents, complex swing, and varied percussive instrumentation. 
+The corpus incorporates: 
+- 
+ Synthetic Drum Stems (20 Tracks): Programmed MIDI drum patterns spanning metal, breakbeat, techno, and jazz rendered via high-end drum VSTs. MIDI event note-ons provide exact microsecond ground-truth timestamps for kick, snare, hat, and tom onsets. 
+- 
+ Annotated Real-World Audio (30 Tracks): Selected excerpts from public MIR datasets (ENST-Drums, MIREX Beat Tracking, Ballroom Dataset) containing human expert annotations 3 . 
+
+### Automated Regression Scoring Harness
+
+Sentinel supports deterministic frame-by-frame execution in File Mode. A Python automated testing script executes the test suite continuously in continuous integration pipelines: 
+- 
+Boots Sentinel headlessly with the target Audio Analysis Module. 
+- 
+Streams each test track WAV through the Audio In node. 
+- 
+Dumps the persistent structured output buffers ( OnsetTriggers , BPM_Output , Phase_Output ) to disk. 
+- 
+Calculates global F 1 ​ , CMLc, and AMLc scores across all 50 tracks. 
+- 
+Rejects pull requests that degrade the overall F 1 ​ -score by more than 0.5% . 
+
+## Existing Framework Analysis and Engine Recommendations
+
+### Build versus Borrow Porting Analysis
+
+A comparative review of established audio processing libraries identifies specific core algorithms to adapt for GPU structured buffers: 
+- 
+ madmom (Python): Contains the gold-standard implementations of SuperFlux, dynamic peak-picking, and comb-filter beat tracking 19 . Its algorithmic structures map directly to parallel HLSL passes, though its neural network models cannot be used under current shader constraints 16 . 
+- 
+ aubio (C/C++): Lightweight and causal, featuring standard spectral flux, HFC, and phase-based ODFs 20 . Its thresholding and peak-picking logic serve as the baseline for Pass 3, though its lack of adaptive whitening requires replacement 4 . 
+- 
+ BTrack (C++): Adam Stark's comb filter matrix implementation provides the explicit mathematical foundation for Pass 4 and Pass 5 9 . Its state update equations translate cleanly to 2D compute dispatches 9 . 
+- 
+ librosa / Essentia: Excellent reference implementations for HPSS median filtering and feature extraction (centroid, flatness), providing benchmark values for pipeline validation 18 . 
+
+### Engine-Side Feature Requests for Audio In
+
+To maximize the capability of future compute modules, specific CPU-side preprocessing capabilities should be integrated directly into Sentinel's core Audio In node: 
+
+ | 
+| | Priority | Engine Request | Implementation Details | Unlocked Analysis Capability 
+| | 1. High | Complex FFT Spectral Output | Publish Real and Imaginary float arrays or Phase Angle buffer alongside Magnitude | Unlocks Phase Deviation (PD), Complex Domain Distance, and PhaseVocoder pitch shifting 
+| | 2. High | Engine Audio Ring Buffer | Expand retain history from 64 hops (~341 ms) to 1024 hops (~5.46 seconds) | Eliminates consumer ring buffer overhead in module HLSL shaders; permits instant retrospective region analysis 
+| | 3. Medium | Multi-Resolution Dual STFT | Provide dual simultaneous FFT ports: STFT-1024 ( N fft ​ = 1024 , sharp time) and STFT-4096 ( N fft ​ = 4096 , sharp freq) | Enables true multi-resolution onset detection; optimal temporal accuracy for hi-hats combined with optimal frequency isolation for bass 
+| | 4. Medium | Discrete Multi-Channel / Mid-Side | Expose un-summed Stereo Left/Right and Mid/Side ( M = 2 L + R ​ , S = 2 L − R ​ ) buffers | Isolates center-panned instruments (kick, snare, lead vocal) from hard-panned guitars and cymbals 
+
+## Phased Implementation Roadmap
+
+The transition from the legacy cryo_pulse module to the definitive production architecture is structured across four execution phases: 
+- 
+ Phase 1: Modernised Core Engine ( cryo_pulse_v2 ): 
+- 
+ Replace simple spectral flux with Per-Bin Adaptive Whitening and SuperFlux frequency filtering 3 . 
+- 
+Upgrade input handling to utilize 1024-bin linear Spectrum data alongside Mel Bands . 
+- 
+ Implement single-hop lookahead causal peak-picking to eliminate double-triggering 3 . 
+- 
+Deliver immediate drop-in replacement for cryo_pulse with vastly improved trigger accuracy. 
+- 
+ Phase 2: Advanced Instrument Isolation & HPSS: 
+- 
+Implement the 2D Spectrogram Region Mask engine supporting up to 16 user-defined regions. 
+- 
+ Integrate 2D median-filter Harmonic-Percussive Source Separation (HPSS) 8 . 
+- 
+Add multi-feature instrument classification vectors (Centroid, Flatness, Decay Rate) to cleanly separate overlapping kick and snare hits. 
+- 
+Deploy the lateral cross-talk inhibition network to prevent cross-lane contamination. 
+- 
+ Phase 3: Parallel Comb Filter Tempo & Beat Phase Lock: 
+- 
+ Replace standard autocorrelation with the parallel Comb Filter Matrix (CFM) running on HLSL compute passes 9 . 
+- 
+ Add Bayesian log-Gaussian tempo priors and harmonic peak suppression to eliminate octave leaps 12 . 
+- 
+ Implement the predictive dual-loop Beat Phase-Locked Loop (PLL) with honest confidence scoring and hold state 14 . 
+- 
+ Phase 4: Interactive Spectrogram UI & Automated Testing: 
+- 
+Construct the high-contrast log-frequency spectrogram UI with real-time dynamic range compression. 
+- 
+Integrate interactive region editing, live waveform overlays, and the "Learn Instrument" affordance. 
+- 
+Deploy the automated Python regression test harness in Sentinel CI across the 50-track ground-truth corpus. 
+
+## Synthesized Conclusions
+
+The architecture specified in this report transforms audio reactivity in Sentinel from a heuristic, hand-tuned visualization tool into an accurate, mathematically deterministic audio analysis engine. 
+ By replacing fixed Mel-band splits with Adaptive Spectral Whitening and SuperFlux differentials, per-bin dynamic range issues are eliminated, enabling quiet hi-hats and loud kick drums to be tracked simultaneously without threshold starvation 3 . 
+By advancing from 1D frequency splitting to 2D Multi-Feature Region Isolation bolstered by Harmonic-Percussive Source Separation , broadband instruments like snares can be isolated cleanly from dense commercial mixes. 
+ Finally, by mapping a Comb Filter Matrix and a dual-loop Phase-Locked Loop directly onto parallel HLSL compute passes, tempo tracking achieves octave stability and sub-frame phase locking while executing well within a single millisecond of GPU time 9 . 
+This design meets all real-time visual constraints, operates deterministically without neural network latency, and establishes a robust framework for every future audio-reactive project built on Sentinel. 
+
+ 

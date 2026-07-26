@@ -1,0 +1,76 @@
+name: "AU Analysis Lens"
+version: "1.0"
+mode: generator
+resolution: [480, 270]
+
+viewport:
+  hint: "Observation lens. Hatched = blob candidates. Panel = live luma distribution with threshold marked."
+
+inputs:
+  - { name: "Plate", slot: 0, required: true }
+  - { name: "Field", slot: 1, required: true }
+
+parameters:
+  - { name: preblur, display: "Pre-Blur", type: float, min: 0.0, max: 2.0, default: 0.35, group: "Observation" }
+  - { name: sep_radius, display: "Nucleus Radius", type: float, min: 0.5, max: 24.0, default: 6.0, group: "Observation" }
+  - { name: separation, display: "Nucleus Separation", type: float, min: 0.0, max: 1.2, default: 0.94, group: "Observation" }
+  - { name: mass_gain, display: "Mass Gain", type: float, min: 0.2, max: 12.0, default: 4.20, group: "Observation" }
+  - { name: mass_gamma, display: "Mass Contrast", type: float, min: 0.2, max: 4.0, default: 1.10, group: "Observation" }
+  - { name: line_texture, display: "Inscription Texture", type: float, min: 0.0, max: 1.5, default: 0.34, group: "Observation" }
+  - { name: local_radius, display: "Texture Radius", type: float, min: 0.5, max: 8.0, default: 2.6, group: "Observation" }
+  - { name: analysis_bias, display: "Observation Bias", type: float, min: -0.5, max: 0.5, default: -0.02, group: "Observation" }
+
+  - { name: mark_low, display: "Threshold Mark Low", type: float, min: 0.0, max: 1.0, default: 0.46, group: "Threshold Readout" }
+  - { name: mark_high, display: "Threshold Mark High", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Threshold Readout" }
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Threshold Readout" }
+
+buffers:
+  - { name: shaped, format: RGBA8, scale: 1.0 }
+  - { name: hist, structured: true, element_size: 16, element_count: 66, persistent: true }
+
+passes:
+  - name: shape
+    shader: shape.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+    output: "buffer:shaped"
+
+  - name: hist
+    shader: hist.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:shaped" }
+    output: "buffer:hist"
+
+  - name: inspect
+    shader: inspect.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:shaped" }
+      - { slot: 1, source: "buffer:hist" }
+
+  - name: analysis_out
+    shader: analysis_out.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:shaped" }
+
+data_outputs:
+  - name: "Observation Histogram"
+    buffer: hist
+    schema:
+      - { name: count, type: uint }
+      - { name: r1, type: uint }
+      - { name: r2, type: uint }
+      - { name: r3, type: uint }
+
+outputs:
+  - { name: "Inspect", pass: inspect }
+  - { name: "Analysis", pass: analysis_out }

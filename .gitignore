@@ -17,6 +17,8 @@ refs/
 vision.json
 *.previous
 projects/recovery_*.sentinel
+# per-project proof bundles are point-in-time artifacts, regenerated on demand
+projects/*/proof/
 *.log
 # compiled shader caches (regenerated on load; build/GPU-specific)
 **/shader_cache/
@@ -47,3 +49,5 @@ projects/*
 !projects/streamdiff_workflows/
 !projects/streamdiff_collage/
 !projects/procedural_building_system/
+!projects/cryogram/
+!projects/autopsia/

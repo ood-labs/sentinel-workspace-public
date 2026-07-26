@@ -1,0 +1,94 @@
+name: "CRYO / Relief"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+features: [camera, noise]
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed"
+  interactions: [camera]
+
+inputs:
+  - { name: "Field", slot: 0, required: true }
+  - { name: "Specimen", slot: 1, required: false }
+
+data_inputs:
+  - name: "Filaments"
+    slot: 0
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: idA, type: float }
+      - { name: idB, type: float }
+      - { name: len, type: float }
+      - { name: strain, type: float }
+      - { name: weight, type: float }
+      - { name: age, type: float }
+      - { name: pad, type: float2 }
+  - name: "Tracks"
+    slot: 1
+    schema:
+      - { name: position, type: float2 }
+      - { name: velocity, type: float2 }
+      - { name: age, type: float }
+      - { name: confidence, type: float }
+      - { name: id, type: float }
+      - { name: active, type: float }
+
+buffers:
+  - { name: gbuf, format: RGBA32F }
+
+parameters:
+  - { name: height_scale,    display: "Relief Height",     group: "Terrain", type: float, min: 0.02, max: 1.60, default: 0.42 }
+  - { name: march_steps,     display: "March Steps",       group: "Terrain", type: int,   min: 24,   max: 320,  default: 130 }
+  - { name: march_distance,  display: "March Distance",    group: "Terrain", type: float, min: 4.0,  max: 60.0, default: 26.0 }
+  - { name: normal_eps,      display: "Normal Epsilon",    group: "Terrain", type: float, min: 0.5,  max: 8.0,  default: 1.8 }
+
+  - { name: key_gain,        display: "Key Light",         group: "Shading", type: float, min: 0.0,  max: 2.5,  default: 0.92 }
+  - { name: rim_gain,        display: "Grazing Rim",       group: "Shading", type: float, min: 0.0,  max: 2.0,  default: 0.34 }
+  - { name: hatch_gain,      display: "Hatch Gain",        group: "Shading", type: float, min: 0.0,  max: 1.2,  default: 0.20 }
+  - { name: hatch_pitch,     display: "Hatch Pitch",       group: "Shading", type: float, min: 2.0,  max: 48.0, default: 11.0 }
+  - { name: scarp_gain,      display: "Boundary Scarps",   group: "Shading", type: float, min: 0.0,  max: 1.0,  default: 0.85 }
+  - { name: fog_density,     display: "Distance Fade",     group: "Shading", type: float, min: 0.0,  max: 0.45, default: 0.055 }
+  - { name: exposure,        display: "Exposure",          group: "Shading", type: float, min: 0.2,  max: 3.0,  default: 1.15 }
+  - { name: vignette,        display: "Vignette",          group: "Shading", type: float, min: 0.0,  max: 1.0,  default: 0.30 }
+
+  - { name: contour_step,    display: "Strata Interval",   group: "Strata",  type: float, min: 0.004, max: 0.20, default: 0.030 }
+  - { name: contour_width,   display: "Strata Width",      group: "Strata",  type: float, min: 0.2,  max: 4.0,  default: 0.9 }
+  - { name: contour_gain,    display: "Strata Gain",       group: "Strata",  type: float, min: 0.0,  max: 1.0,  default: 0.62 }
+
+  - { name: stage_grid,      display: "Stage Grid",        group: "Stage",   type: float, min: 0.04, max: 1.20, default: 0.25 }
+  - { name: stage_gain,      display: "Stage Gain",        group: "Stage",   type: float, min: 0.0,  max: 1.0,  default: 0.20 }
+  - { name: fwidth_approx_scale, display: "Grid Softness", group: "Stage",   type: float, min: 0.2,  max: 6.0,  default: 1.6 }
+
+  - { name: wire_gain,       display: "Bond Visibility",   group: "Measured Overlay", type: float, min: 0.0, max: 1.5, default: 0.90 }
+  - { name: wire_lift,       display: "Bond Lift",         group: "Measured Overlay", type: float, min: 0.0, max: 0.50, default: 0.075 }
+  - { name: wire_weight_min, display: "Stretched Weight",  group: "Measured Overlay", type: float, min: 0.2, max: 3.0, default: 0.65 }
+  - { name: wire_weight_max, display: "Compressed Weight", group: "Measured Overlay", type: float, min: 0.4, max: 6.0, default: 1.9 }
+  - { name: xray_gain,       display: "Occluded X-Ray",    group: "Measured Overlay", type: float, min: 0.0, max: 1.0, default: 0.16 }
+  - { name: marker_gain,     display: "Identity Markers",  group: "Measured Overlay", type: float, min: 0.0, max: 1.5, default: 0.95 }
+  - { name: marker_height,   display: "Marker Height",     group: "Measured Overlay", type: float, min: 0.01, max: 0.60, default: 0.11 }
+  - { name: marker_scale,    display: "Marker Scale",      group: "Measured Overlay", type: float, min: 0.3, max: 3.0, default: 1.0 }
+  - { name: marker_confidence, display: "Marker Threshold", group: "Measured Overlay", type: float, min: 0.1, max: 1.0, default: 0.90 }
+
+passes:
+  - name: march
+    shader: march.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: "buffer:gbuf"
+
+  - name: shade
+    shader: shade.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:gbuf" }
+      - { slot: 1, source: "input:0" }
+      - { slot: 2, source: "input:1" }
+      - { slot: 3, source: "data:0" }
+      - { slot: 4, source: "data:1" }
+    output: output
+
+outputs:
+  - { name: "Relief", pass: shade }
