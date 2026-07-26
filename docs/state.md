@@ -1,6 +1,6 @@
 ---
 type: state
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 
 # Workspace State
@@ -10,11 +10,10 @@ updated: 2026-07-25
 Phase 2 - Audio Analysis v2 (`pulse2`) is **in progress**, not planned. See the detailed Phase 2
 section below for the live position; this header block was stale through 2D and has been corrected.
 
-Phase 3 - Interaction Lab v2 is planned and awaiting implementation. It promotes AUTOPSIA's
-instrument UI language into a shared `sui3_*` kit, consolidates Interaction Lab from seven stations
-to four, and rebuilds each station so state is carried by structure and live readout rather than by
-fill and rollover. Two operator decisions are binding: hybrid scope, and an amber accent reserved
-for meaning.
+Phase 3 - Interaction Lab v2 is **in progress**. 3A (baseline) and 3B (the `sui3_*` kit plus the
+Style Authority station) are complete and committed. The phase is **stopped at the 3B taste
+checkpoint**, which is a hard blocker: four stations depend on the answer and nothing downstream
+should be built unapproved.
 
 CRYOGRAM is committed and working as a measured-crystal audio-reactive example, with two known
 defects tracked separately (see Blockers).
@@ -23,7 +22,8 @@ defects tracked separately (see Blockers).
 
 Phase 2: 2D complete with criterion 1 short (see below). Next is 2E1.
 
-Phase 3: none started. Next is 3A - baseline, profile ceiling, and platform-bug confirmation.
+Phase 3: 3A and 3B complete. **Blocked at the 3B taste checkpoint** (hard stop). Next after
+approval is 3C - Motion Console.
 
 Phase 2 was audited before implementation by four parallel agents. Ten sub-phases (2A1, 2A2, 2B,
 2C1, 2C2, 2C3, 2D, 2E1, 2E2, 2F). Five judgement calls are recorded in the phase doc's Plan Audit
@@ -33,11 +33,16 @@ Phase 3 has six sub-phases (3A, 3B, 3C, 3D, 3E, 3F) and has **not** been plan-au
 
 ## Blockers
 
-None blocking Phase 2 or Phase 3.
+**Phase 3 is stopped at the 3B taste checkpoint.** Two things are wanted from it: approval of the
+look, and the hover pass that closes 3B.3.
 
-Phase 3 carries a known constraint rather than a blocker: viewport event injection does not work on
-this build, so every pointer-gesture criterion needs a hand on the mouse. The phase is ordered to
-batch that into two hands-on sessions.
+Phase 3 also carries a known constraint rather than a blocker: viewport event injection does not
+work on this build, so every pointer-gesture criterion needs a hand on the mouse. The phase is
+ordered to batch that into two hands-on sessions. 3A additionally found the Sentinel window
+unreachable from the agent session (`list_windows` empty, `sentinel_screenshot` "No window found"),
+so full-window screenshots are unavailable for the whole phase; pipeline texture capture works.
+
+Nothing blocking Phase 2.
 
 Tracked separately, out of Phase 2 scope:
 
@@ -62,7 +67,7 @@ Tracked separately, out of Phase 2 scope:
 
 ## Last devlog
 
-`docs/devlogs/2026-07-23-axiom-choir-example.md` - complete, approved.
+`docs/devlogs/2026-07-26-phase3b-sui3-kit.md` - complete, approval pending.
 
 ## Phase 2 - Audio Analysis v2 (in progress, 2026-07-25)
 
@@ -119,9 +124,31 @@ monochrome look specified in both CLAUDE.md and the phase doc (which explicitly 
 not Magma/Inferno); CLAUDE.md permits it because the user asked. Awaiting their choice
 of ordering: colour ramp first, or finish criteria 3-6 first.
 
-## Phase 3 - Interaction Lab v2 (planned, 2026-07-26)
+## Phase 3 - Interaction Lab v2 (in progress, 2026-07-26)
 
-Not started. Plan doc: `docs/phases/phase-3-interaction-lab-v2.md`. Not plan-audited.
+Plan doc: `docs/phases/phase-3-interaction-lab-v2.md`. Not plan-audited.
+
+**3A complete** — `docs/devlogs/2026-07-26-phase3a-baseline.md`. Profile ceiling 14.88 ms pipeline
+with `Motion_Console` alone at 14.66 ms (98% of all pipeline time). `burst` confirmed a **one-way
+latch** that survives two `force_reload`s — worse than the documented constant-1.0 — so one press
+destroys the Pulse lane for the session; `sentinel_state get` and `sentinel_pipeline info` disagreed
+on it, and `info` is the one to trust. xypad Y confirmed down=more on the render side.
+`follow_panel` proven to pin resolution, which forced Amendment 1: every v3 station declares a
+canonical fixed-resolution renderer.
+
+**3B complete** — `docs/devlogs/2026-07-26-phase3b-sui3-kit.md`. Six of seven criteria pass with
+measurements; 3B.3 (hover) is structurally proven but gesture-dependent and deliberately **not**
+marked complete. Two defects were caught by measuring rather than looking, both of which read as
+correct to the eye:
+
+1. Every hairline was a **2px half-intensity straddle** — `P = tid + 0.5` puts pixel centres on
+   half-integers while the layout supplies integer edges. Fixed kit-wide by snapping geometry to
+   `floor(v) + 0.5`; cell-frame runs went from `{1: 627, 2: 581}` to `{1: 1162}`.
+2. The METERS bank rendered no readable value while the kit's own header claimed every control
+   does. Fixed on both sides.
+
+`Style_Authority` measures **1.865 ms** mean — one seventh of `Motion_Console` while drawing a much
+denser sheet, which is the payoff for the single-tap glyph.
 
 The premise: AUTOPSIA deliberately does not use Interaction Lab's shared UI kit
 (`modules/_shared/au_hud/au_text.hlsli:9`). The refinement lives in the `au_*`

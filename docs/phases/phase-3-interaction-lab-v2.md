@@ -247,6 +247,38 @@ The primitive gallery survives as the authority's own preview of what it is publ
 7. The three retired modules are **not yet deleted** - they remain on disk until 3F, so the taste
    checkpoint can compare old against new side by side.
 
+### 3B result (2026-07-26)
+
+Six of seven pass. Devlog: `docs/devlogs/2026-07-26-phase3b-sui3-kit.md`.
+
+**3B.3 is NOT marked complete.** Rollover is unreachable by construction - the station declares no
+pointer-event block and no v3 function accepts an interaction-state argument - but the criterion as
+written wants two captures with a pointer on and off a control, which is gesture-dependent. It is
+batched onto the taste checkpoint.
+
+**3B.6 passes weakly** and the criterion should be read accordingly downstream: `validate` reports
+`0 controls` for this station, so the "rendered rectangles agree with the manifest" half is vacuous
+here. It bites in 3D and 3E, which do declare control rects.
+
+**Amendment 2 - the readout rule is now stated correctly.** Criterion 1 requires "a live numeric
+readout attached to every control." The kit's own header claimed each control draws its own digits;
+`sui3Meter` cannot, because a 20px meter in a bank of six has nowhere to put them. The rule for 3C-3F
+is therefore: **numeric where the control has room, positional where it does not - and every control
+GROUP owes one printed number.** A bank of meters with no number anywhere is a criterion-1 failure;
+a single meter without its own digits is not.
+
+**Two defects fixed in the kit, relevant to every later sub-phase:**
+
+1. Hairlines were 2px at half intensity roughly half the time. Callers pass `P = tid + 0.5`, so a
+   line whose geometry lands on an integer boundary is equidistant from two pixel centres. All
+   axis-aligned primitives now snap geometry to `floor(v) + 0.5` via `sui3Snap*` / `sui3HairAt`.
+   **New stations must draw axis-aligned lines through `sui3HairAt`, never `sui3Hair(abs(p - at))`.**
+2. `sui3Brackets`, `sui3Graticule` and `sui3Ticks` needed rewrites rather than wrappers - the first
+   counted pixels from an unsnapped edge, the latter two derived distance from `frac()` of an
+   unsnapped origin.
+
+Radial primitives are deliberately left unsnapped.
+
 ## Sub-Phase 3C - Motion Console
 
 Smallest rebuild, and the one that exercises the widest set of primitives: pads, sliders, a toggle,

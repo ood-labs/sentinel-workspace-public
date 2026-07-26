@@ -1,0 +1,81 @@
+name: "Style Authority"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+# NO `panel: follow_panel` block, deliberately. Phase 3A Amendment 1: every v3
+# station keeps a canonical renderer at an intentional fixed resolution, per
+# CLAUDE.md's Direct-Manipulation UI Architecture rule. Every current lab
+# station is follow_panel with no canonical output, which is why five of seven
+# render at extents where their layout cannot work (100x132 in one case) and why
+# resolution_width/height writes are ignored.
+#
+# This station has no editing surface: its values are numeric shaping, which
+# CLAUDE.md puts in Properties, not in an authored canvas that duplicates
+# sliders. The render is a live specimen sheet of what it publishes.
+
+parameters:
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Theme" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.2, max: 1.6, default: 1.0, group: "Theme" }
+
+  - { name: title_scale, display: "Title Scale", type: float, min: 1.0, max: 4.0, default: 2.0, group: "Typography" }
+  - { name: section_scale, display: "Section Scale", type: float, min: 1.0, max: 3.0, default: 1.0, group: "Typography" }
+  - { name: body_scale, display: "Body Scale", type: float, min: 1.0, max: 3.0, default: 1.0, group: "Typography" }
+
+  - { name: outer_padding, display: "Outer Padding", type: float, min: 4.0, max: 48.0, default: 20.0, group: "Layout" }
+  - { name: section_gap, display: "Section Gap", type: float, min: 2.0, max: 40.0, default: 14.0, group: "Layout" }
+  - { name: control_height, display: "Control Height", type: float, min: 12.0, max: 64.0, default: 28.0, group: "Layout" }
+  - { name: control_gap, display: "Control Gap", type: float, min: 2.0, max: 32.0, default: 8.0, group: "Layout" }
+
+  - { name: demo_value, display: "Specimen Value", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Specimen" }
+  - { name: demo_pad, display: "Specimen Pad", type: point2D, min: [0, 0], max: [1, 1], default: [0.34, 0.68], group: "Specimen" }
+  - { name: demo_toggle, display: "Specimen Toggle", type: bool, default: true, group: "Specimen" }
+  - { name: demo_bank, display: "Specimen Bank", type: int, min: 0, max: 3, default: 2, group: "Specimen" }
+
+buffers:
+  - { name: theme, structured: true, element_size: 16, element_count: 4, persistent: false }
+
+passes:
+  - name: state
+    shader: state.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:theme"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:theme" }
+    output: output
+
+control_outputs:
+  - { name: title_scale, buffer: theme, element: 0, field_offset: 0, description: "Published title type scale" }
+  - { name: section_scale, buffer: theme, element: 0, field_offset: 4, description: "Published section type scale" }
+  - { name: body_scale, buffer: theme, element: 0, field_offset: 8, description: "Published body type scale" }
+  - { name: exposure, buffer: theme, element: 0, field_offset: 12, description: "Published non-accent level exposure" }
+  - { name: outer_padding, buffer: theme, element: 1, field_offset: 0, description: "Published outer padding, px" }
+  - { name: section_gap, buffer: theme, element: 1, field_offset: 4, description: "Published section gap, px" }
+  - { name: control_height, buffer: theme, element: 1, field_offset: 8, description: "Published control height, px" }
+  - { name: control_gap, buffer: theme, element: 1, field_offset: 12, description: "Published control gap, px" }
+  - { name: accent_r, buffer: theme, element: 2, field_offset: 0, description: "Published accent red" }
+  - { name: accent_g, buffer: theme, element: 2, field_offset: 4, description: "Published accent green" }
+  - { name: accent_b, buffer: theme, element: 2, field_offset: 8, description: "Published accent blue" }
+  - { name: specimen_value, buffer: theme, element: 2, field_offset: 12, description: "Specimen scalar" }
+  - { name: pad_x, buffer: theme, element: 3, field_offset: 0, description: "Specimen pad X" }
+  - { name: pad_y, buffer: theme, element: 3, field_offset: 4, description: "Specimen pad Y, up = more" }
+
+data_outputs:
+  - name: "Theme"
+    buffer: theme
+    schema:
+      - { name: a, type: float }
+      - { name: b, type: float }
+      - { name: c, type: float }
+      - { name: d, type: float }
+
+outputs:
+  - { name: "Style Authority", pass: render }
