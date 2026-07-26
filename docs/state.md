@@ -7,25 +7,37 @@ updated: 2026-07-25
 
 ## Current focus
 
-Phase 2 - Audio Analysis v2 (`pulse2`) is planned and awaiting implementation. It builds a reusable
-GPU audio analysis system: adaptive-whitened SuperFlux onset detection, click-to-place spectral
-region isolation, a multi-feature classifier for coincident hits, and comb-filter tempo with a
-dual-loop beat PLL. The scoring harness is sub-phase 2A and is blocking.
+Phase 2 - Audio Analysis v2 (`pulse2`) is **in progress**, not planned. See the detailed Phase 2
+section below for the live position; this header block was stale through 2D and has been corrected.
+
+Phase 3 - Interaction Lab v2 is planned and awaiting implementation. It promotes AUTOPSIA's
+instrument UI language into a shared `sui3_*` kit, consolidates Interaction Lab from seven stations
+to four, and rebuilds each station so state is carried by structure and live readout rather than by
+fill and rollover. Two operator decisions are binding: hybrid scope, and an amber accent reserved
+for meaning.
 
 CRYOGRAM is committed and working as a measured-crystal audio-reactive example, with two known
 defects tracked separately (see Blockers).
 
 ## Active sub-phase
 
-None started. Next is 2A1 - Frozen corpus and onset-export contract.
+Phase 2: 2D complete with criterion 1 short (see below). Next is 2E1.
 
-Phase 2 has been audited before implementation by four parallel agents. Ten sub-phases (2A1, 2A2,
-2B, 2C1, 2C2, 2C3, 2D, 2E1, 2E2, 2F). Five judgement calls are recorded in the phase doc's Plan
-Audit Findings section and are individually revertible.
+Phase 3: none started. Next is 3A - baseline, profile ceiling, and platform-bug confirmation.
+
+Phase 2 was audited before implementation by four parallel agents. Ten sub-phases (2A1, 2A2, 2B,
+2C1, 2C2, 2C3, 2D, 2E1, 2E2, 2F). Five judgement calls are recorded in the phase doc's Plan Audit
+Findings section and are individually revertible.
+
+Phase 3 has six sub-phases (3A, 3B, 3C, 3D, 3E, 3F) and has **not** been plan-audited.
 
 ## Blockers
 
-None blocking Phase 2.
+None blocking Phase 2 or Phase 3.
+
+Phase 3 carries a known constraint rather than a blocker: viewport event injection does not work on
+this build, so every pointer-gesture criterion needs a hand on the mouse. The phase is ordered to
+batch that into two hands-on sessions.
 
 Tracked separately, out of Phase 2 scope:
 
@@ -45,6 +57,8 @@ Tracked separately, out of Phase 2 scope:
   recommends 4096 (11.7 Hz/bin, 0-12 kHz); the alternative is 2048 (23.4 Hz/bin, full 0-24 kHz).
   Adopt whichever scores higher and record the numbers.
 - Whether the generated corpus WAV files are committed or regenerated on demand.
+- Whether Interaction Lab v2 is promoted to the public workspace after Phase 3. Deliberately out of
+  Phase 3 scope: Phase 1 is still approval-pending with an open cold-load follow-up.
 
 ## Last devlog
 
@@ -104,3 +118,35 @@ darker base through a colour spectrum to separate instruments. This OVERRIDES th
 monochrome look specified in both CLAUDE.md and the phase doc (which explicitly says
 not Magma/Inferno); CLAUDE.md permits it because the user asked. Awaiting their choice
 of ordering: colour ramp first, or finish criteria 3-6 first.
+
+## Phase 3 - Interaction Lab v2 (planned, 2026-07-26)
+
+Not started. Plan doc: `docs/phases/phase-3-interaction-lab-v2.md`. Not plan-audited.
+
+The premise: AUTOPSIA deliberately does not use Interaction Lab's shared UI kit
+(`modules/_shared/au_hud/au_text.hlsli:9`). The refinement lives in the `au_*`
+renderers while every lab station is built on the older, generic `sui_*` layer, so
+lifting the lab station-by-station would be fighting the kit. The kit is replaced
+first, then the stations are rebuilt on it.
+
+Measured differences driving the work: 2px strokes plus a gutter versus exact 1px
+hairlines; `lerp` toward filled control greys versus additive ink on a near-black
+field; a grey accent spent on hover versus amber reserved for meaning; normalized
+960x540 layout versus pixel space; no per-control readouts versus a live value on
+every control.
+
+Two operator decisions, binding:
+1. **Hybrid scope.** New kit; Spline Editor, Gizmo Lab and Motion Console rebuilt;
+   UI_Kit + Font_Sampler + UI_Style_Tuner merged into one Style Authority station that
+   publishes the live theme the other three consume. Seven stations become four.
+2. **Amber accent reserved for meaning.** Overrides the lab's monochrome precedent.
+   X/Y/Z gizmo handles stay red/green/blue - those carry directional meaning.
+
+Three platform gotchas inherited from AUTOPSIA, to be re-confirmed on this build in
+3A rather than assumed: `type: button` reads a constant 1.0 in HLSL (Motion_Console's
+`burst` is declared that way and is suspected dead); host `xypad` stores Y increasing
+downward; never `[unroll]` a glyph loop.
+
+Known hazards: rebuilt modules will orphan the 4 group presets and 7 node presets in
+`interaction_lab.sentinel` - 3F migrates or explicitly retires each; `sui_*` headers
+must not be edited because every other project bundles a copy.

@@ -9,7 +9,8 @@ This plan governs work in the user-writable Sentinel workspace and its curated p
 | Phase | Title | Status | Detailed plan |
 | --- | --- | --- | --- |
 | 1 | Official Examples Modernization | Complete; approval pending | [Phase 1](phases/phase-1-official-examples-modernization.md) |
-| 2 | Audio Analysis v2 (`pulse2`) | Planned | [Phase 2](phases/phase-2-audio-analysis-v2.md) |
+| 2 | Audio Analysis v2 (`pulse2`) | In progress | [Phase 2](phases/phase-2-audio-analysis-v2.md) |
+| 3 | Interaction Lab v2 (Instrument-Grade UI Overhaul) | Planned | [Phase 3](phases/phase-3-interaction-lab-v2.md) |
 
 ## Phase 1 - Official Examples Modernization
 
@@ -126,6 +127,68 @@ The detailed phase doc is the acceptance contract. A sub-phase is not complete b
 compiles or a capture exists; its measured and behavioral criteria must hold in the running
 application.
 
+## Phase 3 - Interaction Lab v2 (Instrument-Grade UI Overhaul)
+
+Promote AUTOPSIA's instrument UI language into a shared `sui3_*` kit, consolidate Interaction Lab
+from seven stations to four, and rebuild each station so state is carried by structure and live
+readout rather than by fill and rollover.
+
+AUTOPSIA deliberately does not use Interaction Lab's shared kit
+(`modules/_shared/au_hud/au_text.hlsli:9` records the decision). The refinement therefore lives in
+the `au_*` renderers while every lab station is built on the older, more generic `sui_*` layer.
+Lifting the lab station-by-station would be fighting the kit, so the kit is replaced first.
+
+Two operator decisions taken at plan time are binding: **hybrid scope** (new kit, three real tools
+rebuilt, three demonstration nodes merged into one station with a genuine job) and **amber accent
+reserved for meaning**, which overrides the lab's strictly-monochrome precedent.
+
+### Sub-Phases
+
+| Sub-phase | Outcome | Primary capability | Status |
+| --- | --- | --- | --- |
+| 3A | Baseline, profile ceiling, platform-bug confirmation | captures, profiling, live probes | Planned |
+| 3B | `sui3_*` kit and the Style Authority station | pixel-space HLSL primitives, control outputs | Planned |
+| 3C | Motion Console rebuilt; `burst` fixed | viewport event hit-testing, meters | Planned |
+| 3D | Spline Editor rebuilt | selection, marquee, tangents, undo | Planned |
+| 3E | Gizmo Lab rebuilt | host selection, transform handles | Planned |
+| 3F | Consolidation, presets, clean-checkout hand-off | preset migration, group audit, portability | Planned |
+
+### MCP And Runtime Surfaces
+
+- `sentinel_pipeline`: `compile_check`, `compile_status`, `force_reload`, `info`, `open_window`.
+- `sentinel_graph`: `profile` (rolling `cook_hz`), `focus`, `place_relative`, `auto_layout` as an
+  explicit layout checkpoint, Scene Group exposure actions.
+- `sentinel_viewport`: `info` for delivered-gesture counts, `state` for durable-state bytes.
+- `sentinel_capture`: `capture_at` at two panel extents, `proof_bundle`, `checkpoint`.
+- `sentinel_expression`: theme drivers from the Style Authority to the other stations.
+- `sentinel_preset`: preset migration and recall verification.
+- `sentinel_vision`: content assertion on captures, with a deterministic PNG fallback.
+
+### Dependencies
+
+1. A running Sentinel in the active interactive desktop; Canvas panels need 0.5.32 or newer and
+   viewport events need 0.5.30 or newer.
+2. `tools/module-ui.ps1` for station validation.
+3. `projects/autopsia` present and readable as the frozen reference implementation.
+4. An operator available for two hands-on sessions - viewport event injection does not work on this
+   build (`docs/state.md:89`), so pointer-gesture proof needs a hand on the mouse.
+
+### Implementation Order
+
+1. 3A baseline and platform-bug confirmation. Nothing else begins first.
+2. 3B kit, then Style Authority. Taste checkpoint - a hard stop.
+3. 3C Motion Console.
+4. 3D Spline Editor.
+5. 3E Gizmo Lab.
+6. 3F consolidation, presets, batched interaction pass, clean-checkout proof.
+
+The detailed phase doc is the acceptance contract. A station is not complete because it compiles or
+a capture exists; its visible and behavioral criteria must hold in the running application, and its
+gesture criteria require a recorded hands-on pass.
+
 ## Future Phases
 
 No later workspace phase is scheduled yet. Additional examples should enter the public collection only after Phase 1 establishes and proves the readiness standard.
+
+Public promotion of Interaction Lab v2 is deliberately **not** part of Phase 3: Phase 1 remains
+approval-pending with an open cold-load follow-up, so promotion is a separate decision.
