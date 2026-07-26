@@ -266,11 +266,22 @@ void main(uint3 tid : SV_DispatchThreadID) {
             }
             float bg = (cnt == 0u) ? 0.0 : w[cnt / 2u];
 
-            float thr = pick_alpha + pick_lambda * bg;
+            // PER-LANE multipliers on the shared threshold and refractory.
+            // Without them a band can be placed precisely and then not tuned:
+            // the threshold that stops a hi-hat lane firing every 150 ms
+            // desensitises the kick by the same factor at the same moment,
+            // because every lane read one global number. Both default to 1.0,
+            // so the committed tables are unaffected.
+            float thrMul = (lane == 0u) ? rgn0_thresh
+                         : (lane == 1u) ? rgn1_thresh : rgn2_thresh;
+            float refMul = (lane == 0u) ? rgn0_refract
+                         : (lane == 1u) ? rgn1_refract : rgn2_refract;
+
+            float thr = (pick_alpha + pick_lambda * bg) * max(thrMul, 0.01);
 
             bool isPeak = (o > thr) && (o >= oPrev) && (o >= oNext);
             float lastHop = (lane == 0u) ? E.e : ((lane == 1u) ? E.f : E.g);
-            bool refOk = (hopCount - lastHop) > refHops;
+            bool refOk = (hopCount - lastHop) > (refHops * max(refMul, 0.01));
 
             // The 2D verdict. Deliberately gates ACCEPTANCE only, and does not
             // touch the refractory: a rejected candidate must not consume the

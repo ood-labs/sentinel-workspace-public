@@ -315,6 +315,26 @@ parameters:
   # Peak picking. No per-lane threshold floor exists by design: whitening
   # normalises every bin to 0..1 against its own running peak, which is what
   # removes the starvation a single global floor caused.
+
+  # ---- PER-LANE PICKING -------------------------------------------------
+  # The threshold and refractory above are shared by all three lanes, which
+  # makes them unusable for dialling in a single band: raising the threshold to
+  # stop a hi-hat lane firing every 150 ms desensitises the kick by the same
+  # factor at the same time. A region you can place precisely and then cannot
+  # tune independently is only half a control.
+  #
+  # These are MULTIPLIERS on the shared values, defaulting to 1.0, so the
+  # global knobs stay meaningful as masters and every committed score table
+  # reproduces bit-for-bit at the defaults.
+  #
+  # Higher threshold multiplier = fewer detections in that lane.
+  - { name: rgn0_thresh,    display: "Kick Threshold x",  group: "Region 0 - Kick", type: float, min: 0.2, max: 8.0, default: 1.0 }
+  - { name: rgn0_refract,   display: "Kick Refractory x", group: "Region 0 - Kick", type: float, min: 0.2, max: 8.0, default: 1.0 }
+  - { name: rgn1_thresh,    display: "Snare Threshold x",  group: "Region 1 - Snare", type: float, min: 0.2, max: 8.0, default: 1.0 }
+  - { name: rgn1_refract,   display: "Snare Refractory x", group: "Region 1 - Snare", type: float, min: 0.2, max: 8.0, default: 1.0 }
+  - { name: rgn2_thresh,    display: "Hat Threshold x",  group: "Region 2 - Hat", type: float, min: 0.2, max: 8.0, default: 1.0 }
+  - { name: rgn2_refract,   display: "Hat Refractory x", group: "Region 2 - Hat", type: float, min: 0.2, max: 8.0, default: 1.0 }
+
   - { name: pick_lambda,    display: "Threshold Lambda",  group: "Peak Picking", type: float, min: 0.5, max: 8.0,  default: 2.2 }
   - { name: pick_alpha,     display: "Threshold Alpha",   group: "Peak Picking", type: float, min: 0.0, max: 2.0,  default: 0.08 }
   - { name: median_window,  display: "Median Window (hops)", group: "Peak Picking", type: float, min: 4.0, max: 32.0, default: 16.0 }
