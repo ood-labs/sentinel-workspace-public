@@ -106,5 +106,15 @@ passes:
       - { slot: 1, source: "buffer:tstate" }
     output: output
 
+# Diagnostics. A blank strip has several possible causes -- no records, a
+# scroll clock parked in the wrong era, or a data input the host never filled --
+# and they are indistinguishable from the picture.
+control_outputs:
+  - { name: ht_now,     buffer: tstate, element: 0, field_offset: 0,  description: "Right-edge sample position" }
+  - { name: ht_maxpos,  buffer: tstate, element: 0, field_offset: 8,  description: "Newest record seen" }
+  - { name: ht_valid,   buffer: tstate, element: 0, field_offset: 12, description: "Clock has locked onto real data" }
+  - { name: ht_n_kick,  buffer: tstate, element: 1, field_offset: 0,  description: "Kick records in window" }
+  - { name: ht_n_beat,  buffer: tstate, element: 1, field_offset: 12, description: "Beat records in window" }
+
 outputs:
   - { name: "Timeline", pass: render }
