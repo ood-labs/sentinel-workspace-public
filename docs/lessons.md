@@ -1,10 +1,50 @@
 ---
 type: lessons
-updated: 2026-07-23
+updated: 2026-07-27
 ---
 
 
 # Lessons
+
+## 2026-07-27 - A guard can be written for a defect it cannot reach
+
+**Symptoms**: A new guard for the `spline_desk` arm-then-execute queueing fix passed. Reverting the
+fix, recompiling and re-running it: still PASS.
+
+**Cause**: The guard fired an automation door six times with no settle, expecting the commands to
+collide. Each MCP round trip is slower than the 16 ms cook, so every command got a cook to itself.
+The defect needs a NON-SNAP command landing on the cook right after a snap command armed, and the
+only non-snap command a pointer produces is a drag move (`modules/spline_desk/interaction.hlsl:190`).
+There is no automation path to it.
+
+**Fix**: Kept the guard for the invariant it does assert, renamed it to match, recorded the negative
+result in its docstring, and marked the fix unguarded in the devlog. The general rule: a new guard
+is not evidence until you have watched it FAIL against the reverted fix. Passing on a build that
+already works proves nothing.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-27
+
+## 2026-07-27 - Probing live GPU state needs to know what the probe perturbs
+
+**Symptoms**: Two false FAILs from guards that had passed minutes earlier - a gizmo reseed sentinel
+reading 0.0, and spline anchors "differing after reset".
+
+**Cause**: Two different wrong assumptions about live state. `do_reset` runs `initialize()` and
+reseeds to four FIXED anchors (`modules/spline_desk/update.hlsl:11`); it does not restore what was
+on screen, so asserting a round trip asserted the wrong thing. And a persistent structured buffer
+can be recreated by the host, reading all zeros for the single cook before the shader's reseed lands.
+
+**Fix**: Assert the seed, not a round trip. For the sentinel, re-read a few times before failing,
+because recovery is the property under test and one sample cannot distinguish "never seeded" from
+"seeded next frame". Also: a guard that fires automation doors must restore everything it moved,
+including the active lane, which `do_reset` alone does not cover.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-27
+
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
 

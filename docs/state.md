@@ -1,6 +1,6 @@
 ---
 type: state
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Workspace State
@@ -81,8 +81,9 @@ Tracked separately, out of Phase 2 scope:
 
 ## Last devlog
 
-`docs/devlogs/2026-07-26-phase3f-consolidation.md` - complete, approval pending. Seven Phase 3
-devlogs exist (3A, 3B, 3C burst-confirmed, 3C motion-console, 3D, 3E, 3F); 3D and 3E are
+`docs/devlogs/2026-07-27-phase3-close-out.md` - complete, approval pending. It is the phase
+boundary record; the narrative lives in `docs/devlogs/2026-07-26-phase3f-consolidation.md`. Eight Phase 3
+devlogs exist (3A, 3B, 3C burst-confirmed, 3C motion-console, 3D, 3E, 3F, close-out); 3D and 3E are
 `in-progress` because their gesture criterion is open, per phase doc :551.
 
 ## Phase 2 - Audio Analysis v2 (in progress, 2026-07-25)
