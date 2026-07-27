@@ -49,7 +49,13 @@ void suiSlider(inout float3 color, SuiContext c, SuiTheme theme, float4 rect, Su
 void suiXYPad(inout float3 color, SuiContext c, SuiTheme theme, float4 rect, SuiInteraction interaction, float2 value) {
     suiControlFrame(color, c, theme, rect);
     float4 interior = suiControlInterior(c, rect);
-    float2 marker = lerp(interior.xy, interior.zw, saturate(value));
+    // Y-UP: value 1 lands on the TOP edge, matching both host surfaces.
+    // This drew Y-down until 2026-07-27, when the host stopped disagreeing
+    // with itself about pad Y and the compensation became the bug. The full
+    // history is the Y-DIRECTION CONTRACT in sui3_core.hlsli.
+    float2 v = saturate(value);
+    float2 marker = float2(lerp(interior.x, interior.z, v.x),
+                           lerp(interior.w, interior.y, v.y));
     float markerRadius = interaction.down ? 7.0 : 5.0;
     suiComposite(color, theme.muted, suiGridPx(c, 32.0, 1.0) * suiFillRect(c, interior));
     suiComposite(color, interaction.hovered ? theme.text : theme.accent, suiRingPx(c, marker, markerRadius, 2.0));
