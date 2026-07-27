@@ -1,0 +1,110 @@
+name: "Data Scope"
+version: "1.0"
+mode: generator
+
+# The worked example for modules/_shared/ui/sui3_trace.hlsli.
+#
+# Three auto-ranging strip charts over a live scalar stream. Every mechanism the
+# component provides is on screen and switchable, because a component whose
+# behaviour cannot be turned off cannot be shown to be doing anything: the
+# Autoscale toggle is the difference between "the plot rescaled" and "the signal
+# happened to fit".
+#
+# The scalars are three mel-band aggregates. That choice is incidental. Nothing
+# below the sampling pass knows the stream is audio, which is the point.
+resolution: [1280, 720]
+
+panel:
+  mode: canvas
+  output: "Data Scope"
+  resolution: follow_panel
+
+parameters:
+  - { name: span_seconds, display: "Span", type: float, min: 0.5, max: 5.0, default: 3.0, group: "Scope" }
+  # The mechanism demo. Off pins full scale to Fixed Scale, so the same signal
+  # can be seen clipping or crawling along the floor.
+  - { name: autoscale, display: "Autoscale", type: bool, default: true, group: "Scope" }
+  - { name: fixed_scale, display: "Fixed Scale", type: float, min: 0.05, max: 1.0, default: 1.0, group: "Scope" }
+  # 4 s is audio_bands' measured setting: the scale follows a change of material
+  # without twitching on individual hits.
+  - { name: peak_halflife, display: "Peak Half-Life", type: float, min: 0.25, max: 10.0, default: 4.0, group: "Scope" }
+  # Reference line. Participates in full scale, which is the fourth mechanism:
+  # a reference above the recent peak would otherwise pin itself to the top edge
+  # and stop reading as a reference at all.
+  - { name: reference, display: "Reference", type: float, min: 0.0, max: 1.0, default: 0.45, group: "Scope" }
+  # -90 measured, not chosen: summed band energy runs about -32 dB on the low
+  # lane and -66 on the high lane for this material, so a -60 floor clipped two
+  # of the three lanes to a flat zero.
+  - { name: db_floor, display: "dB Floor", type: float, min: -120.0, max: -20.0, default: -90.0, group: "Scope" }
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Scope" }
+
+data_inputs:
+  - name: "Mel Bands"
+    slot: 0
+    schema:
+      - { name: hop_index,          type: uint }
+      - { name: sample_position,    type: uint }
+      - { name: generation_counter, type: uint }
+      - { name: qpc_ticks_lo,       type: uint }
+      - { name: qpc_ticks_hi,       type: uint }
+      - { name: sample_rate,        type: uint }
+      - { name: fft_size,           type: uint }
+      - { name: hop_size,           type: uint }
+      - { name: value_count,        type: uint }
+      - { name: energy,             type: float }
+
+buffers:
+  # Per lane, stride 1026:
+  #   [0] stateA (cursor, write_idx, peak, hop_dt)
+  #   [1] stateB (last_value, full_scale, drained_last_cook, samples_shown)
+  #   [2..1025] trace (value, reference_at_sample, event, spare)
+  #
+  # 1024 samples is 5.46 s at the default 256-sample hop, so the 5 s maximum
+  # span never asks the ring for history it has already overwritten.
+  - { name: trace, structured: true, element_size: 16, element_count: 3078, persistent: true }
+
+passes:
+  - name: sample
+    shader: sample.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 4
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:trace"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:trace" }
+
+control_outputs:
+  # Everything a guard needs to assert on the mechanisms without reading pixels.
+  # cursor is latest+1, so it is a direct readback of the stream's generation
+  # counter as the module sees it. Distinguishes "the stream stopped advancing"
+  # from "the per-slot generation check rejected every hop", which are
+  # indistinguishable from `drained` alone.
+  - { name: cursor,        buffer: trace, element: 0,    field_offset: 0,  description: "Next generation to drain (latest+1)" }
+  - { name: hop_dt,        buffer: trace, element: 0,    field_offset: 12, description: "Sample interval in seconds, from the stream" }
+  - { name: samples_shown, buffer: trace, element: 1,    field_offset: 12, description: "Samples across the plot at the current span" }
+  - { name: drained,       buffer: trace, element: 1,    field_offset: 8,  description: "Samples drained on the last cook" }
+  - { name: write_idx,     buffer: trace, element: 0,    field_offset: 4,  description: "Total samples plotted since start" }
+
+  - { name: low_value,  buffer: trace, element: 1,    field_offset: 0,  description: "Low lane, newest sample 0..1" }
+  - { name: mid_value,  buffer: trace, element: 1027, field_offset: 0,  description: "Mid lane, newest sample 0..1" }
+  - { name: high_value, buffer: trace, element: 2053, field_offset: 0,  description: "High lane, newest sample 0..1" }
+
+  - { name: low_peak,   buffer: trace, element: 0,    field_offset: 8,  description: "Low lane rolling peak" }
+  - { name: mid_peak,   buffer: trace, element: 1026, field_offset: 8,  description: "Mid lane rolling peak" }
+  - { name: high_peak,  buffer: trace, element: 2052, field_offset: 8,  description: "High lane rolling peak" }
+
+  - { name: low_fs,     buffer: trace, element: 1,    field_offset: 4,  description: "Low lane full scale" }
+  - { name: mid_fs,     buffer: trace, element: 1027, field_offset: 4,  description: "Mid lane full scale" }
+  - { name: high_fs,    buffer: trace, element: 2053, field_offset: 4,  description: "High lane full scale" }
+
+outputs:
+  - { name: "Data Scope", pass: render }

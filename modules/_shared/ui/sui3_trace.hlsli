@@ -114,6 +114,28 @@ float sui3PeakLinear(float peak, float value, float dt, float ratePerSec) {
 // `minFs` is not optional in practice. Without a floor a silent input
 // autoscales its own noise to full height and looks like it is working.
 // `headroom` of ~1.15 keeps the tallest peak off the top edge.
+//
+// FEED THIS THE WINDOW MAX, NOT ONLY THE DECAYED PEAK. The decay is anchored at
+// "now" while the plot shows history, so whenever the half-life is short
+// relative to the span, a loud passage still fully on screen has already
+// decayed the peak below its own samples and the plot clips itself.
+//
+// Measured in Data Scope, same material and same settings both times, span 5 s
+// against a 0.25 s half-life. Plotted column height as a fraction of the strip:
+//
+//   decayed peak only:            peak 1.000  p95 1.000  median 1.000/0.875/0.876
+//   max(windowMax, decayedPeak):  peak 0.875  p95 0.855  median 0.614/0.473/0.492
+//
+// 0.875 is 1/1.15, exactly the headroom, so the tallest sample lands just under
+// the top edge and nothing clips. The severity scales with span/half-life: at
+// the 3 s and 4 s defaults the same break measured only 0.896, which looks
+// almost right and is the reason this needs a written number rather than a
+// glance.
+//
+// The fix is a floor, not a replacement. Scan the displayed samples for their
+// maximum and pass `max(windowMax, decayedPeak)`: the window term guarantees
+// nothing on screen can clip, and the decayed term keeps the scale from
+// snapping the instant a peak scrolls off the left edge.
 float sui3FullScale(float peak, float refLevel, float minFs, float headroom) {
     return max(max(peak, refLevel), max(minFs, 1e-6)) * max(headroom, 1.0);
 }
