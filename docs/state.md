@@ -39,7 +39,10 @@ snapshot on every cook of a live drag, so a drag accelerated away from the point
 destroyed. It shipped green through the whole guard suite, because no automated call can drive a
 pointer. **Five unguarded fixes now rest on the hands-on pass**, not three criteria.
 
-Phase 4: not yet decomposed; the phase doc is being drafted.
+Phase 4: decomposed into 4A (extract and document `sui3_trace.hlsli`), 4B (the Data Scope station),
+4C (second consumer plus guards). Contract: `docs/phases/phase-4-data-scope.md`. Not started. It does
+not depend on the Phase 3 hands-on blocker clearing, and must not be used as a reason to treat
+Phase 3 as done.
 
 Phase 2 was audited before implementation by four parallel agents. Ten sub-phases (2A1, 2A2, 2B,
 2C1, 2C2, 2C3, 2D, 2E1, 2E2, 2F). Five judgement calls are recorded in the phase doc's Plan Audit
