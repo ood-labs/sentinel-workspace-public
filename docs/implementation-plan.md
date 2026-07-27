@@ -12,6 +12,7 @@ This plan governs work in the user-writable Sentinel workspace and its curated p
 | 2 | Audio Analysis v2 (`pulse2`) | Complete, approval pending | [Phase 2](phases/phase-2-audio-analysis-v2.md) |
 | 3 | Interaction Lab v2 (Instrument-Grade UI Overhaul) | In progress; 3A-3F built, awaiting the operator hands-on gesture pass | [Phase 3](phases/phase-3-interaction-lab-v2.md) |
 | 4 | Data Scope (reusable scrolling strip-chart kit) | Planned | [Phase 4](phases/phase-4-data-scope.md) |
+| 5 | Official Example UI Port (v1 `sui_*` to sui3) | Planned | [Phase 5](phases/phase-5-example-ui-port.md) |
 
 ## Phase 1 - Official Examples Modernization
 
@@ -189,6 +190,33 @@ reserved for meaning**, which overrides the lab's strictly-monochrome precedent.
 The detailed phase doc is the acceptance contract. A station is not complete because it compiles or
 a capture exists; its visible and behavioral criteria must hold in the running application, and its
 gesture criteria require a recorded hands-on pass.
+
+## Phase 5 - Official Example UI Port
+
+Interaction Lab is the only official example on the sui3 kit; the other six canvas panels in the
+public collection are still on v1 `sui_*`. Phase 5 ports them so the collection reads as one
+instrument family, and reviews each panel's control set against the rule that canvas UI must not
+duplicate Properties.
+
+| Sub-phase | Target | Canvas controls |
+| --- | --- | --- |
+| 5A | Kit bundling and a project-agnostic guard harness | - |
+| 5B | `signal` (topographic_hud) | 16 slider |
+| 5C | `strata_control` (strata) | 12 slider, 1 toggle |
+| 5D | `dada_control` (desert_totem) | 12 slider |
+| 5E | `LR_Furnishings`, `LR_Lighting` (living_room_sdf) | 5 button, 1 toggle, 4 slider |
+| 5F | `Fruit_LFO` (showcase_gallery) | 13 slider, 1 button, 1 toggle, 1 xypad |
+| 5G | Showcase Gallery resync and collection review | copies of the above |
+
+`face_collage`, `industrial_lattice` and `procedural_building_system` declare no canvas controls and
+are out of scope. `fruit_atlas_scatter` dropped out when its orphaned `Fruit_LFO` was removed.
+
+Every control is proven by a real synthetic gesture through `sentinel_ui action=
+viewport_control_drag`, asserting both the bound parameter and the drawn state. Phase 3 shipped a
+green suite over a broken pad twice because only one half was asserted.
+
+Workflow constraint: `ood-labs/sentinel-bugs#88` makes loading the same project twice in one session
+a deterministic crash, so this phase relaunches Sentinel between iterations on a project.
 
 ## Future Phases
 
