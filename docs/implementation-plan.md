@@ -10,7 +10,7 @@ This plan governs work in the user-writable Sentinel workspace and its curated p
 | --- | --- | --- | --- |
 | 1 | Official Examples Modernization | Complete; approval pending | [Phase 1](phases/phase-1-official-examples-modernization.md) |
 | 2 | Audio Analysis v2 (`pulse2`) | In progress | [Phase 2](phases/phase-2-audio-analysis-v2.md) |
-| 3 | Interaction Lab v2 (Instrument-Grade UI Overhaul) | Planned | [Phase 3](phases/phase-3-interaction-lab-v2.md) |
+| 3 | Interaction Lab v2 (Instrument-Grade UI Overhaul) | In progress; 3A-3F built, awaiting the operator hands-on gesture pass | [Phase 3](phases/phase-3-interaction-lab-v2.md) |
 
 ## Phase 1 - Official Examples Modernization
 
@@ -146,12 +146,12 @@ reserved for meaning**, which overrides the lab's strictly-monochrome precedent.
 
 | Sub-phase | Outcome | Primary capability | Status |
 | --- | --- | --- | --- |
-| 3A | Baseline, profile ceiling, platform-bug confirmation | captures, profiling, live probes | Planned |
-| 3B | `sui3_*` kit and the Style Authority station | pixel-space HLSL primitives, control outputs | Planned |
-| 3C | Motion Console rebuilt; `burst` fixed | viewport event hit-testing, meters | Planned |
-| 3D | Spline Editor rebuilt | selection, marquee, tangents, undo | Planned |
-| 3E | Gizmo Lab rebuilt | host selection, transform handles | Planned |
-| 3F | Consolidation, presets, clean-checkout hand-off | preset migration, group audit, portability | Planned |
+| 3A | Baseline, profile ceiling, platform-bug confirmation | captures, profiling, live probes | Complete |
+| 3B | `sui3_*` kit and the Style Authority station | pixel-space HLSL primitives, control outputs | Complete; 3B.3 hover open |
+| 3C | Motion Console rebuilt; `burst` fixed | viewport event hit-testing, meters | Complete |
+| 3D | Spline Desk rebuilt | selection, marquee, tangents, undo | Built; 3D.1 open pending hands-on |
+| 3E | Gizmo Desk rebuilt | host selection, transform handles | Built; 3E.1 open pending hands-on |
+| 3F | Consolidation, presets, clean-checkout hand-off | preset migration, group audit, portability | Complete; all seven criteria met |
 
 ### MCP And Runtime Surfaces
 
@@ -170,8 +170,11 @@ reserved for meaning**, which overrides the lab's strictly-monochrome precedent.
    viewport events need 0.5.30 or newer.
 2. `tools/module-ui.ps1` for station validation.
 3. `projects/autopsia` present and readable as the frozen reference implementation.
-4. An operator available for two hands-on sessions - viewport event injection does not work on this
-   build (`docs/state.md:89`), so pointer-gesture proof needs a hand on the mouse.
+4. An operator available for one hands-on session. The original claim that viewport event injection
+   does not work was too pessimistic and was retracted in 3B: `sentinel_ui action=click
+   method=mouse` drives real ImGui widgets, and 19 of 24 Scene Group Properties rows were exercised
+   that way. What has no MCP route is a pointer gesture INSIDE a module preview, which is what
+   3B.3, 3D.1 and 3E.1 need.
 
 ### Implementation Order
 

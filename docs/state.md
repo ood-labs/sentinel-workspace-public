@@ -10,9 +10,11 @@ updated: 2026-07-26
 Phase 2 - Audio Analysis v2 (`pulse2`) is **in progress**, not planned. See the detailed Phase 2
 section below for the live position; this header block was stale through 2D and has been corrected.
 
-Phase 3 - Interaction Lab v2 is **in progress**. 3A (baseline) and 3B (the `sui3_*` kit plus the
-Style Authority station) are complete and committed, and the **3B taste checkpoint has passed**.
-Next is 3C - Motion Console.
+Phase 3 - Interaction Lab v2 is **in progress**. All six sub-phases 3A-3F are built and committed,
+and the **3B taste checkpoint has passed**. The lab is four stations (Style Authority, Motion
+Console, Spline Desk, Gizmo Desk) plus `Spline_Output`. 3F's own seven criteria are met. The phase
+is held open by ONE thing: the operator hands-on gesture pass for 3B.3, 3D.1 and 3E.1, which the
+phase doc's Autonomy section makes a hard blocker.
 
 CRYOGRAM is committed and working as a measured-crystal audio-reactive example, with two known
 defects tracked separately (see Blockers).
@@ -21,7 +23,10 @@ defects tracked separately (see Blockers).
 
 Phase 2: 2D complete with criterion 1 short (see below). Next is 2E1.
 
-Phase 3: 3A and 3B complete, taste checkpoint passed. **3C - Motion Console is active.**
+Phase 3: 3A-3F complete and committed, taste checkpoint passed. **Awaiting the operator hands-on
+gesture pass**, then `$end-session`. Two audit rounds have landed; every actionable finding is
+fixed. Regression harness: `python tools/interaction-lab-guards.py` (37 passed, 0 failed, 4 skipped
+-- the four skips ARE the hands-on gap). Gesture recorder: `python tools/interaction-lab-handson.py`.
 
 Phase 2 was audited before implementation by four parallel agents. Ten sub-phases (2A1, 2A2, 2B,
 2C1, 2C2, 2C3, 2D, 2E1, 2E2, 2F). Five judgement calls are recorded in the phase doc's Plan Audit
@@ -30,6 +35,12 @@ Findings section and are individually revertible.
 Phase 3 has six sub-phases (3A, 3B, 3C, 3D, 3E, 3F) and has **not** been plan-audited.
 
 ## Blockers
+
+**PHASE 3 HARD BLOCKER: the hands-on gesture pass.** 3D.1 (anchor drag, handle drag, marquee,
+keyboard), 3E.1 (gizmo axis/ring/centre drag) and 3B.3 (hover, which must NOT change the accent).
+No MCP route exists to click inside a module preview, so these need a hand on the mouse. Run
+`tools/interaction-lab-handson.py` first; it records the pass as assertions about what actually
+moved and voids the record if any automation door fires.
 
 **3B taste checkpoint PASSED (2026-07-26).** Look approved; pad, rail, state and bank confirmed
 responding by the operator. 3B.3 (hover specifically) stays open and is carried into the 3F
@@ -70,7 +81,9 @@ Tracked separately, out of Phase 2 scope:
 
 ## Last devlog
 
-`docs/devlogs/2026-07-26-phase3b-sui3-kit.md` - complete, approval pending.
+`docs/devlogs/2026-07-26-phase3f-consolidation.md` - complete, approval pending. Seven Phase 3
+devlogs exist (3A, 3B, 3C burst-confirmed, 3C motion-console, 3D, 3E, 3F); 3D and 3E are
+`in-progress` because their gesture criterion is open, per phase doc :551.
 
 ## Phase 2 - Audio Analysis v2 (in progress, 2026-07-25)
 
@@ -137,7 +150,8 @@ latch** that survives two `force_reload`s — worse than the documented constant
 destroys the Pulse lane for the session; `sentinel_state get` and `sentinel_pipeline info` disagreed
 on it, and `info` is the one to trust. xypad Y confirmed down=more on the render side.
 `follow_panel` proven to pin resolution, which forced Amendment 1: every v3 station declares a
-canonical fixed-resolution renderer.
+canonical fixed-resolution renderer. **Amendment 1 was later reversed by Amendment 3** -- it was the
+wrong diagnosis, and all four shipped stations are `follow_panel`.
 
 **3B complete** — `docs/devlogs/2026-07-26-phase3b-sui3-kit.md`. Six of seven criteria pass with
 measurements; 3B.3 (hover) is structurally proven but gesture-dependent and deliberately **not**
