@@ -47,8 +47,12 @@ void main(uint3 tid : SV_DispatchThreadID) {
     uint count = min(_ViewportEventCount, 64u);
     [loop] for (uint i = 0u; i < count; ++i) {
         ViewportEvent e = _ViewportEvents[i];
-        // Click only. A drag across the plate must not machine-gun the envelope.
-        if (!(e.type == 5u && e.code == 1u)) continue;
+        // Click only, and only its COMPLETE phase. Without the phase test every
+        // other phase the host reports on a click gesture fires the envelope
+        // again, so one press could inflate burst_fires by more than one. The
+        // kit's own sui3IsClick and spline_desk both require phase 7; this was
+        // the one place that did not.
+        if (!sui3IsClick(e)) continue;
         if (!mcHit(saturate(e.position), MC_RECT_BURST)) continue;
         fire = true;
     }

@@ -28,7 +28,12 @@ uint hitHandle(float2 p,GizmoState st,uint activeId){
 [numthreads(1,1,1)]
 void main(uint3 tid:SV_DispatchThreadID){
     GizmoState st=OutputBuffer[0];uint modeParam=(uint)clamp(transform_mode,0,2);uint localParam=local_space?1u:0u;
-    if(st.mode<0||st.mode>2||isnan(st.mode)){st.mode=(float)modeParam;st.local_space=(float)localParam;st.last_local_param=100.0+(float)localParam+2.0*(float)modeParam;st.active_handle=0;st.dragging=0;}
+    // MAGIC SENTINEL, not a range check on `mode`. `st.mode<0||st.mode>2` is
+    // false for a zeroed buffer, because 0 is a legal mode -- so the reseed never
+    // ran and garbage in the persistent buffer survived. In particular a nonzero
+    // auto_latch masked do_orbit off permanently, since the rising edge can never
+    // fire against a latch that is already set. Clear the latch here too.
+    if(abs(st.magic-GD_MAGIC)>0.5||isnan(st.mode)){st.mode=(float)modeParam;st.local_space=(float)localParam;st.last_local_param=100.0+(float)localParam+2.0*(float)modeParam;st.active_handle=0;st.dragging=0;st.auto_latch=0;st.pending=0;st.magic=GD_MAGIC;}
     // Keep capture alive across cooks with no pointer events. Only clear the
     // handle on the cook after an explicit commit/cancel boundary.
     if(st.dragging<0.5&&(st.command==3.0||st.command==4.0||st.command==5.0))st.active_handle=0.0;
@@ -67,6 +72,36 @@ void main(uint3 tid:SV_DispatchThreadID){
         st.selection_mask = (float)currentMask;
         st.pivot = pivot;
         st.active_id = (float)activeId;
+    }
+
+    // ---- arm-then-execute, the discipline spline_desk proved ----------------
+    // `snapshot` reads scene_state and writes drag_snapshot while `update` reads
+    // drag_snapshot and writes scene_state. That is a cycle, and the scheduler
+    // resolves it by running `update` FIRST -- measured in
+    // modules/spline_desk/snapshot.hlsl for this exact pair of passes.
+    //
+    // Commands 5 and 6 are emitted when a drag begin and its first move (or an
+    // immediate commit) land in the SAME cook, which the host does whenever the
+    // drag threshold trips inside one frame. On those cooks `update` transformed
+    // against the PREVIOUS transaction's snapshot and then `snapshot` banked the
+    // already-transformed objects as the new base, so the undo point and the
+    // transform origin were both wrong. Command 1 escaped only by accident,
+    // because `update` early-returns on it.
+    //
+    // So a same-cook transform is deferred by one cook: this cook reports the
+    // begin, `update` no-ops, `snapshot` captures a clean pre-edit base, and the
+    // transform runs next cook against it. A newer command arriving meanwhile
+    // supersedes the deferred one rather than queueing, because a drag move is
+    // idempotent -- it transforms from the snapshot using the CURRENT pointer, so
+    // the freshest one is the only one worth running.
+    float deferred = st.pending;
+    st.pending = 0.0;
+    uint issued = (uint)round(st.command);
+    if (issued == 5u || issued == 6u) {
+        st.pending = (issued == 5u) ? 3.0 : 2.0;
+        st.command = 1.0;
+    } else if (st.command < 0.5 && deferred > 0.5) {
+        st.command = deferred;
     }
     OutputBuffer[0]=st;
 }

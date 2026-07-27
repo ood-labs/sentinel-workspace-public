@@ -191,11 +191,21 @@ void main(uint3 tid : SV_DispatchThreadID) {
     bool needsSnap = (want == 1.0 || want == 5.0 || want == 7.0
                    || want == 8.0 || want == 9.0 || want == 12.0
                    || want == 13.0);
+    //
+    // A want that arrives while this cook is ALREADY executing an armed command
+    // is queued, never dropped. The first version overwrote `exec` for any
+    // non-snap want, and the ordinary case hits that path every time: pointer
+    // down arms SELECT, the host's drag threshold trips on the next cook, and
+    // `else exec = want` replaced the armed SELECT with the drag move while
+    // `pending` had already been cleared. The selection simply never ran, so
+    // update.hlsl dragged whatever was selected BEFORE the click. Queueing costs
+    // one cook of latency and loses nothing.
     float exec = 0.0;
     if (st.pending > 0.5) { exec = st.pending; st.pending = 0.0; }
     if (want > 0.5) {
-        if (needsSnap) { if (exec < 0.5) st.pending = want; }
-        else exec = want;   // drag moves, undo and selection run the same cook
+        if (exec > 0.5)      st.pending = want;  // busy: run it on the next cook
+        else if (needsSnap)  st.pending = want;  // arm; this cook mutates nothing
+        else                 exec = want;        // drag moves and undo run now
     }
     st.command = exec;
     if (exec > 0.5) st.last_cmd = exec;

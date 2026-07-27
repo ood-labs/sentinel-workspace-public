@@ -99,6 +99,13 @@ data_outputs:
       - { name: selection_mask, type: float }
       - { name: dragging, type: float }
       - { name: drag_pad, type: float3 }
+      # The schema must sum to element_size. It stopped at 80 while the buffer is
+      # 96, so nothing was misread (offsets are right and element_count is 1) but
+      # a consumer deriving its stride from the schema was wrong by 16 bytes.
+      - { name: auto_latch, type: float }
+      - { name: pending, type: float }
+      - { name: magic, type: float }
+      - { name: pad3, type: float }
   - name: "Scene Objects"
     buffer: scene_state
     schema:

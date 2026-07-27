@@ -68,9 +68,13 @@ float sceneSdf(float3 p, out uint objectId) {
 float3 normalAt(float3 p) {
     uint ignored; float e = 0.0025;
     float d = sceneSdf(p, ignored);
-    return normalize(float3(sceneSdf(p + float3(e,0,0), ignored) - d,
-                            sceneSdf(p + float3(0,e,0), ignored) - d,
-                            sceneSdf(p + float3(0,0,e), ignored) - d));
+    float3 g = float3(sceneSdf(p + float3(e,0,0), ignored) - d,
+                      sceneSdf(p + float3(0,e,0), ignored) - d,
+                      sceneSdf(p + float3(0,0,e), ignored) - d);
+    // A gradient of exactly zero normalizes to NaN, which propagates through the
+    // lighting into a black or garbage pixel. Rare, but it costs one compare.
+    float len2 = dot(g, g);
+    return len2 > 1e-20 ? g * rsqrt(len2) : float3(0, 1, 0);
 }
 
 // Soft shadow against the OBJECTS only. Without it the twelve solids float,
@@ -118,7 +122,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float2 uv  = P / R;
     float2 ndc = float2(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0);
     float4 farWorld = mul(_InvViewProjMatrix, float4(ndc, 1.0, 1.0));
-    farWorld /= max(farWorld.w, 1e-6);
+    // Sign-preserving guard. `max(w, 1e-6)` on a SIGNED w turns any negative w
+    // into +1e-6, flipping the unprojected point through the origin and sending
+    // the ray backwards; clamp the magnitude and keep the sign instead.
+    farWorld /= (farWorld.w < 0.0 ? min(farWorld.w, -1e-6) : max(farWorld.w, 1e-6));
     float3 ro = _CameraPos;
     float3 rd = normalize(farWorld.xyz - ro);
 

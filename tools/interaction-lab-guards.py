@@ -263,6 +263,30 @@ def guard_pad_direction(mcp):
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def guard_gizmo_state_integrity(mcp):
+    """The reseed sentinel ran, and the published schema covers the whole stride.
+
+    Both are audit findings with the same shape: something that is silently fine
+    until it is not. The reseed used to guard on `st.mode` being out of 0..2, but
+    0 is a legal mode, so a zeroed buffer looked valid and the seed never ran --
+    and a garbage auto_latch masks do_orbit off permanently, because a rising
+    edge cannot fire against a latch that is already set. Separately the schema
+    summed to 80 bytes against a 96-byte buffer, so a consumer deriving its
+    stride from the schema walked off by 16 bytes per element.
+    """
+    cap = mcp.port("Gizmo_Desk", "Gizmo State", 1)
+    g = cap["elements"][0]
+    record("gizmo: reseed sentinel is set", abs(g.get("magic", 0.0) - 7321.0) < 0.5,
+           "magic %s" % g.get("magic"))
+    record("gizmo: idle auto_latch is clear", abs(g.get("auto_latch", 1.0)) < 0.5,
+           "auto_latch %s, pending %s" % (g.get("auto_latch"), g.get("pending")))
+    # float/uint fields are 4 bytes; float2 8; float3 12.
+    widths = {"pointer": 8, "drag_start": 8, "pivot": 12, "drag_pad": 12}
+    described = sum(widths.get(k, 4) for k in g)
+    record("gizmo: schema covers the whole stride", described == cap["elementSize"],
+           "schema %d bytes vs element_size %d" % (described, cap["elementSize"]))
+
+
 def guard_spline_undo(mcp):
     """3D: undo must reverse a close, preserve the selection bit, and leave knots identical.
 
@@ -440,6 +464,7 @@ def main():
             pass  # ping returns a bare PONG string on some builds
         guard_health(mcp)
         guard_pad_direction(mcp)
+        guard_gizmo_state_integrity(mcp)
         guard_spline_undo(mcp)
         guard_gizmo_orbit(mcp)
         guard_group_surfaces(mcp)

@@ -8,16 +8,22 @@ struct SceneObject {
     uint kind; uint flags; float marker; float pad2;
 };
 
+// Reseed sentinel. NOT a range check on `mode`: mode 0 is legal, so a zeroed
+// buffer looks like a valid Move-mode state and the seed never runs. Same defect
+// and same cure as SD_MAGIC in modules/spline_desk/interaction.hlsl.
+#define GD_MAGIC 7321.0
+
 struct GizmoState {
     float mode; float local_space; float active_handle; float command;
     float2 pointer; float2 drag_start;
     float3 pivot; float last_local_param;
     float active_id; float start_angle; float start_radius; float selection_mask;
     float dragging; float3 drag_pad;
-    // Rising-edge latch for the numeric-transform doors, plus room to grow.
-    // GizmoState moves from 80 to 96 bytes; it is an internal buffer, and the
-    // published Gizmo State schema keeps its original field order.
-    float auto_latch; float3 auto_pad;
+    // Rising-edge latch for the numeric-transform doors, then the deferred
+    // transform command and the reseed sentinel. GizmoState moves from 80 to 96
+    // bytes; the published Gizmo State schema keeps its original field order and
+    // appends these so a consumer deriving stride from the schema gets 96.
+    float auto_latch; float pending; float magic; float pad3;
 };
 
 float2 labViewportSize() { return max(_Resolution.xy, float2(1.0, 1.0)); }
