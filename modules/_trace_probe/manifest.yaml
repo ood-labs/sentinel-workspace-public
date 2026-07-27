@@ -1,0 +1,34 @@
+name: "Trace Probe"
+version: "1.0"
+mode: generator
+
+# 4A.1 compile canary for modules/_shared/ui/sui3_trace.hlsli.
+#
+# Deliberately declares NO viewport block and NO parameters. The point is to
+# prove the header carries no hidden dependency on interaction bindings or on
+# host-injected parameter globals -- the failure `au_text.hlsli:9` records, where
+# an umbrella header dragged in bindings the consuming module never declared.
+#
+# Both passes call every public function in the header. A function that is never
+# called is not compile-checked, so "it compiled" would prove nothing about it.
+resolution: [640, 360]
+
+buffers:
+  - { name: ring, structured: true, element_size: 16, element_count: 528, persistent: true }
+
+passes:
+  - name: state
+    shader: state.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ring"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:ring" }

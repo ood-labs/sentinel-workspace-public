@@ -112,6 +112,24 @@ SuiContext c = suiContext(tid.xy, _Resolution.xy);
 - Use an explicit design canvas only for intentional legacy scaling, and map it into the actual output consistently.
 - Generate camera-facing rotation rings by projecting their real 3D axis planes. Render and hit-test the same projected basis.
 
+## Scrolling Data Traces
+
+Plotting a scalar stream over time is `modules/_shared/ui/sui3_trace.hlsli`. It gives a strip chart the behaviour a TouchDesigner CHOP viewer has: the plot advances at the rate of the data rather than the frame rate, and it rescales itself continuously to the signal's recent dynamics. Every function is pure and takes its extents as arguments, so a state pass can include it without declaring viewport events, and it contains no text, theme, or parameter references so both the `sui3` and `au_hud` kits can draw with it. Labels, units, and readouts stay with the calling module.
+
+Four mechanisms make the plot honest. Each was measured in `modules/audio_bands`, which is the reference consumer.
+
+**Ring plus generation catch-up.** Keep a write cursor and drain from it to `_DataN_Generation` every cook, rather than sampling the newest value once per frame. A module cooking at 60 Hz against a 187.5 Hz hop rate discards two of every three samples that way, aliases the rest, and the time axis it draws is fiction. Use `sui3CatchupStart` to clamp the drain to what the ring still holds; a fresh cursor of 0 against a generation counter in the millions would otherwise spin the loop a million times on the first cook. Buffers that carry no header record, including Spectrum and Mel Bands, need each slot's own `generation_counter` validated inside the loop, because element zero cannot report the latest generation.
+
+**Decaying-peak autoscale.** A fixed full scale is wrong for every input. Measured peaks on real drums run past 24 dB while a quiet pad barely reaches 4, so one case clips and the other draws a flat line along the bottom. `sui3PeakDecay` holds a rolling peak with instant attack and a half-life release; 4 seconds is the measured point where the scale follows a change of material without twitching on individual hits. Always pass a `minFs` floor to `sui3FullScale`. Without one, a silent input autoscales its own noise to full height and looks like it is working.
+
+**Max-reduce, never mean.** At long spans one pixel column covers many samples. `sui3TraceSpan` returns the index range a column covers and the caller takes the maximum over it. Averaging hides precisely the transient the plot exists to show. The span is capped at eight samples per column because an uncapped per-pixel loop at a long span is a frame-rate cliff.
+
+**Scale the reference line too.** Pass any threshold or reference level into `sui3FullScale` as `refLevel`. A threshold set above the recent peak otherwise pins itself to the top edge, where it stops reading as a threshold and becomes the rect border, losing the one thing the strip is for: how far under the line the peaks are falling.
+
+The strip's Y is value-up, so value 0 sits on the bottom edge. That is the opposite of `sui3PadPoint` and it is deliberate. A pad's Y direction is forced by the host, which currently disagrees with itself about it; a plot's value is the module's own and follows the convention every measuring instrument already uses. Time runs oldest-left to newest-right, so the trace scrolls right to left.
+
+Do not reach for this when a single current value is the whole story. A number, a bar, or a meter is more legible than a trace, and a trace of a value that does not change is a horizontal line that costs a ring buffer.
+
 ## Full-Bleed Canvas Panels
 
 Sentinel 0.5.32 and newer support the Phase 89.2 authored panel contract:
@@ -169,6 +187,7 @@ Prove controls with real or injected pointer input, not StateTree writes alone. 
 - `modules/font_style_sampler/`: regular-face edge-weight comparison.
 - `modules/spline_editor/`: authored sub-object editing with persistent state and typed outputs.
 - `modules/transform_gizmo_lab/`: selection, multi-object transforms, projected handles, and camera-aware rotation rings.
+- `modules/audio_bands/`: the reference consumer for `sui3_trace.hlsli`, with three auto-ranging strip charts and an on-plot threshold handle.
 - `projects/interaction_lab/interaction_lab.sentinel`: bundled review project.
 
 Everything above is authored Module content. It does not require a new Sentinel native widget or IPC feature.
