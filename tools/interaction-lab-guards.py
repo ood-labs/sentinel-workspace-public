@@ -307,6 +307,59 @@ def guard_theme_governs(mcp):
            "still off: %s" % stuck if stuck else "all three back to %s" % (base,))
 
 
+def guard_spline_readout_matches_knots(mcp):
+    """The tangent readout must equal the tangent actually stored on the knots.
+
+    `interaction.hlsl` advances `st.tangent_mode` on every fire but only writes it
+    onto the knots when command 8 runs, so divergence means a command was lost
+    somewhere between arming and executing.
+
+    WHAT THIS DOES NOT COVER, stated because it was written believing otherwise:
+    it does NOT guard the arm-then-execute queueing fix. That defect needs a
+    non-snap command to land on the cook immediately after a snap command armed,
+    and the only non-snap command a pointer produces is a drag move. Firing doors
+    from here cannot reproduce it -- each MCP round trip is slower than the 16 ms
+    cook, so every command gets a cook to itself and never collides. Verified by
+    reverting the fix, recompiling, and watching this guard pass anyway. The
+    queueing fix is unguarded and is listed as such in the devlog.
+    """
+    # `do_reset` runs update.hlsl's initialize(), which reseeds to these four
+    # fixed anchors. It does NOT restore whatever was on screen beforehand, so
+    # the probe asserts the seed rather than a round trip.
+    SEED = [(0.16, 0.62), (0.36, 0.30), (0.62, 0.68), (0.84, 0.35)]
+    try:
+        mcp.edge("Spline_Desk", "do_select_lane")
+        # Deliberately NO settle between fires -- the collision is the point.
+        for _ in range(6):
+            mcp.set_param("Spline_Desk", "do_tangent", True)
+            mcp.set_param("Spline_Desk", "do_tangent", False)
+        time.sleep(1.2)
+
+        readout = int(round(float(mcp.call("sentinel_state", {
+            "action": "get",
+            "path": "/sentinel/pipelines/Spline_Desk/control_outputs/tangent_mode",
+        })["value"])))
+        knots = mcp.port("Spline_Desk", "Spline Knots", 4)["elements"]
+        sel = [k for k in knots if k["flags"] & 1]
+        off = [(i, k["tangent_mode"]) for i, k in enumerate(knots)
+               if (k["flags"] & 1) and k["tangent_mode"] != readout]
+        record("spline: tangent readout matches the knots",
+               bool(sel) and not off,
+               "no selection to test" if not sel else
+               ("readout %d but knots %s" % (readout, off) if off
+                else "%d selected knots all at tangent_mode %d" % (len(sel), readout)))
+    finally:
+        mcp.edge("Spline_Desk", "do_reset")
+        time.sleep(0.4)
+    after = mcp.port("Spline_Desk", "Spline Knots", 4)["elements"]
+    off = [(i, [round(v, 4) for v in k["anchor"]])
+           for i, k in enumerate(after[:4])
+           if abs(k["anchor"][0] - SEED[i][0]) > 1e-4
+           or abs(k["anchor"][1] - SEED[i][1]) > 1e-4]
+    record("spline: readout probe left the desk seeded", not off,
+           "four anchors at the seed" if not off else "off-seed: %s" % off)
+
+
 def guard_gizmo_state_integrity(mcp):
     """The reseed sentinel ran, and the published schema covers the whole stride.
 
@@ -318,8 +371,19 @@ def guard_gizmo_state_integrity(mcp):
     summed to 80 bytes against a 96-byte buffer, so a consumer deriving its
     stride from the schema walked off by 16 bytes per element.
     """
+    # The persistent buffer can be recreated (and so zeroed) by the host, and the
+    # reseed lands on the NEXT cook -- a read inside that one-frame window sees
+    # zeros. Observed once in practice. Recovery is the thing under test, so
+    # re-read rather than fail on a single sample: a sentinel that never comes
+    # back is the real defect, and this still catches it.
     cap = mcp.port("Gizmo_Desk", "Gizmo State", 1)
     g = cap["elements"][0]
+    for _ in range(4):
+        if abs(g.get("magic", 0.0) - 7321.0) < 0.5:
+            break
+        time.sleep(0.4)
+        cap = mcp.port("Gizmo_Desk", "Gizmo State", 1)
+        g = cap["elements"][0]
     record("gizmo: reseed sentinel is set", abs(g.get("magic", 0.0) - 7321.0) < 0.5,
            "magic %s" % g.get("magic"))
     record("gizmo: idle auto_latch is clear", abs(g.get("auto_latch", 1.0)) < 0.5,
@@ -510,6 +574,7 @@ def main():
         guard_pad_direction(mcp)
         guard_theme_governs(mcp)
         guard_gizmo_state_integrity(mcp)
+        guard_spline_readout_matches_knots(mcp)
         guard_spline_undo(mcp)
         guard_gizmo_orbit(mcp)
         guard_group_surfaces(mcp)

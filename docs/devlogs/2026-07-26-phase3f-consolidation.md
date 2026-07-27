@@ -389,3 +389,43 @@ fixed: a conversation leak in 3E and contrastive framing in 3A.
 stale. Those move at the phase boundary.
 
 Guard suite: **37 passed, 0 failed, 4 skipped.**
+
+## A guard that did not bite, and saying so
+
+Two guards were added for the audit fixes above, and one of them was written on a false premise.
+
+`guard_spline_readout_matches_knots` was built to cover the arm-then-execute queueing fix. The
+reasoning looked sound: `interaction.hlsl` advances `st.tangent_mode` on every fire but only writes
+it onto the knots when command 8 runs, so a dropped command shows up as the readout disagreeing with
+the thing it labels. Firing the door six times with no settle between should collide.
+
+It does not. Reverting the fix, recompiling, and re-running produced **PASS** - the guard is blind to
+the defect it was written for. Each MCP round trip is slower than a 16 ms cook, so every fired
+command gets a cook to itself and the collision never happens. The defect needs a NON-SNAP command
+landing on the cook right after a snap command armed, and the only non-snap command a pointer
+produces is a drag move. There is no automation path to it.
+
+The guard is kept, renamed to what it actually asserts, and its docstring now records the negative
+result so nobody re-derives the same wrong premise. **The queueing fix in
+`spline_desk/interaction.hlsl` and the same-cook deferral in `gizmo_desk/interaction.hlsl` are
+unguarded.** Both are covered by the hands-on pass: a spline anchor drag exercises exactly the
+pointer-down-then-drag-move sequence that produced the bug, and a gizmo axis drag exercises the
+begin-and-move-in-one-cook path.
+
+Two guards that DO bite, both verified by reverting the fix and watching them fail:
+
+| Fix | Guard | Reverted result |
+| --- | --- | --- |
+| Pad Y-up (`sui3PadPoint`) | `guard_pad_direction` | 2 FAILs, `value 0.9 drew at 0.10` |
+| Section-scale clamp | none yet | - |
+| Gizmo `GD_MAGIC` reseed | `guard_gizmo_state_integrity` | not reverted; asserts recovery |
+| Schema stride 80 to 96 | `guard_gizmo_state_integrity` | schema sum vs `elementSize` |
+| Theme governance | `guard_theme_governs` | asserts the causal chain |
+
+Two guard bugs were found in the process and fixed. `do_reset` runs `initialize()` and reseeds to
+four fixed anchors rather than restoring what was on screen, so the probe now asserts the seed
+instead of a round trip. And the gizmo state buffer can read all zeros for the single cook between
+the host recreating it and the reseed landing; the sentinel check now re-reads rather than failing
+on one sample, since recovery is the property under test.
+
+Suite: **39 passed, 0 failed, 4 skipped.**
