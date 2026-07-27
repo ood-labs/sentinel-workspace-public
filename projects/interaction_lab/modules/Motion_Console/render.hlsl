@@ -144,9 +144,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
             S_B,S_I,S_A,S_S,0,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rBias) > 0.5 || sui3Frame(P, rBias) > 0.0) {
         col = lerp(col, float3(0,0,0), sui3RectIn(P, rBias));
-        // Drawn with the RAW pad value so the reticle sits under the pointer;
-        // the published bias_y is flipped once in lfo_compute.hlsl.
-        col += sui3Pad(P, rBias, float2(motion_bias.x, 1.0 - motion_bias.y), T);
+        // The raw pad value, drawn straight. The readout below prints the same
+        // number and lfo_compute publishes the same number: zero flips, per the
+        // Y-DIRECTION CONTRACT in sui3_core.hlsli.
+        col += sui3Pad(P, rBias, motion_bias, T);
     }
     // Readout INSIDE the pad, bottom-left. Below the pad it shared a row with
     // the lane-1 AMP label and collided with it at 1600x900 -- and the row below

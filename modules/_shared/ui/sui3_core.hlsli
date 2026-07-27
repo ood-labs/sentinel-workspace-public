@@ -163,17 +163,29 @@ float sui3EdgeReadout(float2 P, float4 r, float2 at, float railPx) {
 }
 
 // ---------------------------------------------------------------------------
-// Y-DIRECTION CONTRACT
+// Y-DIRECTION CONTRACT: ZERO FLIPS
 //
-// Host `xypad` controls store Y increasing DOWNWARD. Phase 3A measured this on
-// the render side: writing pad_y 0.05 placed the marker at row 69 and pad_y
-// 0.95 at row 94, in a pad interior spanning rows 64..101. A raw pad value
-// therefore means "down = more".
+// A pad has four surfaces that describe the same control -- the Properties row,
+// the reticle drawn on the canvas, the number printed beside that reticle, and
+// the published control output. THEY MUST ALL CARRY THE SAME NUMBER. The pad's
+// value is the host parameter, unmodified, everywhere.
 //
-// Flip EXACTLY ONCE, at publish time, so the value leaving the module means
-// "up = more" while the renderer's own draw still lands the reticle under the
-// pointer. Flipping inside the renderer instead mirrors the reticle against the
-// mouse -- AUTOPSIA hit that and recorded it at `au_deck/state.hlsl:52`.
+// This replaces a "flip exactly once, at publish" rule that was wrong in
+// practice. Under it the reticle was drawn at `raw` while the readout beside it
+// printed `1 - raw`: a pad sitting 68% down the well captioned 0.32. Two
+// visible numbers for one control, disagreeing, which is precisely what
+// CLAUDE.md's "every number stays attached to what it describes" forbids. The
+// rule also could not survive contact with a second pad, because "once" is not
+// checkable -- nothing stops a renderer from flipping again, and
+// `au_deck/state.hlsl:52` is AUTOPSIA hitting exactly that.
+//
+// Zero flips is checkable: any `1.0 -` on a pad component is a bug on sight.
+//
+// The DIRECTION itself is the host's business, not the kit's. Phase 3A tried to
+// derive it by measuring where a renderer drew the marker, which is circular --
+// that measures the renderer. Whatever the host does, every surface here now
+// agrees with the host parameter, so a consumer that wants the other direction
+// flips once at the point of use, where the flip is visible.
 //
 // This lives in core, not in sui3_events.hlsli, deliberately: it is a pure
 // function and a state pass must be able to call it without declaring viewport
@@ -181,7 +193,7 @@ float sui3EdgeReadout(float2 P, float4 r, float2 at, float railPx) {
 // that reason -- an umbrella header dragging in interaction bindings the
 // consuming module never declared.
 float2 sui3PublishPad(float2 raw) {
-    return float2(saturate(raw.x), saturate(1.0 - raw.y));
+    return saturate(raw);
 }
 
 #endif

@@ -71,9 +71,12 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float ch = L.ch, cg = L.cg, mH = L.mH;
 
     float4 rPad = L.rPad;
-    // Caption only if the header actually left room for it above the pad.
-    if (bodyTop + 11.0 * sS <= rPad.y)
-        col += T.dim * sui3Text(P, float2(colL, bodyTop), sS, S_P,S_A,S_D,0,0,0,0,0,0,0,0,0);
+    // Shrunk to whatever the header left above the pad, and dropped only if
+    // even 1x will not fit. Same rule as the other section captions.
+    float padCapS = saCapScale(rPad.y - bodyTop, sS);
+    if (padCapS > 0.0)
+        col += T.dim * sui3Text(P, float2(colL, bodyTop), padCapS,
+            S_P,S_A,S_D,0,0,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rPad) > 0.5 || sui3Frame(P, rPad) > 0.0) {
         col = lerp(col, float3(0,0,0), sui3RectIn(P, rPad));
         col += sui3Pad(P, rPad, t3.xy, T);
@@ -87,9 +90,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // rail specimen
     float4 rRail = L.rRail;
     float railY = rRail.y;
-    bool railCap = saCapFits(rRail.y - rPad.w, sB);
+    float railCapS = saCapScale(rRail.y - rPad.w, sS);
+    bool railCap = railCapS > 0.0;
     if (railCap)
-        col += T.dim * sui3Text(P, float2(colL, railY - 11.0 * sB), sS,
+        col += T.dim * sui3Text(P, float2(colL, railY - saCapOffset(railCapS)), railCapS,
             S_R,S_A,S_I,S_L,0,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rRail) > 0.5 || sui3Frame(P, rRail) > 0.0) {
         col = lerp(col, float3(0,0,0), sui3RectIn(P, rRail));
@@ -101,9 +105,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float rowY = L.rowY;
     float tw = ch * 2.6;
     float4 rTog = L.rTog;
-    bool rowCap = saCapFits(rTog.y - rRail.w, sB);
+    float rowCapS = saCapScale(rTog.y - rRail.w, sS);
+    bool rowCap = rowCapS > 0.0;
     if (rowCap)
-        col += T.dim * sui3Text(P, float2(colL, rowY - 11.0 * sB), sS,
+        col += T.dim * sui3Text(P, float2(colL, rowY - saCapOffset(rowCapS)), rowCapS,
             S_S,S_T,S_A,S_T,S_E,0,0,0,0,0,0,0);
     if (sui3RectIn(P, rTog) > 0.5 || sui3Frame(P, rTog) > 0.0) {
         col = lerp(col, float3(0,0,0), sui3RectIn(P, rTog));
@@ -121,9 +126,9 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // two captions ran together and printed "STATEBANK".
     float bx0 = L.bx0;
     col += T.rule * 0.6 * sui3HairAt(P.x, colL + tw + cg * 1.5)
-         * step(rowY - (rowCap ? 11.0 * sB : 0.0), P.y) * step(P.y, rowY + ch);
+         * step(rowY - (rowCap ? saCapOffset(rowCapS) : 0.0), P.y) * step(P.y, rowY + ch);
     if (rowCap)
-        col += T.dim * sui3Text(P, float2(bx0, rowY - 11.0 * sB), sS,
+        col += T.dim * sui3Text(P, float2(bx0, rowY - saCapOffset(rowCapS)), rowCapS,
             S_B,S_A,S_N,S_K,0,0,0,0,0,0,0,0);
     float bw = L.bw;
     [loop] for (int b = 0; b < 4; ++b) {
@@ -140,8 +145,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // meters
     float mY = L.mY;
     float mw = L.mw;
-    col += T.dim * sui3Text(P, float2(colL, mY - 11.0 * sB), sS,
-        S_M,S_E,S_T,S_E,S_R,S_S,0,0,0,0,0,0);
+    float mCapS = saCapScale(mY - (L.rowY + L.ch), sS);
+    if (mCapS > 0.0)
+        col += T.dim * sui3Text(P, float2(colL, mY - saCapOffset(mCapS)), mCapS,
+            S_M,S_E,S_T,S_E,S_R,S_S,0,0,0,0,0,0);
     [loop] for (int m = 0; m < 6; ++m) {
         float x = colL + (float)m * (mw + cg);
         float4 rm = float4(x, mY, x + mw, mY + mH);
@@ -230,10 +237,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // theme value visibly retunes the reference itself.
     // Derived from the specimen column's actual bottom, not a fixed fraction:
     // a fraction put the PRIMITIVES caption straight through the meters.
-    float gTop = max(L.gTop, mY + mH + 30.0 * sB);
+    float gTop = max(L.gTop, mY + mH + 30.0 * sS);
     if (showGrid) {
-    col += sui3Rule(P, R, gTop - 26.0 * sB, pad, T);
-    col += T.dim * sui3Text(P, float2(pad, gTop - 19.0 * sB), sS,
+    col += sui3Rule(P, R, gTop - 26.0 * sS, pad, T);
+    col += T.dim * sui3Text(P, float2(colL, gTop - 19.0 * sS), sS,
         S_P,S_R,S_I,S_M,S_I,S_T,S_I,S_V,S_E,S_S,0,0);
 
     float gCols = 4.0;

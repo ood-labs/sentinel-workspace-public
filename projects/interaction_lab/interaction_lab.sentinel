@@ -1585,7 +1585,7 @@
         "accent_color_b": "0.090000",
         "accent_color_g": "0.420000",
         "accent_color_r": "1.000000",
-        "body_scale": "2.000000",
+        "body_scale": "1.000000",
         "control_gap": "8.000000",
         "control_height": "34.000000",
         "demo_bank": "2.000000",

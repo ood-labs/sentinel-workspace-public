@@ -49,12 +49,16 @@ void main(uint3 id : SV_DispatchThreadID) {
 
     if (mute) { d.lfo1 = d.lfo2 = d.lfo3 = d.lfo4 = 0.0; }
 
-    d.bias_x = saturate(motion_bias.x);
-    // Y flipped exactly once, here at publish. Host xypad stores down = more
-    // (3A measured pad_y 0.05 -> row 69, 0.95 -> row 94); what LEAVES this node
-    // means up = more. The renderer draws the raw value so the reticle stays
-    // under the pointer.
-    d.bias_y = saturate(1.0 - motion_bias.y);
+    // Published exactly as the Properties row holds them. There is no flip on
+    // either axis: the reticle, the printed readout, the Properties row and
+    // these control outputs all carry the same number. A consumer that wants
+    // the opposite Y direction inverts it at the point of use, where the
+    // inversion is visible. See the Y-DIRECTION CONTRACT in sui3_core.hlsli.
+    // (Written out rather than calling sui3PublishPad, so this pure-compute
+    // pass does not have to pull in a UI header for one saturate.)
+    float2 bias = saturate(motion_bias);
+    d.bias_x = bias.x;
+    d.bias_y = bias.y;
 
     d.energy = (d.lfo1 + d.lfo2 + d.lfo3 + d.lfo4) * 0.25;
     d.pulse  = d.lfo4;

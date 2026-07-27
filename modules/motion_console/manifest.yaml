@@ -144,7 +144,7 @@ control_outputs:
   - { name: lfo3, buffer: lfo, element: 0, field_offset: 8, description: "Camera-drift modulation (0-1)" }
   - { name: lfo4, buffer: lfo, element: 0, field_offset: 12, description: "Rhythmic pulse modulation (0-1)" }
   - { name: bias_x, buffer: lfo, element: 0, field_offset: 16, description: "Horizontal motion bias (0-1)" }
-  - { name: bias_y, buffer: lfo, element: 0, field_offset: 20, description: "Vertical motion bias, up = more (0-1)" }
+  - { name: bias_y, buffer: lfo, element: 0, field_offset: 20, description: "Vertical motion bias, exactly as the Properties pad holds it (0-1)" }
   - { name: energy, buffer: lfo, element: 0, field_offset: 24, description: "Combined modulation energy (0-1)" }
   - { name: pulse, buffer: lfo, element: 0, field_offset: 28, description: "Pulse lane with burst envelope (0-1)" }
   - { name: burst_env, buffer: ui, element: 0, field_offset: 0, description: "Burst envelope, decays to 0 (0-1)" }

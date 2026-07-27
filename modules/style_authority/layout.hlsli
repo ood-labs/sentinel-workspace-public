@@ -39,7 +39,28 @@ struct SaLayout {
 // gap shrinks with the panel while the caption does not. Callers pass the real
 // gap; a caption that cannot fit is dropped rather than printed across the
 // control above it. Same rule as modules/motion_console/layout.hlsli.
-bool saCapFits(float gapPx, float sB) { return gapPx >= 12.0 * sB; }
+//
+// `want` is the scale the caption ASKS for. Every section caption here renders
+// at the section scale, while the old boolean test and its matching y-offset
+// were both passed the BODY scale -- so at section 2 / body 1 the glyphs were
+// twice the height the layout had reserved and RAIL, STATE, BANK and METERS
+// each printed through the control above them. A fit test measuring a
+// different scale than the draw is not a fit test.
+//
+// Returning a SCALE rather than a yes/no is the other half. Dropping a caption
+// is the correct answer only when even 1x cannot fit; when the gap is merely
+// too small for the requested size, shrinking keeps the label. That is the same
+// give-back the header already does with the title, and it means raising
+// Section Scale can never silently delete the control captions.
+//
+// 0 means the gap cannot hold a caption at all: do not draw.
+float saCapScale(float gapPx, float want) {
+    float fit = floor((gapPx - 3.0) / 13.0);
+    return min(max(1.0, floor(want)), max(fit, 0.0));
+}
+
+// The baseline offset above a control for a caption drawn at `scale`.
+float saCapOffset(float scale) { return 13.0 * scale + 2.0; }
 
 // `titleScale`/`sectionScale` are the published type scales; the four layout
 // metrics are the published pixel metrics. See render.hlsl for why the boxes
@@ -64,21 +85,38 @@ SaLayout saLayout(float2 R, float titleScale, float sectionScale, float bodyScal
     L.sB = extentStep * max(1.0, floor(bodyScale));
     L.sS = extentStep * max(1.0, floor(sectionScale));
 
-    L.pad     = outerPad * L.sB;
-    L.headY   = L.pad + 2.0 * L.sB;
-    L.colL    = L.pad;
-    L.colR    = R.x * 0.575;
-
-    L.showGrid = (R.y >= 520.0);
-    float gTopPlanned = L.showGrid ? (R.y * 0.60) : (R.y - L.pad);
-    L.capH = 11.0 * L.sB;
-    L.cg   = max(ctlG, 2.0);
-
-    // THE HOST'S RECTS, verbatim.
+    // THE HOST'S RECTS, verbatim. They come first now, because the sheet's left
+    // column and outer frame are derived FROM them.
     L.rPad  = saPx(UI_RECT_PAD,    R);
     L.rRail = saPx(UI_RECT_RAIL,   R);
     L.rTog  = saPx(UI_RECT_TOGGLE, R);
     float4 rBank = saPx(UI_RECT_BANK, R);
+
+    // outer_padding is PUBLISHED IN PIXELS, so it is spent in pixels. It used to
+    // be multiplied by the body glyph scale, which made a published 36px metric
+    // draw a 72px inset -- the same class of defect as body_scale never reaching
+    // this function: the live theme source not applying its own published value
+    // to itself. It tracks the extent step, which is the thing that actually
+    // changes pixel density, and not the operator's type-scale request.
+    //
+    // The clamp is the important half. The four control rects are STATIC
+    // NORMALIZED values in the manifest; they cannot move when a padding slider
+    // does. With padding at 36 and body scale at 2 the frame and the whole text
+    // column sat 50px right of the control column, so the pad, rail, toggle and
+    // bank hung off the left of the sheet. The rects cannot give way, so the
+    // sheet does: the frame is held clear of the control column at every
+    // padding setting, and the text column simply IS the control column.
+    L.pad     = min(outerPad * extentStep, max(8.0, 2.0 * L.rPad.x - 10.0));
+    L.headY   = L.pad + 2.0 * L.sB;
+    L.colL    = L.rPad.x;
+    L.colR    = R.x * 0.575;
+
+    L.showGrid = (R.y >= 520.0);
+    float gTopPlanned = L.showGrid ? (R.y * 0.60) : (R.y - L.pad);
+    // Section captions render at the SECTION scale, so the space reserved for
+    // them is measured at that scale too.
+    L.capH = 11.0 * L.sS;
+    L.cg   = max(ctlG, 2.0);
 
     // TITLE SCALE IS COMPUTED AFTER THE RECTS, because the header has to fit in
     // the space above the first control and that space is normalized while the
@@ -110,7 +148,8 @@ SaLayout saLayout(float2 R, float titleScale, float sectionScale, float bodyScal
     L.bw   = ((rBank.z - rBank.x) - L.cg * 3.0) / 4.0;
 
     L.mH = L.ch * 1.15;
-    L.mY = rBank.w + L.cg + 11.0 * L.sB;
+    // Room for a METERS caption at the section scale, plus the control gap.
+    L.mY = rBank.w + L.cg + saCapOffset(max(1.0, floor(L.sS)));
     L.mw = L.ch * 0.72;
 
     L.gTop = gTopPlanned;

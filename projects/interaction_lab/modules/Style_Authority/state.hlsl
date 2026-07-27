@@ -24,9 +24,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // state to keep in sync -- which is exactly why undo, presets and project
     // save work without this module doing anything.
     //
-    // Y flipped exactly once, here, at publish time. The stored pad_y is the
-    // host's down=more convention so the renderer draws the reticle under the
-    // pointer; what LEAVES the node means up=more.
+    // The pad publishes exactly what the Properties row holds -- no flip on
+    // either axis. The reticle is drawn from the same number and the readout
+    // prints the same number, so the four surfaces cannot disagree. See the
+    // Y-DIRECTION CONTRACT in sui3_core.hlsli.
     float2 pub = sui3PublishPad(demo_pad);
     Theme[3] = float4(pub.x, pub.y,
                       demo_toggle > 0.5 ? 1.0 : 0.0,

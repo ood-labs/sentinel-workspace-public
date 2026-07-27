@@ -120,7 +120,7 @@ control_outputs:
   - { name: accent_b, buffer: theme, element: 2, field_offset: 8, description: "Published accent blue" }
   - { name: specimen_value, buffer: theme, element: 2, field_offset: 12, description: "Specimen scalar" }
   - { name: pad_x, buffer: theme, element: 3, field_offset: 0, description: "Specimen pad X" }
-  - { name: pad_y, buffer: theme, element: 3, field_offset: 4, description: "Specimen pad Y, up = more" }
+  - { name: pad_y, buffer: theme, element: 3, field_offset: 4, description: "Specimen pad Y, exactly as the Properties row holds it" }
   - { name: toggle, buffer: theme, element: 3, field_offset: 8, description: "Specimen toggle, live" }
   - { name: bank, buffer: theme, element: 3, field_offset: 12, description: "Specimen bank selection, live" }
 
