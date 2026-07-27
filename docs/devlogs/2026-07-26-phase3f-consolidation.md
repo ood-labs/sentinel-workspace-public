@@ -3,9 +3,9 @@ type: devlog
 date: 2026-07-26
 phase: 3
 subphase: 3F
-status: in-progress
+status: complete
 approval: pending
-summary: "Lab consolidated to four stations; every group row driven by real mouse; presets re-saved; cold load and a re-measured profile pass. Hands-on gesture pass outstanding."
+summary: "Lab consolidated to four stations; all seven 3F criteria met; two audit rounds landed including two ship-blocking command-dropping bugs, the pad Y direction against the host widget, and the Style Authority wired to actually govern. Phase-level hands-on gesture pass still outstanding."
 ---
 
 # Phase 3F - Consolidation, Presets, And Hand-Off
