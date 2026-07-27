@@ -168,13 +168,24 @@ def guard_health(mcp):
 # These are the same numbers `_ui.generated.hlsli` carries, so the guard measures
 # the well the HOST hit-tests, not one the guard invented.
 PAD_WELLS = [
-    ("Style_Authority", "demo_pad", (0.015625, 0.120833, 0.559375, 0.315278), "style authority pad"),
-    ("Motion_Console", "motion_bias", (0.82, 0.02, 0.97, 0.13), "motion console bias"),
+    ("Style_Authority", "demo_pad", (0.015625, 0.120833, 0.559375, 0.315278),
+     "style authority pad", "pad"),
+    ("Motion_Console", "motion_bias", (0.82, 0.02, 0.97, 0.13),
+     "motion console bias", "bias"),
 ]
 
 
 def _reticle_row(png_path, rect, w, h):
-    """Row of the amber reticle inside `rect`, as 0 at the well's BOTTOM.
+    """Row only, for callers that do not care where the reticle sits across."""
+    pos = _reticle_pos(png_path, rect, w, h)
+    return None if pos is None else pos[1]
+
+
+def _reticle_pos(png_path, rect, w, h):
+    """(col, row) of the amber reticle inside `rect`, each 0..1.
+
+    Col is 0 at the well's LEFT edge, row is 0 at its BOTTOM, so the pair is
+    directly comparable with the pad's (x, y) value.
 
     Amber is the accent, but the reticle is NOT the only accent-coloured thing in
     a well: both stations print an XY readout inside the same rect. Averaging
@@ -238,8 +249,9 @@ def _reticle_row(png_path, rect, w, h):
     if best is None or best_score > 1.5:
         return None
 
+    mean_x = sum(c[0] for c in best) / float(len(best))
     mean_y = sum(c[1] for c in best) / float(len(best))
-    return 1.0 - (mean_y / max(chh - 1, 1))
+    return (mean_x / max(cw - 1, 1), 1.0 - (mean_y / max(chh - 1, 1)))
 
 
 def guard_pad_direction(mcp):
@@ -260,7 +272,7 @@ def guard_pad_direction(mcp):
     tmp = os.path.join(WORKSPACE, "captures", "_padguard")
     os.makedirs(tmp, exist_ok=True)
     try:
-        for pid, stem, rect, label in PAD_WELLS:
+        for pid, stem, rect, label, _ctrl in PAD_WELLS:
             before = {}
             for ax in ("x", "y"):
                 before[ax] = mcp.call("sentinel_state", {
@@ -291,6 +303,77 @@ def guard_pad_direction(mcp):
             ok = hi > 0.72 and lo < 0.28
             record("pad draws Y-up: %s" % label, ok,
                    "value 0.9 drew at %.2f, value 0.1 at %.2f (0 = well bottom)" % (hi, lo))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def guard_pad_gesture_tracks(mcp):
+    """The reticle must land under the DRAG, not merely draw the stored number.
+
+    `guard_pad_direction` writes the parameter and checks where the pad draws.
+    That proves the drawing but not the loop, and the gap is exactly where this
+    defect kept hiding: a pad can draw a stored value perfectly while the host
+    writes the opposite end of the range for a given pointer position, so the
+    dot runs away from the cursor. Both times the operator caught this, a
+    drawing-only assertion was green.
+
+    `sentinel_ui action=viewport_control_drag` closes it. Coordinates are
+    control-local 0..1 with y measured DOWN from the top, and the parameter
+    receives (x, 1 - y), so a drag at y writes a value that must draw at
+    (1 - y) up from the well's bottom. Asserting the round trip pointer ->
+    host -> parameter -> pixels means neither half can be wrong on its own.
+
+    The drag only lands on the FOCUSED viewport, and it fails silently when it
+    does not: the call returns success and the parameter simply does not move.
+    Every window is opened first for that reason. Diagnosing this cost a round
+    of chasing a phantom stuck-capture theory, so check `viewport info`'s
+    `focused` before believing the tool is broken.
+    """
+    import shutil
+    tmp = os.path.join(WORKSPACE, "captures", "_padtrack")
+    os.makedirs(tmp, exist_ok=True)
+    # Off-centre and asymmetric so a transposed or mirrored mapping cannot
+    # coincidentally satisfy the check.
+    TARGETS = [(0.22, 0.18), (0.78, 0.83)]
+    try:
+        for pid, stem, rect, label, ctrl in PAD_WELLS:
+            before = {ax: mcp.call("sentinel_state", {
+                "action": "get",
+                "path": "/sentinel/pipelines/%s/parameters/%s_%s" % (pid, stem, ax),
+            })["value"] for ax in ("x", "y")}
+            worst, detail = 0.0, []
+            try:
+                mcp.call("sentinel_pipeline", {"action": "open_window", "pipeline_id": pid})
+                time.sleep(1.0)
+                if not mcp.call("sentinel_viewport", {
+                        "action": "info", "pipeline": pid}).get("focused"):
+                    record("pad follows the drag: %s" % label, False,
+                           "viewport never took focus; a drag cannot land")
+                    continue
+                for dx, dy in TARGETS:
+                    for phase in ("begin", "update", "end"):
+                        mcp.call("sentinel_ui", {
+                            "action": "viewport_control_drag", "pipeline": pid,
+                            "control": ctrl, "phase": phase, "x": dx, "y": dy})
+                    time.sleep(0.6)
+                    shot = os.path.join(tmp, "%s_%.2f.png" % (pid, dy))
+                    cap = mcp.call("sentinel_capture", {
+                        "action": "pipeline", "pipeline_id": pid, "filepath": shot})
+                    pos = _reticle_pos(shot, rect, cap["width"], cap["height"])
+                    if pos is None:
+                        detail.append("drag(%.2f,%.2f): no reticle found" % (dx, dy))
+                        worst = 1.0
+                        continue
+                    want = (dx, 1.0 - dy)
+                    err = max(abs(pos[0] - want[0]), abs(pos[1] - want[1]))
+                    worst = max(worst, err)
+                    detail.append("drag(%.2f,%.2f) -> drew (%.2f,%.2f), want (%.2f,%.2f)"
+                                  % (dx, dy, pos[0], pos[1], want[0], want[1]))
+            finally:
+                for ax in ("x", "y"):
+                    mcp.set_param(pid, "%s_%s" % (stem, ax), float(before[ax]))
+            record("pad follows the drag: %s" % label, worst <= 0.12,
+                   "%s (worst err %.2f)" % ("; ".join(detail), worst))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
@@ -835,7 +918,8 @@ def main():
     try:
         if mcp.call("sentinel_app", {"action": "ping"}).get("text", "").strip() == "":
             pass  # ping returns a bare PONG string on some builds
-        for guard in (guard_health, guard_pad_direction, guard_theme_governs,
+        for guard in (guard_health, guard_pad_direction, guard_pad_gesture_tracks,
+                      guard_theme_governs,
                       guard_gizmo_state_integrity, guard_spline_readout_matches_knots,
                       guard_spline_undo, guard_spline_arm_settles, guard_gizmo_orbit,
                       guard_group_surfaces, guard_presets,
