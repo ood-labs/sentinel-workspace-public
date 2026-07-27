@@ -151,6 +151,27 @@ float sui3FullScale(float peak, float refLevel, float minFs, float headroom) {
 // name is how a "shared" header stops being shareable. The caller runs a
 // four-line loop over [i0, i1] and takes its own max.
 
+// Smoothed sample interval, for a consumer sampling at COOK RATE.
+//
+// NEVER pass a raw `_DeltaTime` to sui3TraceSamples. The sample count sets the
+// horizontal mapping, so recomputing it from the instantaneous frame delta
+// re-scales the whole time axis every single frame. Measured in Signal Trails
+// at a nominal 60 fps: `_DeltaTime` swinging between about 14 and 20 ms moved
+// an 8 s window between roughly 400 and 570 samples, and the trace visibly
+// stretched and squashed on every cook.
+//
+// A stream-driven consumer does not need this: its interval is a property of
+// the stream (hop_size / sample_rate) and is exactly constant. This is a
+// cook-rate hazard specifically.
+//
+// alpha ~0.02 settles over about a second, slow enough to be invisible and fast
+// enough to follow a real frame-rate change.
+float sui3SmoothDt(float prev, float dt, float alpha) {
+    float d = max(dt, 1e-5);
+    if (prev <= 0.0) return d;
+    return lerp(prev, d, saturate(alpha));
+}
+
 // How many samples to show, from a span in seconds and the sample interval.
 // Clamped to the ring: asking for more history than the ring holds would replay
 // stale slots as if they were recent.
@@ -203,6 +224,21 @@ float sui3TraceFrac(float px, float x0, float x1, float nShow, float writeIdx) {
 // True when the plot has more columns than samples to fill them.
 bool sui3TraceUpsampling(float x0, float x1, float nShow) {
     return nShow < max(x1 - x0, 1.0);
+}
+
+// Clamp an absolute sample index to what has actually been written.
+//
+// `writeIdx` is the NEXT slot to write, not the last one written, and that slot
+// still holds the sample from one full ring ago. Plotting it draws data from
+// 1024 samples in the past at the live edge, which appears as a spike or notch
+// welded to the rightmost column and never scrolls away. The interpolating path
+// makes it worse by reaching one sample FURTHER for its segment endpoint.
+//
+// Apply to every index before fetching, in both the reduce and interpolate
+// paths. Indices below zero are still the caller's to skip: before the ring has
+// filled there is genuinely nothing there.
+int sui3TraceClampIndex(int i, float writeIdx) {
+    return min(i, (int)writeIdx - 1);
 }
 
 // ---------------------------------------------------------------------------

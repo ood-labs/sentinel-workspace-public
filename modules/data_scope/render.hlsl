@@ -125,8 +125,11 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
             float v = 0.0, refAt = 0.0;
             [loop] for (int i = i0; i <= i1; ++i) {
-                if (i < 0) continue;
-                float4 t = Trace[sui3TraceAt(dsTraceBase(lane), DS_CAP, (uint)i)];
+                // writeIdx is the NEXT slot, still holding the sample from one
+                // full ring ago; plotting it welds stale data to the live edge.
+                int k = sui3TraceClampIndex(i, writeIdx);
+                if (k < 0) continue;
+                float4 t = Trace[sui3TraceAt(dsTraceBase(lane), DS_CAP, (uint)k)];
                 v     = max(v, t.x);
                 refAt = max(refAt, t.y);
             }

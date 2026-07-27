@@ -48,6 +48,18 @@ tread. The renderer now tests `sui3TraceUpsampling` and interpolates via
 **A fill is wrong for a smooth signal.** `sui3StripTrail` was added for this:
 a solid slab under an LFO hides the shape that is the entire content.
 
+**A cook-rate consumer must smooth its sample interval.** The sample count sets
+the horizontal mapping, so deriving it from a raw `_DeltaTime` rescaled the time
+axis every frame. Measured: the window swung across 12.4 samples of an 8 s span,
+a 2.6% stretch per cook, about 42 px at this width, and it read as the whole
+trace shivering. `sui3SmoothDt` took it to 0.8 samples, 0.16%. Data Scope never
+showed this because a stream's interval is exactly constant.
+
+**The live edge must clamp to the last written sample.** `writeIdx` is the next
+slot, still holding the sample from a full ring ago, so the rightmost column
+plotted thousand-sample-old data as a spike that never scrolled away.
+`sui3TraceClampIndex` fixes it in both consumers.
+
 ## Note on catch-up
 
 Sampling once per cook means the ring's generation catch-up degenerates to a

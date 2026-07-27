@@ -27,7 +27,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
     uint  writeIdx = (uint)max(A.y, 0.0);
     float peak     = A.z;
 
-    float dt  = max(_DeltaTime, 1e-4);
+    // Smoothed, NOT the raw frame delta. nShow below sets the horizontal
+    // mapping, so a jittering interval re-scales the time axis every cook and
+    // the whole trace visibly stretches and squashes.
+    float dt  = sui3SmoothDt(A.w, _DeltaTime, 0.02);
     float raw = stChannel(ch);
 
     // Bipolar folds -1..1 into 0..1 around a mid baseline; unipolar plots the

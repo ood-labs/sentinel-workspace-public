@@ -25,7 +25,8 @@ float4 stLaneRect(float2 R, uint ch) {
     return float4(stGutter(u), y0 + 2.0 * u, R.x - 6.0 * u, y0 + h - 4.0 * u);
 }
 
-float stSample(uint ch, int i) {
+float stSample(uint ch, int i, float writeIdx) {
+    i = sui3TraceClampIndex(i, writeIdx);
     if (i < 0) return 0.0;
     return Trace[sui3TraceAt(stTraceBase(ch), ST_CAP, (uint)i)].x;
 }
@@ -41,13 +42,14 @@ float stColumn(uint ch, float px, float4 r, float nShow, float writeIdx, float f
     if (sui3TraceUpsampling(r.x, r.z, nShow)) {
         float pos = sui3TraceFrac(px, r.x, r.z, nShow, writeIdx);
         int   i0  = (int)floor(pos);
-        v = lerp(stSample(ch, i0), stSample(ch, i0 + 1), frac(pos));
+        v = lerp(stSample(ch, i0, writeIdx),
+                 stSample(ch, i0 + 1, writeIdx), frac(pos));
     } else {
         int i0, i1;
         sui3TraceSpan(px, r.x, r.z, nShow, writeIdx, i0, i1);
         v = 0.0;
         [loop] for (int i = i0; i <= i1; ++i) {
-            v = max(v, stSample(ch, i));
+            v = max(v, stSample(ch, i, writeIdx));
         }
     }
     return saturate(v / max(fs, 1e-6));
