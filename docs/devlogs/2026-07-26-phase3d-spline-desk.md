@@ -3,7 +3,7 @@ type: devlog
 date: 2026-07-26
 phase: 3
 subphase: 3D
-status: complete
+status: in-progress
 approval: pending
 summary: "Spline Desk v3 rebuilt on the sui3 kit; undo made real after finding the snapshot captured post-edit, contracts preserved byte-for-byte"
 ---

@@ -307,3 +307,85 @@ would have failed for a reason unrelated to undo. It now asserts `active_lane ==
 precondition and skips its four assertions rather than reporting a misleading failure.
 
 Guard suite after both fixes: **30 passed, 0 failed, 4 skipped.**
+
+## Second audit pass: three agents, six findings acted on
+
+A second round of code / spec / proof agents ran against the landed phase. Their headline findings
+were real, and two were ship-blocking.
+
+**Both ship-blockers are the same shape: a command the state machine believed it had run.**
+
+`spline_desk/interaction.hlsl` discarded a command instead of queueing it. Pointer-down arms SELECT;
+the host's drag threshold trips on the next cook, and `else exec = want` overwrote the armed SELECT
+with the drag move while `pending` had already been cleared. The selection never ran, so `update`
+dragged whatever was selected *before* the click. Traced by hand before touching it, because a
+plausible-sounding report about a state machine is exactly the kind that is wrong half the time.
+This one was right. A want arriving while a command is already executing is now queued.
+
+`gizmo_desk` never adopted arm-then-execute at all, and so hit the read-write cycle
+`spline_desk/snapshot.hlsl` had already measured and documented: `snapshot` reads `scene_state` and
+writes `drag_snapshot` while `update` reads `drag_snapshot` and writes `scene_state`, and the
+scheduler runs `update` first. Commands 5 and 6 - a drag begin and its first move landing in one
+cook - therefore transformed against the *previous* transaction's snapshot and then banked the
+result as the new base. Command 1 escaped only because `update` early-returns on it. Same-cook
+transforms now defer by one cook: the begin is reported, `update` no-ops, the snapshot captures
+clean, the transform runs next cook against it.
+
+**Four smaller ones.** The gizmo reseed guarded on `mode` being outside 0..2, but 0 is a legal mode,
+so a zeroed buffer looked valid and the seed never ran - and a garbage `auto_latch` masks `do_orbit`
+off permanently, since a rising edge cannot fire against a latch already set. Now a magic sentinel,
+matching the `SD_MAGIC` fix `spline_desk` already carried. The published `Gizmo State` schema summed
+to 80 bytes against a 96-byte buffer. `motion_console` fired the burst envelope on every phase of a
+click rather than only COMPLETE, so one press could inflate `burst_fires`. Two float guards in the
+raymarcher: a zero gradient normalizing to NaN, and a sign-losing `max()` on a signed `w`.
+
+**Considered and rejected.** `derive.hlsl` publishing `first_knot = 0xffffffff` for empty lanes is a
+sentinel paired with an `active` flag, and 0 would be a *valid* index - the current form is safer.
+The orbit door consuming its rising edge when nothing is selected is correct for an edge-triggered
+control; deferring the fire until a selection appears would act at a moment the operator did not
+ask for.
+
+## The Style Authority now governs something
+
+The sharpest spec finding: deliverable D3 rests entirely on "the other three stations consume them
+by `sentinel_expression`... tuning the authority therefore visibly retunes the whole lab, which is
+what makes it a tool rather than a swatch page." That was proven in 3B against `UI_Style_Tuner`, a
+module 3F deleted, and the shipped project then contained zero expressions. The claim was true of a
+graph that no longer existed.
+
+Re-pointing the drivers was pre-authorized by the phase doc. Nine expressions now drive
+`accent_color_r/g/b` on Motion Console, Spline Desk and Gizmo Desk from the authority's published
+`accent_r/g/b`, saved into the project.
+
+| | authority | Motion Console | Spline Desk | Gizmo Desk |
+| --- | --- | --- | --- | --- |
+| baseline | 1.00, 0.42, 0.09 | 1.00, 0.42, 0.09 | 1.00, 0.42, 0.09 | 1.00, 0.42, 0.09 |
+| driven | 0.18, 0.86, 0.42 | 0.18, 0.86, 0.42 | 0.18, 0.86, 0.42 | 0.18, 0.86, 0.42 |
+| restored | 1.00, 0.42, 0.09 | 1.00, 0.42, 0.09 | 1.00, 0.42, 0.09 | 1.00, 0.42, 0.09 |
+
+Guarded as `theme: authority drives all three stations`. It asserts the causal chain rather than a
+pixel diff, deliberately: a diff would still pass with one of the three unwired.
+
+## Documentation corrections
+
+Amendments 5, 6 and 7 added. **5** records the numeric-transform scope fence being crossed in 3E as
+a deviation rather than retroactively blessing it - the addition is defensible and 3E.2 is proven
+through it, but crossing a fence silently is the defect. **6** retires "the Y flip is applied exactly
+once" as the wording of 3C.5; "once" is a claim about history that no assertion can test, and it
+produced two failed fixes. **7** records `modules/spline_editor/` and `modules/transform_gizmo_lab/`
+as orphaned and deliberately left in place for the operator to decide at phase close.
+
+Also: Amendment 1 now carries an inline SUPERSEDED marker, since a reader stopping at "a new hard
+requirement, not a preference" was reading a rule reversed two amendments later. Amendment 2 was a
+bold run-in buried in the 3B result block and is now a heading. The Verification Plan cited 3C.4 for
+the Y criterion and 3C.5 for extents; they are 3C.5 and 3C.6. The Files Summary named
+`modules/motion_control_desk/`, which never existed.
+
+The 3D and 3E devlogs were self-marked `status: complete` with their gesture criterion deferred,
+which the phase doc forbids in as many words. Both are back to `in-progress`. Two writing defects
+fixed: a conversation leak in 3E and contrastive framing in 3A.
+
+**Deferred to `$end-session`, as before:** `docs/state.md` and `docs/implementation-plan.md` are
+stale. Those move at the phase boundary.
+
+Guard suite: **37 passed, 0 failed, 4 skipped.**

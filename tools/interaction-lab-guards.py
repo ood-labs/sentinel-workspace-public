@@ -263,6 +263,50 @@ def guard_pad_direction(mcp):
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+THEME_FOLLOWERS = ["Motion_Console", "Spline_Desk", "Gizmo_Desk"]
+
+
+def guard_theme_governs(mcp):
+    """The Style Authority must actually govern the other three stations.
+
+    Deliverable D3 rests entirely on "the other stations consume them by
+    sentinel_expression... tuning the authority therefore visibly retunes the
+    whole lab, which is what makes it a tool rather than a swatch page." That was
+    proven in 3B against UI_Style_Tuner, a module 3F deleted, and the shipped
+    project then carried zero expressions -- so the claim was true of a graph
+    that no longer existed. This drives the authority and asserts the followers
+    move, which is the causal chain itself rather than a pixel diff that would
+    also pass if one of the three were unwired.
+    """
+    def accent(pid):
+        return tuple(round(float(mcp.call("sentinel_state", {
+            "action": "get",
+            "path": "/sentinel/pipelines/%s/parameters/accent_color_%s" % (pid, c),
+        })["value"]), 4) for c in "rgb")
+
+    base = accent("Style_Authority")
+    probe = (0.18, 0.86, 0.42)
+    try:
+        for c, v in zip("rgb", probe):
+            mcp.set_param("Style_Authority", "accent_color_%s" % c, v)
+        time.sleep(1.0)
+        moved = {f: accent(f) for f in THEME_FOLLOWERS}
+    finally:
+        for c, v in zip("rgb", base):
+            mcp.set_param("Style_Authority", "accent_color_%s" % c, v)
+        time.sleep(0.8)
+    restored = {f: accent(f) for f in THEME_FOLLOWERS}
+
+    lagging = [f for f, v in moved.items()
+               if any(abs(v[i] - probe[i]) > 0.01 for i in range(3))]
+    record("theme: authority drives all three stations", not lagging,
+           "did not follow: %s" % lagging if lagging else "all three -> %s" % (probe,))
+    stuck = [f for f, v in restored.items()
+             if any(abs(v[i] - base[i]) > 0.01 for i in range(3))]
+    record("theme: followers restore with the authority", not stuck,
+           "still off: %s" % stuck if stuck else "all three back to %s" % (base,))
+
+
 def guard_gizmo_state_integrity(mcp):
     """The reseed sentinel ran, and the published schema covers the whole stride.
 
@@ -464,6 +508,7 @@ def main():
             pass  # ping returns a bare PONG string on some builds
         guard_health(mcp)
         guard_pad_direction(mcp)
+        guard_theme_governs(mcp)
         guard_gizmo_state_integrity(mcp)
         guard_spline_undo(mcp)
         guard_gizmo_orbit(mcp)

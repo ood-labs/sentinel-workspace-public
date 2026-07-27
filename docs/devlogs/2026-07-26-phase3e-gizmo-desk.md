@@ -3,7 +3,7 @@ type: devlog
 date: 2026-07-26
 phase: 3
 subphase: 3E
-status: complete
+status: in-progress
 approval: pending
 summary: "Gizmo Desk v3 rebuilt on the sui3 kit with lit raymarched solids; host pick/shift-extend proven over MCP, multi-selection orbit proven numerically and visually"
 ---
@@ -29,9 +29,9 @@ Cost: **3.30 ms** median wall time (7 samples, 3.23-4.06).
 
 ## The reversal: these are lit solids, not outlines
 
-I first rendered the twelve objects as flat screen-space silhouettes - ring, square, diamond,
-brackets - reasoning that kind-as-shape kept them distinguishable without colour. The operator
-rejected it on sight, and correctly: **a transform gizmo is only judgeable against shaded
+The twelve objects were first rendered as flat screen-space silhouettes - ring, square, diamond,
+brackets - on the reasoning that kind-as-shape kept them distinguishable without colour. The
+operator rejected that on sight, and correctly: **a transform gizmo is only judgeable against shaded
 geometry.** A rotation is invisible on a flat outline, and so is a non-uniform scale. The renderer
 now raymarches the same SDF v1 used, with one key light, a dim opposing fill, a silhouette rim,
 specular, and soft shadows against the objects. The floor is a real lit plane carrying the

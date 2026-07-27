@@ -177,6 +177,11 @@ Record the live Sentinel version, and confirm `audio`-era capabilities are irrel
 
 ## Amendment 1 - Extent testing mechanism (recorded 2026-07-26, after 3A)
 
+> **SUPERSEDED BY AMENDMENT 3.** Its conclusion - a canonical fixed-resolution renderer with
+> `follow_panel` reserved for editor surfaces - was the wrong diagnosis and was reversed
+> during 3C. All four shipped stations are `follow_panel`. The measurements below stand; the
+> requirement drawn from them does not. Read Amendment 3 before acting on anything here.
+
 3A proved that `follow_panel` pins a module's render size to its dock content size, that
 `resolution_width`/`resolution_height` writes are ignored while it is active, and that no
 dock-resize mechanism exists anywhere in the MCP surface. The Sentinel window is also
@@ -267,6 +272,66 @@ This is the Tier 2 "substitute a deterministic assertion and note the substituti
 the profiler rather than to vision evaluation. It is not a relaxation: the ceiling comparison stays,
 and it now has to hold in the worst state rather than a convenient one.
 
+## Amendment 5 - The numeric-transform fence was crossed in 3E (recorded 2026-07-26, during 3F audit)
+
+The Out Of Scope list above bars adding "snapping, numeric transform entry, spline segment
+insertion, or depth-tested gizmo fading". 3E added numeric transform entry: `do_orbit`,
+`orbit_axis` and `orbit_degrees` on the Gizmo Desk, shipped and documented in
+`projects/interaction_lab/README.md`. No devlog lifted the fence, and the deferred list in the
+README was quietly rewritten without the item. A post-landing audit caught it.
+
+**Recorded as a deviation, not retroactively blessed.** The fence was correct in intent - the phase
+is a foundation, not a DCC feature race - and crossing it silently is the actual defect. The
+addition itself is defensible on its merits: it is the only way to transform a selection without a
+pointer, which is precisely the gap that makes 3E's criterion 1 unprovable by automation, and 3E
+criterion 2 (multi-selection shared pivot) is proven THROUGH it. Removing it now would delete the
+only code-path-identical proxy the gizmo has for its own transform maths.
+
+**Consequences carried forward.** The fence stands for the remaining three items. Any future numeric
+door must be added by amendment first. And 3E criterion 2's evidence must be read for what it is:
+the shared-pivot transform is proven, the pointer path that reaches it is not, which is why 3E.1
+stays open pending the hands-on pass. 3D's keyboard nudge is the same class and is covered by this
+amendment.
+
+## Amendment 6 - "Flipped exactly once" was the wrong way to state 3C.5 (recorded 2026-07-26, during 3F audit)
+
+3C.5 reads: "The XY bias pad's published value moves **up** when the reticle moves up, proving the Y
+flip is applied exactly once." The requirement in the first clause is right and is met. The
+explanation in the second clause is wrong, and it cost two failed fixes and two operator reports of
+the same defect.
+
+**Why "once" cannot be a rule.** It is not checkable. Nothing in a shader can observe how many times
+a value has been inverted upstream, so "once" is a claim about history that no assertion can test.
+The first fix read it as "flip at publish", which drew the reticle at `raw` while printing `1 - raw`
+next to it - one control with two visible numbers that disagreed. The second removed every flip so
+all four module-drawn surfaces agreed, and all four were then upside down against the Properties
+row, which the module does not draw and had never been compared against.
+
+**Restated.** The stored value is the host parameter, unmodified, on every surface: the Properties
+row, the drawn reticle, the printed readout, and the published output. Direction is a separate
+concern and belongs to one function. The host's XY pad is Y-up - value 1 at the top - measured by
+driving the parameter and reading the widget; canvas pixels run downward, so the kit converts value
+to pixel through `sui3PadPoint` and back through `sui3PadValue`, and nowhere else.
+
+**Proof method, replacing the readback pair.** A readback pair compares the module to itself and
+cannot see a whole-control inversion. The criterion is now met by an assertion on the RENDERED
+image: driving the parameter to 0.9 must place the reticle in the upper fifth of the well and 0.1 in
+the lower fifth, measured against the manifest rect. Guarded in
+`tools/interaction-lab-guards.py::guard_pad_direction`, which fails if the single line in
+`sui3PadPoint` is reverted.
+
+## Amendment 7 - Two v1 module directories are orphaned (recorded 2026-07-26, during 3F audit)
+
+`modules/spline_editor/` and `modules/transform_gizmo_lab/` are the v1 stations that 3D and 3E
+replaced. The Files Summary described the rebuild as in-place; it was not, and both directories are
+still tracked, still on disk, and referenced by no project, manifest or document.
+
+They are **left in place** for this phase. Deleting tracked source is not something to fold into an
+audit fix, the phase's own scope fence bars touching files outside the listed lab family, and the v1
+sources are the only remaining reference for the behaviours 3D and 3E claim to preserve. Removal is
+a deliberate decision for the operator at phase close, recorded here so it is not silently
+forgotten. `modules/motion_control_desk/` in the original Files Summary never existed.
+
 ## Sub-Phase 3B - The `sui3_*` Kit And The Style Authority
 
 The kit lands first, then the one station that proves it. **This is the taste checkpoint.** If the
@@ -329,7 +394,9 @@ batched onto the taste checkpoint.
 `0 controls` for this station, so the "rendered rectangles agree with the manifest" half is vacuous
 here. It bites in 3D and 3E, which do declare control rects.
 
-**Amendment 2 - the readout rule is now stated correctly.** Criterion 1 requires "a live numeric
+### Amendment 2 - the readout rule is now stated correctly (recorded 2026-07-26, during 3B)
+
+Criterion 1 requires "a live numeric
 readout attached to every control." The kit's own header claimed each control draws its own digits;
 `sui3Meter` cannot, because a 20px meter in a bank of six has nowhere to put them. The rule for 3C-3F
 is therefore: **numeric where the control has room, positional where it does not - and every control
@@ -469,7 +536,9 @@ and `camera_fov` parameters. Confirm none is exposed on a Scene Group; if any is
 
 ### Modified
 
-- `modules/motion_control_desk/`, `modules/spline_editor/`, `modules/transform_gizmo_lab/` and their
+- `modules/motion_console/` (planned here as `motion_control_desk/`, which never existed at
+  `ba7d722`; the rebuild was created under the new name), `modules/spline_desk/`,
+  `modules/gizmo_desk/` and their
   bundled copies under `projects/interaction_lab/modules/`
 - `projects/interaction_lab/interaction_lab.sentinel`
 - `projects/interaction_lab/README.md`
@@ -510,11 +579,11 @@ create or `force_reload`, `place_relative`, poll `compile_status`, inspect healt
 | Authority is load-bearing | 3B.2 | change upstream value, capture a *different* station |
 | No rollover dependence | 3B.3 | two captures, pointer on and off, compared |
 | Accent reserved for meaning | 3B.4, 3E.4 | amber absent from idle chrome; present only on selection |
-| Legible at any dock extent | 3B.5, 3C.5, 3D.5, 3E.5 | captures at 640x360 and 1600x900 |
-| Manifest/render rect agreement | 3B.6, 3C.5, 3D.5, 3E.5 | `tools/module-ui.ps1 validate` |
+| Legible at any dock extent | 3B.5, 3C.6, 3D.5, 3E.5 | captures at 640x360 and 1600x900 |
+| Manifest/render rect agreement | 3B.6, 3C.6, 3D.5, 3E.5 | `tools/module-ui.ps1 validate` |
 | Controls publish live state | 3C.1 | ten-second control-output read, non-constant |
 | `burst` fires | 3C.2 | visible transient plus measured step in `pulse` |
-| Y flipped exactly once | 3C.4 | readback pair, up means more |
+| Pad Y agrees with the host widget | 3C.5 | rendered-reticle assertion, up means more |
 | Interaction actually works | 3D.1, 3E.1 | **hands-on pass**, plus non-zero delivered gesture count |
 | Data contracts survive | 3D.2 | `Spline_Output` capture pair |
 | Durable state survives | 3D.3, 3E.3 | save/close/reopen byte-identity |

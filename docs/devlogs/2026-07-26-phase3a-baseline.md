@@ -112,8 +112,8 @@ So: it latches true on first trigger, **cannot be written back to false**, and *
 
 `lfo_compute.hlsl:36` does `if (burst) d.lfo4 = 1.0;` and line 42 pins `energy` the same
 way, so a single press permanently destroys the Pulse lane and the energy readout for the
-rest of the session. This is not merely "the button does not fire" — it is a live
-data-corruption bug in the shipped example.
+rest of the session. The button failing to fire is the visible symptom; the defect underneath it
+is live data corruption in the shipped example.
 
 **Second finding: two MCP surfaces disagree.** `sentinel_state get` on
 `/parameters/burst` returned `0.000000` throughout, while `sentinel_pipeline info` reported
