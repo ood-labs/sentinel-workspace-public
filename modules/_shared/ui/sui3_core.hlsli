@@ -194,18 +194,29 @@ float sui3EdgeReadout(float2 P, float4 r, float2 at, float railPx) {
 // The module does not own either mapping. It cannot draw one reticle that agrees
 // with both, and there is no third option: the parameter is a single number.
 //
-// SO THE CANVAS GESTURE WINS, and this is a deliberate choice rather than a
-// coin toss. The reticle is the thing under the operator's cursor during a drag;
-// a control that does not track the pointer is broken in the hand, while a
-// Properties row that plots the same number at the opposite end is merely
-// inconsistent to look at. Direct manipulation beats a secondary readout. The
-// first attempt at this matched the Properties row instead and made the pad
-// undraggable in exactly that way.
+// FLIPPING THE DRAWING CANNOT FIX THIS. It only chooses which of the two host
+// surfaces is wrong. Both choices were shipped and both were rejected by the
+// operator: draw Y-up and the Properties row agrees while the dot runs away from
+// the cursor; draw Y-down and the dot tracks while the Properties row is
+// mirrored. Anyone reading this and reaching for the Y term is about to
+// re-run that loop for a fourth time. Don't.
 //
-// Consequence, stated plainly so nobody "fixes" it again: a value of 0 draws at
-// the TOP of the well on the canvas and displays at the BOTTOM of the Properties
-// widget. That residual mismatch is the host's, it is not reachable from module
-// code, and closing it needs a host change to make the two surfaces agree.
+// The rect was the other lever and it is CLOSED, tested rather than assumed.
+// Declaring the manifest rect with an inverted Y pair would feed the host's
+// Y-down gesture a reversed interval and yield Y-up values, agreeing with the
+// Properties row. `tools/module-ui.ps1` rejects it outright: "control 'pad' rect
+// is outside normalized bounds or inverted", plus a negative hit height. The
+// rect must be a plain bounding box.
+//
+// So the residual defect is the HOST's, not this module's, and closing it needs
+// either a host change so its two surfaces share one convention, or a module pad
+// rebuilt on `param_gestures`/`events` so the module owns pointer-to-value and
+// the host's canvas mapping is out of the loop entirely.
+//
+// Until then the drawing matches the CANVAS GESTURE (Y-down), because a
+// direct-manipulation control whose dot does not follow the pointer is broken in
+// the hand, while a Properties row that plots the same number at the other end
+// is wrong to look at but still readable and still typeable.
 //
 // The rule, whole: the stored value is the host parameter unmodified on every
 // surface, and every value-to-pixel conversion is `sui3PadPoint`. A bare
@@ -220,20 +231,28 @@ float2 sui3PublishPad(float2 raw) {
     return saturate(raw);
 }
 
-// Value -> canvas pixel, for a pad occupying rect `r` = (x0, y0, x1, y1) with y
-// increasing downward. This matches the HOST CANVAS GESTURE, which is Y-down:
-// value 0 lands on r.y (the TOP edge), so the reticle sits under the pointer
-// that produced it. See the contract above for why this and not the Properties
-// row. Do not "correct" the Y term here without re-reading it.
+// Normalizes a pad rect so r.y is the top edge. The manifest is required to
+// declare a plain bounding box, so this is a no-op guard rather than a
+// conversion; it exists so a hand-written rect cannot silently invert a pad.
+float4 sui3PadRect(float4 r) {
+    return float4(r.x, min(r.y, r.w), r.z, max(r.y, r.w));
+}
+
+// Value -> canvas pixel. Y-DOWN, matching the host canvas gesture: value 0 lands
+// on the top edge, so the reticle sits under the pointer that produced it. This
+// disagrees with the host Properties row by design; read the contract above
+// before changing the Y term.
 float2 sui3PadPoint(float4 r, float2 val) {
+    r = sui3PadRect(r);
     val = saturate(val);
     return float2(lerp(r.x, r.z, val.x), lerp(r.y, r.w, val.y));
 }
 
-// Canvas pixel -> value. The exact inverse of sui3PadPoint, and therefore also
-// Y-down. A pad that hit-tests with its own arithmetic drifts from the drawing
-// the moment one of the two is edited.
+// Canvas pixel -> value. The exact inverse of sui3PadPoint. A pad that hit-tests
+// with its own arithmetic drifts from the drawing the moment one of the two is
+// edited.
 float2 sui3PadValue(float4 r, float2 px) {
+    r = sui3PadRect(r);
     float x = (px.x - r.x) / max(r.z - r.x, 1e-5);
     float y = (px.y - r.y) / max(r.w - r.y, 1e-5);
     return saturate(float2(x, y));

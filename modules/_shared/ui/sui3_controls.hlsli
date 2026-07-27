@@ -35,10 +35,12 @@ float3 sui3Well(float2 P, float4 r, Sui3Theme t) {
 }
 
 // XY pad. `val` is the HOST PARAMETER, unmodified -- the same number the
-// Properties row shows, the readout prints, and the node publishes. It is placed
-// through sui3PadPoint, which is Y-up to match the host's own XY widget; see the
-// Y-DIRECTION CONTRACT in sui3_core.hlsli.
+// Properties row shows, the readout prints, and the node publishes. See the
+// Y-DIRECTION CONTRACT in sui3_core.hlsli for why the manifest rect for a pad is
+// declared with its Y pair INVERTED and must be normalized here before anything
+// draws with it. Every helper below assumes r.y is the top edge.
 float3 sui3Pad(float2 P, float4 r, float2 val, Sui3Theme t) {
+    r = sui3PadRect(r);
     float3 c = t.well * sui3RectIn(P, r);
     c += t.rule * 0.20 * sui3Graticule(P, r, float2(4.0, 4.0));
 
