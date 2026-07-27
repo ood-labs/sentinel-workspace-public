@@ -489,9 +489,11 @@ features: [math3d, noise, camera]
 
 Provides in cbuffer: `_ViewMatrix`, `_ProjMatrix`, `_ViewProjMatrix`, `_InvViewProjMatrix`, `_CameraPos`, `_CameraNear`, `_CameraFar`, `_CameraFOV`.
 
-The rig supports fly and orbit modes (`camera_mode` parameter; `Tab` toggles while the preview interaction is active). Camera-feature modules also expose a `camera_ref` parameter: point it at a `camera` node to drive this module from a shared wireless rig (local camera rows lock while bound; a group's single contained `camera` node binds members automatically). A `camswitch` node cuts or blends between camera nodes for show control.
+The rig supports fly and orbit modes (`camera_mode` parameter; `Tab` toggles while the preview interaction is active). Read `knowledge/internal-camera-template.md` before authoring any 3D renderer.
 
-Choose exactly one camera owner: the Module's internal camera or an explicit `camera`/`camswitch`. Never expose camera-related parameters (binding, mode, position, orbit, target, FOV, or Module-local camera rows) on a Scene Group/top-level control surface. Keep camera operation on the owning renderer preview or camera node Properties. While externally or group-bound, the local camera rows are inactive. After binding or grouping, open the renderer preview and prove the owning camera with a visible before/after change; StateTree write success is not interaction proof.
+The Module's internal camera is the mandatory default. Declare `features: [camera]` and `viewport.interactions: [camera]`, keep `camera_ref` empty, save Fly as the default, and construct every camera-dependent pass from the injected matrices and `_CameraPos`. Do not create an explicit `camera`/`camswitch` for one renderer, multiple passes inside one Module, or a renderer plus post-processing, and do not invent shader-local orbit or parallel ray equations.
+
+Use `camera_ref`, a `camera` node, or `camswitch` only when multiple separate camera-capable 3D renderer nodes genuinely require one synchronized viewpoint or show-level switching; state that justification before creating the external owner. Never expose camera-related parameters on a Scene Group/top-level control surface. Prove the owner through real viewport movement in the open renderer preview and visibly different captures; StateTree write success is not interaction proof.
 
 Declare viewport behavior in the manifest with an optional `viewport:` block:
 

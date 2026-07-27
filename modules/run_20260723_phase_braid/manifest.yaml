@@ -1,0 +1,76 @@
+name: "Run 20260723 Phase Braid"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+
+buffers:
+  - name: phase_state
+    format: RGBA16F
+    scale: 0.01
+    persistent: true
+
+  - name: braid_controls
+    structured: true
+    element_size: 16
+    element_count: 1
+
+parameters:
+  - { name: play, display: "Play", type: bool, default: true, flags: button, group: "Performance" }
+  - { name: rate, display: "Rate", type: float, min: -0.25, max: 0.25, default: 0.065, group: "Performance" }
+  - { name: master_phase, display: "Reset Seed", type: float, min: 0.0, max: 1.0, default: 0.08, group: "Performance" }
+  - { name: reset_phase, display: "Hold Reset Seed", type: bool, default: false, flags: button, group: "Performance" }
+  - { name: braid_mode, display: "Braid Mode", type: enum, default: 0, options: [Counterpoint, Unison, Foldback], flags: button_grid, group: "Performance" }
+  - { name: gate_ratio, display: "Gate Ratio", type: float, min: 0.5, max: 3.0, default: 1.5, group: "Mapping" }
+  - { name: gate_offset, display: "Gate Offset", type: float, min: -1.0, max: 1.0, default: 0.049, group: "Mapping" }
+  - { name: memory_lag, display: "Memory Lag", type: float, min: 0.0, max: 0.45, default: 0.22, group: "Mapping" }
+  - { name: memory_offset, display: "Memory Offset", type: float, min: -1.0, max: 1.0, default: 0.028, group: "Mapping" }
+  - { name: crossmod, display: "Cross Modulation", type: float, min: 0.0, max: 1.0, default: 0.38, group: "Mapping" }
+  - { name: energy_shape, display: "Energy Shape", type: float, min: 0.2, max: 3.0, default: 1.0, group: "Mapping" }
+  - { name: beat_divisions, display: "Beat Divisions", type: int, min: 4, max: 32, default: 16, group: "Preview" }
+  - { name: lane_height, display: "Lane Height", type: float, min: 0.08, max: 0.22, default: 0.15, group: "Preview" }
+  - { name: line_weight, display: "Line Weight", type: float, min: 0.5, max: 4.0, default: 1.3, group: "Preview" }
+  - { name: connector_weight, display: "Connector Weight", type: float, min: 0.5, max: 4.0, default: 1.7, group: "Preview" }
+  - { name: marker_radius, display: "Marker Radius", type: float, min: 3.0, max: 16.0, default: 7.0, group: "Preview" }
+  - { name: rail_weight, display: "Rail Weight", type: float, min: 0.0, max: 1.0, default: 0.28, group: "Preview" }
+  - { name: accent_weight, display: "Accent Weight", type: float, min: 0.0, max: 1.0, default: 0.92, group: "Preview" }
+  - { name: energy_brightness, display: "Energy Brightness", type: float, min: 0.0, max: 1.0, default: 0.78, group: "Preview" }
+  - { name: background_color, display: "Field", type: color, default: [0.002, 0.003, 0.004], group: "Palette" }
+  - { name: rail_color, display: "Rails", type: color, default: [0.32, 0.34, 0.33], group: "Palette" }
+  - { name: loom_color, display: "Loom Lane", type: color, default: [0.92, 0.93, 0.89], group: "Palette" }
+  - { name: gate_color, display: "Gate Lane", type: color, default: [0.62, 0.64, 0.61], group: "Palette" }
+  - { name: memory_color, display: "Memory Lane", type: color, default: [0.43, 0.45, 0.43], group: "Palette" }
+  - { name: accent_color, display: "Live Phase", type: color, default: [1.0, 0.17, 0.02], group: "Palette" }
+
+passes:
+  - name: advance
+    shader: braid_advance.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: "buffer:phase_state"
+
+  - name: compute
+    shader: braid_compute.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: "buffer:braid_controls"
+
+  - name: preview
+    shader: braid_preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:braid_controls" }
+    output: output
+
+control_outputs:
+  - { name: loom_phase, buffer: braid_controls, element: 0, field_offset: 0, description: "Phase for the Fault Loom generator" }
+  - { name: gate_phase, buffer: braid_controls, element: 0, field_offset: 4, description: "Counterpoint phase for the Void Gate" }
+  - { name: memory_phase, buffer: braid_controls, element: 0, field_offset: 8, description: "Lagged phase for Etch Memory" }
+  - { name: energy, buffer: braid_controls, element: 0, field_offset: 12, description: "Shared performance intensity envelope" }

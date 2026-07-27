@@ -1,0 +1,154 @@
+name: "Phase Lattice Core Vacuum"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA16F
+
+inputs:
+  - { name: "Traced Field", slot: 0, required: true }
+
+parameters:
+  - name: void_radius
+    display: "Nucleus Radius"
+    type: float
+    min: 0.035
+    max: 0.24
+    default: 0.105
+    group: "Excision"
+
+  - name: edge_feather
+    display: "Edge Transition"
+    type: float
+    min: 0.002
+    max: 0.06
+    default: 0.032
+    group: "Excision"
+
+  - name: penumbra_width
+    display: "Penumbral Reach"
+    type: float
+    min: 0.01
+    max: 0.18
+    default: 0.085
+    group: "Penumbral Release"
+
+  - name: penumbra_floor
+    display: "Contour Threshold"
+    type: float
+    min: 0.0
+    max: 0.25
+    default: 0.12
+    group: "Penumbral Release"
+
+  - name: penumbra_softness
+    display: "Contour Transition"
+    type: float
+    min: 0.01
+    max: 0.16
+    default: 0.060
+    group: "Penumbral Release"
+
+  - name: penumbra_residue
+    display: "Field Residue"
+    type: float
+    min: 0.0
+    max: 0.50
+    default: 0.0
+    group: "Penumbral Release"
+
+  - name: penumbra_discipline
+    display: "Contour Release"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 1.0
+    group: "Penumbral Release"
+
+  - name: facet_depth
+    display: "Field Faceting"
+    type: float
+    min: 0.0
+    max: 0.28
+    default: 0.10
+    group: "Excision"
+
+  - name: nucleus_floor
+    display: "Nucleus Floor"
+    type: float
+    min: 0.0
+    max: 0.20
+    default: 0.012
+    group: "Excision"
+
+  - name: nucleus_lip_width
+    display: "Cavity Lip Reach"
+    type: float
+    min: 0.005
+    max: 0.14
+    default: 0.038
+    group: "Cavity Relief"
+
+  - name: nucleus_lip_relief
+    display: "Cavity Lip Relief"
+    type: float
+    min: 0.0
+    max: 0.70
+    default: 0.26
+    group: "Cavity Relief"
+
+  - name: nucleus_lip_shadow
+    display: "Cavity Lip Shadow"
+    type: float
+    min: 0.0
+    max: 0.70
+    default: 0.22
+    group: "Cavity Relief"
+
+  - name: needle_restore
+    display: "Azimuth Continuity"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.72
+    group: "Live Indicator"
+
+  - name: azimuth_x
+    display: "Live Azimuth X"
+    type: float
+    min: -1.0
+    max: 1.0
+    default: 0.0
+    group: "Live Indicator"
+
+  - name: azimuth_y
+    display: "Live Azimuth Y"
+    type: float
+    min: -1.0
+    max: 1.0
+    default: 1.0
+    group: "Live Indicator"
+
+  - name: azimuth_confidence
+    display: "Live Confidence"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.5
+    group: "Live Indicator"
+
+  - name: vacuum_core
+    display: "Nucleus Center"
+    type: point2D
+    min: [-0.42, -0.38]
+    max: [0.42, 0.38]
+    default: [0.0, 0.0]
+    group: "Placement"
+
+passes:
+  - name: excise_core
+    shader: excise.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output

@@ -1,0 +1,48 @@
+name: "PD / Depth Aperture"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Program", slot: 0, required: true }
+
+data_inputs:
+  - name: "Particle Records"
+    slot: 0
+    schema:
+      - { name: position, type: float3 }
+      - { name: age, type: float }
+      - { name: origin, type: float3 }
+      - { name: life, type: float }
+      - { name: axis, type: float2 }
+      - { name: mass, type: float }
+      - { name: seed, type: float }
+      - { name: kind, type: uint }
+      - { name: emitterId, type: uint }
+      - { name: active, type: uint }
+      - { name: serial, type: uint }
+
+viewport:
+  hint: "Depth Aperture: three live strata of the Particle Records lane; each band is a different cut through the same emitted solids."
+
+parameters:
+  - { name: aperture_mix, display: "Aperture Mix", type: float, min: 0.0, max: 1.0, default: 0.86, group: "Composition" }
+  - { name: slice_spread, display: "Slice Spread", type: float, min: 0.05, max: 0.42, default: 0.18, group: "Composition" }
+  - { name: event_gain, display: "Event Ink", type: float, min: 0.0, max: 2.0, default: 0.9, group: "Composition" }
+  - { name: rail_gain, display: "Aperture Rail", type: float, min: 0.0, max: 2.0, default: 0.72, group: "Composition" }
+  - { name: sideband_width, display: "Sideband Width", type: float, min: 0.14, max: 0.42, default: 0.24, group: "Layout" }
+  - { name: pulse_rate, display: "Pulse Rate", type: float, min: 0.2, max: 4.0, default: 1.2, group: "Motion" }
+  - { name: liability_color, display: "Liability Signal", type: color, default: [1.0, 0.31, 0.025], group: "Look" }
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+    output: output
+
+outputs:
+  - { name: "Program", pass: render }

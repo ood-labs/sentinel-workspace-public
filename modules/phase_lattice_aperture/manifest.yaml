@@ -1,0 +1,82 @@
+name: "Phase Lattice Aperture"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+
+inputs:
+  - { name: "Temporal Memory", slot: 0, required: true }
+  - { name: "Raw Seed", slot: 1, required: true }
+
+parameters:
+  - name: aperture_mode
+    display: "Aperture Geometry"
+    type: enum
+    default: 0
+    options: [Iris, Split, Plates]
+    flags: button_grid
+    group: "Cut"
+
+  - name: void_scale
+    display: "Void Scale"
+    type: float
+    min: 0.22
+    max: 0.92
+    default: 0.58
+    group: "Cut"
+
+  - name: edge_softness
+    display: "Cut Softness"
+    type: float
+    min: 0.002
+    max: 0.075
+    default: 0.016
+    group: "Cut"
+
+  - name: difference_gate
+    display: "Divergence Gate"
+    type: float
+    min: 0.02
+    max: 0.58
+    default: 0.18
+    group: "Recovery"
+
+  - name: seed_reveal
+    display: "Seed Recovery"
+    type: float
+    min: 0.0
+    max: 1.0
+    default: 0.62
+    group: "Recovery"
+
+  - name: memory_gain
+    display: "Memory Gain"
+    type: float
+    min: 0.25
+    max: 1.5
+    default: 0.92
+    group: "Recovery"
+
+  - name: aperture_core
+    display: "Aperture Core"
+    type: point2D
+    min: [-0.42, -0.38]
+    max: [0.42, 0.38]
+    default: [0.0, 0.0]
+    group: "Placement"
+
+  - name: accent_gain
+    display: "Accent Retention"
+    type: float
+    min: 0.0
+    max: 1.5
+    default: 0.88
+    group: "Grade"
+
+passes:
+  - name: composite
+    shader: composite.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+    output: output

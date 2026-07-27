@@ -1,0 +1,175 @@
+name: "PD / Ledger Extrusion"
+version: "2.0"
+mode: generator
+resolution: [1280, 720]
+features: [camera]
+
+inputs:
+  - { name: "Ledger Plate", slot: 0, required: true }
+
+data_inputs:
+  - name: "Debt Quanta"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: axis, type: float2 }
+      - { name: mass, type: float }
+      - { name: radius, type: float }
+      - { name: kind, type: uint }
+      - { name: sourceIndex, type: uint }
+      - { name: ledgerId, type: uint }
+      - { name: active, type: uint }
+      - { name: phase, type: float }
+      - { name: age, type: float }
+
+buffers:
+  - { name: emission_clock, structured: true, element_size: 32, element_count: 1, persistent: true }
+  - { name: emitted_solids, structured: true, element_size: 64, element_count: 192, persistent: true }
+  - { name: particle_stats, structured: true, element_size: 16, element_count: 1 }
+  - { name: particle_field, format: RGBA16F, scale: 0.5 }
+
+state_buffers:
+  - name: emission_clock
+    max_elements: 1
+    schema:
+      - { name: remainder, type: float }
+      - { name: spawnSerial, type: uint }
+      - { name: spawnBudget, type: uint }
+      - { name: initialized, type: uint }
+      - { name: cameraDistance, type: float }
+      - { name: deltaTime, type: float }
+      - { name: pathPhase, type: float }
+      - { name: pad, type: float }
+  - name: emitted_solids
+    max_elements: 192
+    schema:
+      - { name: position, type: float3 }
+      - { name: age, type: float }
+      - { name: origin, type: float3 }
+      - { name: life, type: float }
+      - { name: axis, type: float2 }
+      - { name: mass, type: float }
+      - { name: seed, type: float }
+      - { name: kind, type: uint }
+      - { name: emitterId, type: uint }
+      - { name: active, type: uint }
+      - { name: serial, type: uint }
+
+data_outputs:
+  - name: "Particle Records"
+    buffer: "emitted_solids"
+    schema:
+      - { name: position, type: float3 }
+      - { name: age, type: float }
+      - { name: origin, type: float3 }
+      - { name: life, type: float }
+      - { name: axis, type: float2 }
+      - { name: mass, type: float }
+      - { name: seed, type: float }
+      - { name: kind, type: uint }
+      - { name: emitterId, type: uint }
+      - { name: active, type: uint }
+      - { name: serial, type: uint }
+
+control_outputs:
+  - { name: active_particles, buffer: particle_stats, element: 0, field_offset: 0, description: "Currently living emitted particle records" }
+  - { name: spawn_serial, buffer: particle_stats, element: 0, field_offset: 4, description: "Monotonic emission event count" }
+  - { name: mean_age, buffer: particle_stats, element: 0, field_offset: 8, description: "Mean normalized particle lifetime" }
+  - { name: mean_depth, buffer: particle_stats, element: 0, field_offset: 12, description: "Mean emitted depth" }
+
+viewport:
+  hint: "Persistent particle rail: each spawn selects one active Debt Quantum, begins exactly at that record on the ledger plane, then advances once through the shared camera path. Axis divergence begins late in life."
+
+parameters:
+  - { name: phase, display: "Rail Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Transport" }
+  - { name: spawn_rate, display: "Print Events / Second", type: float, min: 0.5, max: 30.0, default: 7.0, group: "Transport" }
+  - { name: particle_lifetime, display: "Record Lifetime", type: float, min: 1.0, max: 14.0, default: 6.5, group: "Transport" }
+
+  - { name: depth_length, display: "Rail Depth", type: float, min: 1.0, max: 12.0, default: 7.2, group: "Camera Rail" }
+  - { name: perspective, display: "Depth Compression", type: float, min: 0.1, max: 2.0, default: 0.68, group: "Camera Rail" }
+  - { name: path_bend, display: "Shared Rail Bend", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [0.20, -0.12], group: "Camera Rail" }
+  - { name: path_sway, display: "Rail Sway", type: float, min: 0.0, max: 1.5, default: 0.22, group: "Camera Rail" }
+  - { name: camera_follow, display: "Camera Pursuit", type: float, min: 0.0, max: 1.0, default: 0.64, group: "Camera Rail" }
+  - { name: camera_roll, display: "Rail Roll", type: float, min: -0.25, max: 0.25, default: -0.018, group: "Camera Rail" }
+  - { name: vanishing_point, display: "Rail Target", type: point2D, min: [-1.0, -1.0], max: [1.0, 1.0], default: [0.14, -0.06], group: "Camera Rail" }
+
+  - { name: divergence, display: "Late Divergence", type: float, min: 0.0, max: 1.0, default: 0.12, group: "Particle Motion" }
+  - { name: divergence_onset, display: "Divergence Onset", type: float, min: 0.1, max: 0.95, default: 0.62, group: "Particle Motion" }
+  - { name: axis_spread, display: "Record Axis Spread", type: float, min: 0.0, max: 1.5, default: 0.32, group: "Particle Motion" }
+  - { name: particle_scale, display: "Token Scale", type: float, min: 0.2, max: 2.5, default: 0.72, group: "Particle Motion" }
+  - { name: trail_length, display: "Motion Streak", type: float, min: 0.0, max: 0.24, default: 0.052, group: "Particle Motion" }
+
+  - { name: plane_scale, display: "Ledger Plane Scale", type: float, min: 0.25, max: 1.2, default: 0.66, group: "Ledger Plane" }
+  - { name: plane_yaw, display: "Ledger Plane Yaw", type: float, min: -0.6, max: 0.6, default: -0.12, group: "Ledger Plane" }
+  - { name: plane_roll, display: "Ledger Plane Roll", type: float, min: -0.2, max: 0.2, default: -0.018, group: "Ledger Plane" }
+  - { name: ledger_opacity, display: "Ledger Ink", type: float, min: 0.0, max: 1.5, default: 0.84, group: "Ledger Plane" }
+  - { name: membrane_opacity, display: "Membrane Body", type: float, min: 0.0, max: 0.8, default: 0.10, group: "Ledger Plane" }
+
+  - { name: macro_gain, display: "Blob Tokens", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Token Geometry" }
+  - { name: hinge_gain, display: "Corner Tokens", type: float, min: 0.0, max: 2.0, default: 0.90, group: "Token Geometry" }
+  - { name: rail_gain, display: "Line Tokens", type: float, min: 0.0, max: 2.0, default: 0.85, group: "Token Geometry" }
+  - { name: trail_gain, display: "Rail Trace", type: float, min: 0.0, max: 2.0, default: 0.72, group: "Token Geometry" }
+  - { name: liability_color, display: "Liability Signal", type: color, default: [1.0, 0.31, 0.025], group: "Token Geometry" }
+
+passes:
+  - name: update_spawn
+    shader: update_spawn.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    time_dependent: true
+    output: "buffer:emission_clock"
+
+  - name: simulate_particles
+    shader: simulate_particles.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:emission_clock" }
+      - { slot: 1, source: "data:0" }
+    output: "buffer:emitted_solids"
+
+  - name: particle_stats
+    shader: particle_stats.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:emitted_solids" }
+      - { slot: 1, source: "buffer:emission_clock" }
+    output: "buffer:particle_stats"
+
+  - name: particle_field
+    shader: particle_field.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:emitted_solids" }
+      - { slot: 1, source: "buffer:emission_clock" }
+    output: "buffer:particle_field"
+
+  - name: ledger_volume
+    shader: ledger_volume.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:particle_field" }
+      - { slot: 2, source: "buffer:particle_stats" }
+    output: output
+
+  - name: field_preview
+    shader: field_preview.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:particle_field" }
+
+outputs:
+  - { name: "Program", pass: ledger_volume }
+  - { name: "Emission Field", pass: field_preview }

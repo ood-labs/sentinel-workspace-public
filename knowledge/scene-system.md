@@ -52,10 +52,9 @@ Verified MCP facts: `camera_ref` takes an entity id, and pointing a module's `ca
 
 ### Camera ownership and control-surface guardrail
 
-Choose exactly one owner before authoring controls:
+The renderer's internal camera is the mandatory default; read `internal-camera-template.md` before authoring 3D. A normal 3D Module declares `features: [camera]` plus `viewport.interactions: [camera]`, keeps `camera_ref` empty, and uses the injected matrices and `_CameraPos` in every camera-dependent pass.
 
-- Use the renderer's internal camera when the camera is local to that renderer and should be manipulated in its preview.
-- Use an explicit `camera` or `camswitch` when multiple consumers need a shared rig or show-level switching.
+Do not create an explicit `camera` or `camswitch` for a single renderer, multiple passes inside one Module, or a renderer followed by post-processing. Those cases all use the renderer's internal camera. Use an external owner only when multiple separate camera-capable 3D renderer nodes need one synchronized viewpoint or the show explicitly requires camera switching; state that justification before creating it.
 
 Never expose camera-related parameters (binding, mode, position, orbit, target, FOV, or renderer-local camera rows) on a Scene Group or other top-level surface. Keep camera operation on the owning renderer preview or the explicit camera node's own Properties. A Scene Group containing exactly one camera binds compatible members automatically, so adding a camera can change ownership without changing the renderer's local rows; those rows then stop affecting the image.
 

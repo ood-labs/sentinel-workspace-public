@@ -3,6 +3,7 @@
 This folder is the shipped agent reference for Sentinel. Start here when a user asks what Sentinel can create, how nodes connect, or how one feature can drive another.
 
 Reusable existing-state creative continuation prompts and the hybrid workflow vocabulary live in `knowledge/creative-exploration-goals.md`.
+The mandatory internal-camera default for authored 3D, including the narrow external-camera exception and proof contract, lives in `knowledge/internal-camera-template.md`.
 
 ## Discover The Current Build
 

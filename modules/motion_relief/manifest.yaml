@@ -1,0 +1,34 @@
+name: "Motion Relief"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+output_format: RGBA16F
+
+inputs:
+  - { name: "Engraved Motion", slot: 0, required: true }
+
+parameters:
+  - { name: relief_depth, display: "Relief Depth", type: float, min: 0.02, max: 0.55, default: 0.24, group: "Relief" }
+  - { name: height_gain, display: "Height Gain", type: float, min: 0.5, max: 5.0, default: 1.7, group: "Relief" }
+  - { name: height_curve, display: "Height Curve", type: float, min: 0.35, max: 2.5, default: 0.82, group: "Relief" }
+  - { name: normal_gain, display: "Normal Gain", type: float, min: 0.2, max: 5.0, default: 1.2, group: "Relief" }
+  - { name: contour_density, display: "Contour Density", type: float, min: 2.0, max: 40.0, default: 14.000000, group: "Material" }
+  - { name: rim_gain, display: "Silver Rim", type: float, min: 0.0, max: 3.0, default: 0.65, group: "Material" }
+  - { name: warm_material, display: "Warm Scar", type: float, min: 0.0, max: 4.0, default: 1.8, group: "Material" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.35, max: 3.0, default: 1.6, group: "Material" }
+  - { name: camera_azimuth, display: "View Azimuth", type: float, min: -0.65, max: 0.65, default: -0.28, group: "Camera" }
+  - { name: camera_elevation, display: "View Elevation", type: float, min: -0.35, max: 0.65, default: 0.2, group: "Camera" }
+  - { name: camera_distance, display: "View Distance", type: float, min: 1.6, max: 5.0, default: 2.75, group: "Camera" }
+  - { name: lens, display: "Lens", type: float, min: 0.28, max: 1.0, default: 0.48, group: "Camera" }
+  - { name: plate_scale, display: "Plate Scale", type: float, min: 0.5, max: 1.8, default: 1.05, group: "Camera" }
+
+passes:
+  - name: relief
+    shader: relief.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+
+outputs:
+  - { name: "Relief", pass: relief }

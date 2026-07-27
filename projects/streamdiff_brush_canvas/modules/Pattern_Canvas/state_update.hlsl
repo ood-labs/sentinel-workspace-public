@@ -26,10 +26,12 @@ void main(uint3 DTid : SV_DispatchThreadID)
         if (keyPress && eventItem.code == 26u) zPressed = true;
     }
     bool autoRun = ControlState[0].y > 0.5;
-    // C owns persistent auto-run. Z is immediate on press and repeats at
-    // Seconds Per Stamp for the full duration of the hold.
+    bool zWasHeld = ControlState[0].x > 0.5;
+    bool zReleased = zWasHeld && !zHeld;
+    // C owns persistent auto-run at Seconds Per Stamp. Z overrides that clock
+    // and requests a fresh stamp on every Pattern Canvas cook while held.
     bool effectiveRun = autoRun || zHeld;
-    bool shouldSpawn = zPressed || (effectiveRun && newCycle);
+    bool shouldSpawn = zHeld || zPressed || (autoRun && newCycle);
 
     int previousStage = (int)round(clamp(state.y, 0.0, 3.0));
     bool revealEnabled = reveal_sequence != 0;
@@ -42,13 +44,21 @@ void main(uint3 DTid : SV_DispatchThreadID)
     else if (revealEnabled && previousStage >= 1 && previousStage < 3) {
         action = (float)(previousStage + 1);
     }
+    // Resynchronize the ordinary clock on release so auto-run resumes cleanly
+    // without an extra handoff stamp.
+    else if (zReleased) {
+        action = 0.0;
+        state.x = cycleValue;
+    }
     else if (!effectiveRun) {
         action = 0.0;
         state.x = cycleValue;
     }
     else if (shouldSpawn) {
         action = 1.0;
-        state.x = cycleValue;
+        state.x = zHeld
+            ? fmod(max(state.x, 0.0) + 1.0, 16777216.0)
+            : cycleValue;
     }
 
     state.y = action;

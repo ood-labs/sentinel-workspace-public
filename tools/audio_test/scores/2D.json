@@ -11,8 +11,8 @@
     "hat": 11.81,
     "beat": 12.0
   },
-  "generated": "2026-07-25T16:52:20",
-  "aggregate_f1": 0.8632647549149141,
+  "generated": "2026-07-25T17:15:13",
+  "aggregate_f1": 0.8648347249111389,
   "results": [
     {
       "pattern": "breakbeat_170",
@@ -66,7 +66,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 184,
       "playback_completed": true,
-      "final_sample_position": 931328
+      "final_sample_position": 931584
     },
     {
       "pattern": "dense_140",
@@ -120,7 +120,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 284,
       "playback_completed": true,
-      "final_sample_position": 941824
+      "final_sample_position": 942080
     },
     {
       "pattern": "four_on_floor_128",
@@ -174,7 +174,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 137,
       "playback_completed": true,
-      "final_sample_position": 935680
+      "final_sample_position": 936192
     },
     {
       "pattern": "halftime_shuffle_88",
@@ -228,7 +228,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 147,
       "playback_completed": true,
-      "final_sample_position": 929792
+      "final_sample_position": 930304
     },
     {
       "pattern": "hats_only_150",
@@ -282,7 +282,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 96,
       "playback_completed": true,
-      "final_sample_position": 940288
+      "final_sample_position": 940800
     },
     {
       "pattern": "hats_under_loud_kick_150",
@@ -336,7 +336,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 289,
       "playback_completed": true,
-      "final_sample_position": 934144
+      "final_sample_position": 934656
     },
     {
       "pattern": "kick_snare_coincident_124",
@@ -390,7 +390,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 144,
       "playback_completed": true,
-      "final_sample_position": 928256
+      "final_sample_position": 928768
     },
     {
       "pattern": "quiet_intro_drop_128",
@@ -444,7 +444,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 139,
       "playback_completed": true,
-      "final_sample_position": 937728
+      "final_sample_position": 939264
     },
     {
       "pattern": "sparse_90",
@@ -498,7 +498,7 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 43,
       "playback_completed": true,
-      "final_sample_position": 931840
+      "final_sample_position": 933376
     },
     {
       "pattern": "syncopated_funk_105",
@@ -552,47 +552,47 @@
       "fft_size_verified": 2048,
       "n_hits_emitted": 148,
       "playback_completed": true,
-      "final_sample_position": 942336
+      "final_sample_position": 927488
     },
     {
       "pattern": "tempo_ramp_120_132",
       "held_out": false,
       "lanes": {
         "kick": {
-          "f1": 0.975609756097561,
+          "f1": 0.9879518072289156,
           "precision": 1.0,
-          "recall": 0.9523809523809523,
-          "tp": 40,
+          "recall": 0.9761904761904762,
+          "tp": 41,
           "fp": 0,
-          "fn": 2,
+          "fn": 1,
           "n_ref": 42,
-          "n_est": 40,
-          "offset_ms": 8.312499999999723
+          "n_est": 41,
+          "offset_ms": 8.124999999999716
         },
         "snare": {
-          "f1": 0.8,
+          "f1": 0.8333333333333333,
           "precision": 1.0,
-          "recall": 0.6666666666666666,
-          "tp": 14,
+          "recall": 0.7142857142857143,
+          "tp": 15,
           "fp": 0,
-          "fn": 7,
+          "fn": 6,
           "n_ref": 21,
-          "n_est": 14,
-          "offset_ms": 7.968749999999858
+          "n_est": 15,
+          "offset_ms": 7.916666666666572
         },
         "hat": {
-          "f1": 0.9818181818181818,
+          "f1": 0.9879518072289156,
           "precision": 1.0,
-          "recall": 0.9642857142857143,
-          "tp": 81,
+          "recall": 0.9761904761904762,
+          "tp": 82,
           "fp": 0,
-          "fn": 3,
+          "fn": 2,
           "n_ref": 84,
-          "n_est": 81,
-          "offset_ms": 8.83333333333347
+          "n_est": 82,
+          "offset_ms": 8.833333333332583
         }
       },
-      "aggregate_f1": 0.9191426459719142,
+      "aggregate_f1": 0.9364123159303882,
       "bpm_ref": 126.0,
       "bpm_est": 0.0,
       "bpm_error": 126.0,
@@ -604,9 +604,9 @@
       "CMLc": 0.0,
       "AMLc": 0.0,
       "fft_size_verified": 2048,
-      "n_hits_emitted": 135,
+      "n_hits_emitted": 138,
       "playback_completed": true,
-      "final_sample_position": 936448
+      "final_sample_position": 954368
     }
   ]
 }

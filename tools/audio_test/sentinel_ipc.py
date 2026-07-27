@@ -22,6 +22,10 @@ ENDPOINT = "tcp://127.0.0.1:5555"
 # 64-hop wrap (16384 samples), so the last observable position legitimately
 # trails the true end of file.
 EOF_SLACK_SAMPLES = 32768
+# Seconds of throwaway playback before the scored run, so the detector's
+# persistent whitening peaks adapt to THIS pattern instead of inheriting the
+# previous one's. See the note in run_pattern.
+PREROLL_S = 2.0
 
 # Lane ids emitted by the `Hits` export contract (see
 # modules/cryo_pulse_baseline/manifest.yaml).
@@ -96,6 +100,47 @@ class Sentinel:
 # ---------------------------------------------------------------------------
 
 
+def cut_pre_restart(by_serial: dict) -> tuple[int, list[dict]]:
+    """Drop records left over from the previous playthrough, then order by time.
+
+    A few records land between reading the watermark and the restart taking
+    effect. Those carry the PREVIOUS playthrough's high sample positions, so the
+    restart boundary is found as a backwards step in sample position and
+    everything before it is dropped.
+
+    THE SCAN MUST RUN IN DETECTION ORDER, PER LANE, WHICH IS WHY THIS IS A
+    SEPARATE FUNCTION WITH ITS OWN TEST. A backwards step only exists while
+    records are ordered by serial. Sorting by sample position first makes one
+    impossible, so the scan silently becomes a no-op and every stale record
+    survives as a false positive near the end of the file. Measured when the
+    beat ring's separate serial sequence forced a sort: twelve per-lane F1 drops
+    between 0.011 and 0.022, the whole regression gate, from a harness change
+    with no detector change behind it.
+
+    Per lane because the two rings carry independent serial sequences, so their
+    restart boundaries are found separately and only then merged. `by_serial` is
+    keyed (lane_id, onset_serial); tuple ordering sorts by lane then serial,
+    which is exactly the order the scan needs.
+
+    Returns (records_dropped, hits_ordered_by_sample_position).
+    """
+    dropped = 0
+    kept: list[dict] = []
+    for lane in sorted({k[0] for k in by_serial}):
+        seq = [h for k, h in sorted(by_serial.items()) if k[0] == lane]
+        cut = 0
+        for i in range(1, min(len(seq), 12)):
+            if int(seq[i]["sample_position"]) < int(seq[i - 1]["sample_position"]):
+                cut = i
+        dropped += cut
+        kept.extend(seq[cut:])
+
+    # Only now ordered by sample position: two independent serial sequences do
+    # not interleave into one meaningful order, and the scorer times everything
+    # by sample position anyway.
+    return dropped, sorted(kept, key=lambda h: int(h["sample_position"]))
+
+
 class AudioRunner:
     """Drives an Audio In node through one corpus pattern and collects Hits.
 
@@ -143,7 +188,10 @@ class AudioRunner:
         })
 
     def read_hits(self) -> list[dict]:
-        d = self.sen.data_port(self.detector, self.hits_port, max_elements=512)
+        # 1024, not 512: since 2E2 the port carries the picker's onsets in slots
+        # 0..511 and the PLL's beats in 512..1023. Reading only the first half
+        # would silently return zero beats and score CMLc/AMLc as 0.
+        d = self.sen.data_port(self.detector, self.hits_port, max_elements=1024)
         return [e for e in (d.get("elements") or []) if int(e.get("onset_serial", 0)) > 0]
 
     def run_pattern(self, wav_path: Path, duration_samples: int,
@@ -156,6 +204,22 @@ class AudioRunner:
         """
         self.configure_file(wav_path)
         time.sleep(settle_s)
+
+        # WHITENING PRE-ROLL. force_reload does not clear `persistent: true`
+        # buffers, so the detector's per-bin running peaks arrive carrying
+        # whatever the PREVIOUS pattern left in them. Measured: sparse_90 scored
+        # 0.636/0.636/0.933 on the run that followed syncopated_funk_105 and
+        # 0.609/0.667/0.903 on two consecutive runs that followed itself --
+        # identical settings, identical code, ~0.03 apart on every lane, purely
+        # from inherited state.
+        #
+        # Playing the pattern once before the scored run lets the peaks adapt to
+        # its own spectrum, so the scored pass starts from the same place no
+        # matter what ran before it. whiten_decay 0.992 at 187.5 hops/s is a
+        # 0.67 s time constant, so PREROLL_S is three of them.
+        self.sen.set(self._audio_param("restart_file"), 1)
+        time.sleep(PREROLL_S)
+
         gen_before = self.generation()
 
         # Serial watermark. The detector's onset serial is monotonic and
@@ -163,11 +227,16 @@ class AudioRunner:
         # standing just before restart belongs to a PREVIOUS run. This is exact,
         # unlike inferring the boundary from a backwards step in
         # sample_position, which breaks as soon as the ring wraps within a run.
+        # PER LANE. Onsets and beats carry independent serial sequences, so one
+        # global maximum would be the larger of the two and would discard every
+        # record of the other stream for the whole run.
+        watermark: dict[int, int] = {}
         try:
-            watermark = max((int(h["onset_serial"]) for h in self.read_hits()),
-                            default=0)
+            for h in self.read_hits():
+                ln = int(h["lane_id"])
+                watermark[ln] = max(watermark.get(ln, 0), int(h["onset_serial"]))
         except SentinelError:
-            watermark = 0
+            watermark = {}
 
         self.sen.set(self._audio_param("restart_file"), 1)
 
@@ -179,12 +248,13 @@ class AudioRunner:
                 f"{self.audio}: generation not advancing after restart_file "
                 f"({gen_before}); playback did not start")
 
-        by_serial: dict[int, dict] = {}
+        by_serial: dict[tuple[int, int], dict] = {}
         samples: list[dict] = []
         pos_trace: list[int] = []
         t0 = time.time()
         last_pos, stalled = -1, 0
         started = False
+        reached_eof = False
 
         while True:
             time.sleep(self.poll_s)
@@ -192,9 +262,9 @@ class AudioRunner:
             pos_trace.append(pos)
 
             for h in self.read_hits():
-                serial = int(h["onset_serial"])
-                if serial > watermark:
-                    by_serial[serial] = h
+                key = (int(h["lane_id"]), int(h["onset_serial"]))
+                if key[1] > watermark.get(key[0], 0):
+                    by_serial[key] = h
 
             if extra_polls:
                 row = {"sample_position": pos}
@@ -213,32 +283,39 @@ class AudioRunner:
                 stalled = 0
             last_pos = pos
 
-            # Completion: playback head reached the end of the WAV, or stopped
-            # advancing for several consecutive polls after it had started.
+            # Completion: the playback head must STOP, not merely get close.
+            #
+            # Breaking the moment a poll lands inside the EOF window silently
+            # truncated the run. The window is EOF_SLACK_SAMPLES (0.68 s at
+            # 48 kHz) and the poll cadence is 1 s, so the break point fell
+            # anywhere in the last second of audio, and every onset after it was
+            # simply never analysed. Measured on tempo_ramp_120_132: two
+            # otherwise identical runs broke 13312 samples apart and differed by
+            # exactly one beat -- one kick, one snare, one hat -- moving snare F1
+            # by 0.033 with ZERO change in false positives. That is three times
+            # the standing 0.01 regression tolerance, arriving from nothing but
+            # poll phase, and it lands hardest on the pattern whose onsets get
+            # densest at the end.
+            #
+            # File mode goes Inactive at end of file, so the head freezes and the
+            # stall path fires. Two stalled polls after entering the EOF window
+            # is enough for the remaining audio to play out and the analyser to
+            # drain; the pre-EOF stall threshold stays at 4 to keep tolerating a
+            # transient hiccup mid-pattern.
             if started and pos >= duration_samples - EOF_SLACK_SAMPLES:
-                break
-            if started and stalled >= 4:
+                reached_eof = True
+            if started and stalled >= (2 if reached_eof else 4):
                 break
             if time.time() - t0 > timeout_s:
                 break
 
         # Final sweep so the last hits before end-of-file are not missed.
         for h in self.read_hits():
-            serial = int(h["onset_serial"])
-            if serial > watermark:
-                by_serial[serial] = h
+            key = (int(h["lane_id"]), int(h["onset_serial"]))
+            if key[1] > watermark.get(key[0], 0):
+                by_serial[key] = h
 
-        hits = [by_serial[s] for s in sorted(by_serial)]
-
-        # A few records can still land between reading the watermark and the
-        # restart taking effect. Those carry the PREVIOUS playthrough's high
-        # sample positions, so drop any leading records that sit above where the
-        # run actually settles.
-        cut = 0
-        for i in range(1, min(len(hits), 12)):
-            if int(hits[i]["sample_position"]) < int(hits[i - 1]["sample_position"]):
-                cut = i
-        dropped, hits = cut, hits[cut:]
+        dropped, hits = cut_pre_restart(by_serial)
 
         return {
             "hits": hits,
@@ -251,15 +328,50 @@ class AudioRunner:
         }
 
 
+def manifest_defaults(sen: Sentinel, detector_id: str) -> dict:
+    """Every writable numeric parameter's manifest default, from the module dir.
+
+    Read from the manifest on disk rather than the live `default` field so the
+    committed file is the authority and a drifted tree cannot vote. `project_dir`
+    is a string and `gate_level` is expression-driven, so both are skipped.
+    """
+    import yaml
+
+    pdir = sen.get(f"/sentinel/pipelines/{detector_id}/parameters/project_dir")
+    if isinstance(pdir, dict):
+        pdir = pdir.get("value")
+    path = Path(str(pdir)) / "manifest.yaml"
+    if not path.is_file():
+        raise SentinelError(f"{detector_id}: no manifest at {path}")
+
+    man = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    out = {}
+    for p in man.get("parameters") or []:
+        name, dflt = p.get("name"), p.get("default")
+        if name in (None, "project_dir", "gate_level") or dflt is None:
+            continue
+        if isinstance(dflt, (int, float)) and not isinstance(dflt, bool):
+            out[name] = float(dflt)
+    return out
+
+
 def reset_detector(sen: Sentinel, detector_id: str, audio_id: str,
                    mel_slot: int = 2, gate_expr: bool = True,
                    params: dict | None = None, timeout_s: float = 30.0) -> None:
-    """force_reload the detector and put back everything reload drops.
+    """force_reload the detector, force it to manifest defaults, put back what
+    reload drops.
 
-    force_reload drops data-port links, clears ref() drivers and resets params
-    to manifest defaults (docs/lessons.md, 2026-07-08). Video links survive.
-    The harness therefore re-adds the link, re-applies the expression, restores
-    non-default params, and asserts the generation is advancing again.
+    force_reload drops data-port links and clears ref() drivers; video links
+    survive. It does NOT reset parameters to manifest defaults, whatever
+    docs/lessons.md said on 2026-07-08 -- a live `beat_snap` of 0.15 survived a
+    reload with a manifest default of 0.0 and silently scored the whole corpus
+    against a mechanism that ships disabled, dropping mean kick F1 by 0.3 and
+    reading ~103 BPM on every pattern. The table looked like a real regression
+    from the change under test.
+
+    So defaults are now WRITTEN, not assumed. Every scored run starts from the
+    committed manifest plus an explicit `params` override, and nothing a
+    previous experiment left in the tree can reach the numbers.
     """
     sen.call("FORCE_RELOAD", pipeline_id=detector_id)
 
@@ -276,6 +388,11 @@ def reset_detector(sen: Sentinel, detector_id: str, audio_id: str,
 
     sen.call("ADD_LINK", from_entity=audio_id, from_slot=mel_slot,
              to_entity=detector_id, to_slot=0)
+
+    defaults = manifest_defaults(sen, detector_id)
+    if defaults:
+        sen.set_many({f"/sentinel/pipelines/{detector_id}/parameters/{k}": v
+                      for k, v in defaults.items()})
 
     if gate_expr:
         sen.call("SET_EXPRESSION",

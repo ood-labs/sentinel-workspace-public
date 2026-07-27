@@ -1,0 +1,126 @@
+{
+  "subphase": "2E2verify2",
+  "detector": "pulse2_analyzer",
+  "corpus_id": "50e89b594f08b41a",
+  "fft_size": "2048",
+  "tolerance_ms": 25.0,
+  "latency_compensated": false,
+  "analysis_latency_ms": {
+    "kick": 12.06,
+    "snare": 11.98,
+    "hat": 11.81,
+    "beat": 12.0
+  },
+  "generated": "2026-07-26T15:15:56",
+  "aggregate_f1": 0.9321647387992733,
+  "results": [
+    {
+      "pattern": "dense_140",
+      "held_out": false,
+      "lanes": {
+        "kick": {
+          "f1": 0.9827586206896551,
+          "precision": 1.0,
+          "recall": 0.9661016949152542,
+          "tp": 57,
+          "fp": 0,
+          "fn": 2,
+          "n_ref": 59,
+          "n_est": 57,
+          "offset_ms": 10.770833333332952
+        },
+        "snare": {
+          "f1": 0.8292682926829268,
+          "precision": 0.7083333333333334,
+          "recall": 1.0,
+          "tp": 34,
+          "fp": 14,
+          "fn": 0,
+          "n_ref": 34,
+          "n_est": 48,
+          "offset_ms": 10.197916666666806
+        },
+        "hat": {
+          "f1": 0.9891891891891893,
+          "precision": 1.0,
+          "recall": 0.9786096256684492,
+          "tp": 183,
+          "fp": 0,
+          "fn": 4,
+          "n_ref": 187,
+          "n_est": 183,
+          "offset_ms": 10.187499999998906
+        }
+      },
+      "aggregate_f1": 0.9337387008539237,
+      "bpm_ref": 140.0,
+      "bpm_est": 140.33734099999998,
+      "bpm_error": 0.3373409999999808,
+      "metrical_level_ok": true,
+      "metrical_ratio": "1x",
+      "tempo_conf": 0.298966,
+      "n_est_beats": 45,
+      "n_ref_beats": 47,
+      "CMLc": 0.0851063829787234,
+      "AMLc": 0.15217391304347827,
+      "fft_size_verified": 2048,
+      "n_hits_emitted": 333,
+      "playback_completed": true,
+      "final_sample_position": 952064
+    },
+    {
+      "pattern": "four_on_floor_128",
+      "held_out": false,
+      "lanes": {
+        "kick": {
+          "f1": 0.9761904761904763,
+          "precision": 1.0,
+          "recall": 0.9534883720930233,
+          "tp": 41,
+          "fp": 0,
+          "fn": 2,
+          "n_ref": 43,
+          "n_est": 41,
+          "offset_ms": 8.249999999999869
+        },
+        "snare": {
+          "f1": 0.8333333333333333,
+          "precision": 1.0,
+          "recall": 0.7142857142857143,
+          "tp": 15,
+          "fp": 0,
+          "fn": 6,
+          "n_ref": 21,
+          "n_est": 15,
+          "offset_ms": 7.583333333333719
+        },
+        "hat": {
+          "f1": 0.9822485207100593,
+          "precision": 1.0,
+          "recall": 0.9651162790697675,
+          "tp": 83,
+          "fp": 0,
+          "fn": 3,
+          "n_ref": 86,
+          "n_est": 83,
+          "offset_ms": 8.958333333334068
+        }
+      },
+      "aggregate_f1": 0.9305907767446229,
+      "bpm_ref": 128.0,
+      "bpm_est": 127.60892100000001,
+      "bpm_error": 0.39107899999999063,
+      "metrical_level_ok": true,
+      "metrical_ratio": "1x",
+      "tempo_conf": 0.510717,
+      "n_est_beats": 42,
+      "n_ref_beats": 43,
+      "CMLc": 0.5581395348837209,
+      "AMLc": 0.5581395348837209,
+      "fft_size_verified": 2048,
+      "n_hits_emitted": 181,
+      "playback_completed": true,
+      "final_sample_position": 949504
+    }
+  ]
+}

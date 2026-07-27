@@ -2,9 +2,9 @@
 type: phase
 phase_number: "2"
 title: "Audio Analysis v2 (pulse2)"
-status: planned
+status: blocked
 approval: pending
-summary: "Build a reusable GPU audio analysis system with a scoring harness first: adaptive-whitened SuperFlux onset detection, click-to-place spectral region isolation, a multi-feature classifier for coincident hits, and comb-filter tempo with a dual-loop beat PLL."
+summary: "Build a reusable GPU audio analysis system with a scoring harness first: adaptive-whitened SuperFlux onset detection, click-to-place spectral region isolation, a multi-feature classifier for coincident hits, and comb-filter tempo with a dual-loop beat PLL. All ten sub-phases implemented. BLOCKED at the approval boundary: two measured criteria gates fail (2E1 metrical level 8/11, 2E2 continuity) and the Autonomy clause requires human sign-off to carry them."
 ---
 
 # Phase 2 - Audio Analysis v2 (`pulse2`)

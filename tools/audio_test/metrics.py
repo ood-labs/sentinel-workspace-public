@@ -113,7 +113,14 @@ def _continuity(ref: np.ndarray, est: np.ndarray, tol: float = 0.175):
     for c in correct:
         run = run + 1 if c else 0
         best = max(best, run)
-    return best / len(est)
+    # Normalised by the LONGER of the two sequences, which is what mir_eval does
+    # and what makes the score mean anything. Dividing by len(est) alone rewards
+    # a detector for emitting less: a tracker that produced three beats against a
+    # hundred reference beats scored a perfect 1.0, indistinguishable from a
+    # tracker that got all hundred right, because all three of its beats happened
+    # to be consecutive and correct. Under-emission is the most likely silent
+    # failure of a beat clock, and the metric was paying it a bonus.
+    return best / max(len(ref), len(est))
 
 
 def _variations(ref: np.ndarray):

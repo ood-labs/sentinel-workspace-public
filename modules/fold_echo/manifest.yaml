@@ -1,0 +1,75 @@
+name: "Fold Echo"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+
+inputs:
+  - { name: "Signal", slot: 0, required: true }
+
+parameters:
+  - name: persistence
+    display: "Memory"
+    type: float
+    min: 0.88
+    max: 0.998
+    default: 0.965
+    group: "Temporal"
+  - name: zoom_drift
+    display: "Radial Drift"
+    type: float
+    min: -0.08
+    max: 0.08
+    default: 0.018
+    group: "Temporal"
+  - name: rotation_rate
+    display: "Rotation Rate"
+    type: float
+    min: -0.35
+    max: 0.35
+    default: 0.055
+    group: "Temporal"
+  - name: smear
+    display: "Edge Shear"
+    type: float
+    min: 0.0
+    max: 0.05
+    default: 0.008
+    group: "Temporal"
+  - name: injection
+    display: "Signal Injection"
+    type: float
+    min: 0.05
+    max: 1.5
+    default: 0.42
+    group: "Signal"
+  - name: threshold
+    display: "Signal Gate"
+    type: float
+    min: 0.0
+    max: 0.8
+    default: 0.12
+    group: "Signal"
+
+buffers:
+  - name: history
+    format: RGBA16F
+    scale: 1.0
+    persistent: true
+
+passes:
+  - name: accumulate
+    shader: echo.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:history" }
+    output: "buffer:history"
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:history" }
+    output: output
+
+outputs:
+  - { name: "Echo", pass: present }

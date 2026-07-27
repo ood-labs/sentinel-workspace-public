@@ -3,6 +3,12 @@
 The architectural renderer uses Sentinel's native Module camera as its only
 camera owner.
 
+The workspace-wide authoritative version of this rule is
+`knowledge/internal-camera-template.md`. Internal camera ownership is the
+mandatory default for authored 3D; an external camera is reserved for multiple
+separate 3D renderer nodes that genuinely require one synchronized viewpoint or
+show-level switching.
+
 ## Manifest
 
 ```yaml
@@ -13,9 +19,9 @@ viewport:
 ```
 
 Do not add an authored `cam_mode`, hero view, orbit parameters, target
-parameters, or a second ray-construction path. Keep `camera_ref` empty unless a
-deliberate external Camera node is added. Do not expose camera parameters on the
-Scene Group.
+parameters, or a second ray-construction path. Keep `camera_ref` empty. Multiple
+passes inside this Module do not justify an external Camera node. Do not expose
+camera parameters on the Scene Group.
 
 The saved native `camera_mode` must be `0` (`Fly`). Orbit remains a host camera
 navigation capability, not a renderer-authored look mode.

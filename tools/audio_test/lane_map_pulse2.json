@@ -15,7 +15,7 @@
     "snare": 1,
     "hat": 2
   },
-  "beat_lane": -1,
+  "beat_lane": 3,
   "tolerance_ms": 25.0,
   "analysis_latency_ms": {
     "kick": 12.06,

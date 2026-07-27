@@ -1,0 +1,77 @@
+name: "Pulse2 / Hit Pads"
+version: "1.0"
+mode: generator
+resolution: [1280, 360]
+
+# Four squares. One per lane. Each lights when that lane fires.
+#
+# That is the whole design. The timeline it replaces plotted hits against time,
+# which answers "how are these events spaced" -- a real question, and NOT the
+# one you have while tuning a threshold. Then you are asking "did that hit
+# register", and reading it off a scrolling chart means tracking a mark that is
+# already moving away from where you looked. A pad that flashes needs no
+# tracking at all: peripheral vision reports it.
+#
+# NO TIME AXIS ANYWHERE. The timeline needed a scroll clock to map sample
+# positions onto columns, and that clock was the source of its worst bug -- it
+# free-ran ahead of the data through silence and showed an empty chart while
+# detection ran perfectly. Firing is detected here by watching each lane's
+# serial counter ADVANCE, which needs no clock, no sample rate, and no
+# assumption about the source's timebase. Nothing to drift.
+
+data_inputs:
+  - name: "Hits"
+    slot: 0
+    schema:
+      - { name: lane_id, type: uint }
+      - { name: onset_serial, type: uint }
+      - { name: hop_index, type: uint }
+      - { name: sample_position, type: uint }
+
+buffers:
+  # One element per lane: .x last serial seen, .y flash level 0..1,
+  # .z lifetime hits, .w that lane's own previous _Time.
+  #
+  # Each lane owns its whole record including its clock, so the four threads
+  # never read a value another thread is writing. Sharing one timestamp element
+  # would be a race for no gain.
+  - { name: pads, structured: true, element_size: 16, element_count: 4, persistent: true }
+
+parameters:
+  # Seconds for a flash to fall to about a tenth. Long enough to catch the eye,
+  # short enough that consecutive hits still read as separate.
+  - { name: decay_s, display: "Flash Decay (s)", group: "Pads", type: float, min: 0.02, max: 1.5, default: 0.16 }
+  # Floor brightness of an idle pad. A pad that goes fully black is
+  # indistinguishable from a pad that is not being rendered.
+  - { name: idle_level, display: "Idle Brightness", group: "Pads", type: float, min: 0.0, max: 0.5, default: 0.07 }
+  - { name: show_counts, display: "Show Counts", group: "Pads", type: float, min: 0.0, max: 1.0, default: 1.0 }
+  - { name: label_size, display: "Label Size", group: "Pads", type: float, min: 1.0, max: 6.0, default: 3.0 }
+  - { name: corner, display: "Corner Radius", group: "Pads", type: float, min: 0.0, max: 0.4, default: 0.08 }
+
+passes:
+  # One thread per lane.
+  - name: detect
+    shader: detect.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 4
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:pads"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:pads" }
+    output: output
+
+control_outputs:
+  - { name: kick_flash,  buffer: pads, element: 0, field_offset: 4,  description: "Kick pad brightness 0..1" }
+  - { name: snare_flash, buffer: pads, element: 1, field_offset: 4,  description: "Snare pad brightness 0..1" }
+  - { name: hat_flash,   buffer: pads, element: 2, field_offset: 4,  description: "Hat pad brightness 0..1" }
+  - { name: beat_flash,  buffer: pads, element: 3, field_offset: 4,  description: "Beat pad brightness 0..1" }
+
+outputs:
+  - { name: "Pads", pass: render }

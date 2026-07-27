@@ -1,0 +1,64 @@
+name: "Forensic Elastic Choir"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Specimen", slot: 0, required: true }
+
+data_inputs:
+  - name: "Evidence Agents"
+    slot: 0
+    schema:
+      - { name: position, type: float2 }
+      - { name: direction, type: float2 }
+      - { name: weight, type: float }
+      - { name: radius, type: float }
+      - { name: kind, type: uint }
+      - { name: sourceIndex, type: uint }
+      - { name: groupId, type: uint }
+      - { name: active, type: uint }
+      - { name: phase, type: float }
+      - { name: pad, type: float }
+
+viewport:
+  hint: "Evidence Agents form elastic choir routes, pressure exclusions, current voices, and directional incisions."
+
+parameters:
+  - { name: phase, display: "Performance Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Score" }
+  - { name: animation_rate, display: "Phase Rate", type: float, min: 0.0, max: 0.5, default: 0.055, group: "Score" }
+  - { name: topology_mode, display: "Topology", type: enum, default: 2, options: [Choir, Excavation, Severed], flags: button_grid, group: "Score" }
+  - { name: substrate_gain, display: "Specimen Substrate", type: float, min: 0.0, max: 2.0, default: 0.48, group: "Layers" }
+  - { name: route_gain, display: "Elastic Routes", type: float, min: 0.0, max: 2.5, default: 1.598, group: "Layers" }
+  - { name: voice_gain, display: "Choir Voices", type: float, min: 0.0, max: 2.5, default: 1.5005, group: "Layers" }
+  - { name: incision_gain, display: "Line Incisions", type: float, min: 0.0, max: 2.5, default: 0.8, group: "Layers" }
+  - { name: engraving_gain, display: "Pressure Engraving", type: float, min: 0.0, max: 2.0, default: 0.85, group: "Layers" }
+  - { name: route_width, display: "Route Width", type: float, min: 0.3, max: 4.0, default: 1.15, group: "Geometry" }
+  - { name: route_bend, display: "Elastic Bend", type: float, min: 0.0, max: 0.45, default: 0.1978, group: "Geometry" }
+  - { name: voice_radius, display: "Voice Radius", type: float, min: 2.0, max: 42.0, default: 8.0, group: "Geometry" }
+  - { name: line_extension, display: "Line Extension", type: float, min: 0.0, max: 2.5, default: 0.65, group: "Geometry" }
+  - { name: pressure_scale, display: "Pressure Scale", type: float, min: 0.1, max: 4.0, default: 1.2, group: "Geometry" }
+  - { name: current_gain, display: "Current Voice", type: float, min: 0.0, max: 3.0, default: 1.922, group: "Current" }
+  - { name: current_color, display: "Current Color", type: color, default: [1.0, 0.29, 0.04], group: "Current" }
+  - { name: tone_steps, display: "Tone Steps", type: float, min: 2.0, max: 16.0, default: 7.0, group: "Finish" }
+  - { name: tone_quantize, display: "Tone Quantize", type: float, min: 0.0, max: 1.0, default: 0.42, group: "Finish" }
+
+passes:
+  - name: program
+    shader: program.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+    output: output
+  - name: pressure
+    shader: pressure.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - { name: "Program", pass: program }
+  - { name: "Pressure Field", pass: pressure }

@@ -1,0 +1,41 @@
+name: "Interleave Analysis Proxy"
+version: "1.0"
+mode: generator
+resolution: [480, 270]
+
+inputs:
+  - { name: "Program", slot: 0, required: true }
+
+parameters:
+  - name: analysis_contrast
+    display: "Analysis Contrast"
+    type: float
+    min: 0.5
+    max: 2.5
+    default: 1.25
+    group: "Analysis"
+  - name: edge_gain
+    display: "Edge Gain"
+    type: float
+    min: 0.0
+    max: 4.0
+    default: 1.1
+    group: "Analysis"
+  - name: signal_weight
+    display: "Signal Weight"
+    type: float
+    min: 0.0
+    max: 1.5
+    default: 0.55
+    group: "Analysis"
+
+passes:
+  - name: proxy
+    shader: proxy.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Analysis", pass: proxy }

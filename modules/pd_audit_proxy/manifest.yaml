@@ -1,0 +1,36 @@
+name: "PD / Audit Proxy"
+version: "1.0"
+mode: generator
+resolution: [480, 270]
+
+inputs:
+  - { name: "Obligation Field", slot: 0, required: true }
+
+viewport:
+  hint: "480x270 analysis contract. This exact image and extent feed the real Features node."
+
+parameters:
+  - { name: signal_gain, display: "Signal Gain", type: float, min: 0.25, max: 3.0, default: 1.15, group: "Audit Signal" }
+  - { name: black_point, display: "Black Point", type: float, min: 0.0, max: 0.45, default: 0.025, group: "Audit Signal" }
+  - { name: white_point, display: "White Point", type: float, min: 0.2, max: 1.0, default: 0.88, group: "Audit Signal" }
+  - { name: edge_gain, display: "Edge Evidence", type: float, min: 0.0, max: 6.0, default: 1.8, group: "Audit Signal" }
+  - { name: detail_gain, display: "Local Contrast", type: float, min: 0.0, max: 8.0, default: 2.6, group: "Audit Signal" }
+
+  - { name: band_count, display: "Ledger Bands", type: float, min: 2.0, max: 12.0, default: 4.0, group: "Discipline" }
+  - { name: binary_threshold, display: "Binary Threshold", type: float, min: 0.05, max: 0.95, default: 0.42, group: "Discipline" }
+  - { name: binary_softness, display: "Threshold Softness", type: float, min: 0.002, max: 0.2, default: 0.035, group: "Discipline" }
+  - { name: binary_mix, display: "Binary Mix", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Discipline" }
+  - { name: invert_signal, display: "Invert Audit", type: bool, default: false, flags: button, group: "Discipline" }
+  - { name: preserve_liability, display: "Liability Trace", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Discipline" }
+
+passes:
+  - name: audit_proxy
+    shader: audit_proxy.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Audit Image", pass: audit_proxy }

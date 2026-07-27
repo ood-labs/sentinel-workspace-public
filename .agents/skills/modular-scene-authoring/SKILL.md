@@ -63,7 +63,7 @@ For architectural and other multi-editor procedural systems:
 - Use Canvas for spatial manipulation and ordinary Properties for dense numeric/color tuning. Do not duplicate every parameter as a fragile authored slider rail.
 - Derive render placement, selection descriptors, picking, and drag inversion from one edit-rectangle transform. A visible handle must pick the exact object or cell it appears to control.
 - Keep logical edits in declared state buffers and preserve drag ownership through commit/cancel.
-- Choose one camera owner. Prefer the host's native Fly camera as the saved internal-camera default; do not invent Hero/Architectural Orbit shader modes.
+- For authored 3D, use the renderer's internal camera as the mandatory default and read `knowledge/internal-camera-template.md`. Declare `features: [camera]` plus `viewport.interactions: [camera]`, keep `camera_ref` empty, save Fly as the default, and do not invent Hero/Architectural Orbit shader modes. Use an external camera only when multiple separate 3D renderer nodes require one synchronized viewpoint or show-level switching.
 - Keep HDR internal if useful, but publish 8-bit sRGB color for video consumers and a separate native depth lane for structural conditioning.
 - Treat StreamDiff or other AI interpretation as optional. Prove the procedural renderer and auxiliary outputs first.
 
@@ -133,7 +133,7 @@ Use typed controls, and make every one visibly matter:
 
 Expose a curated top-level interface, not member-node internals. Start with roughly four to eight high-impact creative controls, counting a compound color or XY widget as one. Open the Scene Group Properties panel and test every exposed control; remove anything inactive, redundant, confusing, or implementation-level.
 
-Never expose camera-related parameters (binding, mode, position, orbit, target, FOV, or renderer-local/internal camera rows) at Scene Group level. Choose one camera owner: internal renderer camera or explicit `camera`/`camswitch`, and operate it from that node's own preview/Properties. While externally or group-bound, local camera rows are inactive. Prove the owner in the open renderer preview with a visible before/after change.
+Never expose camera-related parameters (binding, mode, position, orbit, target, FOV, or renderer-local/internal camera rows) at Scene Group level. The internal renderer camera is the default owner; do not create an explicit `camera`/`camswitch` for a single renderer, several passes within one Module, or a renderer plus post-processing. External ownership is reserved for multiple separate camera-capable 3D renderer nodes that need a synchronized view or show-level switching. Prove the chosen owner through real interaction in the open renderer preview and visibly different captures.
 
 ---
 

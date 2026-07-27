@@ -3,8 +3,9 @@ type: lessons
 updated: 2026-07-26
 ---
 
-
 # Lessons
+
+Gotchas worth knowing before re-hitting the same wall. Newest at top.
 
 ## 2026-07-26 - Invoking module-ui.ps1 from the Bash tool needs the call operator
 
@@ -88,8 +89,205 @@ including the active lane, which `do_reset` alone does not cover.
 
 **Discovered**: 2026-07-27
 
+## 2026-07-26 - A tool that defaults to one of two targets will silently measure the wrong one
 
-Gotchas worth knowing before re-hitting the same wall. Newest at top.
+**Symptoms**: Six consecutive full-corpus runs showed every lane collapsing
+(kick -0.24, hat -0.32, BPM ~103 on all eleven patterns). It survived reverting
+the change under test, a clean project reload, `--no-reset`, and byte-comparing
+both module copies against the committed sources. It read as the committed score
+table having stopped being reproducible.
+
+**Cause**: `tools/audio_test/score_detector.py` had
+`--lane-map default="lane_map.json"`, and that map names `pulse_baseline` -- the
+Phase 1 detector. Every run measured the wrong module and printed the result
+under a pulse2 subphase heading. The numbers were entirely plausible *for that
+detector*, which is exactly why it survived four rounds of bisection: nothing
+looked corrupt, it just looked worse.
+
+**Fix**: `--lane-map` is now required with no default; the chosen map is written
+into every score table; and comparing against a baseline whose `detector` field
+differs from the current run is a hard error rather than a table.
+
+**This was already known and written down, which is the actual lesson.** The 2C3
+devlog records the same trap, and `sweep_inhibit.py` carries a shouting header
+about it ("LANE MAP IS EXPLICIT AND NOT OPTIONAL"). Both documented the footgun
+and neither removed it, so it fired again and cost six full-corpus runs plus a
+clean project reload. A documented footgun is still a footgun; if the fix is a
+one-line `required=True`, write the fix rather than the warning.
+
+**The transferable part**: when two similar targets exist and a tool picks one by
+default, a wrong answer is indistinguishable from a real result. Before
+bisecting a surprising measurement, confirm WHAT was measured -- the provenance
+fields, not the numbers.
+
+**Frequency**: one-time (fixed), but the class is recurring
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - An exponential tracker converges to the mean; summaries report the median
+
+**Symptoms**: A dual-loop PLL settled at 93.6 hops while the tempo it tracked
+published 88.2 -- 6% slow, while locked and correcting every cook. Reported as
+an unexplained defect, since an exponential tracker's only fixed point is its
+observation.
+
+**Cause**: Both things were true and neither was a bug. The observation's median
+was 88.16 but its **mean was 95.83**: the comb intermittently returned a
+metrical relative (131.8 hops, a 3:2 dotted quarter) on about one cook in six.
+The loop tracked the mean faithfully. Every summary I had written -- and the
+`diag_tempo_stability` output -- reported medians, which are precisely the
+statistic that hides this.
+
+**Fix**: `modules/pulse2_analyzer/pll.hlsl` -- reject observations outside a
+relative window (`tempo_reject`, 0.18) rather than averaging them. Counter
+decays on agreement instead of resetting, or one agreeing sample in a wrong
+period holds the loop there forever (measured: syncopated_funk_105 parked at
+80.3 hops against an observed 107.2, counter climbing to 146 and being knocked
+to zero repeatedly).
+
+**The transferable part**: when a filter's output disagrees with its input,
+compare it against the same statistic the filter computes. A median-vs-mean gap
+IS the finding, not noise around it.
+
+**Frequency**: recurring (any smoothing over a multi-modal estimator)
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - force_reload does not reset module parameters to manifest defaults
+
+**Symptoms**: A live `beat_snap` of 0.15, left behind by an earlier experiment,
+survived every `force_reload` and silently scored a whole corpus against a
+mechanism that ships disabled.
+
+**Cause**: `reset_detector` in `tools/audio_test/sentinel_ipc.py` documented that
+force_reload "resets params to manifest defaults" (attributed to a 2026-07-08
+lesson). It does not. It drops data-port links and clears `ref()` drivers;
+parameter values persist.
+
+**Fix**: `reset_detector` now reads the manifest from the module's `project_dir`
+and WRITES every numeric default before applying overrides. Defaults are no
+longer assumed.
+
+**Related**: this also surfaced that `classify_mode` defaulted to Off while the
+shipped project ran it at 1, so scoring from manifest defaults dropped snare F1
+by 0.33 while kick and hat reproduced at +0.000. A module whose own default does
+not reproduce its own published numbers is a trap; the default was corrected.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - Control-loop gains applied per cook are frame-rate dependent
+
+**Symptoms**: A beat-tracking PLL reported the correct period (80.9 hops = 140
+BPM, confirmed by control output) yet completed only 28 phase cycles where that
+period implied 46, with not one beat suppressed by either gate. Continuity
+scores stayed low no matter how the gains were tuned; lowering one traded jitter
+for drift and raising it traded back.
+
+**Cause**: `modules/pulse2_analyzer/pll.hlsl` applied its correction once per
+COOK. A cook covers roughly three analysis hops while a beat spans eighty-odd,
+so a nominal gain of 0.15 acted as a loop gain near 3.0 per beat. The loop
+became overdamped, parked the accumulator on the observation, and resisted
+advancing past it, which changes the emitted beat RATE rather than merely its
+smoothness. Cooks-per-beat depends on frame rate, so the same code tracked
+differently at 60 fps than at 30.
+
+**Fix**: Scale every gain by the fraction of a beat actually elapsed during that
+cook (`advanced = (limit - start) / period`), making the gains mean "fraction of
+the error corrected per beat" and removing the cook-rate dependency. Note the
+span must be the range the accumulator actually advanced, not the range of new
+hops available.
+
+**Frequency**: always, for any control loop in a per-cook shader pass
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - Circular smoothing of a quantity that rotates by construction
+
+**Symptoms**: Circular (phasor) averaging was added to smooth a noisy phase
+estimate. The resulting vector strength sat at 0.14-0.16 on EVERY pattern,
+steady four-on-the-floor and dense breakbeat alike. Identical numbers across
+material that differs wildly is the tell.
+
+**Cause**: The comb filter reports phase as an offset measured backwards from
+the newest analysis hop. As the newest hop advances, a perfectly stationary beat
+grid still makes that offset sweep through a full turn. The quantity rotates by
+construction, so its circular mean is uniform and averaging it destroys the
+signal rather than the noise.
+
+**Fix**: Smooth the phase ERROR (observation minus accumulator), which is the
+stationary quantity while locked. Coherence went from 0.15 to 0.997 on steady
+patterns. General rule: before circularly averaging, confirm the quantity is
+stationary in the frame you are averaging it in.
+
+**Frequency**: one-time, but the class recurs wherever a value is measured
+relative to a moving reference
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - A cut that depends on ordering breaks silently when you re-sort
+
+**Symptoms**: A twelve-lane regression-gate failure (per-lane F1 drops of
+0.011-0.022) appeared after a harness change with no detector change behind it.
+The obvious suspect was a detector parameter that had been raised in the same
+session; it was innocent.
+
+**Cause**: `tools/audio_test/sentinel_ipc.py` drops records left over from the
+previous playthrough by scanning for a BACKWARDS STEP in sample position, which
+only exists while records are in detection (serial) order. Adding a second data
+ring with its own independent serial sequence prompted sorting the merged list
+by sample position first, which makes a backwards step impossible. The scan
+silently became a no-op and stale records survived as false positives.
+
+**Fix**: Cut per lane in serial order, then merge and sort by position. The
+function was extracted to `cut_pre_restart()` specifically so it could be unit
+tested without a running app; `tools/audio_test/test_ipc_cut.py` asserts the
+failure mode directly.
+
+**Frequency**: one-time
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - Continuity metrics that divide by the estimate count reward silence
+
+**Symptoms**: Beat continuity scores looked implausibly healthy on some
+patterns while the beat train was visibly wrong.
+
+**Cause**: `tools/audio_test/metrics.py` normalised the longest correct run by
+`len(est)` alone. A tracker emitting three beats against a hundred reference
+beats scored a perfect 1.0, indistinguishable from one that got all hundred
+right, because its three beats happened to be consecutive and correct.
+Under-emission is the most likely silent failure of a beat clock and the metric
+was paying a bonus for it.
+
+**Fix**: Normalise by `max(len(ref), len(est))`, matching mir_eval. Unit tests
+in `tools/audio_test/test_metrics.py` pin the behaviour.
+
+**Frequency**: one-time
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 - A regression gate on one metric blesses defects in every other
+
+**Symptoms**: Five separate beat-tracking defects landed and were caught only by
+manual inspection. Every one of them left all three onset-lane F1 scores at
+exactly +0.000 against the committed baseline, so the regression gate passed
+each time.
+
+**Cause**: `score_detector.py`'s gate iterated lane F1 only, while the table it
+guards also carries BPM error, metrical level and continuity. Onset detection
+and beat tracking are independent subsystems sharing one score table; gating one
+says nothing about the other.
+
+**Fix**: Extend the gate to BPM error and metrical level. Continuity was
+deliberately left ungated: repeat runs on unchanged code swing by 0.3 CMLc, so
+any threshold tight enough to catch a real regression fires constantly on noise.
+Gate what is stable, report what is not, and say which is which.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-26
 
 ## 2026-07-23 - Scaled feedback passes need their actual texture extent
 

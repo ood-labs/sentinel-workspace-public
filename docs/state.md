@@ -7,8 +7,10 @@ updated: 2026-07-26
 
 ## Current focus
 
-Phase 2 - Audio Analysis v2 (`pulse2`) is **in progress**, not planned. See the detailed Phase 2
-section below for the live position; this header block was stale through 2D and has been corrected.
+Phase 2 - Audio Analysis v2 (`pulse2`) is implemented and committed, awaiting approval. It built a
+reusable GPU audio analysis system: adaptive-whitened SuperFlux onset detection, click-to-place
+spectral region isolation, a multi-feature classifier for coincident hits, and comb-filter tempo
+with a dual-loop beat PLL. Two measured criteria gates are open (see below).
 
 Phase 3 - Interaction Lab v2 is **in progress**. All six sub-phases 3A-3F are built and committed,
 and the **3B taste checkpoint has passed**. The lab is four stations (Style Authority, Motion
@@ -16,12 +18,16 @@ Console, Spline Desk, Gizmo Desk) plus `Spline_Output`. 3F's own seven criteria 
 is held open by ONE thing: the operator hands-on gesture pass for 3B.3, 3D.1 and 3E.1, which the
 phase doc's Autonomy section makes a hard blocker.
 
+Phase 4 - Data Scope is **planned**. Lift the CHOP-style scrolling strip chart proved in
+`modules/audio_bands` into a documented, reusable `sui3_trace` kit component with a worked example
+station, so any module can plot any scalar stream over time.
+
 CRYOGRAM is committed and working as a measured-crystal audio-reactive example, with two known
 defects tracked separately (see Blockers).
 
 ## Active sub-phase
 
-Phase 2: 2D complete with criterion 1 short (see below). Next is 2E1.
+Phase 2: none. All ten sub-phases (2A1 through 2F) are closed. Phase 2 is at its approval boundary.
 
 Phase 3: 3A-3F complete and committed, taste checkpoint passed. **Awaiting the operator hands-on
 gesture pass**, then `$end-session`. Three audit rounds have landed; every actionable finding is
@@ -32,6 +38,8 @@ Round three caught a regression the round-one fix introduced: `spline_desk` re-c
 snapshot on every cook of a live drag, so a drag accelerated away from the pointer and undo was
 destroyed. It shipped green through the whole guard suite, because no automated call can drive a
 pointer. **Five unguarded fixes now rest on the hands-on pass**, not three criteria.
+
+Phase 4: not yet decomposed; the phase doc is being drafted.
 
 Phase 2 was audited before implementation by four parallel agents. Ten sub-phases (2A1, 2A2, 2B,
 2C1, 2C2, 2C3, 2D, 2E1, 2E2, 2F). Five judgement calls are recorded in the phase doc's Plan Audit
@@ -56,6 +64,18 @@ where they are, the undo point was overwritten. Both were live defects during ro
 responding by the operator. 3B.3 (hover specifically) stays open and is carried into the 3F
 hands-on pass.
 
+**PHASE 2: two measured criteria gates are open.** 2E1 criterion 3 (correct metrical level, 8/11
+against a required 11/11) and 2E2 criterion 3 (CMLc/AMLc short of the bar). Neither is loosened and
+both need a human call. Detail in the Phase 2 section below.
+
+**HOST DEFECT, open, affects any module with an XY pad.** The host uses opposite Y conventions on
+two surfaces that share one `point2D` parameter: the Properties row is Y-up, the canvas
+`viewport.controls` `kind: xypad` gesture is Y-down. No module drawing satisfies both, so a pad can
+have a correct Properties row or a dot that follows the cursor, never both. Shipped matching the
+gesture, so the dot tracks. The inverted-rect workaround is closed: `module-ui.ps1` rejects it. A
+report for the host fix was written 2026-07-26. Full contract in
+`modules/_shared/ui/sui3_core.hlsli`. Do not "fix" this by flipping the Y term again.
+
 **Injection constraint REVISED.** 3A recorded pointer injection as dead. That was too pessimistic:
 `sentinel_ui action=click method=mouse` works and was proven by flipping a bool and reading it
 back. Caveats that produce a false pass: the widget path needs the window prefix
@@ -65,8 +85,6 @@ MCP route to click an arbitrary point inside a module preview. Because `viewport
 parameters, though, everything downstream of a value is automatable; only hit-region mapping needs
 a human. 3A's other finding stands: the Sentinel window is unreachable from the agent session, so
 full-window screenshots are unavailable for the phase; pipeline texture capture works.
-
-Nothing blocking Phase 2.
 
 Tracked separately, out of Phase 2 scope:
 
@@ -82,78 +100,93 @@ Tracked separately, out of Phase 2 scope:
 
 - Cold-load Scientific Organism from a clean checkout before public-workspace or official-gallery promotion.
 - Keep raw intermediate effect captures in coordinate-contract proof; a correct later overlay is not sufficient.
-- Phase 2 sub-phase 2A must settle `fft_size` 4096 versus 2048 by measurement. The source research
-  recommends 4096 (11.7 Hz/bin, 0-12 kHz); the alternative is 2048 (23.4 Hz/bin, full 0-24 kHz).
-  Adopt whichever scores higher and record the numbers.
-- Whether the generated corpus WAV files are committed or regenerated on demand.
 - Whether Interaction Lab v2 is promoted to the public workspace after Phase 3. Deliberately out of
   Phase 3 scope: Phase 1 is still approval-pending with an open cold-load follow-up.
 
+Settled during Phase 2, kept here as the record:
+
+- `fft_size` is **2048**, not the 4096 the source research recommended. 4096
+  truncates Spectrum coverage to 0-12 kHz while still publishing 1024 bins, and
+  nothing in the port metadata reveals it. Every committed score table records
+  the `fft_size` in force.
+- Corpus WAVs **are committed**, hash-frozen by `corpus.sha256`; the scorer
+  refuses to run if any file drifts.
+
+## Decisions pending for Phase 2 approval
+
+- Accept the two open gates and approve Phase 2, or re-scope them. The PLL
+  period defect that was the standing lead is now fixed and is no longer a
+  candidate explanation for the remaining continuity shortfall.
+- The harness scored the WRONG DETECTOR for six consecutive full-corpus runs
+  because `score_detector.py --lane-map` defaulted to `lane_map.json`
+  (`pulse_baseline`, the Phase 1 module). The flag is now required, the map is
+  recorded in every written table, and a baseline scored on a different detector
+  is a hard error. No committed table was affected -- `scores/2E2.json`
+  reproduces at +0.000 on every lane -- but any score table produced outside
+  this workspace before that fix should be re-checked for which detector it
+  actually measured.
+- `mu_tempo` ships at 0.2 rather than the phase doc's 0.02, because normalising
+  the loop gains to per-beat changed their units. Recorded in the manifest and
+  the 2E2 devlog as a Tier 2 adoption; the doc's Tier 2 clause does not name
+  `mu_tempo` explicitly, so it is authorization by analogy.
+
 ## Last devlog
 
-`docs/devlogs/2026-07-26-phase3-audit-round-three.md` - complete, approval pending. The phase
+`docs/devlogs/2026-07-26-phase3-audit-round-three.md` - complete, approval pending. The Phase 3
 boundary record is `docs/devlogs/2026-07-27-phase3-close-out.md` and the 3F narrative is
 `docs/devlogs/2026-07-26-phase3f-consolidation.md`. Nine Phase 3 devlogs exist (3A, 3B, 3C
 burst-confirmed, 3C motion-console, 3D, 3E, 3F, close-out, audit round three); 3B, 3D and 3E are
 `in-progress` because their gesture criterion is open, per the phase doc.
 
+Upstream's most recent is `docs/devlogs/2026-07-26-pulse2-2f-project-portability.md` - complete,
+approval pending, preceded by `2026-07-26-pulse2-2e2-pll-beat-clock.md`, which carries the Phase 2
+audit record.
+
 Note: the close-out devlog is dated `2026-07-27` in its filename and frontmatter but was written and
 committed on 2026-07-26. Left as-is rather than renamed mid-phase; worth correcting at approval.
 
-## Phase 2 - Audio Analysis v2 (in progress, 2026-07-25)
+## Phase 2 - Audio Analysis v2 (complete, approval pending, 2026-07-26)
 
-Complete and committed: 2A1 corpus + onset contract, 2A2 scorer/baseline, 2B core
-detector (aggregate F1 0.774 vs 0.706 baseline), 2C1 region masks (kick 0.909,
-aggregate 0.797).
+All ten sub-phases are implemented and committed. `projects/pulse2/` is bundled,
+loads from a clean path with relative `project_dir` values, and reproduces its
+committed score table from that load.
 
-**2C2 is BLOCKED at criterion 2 and is human checkpoint 1.**
+Onset detection is the solid part: kick 0.913, snare 0.782, hat 0.969 mean F1 on
+the frozen corpus `50e89b594f08b41a` at +/-25 ms, raw. Tempo lands within 2 BPM
+on every pattern that locks. The detector is honest under a -44 dBFS noise floor
+and under digital silence, and held F1 to +0.000 across a 30-minute soak.
 
-Proven: criterion 1 (display audio-driven and legible) — see
-`docs/devlogs/2026-07-25-pulse2-2c2-console-display.md`.
+**TWO MEASURED CRITERIA GATES ARE OPEN AND NOT AUTHORIZED.** Both are recorded,
+neither is loosened, and both need a human call:
 
-Blocker: no available automation command delivers viewport pointer events to a
-Module. Tried `CLICK_AT`, `DRAG_AT` (both report ok, `method: imgui_injection`) and
-`sentinel_viewport pick` (rejected — needs a `selection` interaction). A
-position-independent event counter in the module (`dbg_events` control output) reads
-exactly 0 throughout, and the shipped `cryo_console` events module behaves the same
-way when probed, so the fault is the injection path and not the module.
+1. **2E1 criterion 3** - correct metrical level on 11/11 patterns. Actual 8/11.
+   `hats_only_150` was proven unachievable from magnitude-only data (100
+   byte-identical hats at exactly 9600-sample spacing; no phase information
+   exists in it). `sparse_90` and `halftime_shuffle_88` remain off.
+2. **2E2 criterion 3** - CMLc >= 0.75 on steady patterns, AMLc >= 0.85
+   corpus-wide. Actual after the outlier-rejection fix: CMLc 0.00-0.90,
+   AMLc 0.03-0.90. Improved on seven of eleven patterns, still short.
 
-Two ways forward, user's call:
-1. Hand-verify the drag (open the `pulse2_console` tab, set Active Lane, drag
-   vertically). If `dbg_events` goes non-zero, criteria 2-5 close quickly.
-2. Redesign the interaction onto the host-owned selection path — declare regions as
-   selectable objects with `viewport.interactions: [selection]` and drive them via
-   `sentinel_viewport edit` four-phase transactions, which IS synthetically
-   automatable. Larger change; abandons raw pointer events.
+The beat clock itself is sound - intervals regular, no dropped beats, zero
+spacing rejections. What fails is beat PLACEMENT.
 
-Not started: 2C3 lateral inhibition (the designed fix for the open 2C1 snare
-precision deficit, 0.31-0.34 — kick click bleeding into 200-2400 Hz), 2D, 2E1,
-2E2, 2F.
+**The PLL period defect is RESOLVED and continuity improved, but not enough.**
+It was never a PLL bug: an exponential tracker converges to the MEAN of its
+input and every summary compared it against the MEDIAN. The comb intermittently
+returns a metrical relative (131.8 hops against a true 88.2, a 3:2 dotted
+quarter, about one cook in six) and those excursions dragged the mean 6% off.
+The tempo loop now rejects outliers instead of averaging them, with a NET
+disagreement counter so rejection cannot become a trap. Four of five patterns
+now converge onto their observation exactly.
 
-Trap defused: the console publishes region edges as control outputs and
-`sentinel_expression` can bind them onto the analyzer's `rgn*_hz` parameters. Those
-expressions are deliberately CLEARED — with them bound, a panel drag would silently
-override the scorer's writes and change scoring configuration. Re-apply only for
-interactive use; clear before any corpus run.
+Continuity rose on seven of eleven patterns (breakbeat 0.02 -> 0.65, quiet_intro
+0.09 -> 0.60, four_on_floor 0.19 -> 0.44, hats_under_loud_kick 0.78 -> 0.90,
+tempo_ramp 0.71 -> 0.83) with onset F1 unchanged at +0.000 on every lane. It is
+still short of the criterion: four_on_floor 0.44, dense_140 0.08,
+syncopated_funk 0.00 against CMLc >= 0.75. Post-fix table: `scores/2E2fix.json`.
 
-### 2C2 update - blocker RESOLVED by human verification
-
-The user performed a real drag on the `pulse2_console` panel. `dbg_events` read
-**1315**, and region placement visibly affected detection inside the drawn band. The
-module was correct all along; `CLICK_AT` / `DRAG_AT` / `viewport pick` simply do not
-feed the module viewport event ring on this build. Criterion 2's mechanism is
-confirmed live. Do NOT re-litigate this — use real input, not injection, to test
-Module viewport events.
-
-Remaining for 2C2: criterion 3 (save/close/reopen byte-identity + undo of a drag),
-4 (firing flash asserted in a capture during playback), 5 (mini-trace legibility),
-6 (`module-ui.ps1 validate` + criterion 1 at 640x360 and 1600x900).
-
-USER DECISION PENDING - palette. The user finds black->white hard to read and wants a
-darker base through a colour spectrum to separate instruments. This OVERRIDES the
-monochrome look specified in both CLAUDE.md and the phase doc (which explicitly says
-not Magma/Inferno); CLAUDE.md permits it because the user asked. Awaiting their choice
-of ordering: colour ramp first, or finish criteria 3-6 first.
+The `beat_snap` onset-anchoring mechanism is implemented and shipped disabled;
+enabling it measured strictly worse even after a gain-scaling bug was fixed.
 
 ## Phase 3 - Interaction Lab v2 (in progress, 2026-07-26)
 
@@ -206,12 +239,15 @@ Three platform gotchas inherited from AUTOPSIA, to be re-confirmed on this build
 `burst` is declared that way and is suspected dead); host `xypad` stores Y increasing
 downward; never `[unroll]` a glyph loop.
 
-**The xypad gotcha above is WRONG and cost three operator reports of the same defect.** Measured by
-driving the parameter and reading the host widget: the host's XY pad is **Y-up**, value 1 at the
-top. Canvas pixels run downward, which is the separate fact the inherited note conflated with it.
-Conversion happens in `sui3PadPoint` / `sui3PadValue` and nowhere else; the stored value is never
-flipped on any surface. See phase doc Amendment 6. Do not assert a pad against the module's other
-surfaces - all four agreeing while all four are upside down is exactly what happened.
+**The xypad gotcha above is wrong, and so was the first correction to it.** Cost four operator
+reports of the same defect across three rounds. The settled finding: the host uses OPPOSITE Y
+conventions on its two surfaces for one `point2D` parameter - the Properties row is Y-up, the canvas
+`kind: xypad` gesture is Y-down. Neither "the pad is Y-up" nor "the pad is Y-down" is a true
+statement about the host. No module drawing satisfies both surfaces, so flipping the Y term only
+chooses which one is broken, and both choices were shipped and rejected. The inverted-rect
+workaround is closed by `module-ui.ps1`. Shipped matching the gesture so the dot follows the
+cursor; the residual Properties mismatch is a host defect, reported 2026-07-26, and is listed under
+Blockers. Full contract in `modules/_shared/ui/sui3_core.hlsli`; read it before touching a pad.
 
 Known hazards: rebuilt modules will orphan the 4 group presets and 7 node presets in
 `interaction_lab.sentinel` - 3F migrates or explicitly retires each; `sui_*` headers
