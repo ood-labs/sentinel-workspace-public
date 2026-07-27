@@ -151,6 +151,50 @@ def measure(path: str):
     return out
 
 
+def edge_segment_lit(path: str, cols: int = 3, lanes: int = 4):
+    """Lit-pixel count per column at the live edge, per lane, right column first.
+
+    `measure` deliberately stops at 95% of the width to stay clear of the
+    margin, so it never looks at the live edge -- and the live edge is exactly
+    where a stale-sample read shows up.
+
+    What it looks like is not a shifted height, which was the first guess and
+    measured almost nothing. A connected trail draws a segment between one
+    column's value and the next, so a single stale sample at the end renders as
+    a near-vertical bar from the live value to a value about a full ring old.
+    The signature is therefore the LENGTH of the lit run in the last columns,
+    and it separates cleanly. Measured over 6 frames x 4 channels with the
+    clamp removed and restored:
+
+        column      clamp removed          clamp restored
+        right-0     mean 13.8, max 20      mean 3.7, max 5
+        right-1     mean 23.3, max 40      mean 4.3, max 5
+        columns over 6 lit: 22/24 and 20/24   vs   0/24 and 0/24
+
+    Columns further left are unaffected in both builds, which is what makes the
+    reading positional rather than a general smoothness heuristic.
+    """
+    img = Image.open(path).convert("RGB")
+    w, _ = img.size
+    px = img.load()
+    rects, _, _ = find_lanes(img, lanes)
+
+    out = []
+    for (top, bot) in rects:
+        y_lo, y_hi = top + 2, bot - 1
+        lit = lambda x: sum(
+            1 for y in range(y_lo, y_hi)
+            if 0.299 * px[x, y][0] + 0.587 * px[x, y][1] + 0.114 * px[x, y][2] >= 60
+        )
+        right = None
+        for x in range(w - 1, int(w * 0.4), -1):
+            if lit(x):
+                right = x
+                break
+        out.append([] if right is None else [lit(right - o) for o in range(cols)])
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("capture")

@@ -626,6 +626,170 @@ def guard_ui_rects():
                out[-1] if out else "no output")
 
 
+# ---------------------------------------------------------------------------
+# Phase 4 scope guards.
+#
+# Two of these assert defects the OPERATOR caught by looking at the running
+# graph after the whole 4B harness had passed the audio scope eight ways. Both
+# were invisible on Data Scope and obvious on Signal Trails: an audio stream's
+# sample interval is exactly constant so the axis cannot jitter, and a filled
+# area chart hid the stale live-edge column that a trail drawing exposed. They
+# are guarded here so the next reader does not have to catch them by eye.
+
+SCOPE_PIPE = "Data_Scope"
+TRAIL_PIPE = "Signal_Trails"
+
+
+def _scope_present(mcp, pipeline):
+    listing = mcp.call("sentinel_pipeline", {"action": "list"})
+    return any(p.get("id") == pipeline for p in listing.get("pipelines", []))
+
+
+def _capture(mcp, pipeline, tag):
+    import tempfile
+    png = os.path.join(tempfile.gettempdir(), "guard_%s.png" % tag)
+    mcp.call("sentinel_capture", {"action": "pipeline", "pipeline_id": pipeline, "filepath": png})
+    return png
+
+
+def _measure_mod():
+    if WORKSPACE not in sys.path:
+        sys.path.insert(0, os.path.join(WORKSPACE, "tools"))
+    import data_scope_measure
+    return data_scope_measure
+
+
+def guard_scope_no_clipping(mcp):
+    """Full scale must cover the samples on screen.
+
+    The decayed peak is anchored at now while the plot shows history, so on its
+    own it lets the scale fall below its own visible samples. Signature is a
+    plotted height of 1.000: columns pinned flat against the top edge. A healthy
+    plot tops out at 1/1.15 = 0.870, the headroom.
+    """
+    if not _scope_present(mcp, SCOPE_PIPE):
+        skip("scope: autoscale covers the window", "%s not in the graph" % SCOPE_PIPE)
+        return
+    res = _measure_mod().measure(_capture(mcp, SCOPE_PIPE, "scope_clip"))
+    peaks = [l["peak_height_frac"] for l in res["lanes"]]
+    p95s = [l["p95_height_frac"] for l in res["lanes"]]
+    clipped = [p for p in peaks if p > 0.95]
+    empty = max(peaks) < 0.2
+    record(
+        "scope: autoscale covers the window",
+        not clipped and not empty,
+        "peaks %s p95 %s" % ([round(p, 3) for p in peaks], [round(p, 3) for p in p95s]),
+    )
+
+
+def guard_scope_reference_in_scale(mcp):
+    """A reference above the recent peak must pull full scale up, not pin itself
+    to the top edge where it stops reading as a reference at all.
+
+    The reference only shows up in the answer when it EXCEEDS the peak, so the
+    peak has to be out of the way first. Asserting against the material as-found
+    passed with the mechanism deliberately deleted, because the audio was loud
+    enough to set the same scale on its own. Raising the dB floor does not help
+    either -- it compresses toward 0 dB, and this material's transients reach it.
+
+    So the measurement is taken in the loop's quiet intro: rewind the WAV, shrink
+    the span and half-life so the peak reflects only what has played since, and
+    read within the first second and a half, before the drop.
+    """
+    if not _scope_present(mcp, SCOPE_PIPE):
+        skip("scope: reference participates in scale", "%s not in the graph" % SCOPE_PIPE)
+        return
+    get = lambda p: float(mcp.call("sentinel_state", {
+        "action": "get", "path": "/sentinel/pipelines/%s/%s" % (SCOPE_PIPE, p)})["value"])
+    base = {k: get("parameters/" + k)
+            for k in ("reference", "peak_halflife", "span_seconds")}
+    try:
+        mcp.set_param(SCOPE_PIPE, "peak_halflife", 0.25)
+        # The window max holds the peak up until the loud samples scroll off, so
+        # the span has to shrink too or this waits out the whole plot.
+        mcp.set_param(SCOPE_PIPE, "span_seconds", 1.0)
+        mcp.set_param(SCOPE_PIPE, "reference", 0.95)
+        mcp.call("sentinel_state", {
+            "action": "invoke",
+            "path": "/sentinel/pipelines/Scope_Audio/actions/restart_file"})
+        time.sleep(1.5)
+        peak = get("control_outputs/low_peak")
+        fs = get("control_outputs/low_fs")
+        want = 0.95 * 1.15
+        record(
+            "scope: reference participates in scale",
+            peak < 0.9 and fs >= want - 0.02,
+            "quiet intro peak %.3f, reference 0.95 -> fs %.3f (need >= %.3f)"
+            % (peak, fs, want),
+        )
+    finally:
+        for k, v in base.items():
+            mcp.set_param(SCOPE_PIPE, k, v)
+        time.sleep(0.5)
+
+
+def guard_trails_axis_stable(mcp):
+    """The time axis must not be rebuilt from the instantaneous frame delta.
+
+    samples_shown sets the horizontal mapping. Derived from a raw _DeltaTime it
+    swung 12.4 samples of an 8 s span at a nominal 60 fps -- a 2.6% stretch every
+    cook, about 42 px at 1727 wide -- and the operator saw the whole trace
+    shivering. Smoothed, it holds inside 0.2%.
+    """
+    if not _scope_present(mcp, TRAIL_PIPE):
+        skip("trails: time axis is stable", "%s not in the graph" % TRAIL_PIPE)
+        return
+    path = "/sentinel/pipelines/%s/control_outputs/samples_shown" % TRAIL_PIPE
+    vals = []
+    for _ in range(30):
+        vals.append(float(mcp.call("sentinel_state", {"action": "get", "path": path})["value"]))
+        time.sleep(0.05)
+    mean = sum(vals) / len(vals)
+    spread = (max(vals) - min(vals)) / max(mean, 1e-6)
+    record(
+        "trails: time axis is stable",
+        spread < 0.01,
+        "samples_shown %.1f-%.1f = %.2f%% of mean (need <1%%)" % (min(vals), max(vals), spread * 100),
+    )
+
+
+def guard_trails_live_edge(mcp):
+    """The rightmost column must plot the newest sample, not a stale one.
+
+    writeIdx is the NEXT slot to write and still holds the sample from one full
+    ring ago, so fetching it draws thousand-sample-old data at the live edge.
+    Because the trail connects consecutive columns, that renders as a vertical
+    bar welded to the right edge that never scrolls away. See
+    `data_scope_measure.edge_segment_lit` for the measured separation.
+
+    Sampled over frames and channels rather than asserted once: the stale slot
+    holds a different ring-old value every cook, so an individual frame can land
+    close enough to the live value to look continuous. Against the break, 2 of
+    24 channel-frames did.
+    """
+    if not _scope_present(mcp, TRAIL_PIPE):
+        skip("trails: live edge is not stale", "%s not in the graph" % TRAIL_PIPE)
+        return
+    time.sleep(2.0)  # settle past the preset guard's console changes
+    seg = _measure_mod().edge_segment_lit
+    tall, total, worst = 0, 0, 0
+    for k in range(3):
+        for lane in seg(_capture(mcp, TRAIL_PIPE, "trail_edge_%d" % k), 2, 4):
+            for n in lane:
+                total += 1
+                worst = max(worst, n)
+                if n > 6:
+                    tall += 1
+        if k < 2:
+            time.sleep(0.5)
+    record(
+        "trails: live edge is not stale",
+        tall < 3,
+        "%d/%d edge columns over 6 lit px, tallest %d (healthy max 5)"
+        % (tall, total, worst),
+    )
+
+
 def run_guard(fn, *args):
     """Run one guard; an exception fails that guard only, not the whole suite.
 
@@ -650,7 +814,9 @@ def main():
         for guard in (guard_health, guard_pad_direction, guard_theme_governs,
                       guard_gizmo_state_integrity, guard_spline_readout_matches_knots,
                       guard_spline_undo, guard_spline_arm_settles, guard_gizmo_orbit,
-                      guard_group_surfaces, guard_presets):
+                      guard_group_surfaces, guard_presets,
+                      guard_scope_no_clipping, guard_scope_reference_in_scale,
+                      guard_trails_axis_stable, guard_trails_live_edge):
             run_guard(guard, mcp)
     finally:
         mcp.close()
