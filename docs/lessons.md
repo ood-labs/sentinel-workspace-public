@@ -1,10 +1,28 @@
 ---
 type: lessons
-updated: 2026-07-27
+updated: 2026-07-26
 ---
 
 
 # Lessons
+
+## 2026-07-26 - Invoking module-ui.ps1 from the Bash tool needs the call operator
+
+**Symptoms**: `pwsh -NoProfile -File tools/module-ui.ps1 ...` fails with `pwsh: command not found`.
+Switching to `powershell -NoProfile -File tools/module-ui.ps1 ...` then fails inside the script:
+`Split-Path : Cannot bind argument to parameter 'Path' because it is an empty string` at
+`tools/module-ui.ps1:10`.
+
+**Cause**: Two separate things. PowerShell 7 is not on PATH in this workspace, only Windows
+PowerShell 5.1. And `powershell -File <relative-path>` leaves `$PSScriptRoot` empty, so the script's
+`[string]$Root = (Split-Path -Parent $PSScriptRoot)` default dies before the body runs.
+
+**Fix**: Use the PowerShell tool with the call operator and an absolute path:
+`& "C:\...\tools\module-ui.ps1" generate -Module modules/<name>`.
+
+**Frequency**: always, for this script
+
+**Discovered**: 2026-07-26
 
 ## 2026-07-27 - One flag for two facts: fixing a dropped command created a corrupted drag
 
