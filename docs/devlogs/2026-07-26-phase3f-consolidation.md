@@ -254,3 +254,56 @@ publishes no gesture counter.
 
 `tools/interaction-lab-guards.py` prints these four as explicit `SKIP` lines with their reason, so
 the gap stays visible in the proof output instead of being absent from it.
+
+## The recorder that had to be stopped from passing itself
+
+The four `SKIP` lines above are honest but inert, so `tools/interaction-lab-handson.py` was written
+to turn the operator pass into an assertion: it polls the live ports, recognises each gesture from
+its signature, and writes a record saying *what moved*, not that someone said they moved it.
+
+Its first run recorded three gestures with nobody touching the mouse. Firing `do_tangent`,
+`do_nudge`, `do_next_lane` and `do_undo` through the automation doors produced:
+
+```
+RECORDED  3D.1 spline anchor drag   knot 0 anchor [0.195, 0.609] -> [0.255, 0.489], handles followed
+RECORDED  3D.1 spline keyboard      active_lane 0.0 -> 1.0
+RECORDED  3E.1 gizmo drag           dragging=1 handle=1 mode=1, objects [7] moved
+```
+
+Every line is true and every line is worthless. `do_nudge` moves an anchor and drags its handles
+along exactly as a pointer drag does, so the state signature alone cannot tell them apart. A tool
+built to certify the one thing that cannot be automated had certified automation.
+
+Three gates now stand between a state change and a recorded gesture:
+
+1. **Pointer command codes.** A spline geometry change counts only when `last_command` is 1, 2 or 3,
+   the three codes a pointer can produce. Every door fires a different code.
+2. **Door poison.** Any sample taken while a door is held, or within six samples after, is
+   inadmissible. Doors latch until the caller clears them, so polling can see them.
+3. **Run-level taint.** Polling cannot see a door set and cleared between two samples, so a door
+   seen at all voids the *entire* record rather than one window, and the JSON carries
+   `tainted: true`. A pass is admissible only when zero doors fired end to end.
+
+The gizmo branch additionally requires the `dragging` flag to transition 0 to 1 inside the watch
+window, so a latched flag from an earlier session cannot be credited.
+
+Re-running the identical door sequence against the hardened recorder: **zero gestures recorded,
+record stamped tainted, exit 6**. The second run set and cleared each door in back-to-back MCP
+calls, faster than the 150 ms poll, and the taint still caught it.
+
+What this does not do is distinguish a `do_tangent` write from the T key once the door has closed.
+Nothing on any port can. The guarantee is narrower and stated in the tool: the record is valid only
+if no door fired for the whole watch, and the operator's presence is the warrant for the keyboard
+line.
+
+**Restoring what the test moved.** The door fires left the station on lane 3 with `tangent_cycle`
+and `close_path` latched, and the knots nudged. `do_reset` restored the seeded lane geometry;
+`do_next_lane` cycled 3 to 0 through the wrap; both toggles went back to default.
+
+That exposed a second defect. The guard suite dropped to 29 passed / **1 failed** on
+`undo: close sets the closed bit`, which had passed all session. The undo guard reads lane 0's knots
+but `do_close` acts on the *active* lane, so the guard was silently inheriting ambient state and
+would have failed for a reason unrelated to undo. It now asserts `active_lane == 0` as a named
+precondition and skips its four assertions rather than reporting a misleading failure.
+
+Guard suite after both fixes: **30 passed, 0 failed, 4 skipped.**

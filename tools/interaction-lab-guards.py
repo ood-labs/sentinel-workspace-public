@@ -169,7 +169,21 @@ def guard_spline_undo(mcp):
 
     v1 preserved the whole flags word to protect the selection, which made the
     closed-path bit (also in flags) the one edit undo could never reverse.
+
+    The knot readback is lane 0's, but `do_close` acts on whatever lane is
+    ACTIVE, so an ambient lane other than 0 makes this guard fail for a reason
+    that has nothing to do with undo. Assert the precondition instead of
+    inheriting it.
     """
+    lane = float(mcp.call("sentinel_state", {
+        "action": "get",
+        "path": "/sentinel/pipelines/Spline_Desk/control_outputs/active_lane",
+    })["value"])
+    record("undo: station is on lane 0 to begin with", lane == 0.0,
+           "active_lane %g" % lane)
+    if lane != 0.0:
+        return
+
     before = mcp.port("Spline_Desk", "Spline Knots", 4)["elements"]
     mcp.edge("Spline_Desk", "do_close")
     closed = mcp.port("Spline_Desk", "Spline Knots", 4)["elements"]
