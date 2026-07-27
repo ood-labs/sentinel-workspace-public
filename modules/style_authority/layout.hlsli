@@ -113,9 +113,6 @@ SaLayout saLayout(float2 R, float titleScale, float sectionScale, float bodyScal
 
     L.showGrid = (R.y >= 520.0);
     float gTopPlanned = L.showGrid ? (R.y * 0.60) : (R.y - L.pad);
-    // Section captions render at the SECTION scale, so the space reserved for
-    // them is measured at that scale too.
-    L.capH = 11.0 * L.sS;
     L.cg   = max(ctlG, 2.0);
 
     // TITLE SCALE IS COMPUTED AFTER THE RECTS, because the header has to fit in
@@ -139,6 +136,24 @@ SaLayout saLayout(float2 R, float titleScale, float sectionScale, float bodyScal
         float noSub = L.rPad.y - L.headY - 3.0 * L.sB - under;
         L.sT = clamp(floor(noSub / 13.0), 1.0, wantT);
     }
+    // A SECTION CAPTION MAY NEVER OUTRANK THE TITLE.
+    //
+    // The title gives back size when the band above the first control is thin,
+    // and at 1355x826 that band is 22px, so a requested 3x title renders at 1x.
+    // The section scale had no such give-back, so PUBLISHED, METERS and
+    // PRIMITIVES kept their full 2x and came out DOUBLE the height of the page
+    // title -- a type hierarchy standing on its head, which is what reads as
+    // "too big and bad" long before anyone measures it.
+    //
+    // Clamping here rather than at the draw call keeps one definition of the
+    // section scale, so capH, mY and every caption agree about how tall a
+    // caption is. As with the title, the published metric stays the ceiling.
+    L.sS = min(L.sS, L.sT);
+
+    // Section captions render at the SECTION scale, so the space reserved for
+    // them is measured at that scale too.
+    L.capH = 11.0 * L.sS;
+
     L.ruleY   = L.headY + 13.0 * L.sT + (L.showSub ? 14.0 : 3.0) * L.sB;
     L.bodyTop = L.ruleY + under;
 

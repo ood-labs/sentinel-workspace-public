@@ -518,3 +518,35 @@ fit before it is dropped.
 **Frequency**: recurring
 
 **Discovered**: 2026-07-26
+
+## A control agreeing with itself is not a control agreeing with the host
+
+The Style Authority pad was reported flipped, fixed, and reported flipped again.
+The first fix removed a `1 - raw` so the reticle, the readout, the published
+output and the stored parameter all carried the same number. Every one of those
+surfaces belongs to the module. The Properties row does not, and the module was
+upside down against it, so making the module self-consistent changed nothing the
+operator could see.
+
+The host's XY pad is **Y-up**: value 1 is the top. Canvas pixels run the other
+way, so `lerp(r.xy, r.zw, val)` -- the obvious thing to write -- draws every pad
+inverted against the widget for the same parameter. The kit now maps value to
+pixel through one function, `sui3PadPoint`, which is where the inversion lives.
+
+Two habits come out of it. Derive a convention from the thing you must match,
+never from your own renderer: Phase 3A measured where its own module drew the
+marker and concluded the direction from that, which is circular and got the
+wrong answer. And when a guard compares a component only to itself, it cannot
+see a whole-component offset -- the pad guard asserts a *rendered* reticle
+position against the host convention, and reverting the one line makes it read
+0.9 as 0.10.
+
+## A section caption may never outrank the title
+
+Style Authority's title gives back size when the band above the first control is
+thin; at 1355x826 a requested 3x title renders at 1x. Section captions had no
+such give-back, so PUBLISHED, METERS and PRIMITIVES kept their full 2x and came
+out double the height of the page title. Nobody reads that as "section scale is
+2"; they read it as the sheet looking wrong. Any type scale that can be clamped
+by available space needs every smaller rank clamped against it, not just against
+its own request.

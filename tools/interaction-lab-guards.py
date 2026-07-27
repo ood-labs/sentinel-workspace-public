@@ -164,6 +164,105 @@ def guard_health(mcp):
     )
 
 
+# Pad wells, as normalized manifest rects: (pipeline, param stem, rect, display).
+# These are the same numbers `_ui.generated.hlsli` carries, so the guard measures
+# the well the HOST hit-tests, not one the guard invented.
+PAD_WELLS = [
+    ("Style_Authority", "demo_pad", (0.015625, 0.120833, 0.559375, 0.315278), "style authority pad"),
+    ("Motion_Console", "motion_bias", (0.82, 0.02, 0.97, 0.13), "motion console bias"),
+]
+
+
+def _reticle_row(png_path, rect, w, h):
+    """Row of the amber reticle inside `rect`, as 0 at the well's BOTTOM.
+
+    Amber is the accent, but the reticle is NOT the only accent-coloured thing in
+    a well: Motion Console prints its bias readout inside the same rect, and
+    averaging every amber pixel put a value-0.9 reticle at 0.49 because the
+    readout sits at the bottom in both probes. So group the amber rows into
+    contiguous bands and take the TALLEST one -- the ring spans roughly 34 rows
+    against a text line's 11, and unlike a centroid it does not average two
+    things that are in different places.
+    """
+    from PIL import Image
+    img = Image.open(png_path).convert("RGB")
+    x0, y0, x1, y1 = (int(rect[0] * w), int(rect[1] * h), int(rect[2] * w), int(rect[3] * h))
+    crop = img.crop((x0, y0, x1, y1))
+    px = crop.load()
+    cw, chh = crop.size
+
+    per_row = []
+    for yy in range(chh):
+        n = 0
+        for xx in range(cw):
+            r, g, b = px[xx, yy]
+            if r > 120 and r - b > 60 and r > g:
+                n += 1
+        per_row.append(n)
+
+    bands, start = [], None
+    for yy, n in enumerate(per_row + [0]):
+        if n > 0 and start is None:
+            start = yy
+        elif n == 0 and start is not None:
+            bands.append((start, yy - 1))
+            start = None
+    if not bands:
+        return None
+    lo, hi = max(bands, key=lambda b: b[1] - b[0])
+    if sum(per_row[lo:hi + 1]) < 8:
+        return None
+    mean_y = sum(yy * per_row[yy] for yy in range(lo, hi + 1)) / sum(per_row[lo:hi + 1])
+    return 1.0 - (mean_y / max(chh - 1, 1))
+
+
+def guard_pad_direction(mcp):
+    """The host's XY pad is Y-UP, so a module pad must draw value 1 at the TOP.
+
+    This is the one defect in Phase 3 that was 'fixed' twice and reported wrong
+    both times. The first fix made the module's own four surfaces agree with each
+    other while all four stayed upside down against the Properties row; nothing
+    in the suite could tell, because every assertion compared the module to
+    itself. So this guard compares the module to the HOST CONVENTION: set the
+    parameter high, and the drawn reticle must be in the upper part of the well.
+    """
+    import shutil
+    tmp = os.path.join(WORKSPACE, "captures", "_padguard")
+    os.makedirs(tmp, exist_ok=True)
+    try:
+        for pid, stem, rect, label in PAD_WELLS:
+            before = {}
+            for ax in ("x", "y"):
+                before[ax] = mcp.call("sentinel_state", {
+                    "action": "get",
+                    "path": "/sentinel/pipelines/%s/parameters/%s_%s" % (pid, stem, ax),
+                })["value"]
+            seen = {}
+            try:
+                for probe in (0.9, 0.1):
+                    mcp.set_param(pid, "%s_x" % stem, 0.5)
+                    mcp.set_param(pid, "%s_y" % stem, probe)
+                    time.sleep(0.6)
+                    shot = os.path.join(tmp, "%s_%s.png" % (pid, probe))
+                    cap = mcp.call("sentinel_capture", {
+                        "action": "pipeline", "pipeline_id": pid, "filepath": shot})
+                    seen[probe] = _reticle_row(shot, rect, cap["width"], cap["height"])
+            finally:
+                for ax in ("x", "y"):
+                    mcp.set_param(pid, "%s_%s" % (stem, ax), float(before[ax]))
+
+            hi, lo = seen.get(0.9), seen.get(0.1)
+            if hi is None or lo is None:
+                record("pad Y-up: %s" % label, False,
+                       "no reticle found in the well (hi=%s lo=%s)" % (hi, lo))
+                continue
+            ok = hi > 0.72 and lo < 0.28
+            record("pad Y-up: %s" % label, ok,
+                   "value 0.9 drew at %.2f, value 0.1 at %.2f (0 = well bottom)" % (hi, lo))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def guard_spline_undo(mcp):
     """3D: undo must reverse a close, preserve the selection bit, and leave knots identical.
 
@@ -340,6 +439,7 @@ def main():
         if mcp.call("sentinel_app", {"action": "ping"}).get("text", "").strip() == "":
             pass  # ping returns a bare PONG string on some builds
         guard_health(mcp)
+        guard_pad_direction(mcp)
         guard_spline_undo(mcp)
         guard_gizmo_orbit(mcp)
         guard_group_surfaces(mcp)

@@ -171,9 +171,12 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float ty = bodyTop;
     float lh = 13.0 * sB;
 
+    // PUBLISHED is a SECTION caption, so the row it occupies is 13*sS tall, not
+    // 13*sB. Advancing by the body line height put the table frame straight
+    // through the caption's descenders whenever section outranked body.
     col += T.dim * sui3Text(P, float2(tx, ty), sS,
         S_P,S_U,S_B,S_L,S_I,S_S,S_H,S_E,S_D,0,0,0);
-    ty += lh + 4.0 * sB;
+    ty += 13.0 * sS + 4.0 * sB;
 
     float4 rTab = float4(tx - 6.0 * sB, ty - 4.0 * sB, R.x - pad + 6.0 * sB, ty + lh * 11.0);
     col += T.rule * sui3Frame(P, rTab);

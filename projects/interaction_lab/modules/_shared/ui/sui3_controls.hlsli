@@ -35,10 +35,9 @@ float3 sui3Well(float2 P, float4 r, Sui3Theme t) {
 }
 
 // XY pad. `val` is the HOST PARAMETER, unmodified -- the same number the
-// Properties row shows, the readout prints, and the node publishes. Drawing it
-// straight is what keeps those four surfaces in agreement; see the Y-DIRECTION
-// CONTRACT in sui3_core.hlsli for why the old "flip once at publish" rule was
-// removed.
+// Properties row shows, the readout prints, and the node publishes. It is placed
+// through sui3PadPoint, which is Y-up to match the host's own XY widget; see the
+// Y-DIRECTION CONTRACT in sui3_core.hlsli.
 float3 sui3Pad(float2 P, float4 r, float2 val, Sui3Theme t) {
     float3 c = t.well * sui3RectIn(P, r);
     c += t.rule * 0.20 * sui3Graticule(P, r, float2(4.0, 4.0));
@@ -47,7 +46,7 @@ float3 sui3Pad(float2 P, float4 r, float2 val, Sui3Theme t) {
     c += t.rule * 0.32 * sui3HairAt(P.x, mid.x) * sui3RectIn(P, r);
     c += t.rule * 0.32 * sui3HairAt(P.y, mid.y) * sui3RectIn(P, r);
 
-    float2 at = lerp(r.xy, r.zw, saturate(val));
+    float2 at = sui3PadPoint(r, val);
 
     c += t.ink    * sui3Reticle(P, at, 5.0, 24.0) * 0.85;
     c += t.accent * sui3Aa(abs(length(P - at) - 8.5), 1.2) * 0.95;
