@@ -1,36 +1,40 @@
 {
   "binds": [
     [
-      "/sentinel/groups/annotation_24/parameters/accent_color_b",
-      "/sentinel/pipelines/Gizmo_Desk/parameters/accent_color_b"
-    ],
-    [
-      "/sentinel/groups/annotation_23/parameters/accent_color_r",
-      "/sentinel/pipelines/Spline_Desk/parameters/accent_color_r"
-    ],
-    [
-      "/sentinel/groups/annotation_25/parameters/Motion_Console_burst_trigger",
-      "/sentinel/pipelines/Motion_Console/parameters/burst_trigger"
-    ],
-    [
-      "/sentinel/groups/annotation_24/parameters/Gizmo_Desk_local_space",
-      "/sentinel/pipelines/Gizmo_Desk/parameters/local_space"
+      "/sentinel/groups/annotation_26/parameters/Style_Authority_exposure",
+      "/sentinel/pipelines/Style_Authority/parameters/exposure"
     ],
     [
       "/sentinel/groups/annotation_26/parameters/Style_Authority_section_scale",
       "/sentinel/pipelines/Style_Authority/parameters/section_scale"
     ],
     [
+      "/sentinel/groups/annotation_26/parameters/accent_color_r",
+      "/sentinel/pipelines/Style_Authority/parameters/accent_color_r"
+    ],
+    [
       "/sentinel/groups/annotation_25/parameters/Motion_Console_burst_decay",
       "/sentinel/pipelines/Motion_Console/parameters/burst_decay"
+    ],
+    [
+      "/sentinel/groups/annotation_25/parameters/Motion_Console_mute",
+      "/sentinel/pipelines/Motion_Console/parameters/mute"
     ],
     [
       "/sentinel/groups/annotation_23/parameters/accent_color_g",
       "/sentinel/pipelines/Spline_Desk/parameters/accent_color_g"
     ],
     [
+      "/sentinel/groups/annotation_24/parameters/Gizmo_Desk_do_orbit",
+      "/sentinel/pipelines/Gizmo_Desk/parameters/do_orbit"
+    ],
+    [
       "/sentinel/groups/annotation_25/parameters/accent_color_r",
       "/sentinel/pipelines/Motion_Console/parameters/accent_color_r"
+    ],
+    [
+      "/sentinel/groups/annotation_25/parameters/motion_bias_x",
+      "/sentinel/pipelines/Motion_Console/parameters/motion_bias_x"
     ],
     [
       "/sentinel/groups/annotation_26/parameters/Style_Authority_body_scale",
@@ -39,6 +43,10 @@
     [
       "/sentinel/groups/annotation_26/parameters/accent_color_g",
       "/sentinel/pipelines/Style_Authority/parameters/accent_color_g"
+    ],
+    [
+      "/sentinel/groups/annotation_24/parameters/accent_color_b",
+      "/sentinel/pipelines/Gizmo_Desk/parameters/accent_color_b"
     ],
     [
       "/sentinel/groups/annotation_23/parameters/accent_color_b",
@@ -81,40 +89,8 @@
       "/sentinel/pipelines/Style_Authority/parameters/section_gap"
     ],
     [
-      "/sentinel/groups/annotation_26/parameters/Style_Authority_exposure",
-      "/sentinel/pipelines/Style_Authority/parameters/exposure"
-    ],
-    [
       "/sentinel/groups/annotation_25/parameters/Motion_Console_master_rate",
       "/sentinel/pipelines/Motion_Console/parameters/master_rate"
-    ],
-    [
-      "/sentinel/groups/annotation_25/parameters/accent_color_b",
-      "/sentinel/pipelines/Motion_Console/parameters/accent_color_b"
-    ],
-    [
-      "/sentinel/groups/annotation_24/parameters/Gizmo_Desk_orbit_axis",
-      "/sentinel/pipelines/Gizmo_Desk/parameters/orbit_axis"
-    ],
-    [
-      "/sentinel/groups/annotation_23/parameters/Spline_Desk_tool_mode",
-      "/sentinel/pipelines/Spline_Desk/parameters/tool_mode"
-    ],
-    [
-      "/sentinel/groups/annotation_26/parameters/accent_color_r",
-      "/sentinel/pipelines/Style_Authority/parameters/accent_color_r"
-    ],
-    [
-      "/sentinel/groups/annotation_25/parameters/Motion_Console_mute",
-      "/sentinel/pipelines/Motion_Console/parameters/mute"
-    ],
-    [
-      "/sentinel/groups/annotation_24/parameters/Gizmo_Desk_do_orbit",
-      "/sentinel/pipelines/Gizmo_Desk/parameters/do_orbit"
-    ],
-    [
-      "/sentinel/groups/annotation_25/parameters/motion_bias_x",
-      "/sentinel/pipelines/Motion_Console/parameters/motion_bias_x"
     ],
     [
       "/sentinel/groups/annotation_24/parameters/accent_color_r",
@@ -131,6 +107,30 @@
     [
       "/sentinel/groups/annotation_25/parameters/motion_bias_y",
       "/sentinel/pipelines/Motion_Console/parameters/motion_bias_y"
+    ],
+    [
+      "/sentinel/groups/annotation_23/parameters/accent_color_r",
+      "/sentinel/pipelines/Spline_Desk/parameters/accent_color_r"
+    ],
+    [
+      "/sentinel/groups/annotation_25/parameters/accent_color_b",
+      "/sentinel/pipelines/Motion_Console/parameters/accent_color_b"
+    ],
+    [
+      "/sentinel/groups/annotation_25/parameters/Motion_Console_burst_trigger",
+      "/sentinel/pipelines/Motion_Console/parameters/burst_trigger"
+    ],
+    [
+      "/sentinel/groups/annotation_24/parameters/Gizmo_Desk_orbit_axis",
+      "/sentinel/pipelines/Gizmo_Desk/parameters/orbit_axis"
+    ],
+    [
+      "/sentinel/groups/annotation_24/parameters/Gizmo_Desk_local_space",
+      "/sentinel/pipelines/Gizmo_Desk/parameters/local_space"
+    ],
+    [
+      "/sentinel/groups/annotation_23/parameters/Spline_Desk_tool_mode",
+      "/sentinel/pipelines/Spline_Desk/parameters/tool_mode"
     ]
   ],
   "display": {
@@ -138,17 +138,17 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 0.5053740739822388,
+    "canvasZoom": 1.5,
     "links": [
       {
-        "endPinId": 72,
-        "id": 4,
-        "startPinId": 67
+        "endPinId": 116,
+        "id": 5,
+        "startPinId": 70
       }
     ],
-    "nextLinkId": 5,
-    "nextNodeId": 27,
-    "nextPinId": 114,
+    "nextLinkId": 6,
+    "nextNodeId": 28,
+    "nextPinId": 118,
     "nodes": [
       {
         "displayName": "Style Authority",
@@ -175,16 +175,6 @@
         "entityId": "Spline_Desk",
         "id": 16,
         "posX": 100.0,
-        "posY": 100.0,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
-        "displayName": "Spline_Output",
-        "entityId": "Spline_Output",
-        "id": 17,
-        "posX": 315.74053955078125,
         "posY": 100.0,
         "positionSet": true,
         "previewVisible": true,
@@ -378,7 +368,7 @@
             "subgroup": "",
             "targetPath": "/sentinel/pipelines/Gizmo_Desk/parameters/transform_mode",
             "type": "int",
-            "value": "1",
+            "value": "0",
             "widget": ""
           },
           {
@@ -396,7 +386,7 @@
             "subgroup": "",
             "targetPath": "/sentinel/pipelines/Gizmo_Desk/parameters/local_space",
             "type": "bool",
-            "value": "false",
+            "value": "true",
             "widget": ""
           },
           {
@@ -543,7 +533,7 @@
             "subgroup": "",
             "targetPath": "/sentinel/pipelines/Motion_Console/parameters/master_rate",
             "type": "float",
-            "value": "0.35",
+            "value": "2.750714",
             "widget": ""
           },
           {
@@ -579,7 +569,7 @@
             "subgroup": "",
             "targetPath": "/sentinel/pipelines/Motion_Console/parameters/motion_bias_x",
             "type": "float",
-            "value": "0.52",
+            "value": "0.045783",
             "widget": "xypad"
           },
           {
@@ -597,7 +587,7 @@
             "subgroup": "",
             "targetPath": "/sentinel/pipelines/Motion_Console/parameters/motion_bias_y",
             "type": "float",
-            "value": "0.64",
+            "value": "0.368479",
             "widget": "xypad"
           },
           {
@@ -877,6 +867,16 @@
         "sceneGroupPresets": [],
         "type": 4,
         "width": 250.0
+      },
+      {
+        "displayName": "Spline_Output",
+        "entityId": "Spline_Output",
+        "id": 27,
+        "posX": 340.0,
+        "posY": 100.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
       }
     ],
     "pins": [
@@ -919,22 +919,6 @@
         "nodeId": 16,
         "slotIndex": 4,
         "type": 6
-      },
-      {
-        "id": 72,
-        "kind": 0,
-        "name": "Nodes",
-        "nodeId": 17,
-        "slotIndex": 0,
-        "type": 6
-      },
-      {
-        "id": 73,
-        "kind": 1,
-        "name": "Splines",
-        "nodeId": 17,
-        "slotIndex": 0,
-        "type": 0
       },
       {
         "id": 33,
@@ -1263,13 +1247,45 @@
         "nodeId": 18,
         "slotIndex": 8,
         "type": 7
+      },
+      {
+        "id": 114,
+        "kind": 1,
+        "name": "pending_command",
+        "nodeId": 16,
+        "slotIndex": 8,
+        "type": 7
+      },
+      {
+        "id": 115,
+        "kind": 1,
+        "name": "snapshot_armed",
+        "nodeId": 16,
+        "slotIndex": 9,
+        "type": 7
+      },
+      {
+        "id": 116,
+        "kind": 0,
+        "name": "Nodes",
+        "nodeId": 27,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 117,
+        "kind": 1,
+        "name": "Splines",
+        "nodeId": 27,
+        "slotIndex": 0,
+        "type": 0
       }
     ]
   },
   "input": {
     "activeSource": ""
   },
-  "layout": "[Window][Terminal]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Sources]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Outputs]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Stats]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Log]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Properties]\nPos=1729,25\nSize=831,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,878\nSize=853,699\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][GridInner]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][GridOuter]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][Save Group Preset##group_preset_save]\nPos=638,324\nSize=324,855\nCollapsed=0\n\n[Window][Delete Group Preset##group_preset_delete]\nPos=1784,983\nSize=272,122\nCollapsed=0\n\n[Window][Phase79_A1_Color]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][Settings]\nPos=590,200\nSize=420,500\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][GroupSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][GroupRangeEdit]\nPos=653,382\nSize=294,136\nCollapsed=0\n\n[Window][Phase83_Wired_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Show_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][streamdiff_1]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,2\n\n[Window][Group_Output_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,3\n\n[Window][Phase84BaselineCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Phase84PostFixCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Phase84StreamDiff]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Phase84OutlineTarget]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][Phase84Ripple]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Phase84Different]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][Phase84NoViewport]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,2\n\n[Window][Phase84DeclaredGate]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,4\n\n[Window][Phase84CameraAuto]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][OrbitProof]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][NonCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][BoundSphere]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][View_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Camera_Mux]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Switched_View]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Phase85Compound]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][GroupCompoundSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][Phase85LegacyFlat]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Phase85DistCompound]\nPos=0,25\nSize=1571,448\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Legacy_Stream_Target]\nPos=0,25\nSize=1222,252\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Presets]\nPos=60,60\nSize=350,500\nCollapsed=0\n\n[Window][Save Preset]\nPos=600,164\nSize=400,572\nCollapsed=0\n\n[Window][Edit Preset Stack]\nPos=590,244\nSize=420,411\nCollapsed=0\n\n[Window][Rename Node Preset]\nPos=668,397\nSize=264,105\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=730,402\nSize=140,95\nCollapsed=0\n\n[Window][Save Group Preset]\nPos=570,70\nSize=460,760\nCollapsed=0\n\n[Window][Save Node Preset]\nPos=700,233\nSize=420,515\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][grid_warp]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][atmosphere]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000011,2\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000011,3\n\n[Window][field_gen]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][link_render]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_srv_spike]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_pointer]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_keyboard]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_pointer_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_keyboard_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_keyboard_series]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_keyboard_hold]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_pointer_control]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_pointer_double]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_pointer_drag]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_pointer_wheel]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_pointer_storm]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_pointer_idle]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_srv_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][mouse_compat_active]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][surface_split_smoke]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][final_surface_smoke]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_bindings_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_bindings_focus_reload]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][phase88_arbitration_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Phase_88_Arbitration]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Phase88_Mouse_Compat]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][Viewport_Ripple]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Phase88_Replay]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Click_Ripples]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Controls89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Scene89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][Big89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000011,2\n\n[Window][Gizmo_Lab]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x00000012,0\n\n[Window][Spline_Editor]\nPos=0,25\nSize=587,834\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][Spline_Output]\nPos=0,25\nSize=2182,1057\nCollapsed=0\nDockId=0x00000011,3\n\n[Window][UI_Kit]\nPos=1479,25\nSize=703,834\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Font_Sampler]\nPos=0,25\nSize=1380,1346\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][UI_Kit_V2_Test]\nPos=0,25\nSize=1087,587\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][UI_Style_Tuner]\nPos=2759,25\nSize=703,1346\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Spline_V2_Test]\nPos=0,614\nSize=1087,590\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Gizmo_V2_Test]\nPos=1089,25\nSize=1093,1179\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][VP_Controls]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000011,2\n\n[Window][VP_Ripple]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000011,1\n\n[Window][VP_Pointer]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000011,3\n\n[Window][Ripple_Storm]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][HR_Precision]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000011,4\n\n[Window][UI_Skill_Smoke]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x00000011,4\n\n[Window][signal]\nPos=0,25\nSize=1108,1399\nCollapsed=0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1399\nCollapsed=0\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\n\n[Window][Editorial_Post]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_control]\nPos=0,25\nSize=1040,1399\nCollapsed=0\n\n[Window][post_2]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\n\n[Window][Desert_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Industrial_Group_Output]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Gallery_Scene_Switcher]\nPos=992,25\nSize=173,100\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=586,657\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_Group_Output]\nPos=133,142\nSize=1619,683\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Food_Collage]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Motion_Console]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x00000012,1\n\n[Window][Style_Authority]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x00000012,4\n\n[Window][Motion_Console_V3]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x00000012,0\n\n[Window][Spline_Desk]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x00000012,1\n\n[Window][Gizmo_Desk]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x00000012,2\n\n[Window][Spline_Output_V3]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x00000012,3\n\n[Docking][Data]\nDockSpace             ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode            ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1727,900 Split=Y\n    DockNode          ID=0x00000003 Parent=0x00000001 SizeRef=1222,851 Split=X Selected=0x60D1231E\n      DockNode        ID=0x00000007 Parent=0x00000003 SizeRef=878,760 Split=Y Selected=0x3B5B8D41\n        DockNode      ID=0x00000009 Parent=0x00000007 SizeRef=878,525 Selected=0x3B5B8D41\n        DockNode      ID=0x0000000A Parent=0x00000007 SizeRef=878,463 Selected=0x37544B19\n      DockNode        ID=0x00000008 Parent=0x00000003 SizeRef=1302,760 Split=X Selected=0x5A80C6E1\n        DockNode      ID=0x0000000B Parent=0x00000008 SizeRef=1087,990 Split=Y Selected=0x3B5B8D41\n          DockNode    ID=0x0000000D Parent=0x0000000B SizeRef=1087,587 Selected=0x3B5B8D41\n          DockNode    ID=0x0000000E Parent=0x0000000B SizeRef=1087,590 Selected=0x37544B19\n        DockNode      ID=0x0000000C Parent=0x00000008 SizeRef=1093,990 Split=X Selected=0x4FC197DD\n          DockNode    ID=0x0000000F Parent=0x0000000C SizeRef=517,700 Split=X Selected=0x36D1E0C7\n            DockNode  ID=0x00000011 Parent=0x0000000F SizeRef=370,1346 CentralNode=1 Selected=0x36D1E0C7\n            DockNode  ID=0x00000012 Parent=0x0000000F SizeRef=1355,1346 Selected=0x2CA0C689\n          DockNode    ID=0x00000010 Parent=0x0000000C SizeRef=703,700 Selected=0x1BEB0585\n    DockNode          ID=0x00000004 Parent=0x00000001 SizeRef=1222,699 Split=X\n      DockNode        ID=0x00000005 Parent=0x00000004 SizeRef=872,360 Selected=0xD33228A6\n      DockNode        ID=0x00000006 Parent=0x00000004 SizeRef=853,360 Selected=0xF12F3499\n  DockNode            ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=831,900 Selected=0x8C72BEA8\n\n",
+  "layout": "[Window][Terminal]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Sources]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Outputs]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Stats]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Log]\nPos=0,878\nSize=872,699\nCollapsed=0\nDockId=0x00000005,4\n\n[Window][Properties]\nPos=1729,25\nSize=831,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,878\nSize=853,699\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][GridInner]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][GridOuter]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Save Group Preset##group_preset_save]\nPos=638,324\nSize=324,855\nCollapsed=0\n\n[Window][Delete Group Preset##group_preset_delete]\nPos=1784,983\nSize=272,122\nCollapsed=0\n\n[Window][Phase79_A1_Color]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Settings]\nPos=590,200\nSize=420,500\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][GroupSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][GroupRangeEdit]\nPos=653,382\nSize=294,136\nCollapsed=0\n\n[Window][Phase83_Wired_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Show_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][streamdiff_1]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][Group_Output_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][Phase84BaselineCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase84PostFixCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase84StreamDiff]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase84OutlineTarget]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Phase84Ripple]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase84Different]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Phase84NoViewport]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][Phase84DeclaredGate]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,4\n\n[Window][Phase84CameraAuto]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][OrbitProof]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][NonCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][BoundSphere]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][View_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Camera_Mux]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Switched_View]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase85Compound]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][GroupCompoundSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][Phase85LegacyFlat]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase85DistCompound]\nPos=0,25\nSize=1571,448\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Legacy_Stream_Target]\nPos=0,25\nSize=1222,252\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Presets]\nPos=60,60\nSize=350,500\nCollapsed=0\n\n[Window][Save Preset]\nPos=600,164\nSize=400,572\nCollapsed=0\n\n[Window][Edit Preset Stack]\nPos=590,244\nSize=420,411\nCollapsed=0\n\n[Window][Rename Node Preset]\nPos=668,397\nSize=264,105\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=730,402\nSize=140,95\nCollapsed=0\n\n[Window][Save Group Preset]\nPos=570,70\nSize=460,760\nCollapsed=0\n\n[Window][Save Node Preset]\nPos=700,233\nSize=420,515\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][grid_warp]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][atmosphere]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][field_gen]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][link_render]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_srv_spike]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_keyboard]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_keyboard_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_keyboard_series]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_keyboard_hold]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_control]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_double]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_drag]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_wheel]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_storm]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_pointer_idle]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_srv_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][mouse_compat_active]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][surface_split_smoke]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][final_surface_smoke]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_bindings_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_bindings_focus_reload]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][phase88_arbitration_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase_88_Arbitration]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase88_Mouse_Compat]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Viewport_Ripple]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Phase88_Replay]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Click_Ripples]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Controls89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Scene89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Big89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][Gizmo_Lab]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Spline_Editor]\nPos=0,25\nSize=587,834\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Spline_Output]\nPos=0,25\nSize=2182,1057\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][UI_Kit]\nPos=1479,25\nSize=703,834\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Font_Sampler]\nPos=0,25\nSize=1380,1346\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][UI_Kit_V2_Test]\nPos=0,25\nSize=1087,587\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][UI_Style_Tuner]\nPos=2759,25\nSize=703,1346\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Spline_V2_Test]\nPos=0,614\nSize=1087,590\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Gizmo_V2_Test]\nPos=1089,25\nSize=1093,1179\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][VP_Controls]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][VP_Ripple]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][VP_Pointer]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][Ripple_Storm]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][HR_Precision]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000000F,4\n\n[Window][UI_Skill_Smoke]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x0000000F,4\n\n[Window][signal]\nPos=0,25\nSize=1108,1399\nCollapsed=0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1399\nCollapsed=0\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\n\n[Window][Editorial_Post]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_control]\nPos=0,25\nSize=1040,1399\nCollapsed=0\n\n[Window][post_2]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\n\n[Window][Desert_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Industrial_Group_Output]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Gallery_Scene_Switcher]\nPos=992,25\nSize=173,100\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=586,657\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_Group_Output]\nPos=133,142\nSize=1619,683\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Food_Collage]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Motion_Console]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Style_Authority]\nPos=0,25\nSize=1727,851\nCollapsed=0\nDockId=0x0000000F,0\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=1727,851\nCollapsed=0\nDockId=0x0000000F,1\n\n[Window][Spline_Desk]\nPos=0,25\nSize=1727,851\nCollapsed=0\nDockId=0x0000000F,3\n\n[Window][Gizmo_Desk]\nPos=0,25\nSize=1727,851\nCollapsed=0\nDockId=0x0000000F,2\n\n[Window][Spline_Output_V3]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x0000000F,3\n\n[Docking][Data]\nDockSpace           ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode          ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1727,900 Split=Y\n    DockNode        ID=0x00000003 Parent=0x00000001 SizeRef=1222,851 Split=X Selected=0x60D1231E\n      DockNode      ID=0x00000007 Parent=0x00000003 SizeRef=878,760 Split=Y Selected=0x3B5B8D41\n        DockNode    ID=0x00000009 Parent=0x00000007 SizeRef=878,525 Selected=0x3B5B8D41\n        DockNode    ID=0x0000000A Parent=0x00000007 SizeRef=878,463 Selected=0x37544B19\n      DockNode      ID=0x00000008 Parent=0x00000003 SizeRef=1302,760 Split=X Selected=0x5A80C6E1\n        DockNode    ID=0x0000000B Parent=0x00000008 SizeRef=1087,990 Split=Y Selected=0x3B5B8D41\n          DockNode  ID=0x0000000D Parent=0x0000000B SizeRef=1087,587 Selected=0x3B5B8D41\n          DockNode  ID=0x0000000E Parent=0x0000000B SizeRef=1087,590 Selected=0x37544B19\n        DockNode    ID=0x0000000C Parent=0x00000008 SizeRef=1093,990 Split=X Selected=0x4FC197DD\n          DockNode  ID=0x0000000F Parent=0x0000000C SizeRef=517,700 CentralNode=1 Selected=0xA6A64A9E\n          DockNode  ID=0x00000010 Parent=0x0000000C SizeRef=703,700 Selected=0x1BEB0585\n    DockNode        ID=0x00000004 Parent=0x00000001 SizeRef=1222,699 Split=X\n      DockNode      ID=0x00000005 Parent=0x00000004 SizeRef=872,360 Selected=0xD33228A6\n      DockNode      ID=0x00000006 Parent=0x00000004 SizeRef=853,360 Selected=0xF12F3499\n  DockNode          ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=831,900 Selected=0x8C72BEA8\n\n",
   "name": "interaction_lab",
   "nodePresets": [
     {
@@ -1597,7 +1613,7 @@
         "outer_padding": "36.000000",
         "project_dir": "modules/Style_Authority",
         "resolution_height": "826",
-        "resolution_width": "1355",
+        "resolution_width": "1727",
         "section_gap": "26.000000",
         "section_scale": "2.000000",
         "title_scale": "3.000000"
@@ -1620,7 +1636,7 @@
       "outputFitMode": 1,
       "outputSinkId": "",
       "panelAnchorId": "Spline_Desk",
-      "panelOpen": false,
+      "panelOpen": true,
       "parameters": {
         "accent_color_b": "0.090000",
         "accent_color_g": "0.420000",
@@ -1641,7 +1657,7 @@
         "nudge_y": "-0.120000",
         "project_dir": "modules/Spline_Desk",
         "resolution_height": "826",
-        "resolution_width": "1355",
+        "resolution_width": "1727",
         "tangent_cycle": "1.000000",
         "tool_mode": "0.000000"
       },
@@ -1675,22 +1691,22 @@
         "camera_mode": "1",
         "camera_move_speed": "5.314683",
         "camera_near": "0.100000",
-        "camera_pitch": "0.133163",
-        "camera_pos_x": "3.790283",
-        "camera_pos_y": "-1.121307",
-        "camera_pos_z": "-3.875701",
-        "camera_target_x": "0.765827",
-        "camera_target_y": "-0.457458",
-        "camera_target_z": "0.050107",
-        "camera_yaw": "-0.656432",
+        "camera_pitch": "-0.325693",
+        "camera_pos_x": "-2.353823",
+        "camera_pos_y": "1.860917",
+        "camera_pos_z": "-5.478714",
+        "camera_target_x": "-0.540663",
+        "camera_target_y": "0.261090",
+        "camera_target_z": "-1.102299",
+        "camera_yaw": "0.392775",
         "do_orbit": "0.000000",
-        "local_space": "0.000000",
+        "local_space": "1.000000",
         "orbit_axis": "1.000000",
         "orbit_degrees": "40.000000",
         "project_dir": "modules/Gizmo_Desk",
         "resolution_height": "826",
-        "resolution_width": "1355",
-        "transform_mode": "1.000000"
+        "resolution_width": "1727",
+        "transform_mode": "0.000000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -1718,24 +1734,24 @@
         "burst_decay": "0.850000",
         "burst_trigger": "0.000000",
         "lfo1_amp": "1.000000",
-        "lfo1_shape": "0.000000",
-        "lfo1_speed": "1.500000",
+        "lfo1_shape": "0.358970",
+        "lfo1_speed": "0.268143",
         "lfo2_amp": "0.800000",
-        "lfo2_shape": "1.000000",
+        "lfo2_shape": "2.652986",
         "lfo2_speed": "0.300000",
         "lfo3_amp": "0.600000",
-        "lfo3_shape": "2.000000",
+        "lfo3_shape": "0.000000",
         "lfo3_speed": "0.150000",
         "lfo4_amp": "0.500000",
-        "lfo4_shape": "3.000000",
+        "lfo4_shape": "2.959536",
         "lfo4_speed": "1.000000",
-        "master_rate": "0.350000",
-        "motion_bias_x": "0.520000",
-        "motion_bias_y": "0.640000",
+        "master_rate": "2.750714",
+        "motion_bias_x": "0.045783",
+        "motion_bias_y": "0.368479",
         "mute": "0.000000",
         "project_dir": "modules/Motion_Console",
         "resolution_height": "826",
-        "resolution_width": "1355"
+        "resolution_width": "1727"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -1752,7 +1768,7 @@
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
-      "panelAnchorId": "Spline_Output_V3",
+      "panelAnchorId": "Spline_Output",
       "panelOpen": false,
       "parameters": {
         "dash": "1.000000",
@@ -1774,7 +1790,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1785113116064,
+  "saved_at_ms": 1785116989002,
   "sources": [],
   "statePayloads": {
     "Gizmo_Desk": {

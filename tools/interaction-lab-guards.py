@@ -217,14 +217,20 @@ def _reticle_row(png_path, rect, w, h):
 
 
 def guard_pad_direction(mcp):
-    """The host's XY pad is Y-UP, so a module pad must draw value 1 at the TOP.
+    """A module pad must draw to match the HOST CANVAS GESTURE: value 0 at the TOP.
 
-    This is the one defect in Phase 3 that was 'fixed' twice and reported wrong
-    both times. The first fix made the module's own four surfaces agree with each
-    other while all four stayed upside down against the Properties row; nothing
-    in the suite could tell, because every assertion compared the module to
-    itself. So this guard compares the module to the HOST CONVENTION: set the
-    parameter high, and the drawn reticle must be in the upper part of the well.
+    The one defect in Phase 3 reported wrong three times, and the reason it kept
+    coming back is that the host disagrees with itself. Its Properties row is
+    Y-up (value 1 at the top); its canvas `kind: xypad` gesture is Y-down (a
+    pointer at the top of the rect writes 0). One parameter, two host surfaces,
+    opposite conventions, so no module drawing satisfies both.
+
+    The canvas gesture wins: the reticle has to sit under the cursor that is
+    dragging it. The previous version of this guard asserted the Properties
+    convention and passed while the pad was undraggable, which is how a green
+    suite shipped a broken control. Asserting the gesture direction is the
+    closest an automated check can get; whether the dot actually tracks the
+    pointer still needs the hands-on pass.
     """
     import shutil
     tmp = os.path.join(WORKSPACE, "captures", "_padguard")
@@ -253,11 +259,13 @@ def guard_pad_direction(mcp):
 
             hi, lo = seen.get(0.9), seen.get(0.1)
             if hi is None or lo is None:
-                record("pad Y-up: %s" % label, False,
+                record("pad tracks gesture: %s" % label, False,
                        "no reticle found in the well (hi=%s lo=%s)" % (hi, lo))
                 continue
-            ok = hi > 0.72 and lo < 0.28
-            record("pad Y-up: %s" % label, ok,
+            # `_reticle_row` reports 0 at the well BOTTOM, so a Y-down pad puts
+            # value 0.9 LOW and value 0.1 HIGH.
+            ok = hi < 0.28 and lo > 0.72
+            record("pad tracks gesture: %s" % label, ok,
                    "value 0.9 drew at %.2f, value 0.1 at %.2f (0 = well bottom)" % (hi, lo))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
