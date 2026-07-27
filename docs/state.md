@@ -24,9 +24,14 @@ defects tracked separately (see Blockers).
 Phase 2: 2D complete with criterion 1 short (see below). Next is 2E1.
 
 Phase 3: 3A-3F complete and committed, taste checkpoint passed. **Awaiting the operator hands-on
-gesture pass**, then `$end-session`. Two audit rounds have landed; every actionable finding is
-fixed. Regression harness: `python tools/interaction-lab-guards.py` (37 passed, 0 failed, 4 skipped
+gesture pass**, then `$end-session`. Three audit rounds have landed; every actionable finding is
+fixed. Regression harness: `python tools/interaction-lab-guards.py` (42 passed, 0 failed, 4 skipped
 -- the four skips ARE the hands-on gap). Gesture recorder: `python tools/interaction-lab-handson.py`.
+
+Round three caught a regression the round-one fix introduced: `spline_desk` re-captured the drag
+snapshot on every cook of a live drag, so a drag accelerated away from the pointer and undo was
+destroyed. It shipped green through the whole guard suite, because no automated call can drive a
+pointer. **Five unguarded fixes now rest on the hands-on pass**, not three criteria.
 
 Phase 2 was audited before implementation by four parallel agents. Ten sub-phases (2A1, 2A2, 2B,
 2C1, 2C2, 2C3, 2D, 2E1, 2E2, 2F). Five judgement calls are recorded in the phase doc's Plan Audit
@@ -41,6 +46,11 @@ keyboard), 3E.1 (gizmo axis/ring/centre drag) and 3B.3 (hover, which must NOT ch
 No MCP route exists to click inside a module preview, so these need a hand on the mouse. Run
 `tools/interaction-lab-handson.py` first; it records the pass as assertions about what actually
 moved and voids the record if any automation door fires.
+
+While dragging, watch for two specific symptoms that no guard can see. A knot or object that
+**accelerates away from the cursor** rather than tracking it means the snapshot is re-arming
+mid-drag. **Undo immediately after a drag** must restore the pre-drag position; if it leaves things
+where they are, the undo point was overwritten. Both were live defects during round three.
 
 **3B taste checkpoint PASSED (2026-07-26).** Look approved; pad, rail, state and bank confirmed
 responding by the operator. 3B.3 (hover specifically) stays open and is carried into the 3F
@@ -83,8 +93,8 @@ Tracked separately, out of Phase 2 scope:
 
 `docs/devlogs/2026-07-27-phase3-close-out.md` - complete, approval pending. It is the phase
 boundary record; the narrative lives in `docs/devlogs/2026-07-26-phase3f-consolidation.md`. Eight Phase 3
-devlogs exist (3A, 3B, 3C burst-confirmed, 3C motion-console, 3D, 3E, 3F, close-out); 3D and 3E are
-`in-progress` because their gesture criterion is open, per phase doc :551.
+devlogs exist (3A, 3B, 3C burst-confirmed, 3C motion-console, 3D, 3E, 3F, close-out); 3B, 3D and 3E
+are `in-progress` because their gesture criterion is open, per the phase doc.
 
 ## Phase 2 - Audio Analysis v2 (in progress, 2026-07-25)
 
@@ -191,6 +201,13 @@ Three platform gotchas inherited from AUTOPSIA, to be re-confirmed on this build
 3A rather than assumed: `type: button` reads a constant 1.0 in HLSL (Motion_Console's
 `burst` is declared that way and is suspected dead); host `xypad` stores Y increasing
 downward; never `[unroll]` a glyph loop.
+
+**The xypad gotcha above is WRONG and cost three operator reports of the same defect.** Measured by
+driving the parameter and reading the host widget: the host's XY pad is **Y-up**, value 1 at the
+top. Canvas pixels run downward, which is the separate fact the inherited note conflated with it.
+Conversion happens in `sui3PadPoint` / `sui3PadValue` and nowhere else; the stored value is never
+flipped on any surface. See phase doc Amendment 6. Do not assert a pad against the module's other
+surfaces - all four agreeing while all four are upside down is exactly what happened.
 
 Known hazards: rebuilt modules will orphan the 4 group presets and 7 node presets in
 `interaction_lab.sentinel` - 3F migrates or explicitly retires each; `sui_*` headers

@@ -6,6 +6,31 @@ updated: 2026-07-27
 
 # Lessons
 
+## 2026-07-27 - One flag for two facts: fixing a dropped command created a corrupted drag
+
+**Symptoms**: A drag would accelerate away from the pointer instead of following it, and the pre-drag
+undo point was destroyed. Introduced by the fix for the opposite defect (a dropped command), and
+invisible to a 42-guard suite that was fully green.
+
+**Cause**: `pending` was made to mean two different things. As an ARM flag it means "an edit is
+queued and its undo snapshot still needs taking". The queueing fix also started using it to mean
+"a command arrived while the cook was busy", which is true on every cook of a live drag: cook k
+drains it into `exec`, the next pointer move re-queues behind that, forever.
+`modules/spline_desk/snapshot.hlsl` gated on `pending` alone, so it re-captured the drag base every
+cook, and `update.hlsl:36` computes `base = drag_snapshot[i] + (pointer - drag_start)` with
+`drag_start` frozen at pointer-down. An advancing base makes the knot land at `base0 + sum(deltas)`.
+
+**Fix**: Split the two facts. `armed` (spline_desk/types.hlsli) is set only on a cook where the
+command is queued AND nothing is executing; the snapshot gates on that. Splitting them also revealed
+a second bug the single flag was hiding: a structural edit queued behind a busy cook used to execute
+with no snapshot ever taken.
+
+**Frequency**: recurring - it is the generic hazard of a state field whose name describes the value
+rather than the question it answers. "Is something pending" and "is the undo point ready" felt like
+the same question until a drag made them differ on every frame.
+
+**Discovered**: 2026-07-27
+
 ## 2026-07-27 - A guard can be written for a defect it cannot reach
 
 **Symptoms**: A new guard for the `spline_desk` arm-then-execute queueing fix passed. Reverting the
