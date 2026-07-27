@@ -240,6 +240,33 @@ wide the console stays legible but its hit targets fall under the 32px comfort m
 validator enforces at the nominal 1280x720. Reflowing would mean giving up host-owned
 controls, and with them undo/redo, presets and OSC - not a trade worth making.
 
+## Amendment 4 - 3F.5 must be measured across panel states (recorded 2026-07-26, during 3F review)
+
+3F.5 reads "total frame cost at or below the 3A ceiling, from a five-sample profile", and it is a
+designated hard stop. Taken literally it is under-specified, because the profiler's output depends
+on something the criterion never names.
+
+**Measured.** With the graph unchanged, `pipeline_ms` moves with which station currently owns the
+active canvas panel. Opening a second station's window and closing the first, with no code or
+parameter change, moved `Style_Authority` from 10.29 ms to 4.25 ms and `pipeline_ms` from 15.87 ms
+to 9.63 ms, while `input_ms` rose from 1.1 ms to 6.65 ms. The cost did not disappear; it moved into
+the UI bucket. A five-sample profile taken in one panel state is therefore five samples of one
+state, not of the lab.
+
+**Revised requirement.** 3F.5 is met when the five-sample profile is repeated **in every panel
+state a reviewer could plausibly leave the lab in** - one per canvas station - and the worst
+observed `pipeline_ms` is at or below the ceiling. The per-node `wall_time_ms` figure is not
+evidence about a shader and must never be quoted without its panel state.
+
+Add a second, instrument-independent assertion alongside it, because a wall-clock number that
+tracks panel focus cannot carry a hard stop on its own: **every station sustains its cook cadence**
+(`cook_hz` at or above 55 with `healthy` true) in all of those states. Cadence is what a regression
+would actually break, and it is what `tools/interaction-lab-guards.py` asserts.
+
+This is the Tier 2 "substitute a deterministic assertion and note the substitution" rule applied to
+the profiler rather than to vision evaluation. It is not a relaxation: the ceiling comparison stays,
+and it now has to hold in the worst state rather than a convenient one.
+
 ## Sub-Phase 3B - The `sui3_*` Kit And The Style Authority
 
 The kit lands first, then the one station that proves it. **This is the taste checkpoint.** If the

@@ -468,3 +468,53 @@ treating the bundle as portable.
 **Frequency**: recurring (every re-save of a bundled show)
 
 **Discovered**: 2026-07-26
+
+## 2026-07-26 — A control with two visible numbers needs zero conversions, not one
+
+**Symptoms**: An XY pad reticle sitting 68% down its well with `0.32` printed beside it. The
+Properties row said `0.68`, the canvas readout said `0.32`, and the published control output said
+`0.32`. Every one of them was "correct" by its own local rule.
+
+**Cause**: A "flip Y exactly once, at publish" convention. The renderer drew the raw parameter so
+the reticle would land under the pointer, and the publish pass inverted it so downstream consumers
+would get "up = more". Nothing was wrong in isolation; the two rules simply described the same
+control with different numbers, and the readout was fed from the published side.
+
+**Fix**: Zero conversions. The pad's value is the host parameter, unmodified, on every surface —
+Properties row, drawn reticle, printed readout, published output. A consumer that wants the other
+direction inverts at the point of use, where the inversion is visible in the consumer's own code.
+"Once" is not a checkable property: nothing stops a second renderer from flipping again, and
+counting flips across a state pass, a render pass and a shared header is exactly the accounting
+that fails. Zero is checkable — any `1.0 -` on a pad component is a bug on sight. Related trap:
+do not infer the host widget's direction by measuring where your own renderer drew the marker.
+That measures the renderer.
+
+**Frequency**: always (every pad, slider or gizmo with both a drawn position and a printed value)
+
+**Discovered**: 2026-07-26
+
+## 2026-07-26 — A pixel diff proves a control is wired, never that the result is usable
+
+**Symptoms**: `body_scale` was published, printed in the readout, and never passed into the layout
+function. Wiring it was proven with a pixel diff: "4 changed pixels to 139,985", recorded as a fix
+and committed. The operator then reported the sheet's type as visibly worse and controls spilling
+off the left edge of the frame.
+
+**Cause**: The stored project value was 2.0, tuned while the parameter was inert. Making it
+load-bearing made a value nobody had ever seen applied suddenly double every body glyph. The pixel
+diff measured *that the pixels changed*, which was never in doubt once the plumbing was connected.
+Two further defects rode in behind it: outer padding was a published PIXEL metric being multiplied
+again by the glyph scale, and section captions were fit-tested at the body scale while being drawn
+at the section scale.
+
+**Fix**: When you connect a parameter that was previously inert, re-examine every stored value of
+it — a saved setting tuned against a no-op is not a setting anyone chose. And close the loop with
+an actual look at the render, not a diff count: assert what the image must *contain* (captions
+present and clear of their controls, nothing outside the frame), which is the standard the phase
+doc already sets for captures and which a diff count quietly sidesteps. A layout metric published
+in pixels is spent in pixels; a caption is fit-tested at the scale it is drawn at, and shrinks to
+fit before it is dropped.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-26
