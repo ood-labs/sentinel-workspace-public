@@ -20,9 +20,9 @@ lanes preserved from v1 (Prompt / Energy / Camera / Pulse), fifteen host-owned
 | --- | --- | --- |
 | 1 | Four lanes cycling independently | 31 sample rounds / 10s at the live panel extent: lfo1 31 distinct 0.089-0.896, lfo2 31 distinct 0.062-0.752, lfo3 30 distinct 0.017-0.588. lfo4 shows exactly two values (0.000/0.500) because its shape is a square at amp 0.50 - correct, not stuck |
 | 2 | Burst fires **and releases** | `env 0.555 / fires 2->3` on the rising edge, `0.000` by +0.2s, still `0.000` and `fires 3` after 1.0s **held high**, then `0.555 / fires 4` after release and re-trigger |
-| 3 | At or below 2.0 ms | **0.539 ms mean** (0.446-0.623 over five samples) against v1 measured alongside it at 11.3-13.3 ms - 22x |
+| 3 | At or below 2.0 ms | **0.539 ms mean** (0.446-0.623 over five samples) against v1 measured alongside it at 11.3-13.3 ms. **The ratio does not survive review, see the correction below** |
 | 4 | Every lane's rate/amp/shape printed and matching | Capture reads `01.50 / 01.00 / shape 0`, `00.30 / 00.80 / 1`, `00.15 / 00.60 / 2`, `01.00 / 00.50 / 3` against identical manifest defaults |
-| 5 | Y flip applied exactly once | raw `motion_bias_y=0.05` (reticle up) -> published `bias_y=0.950`; raw `0.95` -> `0.050`. Up = more |
+| 5 | Pad Y agrees with the host widget | **Superseded, see the correction below.** As shipped: raw `motion_bias_y=0.9` draws the reticle at 0.90 of the well measured from its bottom and publishes `bias_y=0.9`; `0.1` draws at 0.08 and publishes `0.1`. Up = more, with the value unmodified on every surface |
 | 6 | Extent survival (restated by Amendment 3) | `info.panel`: `effective_mode canvas`, `resolution_mode follow_panel`, `render_size == content_size == [1375, 809]`, criterion 1 holding there. Layout swept at 640x360, 900x820, 1600x900 and 1920x403 (4.8:1) with no label crossing another element. `module-ui.ps1 validate`: `OK Motion Console (15 controls)` |
 
 ## Decisions
@@ -113,3 +113,25 @@ the documented fallback to the root resolution for an unsized panel, and the rea
 3D, the Spline Editor - the heaviest interaction surface (selection, marquee, tangent modes, path
 closing, undo/redo), preserving the `README.md:62` data contracts so `Spline_Output` keeps working
 unmodified.
+
+
+## Corrections after the 3F audit
+
+**Criterion 5's result no longer describes the shipped build, and its criterion was rewritten.**
+This entry recorded `motion_bias_y=0.05` publishing `bias_y=0.950` as the pass: a flip applied
+between the parameter and the published output. That was the wrong reading of a criterion whose own
+wording was wrong, and the operator reported the pad as flipped twice afterwards. The stored value
+is now the host parameter unmodified on every surface, and the Y-up *direction* lives in one kit
+function that converts value to pixel. See phase doc Amendment 6, and
+`tools/interaction-lab-guards.py::guard_pad_direction`, which asserts the rendered reticle position
+rather than a readback pair.
+
+**The 22x and the 3.6x are attribution, not speedup.** `sentinel_graph action=profile` is a CPU
+wall-clock profiler, and the drawing work these numbers claim to have removed is GPU work the
+profiler cannot see. 3F later measured the same figure moving 9.63 to 15.87 ms on panel ownership
+alone with no code change, and a control that disabled roughly 40% of the drawing moved nothing.
+What stands from this sub-phase is the pixel-identity proof of the whole-run text reject: pre-guard
+and post-guard captures differ by 0 pixels of 1,112,375, which is a correctness result and needs no
+profiler. The `1.920 -> 0.539 ms` and `11.3-13.3 -> 0.539 ms` figures should be read as the cost
+moving between accounting buckets, and neither should be quoted as a shader speedup. Phase doc
+Amendment 4 now forbids quoting a per-node `wall_time_ms` without its panel state.
