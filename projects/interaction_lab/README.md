@@ -113,8 +113,11 @@ toward amber rather than added — an additive rim on an already-lit body clips 
 and drifts the hue to yellow.
 
 Numeric orbit (`do_orbit` / `orbit_axis` / `orbit_degrees`) applies an exact rotation about the same
-shared pivot the drag uses. Every 3D tool has numeric entry beside its gizmo, and it is also the
-only way to transform a selection from OSC, a Conductor cue, or an expression.
+shared pivot the drag uses, and it is the only way to transform a selection from OSC, a Conductor
+cue, or an expression. It is also the honest reason it exists: no automated call can produce a
+pointer drag, so this is the only code path that exercises the transform maths without a hand on the
+mouse. It proves the maths and the shared pivot. It does not prove the drag that normally reaches
+them, and it is not a substitute for it.
 
 Data outputs: `Scene Objects` (durable transforms for sixteen slots) and `Gizmo State`, plus the
 declared viewport descriptors and pick result through the standard selection provider.
@@ -187,3 +190,7 @@ This is a foundation rather than a full DCC toolset. It does not include snappin
 insertion, depth-tested gizmo fading, or host-mirrored sub-object selection. Those can be layered on
 as additional Module passes and controls without changing the application. Captures and
 machine-generated proof bundles are intentionally excluded from the public project.
+
+Numeric transform entry belongs on that deferred list too, and an earlier draft of this file dropped
+it from the list without saying so while adding the feature above. It is present, deliberately, for
+the reason given there. The rest of the list stands.

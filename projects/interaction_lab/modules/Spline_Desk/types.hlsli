@@ -37,7 +37,13 @@ struct EditorState {
     // reason this indirection is necessary rather than fussy.
     float pending;
     float last_cmd;
-    float2 spare;
+    // Does `pending` name a command that has ALREADY had its snapshot taken?
+    // "A command is waiting" and "the undo point for it exists" are different
+    // facts, and conflating them cost a drag its base. A command queued because
+    // the cook was busy is waiting but NOT armed, so it goes round again and
+    // arms properly on a clean cook.
+    float armed;
+    float spare;
 };
 
 // Seed sentinel for EditorState. Held in toolbar_pad.x; see interaction.hlsl.

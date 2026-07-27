@@ -44,8 +44,24 @@ RWStructuredBuffer<SplineKnot> OutputBuffer : register(u0);
 // survives until the next edit arms -- a continuous mirror does not, because
 // the first idle cook after an edit overwrites it and the undo window collapses
 // to a single cook.
+// `pending` ALONE IS NOT THE ARM COOK, and reading it as one corrupts drags.
+//
+// When queueing was added to interaction.hlsl so a want arriving during an
+// executing command could not be dropped, `pending` started being written on
+// every cook of a live drag: cook k drains pending into exec=2, the next move
+// sets want=2, exec is busy, so pending=2 again. A gate on `pending` alone
+// therefore re-captured the snapshot every cook of the drag. update.hlsl
+// computes `base = drag_snapshot[i] + (pointer - drag_start)` with drag_start
+// frozen at pointer-down, so a base that advances every cook makes the knot land
+// at base0 + sum(deltas) instead of base0 + delta: the drag ACCELERATES away
+// from the pointer, and the pre-drag undo point is destroyed along with it.
+//
+// `armed` is the real signal. interaction.hlsl sets it only on a cook where the
+// command is queued AND nothing is executing, so it means "this pending command
+// still needs its undo point, and right now the knots are the pre-edit ones".
+// Order-independent, so it does not rest on the scheduler measurement above.
 [numthreads(1,1,1)]
 void main(uint3 tid : SV_DispatchThreadID) {
-    if (_Tex0[0].pending < 0.5) return;
+    if (_Tex0[0].armed < 0.5) return;
     [loop] for (uint i = 0u; i < 64u; i++) OutputBuffer[i] = _Tex1[i];
 }

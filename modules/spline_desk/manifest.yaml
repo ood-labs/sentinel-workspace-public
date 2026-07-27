@@ -139,3 +139,10 @@ control_outputs:
   - { name: active_lane, buffer: editor_state, element: 0, field_offset: 36, description: "Active spline lane 0-7" }
   - { name: tangent_mode, buffer: editor_state, element: 0, field_offset: 40, description: "Tangent mode 0 free / 1 aligned / 2 mirrored" }
   - { name: last_command, buffer: editor_state, element: 0, field_offset: 84, description: "Last non-zero editor command code" }
+  # The arm-then-execute machinery is what makes undo work, and it has failed
+  # twice while being invisible from outside the shader. Publishing it means a
+  # guard can assert that the desk is idle rather than stuck armed -- a latched
+  # `snapshot_armed` re-captures the undo point every cook and kills undo
+  # silently, with every other readout looking perfectly normal.
+  - { name: pending_command, buffer: editor_state, element: 0, field_offset: 80, description: "Command queued for a later cook, 0 when none" }
+  - { name: snapshot_armed, buffer: editor_state, element: 0, field_offset: 88, description: "1 while the queued command still needs its undo snapshot" }

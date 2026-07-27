@@ -175,6 +175,22 @@ Record the live Sentinel version, and confirm `audio`-era capabilities are irrel
    that. If it behaves correctly, 3C's fix is dropped and the reversal is recorded.
 4. The `xypad` Y direction is stated as measured, with the readback.
 
+## Amendments - index
+
+Seven amendments were recorded during the phase. Six sit in the block below; **Amendment 2 does not**
+- it restates the readout rule that 3B's own criteria depend on, so it lives inside the 3B section
+rather than here. It is indexed so the sequence has no silent hole.
+
+| # | Subject | Where |
+| --- | --- | --- |
+| 1 | Extent testing mechanism - **superseded by 3** | below |
+| 2 | The readout rule, stated correctly | Sub-Phase 3B |
+| 3 | Amendment 1 was the wrong diagnosis; all four stations are `follow_panel` | below |
+| 4 | 3F.5 must be measured across panel states | below |
+| 5 | The numeric-transform fence was crossed in 3E | below |
+| 6 | "Flipped exactly once" was the wrong way to state 3C.5 | below |
+| 7 | Two v1 module directories are orphaned | below |
+
 ## Amendment 1 - Extent testing mechanism (recorded 2026-07-26, after 3A)
 
 > **SUPERSEDED BY AMENDMENT 3.** Its conclusion - a canonical fixed-resolution renderer with
@@ -283,15 +299,26 @@ README was quietly rewritten without the item. A post-landing audit caught it.
 **Recorded as a deviation, not retroactively blessed.** The fence was correct in intent - the phase
 is a foundation, not a DCC feature race - and crossing it silently is the actual defect. The
 addition itself is defensible on its merits: it is the only way to transform a selection without a
-pointer, which is precisely the gap that makes 3E's criterion 1 unprovable by automation, and 3E
-criterion 2 (multi-selection shared pivot) is proven THROUGH it. Removing it now would delete the
-only code-path-identical proxy the gizmo has for its own transform maths.
+pointer, which is precisely the gap that makes 3E's criterion 1 unprovable by automation, and it is
+the only reachable exercise of the gizmo's transform maths at all.
 
-**Consequences carried forward.** The fence stands for the remaining three items. Any future numeric
-door must be added by amendment first. And 3E criterion 2's evidence must be read for what it is:
-the shared-pivot transform is proven, the pointer path that reaches it is not, which is why 3E.1
-stays open pending the hands-on pass. 3D's keyboard nudge is the same class and is covered by this
-amendment.
+**Corrected 2026-07-26 (second audit): it is not the same code path.** This amendment originally
+called numeric orbit "the only code-path-identical proxy" for the drag transform. That is wrong, and
+overstating it inflates what 3E criterion 2 can claim. Command 20 is a separate early-returning
+branch in `modules/gizmo_desk/update.hlsl:39-64`. It averages its own pivot straight out of
+`OutputBuffer`, uses world axes only, and takes its angle from the `orbit_degrees` parameter. The
+drag path at `:65+` uses `st.pivot` captured at gesture start, `labAxisWorld` with local-space and
+the active object's rotation applied, `labRotationPointerAngle` derived from pointer geometry, and
+`_Tex1` (the snapshot) as its base. They share `rotateAround` and the idea of rotating a selection
+about a common pivot. They share neither the pivot computation, the axis derivation, nor the base.
+
+**Consequences carried forward.** The fence stands for the remaining three items, and any future
+numeric door must be added by amendment first. 3E criterion 2's evidence must be read for what it
+is, which is less than was first written: numeric orbit proves that a shared pivot rotates a
+multi-selection coherently and round-trips exactly, in the orbit branch. It does not exercise the
+drag branch's pivot capture, axis derivation, or snapshot base. Those are proven only by the
+hands-on pass, which is why 3E.1 stays open. 3D's keyboard nudge is the same class and is covered by
+this amendment.
 
 ## Amendment 6 - "Flipped exactly once" was the wrong way to state 3C.5 (recorded 2026-07-26, during 3F audit)
 
@@ -324,13 +351,19 @@ the lower fifth, measured against the manifest rect. Guarded in
 
 `modules/spline_editor/` and `modules/transform_gizmo_lab/` are the v1 stations that 3D and 3E
 replaced. The Files Summary described the rebuild as in-place; it was not, and both directories are
-still tracked, still on disk, and referenced by no project, manifest or document.
+still tracked and still on disk while no *project* loads them.
+
+**Corrected 2026-07-26 (second audit).** This first read "referenced by no project, manifest or
+document", which is false and would have made removal look free. They are referenced by
+`.sentinel-workspace-manifest.json`, by `knowledge/ui-authoring.md`, and by the
+`module-ui-authoring` skill in both `.agents/skills/` and `.claude/skills/`. Deleting the
+directories breaks those references, and two of the four are outside this phase's scope fence.
 
 They are **left in place** for this phase. Deleting tracked source is not something to fold into an
 audit fix, the phase's own scope fence bars touching files outside the listed lab family, and the v1
 sources are the only remaining reference for the behaviours 3D and 3E claim to preserve. Removal is
-a deliberate decision for the operator at phase close, recorded here so it is not silently
-forgotten. `modules/motion_control_desk/` in the original Files Summary never existed.
+a deliberate decision for the operator at phase close, and it is now a four-file change rather than
+two directory deletions. `modules/motion_control_desk/` in the original Files Summary never existed.
 
 ## Sub-Phase 3B - The `sui3_*` Kit And The Style Authority
 
@@ -440,10 +473,14 @@ stream, following `modules/au_deck/state.hlsl`.
    for this station.
 4. Every lane displays its live rate, amplitude and shape numerically, and the number matches the
    parameter it describes.
-5. The XY bias pad's published value moves **up** when the reticle moves up, proving the Y flip is
-   applied exactly once. 3A measured the current renderer at "down = more" (`pad_y` 0.05 -> row 69,
-   0.95 -> row 94), so this is a required inversion, verified as a readback pair against marker
-   position.
+5. **Restated by Amendment 6.** The XY bias pad's published value moves **up** when the reticle moves
+   up. 3A measured the current renderer at "down = more" (`pad_y` 0.05 -> row 69, 0.95 -> row 94), so
+   the direction has to change. The bar is that the drawn reticle agrees with the **host Properties
+   row**, which is Y-up: value 1 at the top of the well. Verified as a readback pair at both ends of
+   the range against measured marker position, not against the module's own other surfaces - all
+   four of those agreeing with each other is what the second failed fix achieved while every one of
+   them was upside down. The published value is the host parameter unmodified; direction is applied
+   only in `sui3PadPoint` / `sui3PadValue`. "Applied exactly once" is retired as unfalsifiable.
 6. **Extent survival, restated by Amendment 3.** The station is a `follow_panel` Canvas, so this
    criterion is met by both parts of Amendment 3's two-part proof: `info.panel` reporting
    `effective_mode: canvas` / `resolution_mode: follow_panel` with `render_size == content_size` at

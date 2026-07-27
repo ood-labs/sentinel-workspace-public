@@ -62,8 +62,14 @@ void main(uint3 tid : SV_DispatchThreadID) {
         }
         return;
     }
-    if (cmd == 5u) cmd = 3u;
-    if (cmd == 6u) cmd = 2u;
+    // 5 and 6 deliberately have NO mapping here any more. They mean "begin and
+    // transform landed in the same cook", and interaction.hlsl now rewrites them
+    // into a begin plus a deferred 3 or 2 so the transform runs against a clean
+    // snapshot. Mapping them through would restore the exact bug that deferral
+    // exists to fix: a transform applied against the PREVIOUS transaction's
+    // snapshot. If one ever reaches this pass it falls through the range check
+    // below and does nothing, which is a visibly dropped gesture rather than
+    // silently corrupted transforms.
     if (cmd < 2u || cmd > 4u) return;
     uint handle = (uint)round(st.active_handle);
     float2 deltaPx = (st.pointer - st.drag_start) * labViewportSize();

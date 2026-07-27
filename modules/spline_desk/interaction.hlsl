@@ -26,6 +26,16 @@
 StructuredBuffer<SplineKnot> _Tex0 : register(t0);
 RWStructuredBuffer<EditorState> OutputBuffer : register(u0);
 
+// Which commands must be reversible, and therefore must not run until a
+// snapshot of the pre-edit knots exists. Drag moves (2, 3) are excluded: they
+// continue an edit whose snapshot was taken at pointer-down, and re-snapshotting
+// mid-drag would move the base the drag measures from. Restore (4) is excluded
+// because it reads the snapshot it would otherwise overwrite.
+bool snapNeeded(float cmd) {
+    return cmd == 1.0 || cmd == 5.0 || cmd == 7.0 || cmd == 8.0
+        || cmd == 9.0 || cmd == 12.0 || cmd == 13.0;
+}
+
 int nextActive(uint splineId, int after) {
     [loop] for (int i = after + 1; i < 64; i++)
         if (_Tex0[i].active > 0.5 && _Tex0[i].spline_id == splineId) return i;
@@ -88,6 +98,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
     if (abs(st.toolbar_pad.x - SD_MAGIC) > 0.5 || isnan(st.tool)) {
         st.tool = 0.0; st.active_spline = 0.0; st.tangent_mode = 1.0;
         st.auto_latch = 0.0; st.toolbar_latch = 0.0;
+        st.pending = 0.0; st.armed = 0.0;
         st.toolbar_pad = float2(SD_MAGIC, 0.0);
     }
     st.command = 0.0; st.phase = 0.0;
@@ -187,25 +198,42 @@ void main(uint3 tid : SV_DispatchThreadID) {
     // that undo must be able to reverse are armed instead of run, so the next
     // cook executes them while THIS cook -- which mutates nothing -- is the one
     // the snapshot pass captures on.
-    float want = st.command;
-    bool needsSnap = (want == 1.0 || want == 5.0 || want == 7.0
-                   || want == 8.0 || want == 9.0 || want == 12.0
-                   || want == 13.0);
+    // A want that arrives while this cook is ALREADY executing is queued, never
+    // dropped. The first version overwrote `exec` for any non-snap want, and the
+    // ordinary case hits that path every time: pointer down arms SELECT, the
+    // host's drag threshold trips on the next cook, and `else exec = want`
+    // replaced the armed SELECT with the drag move while `pending` had already
+    // been cleared. The selection never ran, so update.hlsl dragged whatever was
+    // selected BEFORE the click.
     //
-    // A want that arrives while this cook is ALREADY executing an armed command
-    // is queued, never dropped. The first version overwrote `exec` for any
-    // non-snap want, and the ordinary case hits that path every time: pointer
-    // down arms SELECT, the host's drag threshold trips on the next cook, and
-    // `else exec = want` replaced the armed SELECT with the drag move while
-    // `pending` had already been cleared. The selection simply never ran, so
-    // update.hlsl dragged whatever was selected BEFORE the click. Queueing costs
-    // one cook of latency and loses nothing.
+    // But queueing and arming are NOT the same state, and the first attempt at
+    // this used one field for both. `pending` then got rewritten on every cook of
+    // a live drag -- drain to exec, next move queues behind it, repeat -- and a
+    // snapshot pass gated on `pending` alone re-captured the drag base every
+    // cook, so the knot landed at base0 + sum(deltas) and accelerated away from
+    // the pointer. `armed` says the snapshot for this pending command has been
+    // taken; a command queued only because the cook was busy has not been armed
+    // and must go round again. That also plugs the matching hole: a structural
+    // edit arriving during a busy cook now still gets its own arm cook instead of
+    // executing with no undo point.
+    float want = st.command;
+    float queued = st.pending;
+    float armed = st.armed;
+    st.pending = 0.0; st.armed = 0.0;
+
     float exec = 0.0;
-    if (st.pending > 0.5) { exec = st.pending; st.pending = 0.0; }
-    if (want > 0.5) {
-        if (exec > 0.5)      st.pending = want;  // busy: run it on the next cook
-        else if (needsSnap)  st.pending = want;  // arm; this cook mutates nothing
-        else                 exec = want;        // drag moves and undo run now
+    if (queued > 0.5 && armed > 0.5) { exec = queued; queued = 0.0; }
+
+    // An unexecuted queue entry outranks a fresh want: the older command is the
+    // one the operator issued first, and for repeated wants (a held drag) the
+    // two are the same command anyway, with the live position carried in
+    // st.pointer rather than in the command code.
+    if (want > 0.5 && queued < 0.5) queued = want;
+
+    if (queued > 0.5) {
+        if (exec > 0.5)             { st.pending = queued; }                    // busy: retry next cook, still unarmed
+        else if (snapNeeded(queued)) { st.pending = queued; st.armed = 1.0; }   // arm; this cook mutates nothing
+        else                          exec = queued;                            // drag moves and undo run now
     }
     st.command = exec;
     if (exec > 0.5) st.last_cmd = exec;

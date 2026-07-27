@@ -5,7 +5,7 @@ phase: 3
 subphase: 3C
 status: complete
 approval: pending
-summary: "Motion Console v3 rebuilt as a full-bleed follow_panel console; all six criteria measured, and a whole-run text reject cut it to 0.539 ms"
+summary: "Motion Console v3 rebuilt as a full-bleed follow_panel console; all six criteria measured, the station at 0.539 ms mean, and a whole-run text reject proven pixel-transparent (its speedup ratio retracted as attribution, see the correction)"
 ---
 
 # Phase 3C - Motion Console v3
@@ -63,8 +63,9 @@ hold them.
 
 `sui3_text.hlsli` gained `sui3RunMiss`, a whole-run bounding reject. Every label was previously
 evaluating twelve font-table lookups for every pixel on the panel including the ~95% of rows it
-cannot touch. Wall time fell **1.920 ms -> 0.539 ms** (3.6x), and Style Authority fell to ~0.93 ms
-for free.
+cannot touch. Measured wall time fell **1.920 ms -> 0.539 ms** alongside it, and Style Authority to
+~0.93 ms. **Read those as attribution, not as a proven speedup** - see the correction below; the
+profiler cannot see GPU drawing cost, so it cannot establish that the guard caused the drop.
 
 Proven transparent, not assumed: with `mute` on to freeze the frame, pre-guard and post-guard
 captures differ by **0 pixels of 1,112,375**, `getbbox()` `None`, max channel delta 0. It is an

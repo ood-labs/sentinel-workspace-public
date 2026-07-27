@@ -3,7 +3,7 @@ type: devlog
 date: 2026-07-26
 phase: 3
 subphase: 3B
-status: complete
+status: in-progress
 approval: pending
 summary: "3B - sui3_* kit and Style_Authority shipped; six of seven criteria pass with measurements, 3B.3 structurally proven but empirically pending the taste checkpoint. Two real defects found and fixed by measurement: every hairline was a 2px half-intensity straddle, and the METERS bank carried no readable value."
 ---

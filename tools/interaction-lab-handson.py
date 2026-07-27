@@ -30,7 +30,9 @@ def _load_guards():
     """Reuse the guard module's MCP client without running its main()."""
     path = os.path.join(HERE, "interaction-lab-guards.py")
     ns = {"__name__": "handson_helper", "__file__": path}
-    exec(compile(open(path, encoding="utf-8").read(), path, "exec"), ns)
+    with open(path, encoding="utf-8") as fh:
+        src = fh.read()
+    exec(compile(src, path, "exec"), ns)
     return ns
 
 
@@ -82,6 +84,7 @@ DOOR_COOLDOWN_SAMPLES = 6
 def sample(mcp):
     s = {}
     s["doors"] = False
+    s["door_read_error"] = None
     for pid, doors in (("Spline_Desk", SPLINE_DOORS), ("Gizmo_Desk", GIZMO_DOORS)):
         for d in doors:
             try:
@@ -91,8 +94,16 @@ def sample(mcp):
                 })["value"]
                 if str(v).lower() in ("true", "1", "1.0"):
                     s["doors"] = True
-            except Exception:
-                pass
+            except Exception as exc:
+                # THE POISON GATE MUST FAIL CLOSED. A door read that throws tells
+                # us nothing about whether that door is open, and "we could not
+                # check" is not "it was shut". Swallowing this turned the one
+                # mechanism that stops a door-driven state change being credited
+                # as a hands-on gesture into a no-op the moment the state call
+                # went wrong -- exactly when a wrong answer is most likely.
+                s["doors"] = True
+                if s["door_read_error"] is None:
+                    s["door_read_error"] = "%s/%s: %s" % (pid, d, exc)
     try:
         knots = mcp.port("Spline_Desk", "Spline Knots", 16)["elements"]
         s["knots"] = [(k["anchor"], k["handle_in"], k["handle_out"],
@@ -145,6 +156,11 @@ def detect(prev, cur, seen, evidence, state):
     if prev["doors"] or cur["doors"]:
         state["tainted"] = True
         state["cooldown"] = DOOR_COOLDOWN_SAMPLES
+        err = prev.get("door_read_error") or cur.get("door_read_error")
+        if err and state.get("taint_reason") is None:
+            state["taint_reason"] = "door state unreadable, assumed open: %s" % err
+        elif state.get("taint_reason") is None:
+            state["taint_reason"] = "an automation door was held during the run"
         return seen, evidence
     if state["cooldown"] > 0:
         state["cooldown"] -= 1
@@ -217,7 +233,7 @@ def main():
     # distinguish "hovered and correctly did nothing" from "never hovered".
     auto = {name for name, _ in GESTURES if not name.startswith("3B.3")}
     seen, evidence = set(), {}
-    state = {"tainted": False, "cooldown": 0}
+    state = {"tainted": False, "cooldown": 0, "taint_reason": None}
     started = time.time()
     try:
         prev = sample(mcp)
@@ -243,19 +259,21 @@ def main():
             missing.append(name)
 
     if state["tainted"]:
-        print("\nTAINTED: an automation door was held during this run. Every line "
-              "above is void; rerun with no scripted writes to the stations.")
+        print("\nTAINTED: %s. Every line above is void; rerun with no scripted "
+              "writes to the stations." % state["taint_reason"])
 
     record = {
         "elapsed_s": round(time.time() - started, 1),
         "tainted": state["tainted"],
+        "taint_reason": state["taint_reason"],
         "recorded": {k: v for k, v in evidence.items() if not k.startswith("_")},
         "missing": missing,
         "manual": [n for n, _ in GESTURES if n.startswith("3B.3")],
     }
     out = os.path.join(WORKSPACE, "captures", "handson_gesture_pass.json")
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    json.dump(record, open(out, "w"), indent=1)
+    with open(out, "w", encoding="utf-8") as fh:
+        json.dump(record, fh, indent=1)
     print("\nrecord written to %s" % out)
     return len(missing) + (1 if state["tainted"] else 0)
 

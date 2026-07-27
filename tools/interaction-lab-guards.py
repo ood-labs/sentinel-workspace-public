@@ -360,6 +360,14 @@ def guard_spline_readout_matches_knots(mcp):
            "four anchors at the seed" if not off else "off-seed: %s" % off)
 
 
+# Kept as a literal on purpose, NOT parsed out of gizmo_desk/types.hlsli. A
+# guard that reads the expected value from the thing it is checking passes
+# whatever the shader says, which is how four pad surfaces once agreed with each
+# other while all four were upside down. This is the contract value, asserted
+# independently; if the shader changes it, this is supposed to fail.
+GD_MAGIC = 7321.0
+
+
 def guard_gizmo_state_integrity(mcp):
     """The reseed sentinel ran, and the published schema covers the whole stride.
 
@@ -379,12 +387,12 @@ def guard_gizmo_state_integrity(mcp):
     cap = mcp.port("Gizmo_Desk", "Gizmo State", 1)
     g = cap["elements"][0]
     for _ in range(4):
-        if abs(g.get("magic", 0.0) - 7321.0) < 0.5:
+        if abs(g.get("magic", 0.0) - GD_MAGIC) < 0.5:
             break
         time.sleep(0.4)
         cap = mcp.port("Gizmo_Desk", "Gizmo State", 1)
         g = cap["elements"][0]
-    record("gizmo: reseed sentinel is set", abs(g.get("magic", 0.0) - 7321.0) < 0.5,
+    record("gizmo: reseed sentinel is set", abs(g.get("magic", 0.0) - GD_MAGIC) < 0.5,
            "magic %s" % g.get("magic"))
     record("gizmo: idle auto_latch is clear", abs(g.get("auto_latch", 1.0)) < 0.5,
            "auto_latch %s, pending %s" % (g.get("auto_latch"), g.get("pending")))
@@ -433,6 +441,51 @@ def guard_spline_undo(mcp):
              or b["handle_out"] != a["handle_out"]]
     record("undo: knot geometry unchanged", not moved,
            "moved %s" % moved if moved else "4 knots bit-identical")
+
+
+def guard_spline_arm_settles(mcp):
+    """3D: the arm-then-execute latch must not stay armed once an edit has run.
+
+    The arm machinery is what gives the desk an undo point, and it has now broken
+    twice in ways nothing else could see: once by never arming, once by arming on
+    every cook of a drag. A latched ``snapshot_armed`` is the silent version of
+    the second failure -- the snapshot re-captures the CURRENT knots every cook,
+    so undo restores the desk to exactly where it already is while the geometry,
+    the readouts and the health all look perfectly correct.
+
+    This cannot catch the mid-drag re-arm itself; no MCP call can produce a
+    pointer drag, and the fix is retired by the hands-on pass rather than here.
+    What it does catch is the latch failing to clear, which is the state that
+    failure leaves behind and the one an automated run can actually reach.
+
+    The zeros are not vacuous. A control output aimed at padding would read zero
+    forever and pass this hollowly, so the offsets are anchored by their
+    neighbour: ``last_command`` sits at byte 84 between ``pending_command`` (80)
+    and ``snapshot_armed`` (88) in a 96-byte ``EditorState``, and it reads a live
+    changing value below. If 84 is right, 80 and 88 are right.
+    """
+    def state(name):
+        return float(mcp.call("sentinel_state", {
+            "action": "get",
+            "path": "/sentinel/pipelines/Spline_Desk/control_outputs/%s" % name,
+        })["value"])
+
+    idle_armed, idle_pending = state("snapshot_armed"), state("pending_command")
+    record("spline: idle desk is not armed", idle_armed == 0.0 and idle_pending == 0.0,
+           "snapshot_armed %g, pending_command %g" % (idle_armed, idle_pending))
+
+    # A structural edit goes through the arm path by construction. After it has
+    # settled both fields must be back to zero, and last_command must show the
+    # edit actually executed rather than being stuck waiting.
+    mcp.edge("Spline_Desk", "do_close")
+    armed, pending = state("snapshot_armed"), state("pending_command")
+    last = state("last_command")
+    record("spline: arm latch clears after a structural edit",
+           armed == 0.0 and pending == 0.0,
+           "snapshot_armed %g, pending_command %g" % (armed, pending))
+    record("spline: the armed edit reached execution", last == 7.0,
+           "last_command %g (7 = close)" % last)
+    mcp.edge("Spline_Desk", "do_undo")
 
 
 def guard_gizmo_orbit(mcp):
@@ -565,25 +618,37 @@ def guard_ui_rects():
                out[-1] if out else "no output")
 
 
+def run_guard(fn, *args):
+    """Run one guard; an exception fails that guard only, not the whole suite.
+
+    Without this a single guard raising -- a renamed port, a station that did not
+    come back from a reload -- aborts the run, and every guard after it silently
+    produces no line at all. A short run then looks like a clean one unless
+    somebody counts the results, which is the failure mode this suite exists to
+    prevent. The exception becomes a FAIL with its text attached, so the count
+    stays honest and the cause is visible.
+    """
+    try:
+        fn(*args)
+    except Exception as exc:
+        record("%s raised" % fn.__name__, False, "%s: %s" % (type(exc).__name__, exc))
+
+
 def main():
     mcp = Mcp(SERVER)
     try:
         if mcp.call("sentinel_app", {"action": "ping"}).get("text", "").strip() == "":
             pass  # ping returns a bare PONG string on some builds
-        guard_health(mcp)
-        guard_pad_direction(mcp)
-        guard_theme_governs(mcp)
-        guard_gizmo_state_integrity(mcp)
-        guard_spline_readout_matches_knots(mcp)
-        guard_spline_undo(mcp)
-        guard_gizmo_orbit(mcp)
-        guard_group_surfaces(mcp)
-        guard_presets(mcp)
+        for guard in (guard_health, guard_pad_direction, guard_theme_governs,
+                      guard_gizmo_state_integrity, guard_spline_readout_matches_knots,
+                      guard_spline_undo, guard_spline_arm_settles, guard_gizmo_orbit,
+                      guard_group_surfaces, guard_presets):
+            run_guard(guard, mcp)
     finally:
         mcp.close()
 
-    guard_bundle_identity()
-    guard_ui_rects()
+    run_guard(guard_bundle_identity)
+    run_guard(guard_ui_rects)
 
     # Not automatable on this build: sentinel_viewport action=edit drives the
     # host object-edit transaction, and these modules render their own gizmo

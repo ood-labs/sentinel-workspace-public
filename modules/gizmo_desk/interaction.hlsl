@@ -33,7 +33,7 @@ void main(uint3 tid:SV_DispatchThreadID){
     // ran and garbage in the persistent buffer survived. In particular a nonzero
     // auto_latch masked do_orbit off permanently, since the rising edge can never
     // fire against a latch that is already set. Clear the latch here too.
-    if(abs(st.magic-GD_MAGIC)>0.5||isnan(st.mode)){st.mode=(float)modeParam;st.local_space=(float)localParam;st.last_local_param=100.0+(float)localParam+2.0*(float)modeParam;st.active_handle=0;st.dragging=0;st.auto_latch=0;st.pending=0;st.magic=GD_MAGIC;}
+    if(abs(st.magic-GD_MAGIC)>0.5||isnan(st.mode)){st.mode=(float)modeParam;st.local_space=(float)localParam;st.last_local_param=100.0+(float)localParam+2.0*(float)modeParam;st.active_handle=0;st.dragging=0;st.auto_latch=0;st.pending=0;st.drag_pad=0;st.magic=GD_MAGIC;}
     // Keep capture alive across cooks with no pointer events. Only clear the
     // handle on the cook after an explicit commit/cancel boundary.
     if(st.dragging<0.5&&(st.command==3.0||st.command==4.0||st.command==5.0))st.active_handle=0.0;
@@ -62,7 +62,14 @@ void main(uint3 tid:SV_DispatchThreadID){
         if(e.phase==5u&&renderedMask>0u){uint handle=st.drag_pad.z>0.5?(uint)round(st.drag_pad.z):hitHandle(e.position,st,renderedActive);float2 press=st.drag_pad.z>0.5?st.drag_pad.xy:e.position;if(handle>0u){st.pivot=renderedPivot;st.active_id=(float)renderedActive;st.selection_mask=(float)renderedMask;st.active_handle=(float)handle;st.dragging=1;st.command=1;beganThisCook=true;ownsTransaction=true;st.drag_start=press;st.pointer=e.position;float2 cp=labProject(renderedPivot);uint axis=min(handle-1u,2u);float ringRadius=42.0+12.0*(float)axis;st.start_angle=(uint)round(st.mode)==1u&&handle<=3u?labRotationPointerAngle(press,renderedPivot,axis,st.local_space>0.5,activeRotation(renderedActive),ringRadius):atan2(press.y-cp.y,press.x-cp.x);st.start_radius=length((press-cp)*labViewportSize());}}
         else if(st.dragging>0.5&&st.active_handle>0u&&(e.phase==6u||e.phase==7u||e.phase==8u)){ownsTransaction=true;st.pointer=e.position;if(e.phase==8u){st.command=4;st.dragging=0;st.drag_pad.z=0;}else if(e.phase==7u){st.command=beganThisCook?5.0:3.0;st.dragging=0;st.drag_pad.z=0;}else st.command=beganThisCook?6.0:2.0;}
     }
-    if(!ownsTransaction&&st.dragging<0.5){st.pivot=pivot;st.active_id=(float)activeId;st.selection_mask=(float)currentMask;}
+    // Resyncing the transaction source to the live selection is only safe when
+    // no transaction is outstanding, and a DEFERRED command is an outstanding
+    // transaction even though the gesture has already ended. On the cook a
+    // deferred 3 runs, `dragging` is 0 and `drag_pad.z` was cleared at commit, so
+    // this line would otherwise overwrite the pivot, active id and mask that the
+    // deferred transform is about to be applied against -- committing the drag
+    // onto whatever the host's release-pick selected instead.
+    if(!ownsTransaction&&st.dragging<0.5&&st.pending<0.5){st.pivot=pivot;st.active_id=(float)activeId;st.selection_mask=(float)currentMask;}
     // Numeric-transform door: rising edge on do_orbit emits command 20.
     uint autoNow = do_orbit > 0.5 ? 1u : 0u;
     uint autoFired = autoNow & ~(uint)round(st.auto_latch);
@@ -90,18 +97,29 @@ void main(uint3 tid:SV_DispatchThreadID){
     //
     // So a same-cook transform is deferred by one cook: this cook reports the
     // begin, `update` no-ops, `snapshot` captures a clean pre-edit base, and the
-    // transform runs next cook against it. A newer command arriving meanwhile
-    // supersedes the deferred one rather than queueing, because a drag move is
-    // idempotent -- it transforms from the snapshot using the CURRENT pointer, so
-    // the freshest one is the only one worth running.
+    // transform runs next cook against it.
+    //
+    // A newer command may supersede a deferred DRAG MOVE (2), because that one is
+    // idempotent: it transforms from the snapshot using the CURRENT pointer, so
+    // only the freshest is worth running. It may NOT supersede a deferred COMMIT
+    // (3) or CANCEL (4). Those finalize a transaction rather than restate it, and
+    // dropping one loses the whole gesture -- for the same-cook begin-and-commit
+    // that deferral exists to serve, the deferred 3 IS the transform, so a command
+    // arriving one cook later would mean the object never moved at all. A
+    // finalizer therefore runs on time and pushes the newcomer back a cook.
     float deferred = st.pending;
     st.pending = 0.0;
     uint issued = (uint)round(st.command);
     if (issued == 5u || issued == 6u) {
         st.pending = (issued == 5u) ? 3.0 : 2.0;
         st.command = 1.0;
-    } else if (st.command < 0.5 && deferred > 0.5) {
-        st.command = deferred;
+    } else if (deferred > 0.5) {
+        if (st.command < 0.5) {
+            st.command = deferred;
+        } else if (deferred == 3.0 || deferred == 4.0) {
+            st.pending = st.command;
+            st.command = deferred;
+        }
     }
     OutputBuffer[0]=st;
 }

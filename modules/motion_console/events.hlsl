@@ -47,11 +47,14 @@ void main(uint3 tid : SV_DispatchThreadID) {
     uint count = min(_ViewportEventCount, 64u);
     [loop] for (uint i = 0u; i < count; ++i) {
         ViewportEvent e = _ViewportEvents[i];
-        // Click only, and only its COMPLETE phase. Without the phase test every
-        // other phase the host reports on a click gesture fires the envelope
-        // again, so one press could inflate burst_fires by more than one. The
-        // kit's own sui3IsClick and spline_desk both require phase 7; this was
-        // the one place that did not.
+        // Click only, and only its COMPLETE phase. This is a consistency fix, not
+        // a measured defect: the kit's own `sui3IsClick` and `spline_desk` both
+        // require phase 7 and this was the one place that tested the code without
+        // the phase, so it was accepting phases they reject. Whether the host
+        // actually reports a second phase on a plain click here was never
+        // measured, so no claim is made that it inflated the fire count -- only
+        // that one consumer was reading the click contract differently from the
+        // other two.
         if (!sui3IsClick(e)) continue;
         if (!mcHit(saturate(e.position), MC_RECT_BURST)) continue;
         fire = true;
