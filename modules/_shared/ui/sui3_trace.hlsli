@@ -181,6 +181,30 @@ void sui3TraceSpan(float px, float x0, float x1, float nShow, float writeIdx,
     i1 = (int)origin + max(kB, kA);
 }
 
+// Fractional sample position of a pixel column.
+//
+// MAX-REDUCE IS ONLY RIGHT WHEN DOWNSAMPLING. It exists to stop a transient
+// being lost between two pixels when a column covers many samples. When the
+// plot is UPSAMPLING -- more pixel columns than samples, which is the normal
+// case for a cook-rate signal on a wide panel -- several adjacent columns land
+// on the same sample, the reduced value is piecewise constant, and a smooth
+// curve is drawn as a visible staircase. Measured on a 60 Hz LFO at an 8 s span
+// across 1600 px: 481 samples, so roughly three columns per sample and a
+// three-pixel tread on every step.
+//
+// Use `sui3TraceUpsampling` to pick, then interpolate between floor(pos) and
+// floor(pos)+1 by frac(pos) instead of reducing.
+float sui3TraceFrac(float px, float x0, float x1, float nShow, float writeIdx) {
+    float w = max(x1 - x0, 1.0);
+    float u = (px - x0) / w;
+    return writeIdx - nShow + u * nShow;
+}
+
+// True when the plot has more columns than samples to fill them.
+bool sui3TraceUpsampling(float x0, float x1, float nShow) {
+    return nShow < max(x1 - x0, 1.0);
+}
+
 // ---------------------------------------------------------------------------
 // 4. DRAWING
 //
@@ -206,6 +230,23 @@ float sui3StripValue(float4 r, float py) {
 float sui3StripFill(float2 P, float4 r, float norm) {
     float top = sui3StripY(r, norm);
     return sui3RectIn(P, r) * step(top, P.y);
+}
+
+// Connected trail between this column's value and the next one's.
+//
+// The fill above is right for a signal made of events, where each column is an
+// independent excursion from a baseline. It is wrong for a smooth continuous
+// signal: a solid slab under an LFO hides the shape that is the whole content.
+// Drawing unconnected per-column marks instead gives a dotted scatter, because
+// adjacent columns take their maxima from different samples.
+//
+// A segment spanning both columns' values reads as one continuous curve at any
+// span. `w` is the stroke width in pixels; 1.0 is the instrument hairline.
+float sui3StripTrail(float2 P, float4 r, float normHere, float normNext, float w) {
+    float y0 = sui3StripY(r, normHere);
+    float y1 = sui3StripY(r, normNext);
+    float d  = max(max(min(y0, y1) - P.y, P.y - max(y0, y1)), 0.0);
+    return sui3RectIn(P, r) * sui3Aa(d, w);
 }
 
 // Horizontal reference line across the strip at a normalized level. Dashed, so

@@ -1,0 +1,90 @@
+name: "Signal Trails"
+version: "1.0"
+mode: generator
+
+# Second consumer of modules/_shared/ui/sui3_trace.hlsli, and the reusability
+# proof for Phase 4C.
+#
+# Deliberately as unlike Data Scope as the component allows:
+#
+#   Data Scope      audio, a data port, 187.5 Hz, drains many samples per cook,
+#                   filled area chart, three lanes
+#   Signal Trails   any scalar, NO data port at all, cook rate, one sample per
+#                   cook, connected trail, four lanes
+#
+# Channels arrive as ordinary float parameters, so anything that can drive a
+# parameter can be plotted: a control output through an expression, an OSC
+# message, a Conductor cue, or a hand on a slider. The intended wiring is
+# Motion Console's LFO control outputs.
+#
+# The component is used unmodified. Sampling at cook rate means the ring's
+# generation catch-up degenerates to one sample per cook, which is not a
+# limitation being hidden: catch-up exists for streams that outpace the frame
+# rate, and this one does not.
+resolution: [1280, 720]
+
+panel:
+  mode: canvas
+  output: "Signal Trails"
+  resolution: follow_panel
+
+parameters:
+  # Drive these with expressions, e.g.
+  #   ref("Motion_Console/control_outputs/lfo1")
+  - { name: ch1, display: "Channel 1", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Channels" }
+  - { name: ch2, display: "Channel 2", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Channels" }
+  - { name: ch3, display: "Channel 3", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Channels" }
+  - { name: ch4, display: "Channel 4", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Channels" }
+
+  - { name: span_seconds, display: "Span", type: float, min: 1.0, max: 15.0, default: 8.0, group: "Scope" }
+  - { name: autoscale, display: "Autoscale", type: bool, default: true, group: "Scope" }
+  - { name: peak_halflife, display: "Peak Half-Life", type: float, min: 0.25, max: 20.0, default: 6.0, group: "Scope" }
+  # Channels can legitimately be bipolar, so the baseline is placeable rather
+  # than assumed to be the bottom of the strip.
+  - { name: bipolar, display: "Bipolar", type: bool, default: false, group: "Scope" }
+  - { name: accent_color, display: "Accent", type: color, default: [1.0, 0.42, 0.09], group: "Scope" }
+
+buffers:
+  # Per channel, stride 1026:
+  #   [0] stateA (unused, write_idx, peak, sample_dt)
+  #   [1] stateB (last_value, full_scale, 0, samples_shown)
+  #   [2..1025] trace (value, 0, 0, 0)
+  #
+  # 1024 samples is ~17 s at 60 fps, so the 15 s maximum span never asks the
+  # ring for history it has already overwritten. At 30 fps it covers 34 s.
+  - { name: trace, structured: true, element_size: 16, element_count: 4104, persistent: true }
+
+passes:
+  - name: sample
+    shader: sample.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 4
+    thread_group_y: 1
+    output: "buffer:trace"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:trace" }
+
+control_outputs:
+  - { name: sample_dt,     buffer: trace, element: 0,    field_offset: 12, description: "Seconds between samples (the cook interval)" }
+  - { name: samples_shown, buffer: trace, element: 1,    field_offset: 12, description: "Samples across the plot at the current span" }
+  - { name: write_idx,     buffer: trace, element: 0,    field_offset: 4,  description: "Total samples plotted since start" }
+
+  - { name: ch1_peak, buffer: trace, element: 0,    field_offset: 8, description: "Channel 1 rolling peak" }
+  - { name: ch2_peak, buffer: trace, element: 1026, field_offset: 8, description: "Channel 2 rolling peak" }
+  - { name: ch3_peak, buffer: trace, element: 2052, field_offset: 8, description: "Channel 3 rolling peak" }
+  - { name: ch4_peak, buffer: trace, element: 3078, field_offset: 8, description: "Channel 4 rolling peak" }
+
+  - { name: ch1_fs, buffer: trace, element: 1,    field_offset: 4, description: "Channel 1 full scale" }
+  - { name: ch2_fs, buffer: trace, element: 1027, field_offset: 4, description: "Channel 2 full scale" }
+  - { name: ch3_fs, buffer: trace, element: 2053, field_offset: 4, description: "Channel 3 full scale" }
+  - { name: ch4_fs, buffer: trace, element: 3079, field_offset: 4, description: "Channel 4 full scale" }
+
+outputs:
+  - { name: "Signal Trails", pass: render }
