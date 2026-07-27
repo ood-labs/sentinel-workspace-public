@@ -182,41 +182,35 @@ float sui3EdgeReadout(float2 P, float4 r, float2 at, float railPx) {
 // The VALUE is never flipped. The DIRECTION is a separate question, and the
 // answer is uncomfortable: THE HOST DISAGREES WITH ITSELF.
 //
-// Two host surfaces write and display the same `point2D` parameter, and they use
-// opposite Y conventions. Measured, both times by the operator at the mouse:
+// RESOLVED 2026-07-27. Both host surfaces are now Y-UP and agree, so a pad draws
+// Y-UP: value 1 at the top edge. Nothing here compensates for anything any more.
 //
-//   * The host's PROPERTIES row is Y-UP. Value 1 renders at the top of the
-//     widget. Drag the canvas dot to the top of its well and the Properties row
-//     shows the dot at the bottom.
-//   * The host's CANVAS xypad gesture (`viewport.controls`, `kind: xypad`) is
-//     Y-DOWN. A pointer at the top of the declared rect writes value 0.
+// History, because this defect was "fixed" by flipping three times and the
+// reasoning is what stops a fourth:
 //
-// The module does not own either mapping. It cannot draw one reticle that agrees
-// with both, and there is no third option: the parameter is a single number.
+// The host used to disagree with itself. Its PROPERTIES row was Y-up (value 1 at
+// the top) while its CANVAS xypad gesture was Y-down (a pointer at the top of
+// the declared rect wrote 0). One parameter, two host surfaces, opposite
+// conventions, and no module drawing could satisfy both -- the parameter is a
+// single number. Flipping the drawing only chose which host surface was wrong,
+// and both choices were shipped and both were rejected at the mouse. The kit
+// drew Y-down and documented the residual defect as the host's, because a
+// control whose dot does not follow the pointer is broken in the hand while a
+// mirrored Properties row is merely wrong to look at.
 //
-// FLIPPING THE DRAWING CANNOT FIX THIS. It only chooses which of the two host
-// surfaces is wrong. Both choices were shipped and both were rejected by the
-// operator: draw Y-up and the Properties row agrees while the dot runs away from
-// the cursor; draw Y-down and the dot tracks while the Properties row is
-// mirrored. Anyone reading this and reaching for the Y term is about to
-// re-run that loop for a fourth time. Don't.
+// The host has since closed it. Measured here through
+// `sentinel_ui action=viewport_control_drag`, which this build added and which
+// is what finally made the gesture direction machine-checkable: a pointer at
+// the top of the pad rect writes a HIGH value and one at the bottom writes a
+// LOW value (0.128 -> 0.872, 0.308 -> 0.692, i.e. value = 1 - pointer_y). The
+// operator confirmed the same at the mouse, reporting the Properties row correct
+// and the module drawing inverted, which is the signature of the kit still
+// compensating for a defect that was gone.
 //
-// The rect was the other lever and it is CLOSED, tested rather than assumed.
-// Declaring the manifest rect with an inverted Y pair would feed the host's
-// Y-down gesture a reversed interval and yield Y-up values, agreeing with the
-// Properties row. `tools/module-ui.ps1` rejects it outright: "control 'pad' rect
-// is outside normalized bounds or inverted", plus a negative hit height. The
-// rect must be a plain bounding box.
-//
-// So the residual defect is the HOST's, not this module's, and closing it needs
-// either a host change so its two surfaces share one convention, or a module pad
-// rebuilt on `param_gestures`/`events` so the module owns pointer-to-value and
-// the host's canvas mapping is out of the loop entirely.
-//
-// Until then the drawing matches the CANVAS GESTURE (Y-down), because a
-// direct-manipulation control whose dot does not follow the pointer is broken in
-// the hand, while a Properties row that plots the same number at the other end
-// is wrong to look at but still readable and still typeable.
+// The rect is NOT a lever and never was, tested rather than assumed: declaring
+// the manifest rect with an inverted Y pair is rejected by `tools/module-ui.ps1`
+// ("control 'pad' rect is outside normalized bounds or inverted"). The rect must
+// be a plain bounding box.
 //
 // The rule, whole: the stored value is the host parameter unmodified on every
 // surface, and every value-to-pixel conversion is `sui3PadPoint`. A bare
@@ -238,14 +232,12 @@ float4 sui3PadRect(float4 r) {
     return float4(r.x, min(r.y, r.w), r.z, max(r.y, r.w));
 }
 
-// Value -> canvas pixel. Y-DOWN, matching the host canvas gesture: value 0 lands
-// on the top edge, so the reticle sits under the pointer that produced it. This
-// disagrees with the host Properties row by design; read the contract above
-// before changing the Y term.
+// Value -> canvas pixel. Y-UP: value 1 lands on the top edge, matching both host
+// surfaces now that they agree.
 float2 sui3PadPoint(float4 r, float2 val) {
     r = sui3PadRect(r);
     val = saturate(val);
-    return float2(lerp(r.x, r.z, val.x), lerp(r.y, r.w, val.y));
+    return float2(lerp(r.x, r.z, val.x), lerp(r.w, r.y, val.y));
 }
 
 // Canvas pixel -> value. The exact inverse of sui3PadPoint. A pad that hit-tests

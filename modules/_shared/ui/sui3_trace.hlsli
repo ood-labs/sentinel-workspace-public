@@ -29,12 +29,11 @@
 // Skipping any one of them produces a plot that looks right and lies.
 //
 // ---------------------------------------------------------------------------
-// Y DIRECTION: this is a PLOT, not a pad. Value 0 sits on the rect's BOTTOM
-// edge and value 1 on its top, which is the opposite of `sui3PadPoint`. That is
-// not an inconsistency to be tidied up. A pad's Y is forced by the host, which
-// disagrees with itself about it (see the contract in sui3_core.hlsli); a strip
-// chart's value is the module's own and answers to nothing but the convention
-// every measuring instrument ever built already uses. Do not "align" these.
+// Y DIRECTION: value 0 sits on the rect's BOTTOM edge and value 1 on its top,
+// the convention every measuring instrument ever built already uses. This now
+// matches `sui3PadPoint`, which went Y-up when the host stopped disagreeing with
+// itself (see the contract in sui3_core.hlsli). A strip chart's Y was always the
+// module's own and never followed the host, so nothing here changed.
 //
 // TIME DIRECTION: oldest at the rect's left edge, newest at the right, so the
 // trace scrolls right to left.

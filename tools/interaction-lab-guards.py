@@ -177,12 +177,19 @@ def _reticle_row(png_path, rect, w, h):
     """Row of the amber reticle inside `rect`, as 0 at the well's BOTTOM.
 
     Amber is the accent, but the reticle is NOT the only accent-coloured thing in
-    a well: Motion Console prints its bias readout inside the same rect, and
-    averaging every amber pixel put a value-0.9 reticle at 0.49 because the
-    readout sits at the bottom in both probes. So group the amber rows into
-    contiguous bands and take the TALLEST one -- the ring spans roughly 34 rows
-    against a text line's 11, and unlike a centroid it does not average two
-    things that are in different places.
+    a well: both stations print an XY readout inside the same rect. Averaging
+    every amber pixel put a value-0.9 reticle at 0.49, because the readout does
+    not move between probes.
+
+    Grouping amber ROWS into bands and taking the tallest was the second attempt
+    and it also failed: when the reticle sits at the top of the well it shares
+    rows with the readout, the two merge into one band, and the weighted mean
+    lands between them (0.70 for a value of 0.90, measured).
+
+    So this picks by SHAPE, in 2D. The reticle is a ring, compact and roughly
+    square; a readout is a wide, flat line of text. Nothing here depends on
+    where either one sits, which matters because these panels follow the dock
+    and the layout reflows with the panel size.
     """
     from PIL import Image
     img = Image.open(png_path).convert("RGB")
@@ -191,46 +198,63 @@ def _reticle_row(png_path, rect, w, h):
     px = crop.load()
     cw, chh = crop.size
 
-    per_row = []
+    amber = set()
     for yy in range(chh):
-        n = 0
         for xx in range(cw):
             r, g, b = px[xx, yy]
             if r > 120 and r - b > 60 and r > g:
-                n += 1
-        per_row.append(n)
+                amber.add((xx, yy))
+    if not amber:
+        return None
 
-    bands, start = [], None
-    for yy, n in enumerate(per_row + [0]):
-        if n > 0 and start is None:
-            start = yy
-        elif n == 0 and start is not None:
-            bands.append((start, yy - 1))
-            start = None
-    if not bands:
+    # Flood-fill 8-connected components.
+    seen, comps = set(), []
+    for seed in amber:
+        if seed in seen:
+            continue
+        stack, comp = [seed], []
+        seen.add(seed)
+        while stack:
+            cx, cy = stack.pop()
+            comp.append((cx, cy))
+            for dx in (-1, 0, 1):
+                for dy in (-1, 0, 1):
+                    n = (cx + dx, cy + dy)
+                    if n in amber and n not in seen:
+                        seen.add(n)
+                        stack.append(n)
+        comps.append(comp)
+
+    best, best_score = None, None
+    for comp in comps:
+        xs = [c[0] for c in comp]
+        ys = [c[1] for c in comp]
+        bw, bh = max(xs) - min(xs) + 1, max(ys) - min(ys) + 1
+        if len(comp) < 8 or bh < 4:
+            continue
+        score = abs(bw / float(bh) - 1.0)   # 0 for a perfect square, large for text
+        if best_score is None or score < best_score:
+            best, best_score = comp, score
+    if best is None or best_score > 1.5:
         return None
-    lo, hi = max(bands, key=lambda b: b[1] - b[0])
-    if sum(per_row[lo:hi + 1]) < 8:
-        return None
-    mean_y = sum(yy * per_row[yy] for yy in range(lo, hi + 1)) / sum(per_row[lo:hi + 1])
+
+    mean_y = sum(c[1] for c in best) / float(len(best))
     return 1.0 - (mean_y / max(chh - 1, 1))
 
 
 def guard_pad_direction(mcp):
-    """A module pad must draw to match the HOST CANVAS GESTURE: value 0 at the TOP.
+    """A module pad must draw Y-UP: value 1 at the TOP.
 
-    The one defect in Phase 3 reported wrong three times, and the reason it kept
-    coming back is that the host disagrees with itself. Its Properties row is
-    Y-up (value 1 at the top); its canvas `kind: xypad` gesture is Y-down (a
-    pointer at the top of the rect writes 0). One parameter, two host surfaces,
-    opposite conventions, so no module drawing satisfies both.
+    Both host surfaces now use that convention. They used to disagree -- the
+    Properties row Y-up, the canvas gesture Y-down -- and the kit drew Y-down to
+    keep the reticle under the pointer, so this guard asserted Y-down too. The
+    host closed the defect on 2026-07-27 and the compensation became the bug:
+    the operator saw a correct Properties row and an inverted pad.
 
-    The canvas gesture wins: the reticle has to sit under the cursor that is
-    dragging it. The previous version of this guard asserted the Properties
-    convention and passed while the pad was undraggable, which is how a green
-    suite shipped a broken control. Asserting the gesture direction is the
-    closest an automated check can get; whether the dot actually tracks the
-    pointer still needs the hands-on pass.
+    An earlier version of this guard asserted the Properties convention and
+    passed while the pad was undraggable, which is how a green suite once
+    shipped a broken control. See `guard_pad_gesture_tracks` for the check that
+    now covers the part a drawing-only assertion cannot.
     """
     import shutil
     tmp = os.path.join(WORKSPACE, "captures", "_padguard")
@@ -262,10 +286,10 @@ def guard_pad_direction(mcp):
                 record("pad tracks gesture: %s" % label, False,
                        "no reticle found in the well (hi=%s lo=%s)" % (hi, lo))
                 continue
-            # `_reticle_row` reports 0 at the well BOTTOM, so a Y-down pad puts
-            # value 0.9 LOW and value 0.1 HIGH.
-            ok = hi < 0.28 and lo > 0.72
-            record("pad tracks gesture: %s" % label, ok,
+            # `_reticle_row` reports 0 at the well BOTTOM, so a Y-up pad puts
+            # value 0.9 HIGH and value 0.1 LOW.
+            ok = hi > 0.72 and lo < 0.28
+            record("pad draws Y-up: %s" % label, ok,
                    "value 0.9 drew at %.2f, value 0.1 at %.2f (0 = well bottom)" % (hi, lo))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

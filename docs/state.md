@@ -71,13 +71,13 @@ hands-on pass.
 against a required 11/11) and 2E2 criterion 3 (CMLc/AMLc short of the bar). Neither is loosened and
 both need a human call. Detail in the Phase 2 section below.
 
-**HOST DEFECT, open, affects any module with an XY pad.** The host uses opposite Y conventions on
-two surfaces that share one `point2D` parameter: the Properties row is Y-up, the canvas
-`viewport.controls` `kind: xypad` gesture is Y-down. No module drawing satisfies both, so a pad can
-have a correct Properties row or a dot that follows the cursor, never both. Shipped matching the
-gesture, so the dot tracks. The inverted-rect workaround is closed: `module-ui.ps1` rejects it. A
-report for the host fix was written 2026-07-26. Full contract in
-`modules/_shared/ui/sui3_core.hlsli`. Do not "fix" this by flipping the Y term again.
+**HOST XY PAD DEFECT: CLOSED 2026-07-27, by the host.** Both host surfaces are now Y-up and agree.
+Measured through `sentinel_ui action=viewport_control_drag` (new in this build): a pointer at the
+top of the pad rect writes a HIGH value, so `value = 1 - pointer_y`. The kit had been drawing
+Y-down to compensate, so on the updated host the compensation became the bug and the operator saw a
+correct Properties row against an inverted pad. `sui3PadPoint` is now Y-up; that one function is
+still the only value-to-pixel conversion for a pad. Full history in
+`modules/_shared/ui/sui3_core.hlsli`.
 
 **Injection constraint REVISED.** 3A recorded pointer injection as dead. That was too pessimistic:
 `sentinel_ui action=click method=mouse` works and was proven by flipping a bool and reading it
@@ -242,15 +242,14 @@ Three platform gotchas inherited from AUTOPSIA, to be re-confirmed on this build
 `burst` is declared that way and is suspected dead); host `xypad` stores Y increasing
 downward; never `[unroll]` a glyph loop.
 
-**The xypad gotcha above is wrong, and so was the first correction to it.** Cost four operator
-reports of the same defect across three rounds. The settled finding: the host uses OPPOSITE Y
-conventions on its two surfaces for one `point2D` parameter - the Properties row is Y-up, the canvas
-`kind: xypad` gesture is Y-down. Neither "the pad is Y-up" nor "the pad is Y-down" is a true
-statement about the host. No module drawing satisfies both surfaces, so flipping the Y term only
-chooses which one is broken, and both choices were shipped and rejected. The inverted-rect
-workaround is closed by `module-ui.ps1`. Shipped matching the gesture so the dot follows the
-cursor; the residual Properties mismatch is a host defect, reported 2026-07-26, and is listed under
-Blockers. Full contract in `modules/_shared/ui/sui3_core.hlsli`; read it before touching a pad.
+**The xypad gotcha above is wrong, and so was the first correction to it.** Cost five operator
+reports of the same defect across four rounds. The host used to use OPPOSITE Y conventions on its
+two surfaces for one `point2D` parameter - Properties row Y-up, canvas `kind: xypad` gesture
+Y-down - so no module drawing satisfied both and flipping the Y term only chose which surface was
+broken. **The host closed this on 2026-07-27**: both surfaces are Y-up and `sui3PadPoint` is now
+Y-up to match, verified by drag measurement and by capture at both ends of the well. The
+inverted-rect workaround was never viable and is closed by `module-ui.ps1`. Full history in
+`modules/_shared/ui/sui3_core.hlsli`; read it before touching a pad.
 
 Known hazards: rebuilt modules will orphan the 4 group presets and 7 node presets in
 `interaction_lab.sentinel` - 3F migrates or explicitly retires each; `sui_*` headers
