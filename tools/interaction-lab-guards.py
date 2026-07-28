@@ -241,12 +241,17 @@ def _reticle_pos(png_path, rect, w, h):
         xs = [c[0] for c in comp]
         ys = [c[1] for c in comp]
         bw, bh = max(xs) - min(xs) + 1, max(ys) - min(ys) + 1
-        if len(comp) < 8 or bh < 4:
+        aspect = bw / float(max(bh, 1))
+        fill = len(comp) / float(max(bw * bh, 1))
+        if (len(comp) < 8 or bw < 5 or bh < 5
+                or not 0.5 <= aspect <= 2.0 or fill >= 0.75):
             continue
-        score = abs(bw / float(bh) - 1.0)   # 0 for a perfect square, large for text
-        if best_score is None or score < best_score:
+        # At a wide dock, several orange numeric glyphs are nearly square.
+        # Prefer the ring's larger connected perimeter, then penalise skew.
+        score = len(comp) - abs(bw - bh) * 2
+        if best_score is None or score > best_score:
             best, best_score = comp, score
-    if best is None or best_score > 1.5:
+    if best is None:
         return None
 
     mean_x = sum(c[0] for c in best) / float(len(best))
