@@ -12,7 +12,7 @@ This plan governs work in the user-writable Sentinel workspace and its curated p
 | 2 | Audio Analysis v2 (`pulse2`) | Complete, approval pending | [Phase 2](phases/phase-2-audio-analysis-v2.md) |
 | 3 | Interaction Lab v2 (Instrument-Grade UI Overhaul) | In progress; 3A-3F built, awaiting the operator hands-on gesture pass | [Phase 3](phases/phase-3-interaction-lab-v2.md) |
 | 4 | Data Scope (reusable scrolling strip-chart kit) | Planned | [Phase 4](phases/phase-4-data-scope.md) |
-| 5 | Official Example UI Port (v1 `sui_*` to sui3) | Planned | [Phase 5](phases/phase-5-example-ui-port.md) |
+| 5 | Official Example UI Port (v1 `sui_*` to sui3) | Complete; approval pending | [Phase 5](phases/phase-5-example-ui-port.md) |
 
 ## Phase 1 - Official Examples Modernization
 
@@ -211,9 +211,12 @@ duplicate Properties.
 `face_collage`, `industrial_lattice` and `procedural_building_system` declare no canvas controls and
 are out of scope. `fruit_atlas_scatter` dropped out when its orphaned `Fruit_LFO` was removed.
 
-Every control is proven by a real synthetic gesture through `sentinel_ui action=
-viewport_control_drag`, asserting both the bound parameter and the drawn state. Phase 3 shipped a
-green suite over a broken pad twice because only one half was asserted.
+Every control is proven through its 5A per-kind route, asserting both the bound
+state and the drawn state. Sliders and XY pads use strict synthetic
+`sentinel_ui action=viewport_control_drag` gestures. Toggles and momentary
+buttons use the automated route only where the host exposes a reliable
+transition; otherwise the contract requires a real desktop gesture with local
+pixel evidence and records the automation route as operator-unproven.
 
 Workflow constraint: `ood-labs/sentinel-bugs#88` makes loading the same project twice in one session
 a deterministic crash, so this phase relaunches Sentinel between iterations on a project.

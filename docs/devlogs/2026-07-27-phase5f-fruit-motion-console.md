@@ -1,3 +1,13 @@
+---
+type: devlog
+date: 2026-07-27
+phase: 5
+subphase: 5F
+status: complete
+approval: pending
+summary: "Fruit Motion Console is a responsive sui3 performance panel with all control kinds, group binds, presets, pixels, and runtime behavior proven"
+---
+
 # Phase 5F — Fruit Motion Console
 
 ## Scope
@@ -39,6 +49,43 @@ The edited Showcase project was loaded once in its Sentinel process.
   `0.28889 -> 0.75556`.
 - `content_size == render_size` at both 923 x 213 and 207 x 154, a 4.46x width
   change.
+
+### Control-verdict rubric
+
+Every surviving Canvas control passed the 5A rubric: it is a coupled
+performance gesture whose drawn state is attached to the live waveform
+instrument, while exact numeric setup remains available in Properties.
+
+| Controls | Verdict | Evidence |
+| --- | --- | --- |
+| `master_rate` | keep | global motion gesture; exact value and rail head proved at both extents |
+| `lfo1_speed`, `lfo2_speed`, `lfo3_speed`, `lfo4_speed` | keep | per-lane temporal gestures attached to the four live traces |
+| `lfo1_amp`, `lfo2_amp`, `lfo3_amp`, `lfo4_amp` | keep | per-lane spatial-energy gestures attached to trace amplitude |
+| `lfo1_shape`, `lfo2_shape`, `lfo3_shape`, `lfo4_shape` | keep | compact waveform-mode gestures with exact state retained in Properties |
+| `motion_bias` | keep | asymmetric two-axis performance gesture with reticle proof |
+| `mute` | keep | immediate performance state with parameter and local accent proof |
+| `burst` | keep | momentary performance action with held-state pixel proof |
+
+All 13 scalar controls were individually exercised at 0.25 and 0.75. Each
+bound value landed at its expected range-mapped target, every detected rail
+head was within 0.05 normalized units, and every pair moved by more than 0.1.
+
+### Scene Group bind liveness
+
+Each of the eight Fruit group controls was driven from its group path, observed
+at the target module parameter, and restored exactly in the still-loaded
+Gallery:
+
+| Group control | Drive -> observed module | Restored |
+| --- | --- | --- |
+| Motion World | `1 -> 0 -> 0` | `1 / 1` |
+| Swarm Clones | `2 -> 1 -> 1` | `2 / 2` |
+| Fruit Scale | `0.58 -> 0.6495 -> 0.6495` | `0.58 / 0.58` |
+| Lifecycle Rate | `0.08 -> 0.222 -> 0.222` | `0.08 / 0.08` |
+| Interval Enabled | `true -> false -> false` | `true / true` |
+| Capture Slot | `-1 -> 0 -> 0` | `-1 / -1` |
+| Card Tool | `0 -> 1 -> 1` | `0 / 0` |
+| Camera View | `2 -> 0 -> 0` | `2 / 2` |
 
 ## Pixel probes
 

@@ -1,3 +1,13 @@
+---
+type: devlog
+date: 2026-07-27
+phase: 5
+subphase: 5G
+status: complete
+approval: pending
+summary: "Showcase Gallery resync is complete with seven coherent responsive panels, strict guards, switching and solo proof, and no public promotion"
+---
+
 # Phase 5G — Showcase Gallery Resync
 
 ## Scope
@@ -79,9 +89,9 @@ Pixel measurements:
 
 | Panel | Exact rule color | 1 px runs | 2 px runs | Glyph component heights | Warm accent / lit |
 | --- | --- | ---: | ---: | --- | ---: |
-| Topographic | `(57,59,56)` | 1,820 | 0 | 7 / 15 / 21 | 2.028% |
-| Strata | `(61,62,60)` | 2,261 | 0 | 7 / 15 / 21 | 2.132% |
-| Desert | `(61,62,60)` | 2,262 | 0 | 7 / 15 / 21 | 3.485% |
+| Topographic | `(57,59,56)` | 2,421 | 0 | 7 / 15 / 21 | 0.349% |
+| Strata | `(61,62,60)` | 2,262 | 0 | 7 / 15 / 21 | 0.380% |
+| Desert | `(61,62,60)` | 2,262 | 0 | 7 / 15 / 21 | 0.357% |
 | Furnishings | `(61,62,60)` | 1,259 | 0 | 7 / 18 / 21 | 8.214% |
 | Lighting | `(57,59,56)` | 140 | 0 | 7 / 10 / 15 / 21 | 0.151% |
 | Architecture | `(77,78,75)` | 721 | 0 | 10 / 15 / 18 / 21 | 2.881% |
@@ -123,9 +133,11 @@ settled end. The Mux was healthy and selected `annotation_90` afterward.
 - Gallery proof bundle regenerated with graph, links, profile, health,
   expressions, and output. The host-owned window screenshot again returned
   `No window found matching 'Sentinel'` and remains operator-unproven.
-- Guard self-test rejected every deliberately broken bundle, module-copy,
-  slider-head, pad-reticle, and toggle-accent variant.
-- `test-official-examples.ps1`: all eight fixture assertions passed.
+- Full guard suite: five bundle rows, six complete module-copy inventories,
+  and ten deliberately broken self-test variants all passed; zero skips.
+- `test-official-examples.ps1`: all nine reported fixture groups passed,
+  including negative Mux-mode, solo, preset-count, Performance-name, and
+  exposed-control-count cases.
 - Final validator:
   - Topographic: 15 active, 0 orphan, 0 errors.
   - Strata: 10 active, 0 orphan, 0 errors.
@@ -140,5 +152,47 @@ settled end. The Mux was healthy and selected `annotation_90` afterward.
 
 ## Pending
 
-- Phase-level `$audit` and final `$end-session`.
 - Human taste approval and operator-only full-window screenshot proof.
+
+## Post-landing audit + fixes
+
+Three independent audit passes covered code/safety, phase-contract alignment,
+and test/proof discrimination. Their cited findings were reproduced before
+fixing:
+
+- The common 923 x 213 dock exposed a real short-height layout bug: Signal's
+  four traces were crushed and its meters overlapped controls, while Strata
+  and Desert produced inverted plot rectangles.
+- The live gesture harness reported values but did not fail on a broken
+  parameter/pixel half; copy identity ignored extra destination files.
+- The gallery validator's Mux, solo, preset, and exposed-control branches
+  lacked negative fixtures.
+- The Gallery save had retained proof-time zoom, window sizes, selection, and
+  Desert gesture values.
+- 5F lacked the explicit per-control rubric and eight individual group-bind
+  drive/observe/restore records; 5F and 5G lacked devlog frontmatter.
+
+Safe fixes applied:
+
+- Signal, Strata, and Desert now use a dedicated short-height layout. Fresh
+  923 x 213 captures show non-inverted 63-pixel plots, clear control labels,
+  and no plot/control or footer/control collision. Live gestures re-passed:
+  Signal `0.25 -> 0.75`, Strata `0.5 -> 1.5`, and Desert `0.3 -> 0.9`;
+  every detected head was within 0.005 of target.
+- `panel_collection.png` was regenerated from the corrected captures.
+- The harness now enforces scalar/head, asymmetric pad/reticle,
+  toggle-roundtrip/accent, and button-held/release gates; MCP requests have a
+  bounded timeout; its self-test generates clean-checkout fixtures.
+- Module-copy checks compare the union of every copy's file inventory and
+  reject missing, changed, and extra files.
+- Five new validator negatives cover wrong Mux mode, disabled soloing, too few
+  presets, missing Performance, and out-of-range exposed controls.
+- Baseline Gallery graph zoom, window layout, selected-group field, and Desert
+  values were restored while retaining the Phase 5 modules and presets.
+- 5F now records all control verdicts and all eight exact group-bind liveness
+  round trips; both final devlogs have schema frontmatter.
+
+The curated Fruit and seven-panel contact sheets are an explicit proof-output
+exception to the earlier “pre-existing proof file set” preference: both are
+required to make 5F/5G's same-extent visual evidence reviewable without
+changing runtime or promotion scope.

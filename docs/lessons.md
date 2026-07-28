@@ -1,11 +1,65 @@
 ---
 type: lessons
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-27 - Short panels need a height layout, not only scaled typography
+
+**Symptoms**: At the Gallery's common 923 x 213 extent, Strata and Desert had
+inverted plot rectangles, while Topographic compressed four traces into a
+sliver and drew its meters over the controls.
+
+**Cause**: The panels combined fixed pixel header/status offsets with
+percentage-based plot bottoms. `projects/strata/modules/strata_control/display.hlsl`,
+`projects/desert_totem/modules/dada_control/display.hlsl`, and
+`projects/topographic_hud/modules/signal/signal_display.hlsl` scaled glyphs but
+never changed the vertical information hierarchy.
+
+**Fix**: Branch on short height, remove secondary telemetry, move the rule up,
+and reserve a fixed non-overlapping plot region before the manifest-owned
+control rectangles. Re-capture every panel at the actual common dock extent.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-27
+
+## 2026-07-27 - A proof harness must decide, not merely report
+
+**Symptoms**: `tools/example-ui-guards.py --exercise` printed parameter values,
+rail heads, reticles, and pixel differences but returned success even when any
+of them was wrong. Copy parity also passed with an extra stale destination
+file.
+
+**Cause**: Evidence collection and acceptance were never connected, and module
+inventory was enumerated from the authority side only.
+
+**Fix**: Enforce per-kind two-half thresholds, return a failing exit status,
+bound MCP request time, compare the union of copy inventories, and generate
+clean-checkout negative fixtures inside the self-test.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-27
+
+## 2026-07-27 - Restore intentional startup state after live proof saves
+
+**Symptoms**: The official Gallery retained a 1.5 graph zoom, proof dock sizes,
+a temporary selected group, and Desert gesture targets after the proof pass.
+
+**Cause**: Saving presets and durable state also serialized unrelated live UI
+and parameter state from the active verification session.
+
+**Fix**: Diff the saved project against the pre-proof baseline and restore
+intentional graph, layout, selection, and gesture values while retaining the
+new presets and module references.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-27
 
 ## 2026-07-26 - Invoking module-ui.ps1 from the Bash tool needs the call operator
 

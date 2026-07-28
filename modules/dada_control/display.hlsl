@@ -35,6 +35,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float sN = 2.0 * sB;
     float sT = 3.0 * sB;
     float pad = max(12.0, 0.026 * R.x);
+    bool compactHeight = R.y < 320.0;
 
     Ctrl d = _Tex0[0];
     Sui3Theme T = sui3Theme(SUI3_AMBER);
@@ -50,9 +51,11 @@ void main(uint3 tid : SV_DispatchThreadID) {
         col += T.ink * sui3Text(P, float2(pad, pad), sT,
             S_D,S_E,S_F,S_O,S_R,S_M,S_SP,S_D,S_E,S_C,S_K,0);
     }
+    if (!compactHeight) {
     col += T.dim * sui3TextLong(P, float2(pad, pad + 36.0 * sB), sB,
         S_D,S_E,S_F,S_O,S_R,S_M,S_A,S_T,S_I,S_O,S_N,S_SP,
         S_F,S_I,S_E,S_L,S_D,S_SP,S_SL,S_SP,S_L,S_I,S_V,S_E);
+    }
 
     if (R.x >= 700.0) {
         col += T.accent * sui3DigitsRight(P, R.x - pad, pad + 2.0 * sB, sN,
@@ -61,12 +64,13 @@ void main(uint3 tid : SV_DispatchThreadID) {
             S_A,S_C,S_C,S_E,S_N,S_T,S_S,0,0,0,0,0);
     }
 
-    float yRule = pad + 54.0 * sB;
+    float yRule = pad + (compactHeight ? 30.0 : 54.0) * sB;
     col += sui3Rule(P, R, yRule, pad, T);
 
     // Compact Properties readbacks: they remain live but are not duplicated
     // as Canvas widgets.
     float statusTop = yRule + 16.0 * sB;
+    if (!compactHeight) {
     col += T.dim * sui3Text(P, float2(pad, statusTop), sB,
         S_S,S_P,S_R,S_E,S_A,S_D,0,0,0,0,0,0);
     col += T.ink * sui3Fixed(P, float2(pad + 55.0 * sB, statusTop), sB, d.spread, 2);
@@ -76,11 +80,12 @@ void main(uint3 tid : SV_DispatchThreadID) {
     col += T.dim * sui3Text(P, float2(pad + 254.0 * sB, statusTop), sB,
         S_R,S_O,S_T,0,0,0,0,0,0,0,0,0);
     col += T.ink * sui3Fixed(P, float2(pad + 302.0 * sB, statusTop), sB, d.twist, 2);
+    }
 
     // Deformation field: the four live axes alter amplitude, direction,
     // density, and the live markers from the same resolved record.
-    float plotTop = statusTop + 28.0 * sB;
-    float plotBottom = 0.565 * R.y;
+    float plotTop = compactHeight ? yRule + 12.0 * sB : statusTop + 28.0 * sB;
+    float plotBottom = (compactHeight ? 0.55 : 0.565) * R.y;
     float4 plot = float4(pad, plotTop, R.x - pad, plotBottom);
     if (sui3RectIn(P, plot) > 0.5 || sui3Frame(P, plot) > 0.0) {
         col += T.well * sui3RectIn(P, plot);
@@ -119,7 +124,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
     // Surface telemetry, still editable in Properties.
     float surfaceY = plot.w + 17.0 * sB;
-    if (R.x >= 700.0) {
+    if (R.x >= 700.0 && !compactHeight) {
         col += T.dim * sui3Text(P, float2(pad, surfaceY), sB,
             S_P,S_A,S_I,S_N,S_T,0,0,0,0,0,0,0);
         col += T.ink * sui3Fixed(P, float2(pad + 50.0 * sB, surfaceY), sB, d.painterly, 2);
@@ -162,9 +167,11 @@ void main(uint3 tid : SV_DispatchThreadID) {
                                           rSecondary.y + 7.0 * sB), sB, d.secondary, 2);
 
     float footY = R.y - pad - 11.0 * sB;
+    if (!compactHeight) {
     col += T.dim * sui3TextLong(P, float2(pad, footY), sB,
         S_S,S_E,S_T,S_U,S_P,S_SP,S_I,S_N,S_SP,S_P,S_R,S_O,
         S_P,S_E,S_R,S_T,S_I,S_E,S_S,0,0,0,0,0);
+    }
 
     OutputUAV[tid.xy] = float4(saturate(col), 1.0);
 }

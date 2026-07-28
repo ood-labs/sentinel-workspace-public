@@ -42,6 +42,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float sN = 2.0 * sB;
     float sT = 3.0 * sB;
     float pad = max(12.0, 0.026 * R.x);
+    bool compactHeight = R.y < 320.0;
 
     Sui3Theme T = sui3Theme(SUI3_AMBER);
     SigData d = _Tex0[0];
@@ -60,9 +61,11 @@ void main(uint3 tid : SV_DispatchThreadID) {
         col += T.ink * sui3Text(P, float2(pad, pad), sT,
             S_T,S_O,S_P,S_O,S_G,S_R,S_A,S_P,S_H,S_I,S_C,0);
     }
+    if (!compactHeight) {
     col += T.dim * sui3TextLong(P, float2(pad, pad + 36.0 * sB), sB,
         S_S,S_I,S_G,S_N,S_A,S_L,S_SP,S_B,S_U,S_S,S_SP,S_SL,
         S_SP,S_L,S_I,S_V,S_E,S_SP,S_S,S_T,S_A,S_T,S_E,0);
+    }
 
     if (R.x >= 700.0) {
         float energyX = R.x - pad - sui3FixedWidth(sN, 2);
@@ -71,12 +74,13 @@ void main(uint3 tid : SV_DispatchThreadID) {
             S_E,S_N,S_E,S_R,S_G,S_Y,0,0,0,0,0,0);
     }
 
-    float yRule = pad + 54.0 * sB;
+    float yRule = pad + (compactHeight ? 30.0 : 54.0) * sB;
     col += sui3Rule(P, R, yRule, pad, T);
 
     // Authority / cue / map status. These are readbacks, edited precisely in
     // Properties; active selections alone receive the accent.
     float statusTop = yRule + 16.0 * sB;
+    if (!compactHeight) {
     col += T.dim * sui3Text(P, float2(pad, statusTop), sB,
         S_A,S_U,S_T,S_H,S_O,S_R,S_I,S_T,S_Y,0,0,0);
     col += T.ink * sui3Digits(P, float2(pad + 82.0 * sB, statusTop), sB,
@@ -93,11 +97,12 @@ void main(uint3 tid : SV_DispatchThreadID) {
         S_N,S_O,S_D,S_E,S_S,0,0,0,0,0,0,0);
     col += T.ink * sui3Digits(P, float2(pad + 337.0 * sB, statusTop), sB,
                               (int)round(d.density), 3);
+    }
 
     // Four live transport lanes. Their marker, trace, and numeric value all
     // derive from the same control-output record.
-    float plotTop = statusTop + 27.0 * sB;
-    float plotBottom = 0.59 * R.y;
+    float plotTop = compactHeight ? yRule + 12.0 * sB : statusTop + 27.0 * sB;
+    float plotBottom = (compactHeight ? 0.55 : 0.59) * R.y;
     float4 plot = float4(pad, plotTop, R.x - pad, plotBottom);
     if (sui3RectIn(P, plot) > 0.5 || sui3Frame(P, plot) > 0.0) {
         col += T.well * sui3RectIn(P, plot);
@@ -126,6 +131,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
     // Resolved layer mix: compact positional meters, not controls.
     float metersTop = plot.w + 18.0 * sB;
+    if (!compactHeight) {
     col += T.dim * sui3Text(P, float2(pad, metersTop), sB,
         S_L,S_A,S_Y,S_E,S_R,S_SP,S_M,S_I,S_X,0,0,0);
     float meterY = metersTop + 18.0 * sB;
@@ -139,6 +145,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
         col += sui3Rail(P, mr, mv, T);
         col += T.ink * sui3Fixed(P, float2(mr.x + 4.0 * sB, mr.y + 2.0 * sB),
                                  sB, layerValue(m, d), 2);
+    }
     }
 
     // The only Canvas controls: two broad performance gestures with attached
@@ -157,9 +164,11 @@ void main(uint3 tid : SV_DispatchThreadID) {
                                           rSweep.y + 7.0 * sB), sB, manual_sweep, 2);
 
     float footY = R.y - pad - 11.0 * sB;
+    if (!compactHeight) {
     col += T.dim * sui3TextLong(P, float2(pad, footY), sB,
         S_S,S_E,S_T,S_U,S_P,S_SP,S_I,S_N,S_SP,S_P,S_R,S_O,
         S_P,S_E,S_R,S_T,S_I,S_E,S_S,0,0,0,0,0);
+    }
 
     OutputUAV[tid.xy] = float4(saturate(col), 1.0);
 }

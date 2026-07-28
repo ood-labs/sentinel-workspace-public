@@ -208,6 +208,43 @@ viewport:
     if (-not (@($badOwnership.projects[0].errors) -match 'must contain exactly one Group Output')) { throw 'Out-of-group gallery output was not rejected.' }
     New-GalleryFixture
 
+    $galleryJson = [IO.File]::ReadAllText($galleryFile) | ConvertFrom-Json
+    ($galleryJson.pipelines | Where-Object { $_.type -eq 'mux' }).parameters.source_mode = '0'
+    Write-Utf8 $galleryFile (($galleryJson | ConvertTo-Json -Depth 12) + "`n")
+    $badMuxMode = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'showcase_gallery', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($badMuxMode.projects[0].errors) -match 'Groups source mode')) { throw 'Non-Groups gallery Mux was not rejected.' }
+    New-GalleryFixture
+
+    $galleryJson = [IO.File]::ReadAllText($galleryFile) | ConvertFrom-Json
+    ($galleryJson.pipelines | Where-Object { $_.type -eq 'mux' }).parameters.solo_upstream = 'false'
+    Write-Utf8 $galleryFile (($galleryJson | ConvertTo-Json -Depth 12) + "`n")
+    $badSolo = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'showcase_gallery', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($badSolo.projects[0].errors) -match 'enable solo_upstream')) { throw 'Disabled gallery solo_upstream was not rejected.' }
+    New-GalleryFixture
+
+    New-FixtureProject 'modules/Active'
+    $fixtureFile = Join-Path $projectRoot 'industrial_lattice.sentinel'
+    $fixtureJson = [IO.File]::ReadAllText($fixtureFile) | ConvertFrom-Json
+    $fixtureJson.graph.nodes[0].sceneGroupPresets = @($fixtureJson.graph.nodes[0].sceneGroupPresets | Select-Object -First 2)
+    Write-Utf8 $fixtureFile (($fixtureJson | ConvertTo-Json -Depth 12) + "`n")
+    $tooFewPresets = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($tooFewPresets.projects[0].errors) -match 'at least 3 presets')) { throw 'Too few Scene Group presets were not rejected.' }
+
+    New-FixtureProject 'modules/Active'
+    $fixtureJson = [IO.File]::ReadAllText($fixtureFile) | ConvertFrom-Json
+    ($fixtureJson.graph.nodes[0].sceneGroupPresets | Where-Object { $_.name -eq 'Performance' }).name = 'Alternate'
+    Write-Utf8 $fixtureFile (($fixtureJson | ConvertTo-Json -Depth 12) + "`n")
+    $missingPerformance = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($missingPerformance.projects[0].errors) -match "named 'Performance'")) { throw 'Missing Performance preset was not rejected.' }
+
+    New-FixtureProject 'modules/Active'
+    $fixtureJson = [IO.File]::ReadAllText($fixtureFile) | ConvertFrom-Json
+    $fixtureJson.graph.nodes[0].sceneGroupParameters = @($fixtureJson.graph.nodes[0].sceneGroupParameters | Select-Object -First 5)
+    Write-Utf8 $fixtureFile (($fixtureJson | ConvertTo-Json -Depth 12) + "`n")
+    $tooFewControls = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($tooFewControls.projects[0].errors) -match 'expose 6-10 controls')) { throw 'Out-of-range Scene Group control count was not rejected.' }
+    New-FixtureProject 'modules/Active'
+
     # Dry-run must be non-mutating and list only the selected fixture project.
     $dryRun = Invoke-JsonScript $promoter @('-SourceRoot', $sourceRoot, '-DestinationRoot', $publicRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 0
     if ($dryRun.mode -ne 'dry-run') { throw 'Promotion did not default to dry-run.' }
@@ -229,7 +266,8 @@ viewport:
     Write-Host 'PASS validator reports absolute path, orphan module, and shader cache independently'
     Write-Host 'PASS repaired fixture validates cleanly'
     Write-Host 'PASS validator rejects workspace escapes and duplicate root project files'
-    Write-Host 'PASS gallery validator enforces outputs, ownership, links, Mux mode, and exact allow-list'
+    Write-Host 'PASS gallery validator enforces outputs, ownership, links, Mux mode, soloing, and exact allow-list'
+    Write-Host 'PASS validator rejects insufficient presets, missing Performance, and out-of-range group controls'
     Write-Host 'PASS promotion dry-run is allowlisted and non-mutating'
     Write-Host 'PASS disposable public promotion validates and matches normalized source content'
 } finally {

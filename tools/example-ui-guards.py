@@ -16,11 +16,14 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import queue
 import subprocess
 import sys
+import tempfile
+import threading
 import time
 
-from PIL import Image, ImageChops
+from PIL import Image, ImageChops, ImageDraw
 import yaml
 
 
@@ -115,6 +118,9 @@ class Mcp:
             bufsize=1,
         )
         self.next_id = 1
+        self.response_queue = queue.Queue()
+        self.reader = threading.Thread(target=self._read_stdout, daemon=True)
+        self.reader.start()
         self._request(
             "initialize",
             {
@@ -124,6 +130,12 @@ class Mcp:
             },
         )
         self._notify("notifications/initialized")
+
+    def _read_stdout(self):
+        assert self.proc.stdout is not None
+        for line in self.proc.stdout:
+            self.response_queue.put(line)
+        self.response_queue.put(None)
 
     def _send(self, payload):
         assert self.proc.stdin is not None
@@ -139,10 +151,16 @@ class Mcp:
         self._send(
             {"jsonrpc": "2.0", "id": request_id, "method": method, "params": params}
         )
-        assert self.proc.stdout is not None
         while True:
-            line = self.proc.stdout.readline()
-            if not line:
+            try:
+                line = self.response_queue.get(
+                    timeout=float(os.environ.get("SENTINEL_MCP_TIMEOUT", "90"))
+                )
+            except queue.Empty as exc:
+                raise TimeoutError(
+                    f"sentinel-mcp request {request_id} timed out"
+                ) from exc
+            if line is None:
                 stderr = self.proc.stderr.read() if self.proc.stderr else ""
                 raise RuntimeError("sentinel-mcp closed: " + stderr)
             message = json.loads(line)
@@ -201,33 +219,49 @@ def bundle_report():
     return rows
 
 
-def module_copy_report(module_name):
-    """Compare every authored source file in a three-copy module set."""
-    copies = [ROOT / relative for relative in MODULE_COPY_SETS[module_name]]
-    authority = copies[0]
-    files = sorted(
-        path.relative_to(authority)
-        for path in authority.rglob("*")
-        if path.is_file() and ".sentinel" not in path.parts
-    )
+def copy_roots_report(copies):
+    """Compare complete normalized inventories across a module copy set."""
+    inventories = []
+    for root in copies:
+        inventories.append(
+            {
+                path.relative_to(root)
+                for path in root.rglob("*")
+                if path.is_file() and ".sentinel" not in path.parts
+            }
+        )
+    files = sorted(set().union(*inventories))
     rows = []
     for relative in files:
-        expected = normalized_hash(authority / relative)
         hashes = {
-            str(root.relative_to(ROOT)): (
+            str(root): (
                 normalized_hash(root / relative) if (root / relative).exists() else None
             )
             for root in copies
         }
+        expected = hashes[str(copies[0])]
         rows.append(
             {
                 "file": relative.as_posix(),
                 "normalized_sha256": expected,
                 "copies": hashes,
-                "all_match": all(value == expected for value in hashes.values()),
+                "all_match": expected is not None
+                and all(value == expected for value in hashes.values()),
             }
         )
     return rows
+
+
+def module_copy_report(module_name):
+    """Compare every relative file in every declared module copy."""
+    copies = [ROOT / relative for relative in MODULE_COPY_SETS[module_name]]
+    report = copy_roots_report(copies)
+    for row in report:
+        row["copies"] = {
+            str(Path(label).relative_to(ROOT)): value
+            for label, value in row["copies"].items()
+        }
+    return report
 
 
 def load_manifest(module_dir: Path):
@@ -269,21 +303,30 @@ def focus_panel(mcp: Mcp, pipeline: str):
     time.sleep(0.8)
 
 
+def gesture_phase(
+    mcp: Mcp, pipeline: str, control: str, x: float, y: float, phase: str
+):
+    return mcp.call(
+        "sentinel_ui",
+        {
+            "action": "viewport_control_drag",
+            "pipeline": pipeline,
+            "control": control,
+            "x": x,
+            "y": y,
+            "phase": phase,
+        },
+    )
+
+
 def drag(mcp: Mcp, pipeline: str, control: str, x: float, y: float):
     # Most 0.5.49 surfaces commit and release on begin; narrow/restored native
     # windows can retain capture until an explicit end. Always send the paired
     # end. Hosts that already released return a harmless not-owned response,
     # while hosts retaining capture are left ready for the next proof target.
-    payload = {
-        "action": "viewport_control_drag",
-        "pipeline": pipeline,
-        "control": control,
-        "x": x,
-        "y": y,
-    }
     responses = [
-        mcp.call("sentinel_ui", {**payload, "phase": "begin"}),
-        mcp.call("sentinel_ui", {**payload, "phase": "end"}),
+        gesture_phase(mcp, pipeline, control, x, y, "begin"),
+        gesture_phase(mcp, pipeline, control, x, y, "end"),
     ]
     time.sleep(0.35)
     return responses
@@ -420,6 +463,94 @@ def pad_reticle_fraction(path: Path, rect):
     return x / max(1, width - 1), 1.0 - y / max(1, height - 1)
 
 
+def as_bool(value):
+    value = scalar_from_response(value)
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in ("1", "true", "on")
+
+
+def validate_control_entry(control_id, entry, parameters):
+    """Return concrete two-half-gate failures for one exercised control."""
+    kind = entry["kind"]
+    probes = entry["probes"]
+    failures = []
+    if kind == "slider":
+        parameter = parameters.get(entry["param"], {})
+        span = abs(
+            float(parameter.get("max", 1.0)) - float(parameter.get("min", 0.0))
+        )
+        value_tolerance = max(0.05, span * 0.05)
+        for probe in probes:
+            value = float(probe["value"])
+            expected = float(probe["expected_value"])
+            head = probe["head_fraction"]
+            if abs(value - expected) > value_tolerance:
+                failures.append(
+                    f"{control_id}: value {value} misses {expected} by more than "
+                    f"{value_tolerance}"
+                )
+            if head is None or abs(float(head) - float(probe["target"])) > 0.05:
+                failures.append(
+                    f"{control_id}: slider head {head} misses {probe['target']}"
+                )
+        heads = [probe["head_fraction"] for probe in probes]
+        if (
+            len(heads) != 2
+            or any(head is None for head in heads)
+            or abs(float(heads[1]) - float(heads[0])) < 0.1
+        ):
+            failures.append(f"{control_id}: slider heads are not visibly separated")
+    elif kind == "xypad":
+        for probe in probes:
+            value = probe["value"]
+            target = probe["target"]
+            reticle = probe["reticle_fraction"]
+            if max(abs(float(value[i]) - float(target[i])) for i in (0, 1)) > 0.05:
+                failures.append(
+                    f"{control_id}: point value {value} misses target {target}"
+                )
+            if reticle is None or max(
+                abs(float(reticle[i]) - float(target[i])) for i in (0, 1)
+            ) > 0.12:
+                failures.append(
+                    f"{control_id}: reticle {reticle} misses target {target}"
+                )
+    elif kind == "toggle":
+        probe, roundtrip = probes
+        before = as_bool(probe["before_value"])
+        after = as_bool(probe["after_value"])
+        restored = as_bool(roundtrip["roundtrip_value"])
+        low = min(probe["before_accent_pixels"], probe["after_accent_pixels"])
+        high = max(probe["before_accent_pixels"], probe["after_accent_pixels"])
+        visual = high >= max(5, low * 2) or probe["changed_pixel_fraction"] >= 0.01
+        if before == after or restored != before:
+            failures.append(
+                f"{control_id}: toggle did not complete off/on/off round trip"
+            )
+        if not visual:
+            failures.append(f"{control_id}: toggle has no verified visual transition")
+    elif kind == "button":
+        probe = probes[0]
+        before = scalar_from_response(probe["before_value"])
+        held = scalar_from_response(probe["held_value"])
+        released = scalar_from_response(probe["released_value"])
+        visual = (
+            probe["held_changed_pixel_fraction"] >= 0.01
+            or probe["held_accent_pixels"]
+            >= max(5, probe["before_accent_pixels"] * 2)
+        )
+        if held == before:
+            failures.append(f"{control_id}: button never reached a held state")
+        if released != before:
+            failures.append(f"{control_id}: button latch did not release")
+        if not visual:
+            failures.append(f"{control_id}: held button has no visual transition")
+    else:
+        failures.append(f"{control_id}: unsupported control kind {kind}")
+    return failures
+
+
 def inspect_build(mcp: Mcp):
     ping = mcp.call("sentinel_app", {"action": "ping"})
     status = mcp.call("sentinel_app", {"action": "status"})
@@ -458,23 +589,45 @@ def inspect_build(mcp: Mcp):
 
 def broken_variant_report():
     """Prove each 5A guard kind can reject a deliberately wrong result."""
-    proof = ROOT / "captures/phase5/showcase_gallery/Fruit_LFO"
+    fixture = tempfile.TemporaryDirectory(prefix="sentinel-example-ui-guards-")
+    proof = Path(fixture.name)
     slider_png = proof / "master_rate_0.25.png"
     pad_png = proof / "motion_bias_0.23_0.71.png"
     toggle_off = proof / "mute_before.png"
     toggle_on = proof / "mute_after.png"
-    required = (slider_png, pad_png, toggle_off, toggle_on)
-    missing = [str(path.relative_to(ROOT)) for path in required if not path.exists()]
-    if missing:
-        raise RuntimeError(f"Run the 5A Fruit_LFO exercise first; missing {missing}")
 
     slider_rect = (0.600, 0.080, 0.820, 0.145)
     pad_rect = (0.800, 0.280, 0.950, 0.485)
     toggle_rect = (0.840, 0.080, 0.950, 0.145)
+    size = (1000, 500)
+    slider_image = Image.new("RGB", size, (5, 5, 5))
+    slider_draw = ImageDraw.Draw(slider_image)
+    slider_draw.line((655, 40, 655, 72), fill=(240, 240, 240), width=2)
+    slider_image.save(slider_png)
+    pad_image = Image.new("RGB", size, (5, 5, 5))
+    pad_draw = ImageDraw.Draw(pad_image)
+    pad_draw.ellipse((829, 164, 841, 176), outline=(255, 112, 28), width=2)
+    pad_image.save(pad_png)
+    Image.new("RGB", size, (5, 5, 5)).save(toggle_off)
+    toggle_image = Image.new("RGB", size, (5, 5, 5))
+    ImageDraw.Draw(toggle_image).rectangle(
+        (840, 40, 950, 72), fill=(255, 112, 28)
+    )
+    toggle_image.save(toggle_on)
+
     slider_measured = slider_head_fraction(slider_png, slider_rect)
     pad_measured = pad_reticle_fraction(pad_png, pad_rect)
     toggle_before = amber_count(toggle_off, toggle_rect)
     toggle_after = amber_count(toggle_on, toggle_rect)
+
+    copy_a = proof / "copy-a"
+    copy_b = proof / "copy-b"
+    copy_a.mkdir()
+    copy_b.mkdir()
+    (copy_a / "manifest.yaml").write_text("name: fixture\n", encoding="utf-8")
+    (copy_b / "manifest.yaml").write_text("name: fixture\n", encoding="utf-8")
+    (copy_b / "stale.hlsl").write_text("// stale\n", encoding="utf-8")
+    extra_file_report = copy_roots_report([copy_a, copy_b])
 
     authority = ROOT / "modules/_shared/ui/sui3_core.hlsli"
     broken_hash = hashlib.sha256(
@@ -534,6 +687,13 @@ def broken_variant_report():
             "rejected": broken_module_hash != expected_module_hash,
         },
         {
+            "guard": "module copy inventory",
+            "broken_variant": "destination contains an extra stale file",
+            "measured": extra_file_report,
+            "expected": "every relative file exists with the same hash in every copy",
+            "rejected": any(not row["all_match"] for row in extra_file_report),
+        },
+        {
             "guard": "strata module copy identity",
             "broken_variant": "authority manifest has an extra content line",
             "measured": broken_strata_hash,
@@ -585,11 +745,12 @@ def broken_variant_report():
         {
             "guard": "toggle accent",
             "broken_variant": "non-firing v1 toggle, identical off/on captures",
-            "measured": [toggle_before, toggle_after],
+            "measured": [toggle_before, toggle_before],
             "expected": "on >= max(5, off * 2)",
-            "rejected": toggle_after < max(5, toggle_before * 2),
+            "rejected": toggle_before < max(5, toggle_before * 2),
         },
     ]
+    fixture.cleanup()
     return rows
 
 
@@ -699,7 +860,7 @@ def live_exercise(args):
                             "png": str(png.relative_to(ROOT)),
                         }
                     )
-            else:
+            elif kind == "toggle":
                 before = proof_dir / f"{control_id}_before_{size_tag}.png"
                 capture(mcp, args.pipeline, before)
                 before_value = state_value(mcp, args.pipeline, param)
@@ -721,18 +882,57 @@ def live_exercise(args):
                         "after_png": str(after.relative_to(ROOT)),
                     }
                 )
-                if kind == "toggle":
-                    drag(mcp, args.pipeline, control_id, 0.5, 0.5)
-                    off = proof_dir / f"{control_id}_off_roundtrip_{size_tag}.png"
-                    capture(mcp, args.pipeline, off)
-                    entry["probes"].append(
-                        {
-                            "roundtrip_value": state_value(mcp, args.pipeline, param),
-                            "accent_pixels": amber_count(off, rect),
-                            "png": str(off.relative_to(ROOT)),
-                        }
-                    )
+                drag(mcp, args.pipeline, control_id, 0.5, 0.5)
+                off = proof_dir / f"{control_id}_off_roundtrip_{size_tag}.png"
+                capture(mcp, args.pipeline, off)
+                entry["probes"].append(
+                    {
+                        "roundtrip_value": state_value(mcp, args.pipeline, param),
+                        "accent_pixels": amber_count(off, rect),
+                        "png": str(off.relative_to(ROOT)),
+                    }
+                )
+            elif kind == "button":
+                before = proof_dir / f"{control_id}_before_{size_tag}.png"
+                held = proof_dir / f"{control_id}_held_{size_tag}.png"
+                released = proof_dir / f"{control_id}_released_{size_tag}.png"
+                capture(mcp, args.pipeline, before)
+                before_value = state_value(mcp, args.pipeline, param)
+                begin = gesture_phase(
+                    mcp, args.pipeline, control_id, 0.5, 0.5, "begin"
+                )
+                time.sleep(0.2)
+                capture(mcp, args.pipeline, held)
+                held_value = state_value(mcp, args.pipeline, param)
+                end = gesture_phase(mcp, args.pipeline, control_id, 0.5, 0.5, "end")
+                time.sleep(0.2)
+                capture(mcp, args.pipeline, released)
+                entry["probes"].append(
+                    {
+                        "before_value": before_value,
+                        "held_value": held_value,
+                        "released_value": state_value(mcp, args.pipeline, param),
+                        "before_accent_pixels": amber_count(before, rect),
+                        "held_accent_pixels": amber_count(held, rect),
+                        "held_changed_pixel_fraction": changed_pixel_fraction(
+                            before, held, rect
+                        ),
+                        "gesture_responses": [begin, end],
+                        "before_png": str(before.relative_to(ROOT)),
+                        "held_png": str(held.relative_to(ROOT)),
+                        "released_png": str(released.relative_to(ROOT)),
+                    }
+                )
+            else:
+                entry["probes"].append(
+                    {"unsupported": f"no live guard for control kind {kind}"}
+                )
             report["controls"][control_id] = entry
+        failures = []
+        for control_id, entry in report["controls"].items():
+            failures.extend(validate_control_entry(control_id, entry, parameters))
+        report["failures"] = failures
+        report["passed"] = not failures
         return report
     finally:
         mcp.close()
@@ -782,8 +982,9 @@ def main():
         return 0 if all(row["rejected"] for row in report) else 1
     if not args.project or not args.pipeline:
         raise SystemExit("--exercise requires --project and --pipeline")
-    print(json.dumps(live_exercise(args), indent=2))
-    return 0
+    report = live_exercise(args)
+    print(json.dumps(report, indent=2))
+    return 0 if report["passed"] else 1
 
 
 if __name__ == "__main__":

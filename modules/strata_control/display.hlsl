@@ -36,6 +36,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float sN = 2.0 * sB;
     float sT = 3.0 * sB;
     float pad = max(12.0, 0.026 * R.x);
+    bool compactHeight = R.y < 320.0;
 
     Ctrl d = _Tex0[0];
     Sui3Theme T = sui3Theme(SUI3_AMBER);
@@ -51,9 +52,11 @@ void main(uint3 tid : SV_DispatchThreadID) {
         col += T.ink * sui3Text(P, float2(pad, pad), sT,
             S_S,S_T,S_R,S_A,S_T,S_A,0,0,0,0,0,0);
     }
-    col += T.dim * sui3TextLong(P, float2(pad, pad + 36.0 * sB), sB,
-        S_P,S_R,S_E,S_M,S_U,S_L,S_T,S_I,S_P,S_L,S_I,S_E,
-        S_D,S_SP,S_P,S_L,S_A,S_T,S_E,S_S,0,0,0,0);
+    if (!compactHeight) {
+        col += T.dim * sui3TextLong(P, float2(pad, pad + 36.0 * sB), sB,
+            S_P,S_R,S_E,S_M,S_U,S_L,S_T,S_I,S_P,S_L,S_I,S_E,
+            S_D,S_SP,S_P,S_L,S_A,S_T,S_E,S_S,0,0,0,0);
+    }
 
     if (R.x >= 700.0) {
         float countX = R.x - pad - sui3FixedWidth(sN, 0);
@@ -63,11 +66,12 @@ void main(uint3 tid : SV_DispatchThreadID) {
             S_C,S_O,S_R,S_N,S_E,S_R,S_S,0,0,0,0,0);
     }
 
-    float yRule = pad + 54.0 * sB;
+    float yRule = pad + (compactHeight ? 30.0 : 54.0) * sB;
     col += sui3Rule(P, R, yRule, pad, T);
 
     // Compact setup readbacks. These values remain editable in Properties.
     float statusTop = yRule + 16.0 * sB;
+    if (!compactHeight) {
     col += T.dim * sui3Text(P, float2(pad, statusTop), sB,
         S_S,S_E,S_E,S_D,0,0,0,0,0,0,0,0);
     col += T.ink * sui3Fixed(P, float2(pad + 38.0 * sB, statusTop), sB, d.seed, 1);
@@ -81,11 +85,12 @@ void main(uint3 tid : SV_DispatchThreadID) {
     col += T.dim * sui3Text(P, float2(pad + 264.0 * sB, statusTop), sB,
         S_T,S_W,S_I,S_S,S_T,0,0,0,0,0,0,0);
     col += T.ink * sui3Fixed(P, float2(pad + 306.0 * sB, statusTop), sB, d.twist, 2);
+    }
 
     // Plate composition plot. Each layer owns one vertical slot; thickness,
     // bracket reach, and live marker all derive from the same resolved mix.
-    float plotTop = statusTop + 28.0 * sB;
-    float plotBottom = 0.565 * R.y;
+    float plotTop = compactHeight ? yRule + 12.0 * sB : statusTop + 28.0 * sB;
+    float plotBottom = (compactHeight ? 0.55 : 0.565) * R.y;
     float4 plot = float4(pad, plotTop, R.x - pad, plotBottom);
     if (sui3RectIn(P, plot) > 0.5 || sui3Frame(P, plot) > 0.0) {
         col += T.well * sui3RectIn(P, plot);
@@ -116,6 +121,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
     // Feature status is telemetry, not a duplicate toggle.
     float featureY = plot.w + 17.0 * sB;
+    if (!compactHeight) {
     col += T.dim * sui3Text(P, float2(pad, featureY), sB,
         S_F,S_E,S_A,S_T,S_U,S_R,S_E,S_SP,S_T,S_H,S_R,S_D);
     float enabled = d.feature_enabled > 0.5 ? 1.0 : 0.0;
@@ -128,6 +134,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
         S_G,S_A,S_I,S_N,0,0,0,0,0,0,0,0);
     col += T.ink * sui3Fixed(P, float2(pad + 190.0 * sB, featureY), sB,
                              d.feature_gain, 2);
+    }
 
     float4 rBlob = pxRect(UI_RECT_BLOB_MIX, R);
     float4 rMarble = pxRect(UI_RECT_MARBLE_MIX, R);
@@ -158,9 +165,11 @@ void main(uint3 tid : SV_DispatchThreadID) {
                                           rMarks.y + 7.0 * sB), sB, d.marks_mix, 2);
 
     float footY = R.y - pad - 11.0 * sB;
+    if (!compactHeight) {
     col += T.dim * sui3TextLong(P, float2(pad, footY), sB,
         S_S,S_E,S_T,S_U,S_P,S_SP,S_I,S_N,S_SP,S_P,S_R,S_O,
         S_P,S_E,S_R,S_T,S_I,S_E,S_S,0,0,0,0,0);
+    }
 
     OutputUAV[tid.xy] = float4(saturate(col), 1.0);
 }
