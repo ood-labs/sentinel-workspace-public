@@ -34,44 +34,12 @@ parameters:
   - { name: feature_gain, display: "Thread Gain", type: float, min: 0.0, max: 2.0, default: 0.688, group: "Features" }
 
 viewport:
-  hint: "Gray/red composition desk for deterministic seeds, shared palette, plate balance, distortion macros, and the live Features thread. Drag the marble plate itself in its own viewport."
-  # ui-label: title = STRATA COMPOSITION DESK
-  # ui-label: subtitle = PLATE SYSTEM / PREMULTIPLIED ALPHA
-  # ui-label: composition = COMPOSITION
-  # ui-label: seed = MASTER SEED
-  # ui-label: palette = PALETTE
-  # ui-label: atelier = ATELIER
-  # ui-label: chrome = CHROME
-  # ui-label: poster = POSTER
-  # ui-label: cage = CAGE
-  # ui-label: mono = MONO
-  # ui-label: distortion = DISTORTION
-  # ui-label: melt = MELT
-  # ui-label: twist = TWIST
-  # ui-label: marble = MARBLE WARP
-  # ui-label: spread = SPREAD
-  # ui-label: wire_scale = WIRE SCALE
-  # ui-label: plate_mix = PLATE MIX
-  # ui-label: sculpture = SCULPTURE
-  # ui-label: marble_plate = MARBLE
-  # ui-label: wire = WIRE
-  # ui-label: marks = MARKS
-  # ui-label: features = FEATURE THREAD
-  # ui-label: corners = CORNERS
+  hint: "Premultiplied plate-balance instrument. Drag the four plate rails for live composition; exact seed, palette, distortion, layout, and Feature Thread setup remains in Properties."
   controls:
-    - { id: master_seed, kind: slider, param: master_seed, rect: [0.060, 0.245, 0.455, 0.305], label: "Master Seed" }
-    - { id: palette_variant, kind: slider, param: palette_variant, rect: [0.060, 0.395, 0.455, 0.455], label: "Palette" }
-    - { id: melt_macro, kind: slider, param: melt_macro, rect: [0.060, 0.565, 0.245, 0.625], label: "Melt" }
-    - { id: twist_macro, kind: slider, param: twist_macro, rect: [0.270, 0.565, 0.455, 0.625], label: "Twist" }
-    - { id: marble_warp_macro, kind: slider, param: marble_warp_macro, rect: [0.060, 0.705, 0.455, 0.765], label: "Marble Warp" }
-    - { id: spread_macro, kind: slider, param: spread_macro, rect: [0.060, 0.850, 0.245, 0.910], label: "Spread" }
-    - { id: wire_scale_macro, kind: slider, param: wire_scale_macro, rect: [0.270, 0.850, 0.455, 0.910], label: "Wire Scale" }
-    - { id: blob_mix, kind: slider, param: blob_mix, rect: [0.550, 0.250, 0.920, 0.310], label: "Sculpture Plate" }
-    - { id: marble_mix, kind: slider, param: marble_mix, rect: [0.550, 0.380, 0.920, 0.440], label: "Marble Plate" }
-    - { id: wire_mix, kind: slider, param: wire_mix, rect: [0.550, 0.510, 0.920, 0.570], label: "Wire Plate" }
-    - { id: marks_mix, kind: slider, param: marks_mix, rect: [0.550, 0.640, 0.920, 0.700], label: "Graphic Marks" }
-    - { id: feature_enabled, kind: toggle, param: feature_enabled, rect: [0.550, 0.825, 0.650, 0.900], label: "Feature Thread" }
-    - { id: feature_gain, kind: slider, param: feature_gain, rect: [0.685, 0.825, 0.920, 0.900], label: "Thread Gain" }
+    - { id: blob_mix, kind: slider, param: blob_mix, rect: [0.055, 0.650, 0.475, 0.735], label: "Sculpture Plate" }
+    - { id: marble_mix, kind: slider, param: marble_mix, rect: [0.525, 0.650, 0.945, 0.735], label: "Marble Plate" }
+    - { id: wire_mix, kind: slider, param: wire_mix, rect: [0.055, 0.815, 0.475, 0.900], label: "Wire Plate" }
+    - { id: marks_mix, kind: slider, param: marks_mix, rect: [0.525, 0.815, 0.945, 0.900], label: "Graphic Marks" }
 
 buffers:
   - { name: ctrl, structured: true, element_size: 64, element_count: 1 }

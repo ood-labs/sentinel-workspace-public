@@ -1,24 +1,48 @@
-name: "Strata Control"
-version: "0.1"
+name: "Strata Composition Desk"
+version: "2.0"
 mode: generator
-resolution: [300, 128]
+resolution: [960, 540]
+working_format: RGBA8
 
-# Master macro node — drive the whole strata system from one place. Wire control outputs to
-# every plate's seed (blob_layout/marks/wire/marble) and the blob/marble warp via ref().
+panel:
+  mode: canvas
+  output: "Composition Desk"
+  resolution: follow_panel
 
-buffers:
-  - name: ctrl
-    structured: true
-    element_size: 32
-    element_count: 1
+data_inputs:
+  - name: "Feature Corners"
+    slot: 0
+    schema:
+      - { name: x, type: float }
+      - { name: y, type: float }
+      - { name: response, type: float }
+      - { name: pad, type: float }
 
 parameters:
-  - { name: master_seed,       display: "Master Seed", type: float, min: 0.0, max: 50.0, default: 5.0, group: "Macros" }
-  - { name: melt_macro,        display: "Melt",        type: float, min: 0.0, max: 1.0,  default: 0.5, group: "Macros" }
-  - { name: twist_macro,       display: "Twist",       type: float, min: 0.0, max: 1.0,  default: 0.4, group: "Macros" }
-  - { name: marble_warp_macro, display: "Marble Warp", type: float, min: 0.0, max: 2.5,  default: 1.0, group: "Macros" }
-  - { name: spread_macro,      display: "Spread",      type: float, min: 0.4, max: 2.0,  default: 1.0, group: "Macros" }
-  - { name: wire_scale_macro,  display: "Wire Scale",  type: float, min: 0.4, max: 2.0,  default: 0.82, group: "Macros" }
+  - { name: master_seed, display: "Master Seed", type: float, min: 0.0, max: 50.0, default: 12.0, group: "Composition" }
+  - { name: palette_variant, display: "Palette", type: int, min: 0, max: 4, default: 0, group: "Composition" }
+  - { name: melt_macro, display: "Melt", type: float, min: 0.0, max: 1.0, default: 0.5, group: "Distortion" }
+  - { name: twist_macro, display: "Twist", type: float, min: 0.0, max: 1.0, default: 0.4, group: "Distortion" }
+  - { name: marble_warp_macro, display: "Marble Warp", type: float, min: 0.0, max: 2.5, default: 1.0, group: "Distortion" }
+  - { name: spread_macro, display: "Spread", type: float, min: 0.4, max: 2.0, default: 1.0, group: "Layout" }
+  - { name: wire_scale_macro, display: "Wire Scale", type: float, min: 0.4, max: 2.0, default: 0.82, group: "Layout" }
+  - { name: blob_mix, display: "Sculpture Plate", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Plate Mix" }
+  - { name: marble_mix, display: "Marble Plate", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Plate Mix" }
+  - { name: wire_mix, display: "Wire Plate", type: float, min: 0.0, max: 2.0, default: 0.0, group: "Plate Mix" }
+  - { name: marks_mix, display: "Graphic Marks", type: float, min: 0.0, max: 2.0, default: 0.584, group: "Plate Mix" }
+  - { name: feature_enabled, display: "Feature Thread", type: bool, default: true, group: "Features" }
+  - { name: feature_gain, display: "Thread Gain", type: float, min: 0.0, max: 2.0, default: 0.688, group: "Features" }
+
+viewport:
+  hint: "Premultiplied plate-balance instrument. Drag the four plate rails for live composition; exact seed, palette, distortion, layout, and Feature Thread setup remains in Properties."
+  controls:
+    - { id: blob_mix, kind: slider, param: blob_mix, rect: [0.055, 0.650, 0.475, 0.735], label: "Sculpture Plate" }
+    - { id: marble_mix, kind: slider, param: marble_mix, rect: [0.525, 0.650, 0.945, 0.735], label: "Marble Plate" }
+    - { id: wire_mix, kind: slider, param: wire_mix, rect: [0.055, 0.815, 0.475, 0.900], label: "Wire Plate" }
+    - { id: marks_mix, kind: slider, param: marks_mix, rect: [0.525, 0.815, 0.945, 0.900], label: "Graphic Marks" }
+
+buffers:
+  - { name: ctrl, structured: true, element_size: 64, element_count: 1 }
 
 passes:
   - name: compute
@@ -27,20 +51,32 @@ passes:
     dispatch: [1, 1, 1]
     thread_group_x: 1
     thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
     output: "buffer:ctrl"
   - name: display
     shader: display.hlsl
     target: cs_5_0
+    time_dependent: true
     inputs:
       - { slot: 0, source: "buffer:ctrl" }
-
-control_outputs:
-  - { name: seed,        buffer: ctrl, element: 0, field_offset: 0,  description: "Master seed 0-50" }
-  - { name: melt,        buffer: ctrl, element: 0, field_offset: 4,  description: "Melt macro 0-1" }
-  - { name: twist,       buffer: ctrl, element: 0, field_offset: 8,  description: "Twist macro 0-1" }
-  - { name: marble_warp, buffer: ctrl, element: 0, field_offset: 12, description: "Marble warp 0-2.5" }
-  - { name: spread,      buffer: ctrl, element: 0, field_offset: 16, description: "Spread 0.4-2.0" }
-  - { name: wire_scale,  buffer: ctrl, element: 0, field_offset: 20, description: "Wire scale 0.4-2.0" }
+    output: output
 
 outputs:
-  - { name: "Control", pass: display }
+  - { name: "Composition Desk", pass: display }
+
+control_outputs:
+  - { name: seed, buffer: ctrl, element: 0, field_offset: 0, description: "Master seed 0-50" }
+  - { name: melt, buffer: ctrl, element: 0, field_offset: 4, description: "Melt macro 0-1" }
+  - { name: twist, buffer: ctrl, element: 0, field_offset: 8, description: "Twist macro 0-1" }
+  - { name: marble_warp, buffer: ctrl, element: 0, field_offset: 12, description: "Marble warp 0-2.5" }
+  - { name: spread, buffer: ctrl, element: 0, field_offset: 16, description: "Layout spread 0.4-2" }
+  - { name: wire_scale, buffer: ctrl, element: 0, field_offset: 20, description: "Wire scale 0.4-2" }
+  - { name: palette, buffer: ctrl, element: 0, field_offset: 24, description: "Shared palette variant 0-4" }
+  - { name: blob_mix, buffer: ctrl, element: 0, field_offset: 28, description: "Sculpture plate gain" }
+  - { name: marble_mix, buffer: ctrl, element: 0, field_offset: 32, description: "Marble plate gain" }
+  - { name: wire_mix, buffer: ctrl, element: 0, field_offset: 36, description: "Wire plate gain" }
+  - { name: marks_mix, buffer: ctrl, element: 0, field_offset: 40, description: "Graphic marks gain" }
+  - { name: feature_enabled, buffer: ctrl, element: 0, field_offset: 44, description: "Feature thread enabled state" }
+  - { name: feature_gain, buffer: ctrl, element: 0, field_offset: 48, description: "Feature thread visual gain" }
+  - { name: feature_count, buffer: ctrl, element: 0, field_offset: 52, description: "Live feature corner record count" }

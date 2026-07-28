@@ -469,6 +469,12 @@ def broken_variant_report():
         + b"\n# deliberately broken module copy\n"
     ).hexdigest()
     expected_module_hash = normalized_hash(module_authority)
+    strata_authority = ROOT / "projects/strata/modules/strata_control/manifest.yaml"
+    broken_strata_hash = hashlib.sha256(
+        normalized_bytes(strata_authority)
+        + b"\n# deliberately broken module copy\n"
+    ).hexdigest()
+    expected_strata_hash = normalized_hash(strata_authority)
 
     rows = [
         {
@@ -484,6 +490,13 @@ def broken_variant_report():
             "measured": broken_module_hash,
             "expected": expected_module_hash,
             "rejected": broken_module_hash != expected_module_hash,
+        },
+        {
+            "guard": "strata module copy identity",
+            "broken_variant": "authority manifest has an extra content line",
+            "measured": broken_strata_hash,
+            "expected": expected_strata_hash,
+            "rejected": broken_strata_hash != expected_strata_hash,
         },
         {
             "guard": "slider head",

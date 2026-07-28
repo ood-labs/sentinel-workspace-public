@@ -10,12 +10,14 @@ No engine pack is required. The project uses authored Modules plus the model-fre
 
 ## Composition Desk
 
-Open `strata_control` for the full-bleed **Strata Composition Desk**. Its controls intentionally own the composition-level values:
+Open `strata_control` for the full-bleed **Strata Composition Desk**. Its four
+Canvas rails balance the sculpture, marble, wire, and graphic-mark plates while
+the coupled composition plot shows their resolved weight.
 
-- shared palette and seed;
-- melt, twist, marble warp, spread, and wire scale;
-- blob, marble, wire, and marks plate balance;
-- live Features-thread enable and gain.
+Exact setup belongs in the node's Properties: shared seed and palette; melt,
+twist, marble warp, spread, and wire scale; and the Feature Thread enable and
+gain. The Canvas reads those values and the real corner count as telemetry
+without duplicating their ordinary scalar/toggle controls.
 
 The desk reads the real `Feature Corners` buffer and shows its live count. It publishes the scalar controls used by visible expressions throughout the graph, so the authority remains inspectable instead of being hidden in a monolithic renderer.
 
@@ -35,9 +37,20 @@ This project deliberately does not add generic object selection or transform giz
 
 The group exposes seven stable remix controls for sculpture gloss/reflection, marble panel size, thread width, bloom, and grain. Composition Desk controls are not duplicated there.
 
+## Remix
+
+Start with **Clean Studio** for material and focal placement, use **Graphic
+Poster** or **Wire Cage** when changing plate balance, and return to
+**Performance** for the documented lower-cost live state. Shape exact
+deformation and Feature Thread behavior in `strata_control` Properties, then
+perform the four plate weights from the Canvas. Drag the marble itself only in
+`marble_panel`; the two direct-manipulation surfaces have distinct jobs.
+
 ## Node presets
 
-- `strata_control` / **Atelier Plate Balance** captures the complete thirteen-control desk state.
+- `strata_control` / **Atelier Plate Balance** captures the complete
+  thirteen-parameter desk state, including the four Canvas rails and nine
+  Properties-only setup values.
 - `blob_render` / **Hero Sculpture** captures the renderer's material, deformation, light, quality, and camera essentials.
 
 Both are project-scoped, so they travel inside the project rather than relying on a machine-local preset library.
