@@ -38,5 +38,48 @@
       { "id": "SD_Face", "enabled": false, "healthy": true, "frame_delta": 0 },
       { "id": "Fruit_SD", "enabled": false, "healthy": true, "frame_delta": 0 }
     ]
+  },
+  "phase5_refresh": {
+    "date": "2026-07-27",
+    "project_load_count": 1,
+    "source_mode": "Groups",
+    "solo_upstream": true,
+    "resolution": [1280, 720],
+    "routes": [
+      { "action": "living_room_sdf", "selected_group": "annotation_87", "healthy": true },
+      { "action": "face_collage", "selected_group": "annotation_88", "healthy": true },
+      { "action": "fruit_atlas_scatter", "selected_group": "annotation_89", "healthy": true },
+      { "action": "topographic_hud", "selected_group": "annotation_90", "healthy": true },
+      { "action": "strata", "selected_group": "annotation_91", "healthy": true },
+      { "action": "desert_totem", "selected_group": "annotation_92", "healthy": true },
+      { "action": "industrial_lattice", "selected_group": "annotation_93", "healthy": true }
+    ],
+    "adjacent_capture_change_percent": [
+      98.7204,
+      99.9960,
+      99.9945,
+      92.7151,
+      37.4952,
+      98.7038
+    ],
+    "crossfade_probe": {
+      "from_group": "annotation_93",
+      "to_group": "annotation_90",
+      "fade_time_seconds": 0.75,
+      "samples_seconds": [0.0168, 0.4634, 0.9183],
+      "mean_rgb_distance_from_start": [7.2258, 42.4948, 46.2897],
+      "mid_mean_rgb_distance_to_end": 8.2626,
+      "healthy": true
+    },
+    "freeze_probe": {
+      "duration_seconds": 2.5,
+      "selected_group": "annotation_90",
+      "selected_pipeline": { "id": "Topo_Group_Output", "frame_delta": 67 },
+      "switcher_pipeline": { "id": "Gallery_Scene_Switcher", "frame_delta": 67 },
+      "nonselected_streamdiff": [
+        { "id": "SD_Face", "frame_delta": 0 },
+        { "id": "Fruit_SD", "frame_delta": 0 }
+      ]
+    }
   }
 }

@@ -72,6 +72,13 @@ Each group has exactly one Group Output. The gallery itself does not add an eigh
 
 `proof/runtime-switching.json` records an Industrial-to-Topographic crossfade at the beginning, midpoint, and completion. It also records a 2.5 second freeze test: the selected Topographic final post and gallery Mux advanced 151 frames, while the nonselected Face and Fruit StreamDiff pipelines advanced zero frames.
 
+[`proof/panel_collection.png`](proof/panel_collection.png) is the Phase 5
+same-extent review of all seven authored panels inside the Gallery. At
+923 x 213 they form one instrument family: black fields, white and gray
+construction lines, compact scientific labels, thin rules, and sparse orange
+state accents. Each panel remains distinct in information hierarchy rather
+than collapsing into a repeated template.
+
 For the complete authored UI, selection, picking, durable state, spline, and gizmo reference, use [`../interaction_lab`](../interaction_lab/). Interaction Lab is deliberately linked rather than included in this aesthetic Mux.
 
 ## Remix

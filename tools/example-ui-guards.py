@@ -59,7 +59,15 @@ PROJECTS = {
     },
     "showcase_gallery": {
         "project": "projects/showcase_gallery/showcase_gallery.sentinel",
-        "targets": {"Fruit_LFO": "projects/showcase_gallery/modules/Fruit_LFO"},
+        "targets": {
+            "Fruit_LFO": "projects/showcase_gallery/modules/Fruit_LFO",
+            "signal": "projects/showcase_gallery/modules/signal",
+            "strata_control": "projects/showcase_gallery/modules/strata_control",
+            "dada_control": "projects/showcase_gallery/modules/dada_control",
+            "LR_Furnishings": "projects/showcase_gallery/modules/LR_Furnishings",
+            "LR_Lighting": "projects/showcase_gallery/modules/LR_Lighting",
+            "LR_Architecture": "projects/showcase_gallery/modules/LR_Architecture",
+        },
     },
 }
 MODULE_COPY_SETS = {
