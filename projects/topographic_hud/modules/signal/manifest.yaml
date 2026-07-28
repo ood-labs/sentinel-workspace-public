@@ -32,49 +32,10 @@ parameters:
   - { name: conductor_energy, display: "Conductor Energy", type: float, min: 0.0, max: 1.0, default: 0.65, hidden: true, group: "Conductor" }
 
 viewport:
-  hint: "Cyan/orange operations console for terrain, density, layer balance, palette, and explicit Manual/Auto/Conductor signal authority."
-  # ui-label: title = TOPOGRAPHIC OPERATIONS
-  # ui-label: subtitle = TERRAIN / SIGNAL / CUE AUTHORITY
-  # ui-label: authority = AUTHORITY
-  # ui-label: cue = CUE MODE
-  # ui-label: terrain = TERRAIN
-  # ui-label: density = DENSITY
-  # ui-label: palette = PALETTE
-  # ui-label: layers = LAYER MIX
-  # ui-label: blue = BLUE
-  # ui-label: accent = ACCENT
-  # ui-label: nodes = NODES
-  # ui-label: labels = LABELS
-  # ui-label: master = MASTER
-  # ui-label: signal = SIGNAL BUS
-  # ui-label: pulse = PULSE
-  # ui-label: sweep = SWEEP
-  # ui-label: beat = BEAT
-  # ui-label: manual = MANUAL
-  # ui-label: auto = AUTO
-  # ui-label: conductor = CONDUCTOR
-  # ui-label: survey = SURVEY
-  # ui-label: threat = THREAT
-  # ui-label: night = NIGHT
-  # ui-label: minimal = MINIMAL
-  # ui-label: performance = PERF
+  hint: "Signal-bus instrument. Drag ENERGY and SWEEP for live performance; exact authority, cue, terrain, palette, rates, and layer shaping remain in Properties."
   controls:
-    - { id: authority, kind: slider, param: authority, rect: [0.055, 0.225, 0.470, 0.285], label: "Signal Authority" }
-    - { id: cue_mode, kind: slider, param: cue_mode, rect: [0.055, 0.365, 0.470, 0.425], label: "Cue Mode" }
-    - { id: terrain, kind: slider, param: terrain, rect: [0.055, 0.550, 0.270, 0.610], label: "Terrain" }
-    - { id: node_density, kind: slider, param: node_density, rect: [0.300, 0.550, 0.515, 0.610], label: "Node Density" }
-    - { id: palette, kind: slider, param: palette, rect: [0.055, 0.705, 0.515, 0.765], label: "Palette" }
-    - { id: layer_blue, kind: slider, param: layer_blue, rect: [0.585, 0.235, 0.930, 0.295], label: "Blue Contours" }
-    - { id: layer_accent, kind: slider, param: layer_accent, rect: [0.585, 0.335, 0.930, 0.395], label: "Accent Contours" }
-    - { id: layer_nodes, kind: slider, param: layer_nodes, rect: [0.585, 0.435, 0.930, 0.495], label: "Nodes" }
-    - { id: layer_labels, kind: slider, param: layer_labels, rect: [0.585, 0.535, 0.930, 0.595], label: "Labels" }
-    - { id: master_mix, kind: slider, param: master_mix, rect: [0.585, 0.655, 0.930, 0.715], label: "Master Mix" }
-    - { id: manual_energy, kind: slider, param: manual_energy, rect: [0.055, 0.850, 0.255, 0.915], label: "Manual Energy" }
-    - { id: manual_sweep, kind: slider, param: manual_sweep, rect: [0.275, 0.850, 0.475, 0.915], label: "Manual Sweep" }
-    - { id: pulse_rate, kind: slider, param: pulse_rate, rect: [0.520, 0.850, 0.620, 0.915], label: "Pulse Rate" }
-    - { id: sweep_rate, kind: slider, param: sweep_rate, rect: [0.640, 0.850, 0.740, 0.915], label: "Sweep Rate" }
-    - { id: beat_rate, kind: slider, param: beat_rate, rect: [0.760, 0.850, 0.860, 0.915], label: "Beat Rate" }
-    - { id: beat_sharp, kind: slider, param: beat_sharp, rect: [0.880, 0.850, 0.950, 0.915], label: "Beat Sharpness" }
+    - { id: manual_energy, kind: slider, param: manual_energy, rect: [0.055, 0.815, 0.475, 0.905], label: "Performance Energy" }
+    - { id: manual_sweep, kind: slider, param: manual_sweep, rect: [0.525, 0.815, 0.945, 0.905], label: "Performance Sweep" }
 
 buffers:
   - { name: sig, structured: true, element_size: 80, element_count: 1 }

@@ -1,6 +1,10 @@
-#include "../_shared/ui/sui_v2.hlsli"
+// Topographic Operations Console — sui3 port.
+//
+// The Canvas is a signal instrument, not a second Properties form. Exact
+// shaping remains in Properties; the two surviving rails are the performance
+// gestures whose values are coupled directly to the live bus traces below.
+#include "../_shared/ui/sui3_controls.hlsli"
 #include "_ui.generated.hlsli"
-#include "../_shared/ui/sui_generated_text.hlsli"
 
 struct SigData {
     float pulse; float sweep; float beat; float slow;
@@ -13,135 +17,149 @@ struct SigData {
 StructuredBuffer<SigData> _Tex0 : register(t0);
 RWTexture2D<float4> OutputUAV : register(u0);
 
-SuiTheme topoTheme()
-{
-    SuiTheme t = suiMonochromeTheme();
-    t.background = float3(0.003, 0.008, 0.011);
-    t.panel = float3(0.008, 0.022, 0.028);
-    t.panelRaised = float3(0.012, 0.036, 0.044);
-    t.control = float3(0.018, 0.055, 0.064);
-    t.controlHover = float3(0.025, 0.100, 0.112);
-    t.controlDown = float3(0.88, 0.44, 0.08);
-    t.text = float3(0.72, 0.96, 1.00);
-    t.muted = float3(0.24, 0.50, 0.56);
-    t.border = float3(0.08, 0.30, 0.35);
-    t.accent = float3(0.06, 0.78, 0.92);
-    t.danger = float3(1.00, 0.43, 0.08);
-    return t;
+float4 pxRect(float4 r, float2 R) {
+    return float4(r.x * R.x, r.y * R.y, r.z * R.x, r.w * R.y);
 }
 
-void drawDiscrete(inout float3 color, SuiContext c, SuiTheme theme, float4 rect,
-                  SuiInteraction interaction, int selected, int count)
-{
-    suiButton(color, c, theme, rect, interaction, false);
-    float width = (rect.z - rect.x) / max((float)count, 1.0);
-    [loop] for (int i = 0; i < 8; ++i) {
-        if (i >= count) break;
-        float4 cell = float4(rect.x + width * i, rect.y, rect.x + width * (i + 1), rect.w);
-        if (i == selected) suiComposite(color, theme.accent * 0.72, suiFillRect(c, suiRectInset(c, cell, 3.0)));
-        if (i > 0) suiComposite(color, theme.border, suiLinePx(c, cell.xy, float2(cell.x, cell.w), 1.0));
-    }
+float laneValue(int lane, SigData d) {
+    return lane == 0 ? d.pulse : lane == 1 ? d.sweep
+         : lane == 2 ? d.beat  : d.slow;
 }
 
-void label(inout float3 color, SuiContext c, SuiTheme theme, float2 p, uint id, bool hot)
-{
-    suiComposite(color, hot ? theme.text : theme.muted, suiLabelText(c, p, suiBodyStyle(), id));
-}
-
-void meter(inout float3 color, SuiContext c, SuiTheme theme, float4 rect, float value, bool orange)
-{
-    suiControlFrame(color, c, theme, rect);
-    float4 inside = suiControlInterior(c, rect);
-    inside.z = lerp(inside.x, inside.z, saturate(value));
-    suiComposite(color, orange ? theme.danger : theme.accent, suiFillRect(c, inside));
+float layerValue(int lane, SigData d) {
+    return lane == 0 ? d.blue_gain : lane == 1 ? d.accent_gain
+         : lane == 2 ? d.nodes_gain : d.labels_gain;
 }
 
 [numthreads(8, 8, 1)]
-void main(uint3 tid : SV_DispatchThreadID)
-{
+void main(uint3 tid : SV_DispatchThreadID) {
     if (tid.x >= (uint)_Resolution.x || tid.y >= (uint)_Resolution.y) return;
-    SuiContext c = suiContext(tid.xy, _Resolution.xy);
-    SuiTheme theme = topoTheme();
-    SigData data = _Tex0[0];
-    float3 color = theme.background;
 
-    suiComposite(color, float3(0.008, 0.028, 0.034), suiGridPx(c, 24.0, 0.55));
-    float4 shell = float4(0.018, 0.025, 0.982, 0.968);
-    suiPanel(color, c, theme, shell, false);
-    suiComposite(color, theme.panelRaised, suiFillRect(c, float4(shell.x, shell.y, shell.z, 0.165)));
-    suiComposite(color, theme.accent, suiFillRect(c, float4(shell.x, shell.y, shell.x + 0.004, 0.165)));
-    suiComposite(color, theme.danger, suiFillRect(c, float4(0.865, shell.y, shell.z, 0.032)));
-    suiComposite(color, theme.text, suiLabelText(c, float2(0.042, 0.060), suiTitleStyle(), UI_LABEL_TITLE));
-    suiComposite(color, theme.muted, suiLabelText(c, float2(0.042, 0.116), suiBodyStyle(), UI_LABEL_SUBTITLE));
+    float2 R = _Resolution.xy;
+    float2 P = (float2)tid.xy + 0.5;
+    float k = min(R.x / 1280.0, R.y / 720.0);
+    float sB = k >= 2.6 ? 3.0 : k >= 1.7 ? 2.0 : 1.0;
+    float sN = 2.0 * sB;
+    float sT = 3.0 * sB;
+    float pad = max(12.0, 0.026 * R.x);
 
-    float live = 0.45 + 0.55 * sin(_Time * 5.0) * sin(_Time * 5.0);
-    suiComposite(color, data.authority > 1.5 ? theme.danger : theme.accent,
-                 suiDiscPx(c, float2(0.936, 0.095), 4.0 + live * 1.5));
-    suiComposite(color, theme.text, suiInteger(c, float2(0.884, 0.080), suiBodyStyle(), (int)round(data.energy * 100.0), 3));
+    Sui3Theme T = sui3Theme(SUI3_AMBER);
+    SigData d = _Tex0[0];
+    float3 col = T.field;
 
-    float4 left = float4(0.035, 0.190, 0.535, 0.800);
-    float4 right = float4(0.555, 0.190, 0.955, 0.800);
-    suiPanel(color, c, theme, left, true);
-    suiPanel(color, c, theme, right, true);
+    // Quiet survey field: all chrome is snapped through sui3 primitives.
+    col += T.rule * 0.13 * sui3Graticule(P, float4(0.0, 0.0, R.x, R.y), float2(16.0, 9.0));
+    col += T.rule * 0.75 * sui3Registration(P, R, 14.0 * sB);
 
-    label(color, c, theme, float2(0.055, 0.195), UI_LABEL_AUTHORITY, true);
-    drawDiscrete(color, c, theme, UI_RECT_AUTHORITY, suiInteraction(UI_INDEX_AUTHORITY), (int)round(authority), 3);
-    label(color, c, theme, float2(0.072, 0.295), UI_LABEL_MANUAL, authority == 0);
-    label(color, c, theme, float2(0.210, 0.295), UI_LABEL_AUTO, authority == 1);
-    label(color, c, theme, float2(0.333, 0.295), UI_LABEL_CONDUCTOR, authority == 2);
+    // Header uses three integer bitmap scales: title, live number, captions.
+    if (R.x >= 700.0) {
+        col += T.ink * sui3TextLong(P, float2(pad, pad), sT,
+            S_T,S_O,S_P,S_O,S_G,S_R,S_A,S_P,S_H,S_I,S_C,S_SP,
+            S_O,S_P,S_E,S_R,S_A,S_T,S_I,S_O,S_N,S_S,0,0);
+    } else {
+        col += T.ink * sui3Text(P, float2(pad, pad), sT,
+            S_T,S_O,S_P,S_O,S_G,S_R,S_A,S_P,S_H,S_I,S_C,0);
+    }
+    col += T.dim * sui3TextLong(P, float2(pad, pad + 36.0 * sB), sB,
+        S_S,S_I,S_G,S_N,S_A,S_L,S_SP,S_B,S_U,S_S,S_SP,S_SL,
+        S_SP,S_L,S_I,S_V,S_E,S_SP,S_S,S_T,S_A,S_T,S_E,0);
 
-    label(color, c, theme, float2(0.055, 0.335), UI_LABEL_CUE, true);
-    drawDiscrete(color, c, theme, UI_RECT_CUE_MODE, suiInteraction(UI_INDEX_CUE_MODE), (int)round(cue_mode), 5);
-    label(color, c, theme, float2(0.060, 0.435), UI_LABEL_SURVEY, cue_mode == 0);
-    label(color, c, theme, float2(0.150, 0.435), UI_LABEL_THREAT, cue_mode == 1);
-    label(color, c, theme, float2(0.245, 0.435), UI_LABEL_NIGHT, cue_mode == 2);
-    label(color, c, theme, float2(0.327, 0.435), UI_LABEL_MINIMAL, cue_mode == 3);
-    label(color, c, theme, float2(0.425, 0.435), UI_LABEL_PERFORMANCE, cue_mode == 4);
+    if (R.x >= 700.0) {
+        float energyX = R.x - pad - sui3FixedWidth(sN, 2);
+        col += T.accent * sui3Fixed(P, float2(energyX, pad + 2.0 * sB), sN, d.energy, 2);
+        col += T.dim * sui3Text(P, float2(energyX, pad + 27.0 * sB), sB,
+            S_E,S_N,S_E,S_R,S_G,S_Y,0,0,0,0,0,0);
+    }
 
-    label(color, c, theme, float2(0.055, 0.510), UI_LABEL_TERRAIN, false);
-    label(color, c, theme, float2(0.300, 0.510), UI_LABEL_DENSITY, false);
-    drawDiscrete(color, c, theme, UI_RECT_TERRAIN, suiInteraction(UI_INDEX_TERRAIN), terrain, 4);
-    suiSlider(color, c, theme, UI_RECT_NODE_DENSITY, suiInteraction(UI_INDEX_NODE_DENSITY), saturate((node_density - 12.0) / 100.0));
-    suiComposite(color, theme.text, suiInteger(c, float2(0.445, 0.565), suiBodyStyle(), (int)round(data.density), 3));
+    float yRule = pad + 54.0 * sB;
+    col += sui3Rule(P, R, yRule, pad, T);
 
-    label(color, c, theme, float2(0.055, 0.665), UI_LABEL_PALETTE, false);
-    drawDiscrete(color, c, theme, UI_RECT_PALETTE, suiInteraction(UI_INDEX_PALETTE), palette, 4);
-    float4 paletteStrip = float4(0.055, 0.775, 0.515, 0.786);
-    float split = paletteStrip.x + (paletteStrip.z - paletteStrip.x) * 0.72;
-    suiComposite(color, theme.accent, suiFillRect(c, float4(paletteStrip.x, paletteStrip.y, split, paletteStrip.w)));
-    suiComposite(color, theme.danger, suiFillRect(c, float4(split, paletteStrip.y, paletteStrip.z, paletteStrip.w)));
+    // Authority / cue / map status. These are readbacks, edited precisely in
+    // Properties; active selections alone receive the accent.
+    float statusTop = yRule + 16.0 * sB;
+    col += T.dim * sui3Text(P, float2(pad, statusTop), sB,
+        S_A,S_U,S_T,S_H,S_O,S_R,S_I,S_T,S_Y,0,0,0);
+    col += T.ink * sui3Digits(P, float2(pad + 82.0 * sB, statusTop), sB,
+                              (int)round(d.authority), 1);
+    col += T.dim * sui3Text(P, float2(pad + 120.0 * sB, statusTop), sB,
+        S_C,S_U,S_E,0,0,0,0,0,0,0,0,0);
+    col += T.ink * sui3Digits(P, float2(pad + 153.0 * sB, statusTop), sB,
+                              (int)round(d.cue_mode), 1);
+    col += T.dim * sui3Text(P, float2(pad + 190.0 * sB, statusTop), sB,
+        S_T,S_E,S_R,S_R,S_A,S_I,S_N,0,0,0,0,0);
+    col += T.ink * sui3Digits(P, float2(pad + 250.0 * sB, statusTop), sB,
+                              (int)round(d.terrain), 1);
+    col += T.dim * sui3Text(P, float2(pad + 288.0 * sB, statusTop), sB,
+        S_N,S_O,S_D,S_E,S_S,0,0,0,0,0,0,0);
+    col += T.ink * sui3Digits(P, float2(pad + 337.0 * sB, statusTop), sB,
+                              (int)round(d.density), 3);
 
-    label(color, c, theme, float2(0.585, 0.190), UI_LABEL_LAYERS, true);
-    label(color, c, theme, float2(0.585, 0.225), UI_LABEL_BLUE, false);
-    suiSlider(color, c, theme, UI_RECT_LAYER_BLUE, suiInteraction(UI_INDEX_LAYER_BLUE), layer_blue * 0.5);
-    label(color, c, theme, float2(0.585, 0.310), UI_LABEL_ACCENT, false);
-    suiSlider(color, c, theme, UI_RECT_LAYER_ACCENT, suiInteraction(UI_INDEX_LAYER_ACCENT), layer_accent * 0.5);
-    label(color, c, theme, float2(0.585, 0.400), UI_LABEL_NODES, false);
-    suiSlider(color, c, theme, UI_RECT_LAYER_NODES, suiInteraction(UI_INDEX_LAYER_NODES), layer_nodes * 0.5);
-    label(color, c, theme, float2(0.585, 0.490), UI_LABEL_LABELS, false);
-    suiSlider(color, c, theme, UI_RECT_LAYER_LABELS, suiInteraction(UI_INDEX_LAYER_LABELS), layer_labels * 0.5);
-    label(color, c, theme, float2(0.585, 0.600), UI_LABEL_MASTER, true);
-    suiSlider(color, c, theme, UI_RECT_MASTER_MIX, suiInteraction(UI_INDEX_MASTER_MIX), saturate((master_mix - 0.25) / 1.5));
+    // Four live transport lanes. Their marker, trace, and numeric value all
+    // derive from the same control-output record.
+    float plotTop = statusTop + 27.0 * sB;
+    float plotBottom = 0.59 * R.y;
+    float4 plot = float4(pad, plotTop, R.x - pad, plotBottom);
+    if (sui3RectIn(P, plot) > 0.5 || sui3Frame(P, plot) > 0.0) {
+        col += T.well * sui3RectIn(P, plot);
+        col += T.rule * 0.20 * sui3Graticule(P, plot, float2(12.0, 4.0));
+        col += T.rule * sui3Frame(P, plot);
+        col += T.mid * 0.55 * sui3Brackets(P, plot, 16.0 * sB);
+    }
 
-    // Live resolved layer readback makes control authority explicit.
-    meter(color, c, theme, float4(0.585, 0.705, 0.745, 0.725), data.blue_gain * 0.5, false);
-    meter(color, c, theme, float4(0.770, 0.705, 0.930, 0.725), data.accent_gain * 0.5, true);
-    meter(color, c, theme, float4(0.585, 0.750, 0.745, 0.770), data.nodes_gain * 0.5, false);
-    meter(color, c, theme, float4(0.770, 0.750, 0.930, 0.770), data.labels_gain * 0.5, true);
+    float laneH = (plot.w - plot.y) * 0.25;
+    [loop] for (int lane = 0; lane < 4; ++lane) {
+        float v = saturate(laneValue(lane, d));
+        float y0 = plot.y + laneH * (float)lane;
+        float yc = y0 + laneH * 0.5;
+        float phase = d.phase * 6.2831853 + (float)lane * 1.13;
+        float u = saturate((P.x - plot.x) / max(plot.z - plot.x, 1.0));
+        float wave = sin(u * 18.84956 + phase) * (0.18 + 0.28 * v);
+        float yw = yc - wave * laneH;
+        float inLane = sui3RectIn(P, float4(plot.x, y0, plot.z, y0 + laneH));
+        col += T.mid * (0.38 + 0.18 * v) * sui3HairAt(P.y, yw) * inLane;
+        float yLive = lerp(y0 + laneH - 3.0, y0 + 3.0, v);
+        col += T.accent * sui3Disc(P, float2(plot.z - 7.0 * sB, yLive), 2.3 * sB);
+        col += T.rule * 0.55 * sui3HairAt(P.y, y0) * step(plot.x, P.x) * step(P.x, plot.z);
+        col += T.accent * sui3Fixed(P, float2(plot.x + 7.0 * sB, y0 + 4.0 * sB),
+                                    sB, v, 2);
+    }
 
-    float4 bus = float4(0.035, 0.820, 0.955, 0.945);
-    suiPanel(color, c, theme, bus, false);
-    label(color, c, theme, float2(0.055, 0.825), UI_LABEL_SIGNAL, true);
-    suiSlider(color, c, theme, UI_RECT_MANUAL_ENERGY, suiInteraction(UI_INDEX_MANUAL_ENERGY), manual_energy);
-    suiSlider(color, c, theme, UI_RECT_MANUAL_SWEEP, suiInteraction(UI_INDEX_MANUAL_SWEEP), manual_sweep);
-    suiSlider(color, c, theme, UI_RECT_PULSE_RATE, suiInteraction(UI_INDEX_PULSE_RATE), pulse_rate * 0.25);
-    suiSlider(color, c, theme, UI_RECT_SWEEP_RATE, suiInteraction(UI_INDEX_SWEEP_RATE), sweep_rate * 0.5);
-    suiSlider(color, c, theme, UI_RECT_BEAT_RATE, suiInteraction(UI_INDEX_BEAT_RATE), beat_rate * 0.125);
-    suiSlider(color, c, theme, UI_RECT_BEAT_SHARP, suiInteraction(UI_INDEX_BEAT_SHARP), saturate((beat_sharp - 0.1) / 7.9));
-    meter(color, c, theme, float4(0.055, 0.925, 0.255, 0.938), data.energy, true);
-    meter(color, c, theme, float4(0.275, 0.925, 0.475, 0.938), data.sweep, false);
-    meter(color, c, theme, float4(0.520, 0.925, 0.690, 0.938), data.pulse, false);
-    meter(color, c, theme, float4(0.710, 0.925, 0.880, 0.938), data.beat, true);
+    // Resolved layer mix: compact positional meters, not controls.
+    float metersTop = plot.w + 18.0 * sB;
+    col += T.dim * sui3Text(P, float2(pad, metersTop), sB,
+        S_L,S_A,S_Y,S_E,S_R,S_SP,S_M,S_I,S_X,0,0,0);
+    float meterY = metersTop + 18.0 * sB;
+    float gap = 10.0 * sB;
+    float meterW = (R.x - 2.0 * pad - 3.0 * gap) * 0.25;
+    [loop] for (int m = 0; m < 4; ++m) {
+        float4 mr = float4(pad + (meterW + gap) * (float)m, meterY,
+                           pad + (meterW + gap) * (float)m + meterW,
+                           meterY + max(14.0 * sB, 0.035 * R.y));
+        float mv = saturate(layerValue(m, d) * 0.5);
+        col += sui3Rail(P, mr, mv, T);
+        col += T.ink * sui3Fixed(P, float2(mr.x + 4.0 * sB, mr.y + 2.0 * sB),
+                                 sB, layerValue(m, d), 2);
+    }
 
-    OutputUAV[tid.xy] = float4(saturate(color), 1.0);
+    // The only Canvas controls: two broad performance gestures with attached
+    // live numbers. Host rects are the drawing authority.
+    float4 rEnergy = pxRect(UI_RECT_MANUAL_ENERGY, R);
+    float4 rSweep = pxRect(UI_RECT_MANUAL_SWEEP, R);
+    col += T.dim * sui3Text(P, float2(rEnergy.x, rEnergy.y - 14.0 * sB), sB,
+        S_P,S_E,S_R,S_F,S_SP,S_E,S_N,S_E,S_R,S_G,S_Y,0);
+    col += T.dim * sui3Text(P, float2(rSweep.x, rSweep.y - 14.0 * sB), sB,
+        S_P,S_E,S_R,S_F,S_SP,S_S,S_W,S_E,S_E,S_P,0,0);
+    col += sui3Rail(P, rEnergy, manual_energy, T);
+    col += sui3Rail(P, rSweep, manual_sweep, T);
+    col += T.accent * sui3Fixed(P, float2(rEnergy.z - sui3FixedWidth(sB, 2) - 5.0 * sB,
+                                          rEnergy.y + 7.0 * sB), sB, manual_energy, 2);
+    col += T.accent * sui3Fixed(P, float2(rSweep.z - sui3FixedWidth(sB, 2) - 5.0 * sB,
+                                          rSweep.y + 7.0 * sB), sB, manual_sweep, 2);
+
+    float footY = R.y - pad - 11.0 * sB;
+    col += T.dim * sui3TextLong(P, float2(pad, footY), sB,
+        S_S,S_E,S_T,S_U,S_P,S_SP,S_I,S_N,S_SP,S_P,S_R,S_O,
+        S_P,S_E,S_R,S_T,S_I,S_E,S_S,0,0,0,0,0);
+
+    OutputUAV[tid.xy] = float4(saturate(col), 1.0);
 }

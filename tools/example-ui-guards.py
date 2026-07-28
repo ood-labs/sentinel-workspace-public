@@ -62,6 +62,23 @@ PROJECTS = {
         "targets": {"Fruit_LFO": "projects/showcase_gallery/modules/Fruit_LFO"},
     },
 }
+MODULE_COPY_SETS = {
+    "signal": (
+        "projects/topographic_hud/modules/signal",
+        "modules/signal",
+        "projects/showcase_gallery/modules/signal",
+    ),
+    "strata_control": (
+        "projects/strata/modules/strata_control",
+        "modules/strata_control",
+        "projects/showcase_gallery/modules/strata_control",
+    ),
+    "dada_control": (
+        "projects/desert_totem/modules/dada_control",
+        "modules/dada_control",
+        "projects/showcase_gallery/modules/dada_control",
+    ),
+}
 
 
 class Mcp:
@@ -164,6 +181,35 @@ def bundle_report():
     return rows
 
 
+def module_copy_report(module_name):
+    """Compare every authored source file in a three-copy module set."""
+    copies = [ROOT / relative for relative in MODULE_COPY_SETS[module_name]]
+    authority = copies[0]
+    files = sorted(
+        path.relative_to(authority)
+        for path in authority.rglob("*")
+        if path.is_file() and ".sentinel" not in path.parts
+    )
+    rows = []
+    for relative in files:
+        expected = normalized_hash(authority / relative)
+        hashes = {
+            str(root.relative_to(ROOT)): (
+                normalized_hash(root / relative) if (root / relative).exists() else None
+            )
+            for root in copies
+        }
+        rows.append(
+            {
+                "file": relative.as_posix(),
+                "normalized_sha256": expected,
+                "copies": hashes,
+                "all_match": all(value == expected for value in hashes.values()),
+            }
+        )
+    return rows
+
+
 def load_manifest(module_dir: Path):
     with (module_dir / "manifest.yaml").open(encoding="utf-8") as handle:
         return yaml.safe_load(handle)
@@ -204,21 +250,20 @@ def focus_panel(mcp: Mcp, pipeline: str):
 
 
 def drag(mcp: Mcp, pipeline: str, control: str, x: float, y: float):
-    # On DIST 0.5.49 a target write is atomic on "begin". A following update
-    # or end reports that the target no longer owns capture. Record the exact
-    # response so a future host change cannot silently alter this contract.
+    # Most 0.5.49 surfaces commit and release on begin; narrow/restored native
+    # windows can retain capture until an explicit end. Always send the paired
+    # end. Hosts that already released return a harmless not-owned response,
+    # while hosts retaining capture are left ready for the next proof target.
+    payload = {
+        "action": "viewport_control_drag",
+        "pipeline": pipeline,
+        "control": control,
+        "x": x,
+        "y": y,
+    }
     responses = [
-        mcp.call(
-            "sentinel_ui",
-            {
-                "action": "viewport_control_drag",
-                "pipeline": pipeline,
-                "control": control,
-                "phase": "begin",
-                "x": x,
-                "y": y,
-            },
-        )
+        mcp.call("sentinel_ui", {**payload, "phase": "begin"}),
+        mcp.call("sentinel_ui", {**payload, "phase": "end"}),
     ]
     time.sleep(0.35)
     return responses
@@ -416,6 +461,14 @@ def broken_variant_report():
         normalized_bytes(authority) + b"\n// deliberately broken identity\n"
     ).hexdigest()
     expected_hash = normalized_hash(authority)
+    module_authority = (
+        ROOT / "projects/topographic_hud/modules/signal/manifest.yaml"
+    )
+    broken_module_hash = hashlib.sha256(
+        normalized_bytes(module_authority)
+        + b"\n# deliberately broken module copy\n"
+    ).hexdigest()
+    expected_module_hash = normalized_hash(module_authority)
 
     rows = [
         {
@@ -424,6 +477,13 @@ def broken_variant_report():
             "measured": broken_hash,
             "expected": expected_hash,
             "rejected": broken_hash != expected_hash,
+        },
+        {
+            "guard": "module copy identity",
+            "broken_variant": "authority manifest has an extra content line",
+            "measured": broken_module_hash,
+            "expected": expected_module_hash,
+            "rejected": broken_module_hash != expected_module_hash,
         },
         {
             "guard": "slider head",
@@ -516,6 +576,8 @@ def live_exercise(args):
             "panel": info.get("panel"),
             "controls": {},
         }
+        panel_size = report["panel"].get("render_size", [0, 0])
+        size_tag = f"{panel_size[0]}x{panel_size[1]}"
         for control_id in requested:
             control = controls[control_id]
             kind = control["kind"]
@@ -528,7 +590,7 @@ def live_exercise(args):
                 maximum = float(parameter.get("max", 1.0))
                 for target in (0.25, 0.75):
                     gestures = drag(mcp, args.pipeline, control_id, target, 0.5)
-                    png = proof_dir / f"{control_id}_{target:.2f}.png"
+                    png = proof_dir / f"{control_id}_{target:.2f}_{size_tag}.png"
                     capture(mcp, args.pipeline, png)
                     entry["probes"].append(
                         {
@@ -547,7 +609,10 @@ def live_exercise(args):
                     gestures = drag(
                         mcp, args.pipeline, control_id, x, 1.0 - value_y
                     )
-                    png = proof_dir / f"{control_id}_{x:.2f}_{value_y:.2f}.png"
+                    png = (
+                        proof_dir
+                        / f"{control_id}_{x:.2f}_{value_y:.2f}_{size_tag}.png"
+                    )
                     capture(mcp, args.pipeline, png)
                     entry["probes"].append(
                         {
@@ -559,11 +624,11 @@ def live_exercise(args):
                         }
                     )
             else:
-                before = proof_dir / f"{control_id}_before.png"
+                before = proof_dir / f"{control_id}_before_{size_tag}.png"
                 capture(mcp, args.pipeline, before)
                 before_value = state_value(mcp, args.pipeline, param)
                 gestures = drag(mcp, args.pipeline, control_id, 0.5, 0.5)
-                after = proof_dir / f"{control_id}_after.png"
+                after = proof_dir / f"{control_id}_after_{size_tag}.png"
                 capture(mcp, args.pipeline, after)
                 after_value = state_value(mcp, args.pipeline, param)
                 entry["probes"].append(
@@ -582,7 +647,7 @@ def live_exercise(args):
                 )
                 if kind == "toggle":
                     drag(mcp, args.pipeline, control_id, 0.5, 0.5)
-                    off = proof_dir / f"{control_id}_off_roundtrip.png"
+                    off = proof_dir / f"{control_id}_off_roundtrip_{size_tag}.png"
                     capture(mcp, args.pipeline, off)
                     entry["probes"].append(
                         {
@@ -601,6 +666,9 @@ def parse_args():
     parser = argparse.ArgumentParser()
     actions = parser.add_mutually_exclusive_group(required=True)
     actions.add_argument("--check-bundles", action="store_true")
+    actions.add_argument(
+        "--check-module-copies", choices=sorted(MODULE_COPY_SETS)
+    )
     actions.add_argument("--discover", action="store_true")
     actions.add_argument("--self-test", action="store_true")
     actions.add_argument("--exercise", action="store_true")
@@ -621,6 +689,10 @@ def main():
         report = bundle_report()
         print(json.dumps(report, indent=2))
         return 0 if all(row["all_match"] for row in report) else 1
+    if args.check_module_copies:
+        report = module_copy_report(args.check_module_copies)
+        print(json.dumps(report, indent=2))
+        return 0 if report and all(row["all_match"] for row in report) else 1
     if args.discover:
         mcp = Mcp()
         try:
