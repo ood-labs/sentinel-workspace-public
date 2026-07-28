@@ -78,6 +78,10 @@ MODULE_COPY_SETS = {
         "modules/dada_control",
         "projects/showcase_gallery/modules/dada_control",
     ),
+    "LR_Furnishings": (
+        "projects/living_room_sdf/modules/LR_Furnishings",
+        "projects/showcase_gallery/modules/LR_Furnishings",
+    ),
 }
 
 

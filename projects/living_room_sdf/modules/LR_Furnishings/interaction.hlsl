@@ -1,5 +1,5 @@
 #include "types.hlsli"
-#include "../_shared/ui/sui_interaction.hlsli"
+#include "../_shared/ui/sui3_events.hlsli"
 #include "_ui.generated.hlsli"
 StructuredBuffer<FurnishingState> _Tex0 : register(t0);
 StructuredBuffer<PNode> _Tex1 : register(t1);
@@ -41,17 +41,27 @@ void main(uint3 tid : SV_DispatchThreadID) {
     if (abs(modeParam - st.pad.y) > 0.1) { st.mode = modeParam; st.pad.y = modeParam; }
     if (abs(snapParam - st.pad.x) > 0.1) { st.snap_enabled = snapParam; st.pad.x = snapParam; }
 
-    uint down = (suiInteraction(UI_INDEX_MOVE).down ? 1u : 0u) |
-                (suiInteraction(UI_INDEX_ROTATE).down ? 2u : 0u) |
-                (suiInteraction(UI_INDEX_RESET).down ? 4u : 0u) |
-                (suiInteraction(UI_INDEX_RESET_ALL).down ? 8u : 0u) |
-                (suiInteraction(UI_INDEX_FIT).down ? 16u : 0u);
-    uint pressed = down & ~(uint)round(st.control_latch); st.control_latch = (float)down;
-    if ((pressed & 1u) != 0u) st.mode = 0.0;
-    if ((pressed & 2u) != 0u) st.mode = 1.0;
-    if ((pressed & 4u) != 0u && _ViewportSelectionMeta.y > 0u) { st.active_id = (float)_ViewportSelectionMeta.y; st.command = 7.0; }
-    if ((pressed & 8u) != 0u) st.command = 8.0;
-    if ((pressed & 16u) != 0u) { st.view_pan = 0.0; st.view_zoom = 1.0; }
+    float4 controlRects[8] = {
+        UI_RECT_MOVE * float4(_Resolution.xy, _Resolution.xy),
+        UI_RECT_ROTATE * float4(_Resolution.xy, _Resolution.xy),
+        UI_RECT_SNAP * float4(_Resolution.xy, _Resolution.xy),
+        UI_RECT_FIT * float4(_Resolution.xy, _Resolution.xy),
+        UI_RECT_RESET * float4(_Resolution.xy, _Resolution.xy),
+        UI_RECT_RESET_ALL * float4(_Resolution.xy, _Resolution.xy),
+        float4(0.0, 0.0, 0.0, 0.0),
+        float4(0.0, 0.0, 0.0, 0.0)
+    };
+    int controlHit = sui3HitBank(0.0, controlRects, 6);
+    if (controlHit == 0) st.mode = 0.0;
+    if (controlHit == 1) st.mode = 1.0;
+    // Snap remains a host-owned bool parameter. The completed click toggles
+    // that parameter, and the ordinary parameter reconciliation above mirrors
+    // it into editor state.
+    if (controlHit == 3) { st.view_pan = 0.0; st.view_zoom = 1.0; }
+    if (controlHit == 4 && _ViewportSelectionMeta.y > 0u) {
+        st.active_id = (float)_ViewportSelectionMeta.y; st.command = 7.0;
+    }
+    if (controlHit == 5) st.command = 8.0;
 
     bool beganThisCook = false;
     uint count = min(_ViewportEventCount, 64u);
