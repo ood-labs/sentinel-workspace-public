@@ -15,7 +15,9 @@
             ProjectFile = 'living_room_sdf.sentinel'
             SharedModules = @()
             MinimumSceneGroups = 1
-            RequiresGroupOutput = $true
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
             MinimumGroupPresets = 3
             MinimumNodePresets = 2
             Exemptions = @()
@@ -45,7 +47,9 @@
                 @{ PipelineId = 'signal'; ProjectDir = 'modules/signal'; Width = 480; Height = 270 }
             )
             MinimumSceneGroups = 1
-            RequiresGroupOutput = $true
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
             MinimumGroupPresets = 3
             MinimumNodePresets = 2
             Exemptions = @()
@@ -57,7 +61,9 @@
                 @{ PipelineId = 'strata_control'; ProjectDir = 'modules/strata_control'; Width = 480; Height = 270 }
             )
             MinimumSceneGroups = 1
-            RequiresGroupOutput = $true
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
             MinimumGroupPresets = 3
             MinimumNodePresets = 2
             Exemptions = @()
@@ -69,7 +75,9 @@
                 @{ PipelineId = 'dada_control'; ProjectDir = 'modules/dada_control'; Width = 480; Height = 270 }
             )
             MinimumSceneGroups = 1
-            RequiresGroupOutput = $true
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
             MinimumGroupPresets = 3
             MinimumNodePresets = 2
             Exemptions = @()

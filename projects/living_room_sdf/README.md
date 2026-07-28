@@ -2,8 +2,8 @@
 
 Living Room SDF is a model-free, modular 3D scene and a practical reference for
 editing a structured SDF composition in Sentinel. Six authored Modules separate
-architecture, furnishings, materials, lighting, rendering, and grading. The final
-grade feeds one Group Output inside one flat Scene Group.
+architecture, furnishings, materials, lighting, rendering, and grading. The
+final grade remains the direct image endpoint inside one flat Scene Group.
 
 ## Requirements
 
@@ -12,7 +12,8 @@ grade feeds one Group Output inside one flat Scene Group.
 - No AI model or TensorRT engine pack
 
 Open `living_room_sdf.sentinel`. The saved `Daylight` look is ready immediately;
-all Module paths are relative and bundled with the project.
+all Module paths are relative and bundled with the project. Every pipeline node
+preview is visible by default, and the project contains no Group Output.
 
 ## Furnishings plan editor
 
@@ -87,7 +88,7 @@ navigation controls for review framing.
    for broad authored offsets.
 3. Save reusable furnishing arrangements as project-scoped node presets.
 4. Save complete lighting, internal-camera, grade, and quality states as Scene Group presets.
-5. Route `LR Group Output` into a groups-mode Mux to include the room in a gallery.
+5. Use `LR Cinematic Grade` directly as the standalone project output.
 
 The renderer is intentionally a consumer: furnishing identity, selection, and edit
 logic stay in `LR Furnishings`, while the final PNode records flow downstream.

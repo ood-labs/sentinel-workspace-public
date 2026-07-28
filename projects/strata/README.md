@@ -1,10 +1,10 @@
 # Strata
 
-Strata is a modular portrait composition built from independent background, marble, sculptural blob, wire, marks, live feature-thread, plate-composite, and post passes. The modernization keeps that premultiplied architecture intact and adds a movable marble focal, a compact passive composition bus, shared palette modes, curated presets, and one Group Output.
+Strata is a modular portrait composition built from independent background, marble, sculptural blob, wire, marks, live feature-thread, plate-composite, and post passes. The modernization keeps that premultiplied architecture intact and adds a movable marble focal, a compact passive composition bus, shared palette modes, and curated presets.
 
 ## What to open
 
-Open `strata.sentinel`. All twelve active nodes live in one flat `STRATA COMPOSITION DESK` Scene Group with no child groups. `Strata_Group_Output` is the sole final endpoint.
+Open `strata.sentinel`. All twelve active nodes live in one flat `STRATA COMPOSITION DESK` Scene Group with no child groups. `post_1` is the final image node, and every pipeline node preview is visible by default.
 
 No engine pack is required. The project uses authored Modules plus the model-free `Features` pipeline.
 
@@ -67,7 +67,7 @@ Both are project-scoped, so they travel inside the project rather than relying o
 ```text
 blob_layout -- BlobInstances --> blob_render ----+
 strata_bg ---------------------------------------+
-marble_panel ------------------------------------+--> plate_comp --> post --> Strata_Group_Output
+marble_panel ------------------------------------+--> plate_comp --> post
 wire_render -------------------------------------+
 marks -------------------------------------------+
 plate_comp --> Features -- Corners --> corner_thread --+
@@ -85,4 +85,5 @@ corners at that same extent, and the full-resolution thread should span the
 portrait. The thread should visibly disappear when its `strata_control`
 Properties toggle is off. In **Performance**, `Features #0` is intentionally
 bypassed while the rest of the graph remains healthy. The project should
-contain exactly one flat Scene Group, zero child groups, and one Group Output.
+contain exactly one flat Scene Group, zero child groups, no Group Output, and
+visible-by-default previews for every pipeline node.

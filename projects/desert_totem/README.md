@@ -4,7 +4,9 @@ Desert Totem is a procedural Dada assemblage built from typed `DadaPart` records
 
 ## What to open
 
-Open `desert_totem.sentinel`. Its six authored Modules form one compact render graph.
+Open `desert_totem.sentinel`. Its six authored Modules form one compact render
+graph with no Group Output. `post_2` is the final image node, and every pipeline
+node preview is visible by default.
 
 No engine pack is required. Every dependency is bundled under `modules/`.
 

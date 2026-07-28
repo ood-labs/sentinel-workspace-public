@@ -62,6 +62,11 @@ function New-FixtureProject([string]$ProjectDir) {
                         [ordered]@{ name = 'Fidelity' },
                         [ordered]@{ name = 'Hero' }
                     )
+                },
+                [ordered]@{
+                    entityId = 'Active'
+                    type = 1
+                    previewVisible = $true
                 }
             )
         }
@@ -189,6 +194,34 @@ viewport:
     Remove-Item -LiteralPath (Join-Path $projectRoot 'shader_cache') -Force -Recurse
     $clean = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 0
     if (-not $clean.portable) { throw 'Repaired fixture did not validate as portable.' }
+
+    $previewConfig = Join-Path $testRoot 'preview-config.psd1'
+    $previewConfigText = [IO.File]::ReadAllText($config).Replace(
+        'industrial_lattice = @{',
+        "industrial_lattice = @{`n            RequireNodePreviews = `$true"
+    )
+    Write-Utf8 $previewConfig $previewConfigText
+    $fixtureFile = Join-Path $projectRoot 'industrial_lattice.sentinel'
+    $fixtureJson = [IO.File]::ReadAllText($fixtureFile) | ConvertFrom-Json
+    ($fixtureJson.graph.nodes | Where-Object { $_.entityId -eq 'Active' }).previewVisible = $false
+    Write-Utf8 $fixtureFile (($fixtureJson | ConvertTo-Json -Depth 12) + "`n")
+    $closedPreview = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $previewConfig, '-Json') 1
+    if (-not (@($closedPreview.projects[0].errors) -match 'preview visible by default')) {
+        throw 'Closed default node preview was not rejected.'
+    }
+
+    New-FixtureProject 'modules/Active'
+    $zeroOutputConfig = Join-Path $testRoot 'zero-output-config.psd1'
+    $zeroOutputConfigText = [IO.File]::ReadAllText($config).Replace(
+        'industrial_lattice = @{',
+        "industrial_lattice = @{`n            ExpectedGroupOutputs = 0"
+    )
+    Write-Utf8 $zeroOutputConfig $zeroOutputConfigText
+    $forbiddenOutput = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $zeroOutputConfig, '-Json') 1
+    if (-not (@($forbiddenOutput.projects[0].errors) -match 'exactly 0 Group Outputs')) {
+        throw 'Forbidden standalone Group Output was not rejected.'
+    }
+    New-FixtureProject 'modules/Active'
 
     # A path that normalizes to an approved shared module must still fail if
     # its resolved location escapes the workspace root.

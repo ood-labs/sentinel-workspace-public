@@ -94,11 +94,6 @@
                                     "startPinId":  295
                                 },
                                 {
-                                    "endPinId":  302,
-                                    "id":  65,
-                                    "startPinId":  293
-                                },
-                                {
                                     "endPinId":  330,
                                     "id":  74,
                                     "startPinId":  287
@@ -120,7 +115,7 @@
                                     "posX":  470,
                                     "posY":  159.99978637695313,
                                     "positionSet":  true,
-                                    "previewVisible":  false,
+                                    "previewVisible":  true,
                                     "type":  1
                                 },
                                 {
@@ -130,7 +125,7 @@
                                     "posX":  470,
                                     "posY":  508.61724853515625,
                                     "positionSet":  true,
-                                    "previewVisible":  false,
+                                    "previewVisible":  true,
                                     "type":  1
                                 },
                                 {
@@ -140,7 +135,7 @@
                                     "posX":  149.99951171875,
                                     "posY":  190.00003051757813,
                                     "positionSet":  true,
-                                    "previewVisible":  false,
+                                    "previewVisible":  true,
                                     "type":  1
                                 },
                                 {
@@ -150,7 +145,7 @@
                                     "posX":  149.99951171875,
                                     "posY":  539.99993896484375,
                                     "positionSet":  true,
-                                    "previewVisible":  false,
+                                    "previewVisible":  true,
                                     "type":  1
                                 },
                                 {
@@ -160,7 +155,7 @@
                                     "posX":  1130.0009765625,
                                     "posY":  240.00009155273438,
                                     "positionSet":  true,
-                                    "previewVisible":  false,
+                                    "previewVisible":  true,
                                     "type":  1
                                 },
                                 {
@@ -169,16 +164,6 @@
                                     "id":  73,
                                     "posX":  850,
                                     "posY":  238.53424072265625,
-                                    "positionSet":  true,
-                                    "previewVisible":  false,
-                                    "type":  1
-                                },
-                                {
-                                    "displayName":  "Desert Group Output 2",
-                                    "entityId":  "Desert_Group_Output",
-                                    "id":  77,
-                                    "posX":  1400,
-                                    "posY":  240.00009155273438,
                                     "positionSet":  true,
                                     "previewVisible":  true,
                                     "type":  1
@@ -1548,14 +1533,6 @@
                                    "type":  0
                                },
                                {
-                                   "id":  302,
-                                   "kind":  0,
-                                   "name":  "Video",
-                                   "nodeId":  77,
-                                   "slotIndex":  0,
-                                   "type":  0
-                               },
-                               {
                                    "id":  306,
                                    "kind":  1,
                                    "name":  "pulse",
@@ -1672,14 +1649,6 @@
                                    "kind":  1,
                                    "name":  "Render",
                                    "nodeId":  73,
-                                   "slotIndex":  0,
-                                   "type":  0
-                               },
-                               {
-                                   "id":  303,
-                                   "kind":  1,
-                                   "name":  "Out",
-                                   "nodeId":  77,
                                    "slotIndex":  0,
                                    "type":  0
                                },
@@ -2348,32 +2317,6 @@
                           "running":  true,
                           "secondaryInputFilePaths":  null,
                           "type":  "module"
-                      },
-                      {
-                          "displayName":  "Desert Group Output 2",
-                          "enabled":  true,
-                          "expressions":  null,
-                          "fitMode":  1,
-                          "id":  "Desert_Group_Output",
-                          "inputSlotSourceIds":  [
-                                                     "post_2"
-                                                 ],
-                          "outputFitMode":  1,
-                          "outputSinkId":  "",
-                          "panelAnchorId":  "Desert_Group_Output",
-                          "panelOpen":  true,
-                          "parameters":  {
-                                             "background_b":  "0.000000",
-                                             "background_g":  "0.000000",
-                                             "background_r":  "0.000000",
-                                             "fit":  "0",
-                                             "height":  "1080",
-                                             "resolution_mode":  "0",
-                                             "width":  "1920"
-                                         },
-                          "running":  true,
-                          "secondaryInputFilePaths":  null,
-                          "type":  "groupoutput"
                       }
                   ],
     "saved_at_ms":  1784242423380,

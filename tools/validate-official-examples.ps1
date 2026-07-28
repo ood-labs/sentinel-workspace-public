@@ -233,19 +233,21 @@ foreach ($projectName in $Projects) {
             }
         }
 
+        $hasExpectedGroupOutputs = $null -ne $definition.ExpectedGroupOutputs
         $expectedGroupOutputs = [int]$definition.ExpectedGroupOutputs
-        if ($expectedGroupOutputs -gt 0) {
+        if ($hasExpectedGroupOutputs) {
             if ($groupOutputs.Count -ne $expectedGroupOutputs) {
                 $errors.Add("needs exactly $expectedGroupOutputs Group Outputs; found $($groupOutputs.Count)")
             }
 
-            $groupOutputIds = @($groupOutputs | ForEach-Object { [string]$_.id })
-            $groupOutputNodes = @($projectJson.graph.nodes | Where-Object { $_.entityId -in $groupOutputIds })
-            foreach ($group in $sceneGroups) {
-                $left = [double]$group.posX
-                $top = [double]$group.posY
-                $right = $left + [double]$group.width
-                $bottom = $top + [double]$group.height
+            if ($expectedGroupOutputs -gt 0) {
+                $groupOutputIds = @($groupOutputs | ForEach-Object { [string]$_.id })
+                $groupOutputNodes = @($projectJson.graph.nodes | Where-Object { $_.entityId -in $groupOutputIds })
+                foreach ($group in $sceneGroups) {
+                    $left = [double]$group.posX
+                    $top = [double]$group.posY
+                    $right = $left + [double]$group.width
+                    $bottom = $top + [double]$group.height
                 $ownedOutputs = @($groupOutputNodes | Where-Object {
                     $centerX = [double]$_.posX + 80.0
                     $centerY = [double]$_.posY + 40.0
@@ -262,6 +264,18 @@ foreach ($projectName in $Projects) {
                 if ($incomingLinks.Count -ne 1) {
                     $errors.Add("Group Output '$($outputNode.entityId)' must have exactly one connected input; found $($incomingLinks.Count)")
                 }
+                }
+            }
+        }
+
+        if ([bool]$definition.RequireNodePreviews) {
+            $closedPreviews = @(
+                $projectJson.graph.nodes |
+                    Where-Object { [int]$_.type -eq 1 -and -not [bool]$_.previewVisible }
+            )
+            if ($closedPreviews.Count -gt 0) {
+                $closedIds = @($closedPreviews | ForEach-Object { [string]$_.entityId }) -join ', '
+                $errors.Add("requires every pipeline node preview visible by default; closed: $closedIds")
             }
         }
 

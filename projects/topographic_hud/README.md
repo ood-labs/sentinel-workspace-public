@@ -1,10 +1,10 @@
 # Topographic Operations
 
-Topographic Operations is a modular survey display built from a shared height field, three distinct transport lanes, editable data records, a cue-aware signal bus, and one Group Output. The original fifteen-node visual graph remains intact; the modernization adds only a Conductor and the final group endpoint.
+Topographic Operations is a modular survey display built from a shared height field, three distinct transport lanes, editable data records, and a cue-aware signal bus. The original fifteen-node visual graph remains intact, with a Conductor added for shared timing.
 
 ## What to open
 
-Open `topographic_hud.sentinel`. The complete graph lives in one flat `TOPOGRAPHIC OPERATIONS` Scene Group with no child groups. `Topo_Group_Output` is the sole final endpoint.
+Open `topographic_hud.sentinel`. The complete graph lives in one flat `TOPOGRAPHIC OPERATIONS` Scene Group with no child groups. `post` is the final image node, and every pipeline node preview is visible by default.
 
 ## Signal bus
 
@@ -46,7 +46,7 @@ show-level surface; they do not duplicate the signal node's setup parameters.
 ## Graph lanes
 
 ```text
-field_gen -> contours / grid / node_gen -> compositor -> post -> Topo_Group_Output
+field_gen -> contours / grid / node_gen -> compositor -> post
                                        |       ^
 node_gen -- Nodes --> link_gen --------+-------+--> label_gen
 signal -- control outputs / expressions ---------> visual parameters
@@ -57,4 +57,4 @@ Textures carry continuous images, structured buffers carry nodes/links/labels, a
 
 ## Runtime checks
 
-All seventeen contained pipelines should be enabled and healthy. The three semantic data lanes must remain wired, both editors should report twelve selectable objects, and the Scene Group must contain exactly one Group Output. The lightweight graph profiler should report no unexplained hotspots.
+All sixteen contained pipelines should be enabled and healthy, with their graph previews visible by default. The three semantic data lanes must remain wired, and both editors should report twelve selectable objects. The lightweight graph profiler should report no unexplained hotspots.
