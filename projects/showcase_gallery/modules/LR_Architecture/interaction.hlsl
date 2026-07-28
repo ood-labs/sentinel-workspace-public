@@ -1,4 +1,5 @@
 #include "types.hlsli"
+#include "../_shared/ui/sui3_events.hlsli"
 RWStructuredBuffer<ArchitectureEditorState> OutputBuffer : register(u0);
 
 [numthreads(1,1,1)]

@@ -82,6 +82,14 @@ MODULE_COPY_SETS = {
         "projects/living_room_sdf/modules/LR_Furnishings",
         "projects/showcase_gallery/modules/LR_Furnishings",
     ),
+    "LR_Lighting": (
+        "projects/living_room_sdf/modules/LR_Lighting",
+        "projects/showcase_gallery/modules/LR_Lighting",
+    ),
+    "LR_Architecture": (
+        "projects/living_room_sdf/modules/LR_Architecture",
+        "projects/showcase_gallery/modules/LR_Architecture",
+    ),
 }
 
 
@@ -485,6 +493,22 @@ def broken_variant_report():
         + b"\n# deliberately broken module copy\n"
     ).hexdigest()
     expected_dada_hash = normalized_hash(dada_authority)
+    lighting_authority = (
+        ROOT / "projects/living_room_sdf/modules/LR_Lighting/manifest.yaml"
+    )
+    broken_lighting_hash = hashlib.sha256(
+        normalized_bytes(lighting_authority)
+        + b"\n# deliberately broken module copy\n"
+    ).hexdigest()
+    expected_lighting_hash = normalized_hash(lighting_authority)
+    architecture_authority = (
+        ROOT / "projects/living_room_sdf/modules/LR_Architecture/manifest.yaml"
+    )
+    broken_architecture_hash = hashlib.sha256(
+        normalized_bytes(architecture_authority)
+        + b"\n# deliberately broken module copy\n"
+    ).hexdigest()
+    expected_architecture_hash = normalized_hash(architecture_authority)
 
     rows = [
         {
@@ -514,6 +538,20 @@ def broken_variant_report():
             "measured": broken_dada_hash,
             "expected": expected_dada_hash,
             "rejected": broken_dada_hash != expected_dada_hash,
+        },
+        {
+            "guard": "living-room lighting copy identity",
+            "broken_variant": "authority manifest has an extra content line",
+            "measured": broken_lighting_hash,
+            "expected": expected_lighting_hash,
+            "rejected": broken_lighting_hash != expected_lighting_hash,
+        },
+        {
+            "guard": "living-room architecture copy identity",
+            "broken_variant": "authority manifest has an extra content line",
+            "measured": broken_architecture_hash,
+            "expected": expected_architecture_hash,
+            "rejected": broken_architecture_hash != expected_architecture_hash,
         },
         {
             "guard": "slider head",

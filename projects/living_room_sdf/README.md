@@ -16,7 +16,7 @@ all Module paths are relative and bundled with the project.
 
 ## Furnishings plan editor
 
-Open `LR Furnishings` to work in the top-down authored Canvas.
+Open `LR Furnishings` to work in the top-down authored sui3 Canvas.
 
 - Left-click selects one logical furnishing assembly.
 - Left-drag moves the selected assembly. Sofa cushions, table decor, and other
@@ -40,7 +40,7 @@ state rather than only ordinary parameters.
 
 ## Lighting desk
 
-Open `LR Lighting` for the full-bleed lighting Canvas. The left side is an
+Open `LR Lighting` for the full-bleed sui3 lighting Canvas. The left side is an
 aspect-correct room plan drawn from the live Architecture and Furnishings records;
 the thin cool/warm rings show the six emitted light records in spatial context.
 The right-side sliders directly control window daylight, practical lamps, ambient
@@ -52,6 +52,11 @@ surfaces for the same member parameters. The saved project deliberately avoids a
 one-way expression from the group back onto `LR Lighting`, because that would
 overwrite changes made in the authored Canvas. Native two-way parameter binding is
 deferred until Sentinel exposes a proper bidirectional bind contract.
+
+`LR Architecture` is a control-free sui3 plan surface. Middle-drag pans and the
+wheel zooms the plan; exact room, entry, floor, art, and pendant dimensions stay
+in Properties. Its 13-record PNode output remains the source of truth for the
+Lighting desk and final renderer.
 
 ## Scene controls and looks
 
