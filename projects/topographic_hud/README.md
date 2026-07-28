@@ -6,20 +6,16 @@ Topographic Operations is a modular survey display built from a shared height fi
 
 Open `topographic_hud.sentinel`. The complete graph lives in one flat `TOPOGRAPHIC OPERATIONS` Scene Group with no child groups. `Topo_Group_Output` is the sole final endpoint.
 
-## Signal Canvas
+## Signal bus
 
-Open `signal` to use the full-bleed **Topographic Operations Console**. The
-Canvas is a live signal instrument: drag the broad **Performance Energy** and
-**Performance Sweep** rails while watching the four transport lanes, resolved
-layer meters, authority, cue, terrain, density, and energy readbacks respond.
+`signal` is a control bus, not a second interface. Edit Manual / Auto /
+Conductor authority, cue, terrain, node density, palette, layer gains, master
+mix, and all signal rates in the node's Properties.
 
-Exact setup belongs in the node's Properties: Manual / Auto / Conductor
-authority, the five cue looks, terrain, node density, palette, four layer gains,
-master mix, and the pulse, sweep, beat, and beat-shape rates. Keeping those
-ordinary scalar and enum controls in Properties leaves the Canvas focused on
-the two gestures that are useful during a performance.
+Its 480 x 270 texture is only a passive four-lane activity preview. It has no
+Canvas mode, follow-panel allocation, or authored controls.
 
-The console publishes sixteen control outputs. Expressions make that authority visible in the graph by driving terrain selection, field detail, node density, layer gains, node pulse, palette, and post color. Manual and Conductor modes are smoothed so changing authority does not pop the scene.
+The bus publishes sixteen control outputs. Expressions make that authority visible in the graph by driving terrain selection, field detail, node density, layer gains, node pulse, palette, and post color. Manual and Conductor modes are smoothed so changing authority does not pop the scene.
 
 ## Editable survey data
 
@@ -37,16 +33,15 @@ Both editors use host-owned picking and four-phase edits. Their offset and edit-
 - **Minimal** — restrained grid and reduced information density.
 - **Performance** — balanced lower-cost default with Conductor authority.
 
-The group exposes eight stable scene-level controls for terrain frequency and octaves, grid and contour density, viewport radius, atmosphere density, bloom, and vignette. Signal Canvas controls are not duplicated there.
+The group exposes eight stable scene-level controls for terrain frequency and octaves, grid and contour density, viewport radius, atmosphere density, bloom, and vignette. Signal-bus setup is not duplicated there.
 
 ## Remix
 
 Start from **Survey** when changing topology or labeling, **Threat** or **Night
 Vision** when exploring palette and density, and **Performance** for the
 documented lower-cost live default. Shape exact rates and layer balance in
-`signal` Properties, then perform the result from the two Canvas rails. The
-Scene Group's eight exposed controls remain the stable show-level surface; they
-do not duplicate the signal node's setup parameters.
+`signal` Properties. The Scene Group's eight exposed controls remain the stable
+show-level surface; they do not duplicate the signal node's setup parameters.
 
 ## Graph lanes
 

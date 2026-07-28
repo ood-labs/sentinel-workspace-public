@@ -154,6 +154,43 @@ foreach ($projectName in $Projects) {
             })
         }
 
+        $passiveBuses = if ($null -eq $definition.PassiveBuses) { @() } else { @($definition.PassiveBuses) }
+        foreach ($bus in $passiveBuses) {
+            $pipelineId = [string]$bus.PipelineId
+            $expectedDir = Normalize-Relative ([string]$bus.ProjectDir)
+            $expectedWidth = [int]$bus.Width
+            $expectedHeight = [int]$bus.Height
+            $pipeline = @($projectJson.pipelines | Where-Object { [string]$_.id -eq $pipelineId })
+            if ($pipeline.Count -ne 1) {
+                $errors.Add("passive bus '$pipelineId' must resolve to exactly one pipeline; found $($pipeline.Count)")
+                continue
+            }
+
+            $actualDir = Normalize-Relative ([string]$pipeline[0].parameters.project_dir)
+            if ($actualDir -ne $expectedDir) {
+                $errors.Add("passive bus '$pipelineId' must use '$expectedDir'; found '$actualDir'")
+                continue
+            }
+            if ([int]$pipeline[0].parameters.resolution_width -ne $expectedWidth -or
+                [int]$pipeline[0].parameters.resolution_height -ne $expectedHeight) {
+                $errors.Add("passive bus '$pipelineId' project resolution must be ${expectedWidth}x${expectedHeight}")
+            }
+
+            $manifestPath = Join-Path (Join-Path $projectRoot $expectedDir) 'manifest.yaml'
+            if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) { continue }
+            $manifestText = [IO.File]::ReadAllText($manifestPath).Replace("`r`n", "`n").Replace("`r", "`n")
+            $resolutionPattern = "(?m)^resolution:\s*\[\s*$expectedWidth\s*,\s*$expectedHeight\s*\]\s*$"
+            if ($manifestText -notmatch $resolutionPattern) {
+                $errors.Add("passive bus '$pipelineId' manifest resolution must be ${expectedWidth}x${expectedHeight}")
+            }
+            if ($manifestText -match '(?m)^panel\s*:') {
+                $errors.Add("passive bus '$pipelineId' must not declare a panel")
+            }
+            if ($manifestText -match '(?m)^\s+controls\s*:') {
+                $errors.Add("passive bus '$pipelineId' must not declare viewport controls")
+            }
+        }
+
         $sceneGroups = @($projectJson.graph.nodes | Where-Object { $_.sceneGroup -eq $true })
         if ($sceneGroups.Count -lt [int]$definition.MinimumSceneGroups) {
             $errors.Add("needs at least $($definition.MinimumSceneGroups) Scene Group(s); found $($sceneGroups.Count)")

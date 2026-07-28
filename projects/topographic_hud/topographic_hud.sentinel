@@ -3344,8 +3344,8 @@
                                              "palette":  "3.000000",
                                              "project_dir":  "modules/signal",
                                              "pulse_rate":  "0.800000",
-                                             "resolution_height":  "64",
-                                             "resolution_width":  "256",
+                                             "resolution_height":  "270",
+                                             "resolution_width":  "480",
                                              "sweep_rate":  "0.100000",
                                              "terrain":  "0.000000"
                                          },

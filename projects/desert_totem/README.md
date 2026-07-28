@@ -1,6 +1,6 @@
 # Desert Totem Sculpture Workstation
 
-Desert Totem is a procedural Dada assemblage built from typed `DadaPart` records and rendered as one coherent distance field. The modernization preserves the modular layout, accent-field, renderer, signal, and post lanes while adding a semantic assembly editor, a focused ochre/black Warp Deck, and safe scene presets.
+Desert Totem is a procedural Dada assemblage built from typed `DadaPart` records and rendered as one coherent distance field. The modernization preserves the modular layout, accent-field, renderer, signal, and post lanes while adding a semantic assembly editor, a compact control bus, and safe scene presets.
 
 ## What to open
 
@@ -17,15 +17,17 @@ The transform overrides live in a durable structured buffer. Project-scoped node
 - **Monument Baseline** restores zero offsets, zero rotations, and unit scale.
 - **Asymmetric Study** restores a moved Base, rotated Crown, and scaled Mid Shelf.
 
-## Warp Deck
+## Warp bus
 
-Open `dada_control` for the full-bleed **Desert Warp Deck**. Its deformation-field plot and four broad rails make Melt, Sag, Primary Warp, and Secondary Warp a coherent live performance gesture.
+`dada_control` is a deformation control bus, not a second performance
+interface. Edit Melt, Sag, Primary/Secondary Warp, Spread, Explode, Twist,
+Painterly, Facet, Hue Shift, Heat Haze, and Accent Field directly in
+Properties. All original layout, scatter, and render binds remain intact.
 
-Exact Spread, Explode, Twist, Painterly, Facet, Hue Shift, Heat Haze, and Accent Field shaping remains in Properties. The panel shows compact live readbacks for that setup without duplicating those parameters as Canvas widgets. All twelve macro parameters and their original layout, scatter, and render binds remain intact.
+Its 480 x 270 texture is only a passive four-lane warp preview. It has no
+Canvas mode, follow-panel allocation, or authored controls.
 
-The Canvas uses the shared sui3 monochrome scientific-instrument vocabulary with a restrained warm accent. Its aspect ratio is preserved, and `follow_panel` rendering scales to the real dock size. Direct equality controls use bidirectional binds into layout, scatter, and render parameters; derived modulation remains expression-driven.
-
-Warp 1 and Warp 2 mode selection intentionally lives on `dada_render` as named button grids: Flow, Ripple, Turbulent, Fractal, Steps, Boxes, and Shatter. Those enum modes are not duplicated or bound through the Warp Deck, so the renderer buttons remain directly editable.
+Warp 1 and Warp 2 mode selection intentionally lives on `dada_render` as named button grids: Flow, Ripple, Turbulent, Fractal, Steps, Boxes, and Shatter. Those enum modes are not duplicated or bound through the warp bus, so the renderer buttons remain directly editable.
 
 ## Camera
 
@@ -40,7 +42,7 @@ Warp 1 and Warp 2 mode selection intentionally lives on `dada_render` as named b
 - **Fidelity** - full-resolution, shadowed, populated hero render.
 - **Performance** - reduced render resolution, shorter march, no shadows, and a capped accent field.
 
-The Scene Group exposes only eight non-conflicting remix controls: layout and scatter seeds, layout jitter, fog, sun azimuth/elevation, bloom, and grain. Warp Deck controls are deliberately not duplicated at the group level.
+The Scene Group exposes only eight non-conflicting remix controls: layout and scatter seeds, layout jitter, fog, sun azimuth/elevation, bloom, and grain. Warp-bus setup is deliberately not duplicated at the group level.
 
 ## Node presets
 

@@ -15,7 +15,7 @@ This document is the release-readiness contract for the curated projects in the 
 | Desert Totem | Procedural sculpture workstation | Logical totem parts | None |
 | Industrial Lattice | Compact beginner-facing 3D example | None | Infinite repetition has no meaningful unique object identity |
 | Procedural Building System | Modular procedural-construction reference with spatial editors and typed architectural records | Massing, facade feature, and lighting handles | Technical workflow study: the renderer is the primary output and StreamDiff is an optional downstream reference, so no Group Output or preset suite is required |
-| Showcase Gallery | Seven-look release gallery and Scene Switcher reference | None | Aggregator: seven flat aesthetic groups and one final groups-mode Mux |
+| Showcase Gallery | Internal seven-look integration and Scene Switcher review fixture | None | Review-only high-VRAM aggregator; validate locally but do not distribute or promote |
 
 An exemption removes only the artificial feature named above. It does not relax health, portability, preset, documentation, or visual-proof requirements.
 
@@ -36,7 +36,13 @@ Every aesthetic project must ship with:
 
 Interaction Lab replaces items 2-5 with three independently switchable, flat control-only Scene Groups and stateful node presets. It remains subject to the same runtime, persistence, documentation, and portability bar.
 
-Showcase Gallery replaces items 2-6 with seven flat imported aesthetic Scene Groups, exactly one connected Group Output inside each group, and one final groups-mode Mux whose exact allow-list matches those seven groups and enables `solo_upstream`. It has no nested groups and does not duplicate the imported projects' control or preset authority.
+Showcase Gallery is not a shipping project. It retains the same integration
+shape for internal review: seven flat imported aesthetic Scene Groups, exactly
+one connected Group Output inside each group, and one final groups-mode Mux
+whose exact allow-list matches those seven groups and enables `solo_upstream`.
+It has no nested groups and does not duplicate the imported projects' control
+or preset authority. Promotion tooling must refuse it; the standalone projects
+are the distribution authorities.
 
 ### Technical modular-procedural examples
 

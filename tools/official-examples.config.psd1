@@ -41,6 +41,9 @@
         topographic_hud = @{
             ProjectFile = 'topographic_hud.sentinel'
             SharedModules = @()
+            PassiveBuses = @(
+                @{ PipelineId = 'signal'; ProjectDir = 'modules/signal'; Width = 480; Height = 270 }
+            )
             MinimumSceneGroups = 1
             RequiresGroupOutput = $true
             MinimumGroupPresets = 3
@@ -50,6 +53,9 @@
         strata = @{
             ProjectFile = 'strata.sentinel'
             SharedModules = @()
+            PassiveBuses = @(
+                @{ PipelineId = 'strata_control'; ProjectDir = 'modules/strata_control'; Width = 480; Height = 270 }
+            )
             MinimumSceneGroups = 1
             RequiresGroupOutput = $true
             MinimumGroupPresets = 3
@@ -59,6 +65,9 @@
         desert_totem = @{
             ProjectFile = 'desert_totem.sentinel'
             SharedModules = @()
+            PassiveBuses = @(
+                @{ PipelineId = 'dada_control'; ProjectDir = 'modules/dada_control'; Width = 480; Height = 270 }
+            )
             MinimumSceneGroups = 1
             RequiresGroupOutput = $true
             MinimumGroupPresets = 3
@@ -91,7 +100,13 @@
         }
         showcase_gallery = @{
             ProjectFile = 'showcase_gallery.sentinel'
+            Promote = $false
             SharedModules = @()
+            PassiveBuses = @(
+                @{ PipelineId = 'signal'; ProjectDir = 'modules/signal'; Width = 480; Height = 270 }
+                @{ PipelineId = 'strata_control'; ProjectDir = 'modules/strata_control'; Width = 480; Height = 270 }
+                @{ PipelineId = 'dada_control'; ProjectDir = 'modules/dada_control'; Width = 480; Height = 270 }
+            )
             MinimumSceneGroups = 7
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 7

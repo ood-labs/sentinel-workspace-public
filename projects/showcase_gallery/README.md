@@ -1,8 +1,15 @@
-# Showcase Gallery
+# Showcase Gallery (internal review only)
 
-`showcase_gallery.sentinel` is the public portfolio switcher for Sentinel's seven aesthetic examples. It keeps each original graph intact inside one flat Scene Group and collects the groups wirelessly through a single groups-mode Mux.
+`showcase_gallery.sentinel` is an internal integration and review fixture for
+Sentinel's seven aesthetic examples. It is not a shipping project. It keeps
+each original graph intact inside one flat Scene Group and collects the groups
+wirelessly through a single groups-mode Mux.
 
-> **High-VRAM review project:** the Gallery loads all seven looks and their engine-backed pipelines into one process. Use the canonical standalone projects under `projects/` for normal distribution and lower-VRAM systems. Each standalone contains one Scene Group and one Group Output, with no Gallery Scene Switcher.
+> **Do not distribute:** the Gallery loads all seven looks and their
+> engine-backed pipelines into one process and exceeds the practical VRAM
+> budget for many systems. Ship the canonical standalone projects under
+> `projects/`; each contains one Scene Group and one Group Output with no
+> Gallery Scene Switcher.
 
 ## Use it
 
@@ -17,7 +24,10 @@ The default is **Living Room SDF** at 1280 x 720 with a 0.75 second fade. The al
 
 The gallery uses Sentinel 0.5.35+ parameter binds for shared editable values. Its 51 curated Scene Group controls are bidirectionally bound to their member parameters, so edits from a group control or the member's Properties row remain synchronized and undo as one change.
 
-The Strata Composition Desk also has eight direct controller-to-consumer bind networks, and the Desert Warp Deck has twelve. Warp 1 and Warp 2 modes intentionally remain independent named enum button grids on Dada Render; they are not bound through the Warp Deck, which preserves direct mode selection without integer-slider fallbacks.
+The Strata composition bus also has eight direct controller-to-consumer bind
+networks, and the Desert warp bus has twelve. Their exact values live in the
+member nodes' Properties. Warp 1 and Warp 2 modes remain independent named enum
+button grids on Dada Render.
 
 Expressions remain only where the relationship is genuinely computed: LFO and Conductor motion, scaled/offset mappings, palette fan-out into hidden implementation parameters, and other derived modulation. Dedicated Canvas consoles are not duplicated wholesale at Scene Group level; each group exposes only its stable remix surface.
 
@@ -56,7 +66,7 @@ its durable card-state payload.
 | Face Collage | Engine-backed | StreamDiff, MediaPipe, accumulation, editorial clone layers | [PNG](proof/face_collage.png) |
 | Fruit Atlas Scatter | Engine-backed | StreamDiff, matting, depth, atlas capture, 3D fruit tunnel | [Output](proof/fruit_atlas.png) / [Console](proof/fruit_motion_console.png) |
 | Topographic HUD | Model-free | Modular texture/data lanes and scientific operations display | [PNG](proof/topographic_hud.png) |
-| Strata | Model-free | Layered marble, blob, wire, marks, and composition desk | [PNG](proof/strata.png) |
+| Strata | Model-free | Layered marble, blob, wire, marks, and passive composition bus | [PNG](proof/strata.png) |
 | Desert Totem | Model-free | Procedural sculpture workstation with internal renderer camera | [PNG](proof/desert_totem.png) |
 | Industrial Lattice | Model-free | Compact infinite structural field with tunable ray-march quality | [PNG](proof/industrial_lattice.png) |
 
@@ -72,12 +82,10 @@ Each group has exactly one Group Output. The gallery itself does not add an eigh
 
 `proof/runtime-switching.json` records an Industrial-to-Topographic crossfade at the beginning, midpoint, and completion. It also records a 2.5 second freeze test: the selected Topographic final post and gallery Mux advanced 151 frames, while the nonselected Face and Fruit StreamDiff pipelines advanced zero frames.
 
-[`proof/panel_collection.png`](proof/panel_collection.png) is the Phase 5
-same-extent review of all seven authored panels inside the Gallery. At
-923 x 213 they form one instrument family: black fields, white and gray
-construction lines, compact scientific labels, thin rules, and sparse orange
-state accents. Each panel remains distinct in information hierarchy rather
-than collapsing into a repeated template.
+[`proof/panel_collection.png`](proof/panel_collection.png) is historical Phase
+5 review evidence. Topographic, Strata, and Desert no longer expose authored
+Canvas panels in the shipping standalone projects; their control nodes use
+small passive previews and Properties.
 
 For the complete authored UI, selection, picking, durable state, spline, and gizmo reference, use [`../interaction_lab`](../interaction_lab/). Interaction Lab is deliberately linked rather than included in this aesthetic Mux.
 

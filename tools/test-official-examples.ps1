@@ -100,8 +100,39 @@ function New-GalleryFixture {
             selected_group = $allowed[0]; fade_time = '0.75'
         }
     }
+    $passiveBuses = @(
+        [ordered]@{ id = 'signal'; project_dir = 'modules/signal' },
+        [ordered]@{ id = 'strata_control'; project_dir = 'modules/strata_control' },
+        [ordered]@{ id = 'dada_control'; project_dir = 'modules/dada_control' }
+    )
+    $busPipelines = foreach ($bus in $passiveBuses) {
+        $moduleRoot = Join-Path $galleryRoot $bus.project_dir
+        Write-Utf8 (Join-Path $moduleRoot 'manifest.yaml') @"
+name: Passive Bus Fixture
+resolution: [480, 270]
+viewport:
+  hint: "Passive preview. Edit in Properties."
+passes:
+  - name: Bus
+    type: pixel
+    shader: display.hlsl
+outputs:
+  - { name: "Bus", pass: Bus }
+"@
+        Write-Utf8 (Join-Path $moduleRoot 'display.hlsl') "float4 mainImage(float2 uv) { return float4(uv, 0.0, 1.0); }`n"
+        [ordered]@{
+            id = $bus.id
+            displayName = $bus.id
+            type = 'module'
+            parameters = [ordered]@{
+                project_dir = $bus.project_dir
+                resolution_width = '480'
+                resolution_height = '270'
+            }
+        }
+    }
     $project = [ordered]@{
-        version = '0.5.33'; name = 'Gallery Fixture'; pipelines = @($outputs) + @($mux); nodePresets = @()
+        version = '0.5.33'; name = 'Gallery Fixture'; pipelines = @($busPipelines) + @($outputs) + @($mux); nodePresets = @()
         graph = [ordered]@{ nodes = @($nodes) + @($groups); pins = $pins; links = $links }
     }
     Write-Utf8 (Join-Path $galleryRoot 'showcase_gallery.sentinel') (($project | ConvertTo-Json -Depth 12) + "`n")
@@ -245,11 +276,60 @@ viewport:
     if (-not (@($tooFewControls.projects[0].errors) -match 'expose 6-10 controls')) { throw 'Out-of-range Scene Group control count was not rejected.' }
     New-FixtureProject 'modules/Active'
 
+    $galleryJson = [IO.File]::ReadAllText($galleryFile) | ConvertFrom-Json
+    ($galleryJson.pipelines | Where-Object { $_.id -eq 'signal' }).parameters.resolution_width = '481'
+    Write-Utf8 $galleryFile (($galleryJson | ConvertTo-Json -Depth 12) + "`n")
+    $badPassiveBus = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'showcase_gallery', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($badPassiveBus.projects[0].errors) -match "passive bus 'signal' project resolution")) {
+        throw 'Passive-bus project resolution drift was not rejected.'
+    }
+    New-GalleryFixture
+
     # Dry-run must be non-mutating and list only the selected fixture project.
     $dryRun = Invoke-JsonScript $promoter @('-SourceRoot', $sourceRoot, '-DestinationRoot', $publicRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 0
     if ($dryRun.mode -ne 'dry-run') { throw 'Promotion did not default to dry-run.' }
     if (Test-Path -LiteralPath (Join-Path $publicRoot 'projects/industrial_lattice')) { throw 'Dry-run mutated the public fixture.' }
     if (@($dryRun.projects).Count -ne 1 -or $dryRun.projects[0].project -ne 'industrial_lattice') { throw 'Dry-run escaped the selected project allowlist.' }
+
+    $promotionConfig = Join-Path $testRoot 'promotion-config.psd1'
+    Write-Utf8 $promotionConfig @'
+@{
+    MinimumSentinelVersion = '0.5.35'
+    Projects = @{
+        industrial_lattice = @{
+            ProjectFile = 'industrial_lattice.sentinel'
+            SharedModules = @()
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $true
+            MinimumGroupPresets = 3
+            MinimumNodePresets = 2
+            Exemptions = @()
+        }
+        showcase_gallery = @{
+            ProjectFile = 'showcase_gallery.sentinel'
+            Promote = $false
+            SharedModules = @()
+            MinimumSceneGroups = 7
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 7
+            RequiresGroupsMux = $true
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 0
+            Exemptions = @('scene-group-controls', 'scene-group-presets', 'node-presets')
+        }
+    }
+    AllowedProjectDirectories = @('assets', 'cues', 'modules', 'proof')
+    AllowedTopLevelFiles = @('README*', 'LICENSE*')
+    GlobalSharedPaths = @('modules/_shared')
+    ForbiddenDirectoryNames = @('.cache', '.shadercache', 'captures', 'checkpoint', 'checkpoints', 'recovery', 'shader_cache', 'shadercache')
+    ForbiddenFileNames = @('.env', '.env.*', 'DEBRIEF.md', 'provider*.json', 'vision.json', '*.cso', '*.log', '*.pdb', '*.tmp')
+    TextExtensions = @('.fx', '.hlsl', '.hlsli', '.json', '.md', '.ps1', '.sentinel', '.txt', '.yaml', '.yml')
+}
+'@
+    $defaultDryRun = Invoke-JsonScript $promoter @('-SourceRoot', $sourceRoot, '-DestinationRoot', $publicRoot, '-ConfigPath', $promotionConfig, '-Json') 0
+    if (@($defaultDryRun.projects).Count -ne 1 -or $defaultDryRun.projects[0].project -ne 'industrial_lattice') {
+        throw 'Default promotion did not omit the review-only Gallery.'
+    }
 
     # Apply into the disposable public root, validate there, and prove normalized parity.
     $applied = Invoke-JsonScript $promoter @('-SourceRoot', $sourceRoot, '-DestinationRoot', $publicRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Apply', '-Json') 0
@@ -262,14 +342,31 @@ viewport:
         }
     }
 
+    $previousErrorAction = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        $reviewOnlyOutput = & $powerShellExe -NoProfile -File $promoter `
+            -SourceRoot $sourceRoot -DestinationRoot $publicRoot `
+            -Projects showcase_gallery -ConfigPath $config -Json 2>&1
+        $reviewOnlyExit = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousErrorAction
+    }
+    if ($reviewOnlyExit -eq 0 -or ($reviewOnlyOutput -join "`n") -notmatch 'review-only') {
+        throw 'Review-only Gallery promotion was not refused.'
+    }
+
     Write-Host 'PASS normalized manifest hashing is checkout-line-ending invariant'
     Write-Host 'PASS validator reports absolute path, orphan module, and shader cache independently'
     Write-Host 'PASS repaired fixture validates cleanly'
     Write-Host 'PASS validator rejects workspace escapes and duplicate root project files'
     Write-Host 'PASS gallery validator enforces outputs, ownership, links, Mux mode, soloing, and exact allow-list'
     Write-Host 'PASS validator rejects insufficient presets, missing Performance, and out-of-range group controls'
+    Write-Host 'PASS validator rejects passive-bus resolution drift'
     Write-Host 'PASS promotion dry-run is allowlisted and non-mutating'
+    Write-Host 'PASS default promotion omits the review-only Showcase Gallery'
     Write-Host 'PASS disposable public promotion validates and matches normalized source content'
+    Write-Host 'PASS promotion refuses the review-only Showcase Gallery'
 } finally {
     $tempFull = [IO.Path]::GetFullPath([IO.Path]::GetTempPath())
     $testFull = [IO.Path]::GetFullPath($testRoot)

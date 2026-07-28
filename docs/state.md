@@ -8,11 +8,12 @@ updated: 2026-07-27
 ## Current focus
 
 Phase 5 - Official Example UI Port is **technically complete; approval
-pending**. Sub-phases 5A-5G are committed, the phase audit fixes are landed for
-final commit, and all seven Gallery panels now use the sui3 family. The common
-923 x 213 dock, per-kind gestures, pixel probes, presets, group binds, Gallery
-switching/crossfade/solo behavior, portability, and negative fixtures are
-proved. No public promotion or push occurred.
+pending**. After collection review, Topographic, Strata, and Desert were
+deliberately reduced from authored Canvas panels to 480 x 270 passive control
+bus previews with all exact editing in Properties. The standalone projects are
+the shipping authorities. The combined Gallery remains review-only and is
+excluded from promotion because its aggregate VRAM cost is unsuitable for
+normal distribution.
 
 Phase 2 - Audio Analysis v2 (`pulse2`) is implemented and committed, awaiting approval. It built a
 reusable GPU audio analysis system: adaptive-whitened SuperFlux onset detection, click-to-place
@@ -112,12 +113,10 @@ Tracked separately, out of Phase 2 scope:
 
 ## Decisions pending
 
-- Approve Phase 5's unified seven-panel look after human review. The technical
-  acceptance bar is complete; the host-owned full-window screenshot remains
-  operator-only.
 - Any public-repository promotion of Phase 5 requires a separate explicit
-  request. This session performed report-only dry runs and made no public
-  changes.
+  request. The combined Showcase Gallery is explicitly review-only and cannot
+  be promoted by the official-example promotion tool; ship the standalone
+  project folders instead.
 
 - Cold-load Scientific Organism from a clean checkout before public-workspace or official-gallery promotion.
 - Keep raw intermediate effect captures in coordinate-contract proof; a correct later overlay is not sufficient.

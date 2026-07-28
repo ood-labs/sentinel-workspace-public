@@ -1,6 +1,6 @@
-# Strata Composition Desk
+# Strata
 
-Strata is a modular portrait composition built from independent background, marble, sculptural blob, wire, marks, live feature-thread, plate-composite, and post passes. The modernization keeps that premultiplied architecture intact and adds a focused gray-and-red composition desk, a movable marble focal, shared palette modes, curated presets, and one Group Output.
+Strata is a modular portrait composition built from independent background, marble, sculptural blob, wire, marks, live feature-thread, plate-composite, and post passes. The modernization keeps that premultiplied architecture intact and adds a movable marble focal, a compact passive composition bus, shared palette modes, curated presets, and one Group Output.
 
 ## What to open
 
@@ -8,18 +8,17 @@ Open `strata.sentinel`. All twelve active nodes live in one flat `STRATA COMPOSI
 
 No engine pack is required. The project uses authored Modules plus the model-free `Features` pipeline.
 
-## Composition Desk
+## Composition bus
 
-Open `strata_control` for the full-bleed **Strata Composition Desk**. Its four
-Canvas rails balance the sculpture, marble, wire, and graphic-mark plates while
-the coupled composition plot shows their resolved weight.
+`strata_control` is a control bus, not a composition interface. Edit sculpture,
+marble, wire, and graphic-mark balance alongside seed, palette, deformation,
+layout, and Feature Thread settings in the node's Properties.
 
-Exact setup belongs in the node's Properties: shared seed and palette; melt,
-twist, marble warp, spread, and wire scale; and the Feature Thread enable and
-gain. The Canvas reads those values and the real corner count as telemetry
-without duplicating their ordinary scalar/toggle controls.
+Its 480 x 270 texture is only a passive four-lane balance preview with the live
+corner count. It has no Canvas mode, follow-panel allocation, or authored
+controls.
 
-The desk reads the real `Feature Corners` buffer and shows its live count. It publishes the scalar controls used by visible expressions throughout the graph, so the authority remains inspectable instead of being hidden in a monolithic renderer.
+The bus reads the real `Feature Corners` buffer and shows its live count. It publishes the scalar controls used by visible expressions throughout the graph, so the authority remains inspectable instead of being hidden in a monolithic renderer.
 
 ## Direct marble placement
 
@@ -35,22 +34,21 @@ This project deliberately does not add generic object selection or transform giz
 - **Wire Cage** — dark restrained sculpture with dominant feature and cage lines.
 - **Performance** — monochrome lower-cost mode; disables Features and uses one render sample.
 
-The group exposes seven stable remix controls for sculpture gloss/reflection, marble panel size, thread width, bloom, and grain. Composition Desk controls are not duplicated there.
+The group exposes seven stable remix controls for sculpture gloss/reflection, marble panel size, thread width, bloom, and grain. Composition-bus setup is not duplicated there.
 
 ## Remix
 
 Start with **Clean Studio** for material and focal placement, use **Graphic
 Poster** or **Wire Cage** when changing plate balance, and return to
 **Performance** for the documented lower-cost live state. Shape exact
-deformation and Feature Thread behavior in `strata_control` Properties, then
-perform the four plate weights from the Canvas. Drag the marble itself only in
-`marble_panel`; the two direct-manipulation surfaces have distinct jobs.
+plate weights, deformation, and Feature Thread behavior in `strata_control`
+Properties. The only direct-manipulation surface is the useful one:
+`marble_panel`, where the marble focal is spatially dragged.
 
 ## Node presets
 
 - `strata_control` / **Atelier Plate Balance** captures the complete
-  thirteen-parameter desk state, including the four Canvas rails and nine
-  Properties-only setup values.
+  thirteen-parameter composition-bus state.
 - `blob_render` / **Hero Sculpture** captures the renderer's material, deformation, light, quality, and camera essentials.
 
 Both are project-scoped, so they travel inside the project rather than relying on a machine-local preset library.
@@ -72,4 +70,4 @@ Textures carry plates, structured buffers carry blob instances and detected corn
 
 ## Runtime checks
 
-All nodes should be healthy in the four hero presets. `Features #0` should report fifteen live corners and the thread should visibly disappear when its Composition Desk toggle is off. In **Performance**, `Features #0` is intentionally bypassed while the rest of the graph remains healthy. The project should contain exactly one flat Scene Group, zero child groups, and one Group Output.
+All nodes should be healthy in the four hero presets. `Features #0` should report fifteen live corners and the thread should visibly disappear when its `strata_control` Properties toggle is off. In **Performance**, `Features #0` is intentionally bypassed while the rest of the graph remains healthy. The project should contain exactly one flat Scene Group, zero child groups, and one Group Output.

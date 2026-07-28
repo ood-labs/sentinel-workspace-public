@@ -1,13 +1,8 @@
-name: "Topographic Operations Console"
-version: "2.0"
+name: "Topographic Signal Bus"
+version: "2.1"
 mode: generator
-resolution: [960, 540]
+resolution: [480, 270]
 working_format: RGBA8
-
-panel:
-  mode: canvas
-  output: "Operations Console"
-  resolution: follow_panel
 
 parameters:
   - { name: authority, display: "Signal Authority (0 Manual / 1 Auto / 2 Conductor)", type: int, min: 0, max: 2, default: 1, group: "Authority" }
@@ -32,10 +27,7 @@ parameters:
   - { name: conductor_energy, display: "Conductor Energy", type: float, min: 0.0, max: 1.0, default: 0.65, hidden: true, group: "Conductor" }
 
 viewport:
-  hint: "Signal-bus instrument. Drag ENERGY and SWEEP for live performance; exact authority, cue, terrain, palette, rates, and layer shaping remain in Properties."
-  controls:
-    - { id: manual_energy, kind: slider, param: manual_energy, rect: [0.055, 0.815, 0.475, 0.905], label: "Performance Energy" }
-    - { id: manual_sweep, kind: slider, param: manual_sweep, rect: [0.525, 0.815, 0.945, 0.905], label: "Performance Sweep" }
+  hint: "Passive signal-bus preview. Edit authority, map, layers, and rates in Properties."
 
 buffers:
   - { name: sig, structured: true, element_size: 80, element_count: 1 }

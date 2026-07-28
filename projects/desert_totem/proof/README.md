@@ -4,7 +4,11 @@ Proof captured on 2026-07-15 from the live Sentinel project.
 
 - `01-monument.png`, `02-dali-melt.png`, `03-cubist-glitch.png`, `04-painterly.png`, `05-fidelity.png`, and `06-performance.png` show six bounded and visibly distinct whole-group looks.
 - `camera-hero.png`, `camera-detail.png`, `camera-orbit.png`, and `camera-silhouette.png` show four distinct wireless Camera Switcher framings.
-- `warp-deck.png` shows the responsive ochre/black full-bleed Canvas at 960x540; its normal closed backing size is 480x270 and the panel uses `follow_panel`.
+- `warp-deck.png` is historical evidence for the superseded authored Canvas
+  and is not the current shipping interface. The standalone `dada_control`
+  node now uses a fixed 480 x 270 passive bus preview with zero authored
+  controls; all editing is in Properties.
+- `warp-bus.png` is the current 480 x 270 passive preview.
 - `assembly-editor.png` shows the four selectable logical assemblies and the selected-assembly outline.
 - `hero.png` is the final settled Monument output.
 
@@ -18,6 +22,9 @@ Runtime assertions recorded during capture:
 - The Performance preset uses 608x912, an 80-unit march distance, disabled shadows, and 24 accent records. Fidelity uses 760x1140, a 120-unit march distance, shadows, and 72 accent records.
 - The live graph ran around 60 FPS during the bounded preset audit. The lightweight profiler occasionally attributed the frame's GPU synchronization wait to the Canvas node; every node remained healthy and frames continued increasing.
 - All six authored Module directories passed Sentinel's real offline `compile_check` with zero lints.
+- Current live proof reports Standard panel mode, a 480 x 270 render target,
+  and healthy advancing frames for `dada_control`. Module UI validation reports
+  zero controls.
 - A cache-free project reload resolved all six relative module paths, cold-compiled the renderer without timeout, and restored the healthy 760x1140 final output.
 - Final structure: six authored Modules, four Camera nodes, one Camera Switcher, one Group Output, one flat Scene Group, zero child groups, eight exposed controls, six group presets, and five project-scoped node presets.
 

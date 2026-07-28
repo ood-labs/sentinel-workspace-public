@@ -1,13 +1,8 @@
-name: "Desert Warp Deck"
-version: "2.0"
+name: "Desert Warp Bus"
+version: "2.1"
 mode: generator
-resolution: [960, 540]
+resolution: [480, 270]
 working_format: RGBA8
-
-panel:
-  mode: canvas
-  output: "Warp Deck"
-  resolution: follow_panel
 
 parameters:
   - { name: melt_macro, display: "Melt", type: float, min: 0.0, max: 0.6, default: 0.12, group: "Structure" }
@@ -24,12 +19,7 @@ parameters:
   - { name: scatter_macro, display: "Accent Field", type: int, min: 0, max: 80, default: 48, group: "Field" }
 
 viewport:
-  hint: "Live deformation instrument. Drag MELT, SAG, PRIMARY and SECONDARY as performance gestures; exact assembly, twist, surface, palette, haze and accent setup remains in Properties."
-  controls:
-    - { id: melt_macro, kind: slider, param: melt_macro, rect: [0.055, 0.650, 0.475, 0.735], label: "Melt Gesture" }
-    - { id: sag_macro, kind: slider, param: sag_macro, rect: [0.525, 0.650, 0.945, 0.735], label: "Sag Gesture" }
-    - { id: warp_primary, kind: slider, param: warp_primary, rect: [0.055, 0.815, 0.475, 0.900], label: "Primary Warp" }
-    - { id: warp_secondary, kind: slider, param: warp_secondary, rect: [0.525, 0.815, 0.945, 0.900], label: "Secondary Warp" }
+  hint: "Passive warp-bus preview. Edit deformation, assembly, surface, haze, and accent parameters in Properties."
 
 buffers:
   - { name: ctrl, structured: true, element_size: 64, element_count: 1 }

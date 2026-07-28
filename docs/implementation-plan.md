@@ -27,11 +27,11 @@ Modernize the seven existing public examples plus Face Collage into portable, in
 | 1C | Living Room direct-manipulation editor | logical selection, durable transforms, cameras, group presets | Complete |
 | 1D | Face Collage public instrument | restrained Scene Group controls, tracking, presets | Complete |
 | 1E | Fruit Atlas Director and card editor | atlas operations, selectable cards, cameras, live/curated modes | Complete |
-| 1F | Topographic HUD control console | Canvas control bus, editable nodes/labels, Conductor | Complete |
-| 1G | Strata composition desk | macro UI, plate manipulation, feature reactivity | Complete |
-| 1H | Desert Totem sculpture workstation | part editing, warp deck, cameras, safe presets | Complete |
+| 1F | Topographic HUD control console | Canvas control bus, editable nodes/labels, Conductor; control Canvas superseded by the Phase 5 post-review passive bus | Complete |
+| 1G | Strata composition desk | macro UI, plate manipulation, feature reactivity; desk superseded by the Phase 5 post-review passive bus | Complete |
+| 1H | Desert Totem sculpture workstation | part editing, warp deck, cameras, safe presets; deck superseded by the Phase 5 post-review passive bus | Complete |
 | 1I | Industrial Lattice compact example | beginner graph, shared camera, look/quality presets | Complete |
-| 1J | Showcase gallery and public release | Group Outputs, groups-mode Mux, clean-clone proof | Complete; approval pending cold-load crash follow-up |
+| 1J | Showcase gallery and public release | Group Outputs, groups-mode Mux, clean-clone proof; Gallery reclassified as internal review-only after Phase 5 collection review | Complete; approval pending cold-load crash follow-up |
 
 ### MCP And Runtime Surfaces
 
@@ -206,7 +206,7 @@ duplicate Properties.
 | 5D | `dada_control` (desert_totem) | 12 slider |
 | 5E | `LR_Furnishings`, `LR_Lighting` (living_room_sdf) | 5 button, 1 toggle, 4 slider |
 | 5F | `Fruit_LFO` (showcase_gallery) | 13 slider, 1 button, 1 toggle, 1 xypad |
-| 5G | Showcase Gallery resync and collection review | copies of the above |
+| 5G | Review-only Showcase Gallery resync and collection review | copies of the above |
 
 `face_collage`, `industrial_lattice` and `procedural_building_system` declare no canvas controls and
 are out of scope. `fruit_atlas_scatter` dropped out when its orphaned `Fruit_LFO` was removed.
@@ -227,3 +227,7 @@ No later workspace phase is scheduled yet. Additional examples should enter the 
 
 Public promotion of Interaction Lab v2 is deliberately **not** part of Phase 3: Phase 1 remains
 approval-pending with an open cold-load follow-up, so promotion is a separate decision.
+
+The combined Showcase Gallery is also not a shipping artifact. It remains an
+internal high-VRAM integration/proof fixture; normal distribution uses the
+standalone projects, and promotion tooling excludes the Gallery.

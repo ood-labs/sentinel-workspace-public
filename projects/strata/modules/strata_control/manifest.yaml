@@ -1,13 +1,8 @@
-name: "Strata Composition Desk"
-version: "2.0"
+name: "Strata Composition Bus"
+version: "2.1"
 mode: generator
-resolution: [960, 540]
+resolution: [480, 270]
 working_format: RGBA8
-
-panel:
-  mode: canvas
-  output: "Composition Desk"
-  resolution: follow_panel
 
 data_inputs:
   - name: "Feature Corners"
@@ -34,12 +29,7 @@ parameters:
   - { name: feature_gain, display: "Thread Gain", type: float, min: 0.0, max: 2.0, default: 0.688, group: "Features" }
 
 viewport:
-  hint: "Premultiplied plate-balance instrument. Drag the four plate rails for live composition; exact seed, palette, distortion, layout, and Feature Thread setup remains in Properties."
-  controls:
-    - { id: blob_mix, kind: slider, param: blob_mix, rect: [0.055, 0.650, 0.475, 0.735], label: "Sculpture Plate" }
-    - { id: marble_mix, kind: slider, param: marble_mix, rect: [0.525, 0.650, 0.945, 0.735], label: "Marble Plate" }
-    - { id: wire_mix, kind: slider, param: wire_mix, rect: [0.055, 0.815, 0.475, 0.900], label: "Wire Plate" }
-    - { id: marks_mix, kind: slider, param: marks_mix, rect: [0.525, 0.815, 0.945, 0.900], label: "Graphic Marks" }
+  hint: "Passive composition-bus preview. Edit plate balance, deformation, layout, and Feature Thread in Properties."
 
 buffers:
   - { name: ctrl, structured: true, element_size: 64, element_count: 1 }

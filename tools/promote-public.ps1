@@ -91,10 +91,19 @@ if (-not (Test-Path -LiteralPath $destinationFull -PathType Container)) { throw 
 if ($sourceFull -eq $destinationFull) { throw 'Source and destination roots must differ.' }
 
 if (-not $PSBoundParameters.ContainsKey('Projects') -or $Projects.Count -eq 0) {
-    $Projects = @($config.Projects.Keys | Sort-Object)
+    $Projects = @(
+        $config.Projects.GetEnumerator() |
+            Where-Object { $_.Value.Promote -ne $false } |
+            ForEach-Object { $_.Key } |
+            Sort-Object
+    )
 }
 $unknown = @($Projects | Where-Object { -not $config.Projects.ContainsKey($_) })
 if ($unknown.Count -gt 0) { throw "Unknown official project(s): $($unknown -join ', ')" }
+$reviewOnly = @($Projects | Where-Object { $config.Projects[$_].Promote -eq $false })
+if ($reviewOnly.Count -gt 0) {
+    throw "Promotion refuses review-only project(s): $($reviewOnly -join ', ')"
+}
 
 $fileMap = @{}
 $replaceDirectories = [Collections.Generic.List[string]]::new()
