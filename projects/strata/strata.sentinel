@@ -66,7 +66,7 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 1.5,
+    "canvasZoom": 0.7174451947212219,
     "links": [
       {
         "endPinId": 265,
@@ -1612,7 +1612,7 @@
         "entityId": "post_1",
         "id": 95,
         "inputTilesOverride": 0,
-        "posX": 2025.7501220703125,
+        "posX": 2027.1439208984375,
         "posY": 1025.977783203125,
         "positionSet": true,
         "previewVisible": true,
@@ -2329,14 +2329,14 @@
         "camera_mode": "0",
         "camera_move_speed": "6.126316",
         "camera_near": "0.100000",
-        "camera_pitch": "0.908874",
-        "camera_pos_x": "-1.190286",
-        "camera_pos_y": "-5.148242",
-        "camera_pos_z": "-3.098445",
+        "camera_pitch": "0.970684",
+        "camera_pos_x": "4.355863",
+        "camera_pos_y": "-6.711837",
+        "camera_pos_z": "0.331417",
         "camera_target_x": "0.000000",
         "camera_target_y": "1.000000",
         "camera_target_z": "0.000000",
-        "camera_yaw": "6.280000",
+        "camera_yaw": "4.755558",
         "dist_cx": "0.000000",
         "dist_cy": "0.000000",
         "dist_cz": "0.150000",
@@ -2364,7 +2364,7 @@
         "surface_epsilon": "0.000700",
         "swirl_amt": "0.150000",
         "twist_amt": "0.132000",
-        "w1_amt": "1.705000",
+        "w1_amt": "2.062000",
         "w1_freq": "1.733000",
         "w1_mode": "2.000000",
         "w1_ox": "0.000000",
@@ -2373,7 +2373,7 @@
         "w1_pitch": "-1.432000",
         "w1_speed": "0.256000",
         "w1_yaw": "-1.002000",
-        "w2_amt": "2.437000",
+        "w2_amt": "1.074000",
         "w2_freq": "1.560000",
         "w2_mode": "1.000000",
         "w2_ox": "0.000000",
@@ -2587,7 +2587,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1785244762900,
+  "saved_at_ms": 1785247103988,
   "sources": [],
   "version": 5,
   "viewportTarget": "blob_render"
