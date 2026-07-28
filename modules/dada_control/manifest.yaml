@@ -1,22 +1,38 @@
-name: "Dada Control"
-version: "0.1"
+name: "Desert Warp Deck"
+version: "2.0"
 mode: generator
-resolution: [256, 128]
+resolution: [960, 540]
+working_format: RGBA8
 
-# Master macro node — drive the whole scene from one place. Wire its control outputs
-# to dada_layout (spread/explode) and dada_render (melt/sag) with ref() expressions.
-
-buffers:
-  - name: ctrl
-    structured: true
-    element_size: 32
-    element_count: 1
+panel:
+  mode: canvas
+  output: "Warp Deck"
+  resolution: follow_panel
 
 parameters:
-  - { name: melt_macro,    display: "Melt",    type: float, min: 0.0, max: 1.0, default: 0.22, group: "Macros" }
-  - { name: sag_macro,     display: "Sag",     type: float, min: 0.0, max: 1.0, default: 0.18, group: "Macros" }
-  - { name: spread_macro,  display: "Spread",  type: float, min: 0.3, max: 2.2, default: 1.0, group: "Macros" }
-  - { name: explode_macro, display: "Explode", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Macros" }
+  - { name: melt_macro, display: "Melt", type: float, min: 0.0, max: 0.6, default: 0.12, group: "Structure" }
+  - { name: sag_macro, display: "Sag", type: float, min: 0.0, max: 0.6, default: 0.18, group: "Structure" }
+  - { name: spread_macro, display: "Spread", type: float, min: 0.7, max: 1.4, default: 1.0, group: "Structure" }
+  - { name: explode_macro, display: "Explode", type: float, min: 0.0, max: 1.2, default: 0.0, group: "Structure" }
+  - { name: warp_primary, display: "Primary Warp", type: float, min: 0.0, max: 1.2, default: 0.45, group: "Warp" }
+  - { name: warp_secondary, display: "Secondary Warp", type: float, min: 0.0, max: 1.0, default: 0.15, group: "Warp" }
+  - { name: twist_macro, display: "Twist", type: float, min: -1.0, max: 1.0, default: 0.20, group: "Warp" }
+  - { name: painterly_macro, display: "Painterly", type: float, min: 0.0, max: 1.0, default: 0.40, group: "Surface" }
+  - { name: facet_macro, display: "Facet", type: float, min: 0.0, max: 1.0, default: 0.10, group: "Surface" }
+  - { name: hue_macro, display: "Hue Shift", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Surface" }
+  - { name: heat_macro, display: "Heat Haze", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Surface" }
+  - { name: scatter_macro, display: "Accent Field", type: int, min: 0, max: 80, default: 48, group: "Field" }
+
+viewport:
+  hint: "Live deformation instrument. Drag MELT, SAG, PRIMARY and SECONDARY as performance gestures; exact assembly, twist, surface, palette, haze and accent setup remains in Properties."
+  controls:
+    - { id: melt_macro, kind: slider, param: melt_macro, rect: [0.055, 0.650, 0.475, 0.735], label: "Melt Gesture" }
+    - { id: sag_macro, kind: slider, param: sag_macro, rect: [0.525, 0.650, 0.945, 0.735], label: "Sag Gesture" }
+    - { id: warp_primary, kind: slider, param: warp_primary, rect: [0.055, 0.815, 0.475, 0.900], label: "Primary Warp" }
+    - { id: warp_secondary, kind: slider, param: warp_secondary, rect: [0.525, 0.815, 0.945, 0.900], label: "Secondary Warp" }
+
+buffers:
+  - { name: ctrl, structured: true, element_size: 64, element_count: 1 }
 
 passes:
   - name: compute
@@ -32,11 +48,22 @@ passes:
     inputs:
       - { slot: 0, source: "buffer:ctrl" }
 
-control_outputs:
-  - { name: melt,    buffer: ctrl, element: 0, field_offset: 0,  description: "Melt macro 0-1" }
-  - { name: sag,     buffer: ctrl, element: 0, field_offset: 4,  description: "Sag macro 0-1" }
-  - { name: spread,  buffer: ctrl, element: 0, field_offset: 8,  description: "Spread 0.3-2.2" }
-  - { name: explode, buffer: ctrl, element: 0, field_offset: 12, description: "Explode 0-3" }
-
 outputs:
-  - { name: "Control", pass: display }
+  - { name: "Warp Deck", pass: display }
+
+control_outputs:
+  - { name: style, buffer: ctrl, element: 0, field_offset: 0, description: "Legacy primary-mode mirror" }
+  - { name: melt, buffer: ctrl, element: 0, field_offset: 4, description: "Watchdog-safe melt amount" }
+  - { name: sag, buffer: ctrl, element: 0, field_offset: 8, description: "Coherent vertical sag" }
+  - { name: spread, buffer: ctrl, element: 0, field_offset: 12, description: "Assembly spread" }
+  - { name: explode, buffer: ctrl, element: 0, field_offset: 16, description: "Radial assembly explode" }
+  - { name: primary, buffer: ctrl, element: 0, field_offset: 20, description: "Primary warp amount" }
+  - { name: secondary, buffer: ctrl, element: 0, field_offset: 24, description: "Secondary warp amount" }
+  - { name: twist, buffer: ctrl, element: 0, field_offset: 28, description: "Coherent twist" }
+  - { name: painterly, buffer: ctrl, element: 0, field_offset: 32, description: "Painterly surface amount" }
+  - { name: facet, buffer: ctrl, element: 0, field_offset: 36, description: "Faceted normal amount" }
+  - { name: hue, buffer: ctrl, element: 0, field_offset: 40, description: "Palette hue rotation" }
+  - { name: heat, buffer: ctrl, element: 0, field_offset: 44, description: "Desert heat haze" }
+  - { name: scatter, buffer: ctrl, element: 0, field_offset: 48, description: "Accent record count" }
+  - { name: primary_mode, buffer: ctrl, element: 0, field_offset: 52, description: "Primary warp mode" }
+  - { name: secondary_mode, buffer: ctrl, element: 0, field_offset: 56, description: "Secondary warp mode" }

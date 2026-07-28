@@ -475,6 +475,12 @@ def broken_variant_report():
         + b"\n# deliberately broken module copy\n"
     ).hexdigest()
     expected_strata_hash = normalized_hash(strata_authority)
+    dada_authority = ROOT / "projects/desert_totem/modules/dada_control/manifest.yaml"
+    broken_dada_hash = hashlib.sha256(
+        normalized_bytes(dada_authority)
+        + b"\n# deliberately broken module copy\n"
+    ).hexdigest()
+    expected_dada_hash = normalized_hash(dada_authority)
 
     rows = [
         {
@@ -497,6 +503,13 @@ def broken_variant_report():
             "measured": broken_strata_hash,
             "expected": expected_strata_hash,
             "rejected": broken_strata_hash != expected_strata_hash,
+        },
+        {
+            "guard": "dada module copy identity",
+            "broken_variant": "authority manifest has an extra content line",
+            "measured": broken_dada_hash,
+            "expected": expected_dada_hash,
+            "rejected": broken_dada_hash != expected_dada_hash,
         },
         {
             "guard": "slider head",

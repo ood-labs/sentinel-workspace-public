@@ -19,12 +19,11 @@ The transform overrides live in a durable structured buffer. Project-scoped node
 
 ## Warp Deck
 
-Open `dada_control` for the full-bleed **Desert Warp Deck**. It owns the existing safe macro layer rather than duplicating renderer math:
+Open `dada_control` for the full-bleed **Desert Warp Deck**. Its deformation-field plot and four broad rails make Melt, Sag, Primary Warp, and Secondary Warp a coherent live performance gesture.
 
-- melt, sag, spread, explode, primary, secondary, and twist controls;
-- painterly, facet, hue, heat-haze, and accent-field controls.
+Exact Spread, Explode, Twist, Painterly, Facet, Hue Shift, Heat Haze, and Accent Field shaping remains in Properties. The panel shows compact live readbacks for that setup without duplicating those parameters as Canvas widgets. All twelve macro parameters and their original layout, scatter, and render binds remain intact.
 
-The Canvas uses an ochre/black scientific-instrument treatment. Its aspect ratio is preserved, and `follow_panel` rendering scales to the real dock size. Direct equality controls use bidirectional binds into layout, scatter, and render parameters; derived modulation remains expression-driven.
+The Canvas uses the shared sui3 monochrome scientific-instrument vocabulary with a restrained warm accent. Its aspect ratio is preserved, and `follow_panel` rendering scales to the real dock size. Direct equality controls use bidirectional binds into layout, scatter, and render parameters; derived modulation remains expression-driven.
 
 Warp 1 and Warp 2 mode selection intentionally lives on `dada_render` as named button grids: Flow, Ripple, Turbulent, Fractal, Steps, Boxes, and Shatter. Those enum modes are not duplicated or bound through the Warp Deck, so the renderer buttons remain directly editable.
 

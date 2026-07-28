@@ -24,37 +24,12 @@ parameters:
   - { name: scatter_macro, display: "Accent Field", type: int, min: 0, max: 80, default: 48, group: "Field" }
 
 viewport:
-  hint: "Ochre/black warp workstation. Choose named Warp 1 and Warp 2 modes on Dada Render; use this deck for structure, distortion amount, surface, and field controls."
-  # ui-label: title = DESERT WARP DECK
-  # ui-label: subtitle = SAFE DOMAIN DISTORTION / ASSEMBLY FIELD
-  # ui-label: structure = STRUCTURE
-  # ui-label: melt = MELT
-  # ui-label: sag = SAG
-  # ui-label: spread = SPREAD
-  # ui-label: explode = EXPLODE
-  # ui-label: warp = WARP FIELD
-  # ui-label: primary = PRIMARY
-  # ui-label: secondary = SECONDARY
-  # ui-label: twist = TWIST
-  # ui-label: surface = SURFACE / FIELD
-  # ui-label: paint = PAINTERLY
-  # ui-label: facet = FACET
-  # ui-label: hue = HUE SHIFT
-  # ui-label: heat = HEAT HAZE
-  # ui-label: accents = ACCENT FIELD
+  hint: "Live deformation instrument. Drag MELT, SAG, PRIMARY and SECONDARY as performance gestures; exact assembly, twist, surface, palette, haze and accent setup remains in Properties."
   controls:
-    - { id: melt_macro, kind: slider, param: melt_macro, rect: [0.060, 0.275, 0.245, 0.335], label: "Melt" }
-    - { id: sag_macro, kind: slider, param: sag_macro, rect: [0.270, 0.275, 0.455, 0.335], label: "Sag" }
-    - { id: spread_macro, kind: slider, param: spread_macro, rect: [0.060, 0.405, 0.245, 0.465], label: "Spread" }
-    - { id: explode_macro, kind: slider, param: explode_macro, rect: [0.270, 0.405, 0.455, 0.465], label: "Explode" }
-    - { id: warp_primary, kind: slider, param: warp_primary, rect: [0.060, 0.625, 0.245, 0.685], label: "Primary Warp" }
-    - { id: warp_secondary, kind: slider, param: warp_secondary, rect: [0.270, 0.625, 0.455, 0.685], label: "Secondary Warp" }
-    - { id: twist_macro, kind: slider, param: twist_macro, rect: [0.060, 0.795, 0.455, 0.855], label: "Twist" }
-    - { id: painterly_macro, kind: slider, param: painterly_macro, rect: [0.550, 0.285, 0.920, 0.345], label: "Painterly" }
-    - { id: facet_macro, kind: slider, param: facet_macro, rect: [0.550, 0.435, 0.920, 0.495], label: "Facet" }
-    - { id: hue_macro, kind: slider, param: hue_macro, rect: [0.550, 0.585, 0.920, 0.645], label: "Hue Shift" }
-    - { id: heat_macro, kind: slider, param: heat_macro, rect: [0.550, 0.735, 0.920, 0.795], label: "Heat Haze" }
-    - { id: scatter_macro, kind: slider, param: scatter_macro, rect: [0.550, 0.860, 0.920, 0.925], label: "Accent Field" }
+    - { id: melt_macro, kind: slider, param: melt_macro, rect: [0.055, 0.650, 0.475, 0.735], label: "Melt Gesture" }
+    - { id: sag_macro, kind: slider, param: sag_macro, rect: [0.525, 0.650, 0.945, 0.735], label: "Sag Gesture" }
+    - { id: warp_primary, kind: slider, param: warp_primary, rect: [0.055, 0.815, 0.475, 0.900], label: "Primary Warp" }
+    - { id: warp_secondary, kind: slider, param: warp_secondary, rect: [0.525, 0.815, 0.945, 0.900], label: "Secondary Warp" }
 
 buffers:
   - { name: ctrl, structured: true, element_size: 64, element_count: 1 }
