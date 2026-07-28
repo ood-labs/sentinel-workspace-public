@@ -1,11 +1,17 @@
 ---
 type: state
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Workspace State
 
 ## Current focus
+
+Strata maintenance completed on 2026-07-28: `blob_render` now uses the native
+internal Fly camera and exposes Draft, Performance, Fidelity, and fully tunable
+Custom SDF quality. The saved Draft 480 x 720 state measures 60 Hz with no graph
+hotspots; higher tiers intentionally spend that budget on more parts, tighter
+surface/normal precision, AO, shadows, and AA.
 
 Phase 5 - Official Example UI Port is **technically complete; approval
 pending**. After collection review, Topographic, Strata, and Desert were
@@ -151,6 +157,10 @@ Settled during Phase 2, kept here as the record:
   `mu_tempo` explicitly, so it is authorization by analogy.
 
 ## Last devlog
+
+`docs/devlogs/2026-07-28-strata-blob-render-refresh.md` - complete, approval
+pending. Strata's blob renderer camera, SDF quality controls, and measured
+60 Hz Draft path are closed as a maintenance pass.
 
 `docs/devlogs/2026-07-27-phase5-close-out.md` - complete, approval pending.
 The final implementation/audit narrative is

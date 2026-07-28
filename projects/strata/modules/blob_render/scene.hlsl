@@ -2,8 +2,8 @@
 // as ONE op_smin-blended field: intertwined ribbons/blobs with 2-stop gradient gloss, chrome,
 // and checker materials, on a TRANSPARENT background (premultiplied-alpha coverage matte) so
 // it composites over the other plates. Domain-distortion warp toolkit is wired but defaults
-// to zero — arrange it beautifully first, distort later. Orbit camera only (fixed studio
-// framing; no camera feature = no reload crash, fully MCP-drivable).
+// to zero — arrange it beautifully first, distort later. The renderer follows Sentinel's
+// native internal-camera contract; every ray comes from the injected inverse view-projection.
 //
 // harvest note: the matte-aware SDF plate contract (premult RGBA coverage + SSAA edges) is
 // the reusable technique here — any raymarch plate can adopt it to composite in 2D.
@@ -75,6 +75,154 @@ float distortLip()
                 + abs(swirl_amt) * 0.3 + abs(bend_amt) * 0.3);
 }
 
+// ---- quality budgets ---------------------------------------------------------
+// Render Quality:
+//   0 Draft       = fastest edit/arrangement view
+//   1 Performance = safe live default
+//   2 Fidelity    = original 130-step, 2x2 SSAA render
+//   3 Custom      = explicit controls from the Quality/Custom group
+int qualityMarchSteps()
+{
+    if (render_quality == 0) return 32;
+    if (render_quality == 1) return 64;
+    if (render_quality == 2) return 130;
+    return clamp((int)march_steps, 32, 160);
+}
+
+uint qualityPartLimit()
+{
+    // Layout records are packed active-first. Draft deliberately renders the
+    // nearest 24 authored parts; Performance keeps the complete current layout.
+    if (render_quality == 0) return 24u;
+    if (render_quality == 1) return 32u;
+    if (render_quality == 2) return 128u;
+    return (uint)clamp((int)part_limit, 4, 128);
+}
+
+float qualityMarchDistance()
+{
+    if (render_quality == 0) return 32.0;
+    if (render_quality == 1) return 40.0;
+    if (render_quality == 2) return 80.0;
+    return clamp(march_dist, 10.0, 120.0);
+}
+
+float qualitySurfaceEpsilon()
+{
+    if (render_quality == 0) return 0.0016;
+    if (render_quality == 1) return 0.0009;
+    if (render_quality == 2) return 0.00045;
+    return clamp(surface_epsilon, 0.0001, 0.004);
+}
+
+float qualityStepScale()
+{
+    if (render_quality == 0) return 1.0;
+    if (render_quality == 1) return 0.9;
+    if (render_quality == 2) return 0.72;
+    return clamp(step_scale, 0.5, 1.0);
+}
+
+float qualityNormalEpsilon()
+{
+    if (render_quality == 0) return 0.0024;
+    if (render_quality == 1) return 0.0012;
+    if (render_quality == 2) return 0.00065;
+    return clamp(normal_epsilon, 0.0002, 0.006);
+}
+
+int qualityAOSamples()
+{
+    if (render_quality == 0) return 0;
+    if (render_quality == 1) return 2;
+    if (render_quality == 2) return 5;
+    return clamp((int)ao_samples, 0, 5);
+}
+
+int qualityShadowSteps()
+{
+    if (render_quality == 0) return 0;
+    if (render_quality == 1) return 12;
+    if (render_quality == 2) return 48;
+    return clamp((int)shadow_steps, 0, 48);
+}
+
+int qualityAA()
+{
+    if (render_quality <= 1) return 1;
+    if (render_quality == 2) return 2;
+    return clamp((int)aa, 1, 2);
+}
+
+float calcAOQuality(float3 p, float3 n, int sampleCount)
+{
+    if (sampleCount <= 0) return 1.0;
+    float occ = 0.0;
+    float sca = 1.0;
+    [loop]
+    for (int i = 1; i <= 5; i++)
+    {
+        if (i > sampleCount) break;
+        float h = 0.02 + 0.06 * (float)i;
+        occ += (h - sceneMap(p + n * h).x) * sca;
+        sca *= 0.74;
+    }
+    return saturate(1.0 - 2.1 * occ);
+}
+
+float softShadowQuality(float3 ro, float3 rd, float k, float maxT, int stepCount)
+{
+    if (stepCount <= 0) return 1.0;
+    float res = 1.0;
+    float t = 0.02;
+    [loop]
+    for (int i = 0; i < 48; i++)
+    {
+        if (i >= stepCount) break;
+        float h = sceneMap(ro + rd * t).x;
+        if (h < 0.0004) return 0.0;
+        res = min(res, k * h / t);
+        t += clamp(h, 0.01, 0.25);
+        if (t > maxT) break;
+    }
+    return saturate(res);
+}
+
+float marchQuality(float3 ro, float3 rd, out float outMat)
+{
+    outMat = -1.0;
+    float t = 0.0;
+    int maxSteps = qualityMarchSteps();
+    float maxT = qualityMarchDistance();
+    float hitEpsilon = qualitySurfaceEpsilon();
+    float stepScale = qualityStepScale();
+    [loop]
+    for (int i = 0; i < 160; i++)
+    {
+        if (i >= maxSteps) break;
+        float2 h = sceneMap(ro + rd * t);
+        if (h.x < hitEpsilon * t + hitEpsilon * (2.0 / 7.0))
+        {
+            outMat = h.y;
+            return t;
+        }
+        t += h.x * stepScale;
+        if (t > maxT) break;
+    }
+    return -1.0;
+}
+
+float3 normalQuality(float3 p)
+{
+    float e = qualityNormalEpsilon();
+    float2 k = float2(1.0, -1.0);
+    return normalize(
+        k.xyy * sceneMap(p + k.xyy * e).x +
+        k.yyx * sceneMap(p + k.yyx * e).x +
+        k.yxy * sceneMap(p + k.yxy * e).x +
+        k.xxx * sceneMap(p + k.xxx * e).x);
+}
+
 // ---- instance helpers --------------------------------------------------------
 float3 partLocal(BlobPart d, float3 p, out float minsc, out float maxsc)
 {
@@ -90,13 +238,13 @@ float2 sceneMap(float3 p)
 {
     float3 pw = domainDistort(p);
     float d = 1e9;
-    uint c0 = min((uint)_Data0_Count, 128u);
+    uint c0 = min(min((uint)_Data0_Count, 128u), qualityPartLimit());
     [loop]
     for (uint i = 0u; i < 128u; i++)
     {
         if (i >= c0) break;
         BlobPart b = _Data0[i];
-        if (b.active < 0.5) continue;
+        if (b.active < 0.5) break;
         float3 cen = float3(b.pos_xy.x, b.pos_xy.y, b.pos_z);
         float maxsc = max(b.sc_xy.x, max(b.sc_xy.y, b.sc_z));
         float approx = length(pw - cen) - BLOB_BOUND_R * maxsc;   // conservative bound
@@ -113,13 +261,13 @@ void shadeSample(float3 pos, out float3 albedo, out float refl, out float specMu
 {
     float3 pw = domainDistort(pos);
     float best = 1e9; albedo = float3(0.6, 0.6, 0.6); refl = 0.0; specMul = 1.0;
-    uint c0 = min((uint)_Data0_Count, 128u);
+    uint c0 = min(min((uint)_Data0_Count, 128u), qualityPartLimit());
     [loop]
     for (uint i = 0u; i < 128u; i++)
     {
         if (i >= c0) break;
         BlobPart b = _Data0[i];
-        if (b.active < 0.5) continue;
+        if (b.active < 0.5) break;
         float3 cen = float3(b.pos_xy.x, b.pos_xy.y, b.pos_z);
         float maxsc = max(b.sc_xy.x, max(b.sc_xy.y, b.sc_z));
         if (length(pw - cen) - BLOB_BOUND_R * maxsc > best) continue;
@@ -139,15 +287,18 @@ void shadeSample(float3 pos, out float3 albedo, out float refl, out float specMu
 void renderRay(float3 ro, float3 rd, out float3 col, out float cov)
 {
     float mat;
-    float t = sdf_march(ro, rd, march_dist, 130, mat);
+    int aoSamples = qualityAOSamples();
+    int shadowSteps = qualityShadowSteps();
+    float t = marchQuality(ro, rd, mat);
     if (t < 0.0) { col = 0.0; cov = 0.0; return; }
 
     float3 pos = ro + rd * t;
-    float3 n = sdf_calcNormal(pos);
-    float ao = sdf_calcAO(pos, n);
+    float3 n = normalQuality(pos);
+    float ao = calcAOQuality(pos, n, aoSamples);
     float3 sun = sdf_sunDir(sun_azimuth, sun_elevation);
     float sha = 1.0;
-    if (shadows != 0) sha = sdf_softShadow(pos + n * 0.02, sun, 14.0, 18.0);
+    if (shadows != 0 && shadowSteps > 0)
+        sha = softShadowQuality(pos + n * 0.02, sun, 14.0, 18.0, shadowSteps);
 
     float3 albedo; float refl; float specMul;
     shadeSample(pos, albedo, refl, specMul);
@@ -187,10 +338,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     uint2 px = DTid.xy;
     if (px.x >= (uint)_Resolution.x || px.y >= (uint)_Resolution.y) return;
 
-    float aspect = _Resolution.x / _Resolution.y;
-    float az = cam_orbit + rotate_speed * _Time * 30.0;
-
-    int N = clamp((int)aa, 1, 2);
+    int N = qualityAA();
     float3 accCol = 0.0; float accA = 0.0;
     [loop]
     for (int sy = 0; sy < N; sy++)
@@ -198,9 +346,13 @@ void main(uint3 DTid : SV_DispatchThreadID)
     {
         float2 jit = (float2(sx, sy) + 0.5) / N - 0.5;
         float2 uv = ((float2)px + 0.5 + jit) / _Resolution.xy;
-        float2 ndc = (uv * 2.0 - 1.0) * float2(aspect, -1.0);
-        float3 ro, rd;
-        sdf_orbitRay(az, cam_elevation, cam_distance, float3(0.0, cam_target_y, 0.0), ndc, cam_focal, ro, rd);
+        float2 clip = float2(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0);
+        float4 nearW = mul(_InvViewProjMatrix, float4(clip, 0.0, 1.0));
+        float4 farW  = mul(_InvViewProjMatrix, float4(clip, 1.0, 1.0));
+        nearW /= nearW.w;
+        farW /= farW.w;
+        float3 ro = _CameraPos;
+        float3 rd = normalize(farW.xyz - nearW.xyz);
         float3 c; float cov;
         renderRay(ro, rd, c, cov);
         accCol += c * cov; accA += cov;             // premultiplied accumulation

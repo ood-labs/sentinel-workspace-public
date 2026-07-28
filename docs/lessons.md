@@ -1,11 +1,32 @@
 ---
 type: lessons
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-28 - Packed SDF records still cost per sample unless the shader exits
+
+**Symptoms**: Strata's blob renderer fell from 60 Hz to roughly 22-26 Hz even
+after AO, shadows, AA, and resolution were reduced. Bypassing only Blob Render
+immediately restored 60 Hz.
+
+**Cause**: The input advertised 128 `BlobPart` records and the renderer scanned
+the full count inside every march, normal, AO, and shadow sample, even though
+active records were packed at the front and the remaining tail was inactive.
+See `projects/strata/modules/blob_render/scene.hlsl:241`.
+
+**Fix**: Bound record evaluation per quality tier and break at the first
+inactive packed record in both field and material scans
+(`scene.hlsl:247`, `scene.hlsl:270`). Pair that with tiered march distance,
+surface epsilon, step scale, and normal epsilon rather than only reducing
+lighting samples.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-28
 
 ## 2026-07-27 - Short panels need a height layout, not only scaled typography
 

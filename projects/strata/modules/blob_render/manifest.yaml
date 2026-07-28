@@ -2,10 +2,15 @@ name: "Blob Render"
 version: "0.1"
 mode: generator
 resolution: [720, 1080]
+features: [camera]
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed"
+  interactions: [camera]
 
 # strata plate 1 — glossy organic mass. Consumes a BlobPart buffer (data:0), renders a
-# premultiplied-alpha coverage matte on transparent bg. Orbit camera only (fixed studio
-# framing, MCP-drivable, no camera-feature reload crash). Warp defaults to zero.
+# premultiplied-alpha coverage matte on transparent bg. Uses Sentinel's native internal
+# camera with Fly navigation. Warp defaults to zero.
 
 data_inputs:
   - name: "Parts"
@@ -28,11 +33,28 @@ data_inputs:
 
 parameters:
   - { name: palette_variant, display: "Palette", type: int, min: 0, max: 4, default: 0, hidden: true, group: "Look" }
+  # ---- quality ----
+  - name: render_quality
+    display: "Render Quality"
+    type: enum
+    options: [Draft, Performance, Fidelity, Custom]
+    default: 1
+    flags: button_grid
+    group: "Quality"
+  - { name: march_steps, display: "March Steps", type: int, min: 32, max: 160, default: 96, group: "Quality/Custom" }
+  - { name: part_limit, display: "Part Budget", type: int, min: 4, max: 128, default: 32, group: "Quality/Custom" }
+  - { name: march_dist, display: "March Distance", type: float, min: 10.0, max: 120.0, default: 40.0, group: "Quality/Custom" }
+  - { name: surface_epsilon, display: "Surface Epsilon", type: float, min: 0.0001, max: 0.004, default: 0.0007, group: "Quality/Custom" }
+  - { name: step_scale, display: "Step Scale", type: float, min: 0.5, max: 1.0, default: 0.9, group: "Quality/Custom" }
+  - { name: normal_epsilon, display: "Normal Epsilon", type: float, min: 0.0002, max: 0.006, default: 0.0009, group: "Quality/Custom" }
+  - { name: ao_samples, display: "AO Samples", type: int, min: 0, max: 5, default: 3, group: "Quality/Custom" }
+  - { name: shadow_steps, display: "Shadow Steps", type: int, min: 0, max: 48, default: 24, group: "Quality/Custom" }
+  - { name: aa, display: "AA (NxN)", type: int, min: 1, max: 2, default: 1, group: "Quality/Custom" }
+
   # ---- look ----
   - { name: blend_k,  display: "Blend (smin)", type: float, min: 0.02, max: 0.6, default: 0.20, group: "Look" }
   - { name: gloss,    display: "Gloss",        type: float, min: 0.0,  max: 2.0, default: 1.0,  group: "Look" }
   - { name: refl_amt, display: "Reflection",   type: float, min: 0.0,  max: 1.0, default: 0.5,  group: "Look" }
-  - { name: aa,       display: "AA (NxN)",     type: int,   min: 1,    max: 2,   default: 2,    group: "Look" }
   - { name: exposure, display: "Exposure",     type: float, min: 0.2,  max: 3.0, default: 1.05, group: "Look" }
 
   # ---- warp — master melt + 2 combinable slots (default OFF: arrange first) ----
@@ -88,15 +110,6 @@ parameters:
   - { name: sun_azimuth,   display: "Sun Azimuth",   type: float, min: 0.0, max: 360.0, default: 125.0, group: "Sun" }
   - { name: sun_elevation, display: "Sun Elevation", type: float, min: 5.0, max: 89.0, default: 55.0, group: "Sun" }
   - { name: shadows,       display: "Sun Shadows",   type: bool, default: true, flags: button, group: "Sun" }
-  - { name: march_dist,    display: "March Distance", type: float, min: 10.0, max: 120.0, default: 40.0, group: "Sun" }
-
-  # ---- camera (orbit; az 90 faces +Z front) ----
-  - { name: cam_orbit,     display: "Camera Orbit",     type: float, min: 0.0, max: 360.0, default: 90.0, group: "Camera" }
-  - { name: cam_elevation, display: "Camera Elevation", type: float, min: -30.0, max: 85.0, default: 2.0, group: "Camera" }
-  - { name: cam_distance,  display: "Camera Distance",  type: float, min: 1.0, max: 40.0, default: 9.5, group: "Camera" }
-  - { name: cam_target_y,  display: "Camera Target Y",  type: float, min: -3.0, max: 3.0, default: 0.0, group: "Camera" }
-  - { name: cam_focal,     display: "Camera Focal",     type: float, min: 0.6, max: 4.0, default: 1.7, group: "Camera" }
-  - { name: rotate_speed,  display: "Auto Rotate",      type: float, min: 0.0, max: 2.0, default: 0.0, group: "Camera" }
 
 passes:
   - name: render
