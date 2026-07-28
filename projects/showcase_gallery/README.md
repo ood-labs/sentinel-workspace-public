@@ -21,13 +21,40 @@ The Strata Composition Desk also has eight direct controller-to-consumer bind ne
 
 Expressions remain only where the relationship is genuinely computed: LFO and Conductor motion, scaled/offset mappings, palette fan-out into hidden implementation parameters, and other derived modulation. Dedicated Canvas consoles are not duplicated wholesale at Scene Group level; each group exposes only its stable remix surface.
 
+### Fruit Motion Console
+
+Open `Fruit_LFO` for the full-bleed motion instrument. Its four live waveform
+lanes drive prompt position, motion energy, camera drift, and pulse. Each lane
+has direct speed, amplitude, and waveform controls; the header adds Master Rate
+and Mute, while the right rail provides the Motion Bias XY pad and momentary
+Burst trigger. These 16 Canvas controls write the real `Fruit_LFO` parameters
+and are intentionally not repeated on the Scene Group.
+
+The console follows its panel rather than stretching a fixed texture. The
+gallery proof covers both a 923 x 213 wide dock and a 207 x 154 compact dock;
+compact mode abbreviates lane and action labels while preserving every hit
+target. `Fruit_Scene` remains the canonical 1280 x 720 renderer.
+
+The Fruit Scene Group carries three gallery-local whole-group presets:
+
+- **Live Fill** — three-clone Flythrough, continuous interval capture, hero
+  camera.
+- **Frozen Gallery** — single-clone Orbit, explicit slot 0, interval capture
+  off, StreamDiff held.
+- **Performance** — two-clone Fruitfall, reduced scale and lifecycle rate,
+  StreamDiff frame skip 2. This is the saved active preset.
+
+The project-scoped **Four Lane Flight** Motion Console preset and **Transit
+Chamber** renderer preset also remain available. The renderer preset includes
+its durable card-state payload.
+
 ## Looks
 
 | Look | Runtime | Defining feature | Proof |
 | --- | --- | --- | --- |
 | Living Room SDF | Model-free | Data-driven interior, plan editors, internal renderer camera | [PNG](proof/living_room.png) |
 | Face Collage | Engine-backed | StreamDiff, MediaPipe, accumulation, editorial clone layers | [PNG](proof/face_collage.png) |
-| Fruit Atlas Scatter | Engine-backed | StreamDiff, matting, depth, atlas capture, 3D fruit tunnel | [PNG](proof/fruit_atlas.png) |
+| Fruit Atlas Scatter | Engine-backed | StreamDiff, matting, depth, atlas capture, 3D fruit tunnel | [Output](proof/fruit_atlas.png) / [Console](proof/fruit_motion_console.png) |
 | Topographic HUD | Model-free | Modular texture/data lanes and scientific operations display | [PNG](proof/topographic_hud.png) |
 | Strata | Model-free | Layered marble, blob, wire, marks, and composition desk | [PNG](proof/strata.png) |
 | Desert Totem | Model-free | Procedural sculpture workstation with internal renderer camera | [PNG](proof/desert_totem.png) |
@@ -37,7 +64,7 @@ Face Collage and Fruit Atlas require the same official engine packs documented b
 
 ## Import behavior
 
-Sentinel's project importer merges pipelines, links, and relative Module paths, but intentionally does not merge annotations or Scene Group presets. The gallery therefore recreates seven flat groups around the imported graphs and bakes each standalone project's active preset into its imported nodes. `tools/repair-showcase-gallery-imports.ps1` performs that deterministic bake and removes only stale expressions that referenced the source project's old Scene Group id; internal LFO and control-output expressions remain live.
+Sentinel's project importer merges pipelines, links, and relative Module paths, but intentionally does not merge annotations or Scene Group presets. The gallery therefore recreates seven flat groups around the imported graphs and bakes each standalone project's active preset into its imported nodes. `tools/repair-showcase-gallery-imports.ps1` performs that deterministic bake and removes only stale expressions that referenced the source project's old Scene Group id; internal LFO and control-output expressions remain live. The three Fruit presets above are gallery-local restorations and must be preserved when that look is re-imported.
 
 Each group has exactly one Group Output. The gallery itself does not add an eighth Group Output because its Mux is the final switchable output and must not be collected as another look.
 
