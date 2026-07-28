@@ -8,6 +8,15 @@ Open `strata.sentinel`. All twelve active nodes live in one flat `STRATA COMPOSI
 
 No engine pack is required. The project uses authored Modules plus the model-free `Features` pipeline.
 
+## Feature analysis branch
+
+`plate_comp` keeps its full 720 x 1080 path into `corner_thread` and Program.
+A separate `Feature Downscale` node resamples that plate to 320 x 480 before
+`Features #0`, so corner detection no longer receives the full-resolution
+texture. The proxy also feeds `corner_thread` as an extent reference; detected
+corner pixels are scaled from the real analysis dimensions back into Program
+space rather than being drawn in one corner of the portrait.
+
 ## Composition bus
 
 `strata_control` is a control bus, not a composition interface. Edit sculpture,
@@ -70,4 +79,10 @@ Textures carry plates, structured buffers carry blob instances and detected corn
 
 ## Runtime checks
 
-All nodes should be healthy in the four hero presets. `Features #0` should report fifteen live corners and the thread should visibly disappear when its `strata_control` Properties toggle is off. In **Performance**, `Features #0` is intentionally bypassed while the rest of the graph remains healthy. The project should contain exactly one flat Scene Group, zero child groups, and one Group Output.
+All nodes should be healthy in the four hero presets. `Feature Downscale`
+should report a 320 x 480 output, `Features #0` should report fifteen live
+corners at that same extent, and the full-resolution thread should span the
+portrait. The thread should visibly disappear when its `strata_control`
+Properties toggle is off. In **Performance**, `Features #0` is intentionally
+bypassed while the rest of the graph remains healthy. The project should
+contain exactly one flat Scene Group, zero child groups, and one Group Output.

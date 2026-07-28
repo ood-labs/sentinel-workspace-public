@@ -1,6 +1,7 @@
 // corner_thread — threads a smooth spline THROUGH the corner points detected by a `features`
 // node on the composited image, drawn over the final picture. Video input _Tex0 = base image;
-// data input _Data0 = Corners buffer ({x,y,response,pad}, x/y in PIXELS, top-left origin).
+// _Tex1 = exact analysis-proxy extent; data input _Data0 = Corners buffer
+// ({x,y,response,pad}, x/y in ANALYSIS PIXELS, top-left origin).
 // Loop mode sorts corners by angle around their centroid → a closed Catmull-Rom lasso woven
 // through every corner; Chain mode threads them in buffer (response) order (open path).
 // A feedback-free reactive overlay: the linework follows the actual image content.
@@ -32,6 +33,9 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float2 res = _Resolution.xy;
     float2 uv = ((float2)px + 0.5) / res;
     float2 P = (float2)px;                                  // pixel space = corner space
+    uint analysisW, analysisH;
+    _Tex1.GetDimensions(analysisW, analysisH);
+    float2 analysisToProgram = res / max(float2(analysisW, analysisH), 1.0);
 
     float3 base = _Tex0.SampleLevel(LinearSampler, uv, 0).rgb;
 
@@ -43,7 +47,9 @@ void main(uint3 DTid : SV_DispatchThreadID)
     [loop] for (uint i = 0u; i < n; i++)
     {
         Corner c = _Data0[i];
-        pts[i] = float2(c.x, c.y); resp[i] = c.response; cen += pts[i];
+        pts[i] = float2(c.x, c.y) * analysisToProgram;
+        resp[i] = c.response;
+        cen += pts[i];
     }
     cen /= (float)n;
 

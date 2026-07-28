@@ -1,4 +1,4 @@
-{
+﻿{
     "binds":  [
                   [
                       "/sentinel/pipelines/blob_layout/parameters/seed",
@@ -69,11 +69,6 @@
                   "canvasZoom":  0.72,
                   "links":  [
                                 {
-                                    "endPinId":  252,
-                                    "id":  53,
-                                    "startPinId":  241
-                                },
-                                {
                                     "endPinId":  258,
                                     "id":  54,
                                     "startPinId":  241
@@ -109,11 +104,6 @@
                                     "startPinId":  249
                                 },
                                 {
-                                    "endPinId":  266,
-                                    "id":  70,
-                                    "startPinId":  255
-                                },
-                                {
                                     "endPinId":  262,
                                     "id":  71,
                                     "startPinId":  247
@@ -127,11 +117,31 @@
                                     "endPinId":  244,
                                     "id":  73,
                                     "startPinId":  255
+                                },
+                                {
+                                    "endPinId":  347,
+                                    "id":  76,
+                                    "startPinId":  241
+                                },
+                                {
+                                    "endPinId":  252,
+                                    "id":  77,
+                                    "startPinId":  348
+                                },
+                                {
+                                    "endPinId":  266,
+                                    "id":  78,
+                                    "startPinId":  348
+                                },
+                                {
+                                    "endPinId":  349,
+                                    "id":  79,
+                                    "startPinId":  255
                                 }
                             ],
-                  "nextLinkId":  76,
-                  "nextNodeId":  94,
-                  "nextPinId":  347,
+                  "nextLinkId":  80,
+                  "nextNodeId":  95,
+                  "nextPinId":  350,
                   "nodes":  [
                                 {
                                     "displayName":  "marble_panel 2",
@@ -227,8 +237,8 @@
                                     "displayName":  "Features #0 2",
                                     "entityId":  "features_0",
                                     "id":  64,
-                                    "posX":  1207.922607421875,
-                                    "posY":  1129.00146484375,
+                                    "posX":  1380,
+                                    "posY":  1026.42236328125,
                                     "positionSet":  true,
                                     "previewVisible":  false,
                                     "type":  1
@@ -1669,6 +1679,16 @@
                                                           ],
                                     "type":  4,
                                     "width":  2129.0
+                                },
+                                {
+                                    "displayName":  "Feature Downscale",
+                                    "entityId":  "Feature_Downscale",
+                                    "id":  94,
+                                    "posX":  1130,
+                                    "posY":  1026.42236328125,
+                                    "positionSet":  true,
+                                    "previewVisible":  false,
+                                    "type":  1
                                 }
                             ],
                   "pins":  [
@@ -1711,14 +1731,6 @@
                                    "nodeId":  64,
                                    "slotIndex":  0,
                                    "type":  0
-                               },
-                               {
-                                   "id":  266,
-                                   "kind":  0,
-                                   "name":  "Corners",
-                                   "nodeId":  65,
-                                   "slotIndex":  1,
-                                   "type":  6
                                },
                                {
                                    "id":  276,
@@ -2015,6 +2027,38 @@
                                    "nodeId":  60,
                                    "slotIndex":  14,
                                    "type":  7
+                               },
+                               {
+                                   "id":  266,
+                                   "kind":  0,
+                                   "name":  "Analysis Reference",
+                                   "nodeId":  65,
+                                   "slotIndex":  1,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  347,
+                                   "kind":  0,
+                                   "name":  "Full Resolution Plate",
+                                   "nodeId":  94,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  348,
+                                   "kind":  1,
+                                   "name":  "Analysis 320 x 480",
+                                   "nodeId":  94,
+                                   "slotIndex":  0,
+                                   "type":  0
+                               },
+                               {
+                                   "id":  349,
+                                   "kind":  0,
+                                   "name":  "Corners",
+                                   "nodeId":  65,
+                                   "slotIndex":  2,
+                                   "type":  6
                                }
                            ]
               },
@@ -2175,7 +2219,7 @@
                           "fitMode":  1,
                           "id":  "features_0",
                           "inputSlotSourceIds":  [
-                                                     "plate_comp"
+                                                     "Feature_Downscale"
                                                  ],
                           "outputFitMode":  1,
                           "outputSinkId":  "",
@@ -2570,6 +2614,7 @@
                           "id":  "corner_thread",
                           "inputSlotSourceIds":  [
                                                      "plate_comp",
+                                                     "Feature_Downscale",
                                                      "features_0"
                                                  ],
                           "outputFitMode":  1,
@@ -2628,6 +2673,28 @@
                           "running":  true,
                           "secondaryInputFilePaths":  null,
                           "type":  "groupoutput"
+                      },
+                      {
+                          "displayName":  "Feature Downscale",
+                          "enabled":  true,
+                          "expressions":  null,
+                          "fitMode":  1,
+                          "id":  "Feature_Downscale",
+                          "inputSlotSourceIds":  [
+                                                     "plate_comp"
+                                                 ],
+                          "outputFitMode":  1,
+                          "outputSinkId":  "",
+                          "panelAnchorId":  "Feature_Downscale",
+                          "panelOpen":  false,
+                          "parameters":  {
+                                             "project_dir":  "modules/feature_downscale",
+                                             "resolution_height":  "480",
+                                             "resolution_width":  "320"
+                                         },
+                          "running":  true,
+                          "secondaryInputFilePaths":  null,
+                          "type":  "module"
                       }
                   ],
     "saved_at_ms":  1784242422644,
