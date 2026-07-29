@@ -1,3 +1,5 @@
+#include "feedback.hlsli"
+
 RWTexture2D<float4> OutputUAV : register(u0);
 StructuredBuffer<float4> CanvasState : register(t3);
 StructuredBuffer<float4> KickEnvelope : register(t4);
@@ -36,7 +38,7 @@ float pcDepthFeedbackSample(float2 uv)
     float sn = sin(angle);
     float2 rotated = float2(cs * p.x + sn * p.y,
                             -sn * p.x + cs * p.y);
-    float zoomFactor = exp2((zoom * 2.0) * dt * gain);
+    float zoomFactor = pcZoomFactor(kickAmount, kick, dt);
     rotated /= max(zoomFactor, 0.0001);
 
     float2 sampleUv = pivot + float2(rotated.x / aspect, rotated.y);
@@ -79,10 +81,11 @@ float pcDepthStamp(float2 uv, int revealStage)
     float2 q = float2(cs * p.x + sn * p.y,
                       -sn * p.x + cs * p.y);
 
-    float sourceWidth;
-    float sourceHeight;
-    _Tex0.GetDimensions(sourceWidth, sourceHeight);
-    float sourceAspect = sourceWidth / max(sourceHeight, 1.0);
+    // Must use the SAME source aspect as accumulate.hlsl. If this pass measured
+    // the texture while the colour pass used the parameter, the depth stamp and
+    // the colour stamp would be different rectangles and the accumulated depth
+    // would drift out of register with the image it describes.
+    float sourceAspect = clamp(stamp_aspect, 0.05, 20.0);
     float2 halfSize = float2(stampSize * sourceAspect, stampSize) * 0.5;
     float2 localUv = q / max(halfSize * 2.0, 0.0001.xx) + 0.5;
     float inside = step(0.0, localUv.x) * step(localUv.x, 1.0) *

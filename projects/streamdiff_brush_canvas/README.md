@@ -11,7 +11,7 @@ The generated subject and cutout also feed a parallel data-driven branch:
 `Pattern Canvas -- video + Spawn Points --> Pattern Tracer`
 
 - **Shape Maker** produces a matched monochrome 640x640 Video Guide and Depth Guide with six shape types, four fill modes, and direct preview positioning.
-- **Paint Canvas** stamps the generated color through the Matting cutout into a persistent 1080x1350 canvas.
+- **Paint Canvas** stamps generated color, matte, and live subject depth into registered persistent 1080x1350 color/depth/mask canvases.
 - **Pattern Canvas** automatically stamps the same live subject into a separate persistent 1080x1350 canvas using Random, Grid, Spiral, Wave, or Border placement.
 - **Pattern Tracer** overlays an adjustable spline through the Pattern Canvas spawn history.
 - **Collage Output** publishes the clean manual canvas, not the authored viewport chrome.
@@ -36,7 +36,13 @@ The graph lives inside the `STREAMDIFF BRUSH CANVAS` Scene Group.
 - Alt + mouse wheel: change the effective brush size.
 - `F`: fit/reset the artboard view.
 - `X` or the top-right **Clear** button: clear the canvas.
+- Hold `K` for the Paint Canvas feedback kick. **K Kick** multiplies the ongoing zoom, rotation, and drift, while **Kick Zoom** adds an independent zoom pulse even when Zoom Speed is zero. Attack, Decay, Sustain, and Release shape the envelope.
 - Brush size, aspect, opacity, rotation, spacing, feather, stroke alignment, subject anchor, and ground color are available in Properties.
+- **Feedback** applies one shared zoom, rotation, drift, pivot, edge, and fade transform to color, depth, and mask so the relief stays registered while flying in or out.
+- **Audio Kick** gates the same envelope from the driven kick level; this project binds it to `Audio_Bands/control_outputs/kick`.
+- **Source Depth Mix**, **Solid Depth**, **Depth Gain**, and **Depth Offset** shape each painted relief stamp.
+- **Depth Blend: Over** follows paint opacity and stays responsive on overlapping strokes. **Max** only raises the existing relief; **Add** builds height cumulatively.
+- Paint Canvas publishes **Canvas**, **Depth**, and **Mask** outputs directly to **Pattern Depth SDF**. This manual relief branch does not require detections.
 
 The viewport follows the panel size without stretching. The persistent poster storage and clean output remain fixed at 1080x1350. `subject_anchor` is expression-driven from Shape Maker's position so the visible conditioned subject lands under the pointer.
 
@@ -65,4 +71,4 @@ The viewport follows the panel size without stretching. The persistent poster st
 - Pattern Count, Phase, Seed, Position Jitter, and Follow Pattern shape the layout.
 - Scale, Scale Variation, Rotation, Rotation Jitter, Opacity, matte controls, shadow, and background color tune the stamps.
 
-Pattern Canvas is intentionally a parallel test branch. It does not replace or alter the interactive Paint Canvas -> Collage Output path.
+Pattern Canvas remains a parallel procedural test branch. The interactive Paint Canvas still feeds Collage Output, and now also drives Pattern Depth SDF with its registered color/depth/mask outputs.

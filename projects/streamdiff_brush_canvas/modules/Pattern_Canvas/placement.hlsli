@@ -1,6 +1,9 @@
 #ifndef PATTERN_CANVAS_PLACEMENT_HLSLI
 #define PATTERN_CANVAS_PLACEMENT_HLSLI
 
+// stamp_pose and spawn_points reach the shared feedback zoom rate through here.
+#include "feedback.hlsli"
+
 static const float PI = 3.14159265359;
 static const float TAU = 6.28318530718;
 
@@ -84,6 +87,11 @@ void pcPlacement(uint cycle, out float2 center, out float stampSize, out float a
 
     float2 randomOffset = float2(pcRandom(cycle, 31u), pcRandom(cycle, 37u)) - 0.5;
     center = clamp(center + randomOffset * position_jitter, 0.04.xx, 0.96.xx);
+    // Contract the finished placement toward the canvas centre. Applied last, on
+    // purpose: every mode carries its own hardcoded inset (Grid 0.10-0.90, Border
+    // 0.10-0.90, Spiral a 0.38 radius), and scaling here shrinks all of them by
+    // the same factor instead of needing a margin term threaded through each one.
+    center = 0.5.xx + (center - 0.5.xx) * clamp(spawn_area, 0.05, 1.0);
     stampSize = cutout_scale * lerp(1.0 - scale_variation,
                                     1.0 + scale_variation,
                                     pcRandom(cycle, 43u));

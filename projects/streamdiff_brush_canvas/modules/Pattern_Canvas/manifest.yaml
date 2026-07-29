@@ -16,8 +16,10 @@ buffers:
   - { name: stamp_subject, format: RGBA8, scale: 1.0, persistent: true }
   - { name: stamp_matte, format: RGBA8, scale: 1.0, persistent: true }
   - { name: stamp_depth, format: RGBA16F, scale: 1.0, persistent: true }
+  - { name: trace_schedule, format: RGBA16F, scale: 0.5, persistent: true }
   - { name: stamp_pose, structured: true, element_size: 32, element_count: 1, persistent: true }
-  - { name: canvas_state, structured: true, element_size: 16, element_count: 1, persistent: true }
+  # [0] spawn/clock state, [1] state_update's own audio latch (see state_update.hlsl)
+  - { name: canvas_state, structured: true, element_size: 16, element_count: 2, persistent: true }
   - { name: control_state, structured: true, element_size: 16, element_count: 1, persistent: true }
   - { name: diffusion_state, structured: true, element_size: 16, element_count: 1, persistent: true }
   - { name: kick_envelope, structured: true, element_size: 16, element_count: 1, persistent: true }
@@ -37,6 +39,10 @@ parameters:
   - { name: pan, display: "Drift", type: point2D, min: [-0.2, -0.2], max: [0.2, 0.2], default: [0.0, 0.0], group: "Feedback" }
   - { name: control_gain, display: "Control Gain", type: float, min: 1.0, max: 10.0, default: 5.0, group: "Feedback" }
   - { name: feedback_kick, display: "X Kick", type: float, min: 1.0, max: 10.0, default: 5.0, group: "Feedback" }
+  # X Kick MULTIPLIES Zoom Speed, so at Zoom Speed 0 it has nothing to scale and
+  # the canvas cannot punch while otherwise standing still. This is an additive
+  # rate gated by the same envelope, which decouples the two.
+  - { name: kick_zoom, display: "Kick Zoom", type: float, min: -0.5, max: 0.5, default: 0.0, group: "Feedback", description: "An independent zoom rate that exists only while the kick envelope is open, added on top of Zoom Speed. Set Zoom Speed to 0 and raise this to get a canvas that is perfectly still between beats and punches on every kick. Negative pulls outward instead of flying in. This is separate from X Kick, which multiplies Zoom Speed and therefore does nothing when Zoom Speed is 0." }
   - { name: kick_attack, display: "Kick Attack", type: float, min: 0.01, max: 2.0, default: 0.08, group: "Feedback" }
   - { name: kick_decay, display: "Kick Decay", type: float, min: 0.01, max: 3.0, default: 0.18, group: "Feedback" }
   - { name: kick_sustain, display: "Kick Sustain", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Feedback" }
@@ -50,19 +56,55 @@ parameters:
   - { name: pattern_phase, display: "Pattern Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Pattern" }
   - { name: seed, display: "Seed", type: float, min: 0.0, max: 100.0, default: 7.0, group: "Pattern" }
   - { name: position_jitter, display: "Position Jitter", type: float, min: 0.0, max: 0.35, default: 0.035, group: "Pattern" }
+  # Shrinks the region stamps spawn into without shrinking the canvas or the
+  # stamps themselves, so a large canvas can carry a smaller cluster of stamps
+  # with real empty margin around it. Normalized, so on a wide canvas the same
+  # factor buys more absolute margin on the long axis than the short one.
+  - { name: spawn_area, display: "Spawn Area", type: float, min: 0.05, max: 1.0, default: 1.0, group: "Pattern", description: "Contracts every placement mode toward the canvas centre. 1.0 spawns across the full canvas as before; 0.6 confines stamps to the middle 60 percent and leaves a clear margin on all sides. Applied after position jitter and the per-mode insets, so it is the final word on where a stamp can land. It does not change stamp size - use Scale for that." }
   - { name: follow_pattern, display: "Follow Pattern", type: bool, default: true, group: "Pattern" }
 
   - { name: cutout_scale, display: "Scale", type: float, min: 0.05, max: 0.70, default: 0.24, group: "Stamp" }
+  # Width-over-height of the subject feeding "Generated Subject". This cannot be
+  # read from the texture: the host conforms module inputs to this module's own
+  # resolution, so GetDimensions returns the canvas size and every stamp would
+  # inherit the canvas aspect. 1.0 matches the square 1280x1280 diffusion output.
+  - { name: stamp_aspect, display: "Stamp Aspect", type: float, min: 0.25, max: 4.0, default: 1.0, group: "Stamp", description: "Width divided by height of the incoming subject, used to shape the stamp rectangle. Set it to match the generator feeding Generated Subject - 1.0 for a square 1280x1280 StreamDiff output, 1.777 for 16:9, 0.8 for a 4:5 portrait. It must be stated rather than measured because the host resizes module inputs to the module's own resolution, which would otherwise make stamps stretch whenever the canvas aspect changes." }
   - { name: scale_variation, display: "Scale Variation", type: float, min: 0.0, max: 0.85, default: 0.22, group: "Stamp" }
   - { name: rotation, display: "Rotation", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Stamp" }
   - { name: rotation_jitter, display: "Rotation Jitter", type: float, min: 0.0, max: 360.0, default: 28.0, group: "Stamp" }
   - { name: opacity, display: "Opacity", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Stamp" }
   - { name: reveal_sequence, display: "Three-Frame Reveal", type: bool, default: false, flags: button, group: "Stamp" }
   - { name: reveal_border, display: "Reveal Border", type: float, min: 0.0, max: 0.25, default: 0.08, group: "Stamp" }
+  - { name: latest_outline_delay, display: "Trace Delay", type: float, min: 0.0, max: 0.5, default: 0.14, group: "Stamp/Laser", description: "Wait after each new stamp before its laser trace appears. Every hit is latched into an independent schedule lane, so the next stamp cannot cancel this delay." }
+  - { name: latest_outline_hold, display: "Trace Visible Time", type: float, min: 0.06, max: 0.5, default: 0.12, group: "Stamp/Laser", description: "How long each hit's complete binary outline remains visible. This directly controls the physical laser trace duration." }
+  - { name: latest_outline_fade, display: "Legacy Trace Tail", type: float, min: 0.01, max: 5.0, default: 0.01, group: "Stamp/Laser", hidden: true }
 
   - { name: depth_fade, display: "Fade Rate", type: float, min: 0.0, max: 8.0, default: 0.35, group: "Depth Accumulation" }
   - { name: depth_gain, display: "Stamp Gain", type: float, min: 0.0, max: 4.0, default: 1.0, group: "Depth Accumulation" }
   - { name: depth_offset, display: "Stamp Offset", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Depth Accumulation" }
+
+  # Audio drive. These take the place of the two performance keys: a kick gates
+  # the X feedback-kick envelope, and every hi-hat fires one Z tap (one stamp
+  # plus one StreamDiff unhold window). They are ordinary parameters because
+  # that is the only surface a control-output expression can write to; drive
+  # them from Audio Bands with:
+  #   audio_kick      = ref("Audio_Bands/control_outputs/kick")
+  #   audio_hat_count = ref("Audio_Bands/control_outputs/hat_count")
+  - { name: audio_enabled, display: "Audio Drive", type: bool, default: true, group: "Audio" }
+  # The kick ENVELOPE rather than the kick count, because X is a held key and an
+  # envelope above a gate is a hold whose length tracks how hard the drum hit.
+  # The module's own Kick Attack/Decay/Sustain/Release still shape the response.
+  - { name: audio_kick, display: "Kick Level (driven)", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Audio" }
+  - { name: audio_kick_gate, display: "Kick Gate", type: float, min: 0.01, max: 1.0, default: 0.20, group: "Audio" }
+  # The hat COUNT rather than the hat envelope. The envelope re-arms to 1.0 on
+  # every hit and takes ~190ms to decay past any usable gate, so at sixteenth
+  # notes it never falls back below one and an envelope edge would report a
+  # single hit for a whole run. An integer that only ever increments cannot miss.
+  - { name: audio_hat_count, display: "Hat Hits (driven)", type: float, min: 0.0, max: 100000000.0, default: 0.0, group: "Audio" }
+  # How long one hat holds StreamDiff unheld. The stamp is always exactly one
+  # per hit; this only sets the diffusion window, which needs to span at least
+  # one cook of the generator to land a new frame.
+  - { name: audio_hat_hold_ms, display: "Hat Generate Window (ms)", type: float, min: 10.0, max: 500.0, default: 90.0, group: "Audio" }
 
   - { name: background_color, display: "Background", type: color, default: [0.94, 0.94, 0.92], group: "Canvas" }
   - { name: matte_threshold, display: "Matte Threshold", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Canvas" }
@@ -70,7 +112,7 @@ parameters:
   - { name: drop_shadow, display: "Drop Shadow", type: float, min: 0.0, max: 1.5, default: 0.28, group: "Canvas" }
 
 viewport:
-  hint: "Left-drag=drift, wheel=zoom, X=feedback kick, C=toggle auto run, Z=maximum-rate generate + spawn override. Alt=fine, Alt+Shift=ultra-fine."
+  hint: "Left-drag=drift, wheel=zoom, X=feedback kick, C=toggle auto run, Z=maximum-rate generate + spawn override. Alt=fine, Alt+Shift=ultra-fine. With Audio Drive on, a kick plays X and every hi-hat taps Z."
   interactions: [pan_zoom, events]
   input:
     keyboard: [x, c, z]
@@ -109,6 +151,9 @@ passes:
     thread_group_y: 1
     inputs:
       - { slot: 0, source: "buffer:control_state" }
+      # state_update runs earlier in this same cook, so its audio window is
+      # already written by the time this pass reads it. One latch, not two.
+      - { slot: 1, source: "buffer:canvas_state" }
     output: "buffer:control_state"
 
   - name: diffusion_state_update
@@ -167,6 +212,17 @@ passes:
       - { slot: 2, source: "buffer:canvas_state" }
     output: "buffer:stamp_depth"
 
+  - name: trace_schedule_update
+    shader: trace_schedule.hlsl
+    target: cs_5_0
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:trace_schedule" }
+      - { slot: 1, source: "buffer:stamp_matte" }
+      - { slot: 2, source: "buffer:stamp_pose" }
+      - { slot: 3, source: "buffer:canvas_state" }
+    output: "buffer:trace_schedule"
+
   - name: accumulate
     shader: accumulate.hlsl
     target: cs_5_0
@@ -223,6 +279,14 @@ passes:
     inputs:
       - { slot: 0, source: "buffer:depth_canvas" }
 
+  - name: present_latest_stamp
+    shader: present_latest_stamp.hlsl
+    target: cs_5_0
+    format: RGBA8
+    time_dependent: true
+    inputs:
+      - { slot: 0, source: "buffer:trace_schedule" }
+
 data_outputs:
   - name: "Spawn Points"
     buffer: "spawn_points"
@@ -236,7 +300,14 @@ control_outputs:
   - { name: diffusion_pulse, buffer: diffusion_state, element: 0, field_offset: 4, description: "One-frame pulse at the configured diffusion cadence" }
   - { name: streamdiff_unhold, buffer: control_state, element: 0, field_offset: 0, description: "1 while Z is held in the focused Pattern Canvas preview" }
   - { name: auto_run_active, buffer: control_state, element: 0, field_offset: 4, description: "1 while C-toggled auto run is active" }
+  # Audio drive state, exposed so the hat path can be inspected without guessing.
+  # audio_hat_stamps against the detector's own hat_count is the direct test of
+  # "is every hit landing a stamp"; the two should track 1:1.
+  - { name: audio_hat_latched, buffer: canvas_state, element: 1, field_offset: 0, description: "Hat count the module has already consumed" }
+  - { name: audio_hat_window,  buffer: canvas_state, element: 1, field_offset: 4, description: "Seconds left in the current hat StreamDiff window" }
+  - { name: audio_hat_stamps,  buffer: canvas_state, element: 1, field_offset: 8, description: "Stamps actually placed for hi-hat hits" }
 
 outputs:
   - { name: "Pattern Canvas", pass: present }
   - { name: "Accumulated Depth", pass: present_depth }
+  - { name: "Latest Stamp Mask", pass: present_latest_stamp }

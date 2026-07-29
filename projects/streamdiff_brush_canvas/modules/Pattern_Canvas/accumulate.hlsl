@@ -1,3 +1,5 @@
+#include "feedback.hlsli"
+
 RWTexture2D<float4> OutputUAV : register(u0);
 StructuredBuffer<float4> CanvasState : register(t3);
 StructuredBuffer<float4> KickEnvelope : register(t4);
@@ -123,10 +125,13 @@ float4 pcStamp(float2 uv, uint cycle, int revealStage)
     float sn = sin(angle);
     float2 q = float2(cs * p.x + sn * p.y, -sn * p.x + cs * p.y);
 
-    float sourceWidth;
-    float sourceHeight;
-    _Tex0.GetDimensions(sourceWidth, sourceHeight);
-    float sourceAspect = sourceWidth / max(sourceHeight, 1.0);
+    // The host conforms module video inputs to THIS module's resolution, so
+    // _Tex0.GetDimensions reports the canvas size and not the generator's. Using
+    // it made every stamp inherit the canvas aspect: the 1280x1280 diffusion
+    // output drew into a 16:9 rect and came out stretched wide. Measured, not
+    // assumed - Collage_Diffusion captures at 1280x1280 while the stamps render
+    // 16:9. The real source shape therefore has to be stated, not probed.
+    float sourceAspect = clamp(stamp_aspect, 0.05, 20.0);
     float2 halfSize = float2(stampSize * sourceAspect, stampSize) * 0.5;
     float2 localUv = q / max(halfSize * 2.0, 0.0001.xx) + 0.5;
     float inside = step(0.0, localUv.x) * step(localUv.x, 1.0) *
@@ -198,9 +203,9 @@ float3 pcFeedbackSample(float2 uv)
     float2 rotated = float2(cs * p.x + sn * p.y,
                             -sn * p.x + cs * p.y);
     // The host applies a fixed 0.02 wheel increment. A +/-0.5 parameter
-    // range makes each notch exactly 2% of the full control span; this 2x
-    // compensation preserves the same maximum feedback velocity.
-    float zoomFactor = exp2((zoom * 2.0) * dt * gain);
+    // range makes each notch exactly 2% of the full control span; the 2x
+    // compensation inside pcZoomFactor preserves the same maximum velocity.
+    float zoomFactor = pcZoomFactor(kickAmount, kick, dt);
     rotated /= max(zoomFactor, 0.0001);
 
     float2 sampleUv = pivot + float2(rotated.x / aspect, rotated.y);

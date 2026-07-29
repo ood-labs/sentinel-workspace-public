@@ -1,9 +1,9 @@
-// Held-D ADSR envelope shared by both the feedback texture transform and the
-// Spawn Points transform. x=level, y=stage, z=release start, w=initialized.
+// Held-K ADSR envelope shared by the colour, mask, and depth feedback transform.
+// x=level, y=stage, z=release start, w=initialized.
 RWStructuredBuffer<float4> OutputBuffer : register(u0);
 
 [numthreads(1, 1, 1)]
-void main(uint3 DTid : SV_DispatchThreadID)
+void main(uint3 id : SV_DispatchThreadID)
 {
     float4 state = OutputBuffer[0];
     if (state.w < 0.5)
@@ -12,13 +12,9 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float dt = clamp(_DeltaTime, 0.0, 0.1);
     float level = saturate(state.x);
     int stage = (int)round(state.y); // 0 idle, 1 attack, 2 decay, 3 sustain, 4 release
-    // A kick drum holds this envelope exactly the way the X key does: the Audio
-    // Bands kick envelope snaps to 1.0 on a hit and decays, so time above the
-    // gate is a press whose length tracks how hard the drum was struck. The
-    // ADSR below then shapes it, so Kick Attack/Decay/Sustain/Release keep
-    // meaning the same thing whether the press came from a finger or a drum.
-    bool audioKick = audio_enabled != 0 && audio_kick >= max(audio_kick_gate, 0.001);
-    bool held = ViewportKeyDown(24u) || audioKick; // X
+    bool audioKick = audio_enabled != 0
+        && audio_kick >= max(audio_kick_gate, 0.001);
+    bool held = ViewportKeyDown(11u) || audioKick; // K
 
     if (held) {
         if (stage == 0 || stage == 4)

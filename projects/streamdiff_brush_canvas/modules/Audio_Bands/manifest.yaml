@@ -1,0 +1,208 @@
+name: "Audio Bands"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+features: [audio]
+
+# Kick / snare / hat detection in ONE node. Pick a frequency band on the
+# spectrum, set a threshold, get a trigger. That is the entire model.
+#
+# Everything is in this module on purpose. The previous three-node system put
+# the band drags in a console and the detection in an analyzer, and because
+# data links cannot form cycles the console could only reach the analyzer
+# through live ref() expressions that any reload wiped. Merging them means the
+# drag writes a buffer the detector reads two passes later, in the same node,
+# with no bridge to lose.
+#
+# No BPM, no beat tracking, no classifier, no spectral whitening. The number
+# drawn on each trace strip IS the number compared against the threshold, and
+# the threshold IS the line drawn across it.
+
+parameters:
+  - { name: band_shape, display: "Band Shape", group: "Bands", type: enum, options: ["Rectangular", "Gaussian"], default: 1, description: "Weighting curve across each band. Gaussian favours the centre, so the exact edges matter less and a wide band still tracks its core. Rectangular weights every bin equally. Level is divided by the weight sum either way, so widening a band never raises its level or forces a threshold re-tune." }
+  # Hold above 0.5 to put all three bands back to their opening positions.
+  # A float rather than a button because button parameters always read 1.0 in
+  # HLSL and so cannot express a momentary press at all.
+  - { name: reset_bands, display: "Reset Bands", group: "Bands", type: float, min: 0.0, max: 1.0, default: 0.0, description: "Hold above 0.5 to return all three bands to their opening frequency ranges and thresholds. A float rather than a button because button parameters always read 1.0 in HLSL and cannot express a momentary press." }
+
+  # Threshold is dB above the band's OWN rolling level, so it does not need
+  # re-tuning when input gain changes. That is also why there is no per-lane
+  # gain knob: it would cancel out of the flux and measurably do nothing.
+  # Thresholds are NOT parameters. Each one is a fader drawn inside its own band
+  # on the spectrum, because the handle has to travel with a band that moves and
+  # a manifest control rectangle is fixed. They live in the bands state buffer,
+  # so they still save with the project, ride along in node presets, and undo.
+  # What that costs is typing an exact dB and driving a threshold from OSC or an
+  # expression; say the word if either matters and they come back as parameters.
+  - { name: kick_refractory_ms,  display: "Kick Min Gap (ms)",  group: "Kick",  type: float, min: 10.0, max: 500.0, default: 90.0, description: "Minimum time between accepted kick hits. After a hit the lane ignores new peaks until this elapses. Raise it to stop one drum registering twice; lower it to catch fast rolls. This only spaces false triggers out, it does not prevent them - use Adapt Time and the lane's threshold fader for that." }
+  - { name: snare_refractory_ms, display: "Snare Min Gap (ms)", group: "Snare", type: float, min: 10.0, max: 500.0, default: 90.0, description: "Minimum time between accepted snare hits. After a hit the lane ignores new peaks until this elapses. Raise it to stop one drum registering twice; lower it to catch fast rolls. This only spaces false triggers out, it does not prevent them - use Adapt Time and the lane's threshold fader for that." }
+  - { name: hat_refractory_ms,   display: "Hat Min Gap (ms)",   group: "Hat",   type: float, min: 10.0, max: 500.0, default: 40.0, description: "Minimum time between accepted hat hits. Defaults lower than kick and snare because hats run fast - 40 ms still allows 25 hits a second. Raise it if a single hat is registering twice; lower it for dense rolls." }
+
+  # Lifts every band's level before the signal gate sees it, and lifts the
+  # spectrum display by the same amount so the two never disagree.
+  #
+  # It does NOT change sensitivity: flux is measured relative to each band's own
+  # rolling level, so gain cancels out of it exactly. What it changes is whether
+  # a quiet input clears the -70 dB gate at all. A source running 40 dB down puts
+  # every band under the gate and switches all three lanes off, which reads as
+  # "detection stopped working" rather than "the input is too quiet".
+  - { name: input_gain_db, display: "Input Gain (dB)", group: "Input", type: float, min: -24.0, max: 48.0, default: 0.0, description: "Lifts every band's level before the -70 dB signal gate, and lifts the spectrum display to match. This does NOT change sensitivity: flux is measured against each band's own rolling level, so gain shifts the level and the baseline together and cancels out of the difference exactly. Raise it only when a genuinely quiet source has fallen under the gate and all three lanes have gone dead. Raising it otherwise lifts the noise floor over the gate and invites false triggers in quiet passages." }
+
+  # Adaptive is the historical behaviour and stays the default so an existing
+  # project reloads unchanged. Fixed exists because the adaptation is exactly what
+  # makes a dying track start triggering: the reference falls with the music.
+  - { name: adapt_mode, display: "Threshold Mode", group: "Response", type: enum, options: ["Adaptive", "Fixed"], default: 0, description: "Adaptive measures each threshold against that band's own rolling level, so it is immune to input gain but drifts - when a track dies down the reference falls with it and quiet material starts clearing the line. Fixed measures against the constant below instead, making the threshold an absolute level that a quiet passage simply cannot reach. The trade is that Fixed IS sensitive to input level: change the source volume and you change the sensitivity." }
+  - { name: fixed_ref_db, display: "Fixed Reference (dB)", group: "Response", type: float, min: -110.0, max: -20.0, default: -70.0, description: "Only used when Threshold Mode is Fixed. This is the zero point of every lane's threshold fader, so a lane fires when its band level exceeds this value plus that lane's threshold. With the default -70 dB and the fader's 0-48 dB range, the absolute trigger level spans -70 to -22 dB. Lower it to make all three lanes more sensitive, raise it to make them deafer." }
+  - { name: baseline_ms,   display: "Adapt Time (ms)",   group: "Response", type: float, min: 50.0, max: 2000.0, default: 250.0, description: "Time constant of the rolling baseline every threshold is measured against - this module's automatic normalisation. A threshold is dB ABOVE this moving average, never an absolute level. SHORT (250 ms) lets the baseline chase the music, so it follows a breakdown quickly and then starts firing on quiet material. LONG (800-2000 ms) holds the loud section's level through a dieback, so quiet passages produce almost no flux. Raise this first when a track dying down causes false triggers; the cost is a brief burst of hits right after a real quiet-to-loud transition." }
+  - { name: envelope_ms,   display: "Output Decay (ms)", group: "Response", type: float, min: 20.0, max: 1000.0, default: 120.0, description: "How fast the kick, snare and hat control outputs fall from 1.0 after a hit. Output shaping only - no effect on detection, thresholds or hit counts. Short for hard percussive stabs; long for a smooth swell that stays lit between hits. This is the knob that shapes anything these envelopes drive downstream." }
+
+  - { name: trace_seconds, display: "Trace Span (s)",    group: "View", type: float, min: 0.5, max: 8.0,  default: 2.5, description: "How much detection history the trace strips show. Display only - no effect on detection." }
+  - { name: db_floor,      display: "Display Floor (dB)", group: "View", type: float, min: -120.0, max: -20.0, default: -90.0, description: "Bottom of the spectrum display in dB. Display only - it does not affect detection, and it is NOT the -70 dB signal gate that decides whether a lane is allowed to fire." }
+
+data_inputs:
+  - name: "Spectrum"
+    slot: 0
+    schema:
+      - { name: hop_index,          type: uint }
+      - { name: sample_position,    type: uint }
+      - { name: generation_counter, type: uint }
+      - { name: qpc_ticks_lo,       type: uint }
+      - { name: qpc_ticks_hi,       type: uint }
+      - { name: sample_rate,        type: uint }
+      - { name: fft_size,           type: uint }
+      - { name: hop_size,           type: uint }
+      - { name: value_count,        type: uint }
+      - { name: magnitude,          type: float }
+
+buffers:
+  # [0..2] lane bands (lo_hz, hi_hz, seeded, threshold_db)
+  # [3]    drag header (active, startX, startY, mode)
+  # [4]    grab record (lane, origLoX, origHiX, origThreshold)
+  # [5]    current pointer (curX, curY, spare, spare)
+  - { name: bands, structured: true, element_size: 16, element_count: 6,    persistent: true }
+  # lane*515 + 0        : (base_db, last_fire_hop, hop_count, env)
+  # lane*515 + 1        : (count, read_cursor, write_idx, peak_flux)
+  # lane*515 + 2        : (level_db, gated, spare, spare)
+  # lane*515 + 3 + k    : (flux, threshold, fired, level_db)  -- 512-hop ring
+  - { name: det,   structured: true, element_size: 16, element_count: 1545, persistent: true }
+  # [0..2559] per-column (db, peak_hold, spare, spare); [2560] axis header
+  # Sized for the widest panel worth serving rather than for one fixed width:
+  # the reducer fills only the first _Resolution.x entries, so the spectrum keeps
+  # one column per real pixel as the dock resizes.
+  - { name: cols,  structured: true, element_size: 16, element_count: 2561, persistent: true }
+
+# Band edges are the one genuinely spatial choice here, so they are a drag on
+# the image rather than a pair of Hz sliders typed against a picture you cannot
+# see. Declaring the buffer here is what makes that drag survive project save,
+# node presets, and undo without being a parameter.
+state_buffers:
+  - name: bands
+    max_elements: 6
+    schema:
+      - { name: lo_hz,     type: float }
+      - { name: hi_hz,     type: float }
+      - { name: seeded,    type: float }
+      - { name: threshold, type: float }
+
+# Full-bleed panel. This node is an instrument you tune by looking at it, not a
+# picture anyone sends downstream, so every pixel of the dock should be the
+# spectrum and the traces rather than a letterboxed 1280x720 stamp inside a host
+# frame. `follow_panel` makes the render extent the real content extent, which is
+# why the renderer carries no absolute pixel sizes.
+#
+# The usual warning against follow_panel — that an arbitrary aspect stretches
+# authored artwork — does not apply here: nothing in this view is composed for a
+# fixed aspect. The spectrum wants every horizontal pixel it can get.
+panel:
+  mode: canvas
+  output: "Bands"
+  resolution: follow_panel
+
+viewport:
+  hint: "Drag a band sideways to move it, middle-drag to resize it, and drag its threshold bar up or down to set that lane's sensitivity. A threshold is dB above that band's OWN rolling level, not an absolute level, so if quiet passages start triggering raise Adapt Time rather than the fader. The trace strip also auto-scales to a decaying peak, so the threshold line can appear to drift while its value is unchanged."
+  interactions: [events]
+  input:
+    pointer: [left, middle, right]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag,   action: move_band,   label: "Move Band / Set Threshold" }
+    - { gesture: middle_drag, action: resize_band, label: "Resize Band" }
+    - { gesture: right_drag,  action: resize_band, label: "Resize Band" }
+
+passes:
+  - name: events
+    shader: events.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:bands"
+
+  # One thread per lane, so the hat's ~300-bin reduction runs alongside the
+  # kick's ~4-bin one instead of after it.
+  - name: detect
+    shader: detect.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 4
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:bands" }
+    output: "buffer:det"
+
+  # Reduce 1024 bins to one value per display column ONCE per frame. Doing this
+  # per-pixel would repeat each column's bin scan for every row of the panel.
+  # 41 x 64 = 2624 threads covers the 2561-element buffer.
+  - name: columns
+    shader: columns.hlsl
+    target: cs_5_0
+    dispatch: [41, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:cols"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:cols" }
+      - { slot: 1, source: "buffer:bands" }
+      - { slot: 2, source: "buffer:det" }
+    output: output
+
+control_outputs:
+  - { name: kick,        buffer: det, element: 0,    field_offset: 12, description: "Kick envelope 0..1" }
+  - { name: snare,       buffer: det, element: 515,  field_offset: 12, description: "Snare envelope 0..1" }
+  - { name: hat,         buffer: det, element: 1030, field_offset: 12, description: "Hat envelope 0..1" }
+  - { name: kick_count,  buffer: det, element: 1,    field_offset: 0,  description: "Kick hits since start" }
+  - { name: snare_count, buffer: det, element: 516,  field_offset: 0,  description: "Snare hits since start" }
+  - { name: hat_count,   buffer: det, element: 1031, field_offset: 0,  description: "Hat hits since start" }
+  # Recent peak flux per lane, in the same dB units as the threshold. This is
+  # the number the trace strip scales itself to, and it tells you the range a
+  # threshold has to live in for this material.
+  - { name: kick_peak,   buffer: det, element: 1,    field_offset: 12, description: "Recent peak kick flux (dB)" }
+  - { name: snare_peak,  buffer: det, element: 516,  field_offset: 12, description: "Recent peak snare flux (dB)" }
+  - { name: hat_peak,    buffer: det, element: 1031, field_offset: 12, description: "Recent peak hat flux (dB)" }
+  # Instantaneous absolute level inside each band, and exactly the value the
+  # signal gate tests. Answers "is there anything in this band at all", which a
+  # flux figure cannot: flux is relative, so a noise floor and a quiet drum
+  # produce the same excursions.
+  # Band edges and thresholds are state-buffer values, so without these they
+  # would be invisible to MCP and to any external monitor. Read-only mirrors.
+  - { name: kick_thresh,  buffer: bands, element: 0, field_offset: 12, description: "Kick threshold (dB)" }
+  - { name: snare_thresh, buffer: bands, element: 1, field_offset: 12, description: "Snare threshold (dB)" }
+  - { name: hat_thresh,   buffer: bands, element: 2, field_offset: 12, description: "Hat threshold (dB)" }
+  - { name: kick_lo_hz,   buffer: bands, element: 0, field_offset: 0,  description: "Kick band low edge (Hz)" }
+  - { name: kick_hi_hz,   buffer: bands, element: 0, field_offset: 4,  description: "Kick band high edge (Hz)" }
+
+  - { name: kick_level,  buffer: det, element: 2,    field_offset: 0,  description: "Kick band level (dB)" }
+  - { name: snare_level, buffer: det, element: 517,  field_offset: 0,  description: "Snare band level (dB)" }
+  - { name: hat_level,   buffer: det, element: 1032, field_offset: 0,  description: "Hat band level (dB)" }
+
+outputs:
+  - { name: "Bands", pass: render }

@@ -43,6 +43,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         pose.angle = angle;
         pose.cycle = cycle;
         pose.visible = 1u;
+        pose.padding.x = _Time;
     }
     else if (stage >= 2 && pose.visible != 0u && feedback_enabled != 0) {
         float dt = clamp(_DeltaTime, 0.0, 0.1);
@@ -52,7 +53,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float kick = lerp(1.0, max(feedback_kick, 1.0), kickAmount);
         float gain = max(control_gain, 0.0) * kick;
         float2 drift = float2(pan.x * aspect, pan.y) * (dt * gain);
-        float zoomFactor = exp2((zoom * 2.0) * dt * gain);
+        float zoomFactor = pcZoomFactor(kickAmount, kick, dt);
         float angleDelta = radians(feedback_rotation_speed) * dt * kick;
         float cs = cos(angleDelta);
         float sn = sin(angleDelta);

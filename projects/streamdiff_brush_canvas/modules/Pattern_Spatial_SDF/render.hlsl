@@ -77,6 +77,33 @@ float tracerSurfaceMask(float2 uv)
     return smoothstep(0.018, 0.22, difference);
 }
 
+// Surface Mix is OPACITY ONLY. How far the slab lifts off the artwork is
+// tracer_relief and nothing else, so fading the tracer in and out no longer
+// animates its height - it holds station at its authored lift and only its
+// colour and emission fade. Scaling the lift by the mix meant a hi-hat fade
+// visibly heaved the slab up out of the surface, which is the thing that
+// belonged to the relief control in the first place.
+//
+// The single geometric thing opacity still has to do is DELETE the slab. At zero
+// opacity a full-height slab would keep its silhouette and keep occluding, so
+// the volume is culled outright below a hair of opacity instead of being scaled
+// down into the panel.
+static const float TRACER_OPACITY_CULL = 0.002;
+
+bool tracerCulled()
+{
+    return saturate(tracer_mix) <= TRACER_OPACITY_CULL;
+}
+
+// Master fade for the detection frames. Applied to the 2D mask AND to the 3D
+// rail geometry, because in integration_mode 1 the frames are real geometry -
+// fading only the colour would leave a lit, occluding, shadow-casting box behind
+// at opacity 0, which is exactly the trap the tracer fell into.
+float detectionOpacity()
+{
+    return saturate(detection_opacity);
+}
+
 float detectionFrameMask(float2 uv)
 {
     if (detections_enabled == 0) return 0.0;
@@ -104,7 +131,9 @@ float detectionFrameMask(float2 uv)
             edgeDistance));
         result = max(result, border * smoothstep(detection_confidence, 1.0, confidence));
     }
-    return saturate(result);
+    // One multiply here fades every mask-driven path at once: the integrated
+    // albedo blend, the emission add, and the mode 0 relief displacement.
+    return saturate(result) * detectionOpacity();
 }
 
 float3 classPalette(float classId)
@@ -155,8 +184,12 @@ float3 detectionColorAtUv(float2 uv)
 float integratedRelief(float2 uv)
 {
     if (integration_mode == 1) return sampledDepth(uv) * relief_amount;
+    // Mode 0 is the integrated look: there is no separate slab, so the tracer's
+    // only presence IS this emboss. Here the mix does scale the height, because
+    // otherwise mix 0 would leave the tracer's shape stamped into the surface
+    // with no colour on it. Mode 1 keeps lift and opacity strictly separate.
     return sampledDepth(uv) * relief_amount
-         + tracerSurfaceMask(uv) * tracer_relief
+         + tracerSurfaceMask(uv) * tracer_relief * saturate(tracer_mix)
          + detectionFrameMask(uv) * detection_relief;
 }
 
@@ -179,6 +212,10 @@ float capsuleDistance(float3 p, float3 a, float3 b, float radius)
 float detectionVolume(float3 p, float2 halfSize)
 {
     if (integration_mode != 1 || detections_enabled == 0) return 10000.0;
+    // Below this the rail would be sub-pixel anyway; returning no geometry at all
+    // means opacity 0 removes the frames completely rather than leaving slivers
+    // that still catch a specular highlight.
+    if (detectionOpacity() <= 0.002) return 10000.0;
 
     float result = 10000.0;
     uint count = min(_Data0_Count, 12u);
@@ -206,12 +243,21 @@ float detectionVolume(float3 p, float2 halfSize)
             corner[c] = float3(cornerPosition, contentSurfaceZ(cornerPosition, halfSize));
             topZ = max(topZ, corner[c].z);
         }
-        topZ += detection_relief;
+        // Sink the rail back toward the surface as it fades, so the frames
+        // retreat into the panel rather than hovering at full height until they
+        // abruptly vanish at the opacity cutoff.
+        topZ += detection_relief * detectionOpacity();
 
         float2 railHalf = max(abs(panelPositionFromUv(hi, halfSize) - center), detection_line_width.xx);
-        float railRadius = detection_geometry_mode == 1
+        // The mode 0 floor used to be 0.004 - 33x coarser than mode 1's 0.00012 -
+        // so Frame Width bottomed out long before the rail looked thin and the
+        // box could never be made fine. Both modes now share the small floor,
+        // which only exists to keep the SDF from degenerating to zero thickness.
+        // Opacity scales the radius as well as the colour, so fading out actually
+        // thins the geometry away instead of leaving a solid rail behind.
+        float railRadius = (detection_geometry_mode == 1
             ? max(detection_line_width * 0.15, 0.00012)
-            : max(detection_line_width * 0.5, 0.004);
+            : max(detection_line_width * 0.5, 0.00012)) * detectionOpacity();
         float outer = boxDistance2D(p.xy - center, railHalf + railRadius.xx);
         float inner = -boxDistance2D(p.xy - center, max(railHalf - railRadius.xx, 0.001.xx));
         float ring = max(outer, inner);
@@ -228,19 +274,40 @@ float detectionVolume(float3 p, float2 halfSize)
         {
             [unroll]
             for (int c = 0; c < 4; ++c)
-                result = min(result, length(p - float3(corner[c].xy, topZ)) - detection_dot_radius);
+                result = min(result, length(p - float3(corner[c].xy, topZ)) - detection_dot_radius * detectionOpacity());
         }
     }
     return result;
 }
 
+// The flat plane the tracer falls back to when it is told to ignore depth. It is
+// the panel's own front plane, not world zero, so an inset frame still holds the
+// tracer inside its pocket instead of floating it out over the moulding.
+float tracerPlaneZ()
+{
+    float z = 0.0;
+    if (frame_mode == 2 || frame_mode == 3) z -= inset_depth;
+    return z;
+}
+
 float tracerVolume(float3 p, float2 halfSize)
 {
-    if (integration_mode != 1 || tracer_relief <= 0.0001) return 10000.0;
+    if (integration_mode != 1 || tracerCulled()) return 10000.0;
+    // Opacity no longer scales this. Surface Mix fades colour and emission only;
+    // the slab holds its authored lift the whole way down and simply ceases to
+    // exist at zero, via the cull above.
+    float relief = tracer_relief;
     float2 uv = panelUv(p.xy, halfSize);
     float mask = tracerSurfaceMask(uv);
     float fieldDistance = (0.42 - mask) * 0.08;
-    float centerZ = contentSurfaceZ(p.xy, halfSize) + tracer_relief;
+    // Depth Follow at 1 rides the artwork's relief exactly as before. At 0 the
+    // slab is a rigid plane that the depth map cannot touch, positioned by Plane
+    // Offset; anything between cross-fades the two anchors, so the tracer can be
+    // made to only partly care about what is underneath it.
+    float depthAnchor = contentSurfaceZ(p.xy, halfSize);
+    float planeAnchor = tracerPlaneZ() + tracer_plane_offset;
+    float anchorZ = lerp(planeAnchor, depthAnchor, saturate(tracer_depth_follow));
+    float centerZ = anchorZ + relief;
     float slabDistance = abs(p.z - centerZ) - 0.012;
     return max(fieldDistance, slabDistance);
 }
@@ -388,6 +455,22 @@ float mapRelief(float3 p)
     return min(min(contentDistance, housingDistance), min(separateDetection, separateTracer));
 }
 
+// Caster set for shadows and ambient occlusion, deliberately NOT the same as the
+// visible scene. The tracer slab and the detection rails are overlays hovering
+// above the artwork; letting them cast means every hi-hat stamps a hard shadow
+// across the image underneath and the AO pass darkens it a second time. That
+// reads as the lighting breaking rather than as depth, so overlays are excluded
+// by default. The panel content and the housing frame always cast.
+float mapShadow(float3 p)
+{
+    float2 halfSize = panelHalfSize();
+    float distance = min(mapContent(p, halfSize), mapFrame(p, halfSize));
+    if (overlay_shadows != 0)
+        distance = min(distance, min(detectionVolume(p, halfSize),
+                                     tracerVolume(p, halfSize)));
+    return distance;
+}
+
 int surfaceMaterial(float3 p)
 {
     float2 halfSize = panelHalfSize();
@@ -400,7 +483,25 @@ int surfaceMaterial(float3 p)
     return housingDistance <= contentDistance ? 1 : 0;
 }
 
-float3 reliefNormalAt(float3 p, float e)
+// Field used for SHADING NORMALS, which is not the same set as the visible
+// scene either. A normal has to come from the surface that was actually hit.
+// Taking the gradient of min(content, tracer) bends the panel's normals wherever
+// the slab hovers nearby - the union field starts curving toward the slab
+// several epsilons before the slab is reached - so N.L on the untouched artwork
+// shifts the instant a tracer line appears and the whole lit area reads as
+// dimming. Overlays are only unioned in when the shaded point is itself on an
+// overlay and genuinely needs the slab's own gradient.
+float mapReliefShading(float3 p, bool includeOverlays)
+{
+    float2 halfSize = panelHalfSize();
+    float distance = min(mapContent(p, halfSize), mapFrame(p, halfSize));
+    if (includeOverlays)
+        distance = min(distance, min(detectionVolume(p, halfSize),
+                                     tracerVolume(p, halfSize)));
+    return distance;
+}
+
+float3 reliefNormalAt(float3 p, float e, bool includeOverlays)
 {
     float3 n = 0.0;
     [unroll]
@@ -410,19 +511,19 @@ float3 reliefNormalAt(float3 p, float e)
             (i & 1) ? 1.0 : -1.0,
             (i & 2) ? 1.0 : -1.0,
             (i == 0 || i == 3) ? 1.0 : -1.0);
-        n += d * mapRelief(p + d * e);
+        n += d * mapReliefShading(p + d * e, includeOverlays);
     }
     return normalize(n);
 }
 
-float3 reliefNormal(float3 p, float travel)
+float3 reliefNormal(float3 p, float travel, bool includeOverlays)
 {
     // Widening a single SDF gradient rejects high-frequency depth/matte noise
     // without doubling the ray-marched field evaluations per shaded pixel.
     float smoothScale = lerp(1.0, normal_smooth_radius, normal_smoothing);
     float sampleRadius = hit_epsilon * (1.5 + travel * 0.04)
         * normal_sample_scale * smoothScale;
-    return reliefNormalAt(p, sampleRadius);
+    return reliefNormalAt(p, sampleRadius, includeOverlays);
 }
 
 float3 housingNormal(float3 p, float travel)
@@ -450,7 +551,7 @@ float ambientOcclusion(float3 p, float3 n)
     for (int i = 1; i <= 5; ++i)
     {
         float distanceAlongNormal = 0.018 + i * 0.035;
-        occlusion += max(distanceAlongNormal - mapRelief(p + n * distanceAlongNormal), 0.0) * weight;
+        occlusion += max(distanceAlongNormal - mapShadow(p + n * distanceAlongNormal), 0.0) * weight;
         weight *= 0.62;
     }
     return saturate(1.0 - occlusion * ao_strength * 6.0);
@@ -464,13 +565,17 @@ float softShadow(float3 origin, float3 direction)
     [loop]
     for (int i = 0; i < 32; ++i)
     {
-        float distanceToSurface = mapRelief(origin + direction * travel);
-        if (distanceToSurface < hit_epsilon * 1.5) return 0.0;
+        float distanceToSurface = mapShadow(origin + direction * travel);
+        // Fully occluded. Must honour Shadow Strength here too - returning a bare
+        // 0.0 would let every hard shadow ignore the control and stay black.
+        if (distanceToSurface < hit_epsilon * 1.5) return 1.0 - saturate(shadow_strength);
         visibility = min(visibility, shadow_softness * distanceToSurface / max(travel, 0.001));
         travel += clamp(distanceToSurface * 0.65, 0.008, 0.16);
         if (travel > 5.0) break;
     }
-    return saturate(visibility);
+    // Lift the shadow floor rather than clamping the whole term, so the penumbra
+    // shape Shadow Softness produces is preserved and only its depth changes.
+    return lerp(1.0, saturate(visibility), saturate(shadow_strength));
 }
 
 float3 cameraRay(float2 uv, out float3 rayOrigin)
@@ -537,14 +642,27 @@ float3 shadeRelief(float3 p, float3 n, float3 viewDirection, float2 uv,
     float2 colorUv = edgeRefinedColorUv(uv, edgeFactor);
     float3 videoAlbedo = adjustAlbedo(_Tex0.SampleLevel(LinearSampler, saturate(colorUv), 0).rgb);
     float3 tracedAlbedo = adjustAlbedo(_Tex3.SampleLevel(LinearSampler, saturate(colorUv), 0).rgb);
-    float tracerMask = (!frameSurface && !detectionSurface && !tracerSurface) ? tracerSurfaceMask(colorUv) : 0.0;
-    float detectionMask = (!frameSurface && !detectionSurface && !tracerSurface) ? detectionFrameMask(colorUv) : 0.0;
+    // In integration_mode 1 the tracer owns its own raised slab, so the content
+    // panel underneath must stay the CLEAN video. Blending traced colour in here
+    // as well painted the tracer twice: once flat on the panel and once on the
+    // slab hovering above it, which is why the two never read as separate
+    // surfaces. Mode 0 is the genuinely integrated look and still blends.
+    bool separateTracer = integration_mode == 1;
+    bool contentSurface = !frameSurface && !detectionSurface && !tracerSurface;
+    float tracerMask = (contentSurface && !separateTracer) ? tracerSurfaceMask(colorUv) : 0.0;
+    float detectionMask = contentSurface ? detectionFrameMask(colorUv) : 0.0;
     float3 integratedAlbedo = lerp(videoAlbedo, tracedAlbedo, tracer_mix * tracerMask);
     integratedAlbedo = lerp(integratedAlbedo, detectionColorAtUv(colorUv), detectionMask);
     float3 localDetectionColor = detectionColorAtUv(uv);
     float3 albedo = frameSurface ? frame_color
-        : detectionSurface ? localDetectionColor
-        : tracerSurface ? tracedAlbedo
+        // Fade the rail's own albedo toward the video underneath it, matching
+        // what the tracer slab does, so a partly-faded frame reads as translucent
+        // rather than as a fully-lit solid that merely got thinner.
+        : detectionSurface ? lerp(videoAlbedo, localDetectionColor, detectionOpacity())
+        // Fade the raised tracer slab back to the video colour underneath it as
+        // the mix drops, so Surface Mix can take the tracer all the way out
+        // rather than leaving a fully-lit slab floating at its relief height.
+        : tracerSurface ? lerp(videoAlbedo, tracedAlbedo, tracer_mix)
         : integratedAlbedo;
     float3 flatNormal = float3(0.0, 0.0, p.z >= 0.0 ? 1.0 : -1.0);
     float effectiveNormalStrength = normal_strength * (1.0 - edgeFactor * normal_edge_soften);
@@ -559,10 +677,19 @@ float3 shadeRelief(float3 p, float3 n, float3 viewDirection, float2 uv,
 
     float3 lightDirection = keyLightDirection();
     float diffuse = saturate(dot(n, lightDirection));
-    float shadow = softShadow(p + n * hit_epsilon * 4.0, lightDirection);
+    // The overlay slabs float a hair above the artwork, so an AO probe from the
+    // slab immediately finds the panel underneath and a shadow ray can clip it
+    // too. Both darken the overlay the moment it appears and make the graphic
+    // read as a lighting glitch instead of an overlay. They keep their diffuse
+    // N.L term but receive no occlusion.
+    bool overlaySurface = detectionSurface || tracerSurface;
+    float shadow = overlaySurface ? 1.0
+        : softShadow(p + n * hit_epsilon * 4.0, lightDirection);
     // The rigid wall has an analytically clean face and covers many pixels, so
     // avoid expensive relief AO queries across the entire wall.
-    float ao = frameSurface ? 1.0 : max(ambientOcclusion(p, n), ao_floor);
+    float ao = (frameSurface || overlaySurface)
+        ? 1.0
+        : max(ambientOcclusion(p, n), ao_floor);
 
     float3 halfVector = normalize(lightDirection + viewDirection);
     float localRoughness = frameSurface ? frame_roughness : roughness;
@@ -584,16 +711,19 @@ float3 shadeRelief(float3 p, float3 n, float3 viewDirection, float2 uv,
     color += rim_color * rim;
     if (detectionSurface)
     {
-        color += localDetectionColor * (1.25 + detection_relief * 0.35);
+        color += localDetectionColor * (1.25 + detection_relief * 0.35) * detectionOpacity();
     }
     else if (tracerSurface)
     {
-        color += max(tracedAlbedo - videoAlbedo, 0.0) * tracer_emission;
+        // Emission scales with the mix too. Without this, Surface Mix at 0 still
+        // left the tracer glowing at full strength, so nothing in the node
+        // actually faded the tracer in and out.
+        color += max(tracedAlbedo - videoAlbedo, 0.0) * tracer_emission * tracer_mix;
     }
     else if (!frameSurface)
     {
         float3 tracerDelta = max(tracedAlbedo - videoAlbedo, 0.0);
-        color += tracerDelta * tracer_emission * tracerMask;
+        color += tracerDelta * tracer_emission * tracerMask * tracer_mix;
         color += detection_color * (1.25 + detection_relief * 0.35) * detectionMask;
         // Keep matte/cutout boundaries and nearly perpendicular side walls
         // from collapsing to black without flattening the interior lighting.
@@ -641,7 +771,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     if (!hit)
     {
-        OutputUAV[DTid.xy] = float4(backgroundColor(rayDirection), 1.0);
+        OutputUAV[DTid.xy] = float4(backgroundColor(rayDirection), 0.0);
         return;
     }
 
@@ -654,12 +784,29 @@ void main(uint3 DTid : SV_DispatchThreadID)
     else if (frameSurface)
         normal = housingNormal(hitPosition, travel);
     else
-        normal = reliefNormal(hitPosition, travel);
+        // Only an overlay hit needs the overlay volumes in its gradient. A
+        // content hit must never see them, or the tracer bends the artwork's
+        // normals as it fades in.
+        normal = reliefNormal(hitPosition, travel, materialId == 2 || materialId == 3);
     if (dot(normal, -rayDirection) < 0.0) normal = -normal;
     // Use the same deformed domain for texture, depth, and cutout lookup so
     // every input remains glued to the SDF through the animation.
     float3 materialPosition = lrDomainDistort(hitPosition, 1.0);
     float2 uv = panelUv(materialPosition.xy, panelHalfSize());
     float3 color = shadeRelief(hitPosition, normal, -rayDirection, uv, materialId);
-    OutputUAV[DTid.xy] = float4(color, 1.0);
+    // Alpha is an explicit authored SDF visibility mask, evaluated at the SAME
+    // deformed world-space hit and UV used by the cutout geometry. It is never
+    // derived from shaded RGB. Overlay hits inherit the underlying cutout
+    // coverage so tracer/detection geometry cannot punch false holes into the
+    // laser silhouette; only the rigid housing is excluded.
+    float latestStamp = _Tex4.SampleLevel(LinearSampler, saturate(uv), 0).r;
+    float latestLife = _Tex4.SampleLevel(LinearSampler, saturate(uv), 0).g;
+    // Encode both authored membership and lifetime in alpha for the dedicated
+    // laser pass. 0 is empty; [0.5, 1] is the newest stamp, with the upper
+    // half carrying its remaining life. The laser pass converts that life to
+    // a spatial retract, so its final output remains strictly binary.
+    float laserSurface = (materialId != 1 && latestStamp >= 0.5 && latestLife > 0.001)
+        ? (0.5 + 0.5 * saturate(latestLife))
+        : 0.0;
+    OutputUAV[DTid.xy] = float4(color, laserSurface);
 }

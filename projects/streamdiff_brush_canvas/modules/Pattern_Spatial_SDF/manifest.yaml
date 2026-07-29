@@ -1,7 +1,7 @@
 name: "Pattern Spatial SDF"
 version: "1.1"
 mode: generator
-resolution: [960, 540]
+resolution: [1920, 1080]
 output_format: RGBA8
 features: [camera]
 
@@ -14,6 +14,7 @@ inputs:
   - { name: "Depth Map", slot: 1, required: true }
   - { name: "Foreground Mask", slot: 2, required: false }
   - { name: "Tracer Surface", slot: 3, required: true }
+  - { name: "Latest Stamp Mask", slot: 4, required: true }
 
 data_inputs:
   - name: "Detections"
@@ -113,12 +114,15 @@ parameters:
     default: 0
     flags: button_grid
     group: "Spatial Integration"
-  - { name: tracer_mix, display: "Surface Mix", type: float, min: 0.0, max: 1.0, default: 0.85, group: "Spatial Integration/Tracer" }
-  - { name: tracer_relief, display: "Relief", type: float, min: 0.0, max: 5.0, default: 0.18, group: "Spatial Integration/Tracer" }
+  - { name: tracer_mix, display: "Surface Mix", type: float, min: 0.0, max: 1.0, default: 0.85, group: "Spatial Integration/Tracer", description: "Opacity of the tracer only. Fades its colour and emission and deletes it entirely at 0. Does NOT move it - the lift belongs to Relief." }
+  - { name: tracer_relief, display: "Relief", type: float, min: 0.0, max: 5.0, default: 0.18, group: "Spatial Integration/Tracer", description: "How far the tracer lifts off whatever it is anchored to. Independent of Surface Mix, so a fade never heaves the slab up out of the surface." }
+  - { name: tracer_depth_follow, display: "Depth Follow", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Spatial Integration/Tracer", description: "1 rides the artwork's depth relief. 0 pins the tracer to a rigid flat plane the depth map cannot touch, positioned by Plane Offset. In between cross-fades the two." }
+  - { name: tracer_plane_offset, display: "Plane Offset", type: float, min: -3.0, max: 3.0, default: 0.0, group: "Spatial Integration/Tracer", description: "Z position of the fixed plane. Only has an effect as Depth Follow moves away from 1; at full Depth Follow the tracer is anchored to the artwork instead." }
   - { name: tracer_emission, display: "Emission", type: float, min: 0.0, max: 6.0, default: 0.8, group: "Spatial Integration/Tracer" }
   - { name: detections_enabled, display: "Detection Frames", type: bool, default: true, flags: button, group: "Spatial Integration/Detections" }
   - { name: detection_confidence, display: "Confidence Floor", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Spatial Integration/Detections" }
-  - { name: detection_line_width, display: "Frame Width", type: float, min: 0.00001, max: 0.08, default: 0.0004, group: "Spatial Integration/Detections" }
+  - { name: detection_line_width, display: "Frame Width", type: float, min: 0.00001, max: 0.08, default: 0.0004, description: "Thickness of the detection frame rail. This drives BOTH the flat 2D outline and, in Spatial integration mode, the real 3D rail geometry. A hard floor used to clamp the geometry at 0.004 in Boxes mode regardless of this value, so the frame could not be made thin; both geometry modes now share a 0.00012 floor that exists only to stop the distance field collapsing to zero thickness.", group: "Spatial Integration/Detections" }
+  - { name: detection_opacity, display: "Frame Opacity", type: float, min: 0.0, max: 1.0, default: 1.0, description: "Master fade for the detection frames. At 0 they are gone completely - the 3D rail geometry stops being generated, so nothing is left to occlude the panel, catch a highlight or cast a shadow. Fading also thins the rail and sinks it back toward the surface as it goes, so it retreats rather than hovering at full height and then popping out. Affects the corner dots and depth struts too.", group: "Spatial Integration/Detections" }
   - { name: detection_relief, display: "Relief", type: float, min: 0.0, max: 5.0, default: 0.22, group: "Spatial Integration/Detections" }
   - { name: detection_color, display: "Frame Color", type: color, default: [1.0, 0.32, 0.08], group: "Spatial Integration/Detections" }
   - { name: detection_corner_dots, display: "Corner Dots", type: bool, default: true, flags: button, group: "Spatial Integration/Detections" }
@@ -165,6 +169,10 @@ parameters:
   - { name: key_intensity, display: "Key Intensity", type: float, min: 0.0, max: 5.0, default: 1.962, group: "Lighting/Key" }
   - { name: shadows_enabled, display: "Self Shadows", type: bool, default: true, flags: button, group: "Lighting/Shadows" }
   - { name: shadow_softness, display: "Shadow Softness", type: float, min: 1.0, max: 32.0, default: 1.737, group: "Lighting/Shadows" }
+  # The overlays hover above the artwork, so casting from them puts a hard shadow
+  # across the image every time the tracer switches on. Off by default.
+  - { name: overlay_shadows, display: "Overlays Cast Shadows", type: bool, default: false, flags: button, description: "Whether the tracer slab and the detection frames cast shadows and contribute ambient occlusion. They are overlays floating above the panel, so casting from them stamps a hard shadow across the artwork underneath every time the tracer switches on, and the AO pass darkens the same area again. Off keeps the panel lighting stable and unaffected by overlays. The panel content and the housing frame always cast either way.", group: "Lighting/Shadows" }
+  - { name: shadow_strength, display: "Shadow Strength", type: float, min: 0.0, max: 1.0, default: 1.0, description: "How dark shadowed areas are allowed to get. At 1.0 a fully occluded point receives no key light at all, which is what makes deep relief read as harsh. Lower values lift the shadow floor so form still reads without the image going black wherever geometry blocks the key. Independent of Shadow Softness, which controls the penumbra width rather than the depth.", group: "Lighting/Shadows" }
   - { name: ambient_color, display: "Ambient Color", type: color, default: [0.18, 0.26, 0.38], group: "Lighting/Ambient" }
   - { name: ambient_strength, display: "Ambient Strength", type: float, min: 0.0, max: 3.0, default: 0.95, group: "Lighting/Ambient" }
   - { name: ao_strength, display: "Cavity Occlusion", type: float, min: 0.0, max: 3.0, default: 1.15, group: "Lighting/Ambient" }
@@ -195,6 +203,22 @@ parameters:
   - { name: background_top, display: "Background Top", type: color, default: [0.055, 0.075, 0.11], group: "Background" }
   - { name: background_bottom, display: "Background Bottom", type: color, default: [0.008, 0.01, 0.016], group: "Background" }
 
+  # Binary white-on-black laser output. The trace is extracted from the
+  # cutout-controlled SDF surface classification, never from shaded RGB.
+  - { name: laser_line_thickness_px, display: "Line Thickness Px", type: float, min: 0.5, max: 12.0, default: 2.0, group: "Laser/Output" }
+  - { name: laser_edge_buffer_px, display: "Blank Edge Buffer Px", type: float, min: 0.0, max: 128.0, default: 8.0, group: "Laser/Output" }
+  # Legacy trace fields remain hidden only to retain the already-compiled SDF
+  # kernel. Their live values are forced to a neutral full-outline/no-flash
+  # configuration; timing belongs to Pattern Canvas.
+  - { name: trace_reveal, display: "Reveal", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Laser/Internal", hidden: true }
+  - { name: trace_count, display: "Count", type: float, min: -1.0, max: 32.0, default: -1.0, group: "Laser/Internal", hidden: true }
+  - { name: trace_mode, display: "Mode", type: float, min: 0.0, max: 5.0, default: 0.0, group: "Laser/Internal", hidden: true }
+  - { name: trace_speed, display: "Speed", type: float, min: 0.0, max: 8.0, default: 0.0, group: "Laser/Internal", hidden: true }
+  - { name: trace_cycle, display: "Cycle (s)", type: float, min: 0.05, max: 10.0, default: 2.0, group: "Laser/Internal", hidden: true }
+  - { name: flash_strobe, display: "Flash Strobe", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Laser/Internal", hidden: true }
+  - { name: flash_rate, display: "Flash Rate", type: float, min: 0.0, max: 10.0, default: 0.0, group: "Laser/Internal", hidden: true }
+  - { name: flash_width, display: "Flash Width", type: float, min: 0.0, max: 0.5, default: 0.0, group: "Laser/Internal", hidden: true }
+
   - { name: ray_steps, display: "Ray Steps", type: int, min: 48, max: 160, default: 160, group: "Quality" }
   - { name: march_safety, display: "March Safety", type: float, min: 0.1, max: 0.9, default: 0.18, group: "Quality" }
   - { name: hit_epsilon, display: "Surface Precision", type: float, min: 0.0005, max: 0.01, default: 0.003, group: "Quality" }
@@ -204,10 +228,24 @@ passes:
   - name: render
     shader: render.hlsl
     target: cs_5_0
-    output: output
     inputs:
       - { slot: 0, source: "input:0" }
       - { slot: 1, source: "input:1" }
       - { slot: 2, source: "input:2" }
       - { slot: 3, source: "input:3" }
-      - { slot: 4, source: "data:0" }
+      - { slot: 4, source: "input:4" }
+      - { slot: 5, source: "data:0" }
+  - name: video
+    shader: video_output.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:render" }
+  - name: laser
+    shader: laser_output.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:render" }
+
+outputs:
+  - { name: "Video", pass: video }
+  - { name: "Laser", pass: laser }

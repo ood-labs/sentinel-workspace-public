@@ -1,0 +1,37 @@
+name: "LaserViz Calibration Grid"
+version: "1.0"
+mode: generator
+resolution: [1920, 1080]
+
+parameters:
+  - { name: edge_buffer_px, display: "Blank Edge Buffer Px", type: float, min: 0.0, max: 256.0, default: 8.0, group: "Grid/Layout" }
+  - { name: pattern_scale, display: "Pattern Scale", type: float, min: 0.1, max: 1.0, default: 0.94, group: "Grid/Layout" }
+  - { name: grid_divisions_x, display: "Grid Divisions X", type: int, min: 1, max: 32, default: 8, group: "Grid/Layout" }
+  - { name: grid_divisions_y, display: "Grid Divisions Y", type: int, min: 1, max: 32, default: 6, group: "Grid/Layout" }
+  - { name: line_thickness_px, display: "Line Thickness Px", type: float, min: 1.0, max: 32.0, default: 1.0, group: "Grid/Lines" }
+  - { name: dot_radius_px, display: "Dot Radius Px", type: float, min: 0.0, max: 64.0, default: 5.0, group: "Grid/Dots" }
+  - { name: dot_sharpness, display: "Dot Sharpness", type: float, min: 0.1, max: 8.0, default: 1.0, group: "Grid/Dots" }
+  - { name: dot_harshness, display: "Dot Harshness", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Grid/Dots" }
+  - { name: dot_feather_px, display: "Dot Feather Px", type: float, min: 0.001, max: 16.0, default: 0.75, group: "Grid/Dots" }
+  - { name: line_color, display: "Line Color", type: color, default: [1.0, 1.0, 1.0], group: "Color" }
+  - { name: color_output_intensity, display: "Color Output Intensity", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Color" }
+  - { name: laser_output_mode, display: "Laser Output", type: enum, options: [Lines, Dots, Both], default: 2, flags: button_grid, group: "Laser Output" }
+
+passes:
+  - name: render
+    shader: laser_calibration_grid.hlsl
+    target: cs_5_0
+  - name: video
+    shader: video_output.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:render" }
+  - name: laser
+    shader: laser_output.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:render" }
+
+outputs:
+  - { name: "Out", pass: video }
+  - { name: "Laser", pass: laser }

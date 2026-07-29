@@ -3,7 +3,8 @@ struct PosterPixel {
     float4 meta;
 };
 RWStructuredBuffer<PosterPixel> OutputBuffer : register(u0);
-StructuredBuffer<float4> PaintState : register(t2);
+StructuredBuffer<float4> PaintState : register(t3);
+StructuredBuffer<PosterPixel> PreviousPoster : register(t4);
 
 static const uint PC_WIDTH = 1080u;
 static const uint PC_HEIGHT = 1350u;
@@ -16,10 +17,13 @@ void main(uint3 id : SV_DispatchThreadID)
     float2 uv = ((float2)id.xy + 0.5) / float2(PC_WIDTH, PC_HEIGHT);
     float4 ctrl = PaintState[0];
     float4 meta = PaintState[18];
-    PosterPixel pixel = OutputBuffer[index];
+    PosterPixel pixel = PreviousPoster[index];
     bool fresh = abs(ctrl.x - pixel.meta.x) > 0.25;
     float4 canvas = pixel.color;
-    if (fresh && meta.x > 0.5) canvas = 0.0;
+    if (fresh && meta.x > 0.5) {
+        canvas = 0.0;
+        pixel.meta.y = 0.0;
+    }
     if (fresh && meta.x <= 0.5) {
         uint queueCount = min((uint)round(meta.z), 16u);
         [loop] for (uint q = 0u; q < queueCount; ++q) {
@@ -42,6 +46,18 @@ void main(uint3 id : SV_DispatchThreadID)
                 float3 premul = subject * alpha;
                 canvas.rgb = premul + canvas.rgb * (1.0 - alpha);
                 canvas.a = alpha + canvas.a * (1.0 - alpha);
+
+                float sourceDepth = _Tex2.SampleLevel(LinearSampler, local, 0).r;
+                float shapedDepth = saturate(
+                    lerp(depth_value, sourceDepth, depth_source_mix)
+                    * depth_gain + depth_offset);
+                if (depth_blend_mode == 0) {
+                    pixel.meta.y = lerp(pixel.meta.y, shapedDepth, alpha);
+                } else if (depth_blend_mode == 1) {
+                    pixel.meta.y = max(pixel.meta.y, shapedDepth * alpha);
+                } else {
+                    pixel.meta.y = saturate(pixel.meta.y + shapedDepth * alpha);
+                }
             }
         }
     }

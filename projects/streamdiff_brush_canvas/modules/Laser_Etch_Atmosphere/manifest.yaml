@@ -1,0 +1,61 @@
+name: "Laser Etch Atmosphere"
+version: "1.0"
+mode: generator
+resolution: [1920, 1080]
+features: [noise]
+time_dependent: true
+
+inputs:
+  - { name: "Video", slot: 0, required: true }
+  - { name: "Laser", slot: 1, required: true }
+
+parameters:
+  - { name: effect_mix, display: "Effect Mix", type: float, min: 0.0, max: 1.0, default: 0.72, group: "Etch" }
+  - { name: etch_width, display: "Etch Width", type: float, min: 0.5, max: 12.0, default: 3.0, group: "Etch" }
+  - { name: etch_heat, display: "Hot Core", type: float, min: 0.0, max: 2.0, default: 0.55, group: "Etch" }
+  - { name: etch_glow, display: "Edge Glow", type: float, min: 0.0, max: 1.5, default: 0.28, group: "Etch" }
+  - { name: etch_char, display: "Char Edge", type: float, min: 0.0, max: 1.5, default: 0.48, group: "Etch" }
+  - { name: etch_color, display: "Etch Color", type: color, default: [1.0, 0.38, 0.08], group: "Etch" }
+
+  - { name: smoke_injection, display: "Smoke Amount", type: float, min: 0.0, max: 2.0, default: 0.78, group: "Smoke" }
+  - { name: smoke_decay, display: "Smoke Fade", type: float, min: 0.25, max: 5.0, default: 0.82, group: "Smoke" }
+  - { name: smoke_rise, display: "Smoke Rise", type: float, min: 0.0, max: 0.45, default: 0.17, group: "Smoke" }
+  - { name: smoke_spread, display: "Smoke Spread", type: float, min: 0.0, max: 4.0, default: 1.45, group: "Smoke" }
+  - { name: smoke_turbulence, display: "Smoke Curl", type: float, min: 0.0, max: 1.5, default: 0.52, group: "Smoke" }
+  - { name: smoke_scale, display: "Smoke Detail", type: float, min: 1.0, max: 12.0, default: 5.2, group: "Smoke" }
+  - { name: smoke_motion, display: "Smoke Motion", type: float, min: 0.0, max: 3.0, default: 0.55, group: "Smoke" }
+  - { name: smoke_source_width, display: "Source Width", type: float, min: 0.25, max: 6.0, default: 1.35, group: "Smoke" }
+  - { name: smoke_contrast, display: "Smoke Definition", type: float, min: 0.4, max: 3.0, default: 1.35, group: "Smoke" }
+  - { name: smoke_opacity, display: "Smoke Opacity", type: float, min: 0.0, max: 1.0, default: 0.42, group: "Smoke" }
+  - { name: smoke_tint, display: "Smoke Tint", type: color, default: [0.72, 0.74, 0.69], group: "Smoke" }
+  - { name: soot_amount, display: "Soot Trail", type: float, min: 0.0, max: 1.5, default: 0.22, group: "Smoke" }
+  - { name: clear_smoke, display: "Clear Smoke", type: bool, default: false, group: "Smoke", flags: [button] }
+
+  - { name: displacement_amount, display: "Heat Displacement", type: float, min: 0.0, max: 0.035, default: 0.0065, group: "Distortion" }
+  - { name: trail_scale, display: "Trail Detail", type: float, min: 1.0, max: 14.0, default: 6.5, group: "Distortion" }
+  - { name: trail_motion, display: "Trail Motion", type: float, min: 0.0, max: 3.0, default: 0.45, group: "Distortion" }
+
+buffers:
+  - { name: smoke_field, format: RGBA16F, scale: 0.5, persistent: true }
+
+passes:
+  - name: smoke_sim
+    shader: smoke_sim.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:smoke_field" }
+      - { slot: 1, source: "input:1" }
+    output: "buffer:smoke_field"
+
+  - name: composite
+    shader: composite.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "buffer:smoke_field" }
+    output: output
+
+outputs:
+  - { name: "Etched Video", pass: composite }
