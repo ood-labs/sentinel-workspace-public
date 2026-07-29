@@ -1,0 +1,29 @@
+name: "Impossible Vanishing Corridor"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Cathedral Program", slot: 0, required: true }
+
+parameters:
+  - { name: corridor_mix, display: "Corridor Mix", type: float, min: 0.0, max: 1.0, default: 0.82, group: "Corridor" }
+  - { name: corridor_phase, display: "Corridor Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: travel_speed, display: "Travel Speed", type: float, min: -2.0, max: 2.0, default: 0.58, group: "Motion" }
+  - { name: corridor_depth, display: "Corridor Depth", type: float, min: 0.15, max: 1.0, default: 0.54, group: "Corridor" }
+  - { name: slice_count, display: "Slice Count", type: float, min: 2.0, max: 10.0, default: 6.0, group: "Corridor" }
+  - { name: vanishing_pull, display: "Vanishing Pull", type: float, min: 0.0, max: 0.42, default: 0.16, group: "Corridor" }
+  - { name: frame_gain, display: "Frame Gain", type: float, min: 0.0, max: 1.2, default: 0.62, group: "Structure" }
+  - { name: dark_color, display: "Dark Color", type: color, default: [0.003,0.005,0.009], group: "Structure" }
+  - { name: accent_color, display: "Accent Color", type: color, default: [0.95,0.18,0.028], group: "Structure" }
+
+passes:
+  - name: corridor
+    shader: corridor.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Corridor Program", pass: corridor }

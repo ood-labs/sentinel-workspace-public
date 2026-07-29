@@ -1,0 +1,30 @@
+name: "Impossible Counterfield"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Archived Floor Program", slot: 0, required: true }
+
+parameters:
+  - { name: counter_mix, display: "Counterfield Mix", type: float, min: 0.0, max: 1.0, default: 0.68, group: "Field" }
+  - { name: field_x, display: "Field Position", type: float, min: 0.04, max: 0.42, default: 0.19, group: "Field" }
+  - { name: field_width, display: "Field Width", type: float, min: 0.12, max: 0.5, default: 0.27, group: "Field" }
+  - { name: counter_phase, display: "Counter Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: gate_rate, display: "Gate Rate", type: float, min: -2.0, max: 2.0, default: 0.38, group: "Motion" }
+  - { name: field_shear, display: "Field Shear", type: float, min: -1.0, max: 1.0, default: 0.16, group: "Motion" }
+  - { name: quant_steps, display: "Quant Steps", type: float, min: 2.0, max: 12.0, default: 5.0, group: "Ink" }
+  - { name: ink_gain, display: "Ink Gain", type: float, min: 0.0, max: 1.5, default: 0.92, group: "Ink" }
+  - { name: bone_color, display: "Bone Color", type: color, default: [0.86,0.84,0.75], group: "Ink" }
+  - { name: counter_color, display: "Counter Color", type: color, default: [0.02,0.025,0.03], group: "Ink" }
+
+passes:
+  - name: counterfield
+    shader: counterfield.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Counterfield Program", pass: counterfield }

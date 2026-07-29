@@ -1,0 +1,30 @@
+name: "Impossible Excavation"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Relay Program", slot: 0, required: true }
+
+parameters:
+  - { name: excavation_mix, display: "Excavation Mix", type: float, min: 0.0, max: 1.0, default: 0.72, group: "Excavation" }
+  - { name: excavation_phase, display: "Excavation Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: excavation_rate, display: "Excavation Rate", type: float, min: -2.0, max: 2.0, default: 0.34, group: "Motion" }
+  - { name: void_width, display: "Void Width", type: float, min: 0.06, max: 0.52, default: 0.26, group: "Excavation" }
+  - { name: excavation_tilt, display: "Excavation Tilt", type: float, min: -1.0, max: 1.0, default: -0.28, group: "Excavation" }
+  - { name: slab_depth, display: "Slab Depth", type: float, min: 0.0, max: 0.38, default: 0.16, group: "Excavation" }
+  - { name: slab_count, display: "Slab Count", type: float, min: 1.0, max: 7.0, default: 4.0, group: "Excavation" }
+  - { name: edge_gain, display: "Edge Gain", type: float, min: 0.0, max: 1.5, default: 0.86, group: "Ink" }
+  - { name: void_color, display: "Void Color", type: color, default: [0.015,0.012,0.018], group: "Ink" }
+  - { name: edge_color, display: "Edge Color", type: color, default: [0.96,0.30,0.05], group: "Ink" }
+
+passes:
+  - name: excavation
+    shader: excavation.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Excavated Program", pass: excavation }

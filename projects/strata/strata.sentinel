@@ -66,17 +66,12 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 0.7174451947212219,
+    "canvasZoom": 0.9953458309173584,
     "links": [
       {
         "endPinId": 265,
         "id": 62,
         "startPinId": 249
-      },
-      {
-        "endPinId": 258,
-        "id": 54,
-        "startPinId": 241
       },
       {
         "endPinId": 244,
@@ -132,9 +127,14 @@
         "endPinId": 350,
         "id": 80,
         "startPinId": 259
+      },
+      {
+        "endPinId": 258,
+        "id": 81,
+        "startPinId": 241
       }
     ],
-    "nextLinkId": 81,
+    "nextLinkId": 82,
     "nextNodeId": 96,
     "nextPinId": 352,
     "nodes": [
@@ -185,7 +185,7 @@
         "id": 59,
         "inputTilesOverride": 1,
         "posX": 610.84765625,
-        "posY": 522.8587646484375,
+        "posY": 521.4649047851563,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -1974,10 +1974,22 @@
       }
     ]
   },
+  "hostPanelVisibility": {
+    "engines": false,
+    "graph": true,
+    "log": true,
+    "outputs": true,
+    "presets": false,
+    "properties": true,
+    "settings": false,
+    "sources": true,
+    "stats": true,
+    "terminal": true
+  },
   "input": {
     "activeSource": ""
   },
-  "layout": "[Window][Terminal]\nPos=0,1088\nSize=872,489\nCollapsed=0\nDockId=0x00000008,0\n\n[Window][Stats]\nPos=0,817\nSize=872,269\nCollapsed=0\nDockId=0x00000007,0\n\n[Window][Log]\nPos=0,1088\nSize=872,489\nCollapsed=0\nDockId=0x00000008,1\n\n[Window][Properties]\nPos=2184,25\nSize=376,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,817\nSize=1308,760\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Style_Authority]\nPos=993,25\nSize=939,691\nCollapsed=0\n\n[Window][Spline_Desk]\nPos=993,718\nSize=939,437\nCollapsed=0\n\n[Window][Gizmo_Desk]\nPos=993,25\nSize=939,1130\nCollapsed=0\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=991,463\nCollapsed=0\n\n[Window][Data_Scope]\nPos=0,833\nSize=991,322\nCollapsed=0\n\n[Window][Signal_Trails]\nPos=0,25\nSize=991,1130\nCollapsed=0\n\n[Window][post_1]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Feature_Downscale]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][corner_thread]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,3\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1396\nCollapsed=0\n\n[Window][03_Material_Library]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][02_Facade_Generator]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][01_Building_Massing]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][04_Lighting_Rig]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][05_Architectural_Renderer]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][07_Detail_and_Relight]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\n\n[Window][signal]\nPos=0,25\nSize=1108,1396\nCollapsed=0\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\n\n[Window][label_gen]\nPos=547,459\nSize=540,427\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=2182,979\nCollapsed=0\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=2182,1190\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][blob_render]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,1\n\n[Window][plate_comp]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,2\n\n[Docking][Data]\nDockSpace         ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode        ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1222,900 Split=Y\n    DockNode      ID=0x00000003 Parent=0x00000001 SizeRef=1222,790 CentralNode=1 Selected=0x6B7433D8\n    DockNode      ID=0x00000004 Parent=0x00000001 SizeRef=1222,760 Split=X\n      DockNode    ID=0x00000005 Parent=0x00000004 SizeRef=488,360 Split=Y Selected=0xD33228A6\n        DockNode  ID=0x00000007 Parent=0x00000005 SizeRef=872,269 Selected=0x590DF097\n        DockNode  ID=0x00000008 Parent=0x00000005 SizeRef=872,489 Selected=0xD33228A6\n      DockNode    ID=0x00000006 Parent=0x00000004 SizeRef=732,360 Selected=0xF12F3499\n  DockNode        ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
+  "layout": "[Window][Terminal]\nPos=0,1088\nSize=872,489\nCollapsed=0\nDockId=0x00000008,0\n\n[Window][Stats]\nPos=0,817\nSize=872,269\nCollapsed=0\nDockId=0x00000007,0\n\n[Window][Log]\nPos=0,1088\nSize=872,489\nCollapsed=0\nDockId=0x00000008,1\n\n[Window][Properties]\nPos=2184,25\nSize=376,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,817\nSize=1308,760\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Style_Authority]\nPos=993,25\nSize=939,691\nCollapsed=0\n\n[Window][Spline_Desk]\nPos=993,718\nSize=939,437\nCollapsed=0\n\n[Window][Gizmo_Desk]\nPos=993,25\nSize=939,1130\nCollapsed=0\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=991,463\nCollapsed=0\n\n[Window][Data_Scope]\nPos=0,833\nSize=991,322\nCollapsed=0\n\n[Window][Signal_Trails]\nPos=0,25\nSize=991,1130\nCollapsed=0\n\n[Window][post_1]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Feature_Downscale]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][corner_thread]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,2\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1396\nCollapsed=0\n\n[Window][03_Material_Library]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][02_Facade_Generator]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][01_Building_Massing]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][04_Lighting_Rig]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][05_Architectural_Renderer]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][07_Detail_and_Relight]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\n\n[Window][signal]\nPos=0,25\nSize=1108,1396\nCollapsed=0\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\n\n[Window][label_gen]\nPos=547,459\nSize=540,427\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=2182,979\nCollapsed=0\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=2182,1190\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][blob_render]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,3\n\n[Window][plate_comp]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,1\n\n[Docking][Data]\nDockSpace         ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode        ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1222,900 Split=Y\n    DockNode      ID=0x00000003 Parent=0x00000001 SizeRef=1222,790 CentralNode=1 Selected=0x6F8F03EC\n    DockNode      ID=0x00000004 Parent=0x00000001 SizeRef=1222,760 Split=X\n      DockNode    ID=0x00000005 Parent=0x00000004 SizeRef=488,360 Split=Y Selected=0xD33228A6\n        DockNode  ID=0x00000007 Parent=0x00000005 SizeRef=872,269 Selected=0x590DF097\n        DockNode  ID=0x00000008 Parent=0x00000005 SizeRef=872,489 Selected=0xD33228A6\n      DockNode    ID=0x00000006 Parent=0x00000004 SizeRef=732,360 Selected=0xF12F3499\n  DockNode        ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
   "name": "strata",
   "nodePresets": [
     {
@@ -2319,7 +2331,7 @@
       "panelOpen": true,
       "parameters": {
         "aa": "1.000000",
-        "ao_samples": "5.000000",
+        "ao_samples": "2.000000",
         "bend_amt": "0.000000",
         "blend_k": "0.150000",
         "camera_distance": "5.000000",
@@ -2344,24 +2356,24 @@
         "facet_amt": "0.000000",
         "gloss": "1.000000",
         "march_dist": "40.000000",
-        "march_steps": "54.000000",
+        "march_steps": "74.000000",
         "melt_amt": "0.336000",
         "normal_epsilon": "0.000900",
         "painterly_amt": "0.000000",
         "painterly_scale": "7.000000",
         "palette_variant": "0.000000",
-        "part_limit": "32.000000",
+        "part_limit": "27.000000",
         "project_dir": "modules/blob_render",
         "refl_amt": "0.500000",
-        "render_quality": "0.000000",
+        "render_quality": "3.000000",
         "resolution_height": "720",
         "resolution_width": "480",
-        "shadow_steps": "23.000000",
+        "shadow_steps": "8.000000",
         "shadows": "1.000000",
-        "step_scale": "0.900000",
+        "step_scale": "0.600000",
         "sun_azimuth": "125.000000",
         "sun_elevation": "55.000000",
-        "surface_epsilon": "0.000700",
+        "surface_epsilon": "0.001000",
         "swirl_amt": "0.150000",
         "twist_amt": "0.132000",
         "w1_amt": "2.062000",
@@ -2587,7 +2599,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1785247103988,
+  "saved_at_ms": 1785290884570,
   "sources": [],
   "version": 5,
   "viewportTarget": "blob_render"

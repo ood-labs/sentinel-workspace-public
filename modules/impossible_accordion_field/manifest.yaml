@@ -1,0 +1,26 @@
+name: "Impossible Accordion Field"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+inputs:
+  - { name: "Extrusion Program", slot: 0, required: true }
+parameters:
+  - { name: accordion_mix, display: "Accordion Mix", type: float, min: 0, max: 1, default: 0.86, group: "Fold" }
+  - { name: accordion_phase, display: "Accordion Phase", type: float, min: 0, max: 1, default: 0, group: "Motion" }
+  - { name: fold_speed, display: "Fold Speed", type: float, min: -2, max: 2, default: 0.32, group: "Motion" }
+  - { name: fold_count, display: "Fold Count", type: float, min: 3, max: 18, default: 8, group: "Fold" }
+  - { name: fold_width, display: "Fold Width", type: float, min: 0.01, max: 0.35, default: 0.12, group: "Fold" }
+  - { name: bend, display: "Bend", type: float, min: -1.0, max: 1.0, default: 0.34, group: "Fold" }
+  - { name: seam_gain, display: "Seam Gain", type: float, min: 0, max: 1.5, default: 0.72, group: "Structure" }
+  - { name: dark_color, display: "Dark Color", type: color, default: [0.002, 0.002, 0.004], group: "Ink" }
+  - { name: fold_color, display: "Fold Color", type: color, default: [0.58, 0.52, 0.44], group: "Ink" }
+  - { name: accent_color, display: "Accent Color", type: color, default: [0.98, 0.12, 0.018], group: "Ink" }
+passes:
+  - name: accordion
+    shader: accordion.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+outputs:
+  - { name: "Accordion Program", pass: accordion }

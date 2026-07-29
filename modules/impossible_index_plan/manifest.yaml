@@ -1,0 +1,65 @@
+name: "Impossible Index Plan"
+version: "1.0"
+mode: generator
+resolution: [640, 360]
+
+buffers:
+  - { name: panels, structured: true, element_size: 64, element_count: 96 }
+  - { name: routes, structured: true, element_size: 48, element_count: 48 }
+
+parameters:
+  - { name: seed, display: "Index Seed", type: int, min: 0, max: 999, default: 317, group: "Grammar" }
+  - { name: panel_count, display: "Panel Count", type: int, min: 12, max: 96, default: 72, group: "Grammar" }
+  - { name: route_count, display: "Route Count", type: int, min: 6, max: 48, default: 28, group: "Grammar" }
+  - { name: angle_family, display: "Angle Family", type: enum, options: [Orthogonal, Forty Five, Thirty Sixty, Twenty Two], flags: button_grid, default: 1, group: "Grammar" }
+  - { name: hierarchy, display: "Hierarchy", type: float, min: 0.0, max: 1.0, default: 0.72, group: "Composition" }
+  - { name: irregularity, display: "Controlled Irregularity", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Composition" }
+  - { name: layout_scale, display: "Field Scale", type: float, min: 0.55, max: 1.8, default: 1.10, group: "Composition" }
+  - { name: layout_offset, display: "Field Offset", type: point2D, min: [-0.45,-0.45], max: [0.45,0.45], default: [0.0,0.0], group: "Composition" }
+  - { name: route_weight, display: "Route Weight", type: float, min: 0.35, max: 2.5, default: 1.0, group: "Routes" }
+
+passes:
+  - { name: emit_panels, shader: emit_panels.hlsl, target: cs_5_0, dispatch: [2,1,1], thread_group_x: 64, thread_group_y: 1, output: "buffer:panels" }
+  - { name: emit_routes, shader: emit_routes.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 64, thread_group_y: 1, output: "buffer:routes" }
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:panels" }
+      - { slot: 1, source: "buffer:routes" }
+    output: output
+
+outputs:
+  - { name: "Index Map", pass: preview }
+
+data_outputs:
+  - name: "Panel Records"
+    buffer: panels
+    schema:
+      - { name: center, type: float2 }
+      - { name: size, type: float2 }
+      - { name: angle, type: float }
+      - { name: depth, type: float }
+      - { name: kind, type: float }
+      - { name: palette, type: float }
+      - { name: group_id, type: float }
+      - { name: order_id, type: float }
+      - { name: fold, type: float }
+      - { name: pattern, type: float }
+      - { name: skew, type: float }
+      - { name: phase, type: float }
+      - { name: weight, type: float }
+      - { name: active, type: float }
+  - name: "Route Records"
+    buffer: routes
+    schema:
+      - { name: p0, type: float2 }
+      - { name: p1, type: float2 }
+      - { name: width, type: float }
+      - { name: palette, type: float }
+      - { name: group_id, type: float }
+      - { name: phase, type: float }
+      - { name: dash, type: float }
+      - { name: elevation, type: float }
+      - { name: active, type: float }
+      - { name: reserved, type: float }

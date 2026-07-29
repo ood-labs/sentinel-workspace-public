@@ -1,0 +1,74 @@
+name: "Impossible Spatial Assembly"
+version: "1.0"
+mode: generator
+resolution: [640, 360]
+
+data_inputs:
+  - name: "Panel Records"
+    slot: 0
+    element_size: 64
+    element_count: 96
+    schema:
+      - { name: center, type: float2 }
+      - { name: size, type: float2 }
+      - { name: angle, type: float }
+      - { name: depth, type: float }
+      - { name: kind, type: float }
+      - { name: palette, type: float }
+      - { name: group_id, type: float }
+      - { name: order_id, type: float }
+      - { name: fold, type: float }
+      - { name: pattern, type: float }
+      - { name: skew, type: float }
+      - { name: phase, type: float }
+      - { name: weight, type: float }
+      - { name: active, type: float }
+
+buffers:
+  - { name: faces, structured: true, element_size: 64, element_count: 288 }
+
+parameters:
+  - { name: assembly_mode, display: "Assembly Grammar", type: enum, options: [Archive Stack, Migrating Floors, Orthographic Reset, Rupture Fan], flags: button_grid, default: 0, group: "Assembly" }
+  - { name: extrusion, display: "Paper Extrusion", type: float, min: 0.0, max: 3.0, default: 1.15, group: "Assembly" }
+  - { name: fold_gain, display: "Fold Gain", type: float, min: 0.0, max: 2.5, default: 0.82, group: "Assembly" }
+  - { name: depth_spread, display: "Depth Spread", type: float, min: 0.0, max: 0.16, default: 0.048, group: "Depth" }
+  - { name: parallax_direction, display: "Parallax Direction", type: point2D, min: [-1.0,-1.0], max: [1.0,1.0], default: [0.72,-0.54], group: "Depth" }
+  - { name: motion_phase, display: "Index Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: motion_amount, display: "Index Motion", type: float, min: 0.0, max: 1.0, default: 0.18, group: "Motion" }
+
+passes:
+  - name: assemble
+    shader: assemble.hlsl
+    target: cs_5_0
+    dispatch: [5,1,1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:faces"
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:faces" }
+    output: output
+
+outputs:
+  - { name: "Assembly Map", pass: preview }
+
+data_outputs:
+  - name: "Face Records"
+    buffer: faces
+    schema:
+      - { name: center, type: float2 }
+      - { name: size, type: float2 }
+      - { name: axis_x, type: float2 }
+      - { name: axis_y, type: float2 }
+      - { name: depth, type: float }
+      - { name: face_kind, type: float }
+      - { name: palette, type: float }
+      - { name: pattern, type: float }
+      - { name: source_id, type: float }
+      - { name: group_id, type: float }
+      - { name: phase, type: float }
+      - { name: active, type: float }

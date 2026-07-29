@@ -1,0 +1,26 @@
+name: "Impossible Stencil Rupture"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+inputs:
+  - { name: "Refraction Program", slot: 0, required: true }
+parameters:
+  - { name: rupture_mix, display: "Rupture Mix", type: float, min: 0, max: 1, default: 0.92, group: "Rupture" }
+  - { name: rupture_phase, display: "Rupture Phase", type: float, min: 0, max: 1, default: 0, group: "Motion" }
+  - { name: cut_speed, display: "Cut Speed", type: float, min: -2, max: 2, default: 0.42, group: "Motion" }
+  - { name: stripe_count, display: "Stripe Count", type: float, min: 3, max: 28, default: 11, group: "Rupture" }
+  - { name: stripe_width, display: "Stripe Width", type: float, min: 0.05, max: 0.9, default: 0.28, group: "Rupture" }
+  - { name: slant, display: "Slant", type: float, min: -1.5, max: 1.5, default: 0.42, group: "Rupture" }
+  - { name: survivor, display: "Survivor Gain", type: float, min: 0.2, max: 2.0, default: 1.2, group: "Structure" }
+  - { name: edge_gain, display: "Cut Edge Gain", type: float, min: 0, max: 1.5, default: 0.86, group: "Structure" }
+  - { name: dark_color, display: "Dark Color", type: color, default: [0.002, 0.002, 0.003], group: "Ink" }
+  - { name: accent_color, display: "Accent Color", type: color, default: [0.98, 0.08, 0.015], group: "Ink" }
+passes:
+  - name: rupture
+    shader: rupture.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+outputs:
+  - { name: "Rupture Program", pass: rupture }

@@ -1,0 +1,34 @@
+name: "Signal Babel / Archive Plate"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+features: [noise]
+
+inputs:
+  - { name: "Reference", slot: 0, required: true }
+
+parameters:
+  - { name: crop_scale, display: "Crop Scale", type: float, min: 0.35, max: 1.5, default: 0.72, group: "Plate/Layout" }
+  - { name: crop_offset, display: "Crop Offset", type: point2D, min: [-0.5, -0.5], max: [0.5, 0.5], default: [0.0, 0.0], group: "Plate/Layout" }
+  - { name: contrast, display: "Print Contrast", type: float, min: 0.4, max: 2.4, default: 1.28, group: "Plate/Print" }
+  - { name: chroma, display: "Chroma Retention", type: float, min: 0.0, max: 1.5, default: 0.88, group: "Plate/Print" }
+  - { name: poster_steps, display: "Ink Steps", type: float, min: 2.0, max: 16.0, default: 7.0, group: "Plate/Print" }
+  - { name: image_mix, display: "Image Presence", type: float, min: 0.0, max: 1.0, default: 0.82, group: "Plate/Print" }
+  - { name: ink_mix, display: "Newsprint Ink", type: float, min: 0.0, max: 0.8, default: 0.18, group: "Plate/Print" }
+  - { name: paper_grain, display: "Paper Grain", type: float, min: 0.0, max: 0.15, default: 0.025, group: "Plate/Print" }
+  - { name: grid_opacity, display: "Registration Grid", type: float, min: 0.0, max: 0.5, default: 0.07, group: "Plate/Structure" }
+  - { name: grid_width, display: "Grid Width", type: float, min: 0.001, max: 0.03, default: 0.006, group: "Plate/Structure" }
+  - { name: accent_routes, display: "Accent Routes", type: float, min: 0.0, max: 0.6, default: 0.11, group: "Plate/Structure" }
+  - { name: paper_color, display: "Paper", type: color, default: [0.86, 0.85, 0.80], group: "Palette" }
+  - { name: ink_color, display: "Ink", type: color, default: [0.018, 0.018, 0.025], group: "Palette" }
+  - { name: accent_color, display: "Signal Red", type: color, default: [0.95, 0.08, 0.045], group: "Palette" }
+
+passes:
+  - name: archive
+    shader: archive.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+
+outputs:
+  - { name: "Archive", pass: archive }

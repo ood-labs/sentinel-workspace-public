@@ -1,0 +1,26 @@
+name: "Impossible Slit Scan"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+inputs:
+  - { name: "Orbit Program", slot: 0, required: true }
+parameters:
+  - { name: slit_mix, display: "Slit Mix", type: float, min: 0, max: 1, default: 0.84, group: "Scan" }
+  - { name: slit_phase, display: "Slit Phase", type: float, min: 0, max: 1, default: 0, group: "Motion" }
+  - { name: scan_speed, display: "Scan Speed", type: float, min: -2, max: 2, default: 0.38, group: "Motion" }
+  - { name: slice_count, display: "Slice Count", type: float, min: 4, max: 32, default: 14, group: "Scan" }
+  - { name: slice_height, display: "Slice Height", type: float, min: 0.01, max: 0.2, default: 0.055, group: "Scan" }
+  - { name: shear, display: "Temporal Shear", type: float, min: -1.0, max: 1.0, default: 0.28, group: "Scan" }
+  - { name: seam_gain, display: "Seam Gain", type: float, min: 0, max: 1.5, default: 0.68, group: "Structure" }
+  - { name: dark_color, display: "Dark Color", type: color, default: [0.002, 0.002, 0.004], group: "Ink" }
+  - { name: slice_color, display: "Slice Color", type: color, default: [0.56, 0.50, 0.42], group: "Ink" }
+  - { name: accent_color, display: "Accent Color", type: color, default: [0.98, 0.12, 0.018], group: "Ink" }
+passes:
+  - name: slit
+    shader: slit.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+outputs:
+  - { name: "Slit Program", pass: slit }

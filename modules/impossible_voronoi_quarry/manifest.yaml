@@ -1,0 +1,29 @@
+name: "Impossible Voronoi Quarry"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Sieved Program", slot: 0, required: true }
+
+parameters:
+  - { name: quarry_mix, display: "Quarry Mix", type: float, min: 0.0, max: 1.0, default: 0.88, group: "Plates" }
+  - { name: quarry_phase, display: "Quarry Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: plate_speed, display: "Plate Speed", type: float, min: -2.0, max: 2.0, default: 0.42, group: "Motion" }
+  - { name: plate_count, display: "Plate Count", type: float, min: 4.0, max: 18.0, default: 10.0, group: "Plates" }
+  - { name: plate_scale, display: "Plate Scale", type: float, min: 0.35, max: 1.4, default: 0.82, group: "Plates" }
+  - { name: seam_gain, display: "Seam Gain", type: float, min: 0.0, max: 1.2, default: 0.72, group: "Structure" }
+  - { name: facet_gain, display: "Facet Gain", type: float, min: 0.0, max: 1.4, default: 0.62, group: "Structure" }
+  - { name: dark_color, display: "Dark Color", type: color, default: [0.006,0.007,0.010], group: "Stone" }
+  - { name: accent_color, display: "Accent Color", type: color, default: [0.90,0.20,0.028], group: "Stone" }
+
+passes:
+  - name: quarry
+    shader: quarry.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Quarry Program", pass: quarry }

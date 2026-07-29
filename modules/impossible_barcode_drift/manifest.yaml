@@ -1,0 +1,30 @@
+name: "Impossible Barcode Drift"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Quarry Program", slot: 0, required: true }
+
+parameters:
+  - { name: barcode_mix, display: "Barcode Mix", type: float, min: 0.0, max: 1.0, default: 0.88, group: "Code" }
+  - { name: barcode_phase, display: "Barcode Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: read_speed, display: "Read Speed", type: float, min: -2.0, max: 2.0, default: 0.56, group: "Motion" }
+  - { name: column_count, display: "Column Count", type: float, min: 16.0, max: 140.0, default: 64.0, group: "Code" }
+  - { name: strip_stretch, display: "Strip Stretch", type: float, min: 0.45, max: 1.6, default: 0.92, group: "Code" }
+  - { name: column_jitter, display: "Column Jitter", type: float, min: 0.0, max: 0.32, default: 0.09, group: "Code" }
+  - { name: head_gain, display: "Read Head Gain", type: float, min: 0.0, max: 1.3, default: 0.72, group: "Instrument" }
+  - { name: dark_color, display: "Dark Color", type: color, default: [0.004,0.005,0.008], group: "Ink" }
+  - { name: line_color, display: "Line Color", type: color, default: [0.78,0.70,0.58], group: "Ink" }
+  - { name: accent_color, display: "Accent Color", type: color, default: [0.98,0.18,0.025], group: "Ink" }
+
+passes:
+  - name: barcode
+    shader: barcode.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Barcode Program", pass: barcode }

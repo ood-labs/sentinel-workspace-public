@@ -1,0 +1,26 @@
+name: "Impossible Depth Extrusion"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+inputs:
+  - { name: "Slit Program", slot: 0, required: true }
+parameters:
+  - { name: extrusion_mix, display: "Extrusion Mix", type: float, min: 0, max: 1, default: 0.88, group: "Volume" }
+  - { name: extrusion_phase, display: "Extrusion Phase", type: float, min: 0, max: 1, default: 0, group: "Motion" }
+  - { name: relief_speed, display: "Relief Speed", type: float, min: -2, max: 2, default: 0.34, group: "Motion" }
+  - { name: depth_layers, display: "Depth Layers", type: float, min: 2, max: 12, default: 7, group: "Volume" }
+  - { name: extrusion, display: "Extrusion", type: float, min: 0.01, max: 0.6, default: 0.18, group: "Volume" }
+  - { name: relief, display: "Relief", type: float, min: 0, max: 1.5, default: 0.84, group: "Volume" }
+  - { name: edge_gain, display: "Edge Gain", type: float, min: 0, max: 1.5, default: 0.72, group: "Structure" }
+  - { name: dark_color, display: "Dark Color", type: color, default: [0.002, 0.002, 0.004], group: "Ink" }
+  - { name: volume_color, display: "Volume Color", type: color, default: [0.62, 0.55, 0.44], group: "Ink" }
+  - { name: accent_color, display: "Accent Color", type: color, default: [0.98, 0.13, 0.018], group: "Ink" }
+passes:
+  - name: extrusion
+    shader: extrusion.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+outputs:
+  - { name: "Extrusion Program", pass: extrusion }

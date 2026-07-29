@@ -1,0 +1,29 @@
+name: "Impossible Quadrant Cathedral"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+
+inputs:
+  - { name: "Orbital Program", slot: 0, required: true }
+
+parameters:
+  - { name: cathedral_mix, display: "Cathedral Mix", type: float, min: 0.0, max: 1.0, default: 0.86, group: "Chambers" }
+  - { name: cathedral_phase, display: "Cathedral Phase", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Motion" }
+  - { name: chamber_speed, display: "Chamber Speed", type: float, min: -2.0, max: 2.0, default: 0.48, group: "Motion" }
+  - { name: cell_zoom, display: "Cell Zoom", type: float, min: 0.55, max: 1.65, default: 1.08, group: "Chambers" }
+  - { name: chamber_drift, display: "Chamber Drift", type: float, min: 0.0, max: 0.34, default: 0.12, group: "Chambers" }
+  - { name: cross_width, display: "Cross Width", type: float, min: 0.01, max: 0.16, default: 0.045, group: "Structure" }
+  - { name: glyph_gain, display: "Glyph Gain", type: float, min: 0.0, max: 1.2, default: 0.60, group: "Marks" }
+  - { name: dark_color, display: "Dark Color", type: color, default: [0.004,0.006,0.010], group: "Marks" }
+  - { name: accent_color, display: "Accent Color", type: color, default: [0.92,0.17,0.028], group: "Marks" }
+
+passes:
+  - name: cathedral
+    shader: cathedral.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Cathedral Program", pass: cathedral }
