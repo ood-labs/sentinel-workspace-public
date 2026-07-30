@@ -13,6 +13,7 @@ This plan governs work in the user-writable Sentinel workspace and its curated p
 | 3 | Interaction Lab v2 (Instrument-Grade UI Overhaul) | In progress; 3A-3F built, awaiting the operator hands-on gesture pass | [Phase 3](phases/phase-3-interaction-lab-v2.md) |
 | 4 | Data Scope (reusable scrolling strip-chart kit) | Planned | [Phase 4](phases/phase-4-data-scope.md) |
 | 5 | Official Example UI Port (v1 `sui_*` to sui3) | Complete; approval pending | [Phase 5](phases/phase-5-example-ui-port.md) |
+| 6 | Public Workspace Curation And Release Refresh | Planned; human review required at every creative gate | [Phase 6](phases/phase-6-public-workspace-curation-refresh.md) |
 
 ## Phase 1 - Official Examples Modernization
 
@@ -221,13 +222,86 @@ pixel evidence and records the automation route as operator-unproven.
 Workflow constraint: `ood-labs/sentinel-bugs#88` makes loading the same project twice in one session
 a deterministic crash, so this phase relaunches Sentinel between iterations on a project.
 
+## Phase 6 - Public Workspace Curation And Release Refresh
+
+Rebuild the curated public release from clean, commit-addressed private source; remove projects that
+no longer belong in the public lineup; refresh the approved existing examples; review four new
+candidates; and make Interaction Lab UI plus the native internal-camera example the obvious default
+authoring foundations.
+
+The phase is deliberately human-gated. Automated checks prepare concise evidence, but the user
+approves the source choices, removal set, UI feel, camera feel, every named creative project,
+Autopsia's inclusion, the StreamDiff Canvas replacement/name, and the final release candidate.
+No approval is inferred from compile success, captures, inactivity, or an earlier phase state.
+
+### Sub-Phases
+
+| Sub-phase | Outcome | Human gate |
+| --- | --- | --- |
+| 6A | Clean source freeze and public/private/local reconciliation ledger | G0 source authority |
+| 6B | Approved curation allowlist and staged exclusion report | G1 release lineup |
+| 6C | Current Interaction Lab promoted as the canonical reusable UI foundation | G2 UI authority |
+| 6D | Standalone native-camera reference with real Fly and Orbit proof | G3 camera feel/discoverability |
+| 6E | Industrial Lattice refreshed and reviewed | G4 |
+| 6F | Strata refreshed and reviewed once more | G5 |
+| 6G | Face Collage measurably optimized and visually reviewed | G6 |
+| 6H | Living Room SDF refreshed and reviewed | G7 |
+| 6I | StreamDiff Workflows reconciled and independently reviewed | G8 |
+| 6J | Cloth Lab prepared as a new public example | G9 |
+| 6K | Scientific Organism prepared as a new public example | G10 |
+| 6L | Autopsia pad direction fixed and inclusion decided | G11 |
+| 6M | StreamDiff Canvas reviewed as the Collage replacement | G12 |
+| 6N | Clean-clone release candidate and publication packet | G13 explicit push decision |
+
+The default release excludes Desert Totem, Fruit Atlas Scatter, Procedural Building System,
+StreamDiff Collage, and Topographic HUD. Procedural Building System remains until its useful camera
+reference is extracted and approved. StreamDiff Collage remains until StreamDiff Canvas is approved.
+Autopsia defaults to hold unless G11 explicitly approves inclusion.
+
+### MCP And Runtime Surfaces
+
+- `sentinel_app`: `ping`, `capabilities`, `engine_status`, project load/save and diagnostics.
+- `sentinel_pipeline`: `compile_check`, `compile_status`, `force_reload`, `info`,
+  `get_data_schemas`, and data-port capture.
+- `sentinel_graph`: focus, local placement/layout, links, profiles, Scene Groups, and outputs.
+- `sentinel_viewport`: real selection/state inspection and supported interaction proof.
+- `sentinel_capture`: content-specific stills, proof bundles, checkpoints, and motion recordings.
+- `sentinel_vision`: content assertions where configured; deterministic local review remains the
+  fallback.
+- `sentinel_preset`, `sentinel_expression`, audio, StreamDiff, camera, conductor, and state surfaces
+  where required by the active project.
+
+### Dependencies
+
+1. Fetched private/public remotes and a clean temporary private source checkout.
+2. The current dirty private checkout preserved for explicit overlay comparison.
+3. Sibling `sentinel-workspace-public`.
+4. Sentinel running in the active interactive desktop with required engine packs and meaningful
+   sources.
+5. Promotion, validation, and Module UI tools.
+6. The user at gates G0-G13; gates may be reviewed in a scheduled batch, but decisions remain
+   project-specific.
+
+### Implementation Order
+
+1. Freeze/reconcile source, then approve the curation set.
+2. Establish and approve the UI and camera foundations.
+3. Refresh and review existing examples individually.
+4. Review new non-StreamDiff candidates.
+5. Reconcile and review Autopsia, StreamDiff Workflows, and StreamDiff Canvas with high-memory work
+   opened one project at a time.
+6. Assemble only approved slices, prove them from a clean clone, and stop for the final publication
+   decision.
+
+The [detailed Phase 6 plan](phases/phase-6-public-workspace-curation-refresh.md) is the acceptance
+contract. Passing automation never advances a human gate or authorizes a public push.
+
 ## Future Phases
 
-No later workspace phase is scheduled yet. Additional examples should enter the public collection only after Phase 1 establishes and proves the readiness standard.
+No later workspace phase is scheduled. Additional public examples should enter the collection only
+through Phase 6's commit-addressed source, portability, visible-behavior, and human-review gates or
+an equally strong successor contract.
 
-Public promotion of Interaction Lab v2 is deliberately **not** part of Phase 3: Phase 1 remains
-approval-pending with an open cold-load follow-up, so promotion is a separate decision.
-
-The combined Showcase Gallery is also not a shipping artifact. It remains an
-internal high-VRAM integration/proof fixture; normal distribution uses the
-standalone projects, and promotion tooling excludes the Gallery.
+The combined Showcase Gallery remains an internal high-VRAM integration/proof fixture rather than a
+shipping artifact. Normal distribution uses the individually reviewed standalone projects, and
+promotion tooling excludes the Gallery.
