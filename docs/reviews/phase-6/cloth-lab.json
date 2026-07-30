@@ -1,0 +1,59 @@
+{
+  "project": "projects/cloth_lab/cloth_lab.sentinel",
+  "candidate": "cloth_lab",
+  "source_resolution": "Preserved the user's live tuning and panel layout as the approved G9 state.",
+  "graph": {
+    "node_count": 3,
+    "link_count": 1,
+    "renderer": "cloth_engine",
+    "audio_source": "cloth_audio",
+    "audio_analysis": "cloth_bands",
+    "audio_link": "cloth_audio:Spectrum -> cloth_bands",
+    "strike_driver": "cloth_engine/parameters/kick_count_in = ref(\"cloth_bands/control_outputs/kick_count\")"
+  },
+  "approved_state": {
+    "resolution": "1280x720",
+    "pin_mode": "Four Corners",
+    "spawn_plane": "Flat",
+    "spawn_height": 1.1,
+    "rest_scale": 1.044868,
+    "substeps": 16,
+    "sweeps": 3,
+    "stretch_stiffness": 0.92,
+    "bend_stiffness": 0.144,
+    "damping": 3.721,
+    "time_scale": 1.309,
+    "wind_speed": 0.8,
+    "turbulence": 1.26,
+    "strike_enabled": true,
+    "strike_gain": 39.122002,
+    "strike_radius": 0.659,
+    "tear_enabled": false,
+    "collider_count": 0,
+    "layout_saved": true
+  },
+  "runtime": {
+    "healthy": true,
+    "compile_ok": true,
+    "frames_progressing": true,
+    "has_preview_srv": true,
+    "output_resolution": "1280x720",
+    "unresolved_project_dirs": [],
+    "mean_strain_at_review": 0.0042855078,
+    "max_strain_at_review": 0.0076897354,
+    "torn_edges_at_review": 0
+  },
+  "proof": {
+    "bundle": "captures/phase6_cloth_lab_approved/proof_bundle",
+    "motion": "captures/phase6_cloth_lab_approved/cloth_motion.mp4",
+    "motion_frames_written": 473,
+    "motion_frames_dropped": 0,
+    "motion_duration_seconds": 8.032,
+    "project_saved": true
+  },
+  "human_gate": {
+    "gate_id": "G9",
+    "decision": "approved",
+    "notes": "The user stated that the project was dialed in, good, and approved in its current state."
+  }
+}
