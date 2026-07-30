@@ -1,0 +1,469 @@
+{
+  "display": {
+    "fpsLimit": 60.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 1.5,
+    "links": [
+      {
+        "endPinId": 7,
+        "id": 1,
+        "startPinId": 6
+      },
+      {
+        "endPinId": 9,
+        "id": 2,
+        "startPinId": 3
+      },
+      {
+        "endPinId": 11,
+        "id": 3,
+        "startPinId": 8
+      },
+      {
+        "endPinId": 12,
+        "id": 4,
+        "startPinId": 10
+      },
+      {
+        "endPinId": 24,
+        "id": 5,
+        "startPinId": 14
+      }
+    ],
+    "nextLinkId": 6,
+    "nextNodeId": 11,
+    "nextPinId": 26,
+    "nodes": [
+      {
+        "displayName": "Jellybeans Image",
+        "entityId": "Jellybeans_Image",
+        "id": 3,
+        "posX": 920.5973510742188,
+        "posY": 339.0348205566406,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 0
+      },
+      {
+        "displayName": "Hermite Signal",
+        "entityId": "Hermite_Signal",
+        "id": 4,
+        "posX": 919.9307250976563,
+        "posY": 564.3264770507813,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Signal to Texture",
+        "entityId": "Signal_to_Texture",
+        "id": 5,
+        "posX": 1155.9515380859375,
+        "posY": 564.3264770507813,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Vertical Displace",
+        "entityId": "Vertical_Displace",
+        "id": 6,
+        "posX": 1443.9515380859375,
+        "posY": 564.3264770507813,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Geometry Pass",
+        "entityId": "Geometry_Pass",
+        "id": 7,
+        "posX": 1721.284912109375,
+        "posY": 564.3264770507813,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Out",
+        "entityId": "Out",
+        "id": 10,
+        "posX": 1985.9515380859375,
+        "posY": 564.3264770507813,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 3,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 5,
+        "kind": 1,
+        "name": "Signal Preview",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "Signal Samples",
+        "nodeId": 4,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 7,
+        "kind": 0,
+        "name": "Signal Samples",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "Displace Texture",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 9,
+        "kind": 0,
+        "name": "Source Image",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 10,
+        "kind": 1,
+        "name": "Displaced Image",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 11,
+        "kind": 0,
+        "name": "Displace Image",
+        "nodeId": 6,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 12,
+        "kind": 0,
+        "name": "Displaced Image",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 13,
+        "kind": 1,
+        "name": "Geometry Preview",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 14,
+        "kind": 1,
+        "name": "Pass Through",
+        "nodeId": 7,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 15,
+        "kind": 1,
+        "name": "Cube Transform",
+        "nodeId": 7,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 16,
+        "kind": 1,
+        "name": "Viewport Objects",
+        "nodeId": 7,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 17,
+        "kind": 1,
+        "name": "Viewport Pick Result",
+        "nodeId": 7,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 18,
+        "kind": 1,
+        "name": "rotation_x",
+        "nodeId": 7,
+        "slotIndex": 5,
+        "type": 7
+      },
+      {
+        "id": 19,
+        "kind": 1,
+        "name": "rotation_y",
+        "nodeId": 7,
+        "slotIndex": 6,
+        "type": 7
+      },
+      {
+        "id": 20,
+        "kind": 1,
+        "name": "rotation_z",
+        "nodeId": 7,
+        "slotIndex": 7,
+        "type": 7
+      },
+      {
+        "id": 21,
+        "kind": 1,
+        "name": "active_handle",
+        "nodeId": 7,
+        "slotIndex": 8,
+        "type": 7
+      },
+      {
+        "id": 24,
+        "kind": 0,
+        "name": "Input",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 25,
+        "kind": 1,
+        "name": "Out",
+        "nodeId": 10,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Terminal]\nPos=0,25\nSize=871,1269\nCollapsed=0\nDockId=0x00000009,0\n\n[Window][Stats]\nPos=0,1296\nSize=871,281\nCollapsed=0\nDockId=0x0000000A,0\n\n[Window][Log]\nPos=0,1296\nSize=871,281\nCollapsed=0\nDockId=0x0000000A,1\n\n[Window][Properties]\nPos=2184,25\nSize=376,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=873,731\nSize=1309,846\nCollapsed=0\nDockId=0x00000004,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=611,778\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1091\nSize=752,486\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,778\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,778\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,805\nSize=752,284\nCollapsed=0\n\n[Window][Radial_Gradient]\nPos=713,805\nSize=227,284\nCollapsed=0\n\n[Window][Gradient_Brush]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Shape_Maker]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Engines]\nPos=1020,513\nSize=622,911\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1181,758\nSize=198,60\nCollapsed=0\n\n[Window][New Project?]\nPos=1144,727\nSize=272,122\nCollapsed=0\n\n[Window][Hermite_Signal]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Signal_to_Texture]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,1\n\n[Window][Vertical_Displace]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,2\n\n[Window][Geometry_Pass]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,3\n\n[Window][Out]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,4\n\n[Docking][Data]\nDockSpace       ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode      ID=0x00000007 Parent=0xCCBD8CF7 SizeRef=871,1552 Split=Y Selected=0xD33228A6\n    DockNode    ID=0x00000009 Parent=0x00000007 SizeRef=871,1269 Selected=0xD33228A6\n    DockNode    ID=0x0000000A Parent=0x00000007 SizeRef=871,281 Selected=0x590DF097\n  DockNode      ID=0x00000008 Parent=0xCCBD8CF7 SizeRef=1687,1552 Split=X\n    DockNode    ID=0x00000001 Parent=0x00000008 SizeRef=1222,900 Split=Y\n      DockNode  ID=0x00000003 Parent=0x00000001 SizeRef=1222,704 CentralNode=1 Selected=0x170DF6A2\n      DockNode  ID=0x00000004 Parent=0x00000001 SizeRef=1222,846 Selected=0xF12F3499\n    DockNode    ID=0x00000002 Parent=0x00000008 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
+  "name": "touchdesigner_new_project",
+  "nodePresets": [],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "Hermite Signal",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Hermite_Signal",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Hermite_Signal",
+      "panelOpen": true,
+      "parameters": {
+        "amplitude": "1.000000",
+        "drift_speed": "0.200000",
+        "exponent": "1.000000",
+        "harmonics": "1.000000",
+        "offset": "0.500000",
+        "period_seconds": "1.000000",
+        "project_dir": "modules/Hermite_Signal",
+        "reset_phase": "0.000000",
+        "resolution_height": "679",
+        "resolution_width": "1309",
+        "roughness": "0.250000",
+        "run": "1.000000",
+        "seed": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Signal to Texture",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Signal_to_Texture",
+      "inputSlotSourceIds": [
+        "Hermite_Signal"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Signal_to_Texture",
+      "panelOpen": true,
+      "parameters": {
+        "clamp_values": "0.000000",
+        "project_dir": "modules/Signal_to_Texture",
+        "resolution_height": "64",
+        "resolution_width": "128"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Vertical Displace",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Vertical_Displace",
+      "inputSlotSourceIds": [
+        "Jellybeans_Image",
+        "Signal_to_Texture"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Vertical_Displace",
+      "panelOpen": true,
+      "parameters": {
+        "extend_mode": "3.000000",
+        "midpoint": "0.500000",
+        "offset_weight": "0.000000",
+        "offset_x": "0.500000",
+        "offset_y": "0.500000",
+        "project_dir": "modules/Vertical_Displace",
+        "uv_weight": "1.000000",
+        "vertical_weight": "0.100000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Geometry Pass",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Geometry_Pass",
+      "inputSlotSourceIds": [
+        "Vertical_Displace"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Geometry_Pass",
+      "panelOpen": true,
+      "parameters": {
+        "camera_distance": "5.000000",
+        "camera_far": "100.000000",
+        "camera_fov": "40.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_mode": "0",
+        "camera_move_speed": "3.000000",
+        "camera_near": "0.100000",
+        "camera_pitch": "-0.437982",
+        "camera_pos_x": "4.000000",
+        "camera_pos_y": "3.000000",
+        "camera_pos_z": "-5.000000",
+        "camera_target_x": "0.000000",
+        "camera_target_y": "0.000000",
+        "camera_target_z": "0.000000",
+        "camera_yaw": "-0.674741",
+        "do_orbit": "0.000000",
+        "exposure": "1.150000",
+        "local_space": "0.000000",
+        "orbit_axis": "1.000000",
+        "orbit_degrees": "30.000000",
+        "project_dir": "modules/Geometry_Pass",
+        "transform_mode": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Out",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Out",
+      "inputSlotSourceIds": [
+        "Geometry_Pass"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Out",
+      "panelOpen": true,
+      "parameters": {
+        "project_dir": "modules/Out"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1785403395349,
+  "sources": [
+    {
+      "captureFrameRate": 0,
+      "captureHeight": 0,
+      "captureWidth": 0,
+      "deviceId": "",
+      "id": "Jellybeans_Image",
+      "imageFitMode": 0,
+      "imageHeight": 720,
+      "imagePath": "images/Jellybeans.jpg",
+      "imageWidth": 1280,
+      "loop": true,
+      "name": "Jellybeans Image",
+      "patternAnimated": true,
+      "patternHeight": 1080,
+      "patternType": "colorbars",
+      "patternWidth": 1920,
+      "playbackRate": 1.0,
+      "playing": true,
+      "senderName": "",
+      "type": "image",
+      "videoPath": ""
+    }
+  ],
+  "statePayloads": {
+    "Geometry_Pass": {
+      "scene_state": {
+        "data": "00000000000000000000000000000000000000000000000000000000000000000000803f0000803f0000803f01000000010000000700000000900b4600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "element_count": 16,
+        "element_size": 64,
+        "encoding": "hex",
+        "schema_signature": "13094422923074777944"
+      }
+    },
+    "Hermite_Signal": {
+      "phase_state": {
+        "data": "69fc99430000803fcdcc4c3e00000000",
+        "element_count": 1,
+        "element_size": 16,
+        "encoding": "hex",
+        "schema_signature": "7167877804803055109"
+      }
+    }
+  },
+  "version": 5
+}

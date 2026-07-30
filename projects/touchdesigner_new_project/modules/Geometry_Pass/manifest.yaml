@@ -1,0 +1,99 @@
+name: "TD Geometry Pass"
+version: "2.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA8
+output_format: RGBA8
+features: [camera, math3d]
+
+viewport:
+  hint: "Click cube to select · drag RGB gizmo · 1 move · 2 rotate · 3 scale · 4 world/local · RMB camera"
+  interactions: [camera, events, selection]
+  selection: { mode: single, provider: ray_query, result_buffer: pick_result, object_buffer: viewport_objects }
+  input:
+    pointer: [left, right]
+    keyboard: ["1", "2", "3", "4", escape]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: transform_cube, label: "Transform Cube" }
+    - { key: "1", action: translate_mode, label: "Translate" }
+    - { key: "2", action: rotate_mode, label: "Rotate" }
+    - { key: "3", action: scale_mode, label: "Scale" }
+    - { key: "4", action: world_local, label: "World / Local" }
+
+inputs:
+  - { name: "Displaced Image", slot: 0, required: true }
+
+parameters:
+  - { name: transform_mode, display: "Gizmo Mode", type: int, min: 0, max: 2, default: 1, group: "Transform" }
+  - { name: local_space, display: "Local Space", type: bool, default: false, group: "Transform" }
+  - { name: do_orbit, display: "Apply Numeric Rotation", type: bool, default: false, group: "Transform" }
+  - { name: orbit_axis, display: "Rotation Axis", type: int, min: 0, max: 2, default: 1, group: "Transform" }
+  - { name: orbit_degrees, display: "Rotation Degrees", type: float, min: -180.0, max: 180.0, default: 30.0, group: "Transform" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.25, max: 3.0, default: 1.15, group: "Preview" }
+
+buffers:
+  - { name: gizmo_state, structured: true, element_size: 96, element_count: 1, persistent: true }
+  - { name: drag_snapshot, structured: true, element_size: 64, element_count: 16, persistent: true }
+  - { name: scene_state, structured: true, element_size: 64, element_count: 16, persistent: true }
+  - { name: viewport_objects, structured: true, element_size: 120, element_count: 16, persistent: true }
+  - { name: pick_result, structured: true, element_size: 40, element_count: 1, persistent: true }
+
+state_buffers:
+  - name: scene_state
+    max_elements: 16
+    schema:
+      - { name: position, type: float3 }
+      - { name: pad0, type: float }
+      - { name: rotation, type: float3 }
+      - { name: pad1, type: float }
+      - { name: scale, type: float3 }
+      - { name: object_id, type: uint }
+      - { name: kind, type: uint }
+      - { name: flags, type: uint }
+      - { name: marker, type: float }
+      - { name: pad2, type: float }
+
+passes:
+  - { name: interaction, shader: interaction.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:scene_state" } ], output: "buffer:gizmo_state" }
+  - { name: snapshot, shader: snapshot.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:gizmo_state" }, { slot: 1, source: "buffer:scene_state" } ], output: "buffer:drag_snapshot" }
+  - { name: update, shader: update.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:gizmo_state" }, { slot: 1, source: "buffer:drag_snapshot" } ], output: "buffer:scene_state" }
+  - { name: descriptors, shader: descriptors.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 16, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:scene_state" } ], output: "buffer:viewport_objects" }
+  - { name: pick, shader: pick.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, inputs: [ { slot: 0, source: "buffer:scene_state" }, { slot: 1, source: "buffer:gizmo_state" } ], output: "buffer:pick_result" }
+  - name: geometry_preview
+    shader: geometry_preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:scene_state" }
+      - { slot: 2, source: "buffer:gizmo_state" }
+  - name: pass_through
+    shader: pass_through.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+
+data_outputs:
+  - name: "Cube Transform"
+    buffer: scene_state
+    schema:
+      - { name: position, type: float3 }
+      - { name: pad0, type: float }
+      - { name: rotation, type: float3 }
+      - { name: pad1, type: float }
+      - { name: scale, type: float3 }
+      - { name: object_id, type: uint }
+      - { name: kind, type: uint }
+      - { name: flags, type: uint }
+      - { name: marker, type: float }
+      - { name: pad2, type: float }
+
+control_outputs:
+  - { name: rotation_x, buffer: scene_state, element: 0, field_offset: 16, description: "Cube X rotation in degrees" }
+  - { name: rotation_y, buffer: scene_state, element: 0, field_offset: 20, description: "Cube Y rotation in degrees" }
+  - { name: rotation_z, buffer: scene_state, element: 0, field_offset: 24, description: "Cube Z rotation in degrees" }
+  - { name: active_handle, buffer: gizmo_state, element: 0, field_offset: 8, description: "Active transform handle" }
+
+outputs:
+  - { name: "Geometry Preview", pass: geometry_preview }
+  - { name: "Pass Through", pass: pass_through }

@@ -60,6 +60,7 @@ projects/*
 !projects/procedural_building_system/
 !projects/cryogram/
 !projects/autopsia/
+!projects/touchdesigner_new_project/
 
 # Generated demo signals (tools/audio_test/make_loop.py)
 tools/audio_test/loops/

@@ -1,0 +1,29 @@
+name: "TD Vertical Displace"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+working_format: RGBA8
+output_format: RGBA8
+
+inputs:
+  - { name: "Source Image", slot: 0, required: true }
+  - { name: "Displace Image", slot: 1, required: true }
+
+parameters:
+  - { name: vertical_weight, display: "Vertical Weight", type: float, min: -0.5, max: 0.5, default: 0.10, group: "Displace" }
+  - { name: midpoint, display: "Midpoint", type: float, min: -1.0, max: 2.0, default: 0.50, group: "Displace" }
+  - { name: uv_weight, display: "UV Weight", type: float, min: 0.0, max: 4.0, default: 1.0, group: "Coordinates" }
+  - { name: offset, display: "Offset", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.5, 0.5], group: "Coordinates" }
+  - { name: offset_weight, display: "Offset Weight", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Coordinates" }
+  - { name: extend_mode, display: "Extend", type: enum, options: ["Hold", "Zero", "Repeat", "Mirror"], default: 3, flags: button_grid, group: "Edges" }
+
+passes:
+  - name: displace
+    shader: displace.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+
+outputs:
+  - { name: "Displaced Image", pass: displace }

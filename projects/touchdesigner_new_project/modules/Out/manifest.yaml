@@ -1,0 +1,21 @@
+name: "TD Out"
+version: "1.0"
+mode: filter
+resolution: [1280, 720]
+
+viewport:
+  hint: "Final pass-through output."
+
+inputs:
+  - { name: "Input", slot: 0, required: true }
+
+passes:
+  - name: out
+    shader: out.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Out", pass: out }

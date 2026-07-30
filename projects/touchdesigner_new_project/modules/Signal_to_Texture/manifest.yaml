@@ -1,0 +1,29 @@
+name: "TD Signal to Texture"
+version: "1.0"
+mode: generator
+resolution: [128, 64]
+working_format: RGBA32F
+output_format: RGBA32F
+
+parameters:
+  - { name: clamp_values, display: "Clamp 0-1", type: bool, default: false, group: "Conversion" }
+
+data_inputs:
+  - name: "Signal Samples"
+    slot: 0
+    schema:
+      - { name: sample_index, type: float }
+      - { name: sample_u, type: float }
+      - { name: value, type: float }
+      - { name: active, type: float }
+
+passes:
+  - name: convert
+    shader: convert.hlsl
+    target: cs_5_0
+    format: RGBA32F
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - { name: "Displace Texture", pass: convert }
