@@ -1,0 +1,109 @@
+{
+  "project": "projects/streamdiff_canvas/streamdiff_canvas.sentinel",
+  "source_commit": "ec9bc554d989c87593337be673a2d2ef2ebd69d5",
+  "local_overlay_commit_or_diff": "a17f180d5c959c4ba5814f1dabd7a800b67cde2c plus the final user-arranged live graph saved at G12",
+  "public_identity": {
+    "slug": "streamdiff_canvas",
+    "title": "StreamDiff Canvas",
+    "replaces": "StreamDiff Collage",
+    "status": "approved"
+  },
+  "promoted_paths": [
+    "projects/streamdiff_canvas/README.md",
+    "projects/streamdiff_canvas/streamdiff_canvas.sentinel",
+    "projects/streamdiff_canvas/modules/"
+  ],
+  "compile": {
+    "modules": [
+      "Generation_Controller",
+      "Paint_Canvas",
+      "Pattern_Canvas",
+      "Pattern_Depth_SDF",
+      "Radial_Gradient"
+    ],
+    "status": "pass; the restored original Paint Canvas compiled live with 7/7 passes, and all ten saved graph nodes were healthy in the final profile"
+  },
+  "runtime": {
+    "healthy": true,
+    "health_reasons": [],
+    "frames_before": 8817,
+    "frames_after": 79161,
+    "resolution": "Paint Canvas editor follows its 590x747 panel; Canvas, Depth, and Mask remain the approved fixed 1080x1350 outputs",
+    "format": "BGRA8"
+  },
+  "performance": {
+    "target": {
+      "resolution": "1080x1350 Paint Canvas output in the saved review state",
+      "complete_graph_budget": "No unexplained regression from the accepted live state; preserve responsive hands-on painting",
+      "heavy_node_share": "StreamDiff and matting may remain the expected heavy nodes; Paint Canvas must not become a graph hotspot",
+      "responsiveness_check": "Real painting and clear/reset remain immediate in the original fixed Paint Canvas"
+    },
+    "baseline_samples": [
+      {
+        "capture": "captures/streamdiff_canvas_checkpoint_20260730",
+        "pipeline_wall_ms": 45.1449,
+        "note": "Pre-sizing-experiment checkpoint; whole-graph observational sample"
+      }
+    ],
+    "candidate_samples": [
+      {
+        "capture": "captures/phase6_streamdiff_canvas_approved",
+        "pipeline_wall_ms": 19.6749,
+        "cook_hz": 31.0,
+        "paint_canvas_wall_ms": 0.0749
+      }
+    ],
+    "delta": "The restored candidate remained responsive and Paint Canvas was not a CPU wall-time hotspot. Whole-graph samples are observational because StreamDiff lifecycle state changed between captures.",
+    "hotspots": [
+      "Collage Cutout was the largest final own-time node at 12.4224 ms; StreamDiff and Depth Estimation remained the expected upstream workload."
+    ],
+    "interaction_response": "The user tested the restored original Paint Canvas, reported that it works, and approved it exactly as shown."
+  },
+  "interactions": [
+    {
+      "gesture": "Real Paint Canvas painting",
+      "expected_visible_change": "The current generated photographic subject accumulates into the fixed canvas with its color, matte, and depth outputs registered",
+      "observed": "Passed in the user's hands after restoring checkpoint a17f180; the approved capture contains layered photographic hands and figures rather than a blank field."
+    },
+    {
+      "gesture": "Clear/reset and restore original implementation",
+      "expected_visible_change": "The canvas clears to its documented state and the known-good fixed implementation resumes painting",
+      "observed": "Passed. The failed flexible-resolution experiment was removed from the working tree and quarantined separately; the restored module compiled healthy."
+    },
+    {
+      "gesture": "Generation Controller prompt and lifecycle controls",
+      "expected_visible_change": "Manual, Interval, and Continuous modes govern hold, generation windows, prompt travel, and pattern-stamp cadence",
+      "observed": "The approved saved graph retains the working controller expressions and the user accepted the resulting output quality and behavior."
+    }
+  ],
+  "captures": [
+    {
+      "path": "captures/streamdiff_canvas_checkpoint_20260730",
+      "content_assertion": "Recoverable pre-sizing-experiment project state plus Paint Canvas, diffusion, pattern-canvas, and depth-relief captures"
+    },
+    {
+      "path": "captures/phase6_streamdiff_canvas_approved",
+      "content_assertion": "Final user-approved 1080x1350 Paint Canvas output, exact saved graph, and final profile"
+    }
+  ],
+  "portability": {
+    "absolute_paths": [],
+    "forbidden_artifacts": [],
+    "validator_passed": true
+  },
+  "documentation": {
+    "requirements_current": true,
+    "controls_current": true,
+    "remix_path_current": true
+  },
+  "rejected_change": {
+    "change": "Make Paint Canvas storage and outputs dynamically follow Width and Height",
+    "decision": "Rejected at G12; keep the original fixed 1080x1350 implementation exactly as approved",
+    "isolation": "The failed uncommitted experiment is quarantined outside the working tree in stash@{0} and is not part of the release candidate"
+  },
+  "human_gate": {
+    "gate_id": "G12",
+    "status": "approved",
+    "notes": "User explicitly approved StreamDiff Canvas as done, with the restored original Paint Canvas kept exactly as it is now."
+  }
+}
