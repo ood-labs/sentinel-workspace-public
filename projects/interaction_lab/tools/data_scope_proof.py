@@ -20,11 +20,19 @@ from pathlib import Path
 
 from data_scope_measure import measure
 
-SERVER = Path(r"C:\Program Files\OODLabs\Sentinel\sentinel-mcp.exe")
 PIPE = "Data_Scope"
 AUDIO = "Scope_Audio"
 CO = f"/sentinel/pipelines/{PIPE}/control_outputs"
 PARAM = f"/sentinel/pipelines/{PIPE}/parameters"
+
+
+def default_server() -> Path:
+    """Resolve the MCP executable from this workspace's own connection file."""
+    workspace = Path(__file__).resolve().parents[3]
+    config_path = workspace / ".mcp.json"
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    server = config["mcpServers"]["sentinel-mcp"]["command"]
+    return Path(server)
 
 
 class Sentinel:
@@ -118,7 +126,7 @@ def require_healthy(client: Sentinel, pipeline_id: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--server", type=Path, default=SERVER)
+    parser.add_argument("--server", type=Path, default=default_server())
     parser.add_argument("--settle", type=float, default=2.0)
     parser.add_argument("--keep", action="store_true")
     args = parser.parse_args()
