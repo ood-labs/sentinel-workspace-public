@@ -1,4 +1,0 @@
-RWTexture2D<float4> OutputUAV : register(u0);
-float3 aces(float3 x){float a=2.51,b=.03,c=2.43,d=.59,e=.14;return saturate((x*(a*x+b))/(x*(c*x+d)+e));}
-[numthreads(8,8,1)]
-void main(uint3 id:SV_DispatchThreadID){if(id.x>=(uint)_Resolution.x||id.y>=(uint)_Resolution.y)return;float2 uv=((float2)id.xy+.5)/_Resolution.xy;float3 c=_Tex0.Load(int3(id.xy,0)).rgb+_Tex1.Load(int3(id.xy,0)).rgb*bloom_intensity;c*=exposure;float l=dot(c,float3(.2126,.7152,.0722));c=lerp(l.xxx,c,saturation);c=lerp(c,c*shadow_tint*2,(1-saturate(l*1.8))*split_tone);c=lerp(c,c*highlight_tint*1.18,saturate((l-.55)*1.8)*split_tone);c=aces(c);c=(c-.5)*contrast+.5;float2 q=uv*(1-uv);float vig=pow(saturate(16*q.x*q.y),vignette);c*=lerp(1,vig,.62);float grain=frac(sin(dot(float2(id.xy),float2(12.9898,78.233)))*43758.5453)-.5;c+=grain*grain_amount;c=pow(saturate(c),1/2.2);OutputUAV[id.xy]=float4(c,1);}

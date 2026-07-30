@@ -10,16 +10,6 @@ This workspace is the user-writable Sentinel agent workspace. It is seeded by Se
 
 Sentinel is a GPU-accelerated live video application for performance and interactive visuals. It combines Spout/NDI/camera/image/pattern/video sources, real-time AI generation, tracking, depth, segmentation, object detection, shader modules, and Spout/NDI output.
 
-## Current Status
-
-Active workspace phase: **Phase 6 - Public Workspace Curation And Release Refresh** is planned with
-approval pending. The acceptance contract is
-`docs/phases/phase-6-public-workspace-curation-refresh.md`.
-
-Begin at Gate G0: reconcile fetched private/public commits and relevant local overlays without
-disturbing the dirty private checkout. Stop at every named human gate G0-G13; automated proof never
-approves a creative project. No public push, tag, or release is authorized by the phase plan.
-
 ## Workspace Ownership
 
 The default Sentinel workspace mirrors the installed application version. Refresh Workspace resets its managed manuals, knowledge, and skills to the installed copies. A custom workspace path is fully user-owned. Sentinel seeds an empty custom workspace once and leaves every non-empty custom workspace unchanged. Ask your agent to use the `update-workspace` skill when you want to bring a custom workspace up to date from the public workspace repository.

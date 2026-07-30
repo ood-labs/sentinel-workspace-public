@@ -112,13 +112,24 @@ $projectSummaries = [Collections.Generic.List[object]]::new()
 foreach ($projectName in $Projects) {
     $definition = $config.Projects[$projectName]
     $projectRoot = Join-Path $sourceFull "projects/$projectName"
-    $projectFile = Join-Path $projectRoot $definition.ProjectFile
-    if (-not (Test-Path -LiteralPath $projectFile -PathType Leaf)) { throw "Project file is missing: $projectFile" }
-    $projectJson = Get-Content -Raw -LiteralPath $projectFile | ConvertFrom-Json
+    $projectFileNames = if ($null -ne $definition.ProjectFiles) {
+        @($definition.ProjectFiles)
+    } else {
+        @($definition.ProjectFile)
+    }
+    if ($projectFileNames.Count -eq 0) { throw "Official project '$projectName' has no project files configured." }
+    $projectFiles = [Collections.Generic.List[string]]::new()
+    $projectJsons = [Collections.Generic.List[object]]::new()
     $activeDirectories = [Collections.Generic.List[string]]::new()
 
-    $projectRelative = Normalize-Relative (Get-RelativePath $sourceFull $projectFile)
-    $fileMap[$projectRelative] = $projectFile
+    foreach ($projectFileName in $projectFileNames) {
+        $projectFile = Join-Path $projectRoot $projectFileName
+        if (-not (Test-Path -LiteralPath $projectFile -PathType Leaf)) { throw "Project file is missing: $projectFile" }
+        $projectFiles.Add($projectFile)
+        $projectJsons.Add((Get-Content -Raw -LiteralPath $projectFile | ConvertFrom-Json))
+        $projectRelative = Normalize-Relative (Get-RelativePath $sourceFull $projectFile)
+        $fileMap[$projectRelative] = $projectFile
+    }
 
     foreach ($pattern in $config.AllowedTopLevelFiles) {
         foreach ($file in Get-ChildItem -LiteralPath $projectRoot -File -Filter $pattern -ErrorAction SilentlyContinue) {
@@ -132,24 +143,26 @@ foreach ($projectName in $Projects) {
         Add-FilesFromDirectory (Join-Path $projectRoot $directoryName) $sourceFull $fileMap $config
     }
 
-    foreach ($pipeline in @($projectJson.pipelines)) {
-        if ($pipeline.type -notin @('module', 'shaderproject')) { continue }
-        $declared = [string]$pipeline.parameters.project_dir
-        if ([string]::IsNullOrWhiteSpace($declared)) { throw "Module pipeline '$($pipeline.id)' in $projectName has no project_dir" }
-        if ([IO.Path]::IsPathRooted($declared)) { throw "Promotion refuses absolute project_dir '$declared' in $projectName" }
-        $resolved = Get-FullPath (Join-Path $projectRoot $declared)
-        if (-not (Test-IsUnder $sourceFull $resolved)) { throw "Promotion path escapes the source workspace: $declared" }
-        $workspaceRelative = Normalize-Relative (Get-RelativePath $sourceFull $resolved)
-        $projectPrefix = "projects/$projectName/modules/"
-        $approvedShared = @($definition.SharedModules | ForEach-Object { Normalize-Relative ([string]$_) })
-        if (-not $workspaceRelative.StartsWith($projectPrefix, [StringComparison]::OrdinalIgnoreCase) -and $workspaceRelative -notin $approvedShared) {
-            throw "Promotion refuses non-allowlisted module '$workspaceRelative' in $projectName"
+    foreach ($projectJson in $projectJsons) {
+        foreach ($pipeline in @($projectJson.pipelines)) {
+            if ($pipeline.type -notin @('module', 'shaderproject')) { continue }
+            $declared = [string]$pipeline.parameters.project_dir
+            if ([string]::IsNullOrWhiteSpace($declared)) { throw "Module pipeline '$($pipeline.id)' in $projectName has no project_dir" }
+            if ([IO.Path]::IsPathRooted($declared)) { throw "Promotion refuses absolute project_dir '$declared' in $projectName" }
+            $resolved = Get-FullPath (Join-Path $projectRoot $declared)
+            if (-not (Test-IsUnder $sourceFull $resolved)) { throw "Promotion path escapes the source workspace: $declared" }
+            $workspaceRelative = Normalize-Relative (Get-RelativePath $sourceFull $resolved)
+            $projectPrefix = "projects/$projectName/modules/"
+            $approvedShared = @($definition.SharedModules | ForEach-Object { Normalize-Relative ([string]$_) })
+            if (-not $workspaceRelative.StartsWith($projectPrefix, [StringComparison]::OrdinalIgnoreCase) -and $workspaceRelative -notin $approvedShared) {
+                throw "Promotion refuses non-allowlisted module '$workspaceRelative' in $projectName"
+            }
+            if (-not (Test-Path -LiteralPath (Join-Path $resolved 'manifest.yaml') -PathType Leaf)) {
+                throw "Promotion cannot resolve active module '$workspaceRelative'"
+            }
+            if (-not $activeDirectories.Contains($workspaceRelative)) { $activeDirectories.Add($workspaceRelative) }
+            Add-FilesFromDirectory $resolved $sourceFull $fileMap $config
         }
-        if (-not (Test-Path -LiteralPath (Join-Path $resolved 'manifest.yaml') -PathType Leaf)) {
-            throw "Promotion cannot resolve active module '$workspaceRelative'"
-        }
-        if (-not $activeDirectories.Contains($workspaceRelative)) { $activeDirectories.Add($workspaceRelative) }
-        Add-FilesFromDirectory $resolved $sourceFull $fileMap $config
     }
 
     $projectShared = Join-Path $projectRoot 'modules/_shared'
@@ -166,7 +179,7 @@ foreach ($projectName in $Projects) {
     }
     $projectSummaries.Add([pscustomobject]@{
         project = $projectName
-        project_file = Normalize-Relative (Get-RelativePath $sourceFull $projectFile)
+        project_files = @($projectFiles | ForEach-Object { Normalize-Relative (Get-RelativePath $sourceFull $_) })
         active_modules = @($activeDirectories)
     })
 }

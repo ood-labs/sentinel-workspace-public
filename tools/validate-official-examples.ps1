@@ -76,7 +76,11 @@ $results = [Collections.Generic.List[object]]::new()
 foreach ($projectName in $Projects) {
     $definition = $config.Projects[$projectName]
     $projectRoot = Join-Path $rootFull "projects/$projectName"
-    $projectFile = Join-Path $projectRoot $definition.ProjectFile
+    $projectFileNames = if ($null -ne $definition.ProjectFiles) {
+        @($definition.ProjectFiles)
+    } else {
+        @($definition.ProjectFile)
+    }
     $errors = [Collections.Generic.List[string]]::new()
     $warnings = [Collections.Generic.List[string]]::new()
     $absolutePaths = [Collections.Generic.List[string]]::new()
@@ -88,20 +92,36 @@ foreach ($projectName in $Projects) {
     $compileResults = [Collections.Generic.List[object]]::new()
     $filesChecked = 0
     $projectJson = $null
+    $projectJsons = [Collections.Generic.List[object]]::new()
 
     if (-not (Test-Path -LiteralPath $projectRoot -PathType Container)) {
         Add-Unique $missingPaths ("projects/{0}" -f $projectName)
         $errors.Add('project directory is missing')
     }
 
-    if (-not (Test-Path -LiteralPath $projectFile -PathType Leaf)) {
-        Add-Unique $missingPaths ("projects/{0}/{1}" -f $projectName, $definition.ProjectFile)
-        $errors.Add("project file '$($definition.ProjectFile)' is missing")
-    } else {
-        try {
-            $projectJson = Get-Content -Raw -LiteralPath $projectFile | ConvertFrom-Json
-        } catch {
-            $errors.Add("project JSON is invalid: $($_.Exception.Message)")
+    foreach ($projectFileName in $projectFileNames) {
+        $projectFile = Join-Path $projectRoot $projectFileName
+        if (-not (Test-Path -LiteralPath $projectFile -PathType Leaf)) {
+            Add-Unique $missingPaths ("projects/{0}/{1}" -f $projectName, $projectFileName)
+            $errors.Add("project file '$projectFileName' is missing")
+        } else {
+            try {
+                $projectJsons.Add((Get-Content -Raw -LiteralPath $projectFile | ConvertFrom-Json))
+            } catch {
+                $errors.Add("project JSON '$projectFileName' is invalid: $($_.Exception.Message)")
+            }
+        }
+    }
+
+    if ($projectJsons.Count -gt 0) {
+        $projectJson = [pscustomobject]@{
+            pipelines = @($projectJsons | ForEach-Object { @($_.pipelines) })
+            nodePresets = @($projectJsons | ForEach-Object { @($_.nodePresets) })
+            graph = [pscustomobject]@{
+                nodes = @($projectJsons | ForEach-Object { @($_.graph.nodes) })
+                pins = @($projectJsons | ForEach-Object { @($_.graph.pins) })
+                links = @($projectJsons | ForEach-Object { @($_.graph.links) })
+            }
         }
     }
 
@@ -332,8 +352,10 @@ foreach ($projectName in $Projects) {
 
     if (Test-Path -LiteralPath $projectRoot -PathType Container) {
         $rootProjectFiles = @(Get-ChildItem -LiteralPath $projectRoot -File -Filter '*.sentinel' -ErrorAction SilentlyContinue)
-        if ($rootProjectFiles.Count -ne 1) {
-            $errors.Add("project root needs exactly one .sentinel file; found $($rootProjectFiles.Count)")
+        $expectedProjectFiles = @($projectFileNames | Sort-Object)
+        $actualProjectFiles = @($rootProjectFiles.Name | Sort-Object)
+        if (@(Compare-Object -ReferenceObject $expectedProjectFiles -DifferenceObject $actualProjectFiles).Count -ne 0) {
+            $errors.Add("project root .sentinel files must exactly match config; expected $($expectedProjectFiles -join ', '); found $($actualProjectFiles -join ', ')")
         }
         $readmes = @(Get-ChildItem -LiteralPath $projectRoot -File -Filter 'README*' -ErrorAction SilentlyContinue)
         if ($readmes.Count -eq 0) {
@@ -341,24 +363,36 @@ foreach ($projectName in $Projects) {
             $errors.Add('user-facing README is missing')
         }
 
-        $proofRoot = Join-Path $projectRoot 'proof'
-        $proofFiles = if (Test-Path -LiteralPath $proofRoot -PathType Container) {
-            @(Get-ChildItem -LiteralPath $proofRoot -File -Recurse -ErrorAction SilentlyContinue)
-        } else { @() }
-        if ($proofFiles.Count -eq 0) {
-            Add-Unique $missingPaths "projects/$projectName/proof"
-            $errors.Add('compact proof bundle is missing or empty')
+        $proofRecords = if ($null -eq $definition.ProofRecords) { @() } else { @($definition.ProofRecords) }
+        if ($definition.Promote -ne $false -and $proofRecords.Count -eq 0) {
+            $errors.Add('no committed proof record is configured')
+        }
+        foreach ($proofRecord in $proofRecords) {
+            $proofRecordPath = Join-Path $rootFull ([string]$proofRecord)
+            if (-not (Test-Path -LiteralPath $proofRecordPath -PathType Leaf)) {
+                Add-Unique $missingPaths ([string]$proofRecord)
+                $errors.Add("committed proof record is missing: $proofRecord")
+            }
         }
 
-        $allEntries = @(Get-ChildItem -LiteralPath $projectRoot -Force -Recurse -ErrorAction SilentlyContinue)
+        $trackedProjectPaths = @(
+            git -C $rootFull ls-files -- "projects/$projectName" |
+                ForEach-Object { Join-Path $rootFull $_ }
+        )
+        $allEntries = @(
+            $trackedProjectPaths |
+                Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } |
+                ForEach-Object { Get-Item -LiteralPath $_ -Force }
+        )
         foreach ($entry in $allEntries) {
             $relative = Normalize-Relative (Get-RelativePath $rootFull $entry.FullName)
-            if ($entry.PSIsContainer) {
-                $name = $entry.Name.ToLowerInvariant()
+            $segments = @($relative -split '/')
+            foreach ($segment in $segments) {
+                $name = $segment.ToLowerInvariant()
                 if ($name -in @($config.ForbiddenDirectoryNames | ForEach-Object { $_.ToLowerInvariant() }) -or $name -match '^checkpoint(?:_|$)') {
                     Add-Unique $forbiddenArtifacts $relative
+                    break
                 }
-                continue
             }
 
             $filesChecked++

@@ -75,19 +75,21 @@
   "assets": {
     "active_graph_external_media_references": 0,
     "procedural_scene": true,
-    "legacy_unreferenced_media": [
-      {
-        "path": "projects/living_room_sdf/images/abandoned_factory00.jpg",
-        "bytes": 616045,
-        "copies": 4
-      },
-      {
-        "path": "projects/living_room_sdf/videos/6616343-hd_1920_1080_25fps_vert.mp4",
-        "bytes": 30013125,
-        "copies": 3
-      }
-    ],
-    "redistribution_note": "The approved active graph does not reference these legacy media files. Their final keep/remove and license audit remains part of release-candidate packaging; no visible project asset was removed at G7."
+    "legacy_unreferenced_media_removed": {
+      "files": 7,
+      "bytes": 92503555,
+      "paths": [
+        "projects/living_room_sdf/images/abandoned_factory00.jpg",
+        "projects/living_room_sdf/images/abandoned_factory00_1.jpg",
+        "projects/living_room_sdf/images/abandoned_factory00_2.jpg",
+        "projects/living_room_sdf/images/abandoned_factory00_3.jpg",
+        "projects/living_room_sdf/videos/6616343-hd_1920_1080_25fps_vert.mp4",
+        "projects/living_room_sdf/videos/6616343-hd_1920_1080_25fps_vert_1.mp4",
+        "projects/living_room_sdf/videos/6616343-hd_1920_1080_25fps_vert_2.mp4"
+      ],
+      "reason": "The approved procedural graph has zero external media references; the redundant legacy files were removed during release-candidate packaging and remain recoverable from Git history."
+    },
+    "redistribution_note": "The approved active graph is fully procedural and ships with no external media dependency or unresolved asset right."
   },
   "runtime": {
     "healthy_nodes": 6,
@@ -110,8 +112,8 @@
   "portability": {
     "module_paths": "relative projects/living_room_sdf/modules/* paths",
     "engine_packs_required": [],
-    "validator_passed": false,
-    "notes": "Full release-set validation and the unreferenced-media disposition remain part of the pending G1/G13 flow."
+    "validator_passed": true,
+    "notes": "The full release-set validator passed after the unreferenced legacy media was removed."
   },
   "human_gate": {
     "gate_id": "G7",

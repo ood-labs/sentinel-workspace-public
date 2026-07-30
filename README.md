@@ -6,7 +6,7 @@ This repository contains ready-to-use Module projects, shared HLSL libraries, ag
 
 ## Requirements
 
-- Sentinel 0.5.33 or newer installed in its standard Windows location.
+- Sentinel 0.5.49 or newer installed in its standard Windows location.
 - Windows 10 or 11 with a supported NVIDIA GPU.
 - An MCP-capable coding agent when using the included automation and authoring skills.
 
@@ -67,15 +67,17 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | Project | What it demonstrates |
 | --- | --- |
 | [`interaction_lab`](projects/interaction_lab/) | Scientific UI controls, responsive Canvas panels, spline editing, selection, and transform gizmos |
-| [`living_room_sdf`](projects/living_room_sdf/) | A bundled, data-driven SDF interior assembled from architecture, furnishing, material, lighting, render, and grade modules |
-| [`topographic_hud`](projects/topographic_hud/) | A 15-module topographic interface using texture lanes, structured records, and a control-output signal bus |
-| [`desert_totem`](projects/desert_totem/) | A procedural Dada totem with structured layout records and layered SDF domain warping |
-| [`fruit_atlas_scatter`](projects/fruit_atlas_scatter/) | A StreamDiff, matting, depth, atlas, and 3D card-scatter workflow; its AI nodes require the corresponding Sentinel engine packs |
-| [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
 | [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene using the shared root-level `steel_lattice` and `industrial_mono_post` modules |
+| [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
+| [`face_collage`](projects/face_collage/) | A tracked-face editorial collage with persistent accumulation, restrained overlays, and project-scoped performance controls |
+| [`living_room_sdf`](projects/living_room_sdf/) | A bundled, data-driven SDF interior assembled from architecture, furnishing, material, lighting, render, and grade modules |
+| [`camera_reference`](projects/camera_reference/) | A focused native Fly/Orbit camera reference with a thin antialiased grid and aligned color/depth outputs |
+| [`touchdesigner_new_project`](projects/touchdesigner_new_project/) | A beginner-oriented recreation of a TouchDesigner starter network using typed signals, texture conversion, displacement, and an interactive geometry pass |
 | [`streamdiff_workflows`](projects/streamdiff_workflows/) | Six focused StreamDiff studies covering 2D feedback, depth-parallax motion, video depth conditioning, procedural warp maps, and direct Mux switching |
-| [`streamdiff_collage`](projects/streamdiff_collage/) | A rapid StreamDiff poster instrument that mattes generated food and graphic elements, atomically stamps them into persistent feedback, and applies rare print interventions |
-| [`procedural_building_system`](projects/procedural_building_system/) | A modular architectural system with editable massing, facade, materials, and lighting data; an sRGB/depth renderer; and an optional depth-ControlNet StreamDiff pass |
+| [`cloth_lab`](projects/cloth_lab/) | An audio-reactive XPBD cloth instrument with native camera interaction, tearing, grabbing, and reusable audio-band analysis |
+| [`scientific_organism`](projects/scientific_organism/) | A modular scientific-instrument composition spanning source, analysis, temporal memory, topology, rendering, and performance control |
+| [`autopsia`](projects/autopsia/) | A forensic relief instrument with tracked features, durable stylus editing, native camera navigation, and a compact macro deck |
+| [`streamdiff_canvas`](projects/streamdiff_canvas/) | A photographic StreamDiff collage canvas with persistent paint, pattern stamps, depth fields, and generation controls |
 
 ## Creating a UI Module
 
