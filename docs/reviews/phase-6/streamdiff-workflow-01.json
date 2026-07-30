@@ -1,0 +1,45 @@
+{
+  "project": "projects/streamdiff_workflows/01_2d_feedback_zoom.sentinel",
+  "source_commit": "40dce88",
+  "workflow": "01_2d_feedback_zoom",
+  "source_resolution": "Kept the committed Phase 6 source and saved the user-approved live state.",
+  "graph": {
+    "pipeline_count": 1,
+    "final_pipeline": "streamdiff_0",
+    "processing_resolution": "896x512",
+    "output_resolution": "1792x1024",
+    "engine_tier": "SDXL IP-Adapter",
+    "engine_precision": "FP8",
+    "external_inputs": 0
+  },
+  "approved_state": {
+    "zoom": 0.06,
+    "feedback": 1.0,
+    "denoise": 0.5,
+    "depth_parallax": false,
+    "controlnet_enabled": false,
+    "warp_enabled": false
+  },
+  "executing_assertion": {
+    "assertion": "With prompt and seed frozen, nonzero zoom visibly rescales prior-frame content while the zero-zoom control removes that image-space rescaling.",
+    "nonzero_zoom_evidence": "captures/phase6_streamdiff_workflow_01_approved/zoom_006_frozen_seed.mp4",
+    "zero_zoom_control": "captures/phase6_streamdiff_workflow_01_approved/zoom_000_frozen_seed.mp4",
+    "baseline_restored": true
+  },
+  "runtime": {
+    "healthy": true,
+    "frames_progressing": true,
+    "observed_fps": 49.1,
+    "has_preview": true,
+    "unresolved_project_dirs": []
+  },
+  "proof": {
+    "bundle": "captures/phase6_streamdiff_workflow_01_approved",
+    "project_saved": true
+  },
+  "human_gate": {
+    "gate_id": "G8",
+    "workflow_decision": "approved",
+    "notes": "The user reviewed the live 2D feedback zoom and explicitly approved it."
+  }
+}
