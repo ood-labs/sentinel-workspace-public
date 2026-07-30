@@ -1,8 +1,8 @@
 # Interaction Lab
 
-Interaction Lab is a bundled Module-only example project for authored viewport tools. It is four
-stations, each a full-panel authored interface that follows its dock, plus one downstream renderer
-that exists to prove a data contract.
+Interaction Lab is a bundled example project for authored viewport tools. It is four stations,
+each a full-panel authored interface that follows its dock, plus one downstream renderer that
+exists to prove a data contract and a live Audio In analysis branch.
 
 Load `interaction_lab.sentinel` in Sentinel. Each station is boxed and labeled in the graph;
 double-click a Module node to use its viewport.
@@ -13,6 +13,10 @@ double-click a Module node to use its viewport.
 | `02 - GIZMO DESK` | `Gizmo_Desk` | Host-owned selection and a 3D transform gizmo over lit geometry |
 | `03 - MOTION CONSOLE` | `Motion_Console` | A compact interface designed around one operator workflow |
 | `04 - STYLE AUTHORITY` | `Style_Authority` | The live theme source: every v3 primitive drawn at the published values |
+
+`Scope_Audio` defaults to **Device**, **Loopback**, **Default loopback** so the audio scope and
+signal trails work portably without a bundled test file. Silence is a healthy state; play audio on
+the Windows default output to exercise the analysis panels.
 
 Scene Groups are flat, never nested, and control-only: the lab is a tool and data-flow reference,
 so it has no Group Output endpoint. Each group exposes five to seven curated controls rather than

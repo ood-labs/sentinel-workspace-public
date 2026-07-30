@@ -1,0 +1,93 @@
+{
+  "project": "projects/interaction_lab/interaction_lab.sentinel",
+  "source_commit": "61e0a58eacf7f1907dc6384d0232123f518d2f7a",
+  "local_overlay_commit_or_diff": "The user-adjusted panel layout and portable Scope_Audio source saved at G2 on 2026-07-30",
+  "promoted_paths": [
+    "projects/interaction_lab/README.md",
+    "projects/interaction_lab/interaction_lab.sentinel",
+    "projects/interaction_lab/modules/"
+  ],
+  "compile": {
+    "modules": [
+      "Style_Authority",
+      "Spline_Desk",
+      "Gizmo_Desk",
+      "Motion_Console",
+      "Spline_Output",
+      "Data_Scope",
+      "Signal_Trails"
+    ],
+    "status": "pass; all seven authored modules compiled and all eight live nodes, including Scope_Audio, were healthy"
+  },
+  "runtime": {
+    "healthy": true,
+    "health_reasons": [],
+    "node_count": 8,
+    "minimum_observed_cook_hz": 117.0,
+    "reference_floor_cook_hz": 55.0,
+    "audio": {
+      "source_mode": "Device",
+      "device_flow": "Loopback",
+      "device": "Default loopback",
+      "signal_live": true,
+      "spectrum_generation": 20252,
+      "status": "healthy streaming"
+    }
+  },
+  "performance": {
+    "target": {
+      "whole_lab_floor": "at least 55 cooks/s in plausible active-panel states"
+    },
+    "candidate_samples": [
+      {
+        "capture": "captures/phase6_interaction_lab_approved",
+        "total_frame_ms": 10.4721,
+        "pipeline_wall_ms": 8.4017,
+        "aggregate_gpu_timestamp_ms": 1.9009,
+        "minimum_node_cook_hz": 117.0
+      }
+    ],
+    "hotspots": [],
+    "interaction_response": "The user reviewed the refined lab, adjusted the panel arrangement, and approved the resulting UI."
+  },
+  "interactions": [
+    {
+      "station": "Spline Desk",
+      "proof": "Prior hardening proof exercised real select, sustained anchor/handle drag, marquee, tangent mode, delete, close, cancel, and immediate undo; the current approved capture remains nonblank and legible."
+    },
+    {
+      "station": "Gizmo Desk",
+      "proof": "Prior hardening proof exercised selection, transform, durable state, and undo on lit geometry."
+    },
+    {
+      "station": "Motion Console",
+      "proof": "The saved lab retains live nonconstant controls and the documented single Y-flip bias-pad contract."
+    },
+    {
+      "station": "Style Authority",
+      "proof": "The saved lab retains the live theme specimen and downstream published control contract."
+    }
+  ],
+  "captures": [
+    {
+      "path": "captures/phase6_interaction_lab_approved",
+      "content_assertion": "User-approved Spline Desk output, exact saved graph and panel layout, live health, links, expressions, and whole-graph profile"
+    }
+  ],
+  "portability": {
+    "absolute_paths": [],
+    "forbidden_artifacts": [],
+    "validator_passed": true,
+    "notes": "The earlier project validator passed; this G2 delta removes the external WAV dependency and uses the portable default loopback endpoint."
+  },
+  "documentation": {
+    "requirements_current": true,
+    "controls_current": true,
+    "audio_default_current": true
+  },
+  "human_gate": {
+    "gate_id": "G2",
+    "status": "approved",
+    "notes": "User explicitly approved Interaction Lab after refining the panel layout and changing Scope_Audio to Device / Loopback / Default loopback."
+  }
+}
