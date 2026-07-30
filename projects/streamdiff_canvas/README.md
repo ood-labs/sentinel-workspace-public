@@ -16,6 +16,12 @@ The generated color, matte, and depth feed two parallel canvases:
 **Pattern Depth SDF** renders the Pattern Canvas color, accumulated depth, and
 cutout mask as a lightweight 3D relief.
 
+The Collage Diffusion prompt bank requests isolated studio photographs on a
+uniform black field. Every prompt explicitly rejects illustration, engraving,
+screenprint, halftone, scanned-print, film-border, contact-sheet, and paper
+artifacts, and ends with `hyper-realistic, 4K` so the matting stage receives a
+clean photographic subject rather than a photographed or scanned print.
+
 ## Radial Gradient
 
 The StreamDiff input is intentionally basic. Its Gradient group has four
