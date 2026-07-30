@@ -1,0 +1,44 @@
+{
+  "project": "projects/streamdiff_workflows/03_backrooms_flythrough.sentinel",
+  "source_commit": "5b30ba7",
+  "workflow": "03_backrooms_flythrough",
+  "source_resolution": "Kept the committed Phase 6 source and saved the user-approved live state.",
+  "graph": {
+    "pipeline_count": 1,
+    "final_pipeline": "streamdiff_0",
+    "processing_resolution": "640x640",
+    "engine_profile": "sdxl/custom/sdxl-turbo/640x640",
+    "engine_tier": "SDXL ControlNet + IP-Adapter",
+    "engine_precision": "FP16"
+  },
+  "approved_state": {
+    "zoom": 0.08,
+    "depth_parallax": true,
+    "parallax_height": 0.039,
+    "controlnet_enabled": true,
+    "controlnet_auto_depth": true,
+    "controlnet_scale": 0.736,
+    "frame_skip": 6,
+    "denoise": 0.798
+  },
+  "executing_assertion": {
+    "assertion": "The recording shows sustained architecture-relative parallax and flythrough rather than a uniform 2D scale.",
+    "motion_evidence": "captures/phase6_streamdiff_workflow_03_approved/flythrough.mp4"
+  },
+  "runtime": {
+    "healthy": true,
+    "frames_progressing": true,
+    "observed_fps": 65.1,
+    "has_preview": true,
+    "unresolved_project_dirs": []
+  },
+  "proof": {
+    "bundle": "captures/phase6_streamdiff_workflow_03_approved",
+    "project_saved": true
+  },
+  "human_gate": {
+    "gate_id": "G8",
+    "workflow_decision": "approved",
+    "notes": "The user reviewed the live Backrooms flythrough, described it as great, and explicitly approved it."
+  }
+}
