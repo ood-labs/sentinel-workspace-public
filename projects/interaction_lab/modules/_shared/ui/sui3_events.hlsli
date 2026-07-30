@@ -5,9 +5,7 @@
 //
 // ============================ THE BUTTON TRAP ============================
 // `type: button` parameters DO NOT deliver a usable pressed level to HLSL.
-// Phase 3A measured the exact behaviour on Sentinel 0.5.49 against
-// Motion_Console's `burst`, and it is worse than previously documented
-// (AUTOPSIA recorded "reads as a constant 1.0"). The truth is a ONE-WAY LATCH:
+// On affected builds the value behaves as a ONE-WAY LATCH:
 //
 //   initial              shader reads false
 //   after set burst=1    shader reads TRUE

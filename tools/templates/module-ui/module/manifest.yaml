@@ -1,0 +1,24 @@
+name: "{{NAME}}"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+
+panel:
+  mode: canvas
+  output: UI
+  resolution: follow_panel
+
+parameters:
+  - { name: amount, display: "Amount", type: float, min: 0.0, max: 1.0, default: 0.5, group: "UI" }
+
+viewport:
+  hint: "Neutral responsive Canvas scaffold. Replace its visual language to suit the project."
+  # ui-label: title = MODULE UI
+  controls:
+    - { id: amount, kind: slider, param: amount, rect: [0.08, 0.28, 0.92, 0.40], label: "Amount" }
+
+passes:
+  - { name: render, shader: render.hlsl, target: cs_5_0, output: output }
+
+outputs:
+  - { name: "UI", pass: render }

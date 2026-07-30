@@ -51,3 +51,18 @@ all active nodes healthy at approximately 57-60 cooks per second.
 The bundled `images/jellybeans.png` file is the only media dependency. Module
 paths and the image path are relative to the project, so the example is
 portable.
+
+## Component map
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Jellybeans_Image` | Image source | `images/jellybeans.png` | portable source texture |
+| `Hermite_Signal` | Module | authored controls and time | typed Hermite signal data |
+| `Signal_to_Texture` | Module | Hermite signal | displacement texture |
+| `Vertical_Displace` | Module | jellybeans image and displacement texture | vertically displaced image |
+| `Geometry_Pass` | Module | displaced image | interactive geometry presentation |
+| `Out` | Module | geometry pass | final reviewed texture |
+
+No model engine pack is required. Study the signal-to-texture boundary and
+purposeful operator decomposition, then build new operators for the current
+problem instead of copying this starter graph.

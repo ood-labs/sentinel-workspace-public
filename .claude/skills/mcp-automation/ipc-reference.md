@@ -83,7 +83,7 @@ All commands use ZeroMQ REQ/REP pattern on `tcp://127.0.0.1:5555`.
 {"cmd": "GET_PROJECT_INFO"}
 // Response: {"status": "ok", "data": {"name": "projectname", "path": "...", "hasUnsavedChanges": false}}
 
-// Set expression on parameter (Phase 40)
+// Set expression on parameter
 {"cmd": "SET_EXPRESSION", "path": "/sentinel/pipelines/streamdiff_0/parameters/denoise", "expression": "sin(time*2)*0.3+0.5"}
 // Response: {"status": "ok", "data": {"path": "...", "expression": "...", "compiled": true}}
 

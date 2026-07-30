@@ -3,7 +3,7 @@ version: "3.0"
 mode: generator
 
 # Fallback extent for a hidden or unsized panel; the layout is authored for
-# arbitrary extents per phase doc Amendment 3.
+# arbitrary extents.
 resolution: [1280, 720]
 
 panel:

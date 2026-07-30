@@ -1,6 +1,6 @@
 @{
-    MinimumSentinelVersion = '0.5.49'
-    LiveProofHostVersion = '0.5.51'
+    MinimumSentinelVersion = '0.5.52'
+    LiveProofHostVersion = '0.5.52'
     CapabilityCommandCount = 152
     CapabilitySchemaHash = 'f87e5c1d5f3ae458'
 
@@ -8,7 +8,7 @@
         interaction_lab = @{
             ProjectFile = 'interaction_lab.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/interaction-lab.json')
+            ProofRecords = @('.release/reviews/phase-6/interaction-lab.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -19,7 +19,7 @@
         living_room_sdf = @{
             ProjectFile = 'living_room_sdf.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/living-room-sdf.json')
+            ProofRecords = @('.release/reviews/phase-6/living-room-sdf.json')
             MinimumSceneGroups = 1
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -31,7 +31,7 @@
         face_collage = @{
             ProjectFile = 'face_collage.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/face-collage.json')
+            ProofRecords = @('.release/reviews/phase-6/face-collage.json')
             MinimumSceneGroups = 1
             RequiresGroupOutput = $true
             MinimumGroupPresets = 3
@@ -41,7 +41,7 @@
         strata = @{
             ProjectFile = 'strata.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/strata.json')
+            ProofRecords = @('.release/reviews/phase-6/strata.json')
             MinimumSceneGroups = 1
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -53,7 +53,7 @@
         industrial_lattice = @{
             ProjectFile = 'industrial_lattice.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/industrial-lattice.json')
+            ProofRecords = @('.release/reviews/phase-6/industrial-lattice.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -64,7 +64,7 @@
         camera_reference = @{
             ProjectFile = 'camera_reference.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/camera-reference.json')
+            ProofRecords = @('.release/reviews/phase-6/camera-reference.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -76,7 +76,7 @@
         touchdesigner_new_project = @{
             ProjectFile = 'touchdesigner_new_project.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/touchdesigner-new-project.json')
+            ProofRecords = @('.release/reviews/phase-6/touchdesigner-new-project.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -96,12 +96,12 @@
             )
             SharedModules = @()
             ProofRecords = @(
-                'docs/reviews/phase-6/streamdiff-workflow-01.json',
-                'docs/reviews/phase-6/streamdiff-workflow-02.json',
-                'docs/reviews/phase-6/streamdiff-workflow-03.json',
-                'docs/reviews/phase-6/streamdiff-workflow-04.json',
-                'docs/reviews/phase-6/streamdiff-workflow-05.json',
-                'docs/reviews/phase-6/streamdiff-workflow-06.json'
+                '.release/reviews/phase-6/streamdiff-workflow-01.json',
+                '.release/reviews/phase-6/streamdiff-workflow-02.json',
+                '.release/reviews/phase-6/streamdiff-workflow-03.json',
+                '.release/reviews/phase-6/streamdiff-workflow-04.json',
+                '.release/reviews/phase-6/streamdiff-workflow-05.json',
+                '.release/reviews/phase-6/streamdiff-workflow-06.json'
             )
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
@@ -113,7 +113,7 @@
         cloth_lab = @{
             ProjectFile = 'cloth_lab.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/cloth-lab.json')
+            ProofRecords = @('.release/reviews/phase-6/cloth-lab.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -124,7 +124,7 @@
         }
         scientific_organism = @{
             ProjectFile = 'scientific_organism.sentinel'
-            ProofRecords = @('docs/reviews/phase-6/scientific-organism.json')
+            ProofRecords = @('.release/reviews/phase-6/scientific-organism.json')
             SharedModules = @()
             MinimumSceneGroups = 1
             RequiresGroupOutput = $true
@@ -136,7 +136,7 @@
         autopsia = @{
             ProjectFile = 'autopsia.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/autopsia.json')
+            ProofRecords = @('.release/reviews/phase-6/autopsia.json')
             MinimumSceneGroups = 1
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -148,7 +148,7 @@
         streamdiff_canvas = @{
             ProjectFile = 'streamdiff_canvas.sentinel'
             SharedModules = @()
-            ProofRecords = @('docs/reviews/phase-6/streamdiff-canvas.json')
+            ProofRecords = @('.release/reviews/phase-6/streamdiff-canvas.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -165,20 +165,71 @@
             Source = 'User-selected clip'
             Purpose = 'Video input for the approved depth-control and matte-composite workflow'
             RedistributionStatus = 'cleared'
-            Evidence = 'docs/reviews/phase-6/streamdiff-workflow-05.json'
+            Evidence = '.release/reviews/phase-6/streamdiff-workflow-05.json'
         }
         @{
             Path = 'projects/touchdesigner_new_project/images/jellybeans.png'
             Source = 'User-selected replacement image'
             Purpose = 'Portable image input for the TouchDesigner starter reference'
             RedistributionStatus = 'cleared'
-            Evidence = 'docs/reviews/phase-6/touchdesigner-new-project.json'
+            Evidence = '.release/reviews/phase-6/touchdesigner-new-project.json'
         }
     )
-    GeneratedMediaPatterns = @(
-        'projects/*/proof/*',
-        'projects/autopsia/*.png'
+    GeneratedMediaPatterns = @()
+
+    SupportedTopLevelTools = @(
+        'audit-public-release.ps1',
+        'module-ui.ps1',
+        'official-examples.config.psd1',
+        'plan-public-release.ps1',
+        'promote-public.ps1',
+        'test-official-examples.ps1',
+        'update-workspace-manifest.ps1',
+        'validate-official-examples.ps1'
     )
+
+    AllowedTopLevelDirectories = @(
+        '.agents',
+        '.claude',
+        '.release',
+        'examples',
+        'knowledge',
+        'projects',
+        'tools'
+    )
+
+    AllowedRepositoryFiles = @(
+        '.gitignore',
+        '.mcp.json',
+        '.sentinel-workspace-manifest.json',
+        '.sentinel-workspace-version',
+        'AGENTS.md',
+        'CLAUDE.md',
+        'GEMINI.md',
+        'LICENSE',
+        'README.md'
+    )
+
+    RetiredReferences = @(
+        'generate_laservibe_hud.py',
+        'interaction-lab-guards.py',
+        'interaction-lab-handson.py',
+        'invoke-sentinel-mcp.ps1',
+        'repair-scene-group-presets.ps1',
+        'sentinel_bridge.py',
+        'sentinel_mcp_call.py',
+        'spline_probe.py',
+        'verify_motion_energy.py',
+        'tracking_ripple.sentinel',
+        'timeline_hud',
+        'choreo_cascade'
+    )
+
+    Scientifica = @{
+        FileName = 'scientifica_ascii.hlsli'
+        Sha256 = 'fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56'
+        LicenseFileName = 'SCIENTIFICA_LICENSE.txt'
+    }
 
     WorkspaceManifest = @{
         Prefixes = @(
@@ -186,26 +237,25 @@
             '.claude/skills',
             'examples',
             'knowledge',
-            'projects'
+            'projects',
+            'tools/templates/module-ui'
         )
         Files = @(
             '.gitignore',
+            '.mcp.json',
+            '.sentinel-workspace-version',
             'AGENTS.md',
             'CLAUDE.md',
             'GEMINI.md',
             'LICENSE',
             'README.md',
-            'tools/generate_laservibe_hud.py',
-            'tools/module-ui.ps1',
-            'tools/official-examples.config.psd1',
-            'tools/test-official-examples.ps1',
-            'tools/validate-official-examples.ps1',
-            'tools/verify_motion_energy.py'
+            'tools/module-ui.ps1'
         )
     }
 
-    AllowedProjectDirectories = @('assets', 'cues', 'images', 'modules', 'proof')
+    AllowedProjectDirectories = @('assets', 'cues', 'images', 'modules', 'tools')
     AllowedTopLevelFiles = @('README*', 'LICENSE*')
+    RequiredProjectReadmeHeading = '## Component map'
     GlobalSharedPaths = @()
     ForbiddenDirectoryNames = @(
         '.cache', '.shadercache', 'captures', 'checkpoint', 'checkpoints',

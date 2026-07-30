@@ -1,98 +1,102 @@
 # Sentinel Workspace
 
-An open authoring workspace for building interactive visuals, tools, and control surfaces with Sentinel.
+The public authoring workspace for Sentinel: concise agent instructions,
+product knowledge, portable example projects, and a small set of local
+authoring tools.
 
-This repository contains ready-to-use Module projects, shared HLSL libraries, agent skills, product knowledge, and portable example shows. It is a focused public snapshot rather than a copy of Sentinel's private development workspace.
+Sentinel is distributed separately. This repository contains workspace content,
+not the application, model engines, or proprietary source.
 
 ## Requirements
 
-- Sentinel 0.5.49 or newer installed in its standard Windows location.
-- Windows 10 or 11 with a supported NVIDIA GPU.
-- An MCP-capable coding agent when using the included automation and authoring skills.
+- Sentinel 0.5.52 or newer on Windows 10 or 11.
+- A supported NVIDIA GPU.
+- An MCP-capable coding agent for the included automation workflows.
 
-Sentinel itself is distributed separately. This repository contains authored workspace content, not the Sentinel application or engine source.
+## Start here
 
-## Quick start
-
-1. Clone this repository:
-
-   ```powershell
-   git clone https://github.com/ood-labs/sentinel-workspace-public.git
-   cd sentinel-workspace-public
-   ```
-
-2. Start Sentinel.
-
-3. Open this folder in an MCP-capable agent. The included `.mcp.json` targets the normal Sentinel installation at `C:\Program Files\OODLabs\Sentinel\sentinel-mcp.exe`.
-
-4. Confirm the live connection:
+1. Start Sentinel in the interactive Windows desktop.
+2. Open this workspace in your coding agent.
+3. Verify the live build:
 
    ```text
    sentinel_app action=ping
    sentinel_pipeline action=list_types
+   sentinel_app action=capabilities
    ```
 
-5. Load [`projects/interaction_lab/interaction_lab.sentinel`](projects/interaction_lab/interaction_lab.sentinel) to explore authored controls, responsive Canvas panels, spline editing, selection, and multi-object transform gizmos.
+4. Read `AGENTS.md` and `knowledge/FEATURE-MAP.md`.
+5. Use `knowledge/EXAMPLE-MAP.md` to find a relevant teaching project.
 
-The live MCP catalog is authoritative for the installed Sentinel build. Start with [`AGENTS.md`](AGENTS.md) or [`knowledge/FEATURE-MAP.md`](knowledge/FEATURE-MAP.md) before authoring new content.
+The live MCP catalog is authoritative for the installed build.
 
 ## Repository layout
 
-| Path | Contents |
+| Path | Purpose |
 | --- | --- |
-| `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` | Equivalent entry instructions for common coding agents |
-| `.agents/skills/`, `.claude/skills/` | Mirrored Sentinel authoring and automation skills |
-| `knowledge/` | Focused product and workflow reference documentation |
-| `projects/` | Portable saved shows, focused technique collections, and their bundled Module dependencies |
-| `examples/` | Small blueprint examples for procedural construction |
-| `tools/` | Local authoring and validation helpers |
+| `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` | Identical entry instructions for common agents |
+| `.agents/skills/`, `.claude/skills/` | Identical Sentinel authoring skills |
+| `knowledge/` | Product and workflow reference |
+| `projects/` | Twelve curated, self-contained example projects |
+| `examples/` | Small generic blueprint and skill fixtures |
+| `tools/` | Supported authoring and release-validation helpers |
+| `.release/` | Maintainer approval records; not installed into user workspaces |
 
-## Interaction Lab
+## Examples are references
 
-Interaction Lab is a Module-only example containing:
+The curated projects teach architectures and techniques. They are not a stock
+Module catalog. Inspect a relevant graph and component map, then invent a
+solution for the current user's source material, interaction, and aesthetic.
+Only copy a project-specific Module when the user explicitly asks for a fork or
+remix of that example.
 
-- A monochrome scientific UI kit and live typography/spacing tuner.
-- A font-style sampler using the bundled Scientifica glyph data.
-- A persistent cubic spline editor connected to a downstream renderer.
-- A selectable 3D scene with translate, rotate, and scale gizmos.
-- Full-frame Canvas panels whose render resolution follows the panel size.
+Generic infrastructure such as licensed font data or the neutral UI scaffold
+may be vendored into the owning project. Every project keeps its active Modules,
+recursive shader includes, runtime assets, and licenses under its own directory.
+See `knowledge/example-authoring.md`.
 
-See the [Interaction Lab guide](projects/interaction_lab/README.md) and the [UI authoring guide](knowledge/ui-authoring.md).
+## Example collection
 
-## Example projects
-
-Open any project by loading its `.sentinel` file in Sentinel:
-
-| Project | What it demonstrates |
+| Project | Primary lesson |
 | --- | --- |
-| [`interaction_lab`](projects/interaction_lab/) | Scientific UI controls, responsive Canvas panels, spline editing, selection, and transform gizmos |
-| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene with its approved renderer and monochrome post pass bundled inside the project |
-| [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
-| [`face_collage`](projects/face_collage/) | A tracked-face editorial collage with persistent accumulation, restrained overlays, and project-scoped performance controls |
-| [`living_room_sdf`](projects/living_room_sdf/) | A bundled, data-driven SDF interior assembled from architecture, furnishing, material, lighting, render, and grade modules |
-| [`camera_reference`](projects/camera_reference/) | A focused native Fly/Orbit camera reference with a thin antialiased grid and aligned color/depth outputs |
-| [`touchdesigner_new_project`](projects/touchdesigner_new_project/) | A beginner-oriented recreation of a TouchDesigner starter network using typed signals, texture conversion, displacement, and an interactive geometry pass |
-| [`streamdiff_workflows`](projects/streamdiff_workflows/) | Six focused StreamDiff studies covering 2D feedback, depth-parallax motion, video depth conditioning, procedural warp maps, and direct Mux switching |
-| [`cloth_lab`](projects/cloth_lab/) | An audio-reactive XPBD cloth instrument with native camera interaction, tearing, grabbing, and reusable audio-band analysis |
-| [`scientific_organism`](projects/scientific_organism/) | A modular scientific-instrument composition spanning source, analysis, temporal memory, topology, rendering, and performance control |
-| [`autopsia`](projects/autopsia/) | A forensic relief instrument with tracked features, durable stylus editing, native camera navigation, and a compact macro deck |
-| [`streamdiff_canvas`](projects/streamdiff_canvas/) | A photographic StreamDiff collage canvas with persistent paint, pattern stamps, depth fields, and generation controls |
+| `autopsia` | Closed-loop feature analysis, stable agents, 3D relief, and performance control |
+| `camera_reference` | Native internal Fly/Orbit camera behavior and efficient reference grid |
+| `cloth_lab` | Audio-driven XPBD cloth, grabbing, tearing, and native camera interaction |
+| `face_collage` | MediaPipe-guided StreamDiff collage, accumulation, cutout, and editorial compositing |
+| `industrial_lattice` | Compact procedural SDF structure and post-processing |
+| `interaction_lab` | Responsive Canvas UI, splines, selection, gizmos, audio scope, and traces |
+| `living_room_sdf` | Modular architectural records, spatial editing, lighting, materials, and SDF rendering |
+| `scientific_organism` | Long modular analysis-to-render chain with temporal memory and a final Scene Group output |
+| `strata` | Feature-reactive modular 2D composition |
+| `streamdiff_canvas` | Persistent painting and patterned depth control for photographic StreamDiff collage |
+| `streamdiff_workflows` | Six focused StreamDiff routing and conditioning studies |
+| `touchdesigner_new_project` | Typed signal-to-texture modulation and geometry displacement |
 
-## Creating a UI Module
+The detailed source, pipeline, connection, output, engine, and remix map is in
+`knowledge/EXAMPLE-MAP.md`. Each project README contains its own exact component
+map.
 
-Use the scaffold helper from the repository root:
+## Create a responsive UI Module
+
+From the repository root:
 
 ```powershell
 ./tools/module-ui.ps1 new projects/my_project/modules/my_ui -Name "My UI"
 ./tools/module-ui.ps1 validate projects/my_project/modules/my_ui
 ```
 
-The template uses the shared scientific UI foundation and opts into a full-frame Canvas panel with `follow_panel` resolution.
+The helper accepts only project-local targets. It creates the Module
+transactionally and vendors a neutral, licensed UI dependency set into that
+project. Replace the placeholder visual language to suit the work.
 
 ## Local data
 
-Captures, shader caches, recovery files, provider configuration, and other machine-local artifacts are ignored. Keep provider keys in the ignored `vision.json` file or supported environment variables; never commit them.
+Captures, shader caches, recovery files, and provider configuration are ignored
+and must not be committed. Keep provider keys in the ignored `vision.json` file
+or supported environment variables.
 
 ## License
 
-Original repository content is available under the [MIT License](LICENSE). Scientifica font data remains covered by its bundled SIL Open Font License notices inside the projects that use it, for example [`projects/interaction_lab/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt`](projects/interaction_lab/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt).
+Original repository content is available under the [MIT License](LICENSE).
+Scientifica-derived font tables remain covered by the SIL Open Font License
+notice beside every bundled copy.

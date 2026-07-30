@@ -84,8 +84,34 @@ Direction, Print Contrast, Ink Saturation, and Micro Detail.
 - All 13 bundled authored Modules pass Sentinel's real offline compile check,
   and the saved project uses only project-local relative Module paths.
 
-The final still is `proof/16_final_master.png`. The signed-off motion master is
-`proof/scientific_organism_motion_final.mp4`. The committed proof set also
-includes the raw Biotic Source field-coordinate check, the final Seed Lab
-toolbar, and the final checkpoint image/profile. A development checkout may contain
-additional intermediate captures under `proof/`.
+Regenerate still and motion proof from `Scientific Organism Output` in the
+running build. Verify the Biotic Source coordinate field, Seed Lab controls,
+final profile, and all intermediate previews; generated captures are not
+distributed with the public project.
+
+## Component map
+
+There is no external media source. The authored biotic field is the first
+semantic image and Features is the only live analysis node.
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Scientific_Seed_Lab` | Module | authored Canvas controls | seed parameters and operator state |
+| `Scientific_Biotic_Source` | Module | Seed Lab controls | organism field |
+| `Scientific_Analysis_Proxy` | Module | biotic field | bounded analysis texture |
+| `Scientific_Features` | Features | analysis proxy | live feature records |
+| `Scientific_Feature_Temporalizer` | Module | feature records | persistent findings |
+| `Scientific_Topology_Weaver` | Module | temporal findings | topology records |
+| `Scientific_Synaptic_Field` | Module | findings and topology | synaptic field layer |
+| `Scientific_Organism_Renderer` | Module | source, field, findings, and topology | primary organism render |
+| `Scientific_Filament_Memory` | Module | organism render | temporal filament memory |
+| `Scientific_Relief_Chamber` | Module | filament memory | relief interpretation |
+| `Scientific_Spectral_Archive` | Module | relief | accumulated spectral archive |
+| `Scientific_Signal_Glyphs` | Module | archive, findings, and topology | annotated signal layer |
+| `Scientific_Final_Grade` | Module | signal layer | final graded texture |
+| `Scientific_Performance_Deck` | Module | final texture plus Canvas gestures | performance control surface |
+| `Scientific_Organism_Output` | Group Output | final grade | reviewed Scene Group texture |
+
+Features requires no model engine pack. Study how a large graph keeps semantic
+responsibilities and intermediate previews legible; do not inherit its
+instrument aesthetic by default.

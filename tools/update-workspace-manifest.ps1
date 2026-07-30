@@ -22,6 +22,34 @@ if (-not $config.ContainsKey('WorkspaceManifest')) {
     throw 'Release config has no WorkspaceManifest policy.'
 }
 
+function Assert-SafeRelativePath([string]$Path, [string]$Context) {
+    if ([string]::IsNullOrWhiteSpace($Path)) {
+        throw "$Context path is empty."
+    }
+    if ($Path.Contains('\')) {
+        throw "$Context path must use forward slashes: $Path"
+    }
+    if ([IO.Path]::IsPathRooted($Path) -or $Path.StartsWith('/') -or
+        $Path.EndsWith('/') -or $Path.Contains('//') -or $Path.Contains(':')) {
+        throw "$Context path is not a canonical relative file path: $Path"
+    }
+    $segments = @($Path -split '/')
+    if (($segments | Where-Object { $_ -in @('', '.', '..') } | Measure-Object).Count -gt 0) {
+        throw "$Context path contains an unsafe segment: $Path"
+    }
+    if ($segments[0].ToLowerInvariant() -in @('.git', '.release')) {
+        throw "$Context path targets protected repository metadata: $Path"
+    }
+    return $Path
+}
+
+function Assert-Sha256([string]$Hash, [string]$Context) {
+    if ($Hash -notmatch '^[0-9a-f]{64}$') {
+        throw "$Context has an invalid SHA-256 value."
+    }
+    return $Hash
+}
+
 if (-not $SourceCommit) {
     $SourceCommit = (git -C $rootFull rev-parse HEAD)
     if ($LASTEXITCODE -ne 0) { throw 'git rev-parse HEAD failed.' }
@@ -70,8 +98,18 @@ $managedPaths = @(
         Sort-Object -Unique
 )
 
+$managedDuplicates = @(
+    $managedPaths |
+        Group-Object { $_.ToLowerInvariant() } |
+        Where-Object { $_.Count -gt 1 }
+)
+if ($managedDuplicates.Count -gt 0) {
+    throw "Managed paths collide by case: $(@($managedDuplicates.Name) -join ', ')"
+}
+
 $files = [Collections.Generic.List[object]]::new()
 foreach ($relative in $managedPaths) {
+    [void](Assert-SafeRelativePath $relative 'managed')
     $full = Join-Path $rootFull $relative.Replace('/', '\')
     if (-not (Test-Path -LiteralPath $full -PathType Leaf)) {
         throw "Managed file is absent from the working tree: $relative"
@@ -90,11 +128,26 @@ if (Test-Path -LiteralPath $manifestPath -PathType Leaf) {
     $priorOrphans = @($prior.orphan_candidates)
 }
 
+$priorEntries = @($priorOrphans) + @($priorFiles)
+$priorDuplicatePaths = @(
+    $priorEntries |
+        Group-Object { ([string]$_.path).Replace('\', '/').ToLowerInvariant() } |
+        Where-Object { $_.Count -gt 1 }
+)
+if ($priorDuplicatePaths.Count -gt 0) {
+    throw "Prior workspace manifest has duplicate paths: $(@($priorDuplicatePaths.Name) -join ', ')"
+}
+foreach ($entry in $priorEntries) {
+    $priorPath = [string]$entry.path
+    [void](Assert-SafeRelativePath $priorPath 'prior manifest')
+    [void](Assert-Sha256 ([string]$entry.sha256) "prior manifest entry '$priorPath'")
+}
+
 $managedLookup = @{}
 foreach ($entry in $files) { $managedLookup[$entry.path.ToLowerInvariant()] = $true }
 $orphanByPath = @{}
-foreach ($entry in @($priorOrphans) + @($priorFiles)) {
-    $path = ([string]$entry.path).Replace('\', '/')
+foreach ($entry in $priorEntries) {
+    $path = [string]$entry.path
     if (-not $path) { continue }
     $key = $path.ToLowerInvariant()
     if ($managedLookup.ContainsKey($key)) { continue }

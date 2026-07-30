@@ -5,13 +5,9 @@ mode: generator
 # forced-extent layout sweep proves against.
 resolution: [1280, 720]
 
-# FULL-BLEED PANEL, per phase doc Amendment 3, which supersedes 3A's Amendment 1.
-#
-# This file previously carried a comment insisting on NO panel block, on the
-# grounds that Amendment 1 required a canonical fixed extent everywhere. That
-# amendment mistook the symptom for the cause: the old lab stations broke at odd
-# extents because their layouts were hard-coded to one design size, not because
-# they followed the dock. A fixed extent hid the bug.
+# FULL-BLEED PANEL. Earlier fixed-extent stations broke at odd dock sizes because
+# their layouts were hard-coded to one design size, not because they followed
+# the dock. This layout is deliberately extent-aware.
 #
 # Style Authority is a live theme source and control reference -- it IS an
 # interface, with no program image to letterbox -- so ui-authoring.md:136 applies

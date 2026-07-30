@@ -1,4 +1,4 @@
-// Crop Select — node A of the Phase 47 node-to-node float output test.
+// Crop Select — node A of the node-to-node float output test.
 //
 // Read the float UV map (slot 0, _Tex0: R = x, G = y in [0,1]) and remap the output
 // UV so the [crop_center +/- crop_size/2] sub-rectangle of the input fills the whole

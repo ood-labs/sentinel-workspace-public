@@ -4,9 +4,8 @@
 // Instrument drawing primitives, v3.
 //
 // EVERY function here takes PIXEL coordinates. Nothing in this header accepts a
-// normalized rect, deliberately. Phase 3A measured the seven Interaction Lab
-// stations rendering at extents from 100x132 to 1920x1080 because `follow_panel`
-// hands each one whatever dock it happens to occupy; normalized drawing turns
+// normalized rect, deliberately. `follow_panel` can hand a Module any dock
+// extent; normalized drawing turns
 // circles into ellipses and drifts hairlines off the pixel grid at every one of
 // those extents. Pixel space keeps a circle circular and a rule exactly one
 // pixel regardless of the panel.
@@ -34,8 +33,7 @@ float sui3Hair(float d) { return sui3Aa(d, 1.0); }
 // Callers pass P = tid + 0.5, so pixel CENTRES sit on half-integers. A hairline
 // whose geometry lands on an integer boundary is therefore equidistant from two
 // centres: both get d = 0.5, both light at 50%, and the "1px" rule renders as a
-// 2px smear. Phase 3B measured exactly that -- the header rule came back as two
-// adjacent rows at 0.118 each instead of one row at 0.220.
+// 2px smear.
 //
 // Snapping the GEOMETRY to floor(v)+0.5 puts the line on a centre, so one pixel
 // gets d = 0 and its neighbours get d = 1. Snap the coordinate, never the

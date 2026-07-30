@@ -85,3 +85,25 @@ generation timing.
 Collage Diffusion requires a compatible StreamDiff engine pack. Collage Cutout
 and Depth Estimation require their corresponding auxiliary engines. Use
 Sentinel's engine setup flow when opening the project on a fresh install.
+
+## Component map
+
+There is no bundled media file; the two Canvas editors author the conditioning
+state directly.
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Paint_Canvas` | Module | pointer events plus diffusion/cutout/depth previews | durable painted field |
+| `Pattern_Canvas` | Module | pointer events plus diffusion/cutout/depth previews | durable pattern stamps |
+| `Radial_Gradient` | Module | authored parameters | base control image |
+| `Pattern_Depth_SDF` | Module | pattern field and cutout | pattern-derived depth control |
+| `Pattern_Depth_SDF_1` | Module | paint field | paint-derived depth control |
+| `Pattern_Depth_SDF_2` | Module | authored parameters | additional depth-field variant |
+| `Generation_Controller` | Module | Canvas controls | generation control outputs |
+| `Collage_Diffusion` | StreamDiff | radial/control image | photographic collage |
+| `depthestimation_0` | Depth Estimation | collage image | depth preview used by the editors |
+| `Collage_Cutout` | Background Removal | collage image | reviewed isolated collage output |
+
+StreamDiff, Depth Estimation, and Background Removal need compatible engine
+packs. Study the separation between durable spatial authoring and generation;
+invent new field semantics and prompts for new work.

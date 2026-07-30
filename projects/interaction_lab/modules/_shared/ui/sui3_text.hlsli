@@ -4,15 +4,10 @@
 // Typographic layer, v3. Derived from the proven `_shared/au_hud/au_text.hlsli`
 // rather than from `sui_typography.hlsli`, for three measured reasons:
 //
-//  1. SINGLE TAP, NOT BILINEAR. `sui_typography.hlsli:63` does a 4-tap bilinear
-//     filter, multiplying font-table lookups by four at every call site.
-//     Phase 3A measured Motion Console -- which draws 16 sliders plus labels
-//     plus four waveform lanes through that path -- at 14.66 ms wall time, 98%
-//     of the entire graph's pipeline cost, and the lab's compiles took minutes.
-//     One tap is sharper on a bitmap face anyway.
+//  1. SINGLE TAP, NOT BILINEAR. A 4-tap filter multiplies font-table lookups at
+//     every call site; one tap is both cheaper and sharper on a bitmap face.
 //  2. NO SYNTHETIC EDGE WEIGHT. The v1 "grown" bold smears the glyph by
-//     max()ing a shifted copy. Phase 3A's Font_Sampler capture shows the
-//     FULL EDGE row as visibly mush. A bitmap face should be drawn as authored.
+//     max()ing a shifted copy. A bitmap face should be drawn as authored.
 //  3. NEVER `[unroll]` A GLYPH LOOP. Unrolling replicates the whole font table
 //     per call site and the shader stops compiling in reasonable time.
 //

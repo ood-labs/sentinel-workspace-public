@@ -1,9 +1,9 @@
 name: "Crop Select (Float Output)"
 version: "1.0"
-description: "Phase 47 node-to-node float output test, node A (the intermediary). Reads a UV map on slot 0 (feed a 16/32-bit float Spout sender from TouchDesigner: R = x in [0,1], G = y in [0,1]), crops the sub-rectangle selected by crop_center_x/y and crop_size, and publishes the cropped float coordinates as the pipeline output at RGBA32F. output_format makes this node hand a full-precision float texture to the next graph node; the downstream crop_present module reads it across the link and samples a fine pattern through it. Precision survives the crop and the node boundary only because both stay float."
+description: "Node-to-node float output test, node A (the intermediary). Reads a UV map on slot 0 (feed it a 16/32-bit float Spout sender from TouchDesigner: R = x in [0,1], G = y in [0,1]), crops the sub-rectangle selected by crop_center_x/y and crop_size, and publishes the cropped float coordinates as the pipeline output at RGBA32F. output_format makes this node hand a full-precision float texture to the next graph node; the downstream crop_present module reads it across the link and samples a fine pattern through it. Precision survives the crop and the node boundary only because both stay float."
 mode: filter
 
-# Phase 47: publish a 32-bit float texture to the next graph node. This is the
+# Publish a 32-bit float texture to the next graph node. This is the
 # single source of truth — main.cpp allocates this node's output at RGBA32F and the
 # final pass is pinned to match, so the output copy always agrees.
 output_format: RGBA32F

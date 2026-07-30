@@ -22,7 +22,7 @@ authoring.
 
 ## Precise construction blueprints
 
-When a scene is mostly objects with real dimensions, anchors, clearances, and repeated instances, use the `procedural-geometry-authoring` skill and the Phase 76 blueprint compiler before writing custom generator shaders.
+When a scene is mostly objects with real dimensions, anchors, clearances, and repeated instances, use the `procedural-geometry-authoring` skill and the blueprint compiler before writing custom generator shaders.
 
 Blueprint producers compile to generated Module projects that publish fixed 48-byte `PNodes`. During visible authoring, prove the producer in its focused/open window before creating the renderer; then place the renderer beside it, wire the records, focus/open it, and prove the graph with:
 

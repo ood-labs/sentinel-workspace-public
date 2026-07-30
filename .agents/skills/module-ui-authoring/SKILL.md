@@ -1,6 +1,6 @@
 ---
 name: module-ui-authoring
-description: Build responsive interactive Sentinel Module interfaces with the shared scientific HLSL UI foundation, viewport controls and events, durable state, selection and gizmos, and full-bleed Canvas or follow-panel presentation. Use when creating shader-rendered control panels, HUDs, editors, spline tools, transform gizmos, dashboards, or any Module intended to behave like a UI rather than only an effect.
+description: Build responsive interactive Sentinel Module interfaces with viewport controls and events, durable state, selection and gizmos, and full-bleed Canvas or follow-panel presentation. Use when creating shader-rendered control panels, editors, spline tools, transform gizmos, dashboards, or any Module intended to behave like a UI rather than only an effect.
 ---
 
 # Module UI Authoring
@@ -13,9 +13,9 @@ Read `knowledge/ui-authoring.md` before implementing. Use `knowledge/module-pipe
 
 1. Discover the live build with `sentinel_app ping`, `sentinel_pipeline list_types`, and `sentinel_app capabilities`. Canvas panels require Sentinel 0.5.32 or newer.
 2. Choose the interaction level: `viewport.controls` for fixed controls, `events` for custom pointer/keyboard behavior, `param_gestures` for parameter-backed movement, or `selection` plus state buffers for object editors and gizmos.
-3. Scaffold with `./tools/module-ui.ps1 new projects/<project>/modules/<name> -Name "<Display Name>"`, or copy the nearest Interaction Lab example into the owning project.
+3. Scaffold with `./tools/module-ui.ps1 new projects/<project>/modules/<name> -Name "<Display Name>"`. The helper vendors its neutral dependencies into the owning project and refuses cross-project or root-module targets.
 4. Keep control rectangles and labels in `manifest.yaml`. Run `module-ui.ps1 generate` after every control or label change.
-5. Render through `../_shared/ui/sui3_controls.hlsli`. Convert generated normalized hit rectangles to pixels with the live `_Resolution`; keep strokes, typography, geometry, and layout measurements in pixel space.
+5. Replace the scaffold's placeholder visual language with one appropriate to the current problem. If its generic SUI3 primitives remain useful, render through `../_shared/ui/sui3_controls.hlsli`. Convert generated normalized hit rectangles to pixels with the live `_Resolution`; keep strokes, typography, geometry, and layout measurements in pixel space.
 6. For a standalone full-frame panel, declare `panel.mode: canvas`, name the UI output, and choose `panel.resolution: follow_panel`. Keep the selected output pass inheriting root resolution.
 7. Write shader files before the manifest, run `module-ui.ps1 validate`, then run the real `sentinel_pipeline compile_check`.
 8. Create or force-reload the live Module, poll `compile_status`, and inspect `info` health. For Canvas, verify `info.panel.content_size` and `render_size` converge.
@@ -29,8 +29,7 @@ Read `knowledge/ui-authoring.md` before implementing. Use `knowledge/module-pipe
 - Keep hit targets at least 32 pixels tall at the declared default resolution.
 - Read momentary feedback from only that control's pressed flag. Do not let hover state recolor shared borders or neighboring controls.
 - Drive toggle, slider, and selected-tool visuals from their actual values. Prefer branchless geometry for binary visual states.
-- Use the Scientifica regular face. Add hierarchy through scale, spacing, color, and synthetic edge weight; do not swap to the bold face.
-- Use the shared defaults unless the user has tuned replacements: tracking `-2.5` for title, section, and body.
+- Choose typography, palette, density, and motion for the current project rather than inheriting an example's aesthetic. Preserve every bundled font license.
 - Acquire drag handles on pointer-down and retain ownership through commit/cancel. Do not re-pick during a drag.
 - Use actual `_Resolution` for projection and hit-testing. A hard-coded design resolution must never distort camera-dependent gizmos.
 - Render and hit-test 3D rotation handles from the same projected axis-plane basis.
@@ -57,4 +56,4 @@ Canvas removes host chrome below the dock tab. `follow_panel` changes the real M
 
 Then run `compile_check`, poll `compile_status`, inspect `info`, and read `sentinel_viewport info` for the live instance.
 
-Use `projects/interaction_lab/modules/Style_Authority`, `Spline_Desk`, `Gizmo_Desk`, and `Motion_Console` as the current working references. Use `projects/interaction_lab/interaction_lab.sentinel` for the complete bundled review station. Copy only what a new owning project needs; never link it to another project's Module directory at runtime.
+Use the Interaction Lab component map and saved graph to study responsive panels, spline editing, selection, and transform gizmos. Reimplement the needed interaction for the current project; do not copy its project-specific Modules unless the user explicitly requests a fork or remix. Never link one project to another project's Module directory at runtime.

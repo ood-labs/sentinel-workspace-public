@@ -71,8 +71,7 @@ SaLayout saLayout(float2 R, float titleScale, float sectionScale, float bodyScal
     L.R  = R;
     // Scale from the SMALLER axis ratio, not from height alone. Height alone
     // picks 2x on a canvas only 1.25x bigger and on a wide-and-short dock puts
-    // giant glyphs in bands too thin to hold them. Same fix as
-    // modules/motion_console/render.hlsl; see phase doc Amendment 3.
+    // giant glyphs in bands too thin to hold them.
     float kS = min(R.x / 1280.0, R.y / 720.0);
     float extentStep = kS >= 2.6 ? 3.0 : kS >= 1.7 ? 2.0 : 1.0;
     // bodyScale was published, printed in the readout table, and then never

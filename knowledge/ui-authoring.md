@@ -11,31 +11,27 @@ Use the `module-ui-authoring` skill for the end-to-end workflow. The reference i
 - Sentinel owns routing: focus, pointer capture, undo transactions, parameter commits, host selection, project persistence, and the dock tab.
 - Keep custom UI inside the Module system. Do not add native Sentinel widgets for an authored look unless the product itself needs a new general capability.
 
-## Scientific UI Foundation
+## Visual Foundation
 
-Include the shared foundation from a sibling Module:
+Create a neutral project-local scaffold with:
 
-```hlsl
-#include "../_shared/ui/sui3_controls.hlsli"
-#include "_ui.generated.hlsli"
+```powershell
+./tools/module-ui.ps1 new projects/my_project/modules/my_panel -Name "My Panel"
 ```
 
-The current foundation provides a monochrome scientific-instrument theme,
-pixel-space geometry and controls, crisp Scientifica regular-face text, and
-generated normalized control rectangles. Convert each generated rectangle to
-pixels with the live `_Resolution` before drawing; the manifest keeps the
-normalized copy for host hit-testing.
+The scaffold vendors its small dependency set into the owning project. Its
+plain field, type, frame, and rail exist only to prove the responsive contract.
+Replace their palette, typography, density, shapes, and motion with a language
+appropriate to the current problem. Do not inherit Interaction Lab's
+scientific-instrument look merely because it is available.
 
-Approved visual defaults are centralized in the shared headers:
+Whatever visual language you choose:
 
-- a near-black field with white/gray ink and one warm accent;
-- one-pixel snapped rules and hard corners;
-- integer glyph scales selected from the live panel extent;
-- layout rectangles derived from the actual panel size, never a fixed design extent.
-
-Use the regular glyph face and create hierarchy through size, spacing, and
-contrast. Do not switch to the bold Scientifica face, tint idle controls, or
-stretch normalized geometry directly across an arbitrary panel aspect.
+- derive layout rectangles from the actual panel size;
+- express strokes, glyph sizes, and grab affordances in pixels;
+- make rendered control geometry match the manifest hit rectangles;
+- derive control visuals from live values, not decorative hover state;
+- keep required font licenses beside every vendored font table.
 
 ## Scaffold And Generate
 
@@ -106,10 +102,12 @@ Acquire a drag handle on pointer-down and retain ownership until commit or cance
 
 ## Responsive Geometry
 
-Treat `_Resolution` as the source of truth:
+Treat the actual output texture extent as the source of truth:
 
 ```hlsl
-SuiContext c = suiContext(tid.xy, _Resolution.xy);
+uint width, height;
+OutputUAV.GetDimensions(width, height);
+float2 resolution = float2(width, height);
 ```
 
 - Store UI rectangles in normalized coordinates.
@@ -120,8 +118,8 @@ SuiContext c = suiContext(tid.xy, _Resolution.xy);
 
 ## Scrolling Data Traces
 
-Plotting a scalar stream over time uses the project-bundled
-`modules/_shared/ui/sui3_trace.hlsli` helper. It gives a strip chart the behaviour
+Interaction Lab's scalar plots use its project-bundled
+`projects/interaction_lab/modules/_shared/ui/sui3_trace.hlsli` helper. It gives a strip chart the behaviour
 a TouchDesigner CHOP viewer has: the plot advances at the rate of the data rather
 than the frame rate, and it rescales itself continuously to the signal's recent
 dynamics. Every function is pure and takes its extents as arguments, so a state
@@ -156,7 +154,7 @@ Do not reach for this when a single current value is the whole story. A number, 
 
 ## Full-Bleed Canvas Panels
 
-Sentinel 0.5.32 and newer support the Phase 89.2 authored panel contract:
+Sentinel 0.5.32 and newer support this authored panel contract:
 
 ```yaml
 panel:
@@ -206,7 +204,7 @@ Prove controls with real or injected pointer input, not StateTree writes alone. 
 
 ## Reference Examples
 
-- `projects/interaction_lab/modules/Style_Authority/`: current shared chrome, controls, typography, and responsive panel reference.
+- `projects/interaction_lab/modules/Style_Authority/`: responsive style and layout station.
 - `projects/interaction_lab/modules/Spline_Desk/`: authored sub-object editing with persistent state and typed outputs.
 - `projects/interaction_lab/modules/Gizmo_Desk/`: selection, multi-object transforms, projected handles, and camera-aware rotation rings.
 - `projects/interaction_lab/modules/Motion_Console/`: responsive performance controls and durable action state.
@@ -214,4 +212,7 @@ Prove controls with real or injected pointer input, not StateTree writes alone. 
 - `projects/cloth_lab/modules/cloth_bands/`: the reference consumer, with three auto-ranging strip charts and an on-plot threshold handle.
 - `projects/interaction_lab/interaction_lab.sentinel`: bundled review project.
 
-Everything above is authored Module content. It does not require a new Sentinel native widget or IPC feature.
+Study these for interaction architecture and proof strategy. Do not copy their
+project-specific visual language or Modules into unrelated work unless the user
+explicitly requests a fork or remix. Everything above is authored Module
+content; it does not require a new Sentinel native widget or IPC feature.

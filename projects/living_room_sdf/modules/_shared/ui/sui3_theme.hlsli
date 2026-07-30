@@ -4,10 +4,8 @@
 // Instrument palette, v3.
 //
 // This struct has NO hover, controlDown, controlHover, panelRaised, or control
-// member, and that absence is the point. Phase 3A found the v1 kit spending its
-// accent on rollover state (`sui_controls.hlsli:45` and `:55`) and defining
-// SUI_CYAN, SUI_BLUE, SUI_AMBER and SUI_RED as four identical greys
-// (`scientific_ui.hlsli:17-20`) -- semantic names carrying no semantics.
+// member, and that absence is the point. Accent communicates selection or a
+// trusted live value, never rollover state or decorative chrome.
 //
 // Omitting the members makes the old look unreachable by construction rather
 // than by discipline: a shader cannot tint a control by hover state here

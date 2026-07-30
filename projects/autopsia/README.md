@@ -2,8 +2,6 @@
 
 **A machine that hallucinates an organism, then dissects what it sees with its own eyes.**
 
-![Program](autopsia_program.png)
-
 A modular chain of nine authored nodes, built entirely from custom Modules. Load
 `autopsia.sentinel` — all modules are bundled under `modules/`.
 
@@ -115,8 +113,6 @@ Two project-scoped AU Deck presets provide recoverable starting points:
 more dimensional interpretation. Recalling either preset changes only
 the six macro-pad axes.
 
-![Deck](autopsia_deck.png)
-
 ## Composite looks
 
 | Look | Description |
@@ -140,11 +136,7 @@ SECTION are fixed **orthographic technical projections** of the same world, and 
 plots the live internal-camera station and its view cone so you can read where the one
 real camera is standing.
 
-![Relief](autopsia_relief.png)
-
 ## Instrumentation
-
-![Census](autopsia_census.png)
 
 Every mark in the rack is a reading of the live population — nothing is fabricated
 telemetry. Population history is a real persistent 256-sample ring; the ledger names
@@ -174,7 +166,27 @@ fed from a 480×270 analysis proxy, never the full-resolution plate.
 
 ## Status
 
-Strong but not finished. Known next step: the relief's terrain shading is the softest
-surface in an otherwise crisp instrument — it wants more linework and less fill.
+This is the approved curated state. Captures and internal build notes are not
+part of the public project; regenerate live proof from the saved graph when
+validating a new Sentinel build.
 
-See `PLAN.md` for the full concept, build order and proof criteria.
+## Component map
+
+There is no external media source. `au_specimen` is the first semantic image
+source, and the reviewed program output is the `au_grade` preview.
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `au_stylus` | Module | viewport events | durable `Stimuli` records |
+| `au_specimen` | Module | `Stimuli` from `au_stylus` | living Plate and Field textures |
+| `au_proxy` | Module | Plate and Field | 480×270 analysis image and histogram |
+| `au_observe` | Features | analysis image | corner and blob findings |
+| `au_stabilizer` | Module | proxy plus Features records | persistent `Agents` |
+| `au_census` | Module | `Agents` | population and distribution instrument |
+| `au_relief` | Module | specimen, agents, and proxy | native-camera 3D relief |
+| `au_grade` | Module | relief, census, and specimen | final reviewed program texture |
+| `au_deck` | Module | authored Canvas gestures | macro control outputs and look selection |
+
+Features is the only live analysis dependency and requires no engine pack.
+Study the stabilization boundary and causal loop; invent new source, finding,
+rendering, and interface semantics for a new project.

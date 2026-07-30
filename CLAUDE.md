@@ -34,13 +34,35 @@ Never create or use Sentinel's built-in Pattern source, color bars, checkerboard
 
 When a creative build needs a source, use a meaningful user-provided or live source (camera, video, image, Spout, or NDI), or author a visually intentional generator Module as the first semantic node. If no meaningful source is available, author that generator before creating or testing downstream analysis. A technically convenient test signal is not an acceptable substitute for the requested creative composition.
 
-## Default Creative Direction And Planning
+## Problem-Led Creative Direction And Planning
 
-When the user does not specify an aesthetic, default to a technical monochrome scientific-instrument look: black field, white and gray geometry, crisp thin strokes, legible measurement or tracking overlays, restrained typography, and one sparingly used warm accent. Prefer hard digital structure, contour lines, cells, quantization, registration marks, and precise HUD composition. Do not default to cyan/magenta/purple gradients, blue glow, soft neon bloom, glassy panels, or vague atmospheric effects unless the user asks for them.
+Do not impose a house aesthetic when the user has not specified one. Derive the
+visual language from the subject, source material, venue, interaction, and
+desired emotional effect. Make a concrete choice of composition, palette,
+typography, material, and motion that fits that problem; avoid generic neon,
+glow, glass, HUD chrome, or any other fashionable default unless it genuinely
+serves the work.
 
 Before an ambitious creative graph, establish a short direction plan covering source semantics, analysis tasks, data-to-visual mappings, motion language, palette, interaction contract, and proof criteria. An explicitly exploratory run may stay loose, but it must still choose a meaningful source and state what each analysis or interaction node is supposed to contribute before building downstream.
 
 Every number or label must derive from real live state and remain attached to what it describes. Every authored interaction must cause an immediate, legible, creatively useful change that is meaningfully better than an ordinary Properties control. Do not add stage drags, momentary buttons, fake telemetry, or decorative controls merely to make a composition appear interactive; remove controls that prove weak, redundant, or unclear.
+
+## Examples Are References, Not A Stock Module Library
+
+Start with `knowledge/EXAMPLE-MAP.md` when an existing project may illuminate a
+technique. Inspect its graph, README, data contracts, and proof strategy, then
+invent the implementation that best fits the current user's problem. Do not copy
+project-bundled generators, renderers, layouts, palettes, controls, or
+compositors into a new project unless the user explicitly asks to fork, remix,
+or extend that exact example.
+
+Reusing a module already authored in the user's current project is normal when
+it remains the right abstraction. Generic infrastructure with no creative
+identity of its own—licensed font tables, low-level math helpers, or the neutral
+`tools/templates/module-ui/` scaffold—may also be vendored into the owning
+project. Preserve licenses, copy only the recursive dependency closure, and
+never link one project to another project's Module directory. See
+`knowledge/example-authoring.md`.
 
 ## Sentinel Launch Safety
 
@@ -203,10 +225,10 @@ Audio In is pipeline type `audio` on builds whose live `list_types` response inc
 
 Use `source_mode=Device` for live WASAPI capture or `source_mode=File` for deterministic paced PCM WAV playback. Device flow `Loopback` captures a Windows playback endpoint, while `Microphone` captures a recording endpoint. For a virtual audio cable, route the producing application's playback into the cable and select the corresponding endpoint under the appropriate flow.
 
-For beat, onset, and drum-driven work, use the project-local Audio Bands implementation
-in `projects/cloth_lab/modules/cloth_bands` as the maintained reference: wire Audio
-In's `Spectrum` port into it, then drive parameters from its control outputs. Bundle
-an owning-project copy instead of linking a new show to another project's files. Use
+For beat, onset, and drum-driven work, inspect the Audio Bands architecture in
+`projects/cloth_lab/modules/cloth_bands`: it wires Audio In's `Spectrum` port into a
+Module and publishes control outputs. Reimplement the needed analysis in the owning
+project unless the user explicitly requests a Cloth Lab remix. Use
 the monotonic `kick_count` / `snare_count` /
 `hat_count` for per-hit edges and `kick` / `snare` / `hat` for 0-1 envelopes; its
 per-lane dB thresholds gate internally, so the counters need no extra signal gate.
@@ -220,7 +242,9 @@ Audio In publishes three typed data ports:
 - `Spectrum`: a 64-hop ring of linear FFT magnitudes for exact frequency-bin analysis.
 - `Mel Bands`: a 64-hop ring of 138 perceptual bands for musical analysis and onset detection.
 
-Scalar `level` and `peak` control outputs can drive parameters directly. Stock audio Modules provide kick, snare, hi-hat, band-energy, count, spectrum-bar, oscilloscope, and starter-reactive behavior.
+Scalar `level` and `peak` control outputs can drive parameters directly. Custom
+Modules can derive kick, snare, hi-hat, band-energy, counts, spectrum bars, and
+oscilloscope views from the typed Audio In ports.
 
 The WASAPI capture, format conversion, FFT, Mel aggregation, timestamps, and ring maintenance run on CPU threads. D3D11 structured buffers carry the completed rings to GPU HLSL Modules for detection and rendering.
 
@@ -283,7 +307,7 @@ Scene Groups are for control and organization. They do not replace video/data wi
 
 The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`) provides identity-aware per-node presets in library, project, or bundled scope, with grouped compound-safe parameter selection and strict or loose Recall Onto compatible nodes. Installs at 0.5.29 or newer carry it; if the tool is absent from the live tools list, presets remain available through the Properties preset strip in the UI.
 
-`save` requires an explicit `params` array and/or `groups` selection; there is no save-everything default. Identity derives from the node type and module project (for example `module:click_ripples`), so presets follow the module across instances and projects. `recall` returns `applied[]` and `skipped[]` and fails loudly when nothing applies. See `knowledge/FEATURE-MAP.md` for verified call shapes.
+`save` requires an explicit `params` array and/or `groups` selection; there is no save-everything default. Identity derives from the node type and Module project, so presets follow that Module across instances and saved projects. `recall` returns `applied[]` and `skipped[]` and fails loudly when nothing applies. See `knowledge/FEATURE-MAP.md` for verified call shapes.
 
 ## Outputs
 
@@ -296,6 +320,8 @@ OSC receive configuration is available through StateTree. Read or set `/sentinel
 Start with:
 
 - `knowledge/FEATURE-MAP.md`
+- `knowledge/EXAMPLE-MAP.md`
+- `knowledge/example-authoring.md`
 - `knowledge/first-run-engines.md`
 - `knowledge/graph-wiring.md`
 - `knowledge/expressions-and-drivers.md`

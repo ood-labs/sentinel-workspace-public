@@ -3,12 +3,10 @@
 // PALETTE CONTRACT, and it is narrow on purpose. The only chromatic elements in
 // this image are:
 //   * the X / Y / Z handles in red / green / blue, because those colours carry
-//     directional meaning and are the one agreed exception to the monochrome
-//     rule (operator decision, recorded in the phase doc);
+//     directional meaning;
 //   * amber, for the uniform-scale centre and for established live values.
 // Everything else -- objects, ground grid, chrome, type, readouts -- is
-// greyscale. 3E's criterion 4 asserts exactly this, so nothing else may
-// introduce a hue.
+// greyscale, so nothing else may introduce a hue.
 #include "types.hlsli"
 #include "layout.hlsli"
 #include "../_shared/ui/sui3_theme.hlsli"

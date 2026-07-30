@@ -1,6 +1,6 @@
 name: "Crop Present (8-bit)"
 version: "1.0"
-description: "Phase 47 node-to-node float output test, node B (the downstream 8-bit consumer). Reads node A (crop_select) on slot 0 as a 16/32-bit float texture across the graph link, treats R/G as cropped UV coordinates, and samples a very high-frequency procedural pattern through them, outputting plain 8-bit. Because the upstream node published float (output_format: RGBA32F), the coordinates arrive continuous and the pattern is smooth; if the node boundary had been 8-bit the cropped coordinates would collapse onto 256 levels and the pattern would stair-step into visible bands. This is the default 8-bit output node — it declares no output_format."
+description: "Node-to-node float output test, node B (the downstream 8-bit consumer). Reads node A (crop_select) on slot 0 as a 16/32-bit float texture across the graph link, treats R/G as cropped UV coordinates, and samples a very high-frequency procedural pattern through them, outputting plain 8-bit. Because the upstream node published float (output_format: RGBA32F), the coordinates arrive continuous and the pattern is smooth; if the node boundary had been 8-bit the cropped coordinates would collapse onto 256 levels and the pattern would stair-step into visible bands. This is the default 8-bit output node — it declares no output_format."
 mode: filter
 
 inputs:

@@ -1,6 +1,6 @@
 # Motion Choreography And Sequencing
 
-Sentinel has a time-structuring system for choreographed animation: a shared motion vocabulary (springs, staggers, seamless loops), a `conductor` pipeline that owns musical and timecode clocks, cue sheets that compile into live expressions, and a `timeline_hud` module that visualizes the arrangement. Use this page when a scene needs staggered entrances, beat-locked hits, scene hand-offs, or precisely timed sequences rather than free-running LFOs.
+Sentinel has a time-structuring system for choreographed animation: a shared motion vocabulary (springs, staggers, seamless loops), a `conductor` pipeline that owns musical and timecode clocks, and cue sheets that compile into live expressions. Use this page when a scene needs staggered entrances, beat-locked hits, scene hand-offs, or precisely timed sequences rather than free-running LFOs.
 
 ## Motion Vocabulary (anim.hlsli + ExprTk)
 
@@ -44,7 +44,9 @@ A cue sheet is YAML: `transport` (`beat` or `timecode`), optional `tempo` (`bpm`
 
 `load_sheet` validates targets, registers every timing and intensity literal as a live parameter under `/sentinel/pipelines/<conductor>/parameters/sheet/...`, and installs the generated expressions. Tweak the sheet parameters live (MCP, UI, OSC), then `bake_sheet` writes the tweaked values back into the YAML (`dry_run: true` previews). Unknown targets and bad references return structured `compile_errors` and install nothing.
 
-Use the `timeline_hud` and `choreo_cascade` modules as the reference consumers when authoring cue sheets for a Conductor node.
+Use the Conductor's `Cue Records` data port when an authored Module needs to
+visualize or otherwise consume the arrangement. Define that consumer in the
+owning project rather than assuming a stock visualization Module exists.
 
 ## Timeline HUD And Ghost Preview
 

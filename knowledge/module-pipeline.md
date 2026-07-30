@@ -225,7 +225,7 @@ Add `selection` to `viewport.interactions` and declare a `selection:` block. `ra
 
 ## Authored Canvas Panels
 
-Installs at 0.5.32 or newer support Phase 89.2 panel presentation:
+Installs at 0.5.32 or newer support authored Canvas panel presentation:
 
 ```yaml
 panel:

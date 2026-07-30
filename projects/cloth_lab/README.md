@@ -118,7 +118,19 @@ The engine is built on three shared headers, bundled here under `modules/_shared
 Engineering notes and the traps behind them: `knowledge/gpu-cloth-and-xpbd.md`.
 Audio wiring: `knowledge/audio-reactivity.md`.
 
-A `proof/` bundle (graph, links, profile, health, expressions, output frame, window
-screenshot) was captured for this packaged state. Per workspace convention
-`projects/*/proof/` is untracked — regenerate on demand with
-`sentinel_capture action=proof_bundle pipeline_id=cloth_engine`.
+Regenerate runtime evidence on demand with
+`sentinel_capture action=proof_bundle pipeline_id=cloth_engine`; captures are
+machine-local and are not part of the public project.
+
+## Component map
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `cloth_audio` | Audio In | Windows default loopback endpoint | PCM, Spectrum, Mel Bands, level, and peak |
+| `cloth_bands` | Module | `cloth_audio` Spectrum data | band histories, kick/snare/hat envelopes, counts, peaks, thresholds, and levels |
+| `cloth_engine` | Module | band-driven expressions plus viewport/camera input | XPBD simulation, cloth records, metrics, and final rendered texture |
+
+The `cloth_engine` preview is the reviewed output. Audio In requires no engine
+pack. Study chronological Spectrum consumption and simulation ownership; build
+new detectors and material behavior for the user's audio rather than importing
+this cloth as a stock effect.

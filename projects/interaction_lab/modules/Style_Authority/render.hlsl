@@ -6,9 +6,8 @@
 // you see is what the rest of the graph receives.
 //
 // Layout rects are PROPORTIONAL to the output; every stroke and glyph is drawn
-// in PIXELS. That hybrid is what survives an extent change. Phase 3A measured
-// the v1 stations, which are normalized throughout, going illegible at their
-// real dock extents.
+// in PIXELS. That hybrid survives extent changes without distorting controls or
+// making hairlines illegible.
 #include "../_shared/ui/sui3_controls.hlsli"
 #include "layout.hlsli"
 

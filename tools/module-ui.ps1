@@ -236,6 +236,72 @@ function Resolve-Module([string]$PathValue) {
     return $path
 }
 
+function Test-IsUnder([string]$ParentPath, [string]$CandidatePath) {
+    $parent = [IO.Path]::GetFullPath($ParentPath).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
+    $candidate = [IO.Path]::GetFullPath($CandidatePath)
+    return $candidate.StartsWith($parent, [StringComparison]::OrdinalIgnoreCase)
+}
+
+function Resolve-ProjectModuleTarget([string]$PathValue) {
+    if (-not $PathValue) { throw 'A project-local module directory is required.' }
+    $path = if ([IO.Path]::IsPathRooted($PathValue)) { $PathValue } else { Join-Path $Root $PathValue }
+    $path = [IO.Path]::GetFullPath($path)
+    $projectsRoot = [IO.Path]::GetFullPath((Join-Path $Root 'projects'))
+    if (-not (Test-IsUnder $projectsRoot $path)) {
+        throw "New Modules must be created under projects/<project>/modules/: $path"
+    }
+
+    $relative = $path.Substring($projectsRoot.TrimEnd('\', '/').Length).TrimStart('\', '/')
+    $segments = @($relative -split '[\\/]')
+    if ($segments.Count -ne 3 -or $segments[1] -cne 'modules' -or $segments[2] -eq '_shared') {
+        throw "New Modules must use the exact shape projects/<project>/modules/<module>: $path"
+    }
+
+    $projectPath = Join-Path $projectsRoot $segments[0]
+    if (-not (Test-Path -LiteralPath $projectPath -PathType Container)) {
+        throw "Project directory does not exist: $projectPath"
+    }
+    return $path
+}
+
+function Get-TemplatePaths {
+    $templateRoot = Join-Path $PSScriptRoot 'templates/module-ui'
+    $moduleTemplate = Join-Path $templateRoot 'module'
+    $sharedTemplate = Join-Path $templateRoot 'shared'
+    foreach ($required in @(
+        (Join-Path $moduleTemplate 'manifest.yaml'),
+        (Join-Path $moduleTemplate 'render.hlsl'),
+        (Join-Path $sharedTemplate 'ui/sui3_core.hlsli'),
+        (Join-Path $sharedTemplate 'ui/sui3_controls.hlsli'),
+        (Join-Path $sharedTemplate 'ui/sui3_text.hlsli'),
+        (Join-Path $sharedTemplate 'ui/sui3_theme.hlsli'),
+        (Join-Path $sharedTemplate 'fonts/scientifica_ascii.hlsli'),
+        (Join-Path $sharedTemplate 'fonts/SCIENTIFICA_LICENSE.txt')
+    )) {
+        if (-not (Test-Path -LiteralPath $required -PathType Leaf)) {
+            throw "Module UI template is incomplete: $required"
+        }
+    }
+    return [pscustomobject]@{
+        Root = $templateRoot
+        Module = $moduleTemplate
+        Shared = $sharedTemplate
+    }
+}
+
+function Get-ProjectModuleManifests {
+    $projectsRoot = Join-Path $Root 'projects'
+    if (-not (Test-Path -LiteralPath $projectsRoot -PathType Container)) { return @() }
+    return @(
+        Get-ChildItem -LiteralPath $projectsRoot -Filter manifest.yaml -File -Recurse |
+            Where-Object {
+                $_.FullName -match '[\\/]projects[\\/][^\\/]+[\\/]modules[\\/][^\\/]+[\\/]manifest\.yaml$' -and
+                $_.Directory.Name -ne '_shared'
+            } |
+            Sort-Object FullName
+    )
+}
+
 function Validate-One([string]$Path, [switch]$CheckStale) {
     $manifest = Read-UiManifest (Join-Path $Path 'manifest.yaml')
     $result = Get-UiErrors $manifest
@@ -265,39 +331,83 @@ switch ($Action) {
         if ($ModulePath) {
             [void](Validate-One (Resolve-Module $ModulePath) -CheckStale)
         } else {
-            $sourceByName = @{}
-            Get-ChildItem -LiteralPath (Join-Path $Root 'modules') -Directory | ForEach-Object {
-                $manifestPath = Join-Path $_.FullName 'manifest.yaml'
-                if (Test-Path -LiteralPath $manifestPath) {
-                    $m = Read-UiManifest $manifestPath
-                    if ($m.Controls.Count -gt 0) { [void](Validate-One $_.FullName -CheckStale); $sourceByName[$m.Name] = $_.FullName }
-                }
-            }
-            Get-ChildItem -LiteralPath (Join-Path $Root 'projects') -Filter manifest.yaml -File -Recurse | Where-Object { $_.FullName -match '[\\/]modules[\\/]' } | ForEach-Object {
-                $bundle = Read-UiManifest $_.FullName
-                if ($sourceByName.ContainsKey($bundle.Name)) {
-                    $source = $sourceByName[$bundle.Name]
-                    $bundleDir = $_.Directory.FullName
-                    foreach ($file in Get-ChildItem -LiteralPath $source -File) {
-                        $other = Join-Path $bundleDir $file.Name
-                        if (-not (Test-Path -LiteralPath $other) -or (Get-FileHash $file.FullName).Hash -ne (Get-FileHash $other).Hash) {
-                            throw "source/bundle drift: $($bundle.Name) file '$($file.Name)'"
-                        }
-                    }
-                }
+            $manifests = @(Get-ProjectModuleManifests)
+            if ($manifests.Count -eq 0) { throw 'No project-local Module manifests were found.' }
+            foreach ($manifestPath in $manifests) {
+                [void](Validate-One $manifestPath.Directory.FullName -CheckStale)
             }
         }
     }
     'new' {
         if (-not $ModulePath -or -not $Name) { throw 'new requires ModulePath and -Name.' }
-        $target = if ([IO.Path]::IsPathRooted($ModulePath)) { $ModulePath } else { Join-Path $Root $ModulePath }
+        $target = Resolve-ProjectModuleTarget $ModulePath
         if (Test-Path -LiteralPath $target) { throw "Target already exists: $target" }
-        New-Item -ItemType Directory -Path $target | Out-Null
-        $template = Join-Path $Root 'modules/_shared/ui/template'
-        Copy-Item -LiteralPath (Join-Path $template 'manifest.yaml') -Destination (Join-Path $target 'manifest.yaml')
-        Copy-Item -LiteralPath (Join-Path $template 'render.hlsl') -Destination (Join-Path $target 'render.hlsl')
-        (Get-Content -Raw -LiteralPath (Join-Path $target 'manifest.yaml')).Replace('{{NAME}}', $Name) | Set-Content -NoNewline -LiteralPath (Join-Path $target 'manifest.yaml')
-        & $PSCommandPath generate $target
-        Write-Host "CREATED $target"
+        $template = Get-TemplatePaths
+        $moduleRoot = Split-Path -Parent $target
+        $sharedRoot = Join-Path $moduleRoot '_shared'
+        $createdSharedFiles = [Collections.Generic.List[string]]::new()
+        $createdDirectories = [Collections.Generic.List[string]]::new()
+        $stage = Join-Path $moduleRoot ('.module-ui-stage-' + [guid]::NewGuid().ToString('N'))
+
+        # Compare every existing shared dependency before changing the project.
+        foreach ($source in Get-ChildItem -LiteralPath $template.Shared -File -Recurse) {
+            $relative = $source.FullName.Substring($template.Shared.TrimEnd('\', '/').Length).TrimStart('\', '/')
+            $destination = Join-Path $sharedRoot $relative
+            if (Test-Path -LiteralPath $destination -PathType Leaf) {
+                if ((Get-FileHash -LiteralPath $source.FullName).Hash -ne (Get-FileHash -LiteralPath $destination).Hash) {
+                    throw "Shared dependency conflict: $destination"
+                }
+            } elseif (Test-Path -LiteralPath $destination) {
+                throw "Shared dependency target is not a file: $destination"
+            }
+        }
+
+        try {
+            if (-not (Test-Path -LiteralPath $moduleRoot -PathType Container)) {
+                New-Item -ItemType Directory -Path $moduleRoot | Out-Null
+                $createdDirectories.Add($moduleRoot)
+            }
+            New-Item -ItemType Directory -Path $stage | Out-Null
+            Copy-Item -Path (Join-Path $template.Module '*') -Destination $stage -Recurse
+
+            $manifestPath = Join-Path $stage 'manifest.yaml'
+            $manifestText = [IO.File]::ReadAllText($manifestPath).Replace('{{NAME}}', $Name)
+            [IO.File]::WriteAllText($manifestPath, $manifestText.Replace("`r`n", "`n"), [Text.UTF8Encoding]::new($false))
+            $manifest = Validate-One $stage
+            [IO.File]::WriteAllText(
+                (Join-Path $stage '_ui.generated.hlsli'),
+                (Get-GeneratedText $manifest),
+                [Text.UTF8Encoding]::new($false)
+            )
+
+            foreach ($source in Get-ChildItem -LiteralPath $template.Shared -File -Recurse) {
+                $relative = $source.FullName.Substring($template.Shared.TrimEnd('\', '/').Length).TrimStart('\', '/')
+                $destination = Join-Path $sharedRoot $relative
+                if (Test-Path -LiteralPath $destination -PathType Leaf) { continue }
+                $parent = Split-Path -Parent $destination
+                if (-not (Test-Path -LiteralPath $parent -PathType Container)) {
+                    New-Item -ItemType Directory -Path $parent -Force | Out-Null
+                }
+                Copy-Item -LiteralPath $source.FullName -Destination $destination
+                $createdSharedFiles.Add($destination)
+            }
+
+            Move-Item -LiteralPath $stage -Destination $target
+            [void](Validate-One $target -CheckStale)
+            Write-Host "CREATED $target"
+        } catch {
+            if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
+            if (Test-Path -LiteralPath $target) { Remove-Item -LiteralPath $target -Recurse -Force }
+            foreach ($path in $createdSharedFiles) {
+                if (Test-Path -LiteralPath $path -PathType Leaf) { Remove-Item -LiteralPath $path -Force }
+            }
+            foreach ($directory in @($createdDirectories | Sort-Object Length -Descending)) {
+                if ((Test-Path -LiteralPath $directory -PathType Container) -and
+                    ((Get-ChildItem -LiteralPath $directory -Force | Measure-Object).Count -eq 0)) {
+                    Remove-Item -LiteralPath $directory
+                }
+            }
+            throw
+        }
     }
 }

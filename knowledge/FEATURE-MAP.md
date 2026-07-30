@@ -62,7 +62,7 @@ Shading and generative tools:
 - `conductor`:
 
 - Control outputs: `bpm`, `total_beats`, `beat`, `bar`, `beat_phase`, `bar_phase`, `is_downbeat`, `quantum`, `loop_phase`, per-cue `cue_phase`/`enter_phase`/`exit_phase`, macros `energy`/`tightness`/`spread`, and timecode outputs.
-- Data port: `Cue Records` for the `timeline_hud` module.
+- Data port: `Cue Records` for project-authored timeline or cue visualizations.
 
 `atlas`:
 
@@ -84,7 +84,7 @@ Scene system and sequencing:
 Presets: the `sentinel_preset` tool (0.5.29+) saves, recalls, and manages identity-aware per-node presets in library, project, or bundled scope. Verified call shapes:
 
 - `save` REQUIRES an explicit selection: `{"action":"save","pipeline":"<id>","name":"<name>","scope":"library","params":["decay","splat_gain"]}` (params and/or groups; there is no save-everything default).
-- Preset identity derives from the node type and module project (`module:click_ripples`), so presets follow the module, not the instance. `list` filters by `pipeline` or `identity`.
+- Preset identity derives from the node type and project-local Module (`module:<module-name>`), so presets follow the Module, not the instance. `list` filters by `pipeline` or `identity`.
 - `recall` takes the preset name or id plus the target `pipeline` and returns `applied[]` and `skipped[]`. `loose: true` recalls onto a different node by matching parameter names, and errors loudly (`no preset parameters applied`) when nothing matches.
 
 Utility and output:
@@ -157,7 +157,9 @@ ref("hand_track/control_outputs/pinch_primary")
 
 Do not use a plain StateTree `set` with a string beginning with `=ref(...)`. That only writes a value string and does not activate the expression engine. `sentinel_expression action=set` compiles and registers the per-frame driver.
 
-The shipped example `examples/tracking_ripple.sentinel` uses the same driver pattern with the model-free `features` tracker: `feature_track/control_outputs/largest_size` drives the `Tracking Ripple` module parameter `track_drive` through `ref("feature_track/control_outputs/largest_size")`.
+The same driver pattern works with model-free `features` outputs: a project can
+drive an authored Module parameter from a path such as
+`ref("feature_track/control_outputs/largest_size")`.
 
 ## Reference Pages
 

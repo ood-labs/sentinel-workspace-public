@@ -60,7 +60,8 @@ Expressions can also target bool parameters (nonzero drives true, e.g. StreamDif
 
 ## Motion Functions
 
-The expression engine registers a shared motion vocabulary matching the Module shader header `shaders/projects/_shared/anim/anim.hlsli`:
+The expression engine registers a motion vocabulary that can also be implemented
+in project-local Module helpers:
 
 - `spring(t, m, k, c)`: closed-form spring progress 0 to 1.
 - `spring_v(t, x0, v0, m, k, c)`: spring from a stamped initial value and velocity.

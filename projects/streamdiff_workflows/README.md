@@ -117,3 +117,54 @@ For study 04, the Mux output should advance while only the selected StreamDiff v
 ## Why these are a collection instead of one project
 
 Loading every StreamDiff configuration simultaneously would obscure the lessons and can create large engine-memory spikes, especially when switching between 896x512 and 512x896 ControlNet profiles. Small projects make the exact parameter bundle visible and keep each experiment cheap to open, copy, and modify.
+
+## Component map
+
+### 01 — 2D feedback zoom
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `2D Feedback Zoom` | StreamDiff | its configured feedback history | reviewed zoom output |
+
+### 02 — depth-parallax zoom
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Depth-Parallax Zoom` | StreamDiff | its configured depth/parallax path | reviewed parallax output |
+
+### 03 — backrooms flythrough
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Backrooms Flythrough` | StreamDiff | its configured motion path | reviewed flythrough output |
+
+### 04 — direct variant Mux
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Teeth Zoom` | StreamDiff | configured prompt/feedback | variant 1 |
+| `Dog Zoom` | StreamDiff | configured prompt/feedback | variant 2 |
+| `Squirrel Pullback` | StreamDiff | configured prompt/feedback | variant 3 |
+| `Direct Variant Mux` | Mux | the three variants | selected reviewed output; holds non-selected variants |
+| `Variant Switcher UI` | Module | Mux preview and time | scalable panel that automatically selects 1–3 |
+
+### 05 — video depth control
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Dancer` | Video source | `assets/dancer_vert.mp4` | original vertical footage |
+| `Video Depth Guide` | Depth Estimation | `Dancer` | raw depth map |
+| `Depth Threshold` | Module | raw depth | far-distance rejection while preserving retained depth |
+| `Marble Dancer` | StreamDiff | thresholded depth control | generated dancer image |
+| `Generated Dancer Cutout` | Background Removal | original `Dancer` footage | original-video matte |
+| `Generated Over Original` | Module | original, generated image, and matte | reviewed generated-subject composite |
+
+### 06 — procedural warp map
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Procedural Flow Map` | Module | authored controls and time | procedural warp texture |
+| `Warped Joshua Tree` | StreamDiff | flow map | reviewed warped output |
+
+Every study that contains StreamDiff needs a compatible generation pack. Study
+05 additionally needs depth and matting engines. Open one graph at a time.

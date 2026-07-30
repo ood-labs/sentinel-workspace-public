@@ -8,16 +8,13 @@
 //
 //  1. NO CONTROL TAKES AN INTERACTION STATE. There is no hovered/down argument
 //     anywhere in this header, so no control can change appearance on rollover.
-//     Phase 3A confirmed the v1 kit tinted sliders and pads by hover
-//     (`sui_controls.hlsli:45`, `:55`). An instrument reads the same whether or
+//     An instrument reads the same whether or
 //     not a pointer happens to be over it.
 //  2. EVERY CONTROL RENDERS ITS OWN LIVE VALUE. A control that cannot tell you
 //     what it is set to is not an instrument. Where a control is wide enough to
 //     carry digits it draws them itself. Where it is not -- a 20px meter in a
 //     bank of six -- it renders the value POSITIONALLY (fill extent plus a
 //     peak-hold hairline) and the CALLER owes the bank one printed number.
-//     That debt is real: Phase 3B shipped a first Style Authority whose METERS
-//     row was the only control on the sheet you could not read a value off.
 //
 // State is carried by STRUCTURE -- an underline, a reticle, a filled rail --
 // never by tinting a control's face.

@@ -71,3 +71,24 @@ report `analysis_downsample = 4x`, fifteen live corners, and a full-resolution
 graph remains healthy. The project should contain exactly one flat Scene
 Group, zero child groups, no Group Output, no expression drivers, and
 visible-by-default previews for every pipeline node.
+
+## Component map
+
+There is no external media source. Authored generators supply the image, and
+Features analyzes the composed plate through its configured proxy scale.
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `strata_bg` | Module | authored parameters | background field |
+| `marble_panel` | Module | authored parameters | focal plate texture |
+| `blob_layout` | Module | authored layout controls | blob placement records |
+| `blob_render` | Module | blob layout | rendered blob layer |
+| `wire_render` | Module | authored parameters/data | wire layer |
+| `marks` | Module | authored parameters | graphic mark layer |
+| `plate_comp` | Module | background, blobs, marble, wires, and marks | assembled plate and Features input |
+| `features_0` | Features | `plate_comp` | corner records |
+| `corner_thread` | Module | plate plus feature records | feature-reactive thread layer |
+| `post_1` | Module | `corner_thread` | final reviewed texture |
+
+No model engine pack is required. Study the explicit analysis proxy and the
+split between composition data, layer renderers, assembly, and finishing.

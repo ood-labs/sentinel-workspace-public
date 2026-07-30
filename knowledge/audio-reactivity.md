@@ -294,7 +294,7 @@ For live device proof:
 
 For a device-loss proof, remove or disable the explicitly selected endpoint, verify device-lost status with advancing timestamped silence, then reconnect it and confirm automatic recovery.
 
-The Phase 99 retained battery also verifies exact in-band hit counts at FFT
+The retained audio regression battery also verifies exact in-band hit counts at FFT
 1024/hop 128 and FFT 2048/hop 256, plus identical detector counters across a
 measured render hitch. MCP transports the completed records; sample positions
 and QPC timestamps inside those records define latency.

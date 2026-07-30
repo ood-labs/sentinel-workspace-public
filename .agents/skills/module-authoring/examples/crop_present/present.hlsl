@@ -1,4 +1,4 @@
-// Crop Present — node B of the Phase 47 node-to-node float output test.
+// Crop Present — node B of the node-to-node float output test.
 //
 // Read the cropped float coordinates published by node A (crop_select) on slot 0
 // (_Tex0: R = x, G = y) and visualize them. The R/G channels show the received

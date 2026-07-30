@@ -104,19 +104,10 @@ Four properties worth knowing:
   produces the same small excursions a quiet drum does. A gated lane greys out
   its level readout rather than going silently dead.
 
-## Measured accuracy
+## Tuning notes
 
-`tools/audio_test/count_bands.py` plays the frozen corpus through the node and
-compares hit counts against ground truth. It measures COUNT accuracy, not onset
-timing, so read a good result as "not over- or under-firing" rather than
-"detects correctly".
-
-```
-python count_bands.py                                  # every pattern
-python count_bands.py --set hat_threshold=5 -- dense_140
-```
-
-At the shipped defaults, on the non-held-out corpus:
+The shipped defaults were tuned against varied drum material. Treat them as a
+starting point and validate counts against the user's actual source:
 
 - Kick and hat land within roughly 10-12% on count.
 - `silence` and `noise_floor_44db` produce exactly zero on every lane.

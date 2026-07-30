@@ -40,6 +40,22 @@ function Add-Unique([Collections.Generic.List[string]]$List, [string]$Value) {
     if ($Value -and -not $List.Contains($Value)) { $List.Add($Value) }
 }
 
+function Get-ActualCaseRelativePath([string]$BasePath, [string]$RelativePath) {
+    $current = Get-FullPath $BasePath
+    $actualSegments = [Collections.Generic.List[string]]::new()
+    foreach ($segment in @($RelativePath.Replace('\', '/') -split '/')) {
+        if (-not $segment) { continue }
+        $match = @(
+            Get-ChildItem -LiteralPath $current -Force -ErrorAction SilentlyContinue |
+                Where-Object { $_.Name -ieq $segment }
+        )
+        if ($match.Count -ne 1) { return $null }
+        $actualSegments.Add($match[0].Name)
+        $current = $match[0].FullName
+    }
+    return $actualSegments -join '/'
+}
+
 if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) {
     throw "Release config is missing: $ConfigPath"
 }
@@ -51,6 +67,81 @@ if ($LASTEXITCODE -ne 0) { throw 'git ls-files failed.' }
 $trackedFiles = @($trackedFiles | ForEach-Object { $_.Replace('\', '/') })
 
 $errors = [Collections.Generic.List[string]]::new()
+
+# Product-only repository surface.
+$expectedTopLevelDirectories = @($config.AllowedTopLevelDirectories | Sort-Object)
+$actualTopLevelDirectories = @(
+    $trackedFiles |
+        Where-Object { $_ -match '/' } |
+        ForEach-Object { ($_ -split '/', 2)[0] } |
+        Sort-Object -Unique
+)
+$missingTopLevelDirectories = @(
+    $expectedTopLevelDirectories | Where-Object { $_ -cnotin $actualTopLevelDirectories }
+)
+$unexpectedTopLevelDirectories = @(
+    $actualTopLevelDirectories | Where-Object { $_ -cnotin $expectedTopLevelDirectories }
+)
+foreach ($path in $missingTopLevelDirectories) {
+    $errors.Add("missing product top-level directory: $path")
+}
+foreach ($path in $unexpectedTopLevelDirectories) {
+    $errors.Add("unexpected product top-level directory: $path")
+}
+
+$expectedRepositoryFiles = @($config.AllowedRepositoryFiles | Sort-Object)
+$actualRepositoryFiles = @($trackedFiles | Where-Object { $_ -notmatch '/' } | Sort-Object)
+$missingRepositoryFiles = @(
+    $expectedRepositoryFiles | Where-Object { $_ -cnotin $actualRepositoryFiles }
+)
+$unexpectedRepositoryFiles = @(
+    $actualRepositoryFiles | Where-Object { $_ -cnotin $expectedRepositoryFiles }
+)
+foreach ($path in $missingRepositoryFiles) { $errors.Add("missing repository file: $path") }
+foreach ($path in $unexpectedRepositoryFiles) { $errors.Add("unexpected repository file: $path") }
+
+$expectedTools = @($config.SupportedTopLevelTools | Sort-Object)
+$actualTools = @(
+    $trackedFiles |
+        Where-Object { $_ -match '^tools/[^/]+$' } |
+        ForEach-Object { $_.Substring('tools/'.Length) } |
+        Sort-Object
+)
+$missingTools = @($expectedTools | Where-Object { $_ -cnotin $actualTools })
+$unexpectedTools = @($actualTools | Where-Object { $_ -cnotin $expectedTools })
+foreach ($tool in $missingTools) { $errors.Add("missing supported top-level tool: tools/$tool") }
+foreach ($tool in $unexpectedTools) { $errors.Add("unsupported top-level tool: tools/$tool") }
+
+$pathCaseFindings = [Collections.Generic.List[string]]::new()
+foreach ($relative in $trackedFiles) {
+    $full = Join-Path $rootFull $relative.Replace('/', '\')
+    if (-not (Test-Path -LiteralPath $full)) { continue }
+    $actualCase = Get-ActualCaseRelativePath $rootFull $relative
+    if ($actualCase -and $actualCase -cne $relative) {
+        $pathCaseFindings.Add("$relative -> $actualCase")
+    }
+}
+foreach ($finding in $pathCaseFindings) {
+    $errors.Add("tracked path casing mismatch: $finding")
+}
+
+# The per-project validator is part of the release audit contract.
+$validatorPath = Join-Path $rootFull 'tools/validate-official-examples.ps1'
+$validatorReport = $null
+if (-not (Test-Path -LiteralPath $validatorPath -PathType Leaf)) {
+    $errors.Add('official example validator is missing')
+} else {
+    $validatorOutput = & $validatorPath -Root $rootFull -ConfigPath $ConfigPath -Json
+    $validatorExit = $LASTEXITCODE
+    try {
+        $validatorReport = ($validatorOutput -join "`n") | ConvertFrom-Json
+    } catch {
+        $errors.Add("official example validator returned invalid JSON: $($_.Exception.Message)")
+    }
+    if ($validatorExit -ne 0 -or ($null -ne $validatorReport -and -not $validatorReport.portable)) {
+        $errors.Add('official example validator failed')
+    }
+}
 
 # Exact project-directory census, including explicitly configured review-only projects.
 $expectedProjects = @($config.Projects.Keys | ForEach-Object { [string]$_ } | Sort-Object)
@@ -385,6 +476,79 @@ foreach ($finding in $linkFindings) {
     $errors.Add("Markdown link: $($finding.kind): $($finding.source) -> $($finding.target)")
 }
 
+# Backticked repository paths and retired plain names are also part of the
+# public contract; normal Markdown-link validation alone cannot see them.
+$backtickFindings = [Collections.Generic.List[object]]::new()
+$backtickPattern = [regex]'`([^`\r\n]+)`'
+foreach ($relative in $markdownEntryPoints) {
+    $path = Join-Path $rootFull $relative.Replace('/', '\')
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { continue }
+    $text = [IO.File]::ReadAllText($path)
+    foreach ($match in $backtickPattern.Matches($text)) {
+        $target = $match.Groups[1].Value.Trim().TrimEnd('.', ',', ';', ':')
+        if ($target -notmatch '^(?:knowledge|projects|examples|tools|\.agents|\.claude|modules|assets|images)/') {
+            continue
+        }
+        if ($target.EndsWith('/')) { continue }
+        if ($target -match '[*<>{}$=]' -or $target -match '\s') { continue }
+        $target = $target -replace ':\d+$', ''
+        $candidates = [Collections.Generic.List[string]]::new()
+        if ($target -match '^(?:knowledge|projects|tools|\.agents|\.claude)/') {
+            $candidates.Add((Get-FullPath (Join-Path $rootFull $target.Replace('/', '\'))))
+        }
+        $candidates.Add((Get-FullPath (Join-Path (Split-Path -Parent $path) $target.Replace('/', '\'))))
+        if ($relative -match '^projects/([^/]+)/') {
+            $projectDocRoot = Join-Path $rootFull ("projects/{0}" -f $Matches[1])
+            $candidates.Add((Get-FullPath (Join-Path $projectDocRoot $target.Replace('/', '\'))))
+        }
+        if ($target.StartsWith('examples/', [StringComparison]::Ordinal)) {
+            $candidates.Add((Get-FullPath (Join-Path $rootFull $target.Replace('/', '\'))))
+        }
+        $valid = @(
+            $candidates |
+                Sort-Object -Unique |
+                Where-Object { (Test-IsUnder $rootFull $_) -and (Test-Path -LiteralPath $_) }
+        )
+        if ($valid.Count -eq 0) {
+            $backtickFindings.Add([pscustomobject]@{
+                source = $relative
+                target = $target
+                kind = 'missing_or_escaping_backtick_path'
+            })
+        }
+    }
+}
+foreach ($finding in $backtickFindings) {
+    $errors.Add("Backticked path: $($finding.kind): $($finding.source) -> $($finding.target)")
+}
+
+$retiredReferenceFindings = [Collections.Generic.List[object]]::new()
+$retiredScanFiles = @(
+    $trackedFiles |
+        Where-Object {
+            $_ -notlike '.release/*' -and
+            $_ -ne '.sentinel-workspace-manifest.json' -and
+            $_ -ne 'tools/official-examples.config.psd1' -and
+            [IO.Path]::GetExtension($_).ToLowerInvariant() -in $textExtensions
+        }
+)
+foreach ($relative in $retiredScanFiles) {
+    $path = Join-Path $rootFull $relative.Replace('/', '\')
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { continue }
+    $text = [IO.File]::ReadAllText($path)
+    foreach ($retired in @($config.RetiredReferences)) {
+        if ($text.IndexOf([string]$retired, [StringComparison]::OrdinalIgnoreCase) -ge 0) {
+            $retiredReferenceFindings.Add([pscustomobject]@{
+                source = $relative
+                reference = [string]$retired
+            })
+        }
+    }
+}
+foreach ($finding in $retiredReferenceFindings) {
+    $errors.Add("retired reference remains: $($finding.source) -> $($finding.reference)")
+}
+
 # Tracked file-size thresholds.
 $largeFiles = [Collections.Generic.List[object]]::new()
 $topFiles = [Collections.Generic.List[object]]::new()
@@ -461,6 +625,36 @@ foreach ($relative in $trackedFiles) {
 }
 foreach ($finding in $assetFindings) { $errors.Add("asset ledger: $($finding.issue): $($finding.path)") }
 
+$fontFindings = [Collections.Generic.List[object]]::new()
+$fontName = [string]$config.Scientifica.FileName
+$fontLicenseName = [string]$config.Scientifica.LicenseFileName
+$fontHash = [string]$config.Scientifica.Sha256
+$fontPaths = @($trackedFiles | Where-Object { [IO.Path]::GetFileName($_) -ceq $fontName })
+foreach ($relative in $fontPaths) {
+    $path = Join-Path $rootFull $relative.Replace('/', '\')
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { continue }
+    if ((Get-Sha256 $path) -ne $fontHash) {
+        $fontFindings.Add([pscustomobject]@{ path = $relative; issue = 'noncanonical_hash' })
+    }
+    $licenseRelative = (
+        (Split-Path -Parent $relative).Replace('\', '/').TrimEnd('/') + '/' + $fontLicenseName
+    )
+    if ($licenseRelative -cnotin $trackedFiles) {
+        $fontFindings.Add([pscustomobject]@{ path = $relative; issue = 'adjacent_license_missing' })
+    }
+}
+foreach ($relative in @($trackedFiles | Where-Object { [IO.Path]::GetFileName($_) -ceq $fontLicenseName })) {
+    $fontRelative = (
+        (Split-Path -Parent $relative).Replace('\', '/').TrimEnd('/') + '/' + $fontName
+    )
+    if ($fontRelative -cnotin $trackedFiles) {
+        $fontFindings.Add([pscustomobject]@{ path = $relative; issue = 'orphan_license' })
+    }
+}
+foreach ($finding in $fontFindings) {
+    $errors.Add("font license: $($finding.issue): $($finding.path)")
+}
+
 # Declared version and capability proof.
 $minimumVersion = [Version]([string]$config.MinimumSentinelVersion)
 $proofHostVersion = [Version]([string]$config.LiveProofHostVersion)
@@ -501,6 +695,9 @@ $manifestUnexpectedPaths = @()
 $manifestDuplicatePaths = @()
 $manifestHashMismatches = [Collections.Generic.List[string]]::new()
 $manifestOrphanOverlaps = @()
+$manifestOrphanUnsafePaths = [Collections.Generic.List[string]]::new()
+$manifestOrphanDuplicatePaths = @()
+$manifestOrphanInvalidHashes = [Collections.Generic.List[string]]::new()
 $manifestSourceReachable = $false
 $manifestSourceIsAncestor = $false
 if (-not $config.ContainsKey('WorkspaceManifest')) {
@@ -605,6 +802,45 @@ if ($null -ne $workspaceManifest) {
         $errors.Add("workspace manifest path is both managed and orphaned: $path")
     }
 
+    $orphanEntries = @($workspaceManifest.orphan_candidates)
+    $orphanPaths = @(
+        $orphanEntries | ForEach-Object { [string]$_.path }
+    )
+    $manifestOrphanDuplicatePaths = @(
+        $orphanPaths |
+            Group-Object { $_.Replace('\', '/').ToLowerInvariant() } |
+            Where-Object { $_.Count -gt 1 } |
+            ForEach-Object { @($_.Group) -join ', ' }
+    )
+    foreach ($path in $manifestOrphanDuplicatePaths) {
+        $errors.Add("workspace manifest contains duplicate orphan path: $path")
+    }
+    foreach ($entry in $orphanEntries) {
+        $rawPath = [string]$entry.path
+        $normalized = $rawPath.Replace('\', '/')
+        $segments = @($normalized -split '/')
+        $unsafe = (
+            [string]::IsNullOrWhiteSpace($rawPath) -or
+            $rawPath -cne $normalized -or
+            [IO.Path]::IsPathRooted($rawPath) -or
+            $normalized.StartsWith('/') -or
+            $normalized.EndsWith('/') -or
+            $normalized.Contains('//') -or
+            $normalized.Contains(':') -or
+            (($segments | Where-Object { $_ -in @('', '.', '..') } | Measure-Object).Count -gt 0) -or
+            ($segments.Count -gt 0 -and $segments[0].ToLowerInvariant() -in @('.git', '.release'))
+        )
+        if ($unsafe) {
+            Add-Unique $manifestOrphanUnsafePaths $rawPath
+            $errors.Add("workspace manifest contains unsafe orphan path: $rawPath")
+        }
+        $declaredHash = [string]$entry.sha256
+        if ($declaredHash -notmatch '^[0-9a-f]{64}$') {
+            Add-Unique $manifestOrphanInvalidHashes $rawPath
+            $errors.Add("workspace manifest orphan hash is invalid: $rawPath")
+        }
+    }
+
     $manifestSourceCommit = ([string]$workspaceManifest.source_commit).Trim()
     if ($manifestSourceCommit -notmatch '^[0-9a-fA-F]{40}$') {
         $errors.Add("workspace manifest source_commit is not a full Git commit id: $manifestSourceCommit")
@@ -660,6 +896,35 @@ $report = [pscustomobject]@{
     root = $rootFull
     commit = $head
     working_tree_clean = ($statusLines.Count -eq 0)
+    product_surface = [pscustomobject]@{
+        expected_directories = $expectedTopLevelDirectories
+        actual_directories = $actualTopLevelDirectories
+        missing_directories = $missingTopLevelDirectories
+        unexpected_directories = $unexpectedTopLevelDirectories
+        expected_files = $expectedRepositoryFiles
+        actual_files = $actualRepositoryFiles
+        missing_files = $missingRepositoryFiles
+        unexpected_files = $unexpectedRepositoryFiles
+        expected_tools = $expectedTools
+        actual_tools = $actualTools
+        missing_tools = $missingTools
+        unexpected_tools = $unexpectedTools
+        path_case_findings = @($pathCaseFindings)
+        exact = (
+            $missingTopLevelDirectories.Count -eq 0 -and
+            $unexpectedTopLevelDirectories.Count -eq 0 -and
+            $missingRepositoryFiles.Count -eq 0 -and
+            $unexpectedRepositoryFiles.Count -eq 0 -and
+            $missingTools.Count -eq 0 -and
+            $unexpectedTools.Count -eq 0 -and
+            $pathCaseFindings.Count -eq 0
+        )
+    }
+    official_examples = [pscustomobject]@{
+        portable = ($null -ne $validatorReport -and [bool]$validatorReport.portable)
+        passed = if ($null -ne $validatorReport) { [int]$validatorReport.passed } else { 0 }
+        failed = if ($null -ne $validatorReport) { [int]$validatorReport.failed } else { 0 }
+    }
     project_set = [pscustomobject]@{
         expected = $expectedProjects
         actual = $actualProjects
@@ -729,7 +994,13 @@ $report = [pscustomobject]@{
     markdown_links = [pscustomobject]@{
         entry_points_checked = $markdownEntryPoints.Count
         findings = @($linkFindings)
-        clean = ($linkFindings.Count -eq 0)
+        backtick_findings = @($backtickFindings)
+        retired_reference_findings = @($retiredReferenceFindings)
+        clean = (
+            $linkFindings.Count -eq 0 -and
+            $backtickFindings.Count -eq 0 -and
+            $retiredReferenceFindings.Count -eq 0
+        )
     }
     file_sizes = [pscustomobject]@{
         review_threshold_mib = 50
@@ -743,6 +1014,11 @@ $report = [pscustomobject]@{
         ledger = @($mediaLedger)
         findings = @($assetFindings)
         clean = ($assetFindings.Count -eq 0)
+    }
+    fonts = [pscustomobject]@{
+        tables = $fontPaths.Count
+        findings = @($fontFindings)
+        clean = ($fontFindings.Count -eq 0)
     }
     version = [pscustomobject]@{
         minimum = [string]$config.MinimumSentinelVersion
@@ -768,6 +1044,9 @@ $report = [pscustomobject]@{
             @($workspaceManifest.orphan_candidates).Count
         } else { 0 }
         orphan_overlaps = $manifestOrphanOverlaps
+        orphan_unsafe_paths = @($manifestOrphanUnsafePaths)
+        orphan_duplicate_paths = $manifestOrphanDuplicatePaths
+        orphan_invalid_hashes = @($manifestOrphanInvalidHashes)
         exact = (
             $null -ne $workspaceManifest -and
             $manifestSourceReachable -and
@@ -776,7 +1055,10 @@ $report = [pscustomobject]@{
             $manifestUnexpectedPaths.Count -eq 0 -and
             $manifestDuplicatePaths.Count -eq 0 -and
             $manifestHashMismatches.Count -eq 0 -and
-            $manifestOrphanOverlaps.Count -eq 0
+            $manifestOrphanOverlaps.Count -eq 0 -and
+            $manifestOrphanUnsafePaths.Count -eq 0 -and
+            $manifestOrphanDuplicatePaths.Count -eq 0 -and
+            $manifestOrphanInvalidHashes.Count -eq 0
         )
     }
     errors = @($errors)
@@ -800,6 +1082,7 @@ if ($ReportPath) {
 if ($Json) {
     Write-Output $jsonText
 } else {
+    Write-Host ("Product surface exact={0}; official examples={1}/{2}" -f $report.product_surface.exact, $report.official_examples.passed, ($report.official_examples.passed + $report.official_examples.failed))
     Write-Host ("Project set: {0} expected, {1} actual, exact={2}" -f $expectedProjects.Count, $actualProjects.Count, $report.project_set.exact)
     Write-Host ("Root module set: {0} expected, {1} actual, exact={2}" -f $expectedModules.Count, $actualModules.Count, $report.module_set.exact)
     Write-Host ("Manuals identical={0}; skills mirrored={1}" -f $report.manuals.identical, $report.skills.mirrored)

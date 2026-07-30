@@ -52,6 +52,96 @@ function Add-Unique([Collections.Generic.List[string]]$List, [string]$Value) {
     if (-not $List.Contains($Value)) { $List.Add($Value) }
 }
 
+function Get-ModuleDependencyClosure(
+    [string]$ModuleDir,
+    [string]$ProjectDir,
+    [string]$WorkspaceDir
+) {
+    $files = [Collections.Generic.List[string]]::new()
+    $errors = [Collections.Generic.List[string]]::new()
+    $queue = [Collections.Generic.Queue[string]]::new()
+    $seen = @{}
+    $manifestPath = Join-Path $ModuleDir 'manifest.yaml'
+    if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
+        return [pscustomobject]@{ Files = @(); Errors = @("missing manifest: $manifestPath") }
+    }
+
+    $manifestText = [IO.File]::ReadAllText($manifestPath)
+    $shaderMatches = [regex]::Matches(
+        $manifestText,
+        '(?m)(?:^\s*|[,{]\s*)shader\s*:\s*["'']?([^\s,"''}\]]+)'
+    )
+    foreach ($match in $shaderMatches) {
+        $shader = [string]$match.Groups[1].Value
+        if ([IO.Path]::IsPathRooted($shader)) {
+            $errors.Add("manifest shader is rooted: $shader")
+            continue
+        }
+        $resolved = Get-FullPath (Join-Path $ModuleDir $shader)
+        if (-not (Test-IsUnder $ProjectDir $resolved)) {
+            $errors.Add("manifest shader escapes its project: $shader")
+            continue
+        }
+        if (-not (Test-Path -LiteralPath $resolved -PathType Leaf)) {
+            $errors.Add("manifest shader is missing: $shader")
+            continue
+        }
+        $queue.Enqueue($resolved)
+    }
+
+    while ($queue.Count -gt 0) {
+        $current = $queue.Dequeue()
+        $key = $current.ToLowerInvariant()
+        if ($seen.ContainsKey($key)) { continue }
+        $seen[$key] = $true
+        $files.Add($current)
+
+        $text = [IO.File]::ReadAllText($current)
+        foreach ($match in [regex]::Matches($text, '(?m)^\s*#\s*include\s*[<"]([^>"]+)[>"]')) {
+            $include = [string]$match.Groups[1].Value
+            $sourceRelative = Normalize-Relative (Get-RelativePath $WorkspaceDir $current)
+            if ([IO.Path]::IsPathRooted($include)) {
+                $errors.Add("$sourceRelative includes rooted path '$include'")
+                continue
+            }
+
+            $candidates = @(
+                (Get-FullPath (Join-Path $ModuleDir $include)),
+                (Get-FullPath (Join-Path (Split-Path -Parent $current) $include))
+            ) | Sort-Object -Unique
+            $hits = @($candidates | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf })
+            if ($hits.Count -eq 0) {
+                $errors.Add("$sourceRelative includes missing file '$include'")
+                continue
+            }
+            if ($hits.Count -gt 1) {
+                $errors.Add("$sourceRelative has ambiguous include '$include'")
+                continue
+            }
+            if (-not (Test-IsUnder $ProjectDir $hits[0])) {
+                $targetRelative = Normalize-Relative (Get-RelativePath $WorkspaceDir $hits[0])
+                $errors.Add("$sourceRelative includes outside its project: $targetRelative")
+                continue
+            }
+            $queue.Enqueue($hits[0])
+        }
+    }
+
+    return [pscustomobject]@{ Files = @($files); Errors = @($errors) }
+}
+
+function Test-TextMentionsComponent([string]$Text, $Component) {
+    $candidates = @([string]$Component.id, [string]$Component.displayName) |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+        Sort-Object -Unique
+    foreach ($candidate in $candidates) {
+        if ($Text.IndexOf($candidate, [StringComparison]::OrdinalIgnoreCase) -ge 0) {
+            return $true
+        }
+    }
+    return $false
+}
+
 if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) {
     throw "Official-example config is missing: $ConfigPath"
 }
@@ -88,6 +178,9 @@ foreach ($projectName in $Projects) {
     $missingPaths = [Collections.Generic.List[string]]::new()
     $orphanModules = [Collections.Generic.List[string]]::new()
     $generatedStale = [Collections.Generic.List[string]]::new()
+    $dependencyErrors = [Collections.Generic.List[string]]::new()
+    $unusedSharedFiles = [Collections.Generic.List[string]]::new()
+    $licenseFindings = [Collections.Generic.List[string]]::new()
     $activeModules = [Collections.Generic.List[object]]::new()
     $activeSharedModules = [Collections.Generic.List[string]]::new()
     $compileResults = [Collections.Generic.List[object]]::new()
@@ -117,6 +210,8 @@ foreach ($projectName in $Projects) {
     if ($projectJsons.Count -gt 0) {
         $projectJson = [pscustomobject]@{
             pipelines = @($projectJsons | ForEach-Object { @($_.pipelines) })
+            sources = @($projectJsons | ForEach-Object { @($_.sources) })
+            outputObjects = @($projectJsons | ForEach-Object { @($_.outputObjects) })
             nodePresets = @($projectJsons | ForEach-Object { @($_.nodePresets) })
             graph = [pscustomobject]@{
                 nodes = @($projectJsons | ForEach-Object { @($_.graph.nodes) })
@@ -379,10 +474,23 @@ foreach ($projectName in $Projects) {
         if (@(Compare-Object -ReferenceObject $expectedProjectFiles -DifferenceObject $actualProjectFiles).Count -ne 0) {
             $errors.Add("project root .sentinel files must exactly match config; expected $($expectedProjectFiles -join ', '); found $($actualProjectFiles -join ', ')")
         }
-        $readmes = @(Get-ChildItem -LiteralPath $projectRoot -File -Filter 'README*' -ErrorAction SilentlyContinue)
-        if ($readmes.Count -eq 0) {
+        $readmePath = Join-Path $projectRoot 'README.md'
+        if (-not (Test-Path -LiteralPath $readmePath -PathType Leaf)) {
             Add-Unique $missingPaths "projects/$projectName/README.md"
             $errors.Add('user-facing README is missing')
+        } else {
+            $readmeText = [IO.File]::ReadAllText($readmePath)
+            $requiredHeading = [string]$config.RequiredProjectReadmeHeading
+            if ([string]::IsNullOrWhiteSpace($requiredHeading) -or
+                $readmeText -notmatch ('(?m)^' + [regex]::Escape($requiredHeading) + '\s*$')) {
+                $errors.Add("README is missing exact heading '$requiredHeading'")
+            }
+            foreach ($component in @($projectJson.sources) + @($projectJson.pipelines) + @($projectJson.outputObjects)) {
+                if (-not (Test-TextMentionsComponent $readmeText $component)) {
+                    $componentId = if ($component.id) { [string]$component.id } else { [string]$component.displayName }
+                    $errors.Add("README component map does not mention '$componentId'")
+                }
+            }
         }
 
         $proofRecords = if ($null -eq $definition.ProofRecords) { @() } else { @($definition.ProofRecords) }
@@ -473,10 +581,60 @@ foreach ($projectName in $Projects) {
         }
     }
 
+    $reachableFiles = @{}
+    foreach ($moduleDir in @($activeModules | ForEach-Object { $_.resolved } | Sort-Object -Unique)) {
+        $closure = Get-ModuleDependencyClosure $moduleDir $projectRoot $rootFull
+        foreach ($file in $closure.Files) {
+            $reachableFiles[$file.ToLowerInvariant()] = $true
+        }
+        foreach ($finding in $closure.Errors) {
+            Add-Unique $dependencyErrors $finding
+        }
+    }
+
+    $sharedRoot = Join-Path $projectRoot 'modules/_shared'
+    if (Test-Path -LiteralPath $sharedRoot -PathType Container) {
+        foreach ($entry in Get-ChildItem -LiteralPath $sharedRoot -File -Recurse) {
+            $relative = Normalize-Relative (Get-RelativePath $rootFull $entry.FullName)
+            if ($entry.Extension.ToLowerInvariant() -in @('.fx', '.hlsl', '.hlsli')) {
+                if (-not $reachableFiles.ContainsKey($entry.FullName.ToLowerInvariant())) {
+                    Add-Unique $unusedSharedFiles $relative
+                }
+            } elseif ($entry.Name -ne [string]$config.Scientifica.LicenseFileName) {
+                Add-Unique $unusedSharedFiles $relative
+            }
+        }
+    }
+
+    $fontFiles = @(
+        Get-ChildItem -LiteralPath $projectRoot -File -Recurse -Filter ([string]$config.Scientifica.FileName) -ErrorAction SilentlyContinue
+    )
+    foreach ($font in $fontFiles) {
+        $relative = Normalize-Relative (Get-RelativePath $rootFull $font.FullName)
+        $hash = (Get-FileHash -LiteralPath $font.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+        if ($hash -ne [string]$config.Scientifica.Sha256) {
+            Add-Unique $licenseFindings "$relative has noncanonical Scientifica hash"
+        }
+        $licensePath = Join-Path $font.DirectoryName ([string]$config.Scientifica.LicenseFileName)
+        if (-not (Test-Path -LiteralPath $licensePath -PathType Leaf)) {
+            Add-Unique $licenseFindings "$relative has no adjacent $($config.Scientifica.LicenseFileName)"
+        }
+    }
+    foreach ($license in Get-ChildItem -LiteralPath $projectRoot -File -Recurse -Filter ([string]$config.Scientifica.LicenseFileName) -ErrorAction SilentlyContinue) {
+        $fontPath = Join-Path $license.DirectoryName ([string]$config.Scientifica.FileName)
+        if (-not (Test-Path -LiteralPath $fontPath -PathType Leaf)) {
+            $relative = Normalize-Relative (Get-RelativePath $rootFull $license.FullName)
+            Add-Unique $licenseFindings "$relative has no adjacent font table"
+        }
+    }
+
     foreach ($path in $absolutePaths) { $errors.Add("absolute path: $path") }
     foreach ($path in $forbiddenArtifacts) { $errors.Add("forbidden artifact: $path") }
     foreach ($path in $orphanModules) { $errors.Add("orphan module: $path") }
     foreach ($path in $generatedStale) { $errors.Add("stale generated UI: $path") }
+    foreach ($path in $dependencyErrors) { $errors.Add("shader dependency: $path") }
+    foreach ($path in $unusedSharedFiles) { $errors.Add("unused shared file: $path") }
+    foreach ($path in $licenseFindings) { $errors.Add("font license: $path") }
 
     $results.Add([pscustomobject]@{
         project = $projectName
@@ -488,6 +646,9 @@ foreach ($projectName in $Projects) {
         forbidden_artifacts = @($forbiddenArtifacts)
         missing_paths = @($missingPaths)
         generated_stale = @($generatedStale)
+        dependency_errors = @($dependencyErrors)
+        unused_shared_files = @($unusedSharedFiles)
+        license_findings = @($licenseFindings)
         compile_results = @($compileResults)
         exemptions = @($definition.Exemptions)
         portable = ($errors.Count -eq 0)

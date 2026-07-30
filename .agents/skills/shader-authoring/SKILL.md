@@ -44,4 +44,4 @@ Shaders must work in BOTH Sentinel and Notch. Every .fx shader must include the 
 5. **Blend with `InputBuffer.Load`** -- `lerp(original, color, BlendAmount)` using `Load(uint3(In.Position.xy, 0))`
 
 Use the live Sentinel shader compiler as the compatibility authority for single-file `.fx` shaders.
-Use this compatibility checklist alongside the live Sentinel compiler output; private development devlogs are intentionally not part of the public workspace.
+Use this compatibility checklist alongside the live Sentinel compiler output; historical development logs are intentionally not part of the public workspace.

@@ -2,10 +2,8 @@ name: "Motion Console"
 version: "3.0"
 mode: generator
 
-# FULL-BLEED PANEL, and Phase 3A's Amendment 1 is superseded here (see the phase
-# doc's Amendment 3). Amendment 1 read v1's breakage as "follow_panel is unsafe"
-# and required a canonical fixed extent. That diagnosis was wrong: v1 broke
-# because its layout was hard-coded to 960x540, not because it followed the dock.
+# FULL-BLEED PANEL. An earlier fixed-extent version broke because its layout was
+# hard-coded to 960x540, not because it followed the dock.
 #
 # ui-authoring.md:142 forbids a follow_panel Canvas as the Program renderer
 # "unless the artwork is deliberately authored for arbitrary aspect ratios", and

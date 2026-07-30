@@ -2,8 +2,8 @@ name: "Signal Trails"
 version: "1.0"
 mode: generator
 
-# Second consumer of modules/_shared/ui/sui3_trace.hlsli, and the reusability
-# proof for Phase 4C.
+# Second consumer of modules/_shared/ui/sui3_trace.hlsli, proving the trace
+# component is not coupled to Data Scope.
 #
 # Deliberately as unlike Data Scope as the component allows:
 #

@@ -36,25 +36,16 @@ or crawls along the floor depending on where `Fixed Scale` sits.
 
 ## Source
 
-Audio In in File mode, playing a repeated build of the measured corpus. The
-corpus file steps its own level by 24 dB at 8 s of every 20 s loop, which is
-what makes the autoscale provable rather than merely visible.
-
-Audio In's File mode plays once and then reports `Inactive`; there is no loop
-parameter, so a 20 s corpus file freezes the scope 20 s after it is wired.
-Generate the looped signal with:
-
-```
-python tools/audio_test/make_loop.py quiet_intro_drop_128 --repeats 9
-```
-
-The output under `tools/audio_test/loops/` is generated and not committed.
+The saved project uses Audio In in Device/Loopback mode and follows the Windows
+default playback endpoint. Route any meaningful program audio through that
+endpoint, then verify the Audio In diagnostics report an active endpoint and a
+present signal before judging the scope.
 
 ## Proof
 
 ```
-python tools/data_scope_proof.py      # asserts the 4B criteria against the live node
-python tools/data_scope_measure.py <capture.png>   # pixel measurement of one capture
+python projects/interaction_lab/tools/data_scope_proof.py
+python projects/interaction_lab/tools/data_scope_measure.py <capture.png>
 ```
 
 The measure tool discriminates the three states that matter, which is the only

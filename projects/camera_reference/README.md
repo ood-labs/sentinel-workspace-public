@@ -35,3 +35,13 @@ when separate renderer nodes genuinely need one synchronized viewpoint or
 show-level camera switching.
 
 No engine pack is required.
+
+## Component map
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Native_Camera_Reference` | Module | native viewport camera input | antialiased grid color and aligned depth outputs |
+
+There is no external source and no downstream output node; the Module preview
+is the reference output. Study its injected-matrix camera contract and efficient
+grid rendering, not the grid as a reusable scene.

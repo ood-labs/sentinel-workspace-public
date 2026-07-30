@@ -107,7 +107,7 @@ void main(uint3 id : SV_DispatchThreadID) {
 
 **Why a ring buffer:** older sources naturally cycle out as the head wraps around. No per-source "is alive" bookkeeping needed — consumer passes just check `t_spawn > 0` and `_Time - t_spawn < lifetime`.
 
-**`_Mouse` cbuffer convention** (post-Phase 34.13):
+**`_Mouse` cbuffer convention**:
 - `_Mouse.xy` — current cursor pos (normalized 0-1, frozen at last drag pos when LMB releases)
 - `_Mouse.zw` — Shadertoy sign rule: positive while LMB held, negated on release
 - `_Mouse.z > 0.0` is the canonical "currently held" check

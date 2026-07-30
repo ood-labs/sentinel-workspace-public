@@ -93,8 +93,25 @@ navigation controls for review framing.
 The renderer is intentionally a consumer: furnishing identity, selection, and edit
 logic stay in `LR Furnishings`, while the final PNode records flow downstream.
 
-## Proof
+## Runtime proof
 
-The `proof/` directory contains plan-editor state recalls, four shared-camera views,
-Daylight and Warm Evening output, plus a live health/graph bundle. See
-`proof/README.md` for the exact assertions.
+Recall the plan-editor states and scene looks, operate the renderer's native
+camera, and capture the final grade with a live health/graph bundle. Generated
+proof media is intentionally not distributed with the project.
+
+## Component map
+
+There is no external media source and no model engine dependency.
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `LR_Architecture` | Module | authored plan edits | room-shell and opening records |
+| `LR_Furnishings` | Module | authored selection and spatial edits | furniture object records |
+| `LR_Materials` | Module | authored material controls | material records |
+| `LR_Lighting` | Module | architecture and furnishings records | lighting records and lighting-plan preview |
+| `LR_SDF_Renderer` | Module | architecture, furnishings, materials, and lighting | native-camera SDF color/depth render |
+| `LR_Cinematic_Grade` | Module | renderer texture | final reviewed program texture |
+
+Study the separation between plan editors, typed construction records, and the
+camera-owning renderer. Define new semantic objects and relations for a new
+space rather than copying this room.

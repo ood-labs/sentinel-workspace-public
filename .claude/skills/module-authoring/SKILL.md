@@ -52,7 +52,7 @@ my_show/
 When bundling is requested, Sentinel copies referenced Module folders into
 `<projectDir>/modules/<id>/`, skips generated `.sentinel/shader_cache` folders,
 and saves each Module pipeline with a relative `project_dir` such as
-`modules/My_Module`. The copied files stay real files on disk, so compile and
+`modules/<module>`. The copied files stay real files on disk, so compile and
 hot-reload continue to work.
 
 Useful MCP actions:
@@ -149,8 +149,8 @@ selections follow Windows default-device changes. Named selections pin the
 endpoint GUID and become unhealthy while that endpoint is unavailable.
 
 Gate onset-driven behavior with a signal floor. Audio In exposes
-`signal_present` in its diagnostics subtree, and the stock Drum Detector
-publishes its own adaptive Mel-energy `signal_present` control output. Keep
+`signal_present` in its diagnostics subtree, and a custom detector should
+publish its own signal-presence result for downstream consumers. Keep
 confidence, counters, and pulses inactive when the selected gate is false.
 
 ## Visible Module Construction Contract
@@ -165,19 +165,7 @@ These are the compiler-injected names. Do NOT redeclare them or you get "redefin
 
 ### Motion vocabulary
 
-For authored motion, include the shared Phase 75 library instead of hand-rolling easing or spring equations:
-
-```hlsl
-#include "../_shared/anim/anim.hlsli"
-```
-
-Use `an_spring`, `an_spring_v`, `an_stagger_index`, `an_stagger_radial`, `an_stagger_wave`, `an_stagger_noise`, `an_anticipate`, `an_squash`, and `an_loop_noise`. The same equations are registered in ExprTk as `spring`, `spring_v`, `stagger`, `anticipate`, and `loop_noise`, so Module shaders and parameter expressions can be checked against one reference.
-
-Rate-class changes must use a phase accumulator (`phase += rate * dt`) instead of `absolute_time * live_rate`. Target-class changes should stamp current value and velocity, then continue with `an_spring_v`. See `knowledge/motion-choreography.md`.
-
-### Motion vocabulary
-
-For authored motion, include the shared Phase 75 library instead of hand-rolling easing or spring equations:
+For authored motion, prefer the common animation vocabulary instead of hand-rolling easing or spring equations. A portable implementation is bundled as generic infrastructure in `projects/scientific_organism/modules/_shared/anim/anim.hlsli`; vendor it into the owning project when those helpers are needed:
 
 ```hlsl
 #include "../_shared/anim/anim.hlsli"
@@ -300,10 +288,10 @@ Author Modules so the manifest resolution is a default target, not a hidden layo
 - **MCP pipeline creation**: `"module"` is in the MCP create enum. The old `"shaderproject"` alias requires direct ZMQ IPC.
 - **All Module inputs are VideoSource type**: Unlike StreamDiff (which has video/style/controlnet), Module inputs are all equivalent. `getInputSlots()` uses `InputSlotType::VideoSource` for all declared inputs — no Reference pins.
 - **Generator mode + explicit inputs**: `mode: generator` with an `inputs:` section gives you both resolution controls AND external video inputs. The pipeline renders at manifest resolution, not input resolution.
-- **Resolution caps**: `resolution_width` clamped to 64-16384 (previously 3840, lifted as of commit `59e9483`), `resolution_height` clamped to 64-2160. Values above the caps get silently clamped by `ShaderProjectPipeline::setParameter`. If you hit the height limit, edit `src/pipelines/shaderproject/ShaderProjectPipeline.cpp` lines ~1672 and ~1793 and rebuild.
+- **Resolution caps**: the host clamps Module dimensions to its supported range. Read the values back from `sentinel_pipeline info`; if a requested extent is clamped, choose a supported resolution rather than assuming the request applied.
 - **Large static const arrays work fine**: Font bitmaps, node positions, baked data — all fine as `static const` in HLSL. No constant memory limit issues like CUDA `.cu` files.
 - **Performance at 1920x1080**: 350 nodes + 100 line segments + 100 text fragments in a single compute pass runs 55+ FPS on RTX 5090. Per-pixel loops over ~500 elements are fine.
-- **`type: int` / `enum` / `bool` bind correctly** (fixed Phase 52): these are written to the cbuffer as real ints, so HLSL reads `int`/`int`(enum index)/`int`(bool) as written. The old "always use `type: float` for selectors" workaround is retired — use `type: int` (with `min`/`max`), `type: enum` (with `options:`), and `type: bool` directly. See the Parameter widget types section above for the full set.
+- **`type: int` / `enum` / `bool` bind correctly**: these are written to the cbuffer as real ints, so HLSL reads `int`/`int`(enum index)/`int`(bool) as written. Use `type: int` (with `min`/`max`), `type: enum` (with `options:`), and `type: bool` directly. See the Parameter widget types section above for the full set.
 - **Local array init from cbuffer can fail**: `float arr[4] = { param1, param2, param3, param4 };` may produce wrong values depending on HLSL compiler optimization. **Fix**: Use getter functions instead: `float getParam(int i) { if (i==0) return param1; if (i==1) return param2; ... }`.
 - **Glow falloff: use finite range, not 1/d²**: Inverse-square glow `intensity / (d*d + eps)` never reaches zero — with many glowing points, the accumulated contribution makes the entire background grey. **Fix**: `max(0, 1 - d*k)²` drops to exactly zero beyond `1/k` screen units.
 - **Tone mapping + dark backgrounds**: Reinhard + gamma correction boosts very dark values (0.01 linear → 0.15 sRGB). **Fix**: Add background gradient AFTER gamma correction, directly in sRGB space: `col = toneMap(scene); col = gamma(col); col += srgb_background;`
@@ -343,15 +331,15 @@ Full working projects are in `examples/` alongside this SKILL.md. Read these fil
 - `wave_field.hlsl` — Camera ray generation with Y-flip, `_ViewProjMatrix` projection, finite-range glows, post-gamma background, depth in alpha
 - `color_out.hlsl` / `depth_out.hlsl` — Trivial ps_5_0 extract passes (`VS_OUTPUT`, `SV_TARGET0`, `_Tex0.SampleLevel`)
 
-### Additional Project Patterns
+### Available Skill Fixtures
 
-| Project | Features | Key Patterns |
-|---------|----------|-------------|
-| `stardust/` | Particle sim, draw pass, depth buffer, post-processing | Compute→draw→post pipeline, `buffer:` ping-pong, vertex pulling, `source: "depth"` |
-| `infinite_zoom/` | Feedback, 3 texture outputs (Color/Depth/Flow) | Ping-pong feedback buffer, `outputs:` multi-output, synthetic depth |
-| `ink_drop_*/` | Fluid sim, 3 outputs (Color/Mask/Displacement) | Multi-buffer fluid simulation, display passes per output |
-| `depthflow/` | Filter mode, camera, parallax | `mode: filter`, dual input (Color+Depth), ray-marched parallax |
-| `sdf_scene/` | SDF feature, camera, ray marching | `features: [camera, math3d, sdf, noise]`, built-in SDF primitives |
+| Fixture | Key pattern |
+| --- | --- |
+| `examples/lfo_panel/` | structured-buffer waveform generation and display |
+| `examples/phase_loop/` | integrated rate and scrub-safe phase |
+| `examples/wave_field/` | internal camera plus color/depth outputs |
+| `examples/uv_remap_bitdepth/` | high-precision intermediate UV data |
+| `examples/crop_select/` and `examples/crop_present/` | float output passed between two Modules |
 
 ## Quick-Start Manifest Template
 
@@ -472,7 +460,7 @@ passes:
 
 ## Authored UI And Canvas Panels
 
-When a Module is an interface, editor, dashboard, spline tool, or gizmo rather than only an effect, use the `module-ui-authoring` skill and read `knowledge/ui-authoring.md`. Bundle the SUI3 foundation under the owning project's `modules/_shared/ui/`: pixel-space scientific instrumentation, Scientifica typography, and manifest-aligned normalized hit rectangles converted with the live render extent through `tools/module-ui.ps1`.
+When a Module is an interface, editor, dashboard, spline tool, or gizmo rather than only an effect, use the `module-ui-authoring` skill and read `knowledge/ui-authoring.md`. Start from the neutral `tools/module-ui.ps1` scaffold, then replace its visual language with one appropriate to the current problem. Keep manifest-aligned normalized hit rectangles converted with the live render extent.
 
 Sentinel 0.5.32 and newer add the independent panel presentation contract:
 
@@ -720,7 +708,7 @@ float4 main(VS_OUTPUT In) : SV_TARGET0 {
 
 **Pattern**: Compute pass writes color+depth to intermediate (depth in alpha), then two trivial pixel shader passes split channels for separate output pins. See `examples/wave_field/` beside this skill for a working example.
 
-## High Bit Depth Passes (Phase 46)
+## High Bit Depth Passes
 
 By default every pass render target is 8-bit (`B8G8R8A8_UNORM`). To run a pass at higher precision (for example to manipulate a 32-bit float UV map without quantizing it), declare a format.
 
@@ -747,14 +735,14 @@ Resolution order for a pass's format: pass `format:` → manifest `working_forma
 
 Canonical example: `examples/uv_remap_bitdepth/` (32-bit float UV in → float intermediate RT → 8-bit pattern out).
 
-## Node-to-Node Float Output (Phase 47)
+## Node-to-Node Float Output
 
 A Module can publish its output as 16/32-bit float to the **next graph node**, so an intermediary Module can crop/select a region of a float input and hand float data downstream, where a later node processes it and outputs 8-bit. Declare a root `output_format:`.
 
 ```yaml
 # Node A: crop a float input and publish float to the next node.
 output_format: RGBA32F       # RGBA8 (default) | RGBA16F | RGBA32F | R32F | R16F | RG16F | RG32F | R8
-working_format: RGBA32F      # intermediate passes (Phase 46)
+working_format: RGBA32F      # high-precision intermediate passes
 
 passes:
   - name: crop
@@ -763,7 +751,7 @@ passes:
 ```
 
 **Rules:**
-- **`output_format:` is the single source of truth** for the node's output texture. It drives both the output-texture allocation and the final-output-pass format, so they always agree — the final pass inherits `output_format` with no per-pass `format:` and no warning. (This is why the Phase 46 "keep the output pass 8-bit" rule above only applies when `output_format` is unset / 8-bit.)
+- **`output_format:` is the single source of truth** for the node's output texture. It drives both the output-texture allocation and the final-output-pass format, so they always agree — the final pass inherits `output_format` with no per-pass `format:` and no warning. The earlier "keep the output pass 8-bit" rule applies only when `output_format` is unset or `RGBA8`.
 - **It is strictly opt-in.** Omit `output_format:` (or set `RGBA8`) and the node publishes 8-bit exactly as before. Only set it when a downstream node needs the float data.
 - **Float auto-converts to 8-bit at the edges.** When a float node is screenshotted, captured, recorded (NVENC), or routed to an NDI output, the runtime converts to 8-bit at that boundary, so those paths are always safe. A Spout output can pass the float through. Plan for the chain to end in an 8-bit node for normal display.
 - **Preview caveat.** Float values above 1.0 clamp to white in the Properties/graph preview (the preview is a UNORM view). Fine for 0..1 UV/crop content.

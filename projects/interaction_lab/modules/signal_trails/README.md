@@ -1,8 +1,8 @@
 # Signal Trails
 
 Four connected trails over any scalar you can route into a parameter. This is
-the second consumer of `modules/_shared/ui/sui3_trace.hlsli` and the phase's
-reusability proof: the component is used **unmodified**.
+the second consumer of `modules/_shared/ui/sui3_trace.hlsli` and demonstrates
+that the trace helper can be reused unchanged inside the same project.
 
 It is deliberately as unlike Data Scope as the component allows.
 

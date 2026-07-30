@@ -14,8 +14,8 @@
 
 float4 sdPx(float4 n, float2 R) { return float4(n.x * R.x, n.y * R.y, n.z * R.x, n.w * R.y); }
 
-// Integer text scale from the smaller axis ratio. Same rule as the other v3
-// stations; see phase doc Amendment 3 for why height alone is wrong.
+// Integer text scale from the smaller axis ratio; height alone is not enough
+// for wide or narrow dock layouts.
 float sdTextScale(float2 R) {
     float k = min(R.x / 1280.0, R.y / 720.0);
     return k >= 2.6 ? 3.0 : k >= 1.7 ? 2.0 : 1.0;

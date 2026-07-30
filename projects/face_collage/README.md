@@ -44,6 +44,32 @@ All referenced Module folders are bundled under `modules/`. The final compositio
 - If StreamDiff reports a missing or incompatible engine, open Sentinel's engine status and install the registered StreamDiff pack for this GPU architecture. The node should report the missing pack explicitly; downstream nodes may hold or show black, but the project should remain responsive.
 - If the final output is black with both inputs ready, inspect `Face_Cutout`, `Accum`, and `Overlay_Comp` in that order, then confirm `Face Collage Group Output` is enabled. No extra Spout/output node is required.
 
-## Proof
+## Runtime proof
 
-The compact runtime proof is in `proof/`, including the final capture, graph, links, profile, pipeline health, and active-expression report.
+Capture the Group Output and inspect graph health, links, profile, and active
+expressions in the running build. Generated proof media is intentionally not
+distributed with the project.
+
+## Component map
+
+There is no bundled media file; provide a meaningful live camera or video input
+to the face-analysis route.
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Face_Guide` | Module | authored parameters | initial face guide image |
+| `SD_Face` | StreamDiff | `Face_Guide` | photographic generated face |
+| `Face_DS` | Module | `SD_Face` | analysis-sized face texture |
+| `Face_Track` | MediaPipe | `Face_DS` | face landmarks and tracking records |
+| `Face_Stitch` | Module | face image and tracking records | aligned stitch/control image |
+| `Face_Cutout` | Module | `Face_DS` and `Face_Stitch` | isolated face layer |
+| `Accum` | Module | `Face_Cutout` | persistent collage history |
+| `Clone_Overlay` | Module | `Face_Cutout` | current clone/guide overlay |
+| `Overlay_Comp` | Module | accumulation, cutout, and overlay | assembled collage |
+| `Editorial_Post` | Module | `Overlay_Comp` | final editorial treatment |
+| `Prompt_LFO` | Module | time and authored controls | prompt/modulation control outputs |
+| `Face_Collage_Group_Output` | Group Output | `Editorial_Post` | reviewed Scene Group texture |
+
+StreamDiff needs a compatible generation pack. MediaPipe itself does not.
+Study the separation between tracking, isolation, accumulation, and editorial
+composition; invent a new visual system for new source material.

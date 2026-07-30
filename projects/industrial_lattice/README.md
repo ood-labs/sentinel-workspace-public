@@ -47,3 +47,13 @@ then reduce march steps or march distance and disable shadows, bolts, or surface
 detail. AA is an `N x N` control, so its cost grows quadratically.
 
 No engine packs are required.
+
+## Component map
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `lattice` | Module | native viewport camera input | repeated structural SDF scene |
+| `Post` | Module | `lattice` texture | final monochrome grade |
+
+`Post` is the reviewed output. Study the clarity of a compact generator/post
+route and the honest choice not to add object picking to infinite repetition.

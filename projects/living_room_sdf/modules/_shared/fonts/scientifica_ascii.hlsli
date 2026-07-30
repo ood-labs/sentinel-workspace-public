@@ -284,5 +284,3 @@ int scientificaRowForFace(int face, int code, int row) {
 }
 int scientificaAdvance(int code) { return 5; }
 #endif
-
-

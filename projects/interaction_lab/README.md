@@ -78,7 +78,7 @@ Data outputs — `Spline Headers`, `Spline Knots`, `Sampled Path` (512 PNode-com
 `Editor Selection` — are unchanged from the previous editor.
 
 `Spline_Output` is deliberately unchanged from before the rebuild and is byte-identical to
-`modules/spline_render`. It consumes the desk's `Sampled Path` port and is the proof the contract
+`modules/Spline_Output`. It consumes the desk's `Sampled Path` port and is the proof the contract
 survived: a downstream consumer written against the old editor still works against the new one.
 
 Undo is worth understanding before you copy it. An edit that undo must reverse is **armed on one
@@ -198,3 +198,23 @@ machine-generated proof bundles are intentionally excluded from the public proje
 Numeric transform entry belongs on that deferred list too, and an earlier draft of this file dropped
 it from the list without saying so while adding the feature above. It is present, deliberately, for
 the reason given there. The rest of the list stands.
+
+## Component map
+
+This is a set of independent teaching stations, not one program-output chain.
+
+| Component | Type | Receives | Publishes or contributes |
+| --- | --- | --- | --- |
+| `Style_Authority` | Module | Canvas control gestures | responsive style and layout station |
+| `Motion_Console` | Module | Canvas gestures and time | scalable LFO panel and scalar control outputs |
+| `Spline_Desk` | Module | pointer/keyboard events | durable spline state and sampled path records |
+| `Spline_Output` | Module | `Spline_Desk` sampled path | downstream rendered proof of the data contract |
+| `Gizmo_Desk` | Module | selection and viewport edits | durable object transforms and camera-aware gizmos |
+| `Scope_Audio` | Audio In | Windows default loopback endpoint | PCM, Spectrum, Mel Bands, level, and peak |
+| `Data_Scope` | Module | `Scope_Audio` texture/data inputs | auto-ranging low/mid/high traces |
+| `Signal_Trails` | Module | scalar expression drivers | four cook-rate trace lanes |
+
+The saved workspace focuses the relevant station rather than defining a Group
+Output. Audio In requires no engine pack. Study the interaction contracts and
+responsive layout decisions; reimplement the needed interaction in the owning
+project instead of copying these station Modules.
