@@ -21,7 +21,7 @@ void main(uint3 tid:SV_DispatchThreadID){
     if(tid.x>=(uint)_Resolution.x||tid.y>=(uint)_Resolution.y)return;
     float2 R=_Resolution.xy,P=(float2)tid.xy+0.5,uv=P/R;
     float k=min(R.x/1280.0,R.y/720.0);
-    float sB=k>=2.6?3.0:k>=1.7?2.0:1.0,sN=2.0*sB,sT=3.0*sB;
+    float sB=k>=2.6?3.0:k>=1.7?2.0:1.0,sN=2.0*sB,sT=1.5*sB;
     float pad=max(10.0,0.022*R.x);
     Sui3Theme T=sui3Theme(SUI3_AMBER);
     ArchitectureEditorState editor=EditorStateBuffer[0];
@@ -57,7 +57,7 @@ void main(uint3 tid:SV_DispatchThreadID){
     if(R.x>=700.0){
         col+=T.ink*sui3TextLong(P,float2(pad,pad),sT,
             S_A,S_R,S_C,S_H,S_I,S_T,S_E,S_C,S_T,S_U,S_R,S_E,S_SP,S_P,S_L,S_A,S_N,0,0,0,0,0,0,0);
-        col+=T.dim*sui3TextLong(P,float2(pad,pad+41.0*sB),sB,
+        col+=T.dim*sui3TextLong(P,float2(pad,pad+18.0*sB),sB,
             S_M,S_I,S_D,S_D,S_L,S_E,S_SP,S_P,S_A,S_N,S_SP,S_SL,S_SP,S_W,S_H,S_E,S_E,S_L,S_SP,S_Z,S_O,S_O,S_M,0);
         col+=T.accent*sui3DigitsRight(P,R.x-pad,pad,sN,13,2);
     }else{
@@ -65,7 +65,7 @@ void main(uint3 tid:SV_DispatchThreadID){
         col+=T.accent*sui3DigitsRight(P,R.x-pad,pad,sN,13,2);
     }
     if(R.x>=700.0)
-        col+=T.dim*sui3TextLong(P,float2(0.62*R.x,pad+41.0*sB),sB,
+        col+=T.dim*sui3TextLong(P,float2(0.62*R.x,pad+18.0*sB),sB,
             S_S,S_H,S_E,S_L,S_L,S_SP,S_SL,S_SP,S_E,S_N,S_T,S_R,
             S_Y,S_SP,S_SL,S_SP,S_F,S_L,S_O,S_O,S_R,S_SP,S_SL,0);
     OutputUAV[tid.xy]=float4(saturate(col),1.0);

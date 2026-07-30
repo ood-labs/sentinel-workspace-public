@@ -1,0 +1,121 @@
+{
+  "project": "projects/living_room_sdf/living_room_sdf.sentinel",
+  "source_commit": "cbc1e0f2726196af05fbd2f2e7eb30df50ab0375",
+  "local_overlay_commit_or_diff": "User-approved saved graph plus compact Architecture and Furnishings Canvas headers on 2026-07-30",
+  "promoted_paths": [
+    "projects/living_room_sdf/living_room_sdf.sentinel",
+    "projects/living_room_sdf/modules/LR_Architecture/preview.hlsl",
+    "projects/living_room_sdf/modules/LR_Architecture/types.hlsli",
+    "projects/living_room_sdf/modules/LR_Furnishings/preview.hlsl"
+  ],
+  "structure": {
+    "pipeline_count": 6,
+    "healthy_pipelines": 6,
+    "scene_groups": 1,
+    "scene_group_name": "LIVING ROOM SDF",
+    "child_groups": 0,
+    "group_outputs": 0,
+    "exposed_controls": 6,
+    "data_driven_renderer_inputs": 4
+  },
+  "camera": {
+    "owner": "LR_SDF_Renderer",
+    "features": [
+      "camera"
+    ],
+    "external_camera_ref": false,
+    "saved_mode": "Fly",
+    "contract": "The renderer owns the injected native camera; no camera controls are exposed on the Scene Group."
+  },
+  "editors": {
+    "furnishings": {
+      "panel_mode": "canvas",
+      "resolution_mode": "follow_panel",
+      "interactions_preserved": [
+        "selection",
+        "move",
+        "rotate",
+        "snap",
+        "pan",
+        "zoom",
+        "fit",
+        "reset"
+      ],
+      "approved_change": "Reduced the responsive plan title to half scale and separated CLICK / DRAG TO EDIT from the title."
+    },
+    "architecture": {
+      "panel_mode": "canvas",
+      "resolution_mode": "follow_panel",
+      "interactions_preserved": [
+        "middle-drag pan",
+        "wheel zoom"
+      ],
+      "approved_change": "Reduced the title to half scale and moved the plan boundary from 18% to 9% so the viewport begins immediately below the compact instruction header.",
+      "compile": {
+        "status": "pass",
+        "passes": 3,
+        "lints": []
+      }
+    }
+  },
+  "presets": {
+    "scene_group": [
+      "Fidelity",
+      "Performance",
+      "Daylight",
+      "Warm Evening",
+      "Gallery",
+      "Material Study"
+    ],
+    "project_node": [
+      "Conversation Plan",
+      "Offset Sofa Study"
+    ]
+  },
+  "assets": {
+    "active_graph_external_media_references": 0,
+    "procedural_scene": true,
+    "legacy_unreferenced_media": [
+      {
+        "path": "projects/living_room_sdf/images/abandoned_factory00.jpg",
+        "bytes": 616045,
+        "copies": 4
+      },
+      {
+        "path": "projects/living_room_sdf/videos/6616343-hd_1920_1080_25fps_vert.mp4",
+        "bytes": 30013125,
+        "copies": 3
+      }
+    ],
+    "redistribution_note": "The approved active graph does not reference these legacy media files. Their final keep/remove and license audit remains part of release-candidate packaging; no visible project asset was removed at G7."
+  },
+  "runtime": {
+    "healthy_nodes": 6,
+    "unhealthy_nodes": 0,
+    "output_resolution": "1280x720",
+    "observed_graph_cadence_hz": 58.0,
+    "renderer_gpu_ms_sample": 7.1921,
+    "graph_frame_ms_sample": 4.3256,
+    "hotspots": []
+  },
+  "proof": {
+    "bundle": "captures/phase6_living_room_approved",
+    "furnishings_before": "captures/phase6_lr_furnishings_title_before.png",
+    "furnishings_after": "captures/phase6_lr_furnishings_title_after.png",
+    "architecture_before": "captures/phase6_lr_architecture_title_before.png",
+    "architecture_after": "captures/phase6_lr_architecture_header_tightened.png",
+    "project_saved": true,
+    "all_nodes_running": true
+  },
+  "portability": {
+    "module_paths": "relative projects/living_room_sdf/modules/* paths",
+    "engine_packs_required": [],
+    "validator_passed": false,
+    "notes": "Full release-set validation and the unreferenced-media disposition remain part of the pending G1/G13 flow."
+  },
+  "human_gate": {
+    "gate_id": "G7",
+    "status": "approved",
+    "notes": "The user reviewed the live room and both plan editors, approved the compact header treatment and tighter Architecture viewport, and explicitly approved the project."
+  }
+}

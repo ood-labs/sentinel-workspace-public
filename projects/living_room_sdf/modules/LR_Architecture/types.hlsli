@@ -1,7 +1,7 @@
 #ifndef LIVING_ROOM_ARCHITECTURE_TYPES_HLSLI
 #define LIVING_ROOM_ARCHITECTURE_TYPES_HLSLI
 
-static const float ARCH_PLAN_TOP = 0.18;
+static const float ARCH_PLAN_TOP = 0.09;
 
 struct PNode {
     float3 position; float scale;

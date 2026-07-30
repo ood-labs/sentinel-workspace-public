@@ -41,7 +41,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
     float k = min(R.x / 1280.0, R.y / 720.0);
     float sB = k >= 2.6 ? 3.0 : k >= 1.7 ? 2.0 : 1.0;
     float sN = 2.0 * sB;
-    float sT = 3.0 * sB;
+    float sT = 1.5 * sB;
     float pad = max(12.0, 0.026 * R.x);
 
     Sui3Theme T = sui3Theme(SUI3_AMBER);
@@ -147,10 +147,10 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
         // Three measured text scales, attached to real selection state.
         float titleY = toolbarBottom + 13.0 * sB;
-        float titleW = R.x >= 700.0 ? 255.0 * sB : 126.0 * sB;
+        float titleW = R.x >= 700.0 ? 138.0 * sB : 72.0 * sB;
         col = lerp(col, T.field,
                    0.90 * sui3RectIn(P, float4(pad - 5.0*sB, titleY - 5.0*sB,
-                                                pad + titleW, titleY + 43.0*sB)));
+                                                pad + titleW, titleY + 27.0*sB)));
         if (R.x >= 700.0) {
             col += T.ink * sui3TextLong(P, float2(pad, titleY), sT,
                 S_F,S_U,S_R,S_N,S_I,S_S,S_H,S_I,S_N,S_G,S_S,S_SP,
@@ -159,7 +159,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
             col += T.ink * sui3Text(P, float2(pad, titleY), sT,
                 S_R,S_O,S_O,S_M,S_SP,S_P,S_L,S_A,S_N,0,0,0);
         }
-        col += T.dim * sui3TextLong(P, float2(pad, titleY + 27.0*sB), sB,
+        col += T.dim * sui3TextLong(P, float2(pad, titleY + 16.0*sB), sB,
             S_C,S_L,S_I,S_C,S_K,S_SP,S_SL,S_SP,S_D,S_R,S_A,S_G,
             S_SP,S_T,S_O,S_SP,S_E,S_D,S_I,S_T,0,0,0,0);
         if (_ViewportSelectionMeta.y > 0u) {
