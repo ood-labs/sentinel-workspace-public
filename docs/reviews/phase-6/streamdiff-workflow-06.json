@@ -1,0 +1,41 @@
+{
+  "project": "projects/streamdiff_workflows/06_procedural_warp_map.sentinel",
+  "source_commit": "7bb6323",
+  "workflow": "06_procedural_warp_map",
+  "source_resolution": "Kept the committed workflow and saved the exact user-adjusted layout.",
+  "graph": {
+    "pipeline_count": 2,
+    "warp_generator": "Expressive_Flow_Layers",
+    "final_pipeline": "streamdiff_0",
+    "connection": "Expressive_Flow_Layers:Out -> streamdiff_0:Warp Map"
+  },
+  "approved_state": {
+    "prompt": "joshua tree state park, detailed rock formations, high detail, hyper realistic, 4k",
+    "warp_enabled": true,
+    "warp_scale": 0.1,
+    "controlnet_enabled": true,
+    "controlnet_auto_depth": true,
+    "depth_parallax": true,
+    "layout_saved": true
+  },
+  "runtime": {
+    "healthy": true,
+    "frames_progressing": true,
+    "has_preview": true,
+    "streamdiff_output_resolution": "1792x1024",
+    "warp_map_resolution": "1920x1080",
+    "module_compile_ok": true,
+    "unresolved_project_dirs": []
+  },
+  "proof": {
+    "bundle": "captures/phase6_streamdiff_workflow_06_approved",
+    "full_proof_bundle": "captures/phase6_streamdiff_workflow_06_approved/proof_bundle",
+    "project_saved": true,
+    "module_bundled": true
+  },
+  "human_gate": {
+    "gate_id": "G8",
+    "workflow_decision": "approved",
+    "notes": "The user adjusted only the layout, confirmed the workflow was otherwise fine, and explicitly approved it."
+  }
+}
