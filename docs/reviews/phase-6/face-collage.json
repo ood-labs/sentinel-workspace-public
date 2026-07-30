@@ -1,0 +1,133 @@
+{
+  "project": "projects/face_collage/face_collage.sentinel",
+  "source_commit": "91fc414e7bb95e663596ce4d3b21d50817213b46",
+  "local_overlay_commit_or_diff": "User-tuned saved graph plus responsive Prompt_LFO Canvas refresh on 2026-07-30",
+  "promoted_paths": [
+    "projects/face_collage/README.md",
+    "projects/face_collage/face_collage.sentinel",
+    "projects/face_collage/modules/Prompt_LFO/"
+  ],
+  "structure": {
+    "pipeline_count": 12,
+    "healthy_pipelines": 12,
+    "scene_groups": 1,
+    "scene_group_name": "FACE COLLAGE",
+    "group_outputs": 1,
+    "exposed_controls": 6,
+    "presets": [
+      "Performance",
+      "Editorial Drift",
+      "Temporal Echo",
+      "Dense Study"
+    ],
+    "expression_drivers": 1
+  },
+  "lfo": {
+    "behavior_changed": false,
+    "parameters": [
+      "waveform",
+      "rate",
+      "range",
+      "phase_offset"
+    ],
+    "control_outputs": [
+      "position",
+      "value",
+      "phase"
+    ],
+    "driver": "Prompt_LFO/control_outputs/position -> SD_Face/parameters/prompt_position",
+    "visualization": [
+      "complete selected waveform",
+      "quarter-cycle guides",
+      "completed/upcoming phase contrast",
+      "live phase cursor",
+      "current-value point"
+    ],
+    "panel": {
+      "declared_mode": "canvas",
+      "effective_mode": "canvas",
+      "resolution_mode": "follow_panel",
+      "output": "Display",
+      "content_size": [
+        530,
+        404
+      ],
+      "render_size": [
+        530,
+        404
+      ],
+      "deferred_resource_count": 0
+    },
+    "compile": {
+      "status": "pass",
+      "passes": 2,
+      "parameters": 4,
+      "lints": []
+    }
+  },
+  "performance": {
+    "baseline_samples": [
+      {
+        "proof": "captures/phase6_face_collage_pre_lfo_refresh",
+        "pipeline_ms": 28.5071,
+        "streamdiff_wall_ms": 23.2854,
+        "mediapipe_wall_ms": 4.1385,
+        "lfo_wall_ms": 0.3248
+      }
+    ],
+    "candidate_samples": [
+      {
+        "proof": "captures/phase6_face_collage_approved",
+        "pipeline_ms": 34.2213,
+        "streamdiff_wall_ms": 25.1384,
+        "mediapipe_wall_ms": 8.2429,
+        "lfo_wall_ms": 0.3481
+      }
+    ],
+    "dominant_nodes": [
+      "SD_Face",
+      "Face_Track"
+    ],
+    "visual_diff": "Not treated as a static pixel metric because StreamDiff, tracking, accumulation, and the prompt LFO are all temporally active.",
+    "accepted_tradeoff": "Preserve the user's exact generated portrait, collage density, tracking treatment, and responsive LFO panel. No quality-reduction candidate was accepted; measured variance remains dominated by StreamDiff and MediaPipe.",
+    "material_improvement_claimed": false
+  },
+  "runtime": {
+    "healthy": true,
+    "output_resolution": "720x1280",
+    "observed_graph_cadence_hz": 28.1,
+    "motion_proof": {
+      "path": "captures/phase6_face_collage_approved/motion.mp4",
+      "duration_seconds": 3.935089,
+      "frames": 125,
+      "resolution": "720x1280",
+      "average_frame_rate": 31.76
+    }
+  },
+  "proof": {
+    "bundle": "captures/phase6_face_collage_approved",
+    "lfo_canvas": "captures/phase6_face_collage_approved/lfo_canvas.png",
+    "clean_compile": true,
+    "all_nodes_running": true,
+    "project_saved": true
+  },
+  "portability": {
+    "module_paths": "relative projects/face_collage/modules/* paths",
+    "engine_packs_required": [
+      "StreamDiff pack compatible with the installed GPU",
+      "MediaPipe face tracking support"
+    ],
+    "validator_passed": false,
+    "notes": "Full release-set validation remains part of the pending G1/G13 flow."
+  },
+  "contract_override": {
+    "original_pass_criterion": "Accept a candidate with a material repeatable cadence improvement.",
+    "approved_result": "Keep the current measured graph with no visual-quality reduction.",
+    "reason": "The user explicitly finalized the project in its current state after tuning the look and approving the responsive LFO Canvas."
+  },
+  "human_gate": {
+    "gate_id": "G6",
+    "status": "approved",
+    "notes": "The user described the look as dialed in, approved the refreshed LFO panel, and explicitly requested finalization of the current project state."
+  }
+}

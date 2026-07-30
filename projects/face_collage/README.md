@@ -17,6 +17,19 @@ The other group presets are:
 
 The Scene Group contains exactly one Group Output, which is the sole final endpoint for wireless Scene Switcher collection.
 
+## Prompt LFO panel
+
+`Prompt_LFO` drives StreamDiff's prompt-bank position through one visible
+expression. Open the node to see a full-bleed oscilloscope Canvas with the
+selected waveform, completed and upcoming phase, quarter-cycle guides, a live
+phase cursor, and the current value point.
+
+The Canvas uses `follow_panel`, so its real render target tracks the dock
+content size instead of stretching the default 320 x 96 texture. Stroke and
+marker weights scale within a restrained pixel range as the panel grows. Exact
+waveform, rate, range, and phase controls remain in Properties; the Canvas is a
+responsive visualization rather than a duplicate control surface.
+
 ## Requirements
 
 - StreamDiff engine pack compatible with the installed GPU.

@@ -3,6 +3,11 @@ version: "0.1"
 mode: generator
 resolution: [320, 96]
 
+panel:
+  mode: canvas
+  output: Display
+  resolution: follow_panel
+
 # Self-animating LFO on _Time. Publishes control outputs: position (value*range), value (0..1),
 # phase. Drive any ranged param with ref("<id>/control_outputs/position").
 
