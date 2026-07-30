@@ -48,6 +48,7 @@ projects/*
 !projects/kidpix_canvas/
 !projects/fruit_atlas_scatter/
 !projects/interaction_lab/
+!projects/camera_reference/
 !projects/living_room_sdf/
 !projects/face_collage/
 !projects/industrial_lattice/

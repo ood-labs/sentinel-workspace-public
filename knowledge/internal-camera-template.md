@@ -92,4 +92,6 @@ A 3D Module is not complete merely because it renders an image. Before continuin
 
 If the preview does not respond correctly to the internal camera, stop and fix the renderer before adding downstream nodes. A StateTree write, exposed camera parameter, compile success, or nonblank preview is not camera proof.
 
-The original focused example remains `projects/procedural_building_system/CAMERA-TEMPLATE.md`; this knowledge file is the workspace-wide canonical contract.
+The focused loadable example is
+`projects/camera_reference/camera_reference.sentinel`; this knowledge file is
+the workspace-wide canonical contract.

@@ -1,0 +1,117 @@
+{
+  "project": "projects/camera_reference/camera_reference.sentinel",
+  "source_commit": "56708de99e7e9c382848caaf1393fff308128bd7",
+  "local_overlay_commit_or_diff": "New standalone reference authored and user-tuned at G3 on 2026-07-30",
+  "promoted_paths": [
+    "projects/camera_reference/README.md",
+    "projects/camera_reference/camera_reference.sentinel",
+    "projects/camera_reference/modules/camera_reference/",
+    "knowledge/internal-camera-template.md"
+  ],
+  "structure": {
+    "pipeline_count": 1,
+    "pipeline": "Native_Camera_Reference",
+    "camera_nodes": 0,
+    "scene_groups": 0,
+    "group_outputs": 0,
+    "scene_geometry": "none",
+    "rendering": "analytic native-camera ray/ground-plane intersection with a fading grid"
+  },
+  "camera_contract": {
+    "features_camera": true,
+    "viewport_camera_interaction": true,
+    "camera_ref": "",
+    "ray_source": "_InvViewProjMatrix with DirectX Y flip and _CameraPos",
+    "parallel_authored_camera": false,
+    "saved_mode": "Orbit",
+    "saved_pose": {
+      "position": [5.224679, 2.533533, -2.674210],
+      "target": [0.0, 0.0, 0.0],
+      "distance": 6.392766,
+      "yaw": -1.097720,
+      "pitch": -0.407497,
+      "fov_degrees": 60.0
+    }
+  },
+  "approved_look": {
+    "background": "true black",
+    "grid": "thin neutral gray analytic grid",
+    "axes": "X red, Z blue",
+    "line_width": 0.58,
+    "grid_strength": 0.138,
+    "grid_fade": 0.15,
+    "axis_strength": 0.72,
+    "anti_aliasing": 1.0
+  },
+  "compile": {
+    "status": "pass",
+    "passes": 4,
+    "parameters": 7,
+    "lints": []
+  },
+  "runtime": {
+    "healthy": true,
+    "health_reasons": [],
+    "resolution": "1280x720",
+    "format": "BGRA8",
+    "cook_hz": 1377.0,
+    "frames_processed": 1014922
+  },
+  "performance": {
+    "candidate_samples": [
+      {
+        "capture": "captures/phase6_camera_reference_approved_orbit",
+        "total_frame_ms": 0.6808,
+        "pipeline_wall_ms": 0.0253,
+        "node_wall_ms": 0.0197,
+        "gpu_timestamp_ms": 0.0189
+      }
+    ],
+    "hotspots": [],
+    "notes": "The reference contains no raymarch or object geometry; the color path adds one lightweight edge-adaptive pass while Depth remains untouched."
+  },
+  "interactions": [
+    {
+      "gesture": "Native Fly navigation",
+      "expected_visible_change": "RMB/WASD/wheel move and orient the native camera over the grid",
+      "observed": "Passed in the user's hands before final mode selection."
+    },
+    {
+      "gesture": "Native Orbit navigation",
+      "expected_visible_change": "Orbit rotates and dollies around the origin while the red/blue axes and grid retain direction",
+      "observed": "Passed in the user's hands; the user selected Orbit and the current pose as the approved saved default."
+    }
+  ],
+  "output_alignment": {
+    "outputs": [
+      "Color",
+      "Depth"
+    ],
+    "current_view": [
+      "captures/phase6_camera_reference_approved_orbit/output.png",
+      "captures/phase6_camera_reference_approved_orbit/depth.png"
+    ],
+    "alternate_view": [
+      "captures/phase6_camera_reference_approved_orbit/alternate_color.png",
+      "captures/phase6_camera_reference_approved_orbit/alternate_depth.png"
+    ],
+    "assertion": "Color and Depth derive from the same analytic camera-dependent scene pass and remained spatially aligned at both viewpoints."
+  },
+  "portability": {
+    "project_dir": "modules/camera_reference",
+    "absolute_paths": [],
+    "engine_packs_required": [],
+    "validator_passed": false,
+    "notes": "The project is self-contained and uses a relative bundled Module path. Full release-set validation remains part of the pending G1/G13 flow."
+  },
+  "contract_override": {
+    "original_phase_default": "Fly",
+    "approved_default": "Orbit",
+    "reason": "The user explicitly requested that the reference save in the reviewed Orbit pose."
+  },
+  "human_gate": {
+    "gate_id": "G3",
+    "status": "approved",
+    "notes": "User confirmed Fly and Orbit work, tuned the minimal grid reference, selected the exact Orbit pose, and explicitly approved the project."
+  }
+}
