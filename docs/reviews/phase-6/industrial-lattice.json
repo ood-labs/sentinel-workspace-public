@@ -1,0 +1,110 @@
+{
+  "project": "projects/industrial_lattice/industrial_lattice.sentinel",
+  "source_commit": "e2848dbadf8c231ba5462e5dfec9f29110228f96",
+  "local_overlay_commit_or_diff": "The exact user-arranged live project saved at G4 on 2026-07-30",
+  "promoted_paths": [
+    "projects/industrial_lattice/README.md",
+    "projects/industrial_lattice/industrial_lattice.sentinel",
+    "projects/industrial_lattice/modules/"
+  ],
+  "approved_structure": {
+    "pipelines": [
+      "lattice",
+      "Post"
+    ],
+    "video_path": "lattice -> Post",
+    "node_presets": [
+      "Industrial Fidelity Core",
+      "Industrial Monochrome Finish"
+    ],
+    "scene_groups": 0,
+    "group_outputs": 0,
+    "notes": "The user explicitly approved the simplified two-node graph as the exact desired version."
+  },
+  "compile": {
+    "modules": [
+      "modules/lattice",
+      "modules/post_3"
+    ],
+    "status": "pass; both bundled modules passed offline compile_check with zero lints and both live nodes reported compile_ok=true"
+  },
+  "runtime": {
+    "healthy": true,
+    "health_reasons": [],
+    "frames_processed": {
+      "lattice": 28288,
+      "Post": 29046
+    },
+    "resolution": "1280x720",
+    "format": "BGRA8",
+    "cook_hz": 61.0
+  },
+  "performance": {
+    "target": {
+      "resolution": "1280x720",
+      "responsiveness_check": "Native camera and node Properties remain immediate in the compact graph"
+    },
+    "candidate_samples": [
+      {
+        "capture": "captures/phase6_industrial_lattice_approved_final",
+        "pipeline_wall_ms": 0.0561,
+        "total_frame_ms": 1.656,
+        "total_gpu_timestamp_ms": 7.7132,
+        "lattice_gpu_timestamp_ms": 7.6904,
+        "Post_gpu_timestamp_ms": 0.0228,
+        "cook_hz": 61.0
+      }
+    ],
+    "hotspots": [],
+    "interaction_response": "The user directly adjusted the live camera, lattice, and post settings and approved the resulting saved state."
+  },
+  "interactions": [
+    {
+      "gesture": "Native renderer camera navigation and framing",
+      "expected_visible_change": "The viewpoint moves through the repeated steel structure without a separate camera node",
+      "observed": "Passed in the user's hands; the approved save retains the final native Fly-camera position, orientation, speed, and 120-degree FOV."
+    },
+    {
+      "gesture": "Lattice and post Properties adjustments",
+      "expected_visible_change": "Structure, surface, atmosphere, exposure, contrast, bloom, and finish remain directly editable",
+      "observed": "Passed in the user's hands; the final downstream frame is a nonblank, legible monochrome steel lattice with strong depth."
+    }
+  ],
+  "captures": [
+    {
+      "path": "captures/phase6_industrial_lattice_approved",
+      "content_assertion": "Approved raw lattice output and whole-graph health/profile evidence"
+    },
+    {
+      "path": "captures/phase6_industrial_lattice_approved_final",
+      "content_assertion": "Approved downstream Post output, exact two-node graph, link summary, node health, and final profile"
+    }
+  ],
+  "portability": {
+    "active_module_paths": [
+      "modules/lattice",
+      "modules/post_3"
+    ],
+    "absolute_paths": [],
+    "forbidden_artifacts": [],
+    "validator_passed": false,
+    "notes": "Active saved paths are relative and both bundled modules compile. Full release-set validation remains part of the pending G1/G13 flow."
+  },
+  "documentation": {
+    "requirements_current": true,
+    "controls_current": true,
+    "remix_path_current": true
+  },
+  "release_contract_followup": {
+    "motion_recording": "not captured in this approval slice",
+    "role_specific_scene_group": "not present in the user-approved simplified graph",
+    "group_output": "not present in the user-approved simplified graph",
+    "group_presets": "not present in the user-approved simplified graph",
+    "disposition": "Preserve the exact approved creative state. Reconcile automation expectations during the pending release-lineup/validation gates without changing this look."
+  },
+  "human_gate": {
+    "gate_id": "G4",
+    "status": "approved",
+    "notes": "User explicitly stated that Industrial Lattice is exactly how they want it and approved it."
+  }
+}
