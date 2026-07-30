@@ -55,11 +55,12 @@
       "official_validator_passed": true,
       "release_audit_passed": true,
       "exact_set_plan_passed": true,
+      "verified_commit": "9d0f5ce99eaefc131c37562eb266d144674203a6",
       "root_module_files": 0,
       "project_count": 12,
       "manifest_files": 508,
       "manifest_orphan_candidates": 1372,
-      "status": "source checkout passed the exact project, zero-root-module, portability, product-surface, and manifest audits; final fresh-checkout proof pending"
+      "status": "fresh clone passed the exact project, zero-root-module, portability, product-surface, fixture, and manifest audits"
     }
   },
   "assets": {
