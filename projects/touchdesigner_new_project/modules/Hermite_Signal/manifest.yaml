@@ -1,0 +1,75 @@
+name: "TD Hermite Signal"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+features: [noise]
+
+panel:
+  mode: canvas
+  output: "Signal Preview"
+  resolution: follow_panel
+
+parameters:
+  - { name: seed, display: "Seed", type: int, min: 0, max: 999, default: 1, group: "Noise" }
+  - { name: period_seconds, display: "Period (Seconds)", type: float, min: 0.1, max: 8.0, default: 1.0, group: "Noise" }
+  - { name: harmonics, display: "Harmonics", type: int, min: 0, max: 4, default: 1, group: "Noise" }
+  - { name: roughness, display: "Roughness", type: float, min: 0.0, max: 1.0, default: 0.25, group: "Noise" }
+  - { name: exponent, display: "Exponent", type: float, min: 0.1, max: 4.0, default: 1.0, group: "Noise" }
+  - { name: amplitude, display: "Amplitude", type: float, min: 0.0, max: 2.0, default: 1.0, group: "Signal" }
+  - { name: offset, display: "Offset", type: float, min: -1.0, max: 2.0, default: 0.5, group: "Signal" }
+  - { name: drift_speed, display: "Drift (Periods / Second)", type: float, min: -0.5, max: 0.5, default: 0.20, group: "Motion" }
+  - { name: run, display: "Run", type: bool, default: true, flags: button, group: "Motion" }
+  - { name: reset_phase, display: "Reset Phase (Edge)", type: bool, default: false, flags: button, group: "Motion" }
+
+buffers:
+  - { name: phase_state, structured: true, element_size: 16, element_count: 1, persistent: true }
+  - { name: signal_samples, structured: true, element_size: 16, element_count: 128 }
+
+state_buffers:
+  - name: phase_state
+    max_elements: 1
+    schema:
+      - { name: phase_periods, type: float }
+      - { name: running, type: float }
+      - { name: speed, type: float }
+      - { name: reserved, type: float }
+
+passes:
+  - name: clock
+    shader: clock.hlsl
+    target: cs_5_0
+    time_dependent: true
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: "buffer:phase_state"
+
+  - name: generate
+    shader: generate.hlsl
+    target: cs_5_0
+    dispatch: [2, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:phase_state" }
+    output: "buffer:signal_samples"
+
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:signal_samples" }
+
+outputs:
+  - { name: "Signal Preview", pass: preview }
+
+data_outputs:
+  - name: "Signal Samples"
+    buffer: signal_samples
+    schema:
+      - { name: sample_index, type: float }
+      - { name: sample_u, type: float }
+      - { name: value, type: float }
+      - { name: active, type: float }
