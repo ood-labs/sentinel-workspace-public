@@ -420,7 +420,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1785422685924,
+  "saved_at_ms": 1785423398084,
   "sources": [
     {
       "captureFrameRate": 0,
@@ -430,7 +430,7 @@
       "id": "Jellybeans_Image",
       "imageFitMode": 0,
       "imageHeight": 720,
-      "imagePath": "images/Jellybeans.jpg",
+      "imagePath": "images/jellybeans.png",
       "imageWidth": 1280,
       "loop": true,
       "name": "Jellybeans Image",
@@ -457,7 +457,7 @@
     },
     "Hermite_Signal": {
       "phase_state": {
-        "data": "76a80e410000803fcdcc4c3e00000000",
+        "data": "cb5717430000803fcdcc4c3e00000000",
         "element_count": 1,
         "element_size": 16,
         "encoding": "hex",

@@ -48,5 +48,6 @@ No model or engine pack is required. The project uses one image source and
 five authored Modules. It was compile-checked and live-proved at 1280x720 with
 all active nodes healthy at approximately 57-60 cooks per second.
 
-The bundled Jellybeans image is the only media dependency. Module paths and
-the image path are relative to the project, so the example is portable.
+The bundled `images/jellybeans.png` file is the only media dependency. Module
+paths and the image path are relative to the project, so the example is
+portable.

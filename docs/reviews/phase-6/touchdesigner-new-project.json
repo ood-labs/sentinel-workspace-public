@@ -2,7 +2,7 @@
   "project": "projects/touchdesigner_new_project/touchdesigner_new_project.sentinel",
   "candidate": "touchdesigner_new_project",
   "source_commit": "e308c8c",
-  "source_resolution": "Merged the new public TouchDesigner starter commit and preserved the user's approved panel layout.",
+  "source_resolution": "Merged the new public TouchDesigner starter commit, replaced the original Jellybeans media with the user's selected replacement, and preserved the user's approved panel layout.",
   "graph": {
     "node_count": 6,
     "pipeline_count": 5,
@@ -13,6 +13,15 @@
     "displacement": "Vertical_Displace",
     "interactive_renderer": "Geometry_Pass",
     "terminal_output": "Out"
+  },
+  "asset": {
+    "path": "projects/touchdesigner_new_project/images/jellybeans.png",
+    "project_reference": "images/jellybeans.png",
+    "bytes": 1728260,
+    "source_dimensions": "1672x941",
+    "sha256": "9A702B3F7C09C4D08DCB3993A6F8F8F6AE4D277B39C212978BC47D37777D5584",
+    "original_removed": "projects/touchdesigner_new_project/images/Jellybeans.jpg",
+    "redistribution_status": "pending user confirmation"
   },
   "approved_presentation": {
     "open_panel": "Geometry_Pass",
@@ -26,7 +35,7 @@
     "all_pipelines_healthy": true,
     "all_modules_compiled": true,
     "frames_progressing": true,
-    "representative_fps": 59.5,
+    "representative_fps": 61.7,
     "geometry_data_outputs": [
       "Cube Transform",
       "Viewport Objects",
@@ -35,7 +44,7 @@
     "unresolved_project_dirs": []
   },
   "proof": {
-    "bundle": "captures/phase6_touchdesigner_starter_approved/proof_bundle",
+    "bundle": "captures/phase6_touchdesigner_starter_approved_replacement/proof_bundle",
     "project_saved": true
   },
   "human_gate": {
