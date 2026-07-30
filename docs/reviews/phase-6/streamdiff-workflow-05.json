@@ -1,0 +1,65 @@
+{
+  "project": "projects/streamdiff_workflows/05_video_depth_control.sentinel",
+  "source_commit": "dd3cb05",
+  "workflow": "05_video_depth_control",
+  "source_resolution": "Preserved the approved local tuning, added depth-distance masking and original-video matte compositing, and relinked the selected clip to the existing tracked asset.",
+  "graph": {
+    "node_count": 6,
+    "link_count": 7,
+    "source": "Dancer",
+    "depth": "depthestimation_0",
+    "depth_mask": "Depth_Threshold",
+    "generator": "streamdiff_0",
+    "person_matte": "Generated_Dancer_Cutout",
+    "final_pipeline": "Generated_Over_Original"
+  },
+  "asset": {
+    "saved_path": "assets/dancer_vert.mp4",
+    "size_bytes": 30013125,
+    "sha256": "4B7F7AE1C87F28734165872231C1ABF0AA719AD6CB9CCBE340912858690C6A56",
+    "video": "H.264, 512x896, 25 fps, 24.76 seconds",
+    "source_match": "The selected Downloads clip was byte-for-byte identical to the tracked project asset.",
+    "redistribution_status": "User reviewed and confirmed redistribution is permitted on 2026-07-30."
+  },
+  "approved_state": {
+    "depth_cutoff": 0.131,
+    "depth_softness": 0.102,
+    "matting_output": "alpha_matte",
+    "matting_threshold": 0.305,
+    "matting_feather": 0.206,
+    "matting_smoothing_alpha": 1.0,
+    "foreground_opacity": 1.0,
+    "edge_grow": -2.204,
+    "edge_feather": 0.77,
+    "edge_contrast": 1.114,
+    "layout_saved": true
+  },
+  "executing_assertion": {
+    "assertion": "The meaningful dancer clip produces corresponding depth and person-matte structure, and the generated composition follows that motion while being composited over the original footage.",
+    "motion_evidence": "captures/phase6_streamdiff_workflow_05_approved/composite_motion.mp4",
+    "depth_evidence": "captures/phase6_streamdiff_workflow_05_depth_raw.png",
+    "matte_evidence": "captures/phase6_streamdiff_workflow_05_original_matte.png"
+  },
+  "runtime": {
+    "healthy": true,
+    "frames_progressing": true,
+    "final_resolution": "512x896",
+    "source_connected": true,
+    "source_fps": 25.0,
+    "source_resolution": "512x896",
+    "module_compile_ok": true,
+    "unresolved_project_dirs": []
+  },
+  "proof": {
+    "bundle": "captures/phase6_streamdiff_workflow_05_approved/proof_bundle",
+    "post_reload_capture": "captures/phase6_streamdiff_workflow_05_approved/post_reload.png",
+    "project_saved": true,
+    "relative_asset_resolved_after_reload": true,
+    "relative_modules_resolved_after_reload": true
+  },
+  "human_gate": {
+    "gate_id": "G8",
+    "workflow_decision": "approved",
+    "notes": "The user described the clip and composite as fully dialed in and good to go, confirmed the clip's licensing, and requested final portable packaging."
+  }
+}

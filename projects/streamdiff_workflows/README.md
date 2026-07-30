@@ -12,7 +12,7 @@ StreamDiff engine swaps are expensive. Close or replace the current project befo
 | `02_depth_parallax_zoom.sentinel` | The same feedback idea stabilized by auto-depth ControlNet and depth reprojection | `zoom`, `parallax_height`, `controlnet_scale`, `denoise` | SDXL ControlNet 896x512, FP16 |
 | `03_backrooms_flythrough.sentinel` | A tuned environmental flythrough using stronger zoom, slower diffusion cadence, and liminal-space prompting | `zoom`, `frame_skip`, `cadence_fade_frames`, `denoise` | SDXL ControlNet 896x512, FP16 |
 | `04_direct_variant_mux.sentinel` | Three independent StreamDiff variants feeding a regular input-mode Mux with `solo_upstream` | Mux `selected`, each variant's prompt and motion controls | SDXL 896x512 IP-Adapter tier, FP8 |
-| `05_video_depth_control.sentinel` | A looping motion clip converted to depth, then used as StreamDiff's depth Control Image | video playback, depth smoothing, `controlnet_scale`, `denoise` | Auxiliary depth + SDXL ControlNet 512x896, FP16 |
+| `05_video_depth_control.sentinel` | A looping motion clip drives depth and person matte; the generated dancer is composited over the original footage | distance cutoff, matte refinement, `controlnet_scale`, `denoise` | Auxiliary depth + matting + SDXL ControlNet 512x896, FP16 |
 | `06_procedural_warp_map.sentinel` | An authored RGB flow field driving StreamDiff's Warp Map input | flow mode/frequency/strength, `warp_scale`, `denoise` | SDXL ControlNet 896x512, FP16 |
 
 The saved precision matches the engine packs used to author and prove each study. Use `sentinel_app action=engine_status` before loading a study on a fresh machine. The FP8 studies require Ada, Blackwell, or another supported FP8 GPU; on other hardware, install the corresponding FP16 896x512 pack and change **Engine Precision** before relaunching the node.
@@ -60,13 +60,27 @@ This is not the final Scene Group switching reference. It teaches the lightweigh
 
 ## 05 - video depth control
 
-The included `assets/dancer_vert.mp4` is the 24.76-second, 512x896 dancer source used to author this study. It is bundled with the project so the saved graph opens with its intended motion guide on another machine.
+The included `assets/dancer_vert.mp4` is the 24.76-second, 512x896 dancer source used to author
+this study. The final reviewed Downloads copy was byte-for-byte identical to this tracked file.
+The saved graph uses the relative asset path, so it opens with the intended motion guide on another
+machine.
 
 ```text
-Dancer Video Guide -> Video Depth Guide -> Marble Dancer Control Image
+Dancer -> Video Depth Guide -> Depth Threshold -> Marble Dancer Control Image
+   |                                              |
+   +-> Background Removal -> Original Matte      +-> Generated Image
+   |                                              |
+   +-----------------> Original Footage ----------+-> Generated Over Original
 ```
 
-Depth Estimation converts motion into a temporally smoothed grayscale structure map. StreamDiff uses that map as depth ControlNet input while the marble-sculpture prompt supplies appearance. The source clip does not feed the main video input; this is structural conditioning rather than ordinary video compositing.
+Depth Estimation converts motion into a temporally smoothed grayscale structure map. Depth
+Threshold removes darker distant values while preserving the retained depth map, and StreamDiff
+uses that result as its depth Control Image. The same original clip feeds Background Removal; its
+person matte masks the generated StreamDiff image, and the final Module composites that generated
+subject over the untouched source footage.
+
+The final compositor exposes `Generated Foreground`, `Edge Grow / Shrink`, `Edge Feather`, and
+`Edge Contrast`. These refine the original-video matte without changing the generated image.
 
 For a new clip:
 

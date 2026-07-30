@@ -1,0 +1,25 @@
+name: "Depth Threshold"
+version: "1.0"
+mode: filter
+resolution_source: "match:input"
+
+inputs:
+  - { name: "Depth Guide", slot: 0, required: true }
+
+viewport:
+  hint: "Preserves bright near-depth values and masks darker distant pixels."
+
+parameters:
+  - { name: cutoff, display: "Distance Cutoff", type: float, min: 0.0, max: 1.0, default: 0.5, group: "Distance Mask" }
+  - { name: softness, display: "Edge Softness", type: float, min: 0.0, max: 0.25, default: 0.02, group: "Distance Mask" }
+
+passes:
+  - name: threshold
+    shader: threshold.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Masked Depth", pass: threshold }
