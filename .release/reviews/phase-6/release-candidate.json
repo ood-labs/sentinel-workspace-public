@@ -1,7 +1,7 @@
 {
   "phase": "6N",
-  "content_commit": "pending-corrective-commit",
-  "binding": "The prior candidate was invalidated by an agent test. Bind this record to the corrective commit only after a fresh checkout passes the exact project, zero-root-module, manifest, and cleanliness audits.",
+  "content_commit": "15038164f328e4a26a16def48c8e8675def86e6d",
+  "binding": "The workspace manifest is generated from this curated content commit. The following binding commit changes only release metadata and the generated install manifest.",
   "project_set": {
     "configured_directories": 12,
     "distributable_projects": [
@@ -23,12 +23,12 @@
     "unexpected": []
   },
   "workspace_surface": {
-    "knowledge_documents": 20,
+    "knowledge_documents": 22,
     "agent_skill_files": 32,
     "claude_skill_files": 32,
     "entry_manuals_identical": true,
-    "minimum_sentinel_version": "0.5.49",
-    "proof_host_version": "0.5.51",
+    "minimum_sentinel_version": "0.5.52",
+    "proof_host_version": "0.5.52",
     "workspace_version": "0.5.52",
     "root_module_directories": 0,
     "active_project_local_modules": 73
@@ -57,8 +57,9 @@
       "exact_set_plan_passed": true,
       "root_module_files": 0,
       "project_count": 12,
-      "manifest_files": 702,
-      "status": "exact staged index passed in a new disposable repository; final corrective commit binding pending"
+      "manifest_files": 508,
+      "manifest_orphan_candidates": 1372,
+      "status": "source checkout passed the exact project, zero-root-module, portability, product-surface, and manifest audits; final fresh-checkout proof pending"
     }
   },
   "assets": {
@@ -73,6 +74,6 @@
     "remote_baseline": "e308c8c362e1d46de16bf4ca02707066912ce0ec",
     "push_authorized": false,
     "gate": "G13",
-    "status": "pending"
+    "status": "ready locally; no push, tag, or publication performed"
   }
 }

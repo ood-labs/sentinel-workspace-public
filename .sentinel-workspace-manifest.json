@@ -2,11 +2,11 @@
     "files":  [
                   {
                       "path":  ".agents/skills/laser-content-authoring/SKILL.md",
-                      "sha256":  "723eed53018eec89dab879fd42e9fbb6c22a53a3a741790a527a635d87fa55a8"
+                      "sha256":  "1f31ee7adf2439ca51fac880e87a400a192a584affb3337b40b9dbfefba9cfdb"
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/ipc-reference.md",
-                      "sha256":  "9d7b7e53d96d73f4da99b19b12cf9288719340e7d65df138e05bb82ede8480db"
+                      "sha256":  "f7c53464832aa09f0fbd9194bdd7553a7db3bc41aca7d7d74b5caa646d13a2b4"
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/item-tracking.md",
@@ -22,23 +22,23 @@
                   },
                   {
                       "path":  ".agents/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "1a4905409da4cede37405e56a1982df15648413b396ff9f770ac213564113b23"
+                      "sha256":  "b7699ce2306b439b2badfea1dbc025c8338097a31fcdb97905537e8ca59b54ed"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/crop_present/manifest.yaml",
-                      "sha256":  "dcb16b2d6b85caeccae2a5a17565683e1497390cc5b300f5d26be46c4702f786"
+                      "sha256":  "5c17d7b6a948a3a1c3dea8cb3a9bf9a9a282f66f587bc7b71da7141fd21401c1"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/crop_present/present.hlsl",
-                      "sha256":  "7763551780e3ffb16d73ff9e803530e7a62a7f95675d9084d8f759db5eb31b7f"
+                      "sha256":  "93f51a81812475ebbf34f7038cc37f14a1fb516059ecae0f9e9cec1b1f218701"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/crop_select/crop.hlsl",
-                      "sha256":  "384cdfc997c0136a933ad7cd269884d06f502a91d9b0621892b0029f3352194b"
+                      "sha256":  "ce880d2f82ed73622c63c13ab8f37310aef7dc71da45e3c84dce14679ba6960b"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/crop_select/manifest.yaml",
-                      "sha256":  "a39b8a3da9ed745c72995883351803278024e688863f77ebef24e4a527ee12e2"
+                      "sha256":  "d1731765a04e82f7c291e7086e80672d6aad0a401b82971ab3c19c589b54304d"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/lfo_panel/lfo_compute.hlsl",
@@ -62,7 +62,7 @@
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/uv_remap_bitdepth/manifest.yaml",
-                      "sha256":  "af56f58b9f20fd6e987fe1bfa64ce68113f5cc9ae0ad6b254728587c43107a7a"
+                      "sha256":  "3502de5b2ab4a73d8362ee3262e97218c257e81e89ffb6569008e1a07b1ac720"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/uv_remap_bitdepth/present.hlsl",
@@ -70,7 +70,7 @@
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/uv_remap_bitdepth/store_uv.hlsl",
-                      "sha256":  "4cc45633f569c9f4e3e82983d499dbbbb94720b7a40fc09129b6e1a7f46cc7eb"
+                      "sha256":  "ac286b0b6bc9e8224e571b257285553e514d23ccdccbc3f706e42fa98ea50fdc"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/wave_field/color_out.hlsl",
@@ -90,7 +90,7 @@
                   },
                   {
                       "path":  ".agents/skills/module-authoring/SKILL.md",
-                      "sha256":  "89c0115eff39d6da9e7938ce68a7a6a3f37826b4b6fd5edc7176d76004be0fb3"
+                      "sha256":  "c7d99a168a78d3a509590b03469be9828565747dbd9e831e41f500cf352db2ed"
                   },
                   {
                       "path":  ".agents/skills/module-ui-authoring/agents/openai.yaml",
@@ -98,7 +98,7 @@
                   },
                   {
                       "path":  ".agents/skills/module-ui-authoring/SKILL.md",
-                      "sha256":  "89a8826a2049f9acf315b403668f855d3ad6d11892b42f1a9efdc91899bf6467"
+                      "sha256":  "c81c77b7320ae851d93615c3a56c039e2d7592812e8d8eed4aea8bd2972156ae"
                   },
                   {
                       "path":  ".agents/skills/motion-eval/SKILL.md",
@@ -122,7 +122,7 @@
                   },
                   {
                       "path":  ".agents/skills/shader-authoring/SKILL.md",
-                      "sha256":  "a8513150d70f1c95cb36fce7fb4295cad016958158a2abe1d9eca7ae01b3b59e"
+                      "sha256":  "129573d47f3b2b32e2991729e8a62a73a34c1fb909eeab8a205c3ca806521023"
                   },
                   {
                       "path":  ".agents/skills/update-workspace/SKILL.md",
@@ -130,11 +130,11 @@
                   },
                   {
                       "path":  ".claude/skills/laser-content-authoring/SKILL.md",
-                      "sha256":  "723eed53018eec89dab879fd42e9fbb6c22a53a3a741790a527a635d87fa55a8"
+                      "sha256":  "1f31ee7adf2439ca51fac880e87a400a192a584affb3337b40b9dbfefba9cfdb"
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/ipc-reference.md",
-                      "sha256":  "9d7b7e53d96d73f4da99b19b12cf9288719340e7d65df138e05bb82ede8480db"
+                      "sha256":  "f7c53464832aa09f0fbd9194bdd7553a7db3bc41aca7d7d74b5caa646d13a2b4"
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/item-tracking.md",
@@ -150,23 +150,23 @@
                   },
                   {
                       "path":  ".claude/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "1a4905409da4cede37405e56a1982df15648413b396ff9f770ac213564113b23"
+                      "sha256":  "b7699ce2306b439b2badfea1dbc025c8338097a31fcdb97905537e8ca59b54ed"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/crop_present/manifest.yaml",
-                      "sha256":  "dcb16b2d6b85caeccae2a5a17565683e1497390cc5b300f5d26be46c4702f786"
+                      "sha256":  "5c17d7b6a948a3a1c3dea8cb3a9bf9a9a282f66f587bc7b71da7141fd21401c1"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/crop_present/present.hlsl",
-                      "sha256":  "7763551780e3ffb16d73ff9e803530e7a62a7f95675d9084d8f759db5eb31b7f"
+                      "sha256":  "93f51a81812475ebbf34f7038cc37f14a1fb516059ecae0f9e9cec1b1f218701"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/crop_select/crop.hlsl",
-                      "sha256":  "384cdfc997c0136a933ad7cd269884d06f502a91d9b0621892b0029f3352194b"
+                      "sha256":  "ce880d2f82ed73622c63c13ab8f37310aef7dc71da45e3c84dce14679ba6960b"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/crop_select/manifest.yaml",
-                      "sha256":  "a39b8a3da9ed745c72995883351803278024e688863f77ebef24e4a527ee12e2"
+                      "sha256":  "d1731765a04e82f7c291e7086e80672d6aad0a401b82971ab3c19c589b54304d"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/lfo_panel/lfo_compute.hlsl",
@@ -190,7 +190,7 @@
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/uv_remap_bitdepth/manifest.yaml",
-                      "sha256":  "af56f58b9f20fd6e987fe1bfa64ce68113f5cc9ae0ad6b254728587c43107a7a"
+                      "sha256":  "3502de5b2ab4a73d8362ee3262e97218c257e81e89ffb6569008e1a07b1ac720"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/uv_remap_bitdepth/present.hlsl",
@@ -198,7 +198,7 @@
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/uv_remap_bitdepth/store_uv.hlsl",
-                      "sha256":  "4cc45633f569c9f4e3e82983d499dbbbb94720b7a40fc09129b6e1a7f46cc7eb"
+                      "sha256":  "ac286b0b6bc9e8224e571b257285553e514d23ccdccbc3f706e42fa98ea50fdc"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/wave_field/color_out.hlsl",
@@ -218,7 +218,7 @@
                   },
                   {
                       "path":  ".claude/skills/module-authoring/SKILL.md",
-                      "sha256":  "89c0115eff39d6da9e7938ce68a7a6a3f37826b4b6fd5edc7176d76004be0fb3"
+                      "sha256":  "c7d99a168a78d3a509590b03469be9828565747dbd9e831e41f500cf352db2ed"
                   },
                   {
                       "path":  ".claude/skills/module-ui-authoring/agents/openai.yaml",
@@ -226,7 +226,7 @@
                   },
                   {
                       "path":  ".claude/skills/module-ui-authoring/SKILL.md",
-                      "sha256":  "89a8826a2049f9acf315b403668f855d3ad6d11892b42f1a9efdc91899bf6467"
+                      "sha256":  "c81c77b7320ae851d93615c3a56c039e2d7592812e8d8eed4aea8bd2972156ae"
                   },
                   {
                       "path":  ".claude/skills/motion-eval/SKILL.md",
@@ -250,7 +250,7 @@
                   },
                   {
                       "path":  ".claude/skills/shader-authoring/SKILL.md",
-                      "sha256":  "a8513150d70f1c95cb36fce7fb4295cad016958158a2abe1d9eca7ae01b3b59e"
+                      "sha256":  "129573d47f3b2b32e2991729e8a62a73a34c1fb909eeab8a205c3ca806521023"
                   },
                   {
                       "path":  ".claude/skills/update-workspace/SKILL.md",
@@ -261,12 +261,20 @@
                       "sha256":  "41e91bbac23c1cb297d9018d088e880889bc1be99b3d3ee20d3320061639cd70"
                   },
                   {
+                      "path":  ".mcp.json",
+                      "sha256":  "32d03cd531b347b5f1b4e5d864efdc18a659a6f2d2c2609aed87e52dbe23e847"
+                  },
+                  {
+                      "path":  ".sentinel-workspace-version",
+                      "sha256":  "d314528c4dc3accc32e5ccd927a0fb9b9d87b98e5ae0cbd6194923ff5ecbc2bc"
+                  },
+                  {
                       "path":  "AGENTS.md",
-                      "sha256":  "055ca7f9872341a3f90658da4265e2b14f12c7842ea7df1eb0f08f0407d354a4"
+                      "sha256":  "ef93f16728804d16c8120aef155c4aec2a6e36e1f45542d5196442e68d8b0629"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "055ca7f9872341a3f90658da4265e2b14f12c7842ea7df1eb0f08f0407d354a4"
+                      "sha256":  "ef93f16728804d16c8120aef155c4aec2a6e36e1f45542d5196442e68d8b0629"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -290,23 +298,31 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "055ca7f9872341a3f90658da4265e2b14f12c7842ea7df1eb0f08f0407d354a4"
+                      "sha256":  "ef93f16728804d16c8120aef155c4aec2a6e36e1f45542d5196442e68d8b0629"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
-                      "sha256":  "4b1b2be542fbf6c35916645966790bb9c3e032d91ba75e32c1dbf47e5c4ee6d1"
+                      "sha256":  "ee87c928908bcab234a1a2ad54e279a8ae6afdf08b4c2d64354e4cdfeb1c246a"
                   },
                   {
                       "path":  "knowledge/creative-exploration-goals.md",
                       "sha256":  "39e2640a23e7905b262f6c47cbd890b42ed8a45d94b7bd614e274de13dd963c2"
                   },
                   {
+                      "path":  "knowledge/example-authoring.md",
+                      "sha256":  "3f7e24e792445d3ce07d41da875ef64a5b41cc0f0199dc78094c9089eb107e94"
+                  },
+                  {
+                      "path":  "knowledge/EXAMPLE-MAP.md",
+                      "sha256":  "2f32b218e878dc9e7f7e5ff056982ab22fb9827da57419ec959924defaf598fc"
+                  },
+                  {
                       "path":  "knowledge/expressions-and-drivers.md",
-                      "sha256":  "77036e4f78d905993ecbf2f924d9f52d49b8be2ab9a9f85e486623dbd477025b"
+                      "sha256":  "d5d06522ef0d87048bc9773911bef0e498ebacfb1b9a6aba8190b17d84891fe7"
                   },
                   {
                       "path":  "knowledge/FEATURE-MAP.md",
-                      "sha256":  "389aebd19f0ab929b12fa902a5f92e43a79d83ccfb8fdb627496955a3a9e5a6b"
+                      "sha256":  "62d1f40c626bdc937f5f185877bb7ba25d688527e6737e5e1cb96b3b86dc7e00"
                   },
                   {
                       "path":  "knowledge/first-run-engines.md",
@@ -330,11 +346,11 @@
                   },
                   {
                       "path":  "knowledge/module-pipeline.md",
-                      "sha256":  "77e925660fe1ee685ae4edceca955de7eb881dac9f07cd8fa5a062c90aa7a32b"
+                      "sha256":  "555a08d3381b31c1e417372a67bbc03675b17cbc868516a8ff64aac1b0e551d5"
                   },
                   {
                       "path":  "knowledge/motion-choreography.md",
-                      "sha256":  "64a3642dc857f25c31409a561ee2217e005a4fc952f0deeaf09c08b7fe00dcc1"
+                      "sha256":  "b553d72d71e30099e2e23e26e6bfc392c2d87a8e805318049a602e060e0e0434"
                   },
                   {
                       "path":  "knowledge/performance-proof.md",
@@ -358,7 +374,7 @@
                   },
                   {
                       "path":  "knowledge/ui-authoring.md",
-                      "sha256":  "259496ce804822b964bc2ed899077fce28f77e1cc3507acbeafea8692568d0de"
+                      "sha256":  "0afc63f46d69ca203072798964dae16011489f0060b368e7b117150f1b93c773"
                   },
                   {
                       "path":  "knowledge/ui-interactions.md",
@@ -381,36 +397,16 @@
                       "sha256":  "bd4345d4946f5de68cf627a108138c6397c0d48c8d252ab27f368dc193a13eb2"
                   },
                   {
-                      "path":  "projects/autopsia/autopsia_agents.png",
-                      "sha256":  "c936919e9ba264f7746a78a81c893199554dd2a05cbf1663da66cfd9a91089b4"
-                  },
-                  {
-                      "path":  "projects/autopsia/autopsia_census.png",
-                      "sha256":  "1c9cfde7fe8175327f4de8e4dc2b64091d165faa37785e39b21860ad2d10c172"
-                  },
-                  {
-                      "path":  "projects/autopsia/autopsia_deck.png",
-                      "sha256":  "8245ae2211478207a6ed64a5d05ae53d6cbfc0c63050548bbdf40499e3b1a2ba"
-                  },
-                  {
-                      "path":  "projects/autopsia/autopsia_program.png",
-                      "sha256":  "3a65a6a76a1c3c2ef3992c886faced6d2c65dd80fcd4fa519ca05476c7c23829"
-                  },
-                  {
-                      "path":  "projects/autopsia/autopsia_relief.png",
-                      "sha256":  "af5005cf7ac007c3e47aaeac62498a168dd737c0e5f41165383dd17421b5df5a"
-                  },
-                  {
-                      "path":  "projects/autopsia/autopsia_specimen.png",
-                      "sha256":  "58f0b11d6a142a34d7d1c5410fe0615e9005cfdc5e9f9a630183f26046572185"
-                  },
-                  {
                       "path":  "projects/autopsia/modules/_shared/au_hud/au_text.hlsli",
                       "sha256":  "86ad63e7d6008858748cf084097ffc18a3aa8deaaa9e7332d8adb1993dae86bd"
                   },
                   {
                       "path":  "projects/autopsia/modules/_shared/fonts/scientifica_ascii.hlsli",
                       "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
+                  },
+                  {
+                      "path":  "projects/autopsia/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
                   },
                   {
                       "path":  "projects/autopsia/modules/au_census/census.hlsl",
@@ -561,12 +557,8 @@
                       "sha256":  "f597212262428aa516b8697de811f45bead8af1fb12ec381c978253be4006c30"
                   },
                   {
-                      "path":  "projects/autopsia/PLAN.md",
-                      "sha256":  "82360ba24b06d681c77074a35990aa5dbdbd7aa31eb40eeff11d55260ddd3fa5"
-                  },
-                  {
                       "path":  "projects/autopsia/README.md",
-                      "sha256":  "9df8d66e0d24d56412bf0ecbc9ba3542ef1d6c961d24d7062334ca2550638879"
+                      "sha256":  "0658890775244133120b92393047b60749c4c95f155892c7533441f601bf1faa"
                   },
                   {
                       "path":  "projects/camera_reference/camera_reference.sentinel",
@@ -594,7 +586,7 @@
                   },
                   {
                       "path":  "projects/camera_reference/README.md",
-                      "sha256":  "f3559b0d28adec9dbea4e3a406ccdf508a24b1f179faea97afd27a44fd0fb32e"
+                      "sha256":  "e7e0cb5818bbdd1c2b1eeef35b3b930f03b03f5f6a2db0d1ca624335b4c13aa8"
                   },
                   {
                       "path":  "projects/cloth_lab/cloth_lab.sentinel",
@@ -607,6 +599,10 @@
                   {
                       "path":  "projects/cloth_lab/modules/_shared/fonts/scientifica_ascii.hlsli",
                       "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
+                  },
+                  {
+                      "path":  "projects/cloth_lab/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
                   },
                   {
                       "path":  "projects/cloth_lab/modules/_shared/surface/bicubic.hlsli",
@@ -642,7 +638,7 @@
                   },
                   {
                       "path":  "projects/cloth_lab/modules/cloth_bands/README.md",
-                      "sha256":  "eb81feabf8c963a322678be2af9c19adf29464ed2db555127b5713ef2ac57958"
+                      "sha256":  "7d5dca2aa67b37a668869dc653f6f371204916b08cf12716700fac7057ae13b8"
                   },
                   {
                       "path":  "projects/cloth_lab/modules/cloth_bands/render.hlsl",
@@ -674,87 +670,11 @@
                   },
                   {
                       "path":  "projects/cloth_lab/README.md",
-                      "sha256":  "f791e20e8e2898217c7f145524e76dfc0d5de43b490a84cffa7616c025155e22"
+                      "sha256":  "2fc2ec4efefe14eb4d4b339e844457a7965ba8960ffe0d196275baf9ca3972dd"
                   },
                   {
                       "path":  "projects/face_collage/face_collage.sentinel",
                       "sha256":  "d2bff69f92a8d67e098fc56adb8f280b47f5e35d68fe076b92c580307807e05e"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/fonts/scientifica_ascii.hlsli",
-                      "sha256":  "7df9d3c53c87e21cd44c66a9543dd6d76e47ed15176c27382754054fac499f4f"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/os_terminal.hlsli",
-                      "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/os_text.hlsli",
-                      "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/palette.hlsli",
-                      "sha256":  "b576afea97755934575f8c192b1099bff05c1e44e636c8cc76be907d68705af4"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/sdf/sdf_blob.hlsli",
-                      "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/sdf/sdf_dada.hlsli",
-                      "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/sdf/sdf_extras.hlsli",
-                      "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/sdf/sdf_noise.hlsli",
-                      "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/sdf/sdf_objects.hlsli",
-                      "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/sdf/sdf_ops.hlsli",
-                      "sha256":  "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/sdf/sdf_shading.hlsli",
-                      "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/ui/sui_controls.hlsli",
-                      "sha256":  "a663f82755e7e974c5a06f0ba72ec7331bba2f6c4189cafababb921f58ade676"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/ui/sui_core.hlsli",
-                      "sha256":  "a2f57e67bbb0c62b462d18f3f007c18eb9a813ed8e0e280ddf5dd6497189d0a7"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/ui/sui_generated_text.hlsli",
-                      "sha256":  "5cdb8979ede92cc221e07fbbd72b029aaa8f18c44be996fc6f688c89ce2f2163"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/ui/sui_interaction.hlsli",
-                      "sha256":  "b3e05d3b2104683a4b5a91432b0824a4c98da8fb35b306e75c565b154b89d07e"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/ui/sui_layout.hlsli",
-                      "sha256":  "116a2239dc461175b56d704d3b114b4410a34edc7e8b2df13ee5ccc8b759332a"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/ui/sui_theme.hlsli",
-                      "sha256":  "e032afed1568d193349975865b4866e9f21bd8422753b12490f54936c56cebaa"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/ui/sui_typography.hlsli",
-                      "sha256":  "1dd13e78bc27a8afdfc3d3f54320a53c022036c05fa7262f63e84805c8c09aff"
-                  },
-                  {
-                      "path":  "projects/face_collage/modules/_shared/ui/sui_v2.hlsli",
-                      "sha256":  "3db388c38ea4736d08f0dd57064ba65750f8f4a969bea8a26b83d27934510d9c"
                   },
                   {
                       "path":  "projects/face_collage/modules/accum/accum.hlsl",
@@ -865,88 +785,16 @@
                       "sha256":  "98fc940d90ac934948725c4f678eee71d657e133fc6ef4f7589622a741f51e96"
                   },
                   {
-                      "path":  "projects/face_collage/proof/expressions.json",
-                      "sha256":  "d000906ae1e22382ae9cb533866201852af7ae2b04e87b7fe86ae380b6751e6b"
-                  },
-                  {
-                      "path":  "projects/face_collage/proof/graph.json",
-                      "sha256":  "a4899a5bebae40f337791fb726ea06be5431c427bb0652df760c84557f0354c9"
-                  },
-                  {
-                      "path":  "projects/face_collage/proof/graph_profile.json",
-                      "sha256":  "af0f7f6eb1de61330a64ad513e1885816b591af0571423c2d8b34a231582e730"
-                  },
-                  {
-                      "path":  "projects/face_collage/proof/links.json",
-                      "sha256":  "06686f6f2bf52bbe8ea274377e7a6050f28b8cc0ba35150afb575b11cf876e91"
-                  },
-                  {
-                      "path":  "projects/face_collage/proof/output.png",
-                      "sha256":  "7f3bb7ab64e02d7bc0290c0f1b04838716c1d71a612916226b2fe9e883681921"
-                  },
-                  {
-                      "path":  "projects/face_collage/proof/output_capture.json",
-                      "sha256":  "e2f00a93753c91cb7d9da1d84da257c6a3c8235bce9c5a1ccf3c8169ed4f2b34"
-                  },
-                  {
-                      "path":  "projects/face_collage/proof/pipeline_info.json",
-                      "sha256":  "ea25e305b62f585bf5159fe4d6f546b01371f4806abbd019e6829a04c119b842"
-                  },
-                  {
-                      "path":  "projects/face_collage/proof/summary.json",
-                      "sha256":  "e3ab451773620ab8996466c50e682538436eac215ae3f6c88cd87d89c1bdcbc8"
-                  },
-                  {
-                      "path":  "projects/face_collage/proof/summary.md",
-                      "sha256":  "5f5505d4c74f15a68d0fdcb4ad8e948747b580869c25edabad7319bcecc24dbc"
-                  },
-                  {
-                      "path":  "projects/face_collage/proof/window.jpg",
-                      "sha256":  "35993b0d468390d799ba31cfdb8d9176b26efc5545725c96935395e13e652bd3"
-                  },
-                  {
                       "path":  "projects/face_collage/README.md",
-                      "sha256":  "36840c322948e76f1ef0a8229d7c71b01ab79f712167dd04aca34deacc216f2c"
+                      "sha256":  "6045fe347b792fef44a86bbb63743b78e646416a1443df6b6b6682faf8640df5"
                   },
                   {
                       "path":  "projects/industrial_lattice/industrial_lattice.sentinel",
                       "sha256":  "51a641a98ebbc5b1ec126b292367ae9979257619ae74529c1b294e499ae5fa2c"
                   },
                   {
-                      "path":  "projects/industrial_lattice/modules/_shared/fonts/scientifica_ascii.hlsli",
-                      "sha256":  "7df9d3c53c87e21cd44c66a9543dd6d76e47ed15176c27382754054fac499f4f"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/os_terminal.hlsli",
-                      "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/os_text.hlsli",
-                      "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/palette.hlsli",
-                      "sha256":  "b576afea97755934575f8c192b1099bff05c1e44e636c8cc76be907d68705af4"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_blob.hlsli",
-                      "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_dada.hlsli",
-                      "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_extras.hlsli",
-                      "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
-                  },
-                  {
                       "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_noise.hlsli",
                       "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_objects.hlsli",
-                      "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
                   },
                   {
                       "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_ops.hlsli",
@@ -955,38 +803,6 @@
                   {
                       "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_shading.hlsli",
                       "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/ui/sui_controls.hlsli",
-                      "sha256":  "a663f82755e7e974c5a06f0ba72ec7331bba2f6c4189cafababb921f58ade676"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/ui/sui_core.hlsli",
-                      "sha256":  "a2f57e67bbb0c62b462d18f3f007c18eb9a813ed8e0e280ddf5dd6497189d0a7"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/ui/sui_generated_text.hlsli",
-                      "sha256":  "5cdb8979ede92cc221e07fbbd72b029aaa8f18c44be996fc6f688c89ce2f2163"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/ui/sui_interaction.hlsli",
-                      "sha256":  "b3e05d3b2104683a4b5a91432b0824a4c98da8fb35b306e75c565b154b89d07e"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/ui/sui_layout.hlsli",
-                      "sha256":  "116a2239dc461175b56d704d3b114b4410a34edc7e8b2df13ee5ccc8b759332a"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/ui/sui_theme.hlsli",
-                      "sha256":  "e032afed1568d193349975865b4866e9f21bd8422753b12490f54936c56cebaa"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/ui/sui_typography.hlsli",
-                      "sha256":  "1dd13e78bc27a8afdfc3d3f54320a53c022036c05fa7262f63e84805c8c09aff"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/modules/_shared/ui/sui_v2.hlsli",
-                      "sha256":  "3db388c38ea4736d08f0dd57064ba65750f8f4a969bea8a26b83d27934510d9c"
                   },
                   {
                       "path":  "projects/industrial_lattice/modules/lattice/distortion.hlsli",
@@ -1009,52 +825,8 @@
                       "sha256":  "0b0841a0314b6aabed309f7dd75251d3f7591bf813b5ad089ec0a325c5d84ca4"
                   },
                   {
-                      "path":  "projects/industrial_lattice/NOTES.md",
-                      "sha256":  "e37f818015ea85773de60a376eda97f4a2272142a3d272232661b4146854da53"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/01-box-frame.png",
-                      "sha256":  "16b9092b36c51349ed0f0e44b6f6b7fda38cac7f7db7596c06d40e1f7e78d687"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/02-heavy-steel.png",
-                      "sha256":  "7ac5dd1da6fc03a1466adfcb31a81c1e0f6ae73e42b55f9829427ef45ea49319"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/03-concrete-haze.png",
-                      "sha256":  "4d02d739cb9f75ce6579747caabea3265972b33e4c95d27b4a26004c3aa3ff87"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/04-fidelity.png",
-                      "sha256":  "10b440269f3d6a60de5e53587e3da63499dd8c6fe482f9410fcd39235abc705a"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/05-performance.png",
-                      "sha256":  "c530b6287f9d0ff983b3e9cdf566202647aab22e8ed41b7cd0b8360c86537985"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/camera-deep-grid.png",
-                      "sha256":  "681eb3754435221674a5567c15621515af751fccdacb9ded3b30cd72ca152f36"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/camera-fly.png",
-                      "sha256":  "fcb60551061bf406578748a1a89dec32b946cbbbb95a5492cf1dfda762b2ad80"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/camera-hero.png",
-                      "sha256":  "639b030907e15e6b9302ea46fe10c40ec1467f35e63daf46d8b4dcfb7b66c3d1"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/camera-lookup.png",
-                      "sha256":  "cfb49c41291a4c50f7b8a6c687187a6ee8fa096e747b29aec509f740efbfaed1"
-                  },
-                  {
-                      "path":  "projects/industrial_lattice/proof/README.md",
-                      "sha256":  "d56370f463d5b1e650a65519caf9c633760b2823298b88605e5f3894bfe61bed"
-                  },
-                  {
                       "path":  "projects/industrial_lattice/README.md",
-                      "sha256":  "10d1bee0a3cbb7b32d6b495cffa975f22357991439e4c304af2087518ca6e447"
+                      "sha256":  "a0b2a96d16fd637fc7b87c9dcfe31a9374d64d51aaf7cf0eb39144b7df75b122"
                   },
                   {
                       "path":  "projects/interaction_lab/.gitignore",
@@ -1065,14 +837,6 @@
                       "sha256":  "7b556f46bd9e704bf719b42a87f286408b0c33f889c017221e7d26cbc11b7aa4"
                   },
                   {
-                      "path":  "projects/interaction_lab/modules/_shared/anim/anim.hlsli",
-                      "sha256":  "66996ffa8ede4dccbd114609d90ddf4d4d4a2e0c1adef858878e16ed160e2fb4"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/au_hud/au_text.hlsli",
-                      "sha256":  "86ad63e7d6008858748cf084097ffc18a3aa8deaaa9e7332d8adb1993dae86bd"
-                  },
-                  {
                       "path":  "projects/interaction_lab/modules/_shared/fonts/scientifica_ascii.hlsli",
                       "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
                   },
@@ -1081,144 +845,32 @@
                       "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
                   },
                   {
-                      "path":  "projects/interaction_lab/modules/_shared/os_terminal.hlsli",
-                      "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/os_text.hlsli",
-                      "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/palette.hlsli",
-                      "sha256":  "b14a7e2f689a97d06c0d7dc07206fe02dc7eb9941c8cd57b7ab5c5105189e373"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/pulse2/regions.hlsli",
-                      "sha256":  "a3d19c3103dcc3efd510c7df56e47279cd6435c93aa4cb3640b1422eb704c7dc"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_audit.hlsli",
-                      "sha256":  "ca5c4a45ba7c444dc12aa913fdb7a25b880f2419e25e9a2b6d8a13a28a9c730a"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_blob.hlsli",
-                      "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_botany.hlsli",
-                      "sha256":  "e3d360cc5dd74e1de6e6338302a8cea962711a5c1f2c0ba5e38d6946d8ff3709"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_dada.hlsli",
-                      "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_extras.hlsli",
-                      "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_kinds.yaml",
-                      "sha256":  "0fc2cf5b2062a97a05ff9aae43133ac454e9c88a3479a4ad7fc02e1799c1c521"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_noise.hlsli",
-                      "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_objects.hlsli",
-                      "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_ops.hlsli",
-                      "sha256":  "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_shading.hlsli",
-                      "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/surface/bicubic.hlsli",
-                      "sha256":  "4ef9a5246308a164cd897d0b1f80de8ba9f5cda589835f6437826caa7f21114b"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/README.md",
-                      "sha256":  "0ae2f8ec9b342eb650cd0dbbfb7ae5e7fb0bf3f289f4461aa95833a78754f94c"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/scientific_ui.hlsli",
-                      "sha256":  "365cadd91dacbecb8f1cb7dd999c7ee0bedb1cb4990269e8922d22e374b65eb9"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/sui_controls.hlsli",
-                      "sha256":  "af4330555deed30cc32e66f2973f8c897770f59c1974a9a6c419023a37078be6"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/sui_core.hlsli",
-                      "sha256":  "cd3bde128252f34cb7dee9f4d9646b167395ec738d4c3195b6a2463b9a887216"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/sui_generated_text.hlsli",
-                      "sha256":  "468d42d0d77c687afa5485b11221196045b7c47765e6479d07618a8ae0af8aa8"
-                  },
-                  {
                       "path":  "projects/interaction_lab/modules/_shared/ui/sui_interaction.hlsli",
                       "sha256":  "a7bc7b302cc72fbd1516c2643e485c78f3d66ec1be6318c04f26e41bf7501b1c"
                   },
                   {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/sui_layout.hlsli",
-                      "sha256":  "85980d0aaf376628d598bbbbf6c773aacc0b07ecf40d3a2773c837f777907e8a"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/sui_theme.hlsli",
-                      "sha256":  "202d46867ca9cc0fdb1d1d21f5ef8f66300c51713a8743c212eef99ee6d52ff9"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/sui_typography.hlsli",
-                      "sha256":  "e2e2e24dd775d4fc3a10b27ecf67ba5f7b357712edff357bc48d21b3c8269d73"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/sui_v2.hlsli",
-                      "sha256":  "b94aae6b48d954905746cc468530eac527e393a43073cf1553701ba595143a76"
-                  },
-                  {
                       "path":  "projects/interaction_lab/modules/_shared/ui/sui3_controls.hlsli",
-                      "sha256":  "341bfdac31754c64000daee45f49b7034a9d623ae4c973914d0c6b837bc059ba"
+                      "sha256":  "9437bc17d4ef194797ad0006d2756e378e9a541fe42970542531ee29d7c6c25f"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/_shared/ui/sui3_core.hlsli",
-                      "sha256":  "0fbab9649817e6ffbae5c4b18e4d0ef18a7d7f0093b06e1ca492d798241d0362"
+                      "sha256":  "53c94ba02cbc9ca2de94ec06d687145f62e48bb457ecb8c64383074358e6bdd0"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/_shared/ui/sui3_events.hlsli",
-                      "sha256":  "7a784df7f5c98678874766259168e907a91a85e5cf33b9ba6627527cab122fd5"
+                      "sha256":  "9a959ac5bcf697c22391c50276800ad0a9b27f580fb8cc1a27b4297440b86f3a"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/_shared/ui/sui3_text.hlsli",
-                      "sha256":  "e436f2ac4fce52889eee6342e39cc1f6b4e58228ffb94882c7fcd30c86b88499"
+                      "sha256":  "86c95a8b044c069abd5c19ab1e8065ad5e26330b4f6c3012c9e201c4e0ee397b"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/_shared/ui/sui3_theme.hlsli",
-                      "sha256":  "df31e54f2d4a677f853ffb0d2277e94a8c125db2cffd2ef8e001bba64d8791a7"
+                      "sha256":  "007ce835b9e4a24c0e74f11aaa828b52e255f7eeffc19026a4a99984d3c47234"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/_shared/ui/sui3_trace.hlsli",
                       "sha256":  "2a4044b694955a86057df1f2275a47fdf4facb72b1a6a20099e02760ec000285"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/template/manifest.yaml",
-                      "sha256":  "99500e0887863f0631c12a5f394af7ecae8f36934ed6bed6962846425a589387"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/ui/template/render.hlsl",
-                      "sha256":  "c4d9dbde40a146b6c86d646e804a1750763d4d9062233e48df20cc1d60af3ac4"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/viewport/pick3d.hlsli",
-                      "sha256":  "3e851260480220a26133134e3958575045d3092cf64e341d02e41574f00f8585"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/modules/_shared/xpbd/xpbd.hlsli",
-                      "sha256":  "62cc8f8ad5360b3b2208665d22307769f2859cddba55d9bd6083b896325f5678"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/data_scope/layout.hlsli",
@@ -1230,7 +882,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/data_scope/README.md",
-                      "sha256":  "6dd3df2c23880f2b4ee53af0748458eb0c3786432309a6b2823da975da69394a"
+                      "sha256":  "1f1ac18f27f1f042e867f530b79f5786a16414046f87a09a6399828363260508"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/data_scope/render.hlsl",
@@ -1242,7 +894,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Gizmo_Desk/_ui.generated.hlsli",
-                      "sha256":  "8b670d6c47a9f9057b9607fae551608b4cdd68503103779de7905f42b8702364"
+                      "sha256":  "633b740b5259d7c21ee0fef83b3ada2c0862f8fa21493e4493fd10d377b95b2b"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Gizmo_Desk/descriptors.hlsl",
@@ -1258,7 +910,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Gizmo_Desk/manifest.yaml",
-                      "sha256":  "af29d2e0dc7b9bc30528220346c0b7b7506b640797d5f8b6d18235b9ec3f193b"
+                      "sha256":  "af5ec5c93d38805d91d105ada669da8c5e418e86b3a009350ea20a5f1a9f54a8"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Gizmo_Desk/pick.hlsl",
@@ -1266,7 +918,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Gizmo_Desk/render.hlsl",
-                      "sha256":  "ee1c762b59689d56e0226823e7c99037dbf7d8301403111bb5ff9a333cd1c10a"
+                      "sha256":  "838c6aaacac0ad87c9600527b8c2af290237a6ee72921d53e732628444de85f9"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Gizmo_Desk/snapshot.hlsl",
@@ -1282,7 +934,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Motion_Console/_ui.generated.hlsli",
-                      "sha256":  "48277347b4e93286dacd7eb5f4ea61176b71d93fcda4503703a4de76b060970f"
+                      "sha256":  "fd6cdfde19556d01ecef73f736e1173a2cb9a800b2f2b00e011c34780864abdf"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Motion_Console/events.hlsl",
@@ -1298,7 +950,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Motion_Console/manifest.yaml",
-                      "sha256":  "7db5db0cd443e3e289898f33f455bea41a9ad2e624ae02654b86230e2e537bd5"
+                      "sha256":  "37b5d2bb553e74ab05e1cdfd7bf2bd088eb3136853d4d34d33a291dd883e3fcb"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Motion_Console/render.hlsl",
@@ -1310,11 +962,11 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/signal_trails/manifest.yaml",
-                      "sha256":  "3258f693f17a515c20311b642be98ff1b7b769a464a0aca470c161fcc03bbc4d"
+                      "sha256":  "2f5c5f0bc09184cc008c95b30138bc68bbcf633a4de2de5920c63112ba592533"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/signal_trails/README.md",
-                      "sha256":  "c4f058baf31ab7226f2863f0acd6d14f34596fc56d0d7eb1954eb38095d41e93"
+                      "sha256":  "f07539c8f4b15a44e01530f325c54b25d6120af3ea6ddbdbdc86e5235aa2d54c"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/signal_trails/render.hlsl",
@@ -1342,7 +994,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Spline_Desk/layout.hlsli",
-                      "sha256":  "42fe7d98401782633b1b8c8c8cecd1c9e58fbe9f562b3cb48e64bda7cdda8443"
+                      "sha256":  "73f96261f348cb8a9497ac7c008454060f8670d8e7b027db9517fc4324a00f3e"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Spline_Desk/manifest.yaml",
@@ -1378,75 +1030,35 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Style_Authority/_ui.generated.hlsli",
-                      "sha256":  "1b2c3ed8b4645f9f7974bf14258557471fad1a9ea4f968faf8b39315bfab4e6c"
+                      "sha256":  "d097715189eae0f101de49a42df9d5e129a262c6cc28d0e4ca5ca587030d49d5"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Style_Authority/layout.hlsli",
-                      "sha256":  "64748f13aa4f2688c349b49b737b7ea3fc1c899c72e9b66933129888a0f7fa25"
+                      "sha256":  "d9e9ceb3733361d298afc101a1ca9263d38e97685f4f4addd21a2806dc451703"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Style_Authority/manifest.yaml",
-                      "sha256":  "8ab315048aca032bb244a78c69a8ced08a8bdae29ae08f5954fdbaf4b0f6e622"
+                      "sha256":  "248bfe6bece4e06e19205d52ba9aa0861b753caa2629e026f6e722ef524ab13b"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Style_Authority/render.hlsl",
-                      "sha256":  "d3ce303a353c848b2057e197e8e21f8ec4360ab7ec801fe28d9696adbf04ea5d"
+                      "sha256":  "9406e30bf8f1384d939ea43011c71cf767e20a9a777af3f07f12ba452835f4a4"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Style_Authority/state.hlsl",
                       "sha256":  "6c729d2e4125962315168e469c6ba644f03cbeba80901b3299efdb5e54c2b18b"
                   },
                   {
-                      "path":  "projects/interaction_lab/proof/font-sampler.png",
-                      "sha256":  "6840715f0c63bf024a0e31224d2b63ec7d7e5f0b42bb7af7b3ddab2fdb0dcff8"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/gizmo-grid.png",
-                      "sha256":  "27f9fd19bf43fe92b66867727477998819644beb59385121226f53071d17522e"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/gizmo-offset.png",
-                      "sha256":  "44012b113863dc945e4f4b5d4c6855b97035068cdf256b204da2b0915cf91bd2"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/motion-console.png",
-                      "sha256":  "f407dbdbb386fe5b2fe8f48b60dbcff08b8730e0b932c0e0d58373543618aaaf"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/README.md",
-                      "sha256":  "5432b5ed25b8debc669c47560efc12fbfdbe127a0f64e89e86aa413c13d814a1"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/spline-default.png",
-                      "sha256":  "42e9c1ae68cc92a643899bc89e0bb8e3075f891ea0c6b0d74e1346188be593c0"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/spline-offset.png",
-                      "sha256":  "264051466955087e2b18b3dc4668a8b48df42930f01243d2b53760b743969330"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/spline-output-default.png",
-                      "sha256":  "b0c9348237ffa264c902c8e7d99a94045bfd6baba38182841f25dffc001e98f6"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/spline-output-offset.png",
-                      "sha256":  "dc2ea168d2fcecdd33a6888e110a2bfba2108559a51a15b09be63382c7f63a5b"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/ui-kit.png",
-                      "sha256":  "597e38d3c94f492dfd4cd66abf8b354558f8b7703cf1ced2f8d0a823e6a5e6fc"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/ui-style-airy.png",
-                      "sha256":  "fbde56bb04ed25470f79e2c72c52db2b4669d5d76eb306c421bef5a1acb409bb"
-                  },
-                  {
-                      "path":  "projects/interaction_lab/proof/ui-style-tuner.png",
-                      "sha256":  "1feaebf344b26abc3ea508d5bca16cc7a4f1afece0d1ee23a9ffe43d4912951c"
-                  },
-                  {
                       "path":  "projects/interaction_lab/README.md",
-                      "sha256":  "a787ed2138a46483c5573016844bfce849cd6021ccccd92f6a226e98ede6e82a"
+                      "sha256":  "e2d097b05fafbcab6eb27d36b85dcfe15343ecc108c7431d553b701a290c21f4"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/tools/data_scope_measure.py",
+                      "sha256":  "de8a4c335c2ee2da38c341c990513ced057b9554a2f35779518e352c88930421"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/tools/data_scope_proof.py",
+                      "sha256":  "12bada2e2be1011245c49635894eb7307166382857caf2ec9298036eff7d889a"
                   },
                   {
                       "path":  "projects/living_room_sdf/living_room_sdf.sentinel",
@@ -1454,99 +1066,31 @@
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/_shared/fonts/scientifica_ascii.hlsli",
-                      "sha256":  "7df9d3c53c87e21cd44c66a9543dd6d76e47ed15176c27382754054fac499f4f"
+                      "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
                   },
                   {
-                      "path":  "projects/living_room_sdf/modules/_shared/os_terminal.hlsli",
-                      "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/os_text.hlsli",
-                      "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/palette.hlsli",
-                      "sha256":  "b576afea97755934575f8c192b1099bff05c1e44e636c8cc76be907d68705af4"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_blob.hlsli",
-                      "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_dada.hlsli",
-                      "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_extras.hlsli",
-                      "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_noise.hlsli",
-                      "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_objects.hlsli",
-                      "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_ops.hlsli",
-                      "sha256":  "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_shading.hlsli",
-                      "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/ui/sui_controls.hlsli",
-                      "sha256":  "a663f82755e7e974c5a06f0ba72ec7331bba2f6c4189cafababb921f58ade676"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/ui/sui_core.hlsli",
-                      "sha256":  "a2f57e67bbb0c62b462d18f3f007c18eb9a813ed8e0e280ddf5dd6497189d0a7"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/ui/sui_generated_text.hlsli",
-                      "sha256":  "5cdb8979ede92cc221e07fbbd72b029aaa8f18c44be996fc6f688c89ce2f2163"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/ui/sui_interaction.hlsli",
-                      "sha256":  "b3e05d3b2104683a4b5a91432b0824a4c98da8fb35b306e75c565b154b89d07e"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/ui/sui_layout.hlsli",
-                      "sha256":  "116a2239dc461175b56d704d3b114b4410a34edc7e8b2df13ee5ccc8b759332a"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/ui/sui_theme.hlsli",
-                      "sha256":  "e032afed1568d193349975865b4866e9f21bd8422753b12490f54936c56cebaa"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/ui/sui_typography.hlsli",
-                      "sha256":  "1dd13e78bc27a8afdfc3d3f54320a53c022036c05fa7262f63e84805c8c09aff"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/modules/_shared/ui/sui_v2.hlsli",
-                      "sha256":  "3db388c38ea4736d08f0dd57064ba65750f8f4a969bea8a26b83d27934510d9c"
+                      "path":  "projects/living_room_sdf/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/_shared/ui/sui3_controls.hlsli",
-                      "sha256":  "341bfdac31754c64000daee45f49b7034a9d623ae4c973914d0c6b837bc059ba"
+                      "sha256":  "9437bc17d4ef194797ad0006d2756e378e9a541fe42970542531ee29d7c6c25f"
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/_shared/ui/sui3_core.hlsli",
-                      "sha256":  "0fbab9649817e6ffbae5c4b18e4d0ef18a7d7f0093b06e1ca492d798241d0362"
+                      "sha256":  "53c94ba02cbc9ca2de94ec06d687145f62e48bb457ecb8c64383074358e6bdd0"
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/_shared/ui/sui3_events.hlsli",
-                      "sha256":  "7a784df7f5c98678874766259168e907a91a85e5cf33b9ba6627527cab122fd5"
+                      "sha256":  "9a959ac5bcf697c22391c50276800ad0a9b27f580fb8cc1a27b4297440b86f3a"
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/_shared/ui/sui3_text.hlsli",
-                      "sha256":  "e436f2ac4fce52889eee6342e39cc1f6b4e58228ffb94882c7fcd30c86b88499"
+                      "sha256":  "86c95a8b044c069abd5c19ab1e8065ad5e26330b4f6c3012c9e201c4e0ee397b"
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/_shared/ui/sui3_theme.hlsli",
-                      "sha256":  "df31e54f2d4a677f853ffb0d2277e94a8c125db2cffd2ef8e001bba64d8791a7"
+                      "sha256":  "007ce835b9e4a24c0e74f11aaa828b52e255f7eeffc19026a4a99984d3c47234"
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/LR_Architecture/_ui.generated.hlsli",
@@ -1693,92 +1237,12 @@
                       "sha256":  "05405683d341a5e4fe1ee2577c4179cfdb130ed94a0dd4ff2a858bdaa9bd2999"
                   },
                   {
-                      "path":  "projects/living_room_sdf/proof/bundle/expressions.json",
-                      "sha256":  "a34c84d9b7aeafe3fe4b5f578e9eaa4cc07331d05697128fb6f957611c94b709"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/bundle/graph.json",
-                      "sha256":  "fd1d5a4de5691fc5946d6bb462dec0f43b4be9e78b32ba511ab05c5a5f6e4cf6"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/bundle/graph_profile.json",
-                      "sha256":  "a4a1d374eef11226f80af500eb74c68afc93d875309f6a3a102e67b8681f6924"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/bundle/links.json",
-                      "sha256":  "12dd68c33516c45864a92f21acf65679a339ac4f0e71bfc6885b3c8715315894"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/bundle/output.png",
-                      "sha256":  "1b32079f3193d0818a7a44c0e6a2b96089c6a33bea5511fec64279ef2b87b04c"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/bundle/pipeline_info.json",
-                      "sha256":  "98d13d0b3809b70be94f728e5678732ca153ecd68fda56f1294254ca99e190f2"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/bundle/window.jpg",
-                      "sha256":  "14ea73e87f5bbe7dc16885fe2c42cce8f0fb8f0ad6b6e0fd054f22a56bd7e225"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/camera_0.png",
-                      "sha256":  "dc378b6ddc9612caeef6d136505088b553f8f9abb0f6a180e5366f8b6792f9e2"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/camera_1.png",
-                      "sha256":  "1bccf5c91a5d059d72153bb3f4372b2533552f7a241d35a94cd40544d622ed81"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/camera_2.png",
-                      "sha256":  "1a4de625f6465c6d88eb855786c9326c67fa9ef58582a976b51f72954bf0daf9"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/camera_3.png",
-                      "sha256":  "5a4bc615de49f506abc0774f45382ea7db175bb0c9cd43413aa73175a604366c"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/lighting-desk.png",
-                      "sha256":  "3a56f104a427eb4ba4a55369a014dac68385ee3b574a2403567ac189cec2ef1a"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/plan_conversation.png",
-                      "sha256":  "6c4e023b5d2962e9d5220b88ef3abc853ca3dd5557534558b935318dd3c93fa7"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/plan_offset_sofa.png",
-                      "sha256":  "c8257b1b394ad0114f36b7872bbf824e9bade7086d3eb476647c4af61c4c2955"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/README.md",
-                      "sha256":  "329b903af7c38dbc1cfc3f9b9b5bd5bb16f47c8627c0ea30ed19155ddb9c6859"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/render_conversation.png",
-                      "sha256":  "9d70199b31c2e6354f42d1d4be2de1ff421989ffd8ce139087bbb63b30878d76"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/render_offset_sofa.png",
-                      "sha256":  "b003db815751df20c82108d67a34a2a93177804a9c13abb45e32272f1c1aec99"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/scene_daylight.png",
-                      "sha256":  "2c17fb1359cde7d22f24405ac3e8361247809d378bb781230b3739de8d7f722a"
-                  },
-                  {
-                      "path":  "projects/living_room_sdf/proof/scene_warm_evening.png",
-                      "sha256":  "b118bd004e4808de1e1f4ca7b0b52672aec60914b36190adb16b0d984a4bf2ce"
-                  },
-                  {
                       "path":  "projects/living_room_sdf/README.md",
-                      "sha256":  "76c4a18aa024b8aab4d5d18c846042837785c42e44a5e1f540e036534ecf29df"
+                      "sha256":  "5dbd20c87e419a2c4df9411b2fc2c789cb60719f0513e00627820fe35dc01f09"
                   },
                   {
                       "path":  "projects/scientific_organism/modules/_shared/anim/anim.hlsli",
                       "sha256":  "66996ffa8ede4dccbd114609d90ddf4d4d4a2e0c1adef858878e16ed160e2fb4"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/au_hud/au_text.hlsli",
-                      "sha256":  "86ad63e7d6008858748cf084097ffc18a3aa8deaaa9e7332d8adb1993dae86bd"
                   },
                   {
                       "path":  "projects/scientific_organism/modules/_shared/fonts/scientifica_ascii.hlsli",
@@ -1787,74 +1251,6 @@
                   {
                       "path":  "projects/scientific_organism/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
                       "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/os_terminal.hlsli",
-                      "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/os_text.hlsli",
-                      "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/palette.hlsli",
-                      "sha256":  "b14a7e2f689a97d06c0d7dc07206fe02dc7eb9941c8cd57b7ab5c5105189e373"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/pulse2/regions.hlsli",
-                      "sha256":  "a3d19c3103dcc3efd510c7df56e47279cd6435c93aa4cb3640b1422eb704c7dc"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_audit.hlsli",
-                      "sha256":  "ca5c4a45ba7c444dc12aa913fdb7a25b880f2419e25e9a2b6d8a13a28a9c730a"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_blob.hlsli",
-                      "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_botany.hlsli",
-                      "sha256":  "e3d360cc5dd74e1de6e6338302a8cea962711a5c1f2c0ba5e38d6946d8ff3709"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_dada.hlsli",
-                      "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_extras.hlsli",
-                      "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_kinds.yaml",
-                      "sha256":  "0fc2cf5b2062a97a05ff9aae43133ac454e9c88a3479a4ad7fc02e1799c1c521"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_noise.hlsli",
-                      "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_objects.hlsli",
-                      "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_ops.hlsli",
-                      "sha256":  "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_shading.hlsli",
-                      "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/surface/bicubic.hlsli",
-                      "sha256":  "4ef9a5246308a164cd897d0b1f80de8ba9f5cda589835f6437826caa7f21114b"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/README.md",
-                      "sha256":  "0ae2f8ec9b342eb650cd0dbbfb7ae5e7fb0bf3f289f4461aa95833a78754f94c"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/scientific_ui.hlsli",
-                      "sha256":  "365cadd91dacbecb8f1cb7dd999c7ee0bedb1cb4990269e8922d22e374b65eb9"
                   },
                   {
                       "path":  "projects/scientific_organism/modules/_shared/ui/sui_controls.hlsli",
@@ -1887,46 +1283,6 @@
                   {
                       "path":  "projects/scientific_organism/modules/_shared/ui/sui_v2.hlsli",
                       "sha256":  "b94aae6b48d954905746cc468530eac527e393a43073cf1553701ba595143a76"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/sui3_controls.hlsli",
-                      "sha256":  "341bfdac31754c64000daee45f49b7034a9d623ae4c973914d0c6b837bc059ba"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/sui3_core.hlsli",
-                      "sha256":  "0fbab9649817e6ffbae5c4b18e4d0ef18a7d7f0093b06e1ca492d798241d0362"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/sui3_events.hlsli",
-                      "sha256":  "7a784df7f5c98678874766259168e907a91a85e5cf33b9ba6627527cab122fd5"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/sui3_text.hlsli",
-                      "sha256":  "e436f2ac4fce52889eee6342e39cc1f6b4e58228ffb94882c7fcd30c86b88499"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/sui3_theme.hlsli",
-                      "sha256":  "df31e54f2d4a677f853ffb0d2277e94a8c125db2cffd2ef8e001bba64d8791a7"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/sui3_trace.hlsli",
-                      "sha256":  "2a4044b694955a86057df1f2275a47fdf4facb72b1a6a20099e02760ec000285"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/template/manifest.yaml",
-                      "sha256":  "99500e0887863f0631c12a5f394af7ecae8f36934ed6bed6962846425a589387"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/ui/template/render.hlsl",
-                      "sha256":  "c4d9dbde40a146b6c86d646e804a1750763d4d9062233e48df20cc1d60af3ac4"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/viewport/pick3d.hlsli",
-                      "sha256":  "3e851260480220a26133134e3958575045d3092cf64e341d02e41574f00f8585"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/modules/_shared/xpbd/xpbd.hlsli",
-                      "sha256":  "62cc8f8ad5360b3b2208665d22307769f2859cddba55d9bd6083b896325f5678"
                   },
                   {
                       "path":  "projects/scientific_organism/modules/scientific_analysis_proxy/manifest.yaml",
@@ -2121,48 +1477,12 @@
                       "sha256":  "473bf530ab4ada35bca455ba27ce9b948e3b7c7d4d14496078fbd16aa15e9fca"
                   },
                   {
-                      "path":  "projects/scientific_organism/proof/16_final_master.png",
-                      "sha256":  "46df72091f5d66ca8f51d95330efbae674628b512bcd858059beef579cbe51b4"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/proof/biotic_coordinate_field_emphasis.png",
-                      "sha256":  "c3c4dabdd758b70d84f01921ab4f8b75f52863f8707cc2ceb5a41e1cbde4f9e8"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/proof/README.md",
-                      "sha256":  "420220c037dc5aea9cc81beff13276bdbca77ca8269a4bcb95aabc7940a9c6ab"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/proof/scientific_organism_motion_final.mp4",
-                      "sha256":  "c33c677708cf8c501bb3d9e9473607aa747de202b656817ca92f68690c5a30a4"
-                  },
-                  {
-                      "path":  "projects/scientific_organism/proof/seed_lab_toolbar_right.png",
-                      "sha256":  "f38050d0c4d726152e4965c037727ae1353603b35f0cd1a881b40b1d9c2391da"
-                  },
-                  {
                       "path":  "projects/scientific_organism/README.md",
-                      "sha256":  "1b1b289f41957054d3c057df1031443c67a704099dc9d5d3c77a4688880da4d3"
+                      "sha256":  "22a9efe72267fd3a338509f668292b00ff31752c91fabccda62c6d3cf3378c12"
                   },
                   {
                       "path":  "projects/scientific_organism/scientific_organism.sentinel",
                       "sha256":  "f552508524e67f6a7446e997070cac4fbb24f11940c31dd49cc1c4a21ed37b0b"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/fonts/scientifica_ascii.hlsli",
-                      "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
-                      "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/os_terminal.hlsli",
-                      "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/os_text.hlsli",
-                      "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
                   },
                   {
                       "path":  "projects/strata/modules/_shared/palette.hlsli",
@@ -2173,80 +1493,12 @@
                       "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
                   },
                   {
-                      "path":  "projects/strata/modules/_shared/sdf/sdf_dada.hlsli",
-                      "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/sdf/sdf_extras.hlsli",
-                      "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/sdf/sdf_noise.hlsli",
-                      "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/sdf/sdf_objects.hlsli",
-                      "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
-                  },
-                  {
                       "path":  "projects/strata/modules/_shared/sdf/sdf_ops.hlsli",
                       "sha256":  "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
                   },
                   {
                       "path":  "projects/strata/modules/_shared/sdf/sdf_shading.hlsli",
                       "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui_controls.hlsli",
-                      "sha256":  "af4330555deed30cc32e66f2973f8c897770f59c1974a9a6c419023a37078be6"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui_core.hlsli",
-                      "sha256":  "cd3bde128252f34cb7dee9f4d9646b167395ec738d4c3195b6a2463b9a887216"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui_generated_text.hlsli",
-                      "sha256":  "468d42d0d77c687afa5485b11221196045b7c47765e6479d07618a8ae0af8aa8"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui_interaction.hlsli",
-                      "sha256":  "a7bc7b302cc72fbd1516c2643e485c78f3d66ec1be6318c04f26e41bf7501b1c"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui_layout.hlsli",
-                      "sha256":  "85980d0aaf376628d598bbbbf6c773aacc0b07ecf40d3a2773c837f777907e8a"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui_theme.hlsli",
-                      "sha256":  "202d46867ca9cc0fdb1d1d21f5ef8f66300c51713a8743c212eef99ee6d52ff9"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui_typography.hlsli",
-                      "sha256":  "e2e2e24dd775d4fc3a10b27ecf67ba5f7b357712edff357bc48d21b3c8269d73"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui_v2.hlsli",
-                      "sha256":  "b94aae6b48d954905746cc468530eac527e393a43073cf1553701ba595143a76"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui3_controls.hlsli",
-                      "sha256":  "341bfdac31754c64000daee45f49b7034a9d623ae4c973914d0c6b837bc059ba"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui3_core.hlsli",
-                      "sha256":  "0fbab9649817e6ffbae5c4b18e4d0ef18a7d7f0093b06e1ca492d798241d0362"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui3_events.hlsli",
-                      "sha256":  "7a784df7f5c98678874766259168e907a91a85e5cf33b9ba6627527cab122fd5"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui3_text.hlsli",
-                      "sha256":  "e436f2ac4fce52889eee6342e39cc1f6b4e58228ffb94882c7fcd30c86b88499"
-                  },
-                  {
-                      "path":  "projects/strata/modules/_shared/ui/sui3_theme.hlsli",
-                      "sha256":  "df31e54f2d4a677f853ffb0d2277e94a8c125db2cffd2ef8e001bba64d8791a7"
                   },
                   {
                       "path":  "projects/strata/modules/blob_layout/compute.hlsl",
@@ -2325,56 +1577,8 @@
                       "sha256":  "2f476ddf9ff31ca52a2df2134930c41319d4d0fddf1c716fdacbb23d0295789c"
                   },
                   {
-                      "path":  "projects/strata/proof/clean-studio.png",
-                      "sha256":  "a7eb093bc024982841cec2a21a0bcd4b919f8e1e2c57cc34ae82357c3c5d83ed"
-                  },
-                  {
-                      "path":  "projects/strata/proof/composition-bus.png",
-                      "sha256":  "4bab1f8f6e26a02b7c63e40095147e5d416d98e15d8c0c3ead5f5bb9acaa4a06"
-                  },
-                  {
-                      "path":  "projects/strata/proof/composition-desk.png",
-                      "sha256":  "7b9a64738e49910fffa27c5cc451ae0f48c5c612cf7e5f07aba76944b26d0ece"
-                  },
-                  {
-                      "path":  "projects/strata/proof/feature-analysis-proxy.png",
-                      "sha256":  "442ae007a1be6ebe2526e00cf3bda05e6753a71af87f0d77015aaee2f84100cb"
-                  },
-                  {
-                      "path":  "projects/strata/proof/feature-disabled.png",
-                      "sha256":  "c47c1a834ba465db9acda7cf86131de44f5fdd7392795ebe16cdf215651feaca"
-                  },
-                  {
-                      "path":  "projects/strata/proof/feature-enabled.png",
-                      "sha256":  "300c00ffcb08df1aa0305e14f872853c94884b8dbcfd716800fcd9460c48dcaf"
-                  },
-                  {
-                      "path":  "projects/strata/proof/graphic-poster.png",
-                      "sha256":  "99ff04cac4f341c347ed2b1d3ceae6045c00ab79e265087bd3cb568501363a01"
-                  },
-                  {
-                      "path":  "projects/strata/proof/marble-focal-shift.png",
-                      "sha256":  "8cdbc607a61abb028c47a0e530d3b26df16a304eedf287bb80e82cbe1607d612"
-                  },
-                  {
-                      "path":  "projects/strata/proof/melted-chrome.png",
-                      "sha256":  "e804ba31ec27749dd4c8695d1ff72b1e763995a3dc2ea96e30929fcbcd45bc75"
-                  },
-                  {
-                      "path":  "projects/strata/proof/performance.png",
-                      "sha256":  "24c1af8416bbaf600d1a64014942b8cb56962c971fedcd0af2b3bd56e95331de"
-                  },
-                  {
-                      "path":  "projects/strata/proof/README.md",
-                      "sha256":  "9acbca000d29e13cb8518901af16ac9c91022914a73c631187c7f6900ccc5d9d"
-                  },
-                  {
-                      "path":  "projects/strata/proof/wire-cage.png",
-                      "sha256":  "21c100e6668b3805ca7658bacbc81b76f024d76a9bbbec9da3fbe5d4c1ca1e71"
-                  },
-                  {
                       "path":  "projects/strata/README.md",
-                      "sha256":  "e691178da58df75adb2c8d787eaaaa3318972cd1fe95a9fb7718cccb717352db"
+                      "sha256":  "7950d16d3f528ba0424faf2a53088904435dda4edc518415571bb053689e880b"
                   },
                   {
                       "path":  "projects/strata/strata.sentinel",
@@ -2383,6 +1587,10 @@
                   {
                       "path":  "projects/streamdiff_canvas/modules/_shared/fonts/scientifica_ascii.hlsli",
                       "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
+                  },
+                  {
+                      "path":  "projects/streamdiff_canvas/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
                   },
                   {
                       "path":  "projects/streamdiff_canvas/modules/_shared/ui/sui_controls.hlsli",
@@ -2542,7 +1750,7 @@
                   },
                   {
                       "path":  "projects/streamdiff_canvas/README.md",
-                      "sha256":  "36b7e15df62371b16847736e1930732c8bb759c321bb4746b909a9d59dfabe9f"
+                      "sha256":  "81701be0a1ffa225b276ad1a8d5383870a90bece8058122e0db5cee8769a4ca6"
                   },
                   {
                       "path":  "projects/streamdiff_canvas/streamdiff_canvas.sentinel",
@@ -2583,6 +1791,10 @@
                   {
                       "path":  "projects/streamdiff_workflows/modules/_shared/fonts/scientifica_ascii.hlsli",
                       "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
+                  },
+                  {
+                      "path":  "projects/streamdiff_workflows/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
                   },
                   {
                       "path":  "projects/streamdiff_workflows/modules/_shared/show_timeline.hlsli",
@@ -2666,11 +1878,7 @@
                   },
                   {
                       "path":  "projects/streamdiff_workflows/README.md",
-                      "sha256":  "c805bc43112f96cdce7e1a79b6cf9c785a76f60e9efb5c2deb9cbc3579abb77a"
-                  },
-                  {
-                      "path":  "projects/streamdiff_workflows/VALIDATION.md",
-                      "sha256":  "3f354f8f3cdc8e2716b4e2e4961e4af9746adcc48060c730eec805c925ab24d4"
+                      "sha256":  "aaf6c79516f9352f692936bbee4578d2ffd8a21c25ad8749d412ce6475408126"
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/.gitignore",
@@ -2685,16 +1893,20 @@
                       "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
                   },
                   {
+                      "path":  "projects/touchdesigner_new_project/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
+                  },
+                  {
                       "path":  "projects/touchdesigner_new_project/modules/_shared/ui/sui3_core.hlsli",
-                      "sha256":  "0fbab9649817e6ffbae5c4b18e4d0ef18a7d7f0093b06e1ca492d798241d0362"
+                      "sha256":  "53c94ba02cbc9ca2de94ec06d687145f62e48bb457ecb8c64383074358e6bdd0"
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/modules/_shared/ui/sui3_text.hlsli",
-                      "sha256":  "e436f2ac4fce52889eee6342e39cc1f6b4e58228ffb94882c7fcd30c86b88499"
+                      "sha256":  "86c95a8b044c069abd5c19ab1e8065ad5e26330b4f6c3012c9e201c4e0ee397b"
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/modules/_shared/ui/sui3_theme.hlsli",
-                      "sha256":  "df31e54f2d4a677f853ffb0d2277e94a8c125db2cffd2ef8e001bba64d8791a7"
+                      "sha256":  "007ce835b9e4a24c0e74f11aaa828b52e255f7eeffc19026a4a99984d3c47234"
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/modules/Geometry_Pass/descriptors.hlsl",
@@ -2774,7 +1986,7 @@
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/README.md",
-                      "sha256":  "c99098038c3295f02bdbccd417332f637f18af1aa1111f4494c185e174246f34"
+                      "sha256":  "0906e97ae82cd270492be6e51734546ffe788d8f9d508c26960c75bfd2d2ac75"
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/touchdesigner_new_project.sentinel",
@@ -2782,31 +1994,43 @@
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "7c680078b2fb6a4f343c684c32fb8739948cf71fdf6a60c2ecb7d84b7ae69a46"
-                  },
-                  {
-                      "path":  "tools/generate_laservibe_hud.py",
-                      "sha256":  "3ac0d42a86d084de596fabcfc528c7826c68fc7f066326c8c62aea5b9ca51f98"
+                      "sha256":  "de39cc4f6bc2a081a7c6a234fd2df5c7344fbd6e378361e7aa45b947f930ffab"
                   },
                   {
                       "path":  "tools/module-ui.ps1",
-                      "sha256":  "6fad90e041c849cec175a95074baa18e5d984f80d6f4656882cd98737642f8a0"
+                      "sha256":  "85053c78378ed0711cb5f8b38a635c4bda7470fd0de0b0113ec64cd5e7d2fddf"
                   },
                   {
-                      "path":  "tools/official-examples.config.psd1",
-                      "sha256":  "02fcbdcb699ed98c356084e6f49c6d9ed64e7837e3c73a8cb3d278c258fa4f71"
+                      "path":  "tools/templates/module-ui/module/manifest.yaml",
+                      "sha256":  "85ea854329a7a703ba3383041c7385a7671fc76343eb489b0f040239e2216b00"
                   },
                   {
-                      "path":  "tools/test-official-examples.ps1",
-                      "sha256":  "6de5ca116768b3079e1f5ee18d043dcea09cb8e34da939e20938b9613092ad04"
+                      "path":  "tools/templates/module-ui/module/render.hlsl",
+                      "sha256":  "ac81d2f1a29b1986ea38c3f6bad18e02ed780a594c999605698220ab64f49921"
                   },
                   {
-                      "path":  "tools/validate-official-examples.ps1",
-                      "sha256":  "db47936c433c8078e3559f59c2df72ac92ff8984a78e18392f0089212686644e"
+                      "path":  "tools/templates/module-ui/shared/fonts/scientifica_ascii.hlsli",
+                      "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
                   },
                   {
-                      "path":  "tools/verify_motion_energy.py",
-                      "sha256":  "12f28a3effcc0af94a9135c87bac5af9efefaf51eff0e2fc237471b923397f66"
+                      "path":  "tools/templates/module-ui/shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
+                  },
+                  {
+                      "path":  "tools/templates/module-ui/shared/ui/sui3_controls.hlsli",
+                      "sha256":  "341bfdac31754c64000daee45f49b7034a9d623ae4c973914d0c6b837bc059ba"
+                  },
+                  {
+                      "path":  "tools/templates/module-ui/shared/ui/sui3_core.hlsli",
+                      "sha256":  "0fbab9649817e6ffbae5c4b18e4d0ef18a7d7f0093b06e1ca492d798241d0362"
+                  },
+                  {
+                      "path":  "tools/templates/module-ui/shared/ui/sui3_text.hlsli",
+                      "sha256":  "e436f2ac4fce52889eee6342e39cc1f6b4e58228ffb94882c7fcd30c86b88499"
+                  },
+                  {
+                      "path":  "tools/templates/module-ui/shared/ui/sui3_theme.hlsli",
+                      "sha256":  "df31e54f2d4a677f853ffb0d2277e94a8c125db2cffd2ef8e001bba64d8791a7"
                   }
               ],
     "orphan_candidates":  [
@@ -4463,6 +3687,34 @@
                                   "sha256":  "4271d9f4c9194ebd5930b09fc7761ed0a61b9c601e179d7391c50a985f73f3c3"
                               },
                               {
+                                  "path":  "projects/autopsia/autopsia_agents.png",
+                                  "sha256":  "c936919e9ba264f7746a78a81c893199554dd2a05cbf1663da66cfd9a91089b4"
+                              },
+                              {
+                                  "path":  "projects/autopsia/autopsia_census.png",
+                                  "sha256":  "1c9cfde7fe8175327f4de8e4dc2b64091d165faa37785e39b21860ad2d10c172"
+                              },
+                              {
+                                  "path":  "projects/autopsia/autopsia_deck.png",
+                                  "sha256":  "8245ae2211478207a6ed64a5d05ae53d6cbfc0c63050548bbdf40499e3b1a2ba"
+                              },
+                              {
+                                  "path":  "projects/autopsia/autopsia_program.png",
+                                  "sha256":  "3a65a6a76a1c3c2ef3992c886faced6d2c65dd80fcd4fa519ca05476c7c23829"
+                              },
+                              {
+                                  "path":  "projects/autopsia/autopsia_relief.png",
+                                  "sha256":  "af5005cf7ac007c3e47aaeac62498a168dd737c0e5f41165383dd17421b5df5a"
+                              },
+                              {
+                                  "path":  "projects/autopsia/autopsia_specimen.png",
+                                  "sha256":  "58f0b11d6a142a34d7d1c5410fe0615e9005cfdc5e9f9a630183f26046572185"
+                              },
+                              {
+                                  "path":  "projects/autopsia/PLAN.md",
+                                  "sha256":  "82360ba24b06d681c77074a35990aa5dbdbd7aa31eb40eeff11d55260ddd3fa5"
+                              },
+                              {
                                   "path":  "projects/desert_totem/desert_totem.sentinel",
                                   "sha256":  "690fe91c9e6c9a496be4ef98c1f5fdf76cce20a4c76d8119d226854ea1660955"
                               },
@@ -4759,12 +4011,128 @@
                                   "sha256":  "47ceff482e8a76c641db7ef8babf07684e094780a4f6dcde496b0eaae8dc9699"
                               },
                               {
+                                  "path":  "projects/face_collage/modules/_shared/fonts/scientifica_ascii.hlsli",
+                                  "sha256":  "7df9d3c53c87e21cd44c66a9543dd6d76e47ed15176c27382754054fac499f4f"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/os_terminal.hlsli",
+                                  "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/os_text.hlsli",
+                                  "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/palette.hlsli",
+                                  "sha256":  "b576afea97755934575f8c192b1099bff05c1e44e636c8cc76be907d68705af4"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/sdf/sdf_blob.hlsli",
+                                  "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/sdf/sdf_dada.hlsli",
+                                  "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/sdf/sdf_extras.hlsli",
+                                  "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/sdf/sdf_noise.hlsli",
+                                  "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/sdf/sdf_objects.hlsli",
+                                  "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/sdf/sdf_ops.hlsli",
+                                  "sha256":  "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/sdf/sdf_shading.hlsli",
+                                  "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/ui/sui_controls.hlsli",
+                                  "sha256":  "a663f82755e7e974c5a06f0ba72ec7331bba2f6c4189cafababb921f58ade676"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/ui/sui_core.hlsli",
+                                  "sha256":  "a2f57e67bbb0c62b462d18f3f007c18eb9a813ed8e0e280ddf5dd6497189d0a7"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/ui/sui_generated_text.hlsli",
+                                  "sha256":  "5cdb8979ede92cc221e07fbbd72b029aaa8f18c44be996fc6f688c89ce2f2163"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/ui/sui_interaction.hlsli",
+                                  "sha256":  "b3e05d3b2104683a4b5a91432b0824a4c98da8fb35b306e75c565b154b89d07e"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/ui/sui_layout.hlsli",
+                                  "sha256":  "116a2239dc461175b56d704d3b114b4410a34edc7e8b2df13ee5ccc8b759332a"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/ui/sui_theme.hlsli",
+                                  "sha256":  "e032afed1568d193349975865b4866e9f21bd8422753b12490f54936c56cebaa"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/ui/sui_typography.hlsli",
+                                  "sha256":  "1dd13e78bc27a8afdfc3d3f54320a53c022036c05fa7262f63e84805c8c09aff"
+                              },
+                              {
+                                  "path":  "projects/face_collage/modules/_shared/ui/sui_v2.hlsli",
+                                  "sha256":  "3db388c38ea4736d08f0dd57064ba65750f8f4a969bea8a26b83d27934510d9c"
+                              },
+                              {
                                   "path":  "projects/face_collage/modules/collage_post/manifest.yaml",
                                   "sha256":  "c298f7124bbc87b842b8e589d0bfc22510b86712c205f9e8da159cd680371c1a"
                               },
                               {
                                   "path":  "projects/face_collage/modules/collage_post/post.hlsl",
                                   "sha256":  "48ef8bad843dfa76ef26a84cbced41067875cd7ed1224e8f23735dfb8e24064c"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/expressions.json",
+                                  "sha256":  "d000906ae1e22382ae9cb533866201852af7ae2b04e87b7fe86ae380b6751e6b"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/graph.json",
+                                  "sha256":  "a4899a5bebae40f337791fb726ea06be5431c427bb0652df760c84557f0354c9"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/graph_profile.json",
+                                  "sha256":  "af0f7f6eb1de61330a64ad513e1885816b591af0571423c2d8b34a231582e730"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/links.json",
+                                  "sha256":  "06686f6f2bf52bbe8ea274377e7a6050f28b8cc0ba35150afb575b11cf876e91"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/output.png",
+                                  "sha256":  "7f3bb7ab64e02d7bc0290c0f1b04838716c1d71a612916226b2fe9e883681921"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/output_capture.json",
+                                  "sha256":  "e2f00a93753c91cb7d9da1d84da257c6a3c8235bce9c5a1ccf3c8169ed4f2b34"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/pipeline_info.json",
+                                  "sha256":  "ea25e305b62f585bf5159fe4d6f546b01371f4806abbd019e6829a04c119b842"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/summary.json",
+                                  "sha256":  "e3ab451773620ab8996466c50e682538436eac215ae3f6c88cd87d89c1bdcbc8"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/summary.md",
+                                  "sha256":  "5f5505d4c74f15a68d0fdcb4ad8e948747b580869c25edabad7319bcecc24dbc"
+                              },
+                              {
+                                  "path":  "projects/face_collage/proof/window.jpg",
+                                  "sha256":  "35993b0d468390d799ba31cfdb8d9176b26efc5545725c96935395e13e652bd3"
                               },
                               {
                                   "path":  "projects/fruit_atlas_scatter/DEBRIEF.md",
@@ -5515,6 +4883,70 @@
                                   "sha256":  "0204e42d2c823ff3796ad78aaa39a5c062cc77cec334cd43443d1020f20ea276"
                               },
                               {
+                                  "path":  "projects/industrial_lattice/modules/_shared/fonts/scientifica_ascii.hlsli",
+                                  "sha256":  "7df9d3c53c87e21cd44c66a9543dd6d76e47ed15176c27382754054fac499f4f"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/os_terminal.hlsli",
+                                  "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/os_text.hlsli",
+                                  "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/palette.hlsli",
+                                  "sha256":  "b576afea97755934575f8c192b1099bff05c1e44e636c8cc76be907d68705af4"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_blob.hlsli",
+                                  "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_dada.hlsli",
+                                  "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_extras.hlsli",
+                                  "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/sdf/sdf_objects.hlsli",
+                                  "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/ui/sui_controls.hlsli",
+                                  "sha256":  "a663f82755e7e974c5a06f0ba72ec7331bba2f6c4189cafababb921f58ade676"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/ui/sui_core.hlsli",
+                                  "sha256":  "a2f57e67bbb0c62b462d18f3f007c18eb9a813ed8e0e280ddf5dd6497189d0a7"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/ui/sui_generated_text.hlsli",
+                                  "sha256":  "5cdb8979ede92cc221e07fbbd72b029aaa8f18c44be996fc6f688c89ce2f2163"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/ui/sui_interaction.hlsli",
+                                  "sha256":  "b3e05d3b2104683a4b5a91432b0824a4c98da8fb35b306e75c565b154b89d07e"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/ui/sui_layout.hlsli",
+                                  "sha256":  "116a2239dc461175b56d704d3b114b4410a34edc7e8b2df13ee5ccc8b759332a"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/ui/sui_theme.hlsli",
+                                  "sha256":  "e032afed1568d193349975865b4866e9f21bd8422753b12490f54936c56cebaa"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/ui/sui_typography.hlsli",
+                                  "sha256":  "1dd13e78bc27a8afdfc3d3f54320a53c022036c05fa7262f63e84805c8c09aff"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/modules/_shared/ui/sui_v2.hlsli",
+                                  "sha256":  "3db388c38ea4736d08f0dd57064ba65750f8f4a969bea8a26b83d27934510d9c"
+                              },
+                              {
                                   "path":  "projects/industrial_lattice/modules/industrial_mono_post/manifest.yaml",
                                   "sha256":  "aa58da97bb60458dabef7c3698ba724662c3b2365ff5bb036d878b112856deea"
                               },
@@ -5529,6 +4961,170 @@
                               {
                                   "path":  "projects/industrial_lattice/modules/steel_lattice/steel.hlsl",
                                   "sha256":  "571a3e8b9eb4f719fe5603825a67a04c9328cccf5a60bcf9fda9dc01fbd10518"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/NOTES.md",
+                                  "sha256":  "e37f818015ea85773de60a376eda97f4a2272142a3d272232661b4146854da53"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/01-box-frame.png",
+                                  "sha256":  "16b9092b36c51349ed0f0e44b6f6b7fda38cac7f7db7596c06d40e1f7e78d687"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/02-heavy-steel.png",
+                                  "sha256":  "7ac5dd1da6fc03a1466adfcb31a81c1e0f6ae73e42b55f9829427ef45ea49319"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/03-concrete-haze.png",
+                                  "sha256":  "4d02d739cb9f75ce6579747caabea3265972b33e4c95d27b4a26004c3aa3ff87"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/04-fidelity.png",
+                                  "sha256":  "10b440269f3d6a60de5e53587e3da63499dd8c6fe482f9410fcd39235abc705a"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/05-performance.png",
+                                  "sha256":  "c530b6287f9d0ff983b3e9cdf566202647aab22e8ed41b7cd0b8360c86537985"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/camera-deep-grid.png",
+                                  "sha256":  "681eb3754435221674a5567c15621515af751fccdacb9ded3b30cd72ca152f36"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/camera-fly.png",
+                                  "sha256":  "fcb60551061bf406578748a1a89dec32b946cbbbb95a5492cf1dfda762b2ad80"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/camera-hero.png",
+                                  "sha256":  "639b030907e15e6b9302ea46fe10c40ec1467f35e63daf46d8b4dcfb7b66c3d1"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/camera-lookup.png",
+                                  "sha256":  "cfb49c41291a4c50f7b8a6c687187a6ee8fa096e747b29aec509f740efbfaed1"
+                              },
+                              {
+                                  "path":  "projects/industrial_lattice/proof/README.md",
+                                  "sha256":  "d56370f463d5b1e650a65519caf9c633760b2823298b88605e5f3894bfe61bed"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/anim/anim.hlsli",
+                                  "sha256":  "66996ffa8ede4dccbd114609d90ddf4d4d4a2e0c1adef858878e16ed160e2fb4"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/au_hud/au_text.hlsli",
+                                  "sha256":  "86ad63e7d6008858748cf084097ffc18a3aa8deaaa9e7332d8adb1993dae86bd"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/os_terminal.hlsli",
+                                  "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/os_text.hlsli",
+                                  "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/palette.hlsli",
+                                  "sha256":  "b14a7e2f689a97d06c0d7dc07206fe02dc7eb9941c8cd57b7ab5c5105189e373"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/pulse2/regions.hlsli",
+                                  "sha256":  "a3d19c3103dcc3efd510c7df56e47279cd6435c93aa4cb3640b1422eb704c7dc"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_audit.hlsli",
+                                  "sha256":  "ca5c4a45ba7c444dc12aa913fdb7a25b880f2419e25e9a2b6d8a13a28a9c730a"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_blob.hlsli",
+                                  "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_botany.hlsli",
+                                  "sha256":  "e3d360cc5dd74e1de6e6338302a8cea962711a5c1f2c0ba5e38d6946d8ff3709"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_dada.hlsli",
+                                  "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_extras.hlsli",
+                                  "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_kinds.yaml",
+                                  "sha256":  "0fc2cf5b2062a97a05ff9aae43133ac454e9c88a3479a4ad7fc02e1799c1c521"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_noise.hlsli",
+                                  "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_objects.hlsli",
+                                  "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_ops.hlsli",
+                                  "sha256":  "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/sdf/sdf_shading.hlsli",
+                                  "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/surface/bicubic.hlsli",
+                                  "sha256":  "4ef9a5246308a164cd897d0b1f80de8ba9f5cda589835f6437826caa7f21114b"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/README.md",
+                                  "sha256":  "0ae2f8ec9b342eb650cd0dbbfb7ae5e7fb0bf3f289f4461aa95833a78754f94c"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/scientific_ui.hlsli",
+                                  "sha256":  "365cadd91dacbecb8f1cb7dd999c7ee0bedb1cb4990269e8922d22e374b65eb9"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/sui_controls.hlsli",
+                                  "sha256":  "af4330555deed30cc32e66f2973f8c897770f59c1974a9a6c419023a37078be6"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/sui_core.hlsli",
+                                  "sha256":  "cd3bde128252f34cb7dee9f4d9646b167395ec738d4c3195b6a2463b9a887216"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/sui_generated_text.hlsli",
+                                  "sha256":  "468d42d0d77c687afa5485b11221196045b7c47765e6479d07618a8ae0af8aa8"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/sui_layout.hlsli",
+                                  "sha256":  "85980d0aaf376628d598bbbbf6c773aacc0b07ecf40d3a2773c837f777907e8a"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/sui_theme.hlsli",
+                                  "sha256":  "202d46867ca9cc0fdb1d1d21f5ef8f66300c51713a8743c212eef99ee6d52ff9"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/sui_typography.hlsli",
+                                  "sha256":  "e2e2e24dd775d4fc3a10b27ecf67ba5f7b357712edff357bc48d21b3c8269d73"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/sui_v2.hlsli",
+                                  "sha256":  "b94aae6b48d954905746cc468530eac527e393a43073cf1553701ba595143a76"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/template/manifest.yaml",
+                                  "sha256":  "99500e0887863f0631c12a5f394af7ecae8f36934ed6bed6962846425a589387"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/ui/template/render.hlsl",
+                                  "sha256":  "c4d9dbde40a146b6c86d646e804a1750763d4d9062233e48df20cc1d60af3ac4"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/viewport/pick3d.hlsli",
+                                  "sha256":  "3e851260480220a26133134e3958575045d3092cf64e341d02e41574f00f8585"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/modules/_shared/xpbd/xpbd.hlsli",
+                                  "sha256":  "62cc8f8ad5360b3b2208665d22307769f2859cddba55d9bd6083b896325f5678"
                               },
                               {
                                   "path":  "projects/interaction_lab/modules/Font_Sampler/_ui.generated.hlsli",
@@ -5645,6 +5241,54 @@
                               {
                                   "path":  "projects/interaction_lab/modules/UI_Style_Tuner/render.hlsl",
                                   "sha256":  "e8e593b96ea939ab7a7e20b04a849f03b0f20728aa897609ad0144b291092643"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/font-sampler.png",
+                                  "sha256":  "6840715f0c63bf024a0e31224d2b63ec7d7e5f0b42bb7af7b3ddab2fdb0dcff8"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/gizmo-grid.png",
+                                  "sha256":  "27f9fd19bf43fe92b66867727477998819644beb59385121226f53071d17522e"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/gizmo-offset.png",
+                                  "sha256":  "44012b113863dc945e4f4b5d4c6855b97035068cdf256b204da2b0915cf91bd2"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/motion-console.png",
+                                  "sha256":  "f407dbdbb386fe5b2fe8f48b60dbcff08b8730e0b932c0e0d58373543618aaaf"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/README.md",
+                                  "sha256":  "5432b5ed25b8debc669c47560efc12fbfdbe127a0f64e89e86aa413c13d814a1"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/spline-default.png",
+                                  "sha256":  "42e9c1ae68cc92a643899bc89e0bb8e3075f891ea0c6b0d74e1346188be593c0"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/spline-offset.png",
+                                  "sha256":  "264051466955087e2b18b3dc4668a8b48df42930f01243d2b53760b743969330"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/spline-output-default.png",
+                                  "sha256":  "b0c9348237ffa264c902c8e7d99a94045bfd6baba38182841f25dffc001e98f6"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/spline-output-offset.png",
+                                  "sha256":  "dc2ea168d2fcecdd33a6888e110a2bfba2108559a51a15b09be63382c7f63a5b"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/ui-kit.png",
+                                  "sha256":  "597e38d3c94f492dfd4cd66abf8b354558f8b7703cf1ced2f8d0a823e6a5e6fc"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/ui-style-airy.png",
+                                  "sha256":  "fbde56bb04ed25470f79e2c72c52db2b4669d5d76eb306c421bef5a1acb409bb"
+                              },
+                              {
+                                  "path":  "projects/interaction_lab/proof/ui-style-tuner.png",
+                                  "sha256":  "1feaebf344b26abc3ea508d5bca16cc7a4f1afece0d1ee23a9ffe43d4912951c"
                               },
                               {
                                   "path":  "projects/kidpix_canvas/kidpix_canvas.sentinel",
@@ -5805,6 +5449,78 @@
                               {
                                   "path":  "projects/kidpix_canvas/modules/kp_spawn/spawn.hlsl",
                                   "sha256":  "ff8d7c999b14e4dc404a98dbd144adacdeb4b8762e8c5ba93668e2c8d22dadbb"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/os_terminal.hlsli",
+                                  "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/os_text.hlsli",
+                                  "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/palette.hlsli",
+                                  "sha256":  "b576afea97755934575f8c192b1099bff05c1e44e636c8cc76be907d68705af4"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_blob.hlsli",
+                                  "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_dada.hlsli",
+                                  "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_extras.hlsli",
+                                  "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_noise.hlsli",
+                                  "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_objects.hlsli",
+                                  "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_ops.hlsli",
+                                  "sha256":  "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/sdf/sdf_shading.hlsli",
+                                  "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/ui/sui_controls.hlsli",
+                                  "sha256":  "a663f82755e7e974c5a06f0ba72ec7331bba2f6c4189cafababb921f58ade676"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/ui/sui_core.hlsli",
+                                  "sha256":  "a2f57e67bbb0c62b462d18f3f007c18eb9a813ed8e0e280ddf5dd6497189d0a7"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/ui/sui_generated_text.hlsli",
+                                  "sha256":  "5cdb8979ede92cc221e07fbbd72b029aaa8f18c44be996fc6f688c89ce2f2163"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/ui/sui_interaction.hlsli",
+                                  "sha256":  "b3e05d3b2104683a4b5a91432b0824a4c98da8fb35b306e75c565b154b89d07e"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/ui/sui_layout.hlsli",
+                                  "sha256":  "116a2239dc461175b56d704d3b114b4410a34edc7e8b2df13ee5ccc8b759332a"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/ui/sui_theme.hlsli",
+                                  "sha256":  "e032afed1568d193349975865b4866e9f21bd8422753b12490f54936c56cebaa"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/ui/sui_typography.hlsli",
+                                  "sha256":  "1dd13e78bc27a8afdfc3d3f54320a53c022036c05fa7262f63e84805c8c09aff"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/modules/_shared/ui/sui_v2.hlsli",
+                                  "sha256":  "3db388c38ea4736d08f0dd57064ba65750f8f4a969bea8a26b83d27934510d9c"
                               },
                               {
                                   "path":  "projects/living_room_sdf/modules/LR_Architecture_2/.sentinel/shader_cache/dxbc/a77c392fdfece8aa.bin",
@@ -6209,6 +5925,214 @@
                               {
                                   "path":  "projects/living_room_sdf/modules/LR_SDF_Renderer_8/shell.hlsl",
                                   "sha256":  "05405683d341a5e4fe1ee2577c4179cfdb130ed94a0dd4ff2a858bdaa9bd2999"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/bundle/expressions.json",
+                                  "sha256":  "a34c84d9b7aeafe3fe4b5f578e9eaa4cc07331d05697128fb6f957611c94b709"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/bundle/graph.json",
+                                  "sha256":  "fd1d5a4de5691fc5946d6bb462dec0f43b4be9e78b32ba511ab05c5a5f6e4cf6"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/bundle/graph_profile.json",
+                                  "sha256":  "a4a1d374eef11226f80af500eb74c68afc93d875309f6a3a102e67b8681f6924"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/bundle/links.json",
+                                  "sha256":  "12dd68c33516c45864a92f21acf65679a339ac4f0e71bfc6885b3c8715315894"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/bundle/output.png",
+                                  "sha256":  "1b32079f3193d0818a7a44c0e6a2b96089c6a33bea5511fec64279ef2b87b04c"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/bundle/pipeline_info.json",
+                                  "sha256":  "98d13d0b3809b70be94f728e5678732ca153ecd68fda56f1294254ca99e190f2"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/bundle/window.jpg",
+                                  "sha256":  "14ea73e87f5bbe7dc16885fe2c42cce8f0fb8f0ad6b6e0fd054f22a56bd7e225"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/camera_0.png",
+                                  "sha256":  "dc378b6ddc9612caeef6d136505088b553f8f9abb0f6a180e5366f8b6792f9e2"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/camera_1.png",
+                                  "sha256":  "1bccf5c91a5d059d72153bb3f4372b2533552f7a241d35a94cd40544d622ed81"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/camera_2.png",
+                                  "sha256":  "1a4de625f6465c6d88eb855786c9326c67fa9ef58582a976b51f72954bf0daf9"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/camera_3.png",
+                                  "sha256":  "5a4bc615de49f506abc0774f45382ea7db175bb0c9cd43413aa73175a604366c"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/lighting-desk.png",
+                                  "sha256":  "3a56f104a427eb4ba4a55369a014dac68385ee3b574a2403567ac189cec2ef1a"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/plan_conversation.png",
+                                  "sha256":  "6c4e023b5d2962e9d5220b88ef3abc853ca3dd5557534558b935318dd3c93fa7"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/plan_offset_sofa.png",
+                                  "sha256":  "c8257b1b394ad0114f36b7872bbf824e9bade7086d3eb476647c4af61c4c2955"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/README.md",
+                                  "sha256":  "329b903af7c38dbc1cfc3f9b9b5bd5bb16f47c8627c0ea30ed19155ddb9c6859"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/render_conversation.png",
+                                  "sha256":  "9d70199b31c2e6354f42d1d4be2de1ff421989ffd8ce139087bbb63b30878d76"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/render_offset_sofa.png",
+                                  "sha256":  "b003db815751df20c82108d67a34a2a93177804a9c13abb45e32272f1c1aec99"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/scene_daylight.png",
+                                  "sha256":  "2c17fb1359cde7d22f24405ac3e8361247809d378bb781230b3739de8d7f722a"
+                              },
+                              {
+                                  "path":  "projects/living_room_sdf/proof/scene_warm_evening.png",
+                                  "sha256":  "b118bd004e4808de1e1f4ca7b0b52672aec60914b36190adb16b0d984a4bf2ce"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/au_hud/au_text.hlsli",
+                                  "sha256":  "86ad63e7d6008858748cf084097ffc18a3aa8deaaa9e7332d8adb1993dae86bd"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/os_terminal.hlsli",
+                                  "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/os_text.hlsli",
+                                  "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/palette.hlsli",
+                                  "sha256":  "b14a7e2f689a97d06c0d7dc07206fe02dc7eb9941c8cd57b7ab5c5105189e373"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/pulse2/regions.hlsli",
+                                  "sha256":  "a3d19c3103dcc3efd510c7df56e47279cd6435c93aa4cb3640b1422eb704c7dc"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_audit.hlsli",
+                                  "sha256":  "ca5c4a45ba7c444dc12aa913fdb7a25b880f2419e25e9a2b6d8a13a28a9c730a"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_blob.hlsli",
+                                  "sha256":  "76aa437cd1f1e5018d10bee68b8a644fe721c5d527ba4171e1ce4bcb08b16f99"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_botany.hlsli",
+                                  "sha256":  "e3d360cc5dd74e1de6e6338302a8cea962711a5c1f2c0ba5e38d6946d8ff3709"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_dada.hlsli",
+                                  "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_extras.hlsli",
+                                  "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_kinds.yaml",
+                                  "sha256":  "0fc2cf5b2062a97a05ff9aae43133ac454e9c88a3479a4ad7fc02e1799c1c521"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_noise.hlsli",
+                                  "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_objects.hlsli",
+                                  "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_ops.hlsli",
+                                  "sha256":  "6da304356e11cbfc8afe61e6e683e3236136bbcc404026e5245f1965b1d2782b"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/sdf/sdf_shading.hlsli",
+                                  "sha256":  "ef7d8722f8cd4732bd6f68874ef627401de6a728012da4feab894f3ca4b1f6be"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/surface/bicubic.hlsli",
+                                  "sha256":  "4ef9a5246308a164cd897d0b1f80de8ba9f5cda589835f6437826caa7f21114b"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/README.md",
+                                  "sha256":  "0ae2f8ec9b342eb650cd0dbbfb7ae5e7fb0bf3f289f4461aa95833a78754f94c"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/scientific_ui.hlsli",
+                                  "sha256":  "365cadd91dacbecb8f1cb7dd999c7ee0bedb1cb4990269e8922d22e374b65eb9"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/sui3_controls.hlsli",
+                                  "sha256":  "341bfdac31754c64000daee45f49b7034a9d623ae4c973914d0c6b837bc059ba"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/sui3_core.hlsli",
+                                  "sha256":  "0fbab9649817e6ffbae5c4b18e4d0ef18a7d7f0093b06e1ca492d798241d0362"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/sui3_events.hlsli",
+                                  "sha256":  "7a784df7f5c98678874766259168e907a91a85e5cf33b9ba6627527cab122fd5"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/sui3_text.hlsli",
+                                  "sha256":  "e436f2ac4fce52889eee6342e39cc1f6b4e58228ffb94882c7fcd30c86b88499"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/sui3_theme.hlsli",
+                                  "sha256":  "df31e54f2d4a677f853ffb0d2277e94a8c125db2cffd2ef8e001bba64d8791a7"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/sui3_trace.hlsli",
+                                  "sha256":  "2a4044b694955a86057df1f2275a47fdf4facb72b1a6a20099e02760ec000285"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/template/manifest.yaml",
+                                  "sha256":  "99500e0887863f0631c12a5f394af7ecae8f36934ed6bed6962846425a589387"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/ui/template/render.hlsl",
+                                  "sha256":  "c4d9dbde40a146b6c86d646e804a1750763d4d9062233e48df20cc1d60af3ac4"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/viewport/pick3d.hlsli",
+                                  "sha256":  "3e851260480220a26133134e3958575045d3092cf64e341d02e41574f00f8585"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/modules/_shared/xpbd/xpbd.hlsli",
+                                  "sha256":  "62cc8f8ad5360b3b2208665d22307769f2859cddba55d9bd6083b896325f5678"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/proof/16_final_master.png",
+                                  "sha256":  "46df72091f5d66ca8f51d95330efbae674628b512bcd858059beef579cbe51b4"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/proof/biotic_coordinate_field_emphasis.png",
+                                  "sha256":  "c3c4dabdd758b70d84f01921ab4f8b75f52863f8707cc2ceb5a41e1cbde4f9e8"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/proof/README.md",
+                                  "sha256":  "420220c037dc5aea9cc81beff13276bdbca77ca8269a4bcb95aabc7940a9c6ab"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/proof/scientific_organism_motion_final.mp4",
+                                  "sha256":  "c33c677708cf8c501bb3d9e9473607aa747de202b656817ca92f68690c5a30a4"
+                              },
+                              {
+                                  "path":  "projects/scientific_organism/proof/seed_lab_toolbar_right.png",
+                                  "sha256":  "f38050d0c4d726152e4965c037727ae1353603b35f0cd1a881b40b1d9c2391da"
                               },
                               {
                                   "path":  "projects/showcase_gallery/modules/_shared/fonts/scientifica_ascii.hlsli",
@@ -7047,6 +6971,90 @@
                                   "sha256":  "5269bde29a267427ace1f631da9781deebc20b75a1856996c641acb3ac59587f"
                               },
                               {
+                                  "path":  "projects/strata/modules/_shared/fonts/scientifica_ascii.hlsli",
+                                  "sha256":  "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                                  "sha256":  "2c5358641dc096aaa71dbb9ddfadfd3939da8e523fb1e9c43cf70ef2fe755653"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/os_terminal.hlsli",
+                                  "sha256":  "32aa1a47285bc2fd4a1ce5fb73170c0cdd309a94bb67dd97e9e59bb45b185f40"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/os_text.hlsli",
+                                  "sha256":  "07fbbcc95b2aa7c15767d2ad7726f26581f316e8a2a53961a9c0e1aa3ab27c3b"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/sdf/sdf_dada.hlsli",
+                                  "sha256":  "a7ba8fd363a63df05a89fbad7cd8987c58e1b3c9c0c513d5626416fb51d4c459"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/sdf/sdf_extras.hlsli",
+                                  "sha256":  "5b760798e594fce30cc1fcd6d131aa658e187e5a19fcfc7a46b64f83d271a7dc"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/sdf/sdf_noise.hlsli",
+                                  "sha256":  "1eaf94f85a562412cedc36052236a94ae17cc5420a0a961704a50b55ade84b7a"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/sdf/sdf_objects.hlsli",
+                                  "sha256":  "bde2b1787d7b80f73ca29b62199880f23cff2048225b005a25a83a6110d49e5f"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui_controls.hlsli",
+                                  "sha256":  "af4330555deed30cc32e66f2973f8c897770f59c1974a9a6c419023a37078be6"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui_core.hlsli",
+                                  "sha256":  "cd3bde128252f34cb7dee9f4d9646b167395ec738d4c3195b6a2463b9a887216"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui_generated_text.hlsli",
+                                  "sha256":  "468d42d0d77c687afa5485b11221196045b7c47765e6479d07618a8ae0af8aa8"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui_interaction.hlsli",
+                                  "sha256":  "a7bc7b302cc72fbd1516c2643e485c78f3d66ec1be6318c04f26e41bf7501b1c"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui_layout.hlsli",
+                                  "sha256":  "85980d0aaf376628d598bbbbf6c773aacc0b07ecf40d3a2773c837f777907e8a"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui_theme.hlsli",
+                                  "sha256":  "202d46867ca9cc0fdb1d1d21f5ef8f66300c51713a8743c212eef99ee6d52ff9"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui_typography.hlsli",
+                                  "sha256":  "e2e2e24dd775d4fc3a10b27ecf67ba5f7b357712edff357bc48d21b3c8269d73"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui_v2.hlsli",
+                                  "sha256":  "b94aae6b48d954905746cc468530eac527e393a43073cf1553701ba595143a76"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui3_controls.hlsli",
+                                  "sha256":  "341bfdac31754c64000daee45f49b7034a9d623ae4c973914d0c6b837bc059ba"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui3_core.hlsli",
+                                  "sha256":  "0fbab9649817e6ffbae5c4b18e4d0ef18a7d7f0093b06e1ca492d798241d0362"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui3_events.hlsli",
+                                  "sha256":  "7a784df7f5c98678874766259168e907a91a85e5cf33b9ba6627527cab122fd5"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui3_text.hlsli",
+                                  "sha256":  "e436f2ac4fce52889eee6342e39cc1f6b4e58228ffb94882c7fcd30c86b88499"
+                              },
+                              {
+                                  "path":  "projects/strata/modules/_shared/ui/sui3_theme.hlsli",
+                                  "sha256":  "df31e54f2d4a677f853ffb0d2277e94a8c125db2cffd2ef8e001bba64d8791a7"
+                              },
+                              {
                                   "path":  "projects/strata/modules/post/manifest.yaml",
                                   "sha256":  "1ca1e51faf37e4f0e64bc59ec82e5666764bf44a77cd23265d02aee19be0944d"
                               },
@@ -7081,6 +7089,58 @@
                               {
                                   "path":  "projects/strata/modules/strata_control/manifest.yaml",
                                   "sha256":  "7a9f70d061432cdacb91b95b21153de16d53b503eeb06becff1f50a92db417dd"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/clean-studio.png",
+                                  "sha256":  "a7eb093bc024982841cec2a21a0bcd4b919f8e1e2c57cc34ae82357c3c5d83ed"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/composition-bus.png",
+                                  "sha256":  "4bab1f8f6e26a02b7c63e40095147e5d416d98e15d8c0c3ead5f5bb9acaa4a06"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/composition-desk.png",
+                                  "sha256":  "7b9a64738e49910fffa27c5cc451ae0f48c5c612cf7e5f07aba76944b26d0ece"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/feature-analysis-proxy.png",
+                                  "sha256":  "442ae007a1be6ebe2526e00cf3bda05e6753a71af87f0d77015aaee2f84100cb"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/feature-disabled.png",
+                                  "sha256":  "c47c1a834ba465db9acda7cf86131de44f5fdd7392795ebe16cdf215651feaca"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/feature-enabled.png",
+                                  "sha256":  "300c00ffcb08df1aa0305e14f872853c94884b8dbcfd716800fcd9460c48dcaf"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/graphic-poster.png",
+                                  "sha256":  "99ff04cac4f341c347ed2b1d3ceae6045c00ab79e265087bd3cb568501363a01"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/marble-focal-shift.png",
+                                  "sha256":  "8cdbc607a61abb028c47a0e530d3b26df16a304eedf287bb80e82cbe1607d612"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/melted-chrome.png",
+                                  "sha256":  "e804ba31ec27749dd4c8695d1ff72b1e763995a3dc2ea96e30929fcbcd45bc75"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/performance.png",
+                                  "sha256":  "24c1af8416bbaf600d1a64014942b8cb56962c971fedcd0af2b3bd56e95331de"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/README.md",
+                                  "sha256":  "9acbca000d29e13cb8518901af16ac9c91022914a73c631187c7f6900ccc5d9d"
+                              },
+                              {
+                                  "path":  "projects/strata/proof/wire-cage.png",
+                                  "sha256":  "21c100e6668b3805ca7658bacbc81b76f024d76a9bbbec9da3fbe5d4c1ca1e71"
+                              },
+                              {
+                                  "path":  "projects/streamdiff_workflows/VALIDATION.md",
+                                  "sha256":  "3f354f8f3cdc8e2716b4e2e4961e4af9746adcc48060c730eec805c925ab24d4"
                               },
                               {
                                   "path":  "projects/tg6SMjlAs3yrFGLN/modules/C1_BG_2/bg.hlsl",
@@ -7431,6 +7491,14 @@
                                   "sha256":  "32012d3e210ce5449a28005b38589304e97f4207c720ac1570cb6ee112a4e925"
                               },
                               {
+                                  "path":  "tools/generate_laservibe_hud.py",
+                                  "sha256":  "3ac0d42a86d084de596fabcfc528c7826c68fc7f066326c8c62aea5b9ca51f98"
+                              },
+                              {
+                                  "path":  "tools/official-examples.config.psd1",
+                                  "sha256":  "02fcbdcb699ed98c356084e6f49c6d9ed64e7837e3c73a8cb3d278c258fa4f71"
+                              },
+                              {
                                   "path":  "tools/promote-public.ps1",
                                   "sha256":  "fc3a1a0b70550d17a6cace2ac5c1c2e77c5690244220fff47854aaed52ca9795"
                               },
@@ -7439,10 +7507,22 @@
                                   "sha256":  "d09407b7a19fc3ef9f256992de26b663b46cbcb1e2f1b5381c4a6745a801a72f"
                               },
                               {
+                                  "path":  "tools/test-official-examples.ps1",
+                                  "sha256":  "6de5ca116768b3079e1f5ee18d043dcea09cb8e34da939e20938b9613092ad04"
+                              },
+                              {
+                                  "path":  "tools/validate-official-examples.ps1",
+                                  "sha256":  "db47936c433c8078e3559f59c2df72ac92ff8984a78e18392f0089212686644e"
+                              },
+                              {
                                   "path":  "tools/validate-standalone-showcase.ps1",
                                   "sha256":  "8a1cc9263085a716be9c344fb0385e00a856689ad1c327de076828f9a6d42c07"
+                              },
+                              {
+                                  "path":  "tools/verify_motion_energy.py",
+                                  "sha256":  "12f28a3effcc0af94a9135c87bac5af9efefaf51eff0e2fc237471b923397f66"
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "da3e0c77a4dcb8667fabf8acca058bcbe97e9bbf"
+    "source_commit":  "15038164f328e4a26a16def48c8e8675def86e6d"
 }
