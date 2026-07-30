@@ -1,0 +1,45 @@
+{
+  "project": "projects/touchdesigner_new_project/touchdesigner_new_project.sentinel",
+  "candidate": "touchdesigner_new_project",
+  "source_commit": "e308c8c",
+  "source_resolution": "Merged the new public TouchDesigner starter commit and preserved the user's approved panel layout.",
+  "graph": {
+    "node_count": 6,
+    "pipeline_count": 5,
+    "link_count": 5,
+    "source": "Jellybeans_Image",
+    "signal": "Hermite_Signal",
+    "signal_texture": "Signal_to_Texture",
+    "displacement": "Vertical_Displace",
+    "interactive_renderer": "Geometry_Pass",
+    "terminal_output": "Out"
+  },
+  "approved_presentation": {
+    "open_panel": "Geometry_Pass",
+    "geometry_panel_open": true,
+    "out_panel_open": false,
+    "other_panels_hidden": true,
+    "resolution": "1280x720",
+    "layout_saved": true
+  },
+  "runtime": {
+    "all_pipelines_healthy": true,
+    "all_modules_compiled": true,
+    "frames_progressing": true,
+    "representative_fps": 59.5,
+    "geometry_data_outputs": [
+      "Cube Transform",
+      "Viewport Objects",
+      "Viewport Pick Result"
+    ],
+    "unresolved_project_dirs": []
+  },
+  "proof": {
+    "bundle": "captures/phase6_touchdesigner_starter_approved/proof_bundle",
+    "project_saved": true
+  },
+  "human_gate": {
+    "decision": "approved",
+    "notes": "The user approved the project with Geometry Pass as the sole visible panel and explicitly requested that exact presentation be saved."
+  }
+}

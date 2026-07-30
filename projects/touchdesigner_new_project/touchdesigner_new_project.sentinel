@@ -4,7 +4,7 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 1.5,
+    "canvasZoom": 0.825562596321106,
     "links": [
       {
         "endPinId": 7,
@@ -263,7 +263,7 @@
   "input": {
     "activeSource": ""
   },
-  "layout": "[Window][Terminal]\nPos=0,25\nSize=871,1269\nCollapsed=0\nDockId=0x00000009,0\n\n[Window][Stats]\nPos=0,1296\nSize=871,281\nCollapsed=0\nDockId=0x0000000A,0\n\n[Window][Log]\nPos=0,1296\nSize=871,281\nCollapsed=0\nDockId=0x0000000A,1\n\n[Window][Properties]\nPos=2184,25\nSize=376,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=873,731\nSize=1309,846\nCollapsed=0\nDockId=0x00000004,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=611,778\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1091\nSize=752,486\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,778\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,778\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,805\nSize=752,284\nCollapsed=0\n\n[Window][Radial_Gradient]\nPos=713,805\nSize=227,284\nCollapsed=0\n\n[Window][Gradient_Brush]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Shape_Maker]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Engines]\nPos=1020,513\nSize=622,911\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1181,758\nSize=198,60\nCollapsed=0\n\n[Window][New Project?]\nPos=1144,727\nSize=272,122\nCollapsed=0\n\n[Window][Hermite_Signal]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Signal_to_Texture]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,1\n\n[Window][Vertical_Displace]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,2\n\n[Window][Geometry_Pass]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,3\n\n[Window][Out]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,4\n\n[Docking][Data]\nDockSpace       ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode      ID=0x00000007 Parent=0xCCBD8CF7 SizeRef=871,1552 Split=Y Selected=0xD33228A6\n    DockNode    ID=0x00000009 Parent=0x00000007 SizeRef=871,1269 Selected=0xD33228A6\n    DockNode    ID=0x0000000A Parent=0x00000007 SizeRef=871,281 Selected=0x590DF097\n  DockNode      ID=0x00000008 Parent=0xCCBD8CF7 SizeRef=1687,1552 Split=X\n    DockNode    ID=0x00000001 Parent=0x00000008 SizeRef=1222,900 Split=Y\n      DockNode  ID=0x00000003 Parent=0x00000001 SizeRef=1222,704 CentralNode=1 Selected=0x170DF6A2\n      DockNode  ID=0x00000004 Parent=0x00000001 SizeRef=1222,846 Selected=0xF12F3499\n    DockNode    ID=0x00000002 Parent=0x00000008 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
+  "layout": "[Window][Terminal]\nPos=0,25\nSize=871,1269\nCollapsed=0\nDockId=0x00000009,0\n\n[Window][Stats]\nPos=0,1296\nSize=871,281\nCollapsed=0\nDockId=0x0000000A,0\n\n[Window][Log]\nPos=0,1296\nSize=871,281\nCollapsed=0\nDockId=0x0000000A,1\n\n[Window][Properties]\nPos=2184,25\nSize=376,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=873,731\nSize=1309,846\nCollapsed=0\nDockId=0x00000004,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=611,778\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1091\nSize=752,486\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,778\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,778\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,805\nSize=752,284\nCollapsed=0\n\n[Window][Radial_Gradient]\nPos=713,805\nSize=227,284\nCollapsed=0\n\n[Window][Gradient_Brush]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Shape_Maker]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Engines]\nPos=1020,513\nSize=622,911\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1181,758\nSize=198,60\nCollapsed=0\n\n[Window][New Project?]\nPos=1144,727\nSize=272,122\nCollapsed=0\n\n[Window][Hermite_Signal]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Signal_to_Texture]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,1\n\n[Window][Vertical_Displace]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,2\n\n[Window][Geometry_Pass]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,3\n\n[Window][Out]\nPos=873,25\nSize=1309,704\nCollapsed=0\nDockId=0x00000003,4\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,845\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,845\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,359\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,845\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,359\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,845\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,845\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,845\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,845\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,845\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,845\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,845\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][Generated_Over_Original]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Generated_Dancer_Cutout]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][Depth_Threshold]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\n\n[Window][Variant_Switcher_UI]\nPos=0,25\nSize=1744,1110\nCollapsed=0\n\n[Window][Settings]\nPos=590,200\nSize=566,678\nCollapsed=0\n\n[Docking][Data]\nDockSpace       ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode      ID=0x00000007 Parent=0xCCBD8CF7 SizeRef=871,1552 Split=Y Selected=0xD33228A6\n    DockNode    ID=0x00000009 Parent=0x00000007 SizeRef=871,1269 Selected=0xD33228A6\n    DockNode    ID=0x0000000A Parent=0x00000007 SizeRef=871,281 Selected=0x590DF097\n  DockNode      ID=0x00000008 Parent=0xCCBD8CF7 SizeRef=1687,1552 Split=X\n    DockNode    ID=0x00000001 Parent=0x00000008 SizeRef=1222,900 Split=Y\n      DockNode  ID=0x00000003 Parent=0x00000001 SizeRef=1222,704 CentralNode=1 Selected=0x62B2A7B5\n      DockNode  ID=0x00000004 Parent=0x00000001 SizeRef=1222,846 Selected=0xF12F3499\n    DockNode    ID=0x00000002 Parent=0x00000008 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
   "name": "touchdesigner_new_project",
   "nodePresets": [],
   "osc": {
@@ -287,7 +287,7 @@
       "outputFitMode": 1,
       "outputSinkId": "",
       "panelAnchorId": "Hermite_Signal",
-      "panelOpen": true,
+      "panelOpen": false,
       "parameters": {
         "amplitude": "1.000000",
         "drift_speed": "0.200000",
@@ -319,7 +319,7 @@
       "outputFitMode": 1,
       "outputSinkId": "",
       "panelAnchorId": "Signal_to_Texture",
-      "panelOpen": true,
+      "panelOpen": false,
       "parameters": {
         "clamp_values": "0.000000",
         "project_dir": "modules/Signal_to_Texture",
@@ -343,7 +343,7 @@
       "outputFitMode": 1,
       "outputSinkId": "",
       "panelAnchorId": "Vertical_Displace",
-      "panelOpen": true,
+      "panelOpen": false,
       "parameters": {
         "extend_mode": "3.000000",
         "midpoint": "0.500000",
@@ -411,7 +411,7 @@
       "outputFitMode": 1,
       "outputSinkId": "",
       "panelAnchorId": "Out",
-      "panelOpen": true,
+      "panelOpen": false,
       "parameters": {
         "project_dir": "modules/Out"
       },
@@ -420,7 +420,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1785403395349,
+  "saved_at_ms": 1785422685924,
   "sources": [
     {
       "captureFrameRate": 0,
@@ -457,7 +457,7 @@
     },
     "Hermite_Signal": {
       "phase_state": {
-        "data": "69fc99430000803fcdcc4c3e00000000",
+        "data": "76a80e410000803fcdcc4c3e00000000",
         "element_count": 1,
         "element_size": 16,
         "encoding": "hex",
