@@ -1327,7 +1327,7 @@
         "db_floor": "-90.000000",
         "fixed_scale": "1.000000",
         "peak_halflife": "4.000000",
-        "project_dir": "../../modules/data_scope",
+        "project_dir": "modules/data_scope",
         "reference": "0.450000",
         "resolution_height": "510",
         "resolution_width": "559",
@@ -1364,7 +1364,7 @@
         "ch3": "0.416477",
         "ch4": "0.350132",
         "peak_halflife": "6.000000",
-        "project_dir": "../../modules/signal_trails",
+        "project_dir": "modules/signal_trails",
         "resolution_height": "510",
         "resolution_width": "555",
         "span_seconds": "8.000000"

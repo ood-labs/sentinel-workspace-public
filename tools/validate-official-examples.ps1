@@ -89,6 +89,7 @@ foreach ($projectName in $Projects) {
     $orphanModules = [Collections.Generic.List[string]]::new()
     $generatedStale = [Collections.Generic.List[string]]::new()
     $activeModules = [Collections.Generic.List[object]]::new()
+    $activeSharedModules = [Collections.Generic.List[string]]::new()
     $compileResults = [Collections.Generic.List[object]]::new()
     $filesChecked = 0
     $projectJson = $null
@@ -148,12 +149,19 @@ foreach ($projectName in $Projects) {
             }
             $workspaceRelative = Normalize-Relative (Get-RelativePath $rootFull $resolved)
             $projectModulePrefix = "projects/$projectName/modules/"
-            $approvedShared = @($definition.SharedModules | ForEach-Object { Normalize-Relative ([string]$_) })
+            $approvedShared = @(
+                $definition.SharedModules |
+                    ForEach-Object { Normalize-Relative ([string]$_) } |
+                    Sort-Object -Unique
+            )
             $isProjectModule = $workspaceRelative.StartsWith($projectModulePrefix, [StringComparison]::OrdinalIgnoreCase)
             $isApprovedShared = $workspaceRelative -in $approvedShared
 
             if (-not $isProjectModule -and -not $isApprovedShared) {
                 $errors.Add("module pipeline '$($pipeline.id)' references non-allowlisted path '$workspaceRelative'")
+            }
+            if (-not $isProjectModule -and $workspaceRelative -match '^modules/[^/]+$') {
+                Add-Unique $activeSharedModules $workspaceRelative
             }
             if (-not (Test-Path -LiteralPath (Join-Path $resolved 'manifest.yaml') -PathType Leaf)) {
                 Add-Unique $missingPaths "$workspaceRelative/manifest.yaml"
@@ -172,6 +180,20 @@ foreach ($projectName in $Projects) {
                 status = 'not_run'
                 note = 'Run sentinel_pipeline compile_check during the project proof slice.'
             })
+        }
+
+        $declaredSharedModules = @(
+            $definition.SharedModules |
+                ForEach-Object { Normalize-Relative ([string]$_) } |
+                Sort-Object -Unique
+        )
+        $resolvedSharedModules = @($activeSharedModules | Sort-Object -Unique)
+        $unusedSharedModules = @(
+            $declaredSharedModules |
+                Where-Object { $_ -notin $resolvedSharedModules }
+        )
+        foreach ($sharedModule in $unusedSharedModules) {
+            $errors.Add("declared shared module is not used by any saved pipeline: $sharedModule")
         }
 
         $passiveBuses = if ($null -eq $definition.PassiveBuses) { @() } else { @($definition.PassiveBuses) }
@@ -460,6 +482,7 @@ foreach ($projectName in $Projects) {
         project = $projectName
         files_checked = $filesChecked
         active_modules = @($activeModules)
+        active_shared_modules = @($activeSharedModules | Sort-Object -Unique)
         orphan_modules = @($orphanModules)
         absolute_paths = @($absolutePaths)
         forbidden_artifacts = @($forbiddenArtifacts)

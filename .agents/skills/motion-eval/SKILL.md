@@ -1,7 +1,6 @@
 ---
 name: motion-eval
 description: Record a deterministic parameter sweep of a Sentinel pipeline to MP4 and evaluate the motion with sentinel_vision. Use when you need to see how an animation looks in motion (not from stills), check whether a Module's phase loop is seamless, or discover what a numeric parameter does across its range. Covers sentinel_capture action="sweep_record" plus the sentinel_vision hand-off.
-distribution: true
 ---
 
 # Motion Eval (sweep-record → sentinel_vision)

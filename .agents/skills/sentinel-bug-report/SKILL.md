@@ -1,7 +1,6 @@
 ---
 name: sentinel-bug-report
 description: Prepare, reproduce, package, submit, and verify Sentinel bug reports through the installed Sentinel MCP bug-report pipeline. Use when a user says to report a bug, submit a crash, prepare a support issue, collect a reproducible Sentinel report, or upload a diagnostic bundle for Sentinel support.
-distribution: true
 ---
 
 # Sentinel Bug Report

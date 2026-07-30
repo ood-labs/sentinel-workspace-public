@@ -16,27 +16,33 @@ Use the `module-ui-authoring` skill for the end-to-end workflow. The reference i
 Include the shared foundation from a sibling Module:
 
 ```hlsl
-#include "../_shared/ui/sui_v2.hlsli"
+#include "../_shared/ui/sui3_controls.hlsli"
 #include "_ui.generated.hlsli"
 ```
 
-The foundation provides normalized layout, a monochrome scientific theme, geometry primitives, controls, Scientifica regular-face text, named typography roles, and generated control rectangles/label tables.
+The current foundation provides a monochrome scientific-instrument theme,
+pixel-space geometry and controls, crisp Scientifica regular-face text, and
+generated normalized control rectangles. Convert each generated rectangle to
+pixels with the live `_Resolution` before drawing; the manifest keeps the
+normalized copy for host hit-testing.
 
-Approved defaults are centralized in the shared headers:
+Approved visual defaults are centralized in the shared headers:
 
-- title: scale `2.0`, edge weight `0.2`, tracking `-2.5`;
-- section: scale `1.75`, edge weight `0.0`, tracking `-2.5`;
-- body: scale `1.5`, edge weight `0.0`, tracking `-2.5`;
-- outer padding `15 px`, section gap `10.595863 px`, control height `32 px`, control gap `6.446163 px`.
+- a near-black field with white/gray ink and one warm accent;
+- one-pixel snapped rules and hard corners;
+- integer glyph scales selected from the live panel extent;
+- layout rectangles derived from the actual panel size, never a fixed design extent.
 
-Use the regular glyph face and add thickness through edge coverage. Do not switch to the bold Scientifica face for hierarchy.
+Use the regular glyph face and create hierarchy through size, spacing, and
+contrast. Do not switch to the bold Scientifica face, tint idle controls, or
+stretch normalized geometry directly across an arbitrary panel aspect.
 
 ## Scaffold And Generate
 
 ```powershell
-./tools/module-ui.ps1 new modules/my_panel -Name "My Panel"
-./tools/module-ui.ps1 generate modules/my_panel
-./tools/module-ui.ps1 validate modules/my_panel
+./tools/module-ui.ps1 new projects/my_project/modules/my_panel -Name "My Panel"
+./tools/module-ui.ps1 generate projects/my_project/modules/my_panel
+./tools/module-ui.ps1 validate projects/my_project/modules/my_panel
 ```
 
 The generator writes `_ui.generated.hlsli` from `viewport.controls`, `viewport.labels`, and comments shaped like `# ui-label: title = SCIENTIFIC PANEL`.
@@ -114,9 +120,17 @@ SuiContext c = suiContext(tid.xy, _Resolution.xy);
 
 ## Scrolling Data Traces
 
-Plotting a scalar stream over time is `modules/_shared/ui/sui3_trace.hlsli`. It gives a strip chart the behaviour a TouchDesigner CHOP viewer has: the plot advances at the rate of the data rather than the frame rate, and it rescales itself continuously to the signal's recent dynamics. Every function is pure and takes its extents as arguments, so a state pass can include it without declaring viewport events, and it contains no text, theme, or parameter references so both the `sui3` and `au_hud` kits can draw with it. Labels, units, and readouts stay with the calling module.
+Plotting a scalar stream over time uses the project-bundled
+`modules/_shared/ui/sui3_trace.hlsli` helper. It gives a strip chart the behaviour
+a TouchDesigner CHOP viewer has: the plot advances at the rate of the data rather
+than the frame rate, and it rescales itself continuously to the signal's recent
+dynamics. Every function is pure and takes its extents as arguments, so a state
+pass can include it without declaring viewport events, and it contains no text,
+theme, or parameter references so both the `sui3` and `au_hud` kits can draw with
+it. Labels, units, and readouts stay with the calling module.
 
-Four mechanisms make the plot honest. Each was measured in `modules/audio_bands`, which is the reference consumer.
+Four mechanisms make the plot honest. Each was measured in
+`projects/cloth_lab/modules/cloth_bands`, the reference consumer.
 
 **Ring plus generation catch-up.** Keep a write cursor and drain from it to `_DataN_Generation` every cook, rather than sampling the newest value once per frame. A module cooking at 60 Hz against a 187.5 Hz hop rate discards two of every three samples that way, aliases the rest, and the time axis it draws is fiction. Use `sui3CatchupStart` to clamp the drain to what the ring still holds; a fresh cursor of 0 against a generation counter in the millions would otherwise spin the loop a million times on the first cook. Buffers that carry no header record, including Spectrum and Mel Bands, need each slot's own `generation_counter` validated inside the loop, because element zero cannot report the latest generation.
 
@@ -192,12 +206,12 @@ Prove controls with real or injected pointer input, not StateTree writes alone. 
 
 ## Reference Examples
 
-- `modules/ui_kit_gallery/`: slider, momentary button, toggle, XY pad, readouts, and shared chrome.
-- `modules/ui_style_tuner/`: live typography and spacing calibration.
-- `modules/font_style_sampler/`: regular-face edge-weight comparison.
-- `modules/spline_editor/`: authored sub-object editing with persistent state and typed outputs.
-- `modules/transform_gizmo_lab/`: selection, multi-object transforms, projected handles, and camera-aware rotation rings.
-- `modules/audio_bands/`: the reference consumer for `sui3_trace.hlsli`, with three auto-ranging strip charts and an on-plot threshold handle.
+- `projects/interaction_lab/modules/Style_Authority/`: current shared chrome, controls, typography, and responsive panel reference.
+- `projects/interaction_lab/modules/Spline_Desk/`: authored sub-object editing with persistent state and typed outputs.
+- `projects/interaction_lab/modules/Gizmo_Desk/`: selection, multi-object transforms, projected handles, and camera-aware rotation rings.
+- `projects/interaction_lab/modules/Motion_Console/`: responsive performance controls and durable action state.
+- `projects/interaction_lab/modules/data_scope/` and `projects/interaction_lab/modules/signal_trails/`: bundled `sui3_trace.hlsli` consumers.
+- `projects/cloth_lab/modules/cloth_bands/`: the reference consumer, with three auto-ranging strip charts and an on-plot threshold handle.
 - `projects/interaction_lab/interaction_lab.sentinel`: bundled review project.
 
 Everything above is authored Module content. It does not require a new Sentinel native widget or IPC feature.

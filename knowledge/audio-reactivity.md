@@ -2,17 +2,15 @@
 
 Pipeline type: `audio`
 
-## Start Here: `modules/audio_bands`
+## Start Here: Cloth Lab's Bundled Audio Bands
 
-**For any beat, onset, or drum-driven work, use `modules/audio_bands`. It is the
-source of truth and the only detector to build on.**
+**For any beat, onset, or drum-driven work, use
+`projects/cloth_lab/modules/cloth_bands` as the maintained reference.**
 
-The workspace contains several older audio experiments — `pulse2_analyzer`,
-`pulse2_console`, `pulse2_hits`, `pulse2_pads`, `pulse2_ringproof`, `cryo_pulse`,
-`cryo_pulse_baseline`, `bands_demo`. They are **superseded**. Do not wire new work
-to them and do not treat them as references. `pulse2_analyzer` in particular looks
-canonical (tempo PLL, 15+ control outputs) and is easy to reach for by mistake.
-They are kept only because saved projects still reference them.
+Older `pulse2_*`, `cryo_pulse*`, and `bands_demo` experiments are superseded and
+are not part of the curated public seed. Do not recreate them or treat historical
+mentions as references. New shows must bundle their own owning-project copy rather
+than link to Cloth Lab at runtime.
 
 Only use something else if the request is genuinely outside `audio_bands`' spec, or
 if a newer module has replaced it.

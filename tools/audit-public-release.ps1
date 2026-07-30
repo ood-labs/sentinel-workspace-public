@@ -36,6 +36,10 @@ function Get-Sha256([string]$Path) {
     return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
 }
 
+function Add-Unique([Collections.Generic.List[string]]$List, [string]$Value) {
+    if ($Value -and -not $List.Contains($Value)) { $List.Add($Value) }
+}
+
 if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) {
     throw "Release config is missing: $ConfigPath"
 }
@@ -62,6 +66,203 @@ $missingProjects = @($expectedProjects | Where-Object { $_ -notin $actualProject
 $unexpectedProjects = @($actualProjects | Where-Object { $_ -notin $expectedProjects })
 foreach ($project in $missingProjects) { $errors.Add("missing configured project directory: projects/$project") }
 foreach ($project in $unexpectedProjects) { $errors.Add("unexpected project directory: projects/$project") }
+
+$projectRoot = Join-Path $rootFull 'projects'
+$filesystemProjects = if (Test-Path -LiteralPath $projectRoot -PathType Container) {
+    @(
+        Get-ChildItem -LiteralPath $projectRoot -Directory -Force |
+            ForEach-Object { $_.Name } |
+            Sort-Object -Unique
+    )
+} else { @() }
+$missingFilesystemProjects = @($expectedProjects | Where-Object { $_ -notin $filesystemProjects })
+$unexpectedFilesystemProjects = @($filesystemProjects | Where-Object { $_ -notin $expectedProjects })
+foreach ($project in $missingFilesystemProjects) {
+    $errors.Add("configured project directory is absent from the filesystem: projects/$project")
+}
+foreach ($project in $unexpectedFilesystemProjects) {
+    $errors.Add("unexpected filesystem project directory (including ignored content): projects/$project")
+}
+
+$expectedProjectFiles = @(
+    foreach ($projectName in $config.Projects.Keys) {
+        $definition = $config.Projects[$projectName]
+        $fileNames = if ($null -ne $definition.ProjectFiles) {
+            @($definition.ProjectFiles)
+        } else {
+            @($definition.ProjectFile)
+        }
+        foreach ($fileName in $fileNames) {
+            "projects/$projectName/$fileName"
+        }
+    }
+)
+$expectedProjectFiles = @($expectedProjectFiles | Sort-Object -Unique)
+$actualProjectFiles = @(
+    $trackedFiles |
+        Where-Object { [IO.Path]::GetExtension($_) -ieq '.sentinel' } |
+        Sort-Object -Unique
+)
+$missingProjectFiles = @($expectedProjectFiles | Where-Object { $_ -notin $actualProjectFiles })
+$unexpectedProjectFiles = @($actualProjectFiles | Where-Object { $_ -notin $expectedProjectFiles })
+foreach ($path in $missingProjectFiles) { $errors.Add("missing configured project file: $path") }
+foreach ($path in $unexpectedProjectFiles) {
+    $errors.Add("unexpected tracked Sentinel project file outside the curated set: $path")
+}
+
+# Exact root-module census. Project-bundled modules remain under
+# projects/<name>/modules and are validated by validate-official-examples.ps1.
+# The curated public seed config declares no root modules, so any tracked or
+# filesystem entry under modules/ is a release failure.
+$configuredModulePaths = [Collections.Generic.List[string]]::new()
+$standaloneModules = if ($config.ContainsKey('StandaloneModules')) {
+    @($config.StandaloneModules)
+} else { @() }
+foreach ($path in @($config.GlobalSharedPaths)) {
+    $configuredModulePaths.Add(([string]$path).Replace('\', '/').TrimEnd('/'))
+}
+foreach ($projectName in $config.Projects.Keys) {
+    foreach ($path in @($config.Projects[$projectName].SharedModules)) {
+        $configuredModulePaths.Add(([string]$path).Replace('\', '/').TrimEnd('/'))
+    }
+}
+foreach ($entry in $standaloneModules) {
+    $configuredModulePaths.Add(([string]$entry.Path).Replace('\', '/').TrimEnd('/'))
+}
+
+$invalidConfiguredModules = @(
+    $configuredModulePaths |
+        Where-Object {
+            [string]::IsNullOrWhiteSpace($_) -or
+            [IO.Path]::IsPathRooted($_) -or
+            $_ -match '(^|/)\.\.($|/)' -or
+            $_ -notmatch '^modules/[^/]+$'
+        } |
+        Sort-Object -Unique
+)
+foreach ($path in $invalidConfiguredModules) {
+    $errors.Add("invalid configured root-module path: $path")
+}
+
+$duplicateConfiguredModules = @(
+    $configuredModulePaths |
+        Group-Object { $_.ToLowerInvariant() } |
+        Where-Object { $_.Count -gt 1 } |
+        ForEach-Object { @($_.Group) -join ', ' }
+)
+foreach ($paths in $duplicateConfiguredModules) {
+    $errors.Add("duplicate configured root-module path: $paths")
+}
+
+$expectedModules = @(
+    $configuredModulePaths |
+        Where-Object { $_ -notin $invalidConfiguredModules } |
+        Sort-Object -Unique
+)
+$actualModules = @(
+    $trackedFiles |
+        ForEach-Object {
+            if ($_ -match '^modules/([^/]+)/') { "modules/$($Matches[1])" }
+        } |
+        Where-Object { $_ } |
+        Sort-Object -Unique
+)
+$missingModules = @($expectedModules | Where-Object { $_ -notin $actualModules })
+$unexpectedModules = @($actualModules | Where-Object { $_ -notin $expectedModules })
+$moduleCaseMismatches = @(
+    foreach ($expected in $expectedModules) {
+        $actual = @($actualModules | Where-Object { $_ -ieq $expected } | Select-Object -First 1)
+        if ($actual.Count -eq 1 -and $actual[0] -cne $expected) {
+            "$($actual[0]) -> $expected"
+        }
+    }
+)
+$directModuleFiles = @($trackedFiles | Where-Object { $_ -match '^modules/[^/]+$' })
+
+$moduleIndex = @(git -C $rootFull ls-files -s -- modules)
+if ($LASTEXITCODE -ne 0) { throw 'git ls-files -s -- modules failed.' }
+$moduleSymlinks = @(
+    $moduleIndex |
+        ForEach-Object {
+            if ($_ -match '^120000\s+\S+\s+\d+\t(.+)$') { $Matches[1].Replace('\', '/') }
+        } |
+        Where-Object { $_ } |
+        Sort-Object -Unique
+)
+
+$moduleRoot = Join-Path $rootFull 'modules'
+$filesystemModuleEntries = if (Test-Path -LiteralPath $moduleRoot -PathType Container) {
+    @(Get-ChildItem -LiteralPath $moduleRoot -Force)
+} else { @() }
+$filesystemModules = @(
+    $filesystemModuleEntries |
+        Where-Object { $_.PSIsContainer } |
+        ForEach-Object { "modules/$($_.Name)" } |
+        Sort-Object -Unique
+)
+$missingFilesystemModules = @($expectedModules | Where-Object { $_ -notin $filesystemModules })
+$unexpectedFilesystemModules = @($filesystemModules | Where-Object { $_ -notin $expectedModules })
+$filesystemDirectModuleFiles = @(
+    $filesystemModuleEntries |
+        Where-Object { -not $_.PSIsContainer } |
+        ForEach-Object { "modules/$($_.Name)" } |
+        Sort-Object -Unique
+)
+$moduleReparsePoints = @(
+    $filesystemModuleEntries |
+        Where-Object { ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0 } |
+        ForEach-Object { "modules/$($_.Name)" } |
+        Sort-Object -Unique
+)
+
+foreach ($path in $missingModules) { $errors.Add("missing configured root module in Git: $path") }
+foreach ($path in $unexpectedModules) { $errors.Add("unexpected tracked root module: $path") }
+foreach ($path in $moduleCaseMismatches) { $errors.Add("root-module path casing mismatch: $path") }
+foreach ($path in $directModuleFiles) { $errors.Add("tracked file is not allowed directly under modules/: $path") }
+foreach ($path in $moduleSymlinks) { $errors.Add("tracked symlink is not allowed under modules/: $path") }
+foreach ($path in $missingFilesystemModules) {
+    $errors.Add("configured root module is absent from the filesystem: $path")
+}
+foreach ($path in $unexpectedFilesystemModules) {
+    $errors.Add("unexpected filesystem root module (including ignored content): $path")
+}
+foreach ($path in $filesystemDirectModuleFiles) {
+    $errors.Add("filesystem file is not allowed directly under modules/: $path")
+}
+foreach ($path in $moduleReparsePoints) {
+    $errors.Add("filesystem reparse point is not allowed directly under modules/: $path")
+}
+
+foreach ($path in $expectedModules) {
+    if ($path -ieq 'modules/_shared') { continue }
+    $manifest = "$path/manifest.yaml"
+    if ($manifest -notin $trackedFiles) {
+        $errors.Add("configured root module has no tracked manifest: $manifest")
+    }
+}
+
+$standaloneEvidence = [Collections.Generic.List[object]]::new()
+foreach ($entry in $standaloneModules) {
+    $modulePath = ([string]$entry.Path).Replace('\', '/').TrimEnd('/')
+    $evidencePath = ([string]$entry.Evidence).Replace('\', '/').TrimEnd('/')
+    $evidenceFull = Join-Path $rootFull $evidencePath.Replace('/', '\')
+    $evidenceExists = Test-Path -LiteralPath $evidenceFull -PathType Leaf
+    $mentionsModule = $false
+    if ($evidenceExists) {
+        $mentionsModule = [IO.File]::ReadAllText($evidenceFull).Contains($modulePath)
+    }
+    $standaloneEvidence.Add([pscustomobject]@{
+        path = $modulePath
+        evidence = $evidencePath
+        evidence_exists = $evidenceExists
+        mentions_module = $mentionsModule
+    })
+    if (-not $evidenceExists) {
+        $errors.Add("standalone root-module evidence is missing: $modulePath -> $evidencePath")
+    } elseif (-not $mentionsModule) {
+        $errors.Add("standalone root-module evidence does not name the module: $modulePath -> $evidencePath")
+    }
+}
 
 # Public entry manuals must be byte-identical and contain no temporary release-phase status.
 $manualPaths = @('AGENTS.md', 'CLAUDE.md', 'GEMINI.md')
@@ -264,15 +465,196 @@ foreach ($finding in $assetFindings) { $errors.Add("asset ledger: $($finding.iss
 $minimumVersion = [Version]([string]$config.MinimumSentinelVersion)
 $proofHostVersion = [Version]([string]$config.LiveProofHostVersion)
 $versionCompatible = $proofHostVersion -ge $minimumVersion
+$workspaceVersionPath = Join-Path $rootFull '.sentinel-workspace-version'
+$workspaceVersion = $null
+if (-not (Test-Path -LiteralPath $workspaceVersionPath -PathType Leaf)) {
+    $errors.Add('missing .sentinel-workspace-version')
+} else {
+    try {
+        $workspaceVersion = [Version]([IO.File]::ReadAllText($workspaceVersionPath).Trim())
+    } catch {
+        $errors.Add(".sentinel-workspace-version is invalid: $($_.Exception.Message)")
+    }
+}
 if (-not $versionCompatible) {
     $errors.Add("proof host $proofHostVersion is older than declared minimum $minimumVersion")
+}
+if ($null -ne $workspaceVersion -and $workspaceVersion -lt $minimumVersion) {
+    $errors.Add("workspace version $workspaceVersion is older than declared minimum $minimumVersion")
 }
 if ([int]$config.CapabilityCommandCount -le 0 -or [string]::IsNullOrWhiteSpace([string]$config.CapabilitySchemaHash)) {
     $errors.Add('capability proof metadata is incomplete')
 }
 
 $head = (git -C $rootFull rev-parse HEAD)
+if ($LASTEXITCODE -ne 0) { throw 'git rev-parse HEAD failed.' }
+
+# Installed-workspace manifest. Its managed set must be derived from the same
+# exact project/config policy as this audit, and every hash must match the
+# candidate checkout. Orphan candidates are deletion tombstones only.
+$workspaceManifestPath = Join-Path $rootFull '.sentinel-workspace-manifest.json'
+$workspaceManifest = $null
+$manifestExpectedPaths = @()
+$manifestActualPaths = @()
+$manifestMissingPaths = @()
+$manifestUnexpectedPaths = @()
+$manifestDuplicatePaths = @()
+$manifestHashMismatches = [Collections.Generic.List[string]]::new()
+$manifestOrphanOverlaps = @()
+$manifestSourceReachable = $false
+$manifestSourceIsAncestor = $false
+if (-not $config.ContainsKey('WorkspaceManifest')) {
+    $errors.Add('release config has no WorkspaceManifest policy')
+} elseif (-not (Test-Path -LiteralPath $workspaceManifestPath -PathType Leaf)) {
+    $errors.Add('missing .sentinel-workspace-manifest.json')
+} else {
+    try {
+        $workspaceManifest = [IO.File]::ReadAllText($workspaceManifestPath) | ConvertFrom-Json
+    } catch {
+        $errors.Add(".sentinel-workspace-manifest.json is invalid: $($_.Exception.Message)")
+    }
+}
+
+if ($null -ne $workspaceManifest) {
+    $manifestCandidateFiles = @(
+        git -C $rootFull ls-files --cached --others --exclude-standard |
+            ForEach-Object { $_.Replace('\', '/') } |
+            Sort-Object -Unique
+    )
+    if ($LASTEXITCODE -ne 0) { throw 'git ls-files for workspace manifest failed.' }
+    $manifestProjectPrefixes = @(
+        $expectedProjects |
+            ForEach-Object { "projects/$($_)/" } |
+            Sort-Object
+    )
+    $manifestPrefixes = @(
+        $config.WorkspaceManifest.Prefixes |
+            ForEach-Object { ([string]$_).Replace('\', '/').Trim('/') + '/' } |
+            Where-Object { $_ -notmatch '^projects/$' } |
+            Sort-Object -Unique
+    )
+    $manifestFiles = @(
+        $config.WorkspaceManifest.Files |
+            ForEach-Object { ([string]$_).Replace('\', '/').TrimStart('/') } |
+            Sort-Object -Unique
+    )
+    $manifestExpectedPaths = @(
+        $manifestCandidateFiles |
+            Where-Object {
+                $path = $_
+                if ($path -in $manifestFiles) { return $true }
+                if (@($manifestPrefixes | Where-Object {
+                    $path.StartsWith($_, [StringComparison]::Ordinal)
+                }).Count -gt 0) { return $true }
+                return @($manifestProjectPrefixes | Where-Object {
+                    $path.StartsWith($_, [StringComparison]::Ordinal)
+                }).Count -gt 0
+            } |
+            Sort-Object -Unique
+    )
+    $manifestActualPaths = @(
+        $workspaceManifest.files |
+            ForEach-Object { ([string]$_.path).Replace('\', '/') } |
+            Sort-Object
+    )
+    $manifestDuplicatePaths = @(
+        $manifestActualPaths |
+            Group-Object { $_.ToLowerInvariant() } |
+            Where-Object { $_.Count -gt 1 } |
+            ForEach-Object { @($_.Group) -join ', ' }
+    )
+    $manifestMissingPaths = @(
+        $manifestExpectedPaths | Where-Object { $_ -cnotin $manifestActualPaths }
+    )
+    $manifestUnexpectedPaths = @(
+        $manifestActualPaths | Where-Object { $_ -cnotin $manifestExpectedPaths }
+    )
+    foreach ($path in $manifestDuplicatePaths) {
+        $errors.Add("workspace manifest contains duplicate path: $path")
+    }
+    foreach ($path in $manifestMissingPaths) {
+        $errors.Add("workspace manifest is missing managed path: $path")
+    }
+    foreach ($path in $manifestUnexpectedPaths) {
+        $errors.Add("workspace manifest contains unexpected managed path: $path")
+    }
+
+    foreach ($entry in @($workspaceManifest.files)) {
+        $relative = ([string]$entry.path).Replace('\', '/')
+        $full = Join-Path $rootFull $relative.Replace('/', '\')
+        if (-not (Test-Path -LiteralPath $full -PathType Leaf)) { continue }
+        $actualHash = Get-Sha256 $full
+        $declaredHash = ([string]$entry.sha256).ToLowerInvariant()
+        if ($actualHash -ne $declaredHash) {
+            $manifestHashMismatches.Add($relative)
+            $errors.Add("workspace manifest hash mismatch: $relative")
+        }
+    }
+
+    $manifestManagedLookup = @{}
+    foreach ($path in $manifestActualPaths) {
+        $manifestManagedLookup[$path.ToLowerInvariant()] = $true
+    }
+    $manifestOrphanOverlaps = @(
+        $workspaceManifest.orphan_candidates |
+            ForEach-Object { ([string]$_.path).Replace('\', '/') } |
+            Where-Object { $manifestManagedLookup.ContainsKey($_.ToLowerInvariant()) } |
+            Sort-Object -Unique
+    )
+    foreach ($path in $manifestOrphanOverlaps) {
+        $errors.Add("workspace manifest path is both managed and orphaned: $path")
+    }
+
+    $manifestSourceCommit = ([string]$workspaceManifest.source_commit).Trim()
+    if ($manifestSourceCommit -notmatch '^[0-9a-fA-F]{40}$') {
+        $errors.Add("workspace manifest source_commit is not a full Git commit id: $manifestSourceCommit")
+    } else {
+        git -C $rootFull cat-file -e "$manifestSourceCommit^{commit}" 2>$null
+        $manifestSourceReachable = ($LASTEXITCODE -eq 0)
+        if (-not $manifestSourceReachable) {
+            $errors.Add("workspace manifest source_commit is not present in this repository: $manifestSourceCommit")
+        } else {
+            git -C $rootFull merge-base --is-ancestor $manifestSourceCommit $head
+            $manifestSourceIsAncestor = ($LASTEXITCODE -eq 0)
+            if (-not $manifestSourceIsAncestor) {
+                $errors.Add("workspace manifest source_commit is not an ancestor of HEAD: $manifestSourceCommit")
+            }
+        }
+    }
+}
+
 $statusLines = @(git -C $rootFull status --porcelain)
+if ($statusLines.Count -gt 0) {
+    $errors.Add('working tree is not clean')
+}
+
+$ignoredStatusLines = @(git -C $rootFull status --porcelain --ignored --untracked-files=all)
+if ($LASTEXITCODE -ne 0) { throw 'git status --ignored failed.' }
+$nontrackedForbiddenArtifacts = [Collections.Generic.List[string]]::new()
+$forbiddenDirectoryNames = @($config.ForbiddenDirectoryNames | ForEach-Object { $_.ToLowerInvariant() })
+foreach ($line in $ignoredStatusLines) {
+    if ($line.Length -lt 4 -or $line.Substring(0, 2) -notin @('??', '!!')) { continue }
+    $relative = $line.Substring(3).Trim('"').Replace('\', '/')
+    $segments = @($relative -split '/')
+    for ($index = 0; $index -lt $segments.Count; $index++) {
+        $name = $segments[$index].ToLowerInvariant()
+        if ($name -in $forbiddenDirectoryNames -or $name -match '^checkpoint(?:_|$)') {
+            Add-Unique $nontrackedForbiddenArtifacts (($segments[0..$index] -join '/'))
+            break
+        }
+    }
+    $leaf = if ($segments.Count -gt 0) { $segments[-1] } else { '' }
+    foreach ($pattern in $config.ForbiddenFileNames) {
+        if ($leaf -like $pattern) {
+            Add-Unique $nontrackedForbiddenArtifacts $relative
+            break
+        }
+    }
+}
+foreach ($path in $nontrackedForbiddenArtifacts) {
+    $errors.Add("untracked or ignored forbidden artifact is visible in the checkout: $path")
+}
+
 $report = [pscustomobject]@{
     schema_version = 1
     root = $rootFull
@@ -283,7 +665,50 @@ $report = [pscustomobject]@{
         actual = $actualProjects
         missing = $missingProjects
         unexpected = $unexpectedProjects
-        exact = ($missingProjects.Count -eq 0 -and $unexpectedProjects.Count -eq 0)
+        filesystem_actual = $filesystemProjects
+        filesystem_missing = $missingFilesystemProjects
+        filesystem_unexpected = $unexpectedFilesystemProjects
+        expected_files = $expectedProjectFiles
+        actual_files = $actualProjectFiles
+        missing_files = $missingProjectFiles
+        unexpected_files = $unexpectedProjectFiles
+        exact = (
+            $missingProjects.Count -eq 0 -and
+            $unexpectedProjects.Count -eq 0 -and
+            $missingFilesystemProjects.Count -eq 0 -and
+            $unexpectedFilesystemProjects.Count -eq 0 -and
+            $missingProjectFiles.Count -eq 0 -and
+            $unexpectedProjectFiles.Count -eq 0
+        )
+    }
+    module_set = [pscustomobject]@{
+        expected = $expectedModules
+        actual = $actualModules
+        missing = $missingModules
+        unexpected = $unexpectedModules
+        case_mismatches = $moduleCaseMismatches
+        direct_files = $directModuleFiles
+        symlinks = $moduleSymlinks
+        filesystem_actual = $filesystemModules
+        filesystem_missing = $missingFilesystemModules
+        filesystem_unexpected = $unexpectedFilesystemModules
+        filesystem_direct_files = $filesystemDirectModuleFiles
+        reparse_points = $moduleReparsePoints
+        standalone_evidence = @($standaloneEvidence)
+        exact = (
+            $missingModules.Count -eq 0 -and
+            $unexpectedModules.Count -eq 0 -and
+            $moduleCaseMismatches.Count -eq 0 -and
+            $directModuleFiles.Count -eq 0 -and
+            $moduleSymlinks.Count -eq 0 -and
+            $missingFilesystemModules.Count -eq 0 -and
+            $unexpectedFilesystemModules.Count -eq 0 -and
+            $filesystemDirectModuleFiles.Count -eq 0 -and
+            $moduleReparsePoints.Count -eq 0 -and
+            @($standaloneEvidence | Where-Object {
+                -not $_.evidence_exists -or -not $_.mentions_module
+            }).Count -eq 0
+        )
     }
     manuals = [pscustomobject]@{
         hashes = $manualHashes
@@ -298,7 +723,8 @@ $report = [pscustomobject]@{
     }
     secrets = [pscustomobject]@{
         findings = @($secretFindings)
-        clean = ($secretFindings.Count -eq 0)
+        untracked_or_ignored_forbidden_artifacts = @($nontrackedForbiddenArtifacts)
+        clean = ($secretFindings.Count -eq 0 -and $nontrackedForbiddenArtifacts.Count -eq 0)
     }
     markdown_links = [pscustomobject]@{
         entry_points_checked = $markdownEntryPoints.Count
@@ -320,10 +746,38 @@ $report = [pscustomobject]@{
     }
     version = [pscustomobject]@{
         minimum = [string]$config.MinimumSentinelVersion
+        workspace = if ($null -ne $workspaceVersion) { [string]$workspaceVersion } else { '' }
         proof_host = [string]$config.LiveProofHostVersion
         compatible = $versionCompatible
         capability_command_count = [int]$config.CapabilityCommandCount
         capability_schema_hash = [string]$config.CapabilitySchemaHash
+    }
+    workspace_manifest = [pscustomobject]@{
+        source_commit = if ($null -ne $workspaceManifest) {
+            [string]$workspaceManifest.source_commit
+        } else { '' }
+        source_reachable = $manifestSourceReachable
+        source_is_ancestor = $manifestSourceIsAncestor
+        expected_files = $manifestExpectedPaths.Count
+        actual_files = $manifestActualPaths.Count
+        missing = $manifestMissingPaths
+        unexpected = $manifestUnexpectedPaths
+        duplicates = $manifestDuplicatePaths
+        hash_mismatches = @($manifestHashMismatches)
+        orphan_candidates = if ($null -ne $workspaceManifest) {
+            @($workspaceManifest.orphan_candidates).Count
+        } else { 0 }
+        orphan_overlaps = $manifestOrphanOverlaps
+        exact = (
+            $null -ne $workspaceManifest -and
+            $manifestSourceReachable -and
+            $manifestSourceIsAncestor -and
+            $manifestMissingPaths.Count -eq 0 -and
+            $manifestUnexpectedPaths.Count -eq 0 -and
+            $manifestDuplicatePaths.Count -eq 0 -and
+            $manifestHashMismatches.Count -eq 0 -and
+            $manifestOrphanOverlaps.Count -eq 0
+        )
     }
     errors = @($errors)
     passed = ($errors.Count -eq 0)
@@ -347,6 +801,7 @@ if ($Json) {
     Write-Output $jsonText
 } else {
     Write-Host ("Project set: {0} expected, {1} actual, exact={2}" -f $expectedProjects.Count, $actualProjects.Count, $report.project_set.exact)
+    Write-Host ("Root module set: {0} expected, {1} actual, exact={2}" -f $expectedModules.Count, $actualModules.Count, $report.module_set.exact)
     Write-Host ("Manuals identical={0}; skills mirrored={1}" -f $report.manuals.identical, $report.skills.mirrored)
     Write-Host ("Secrets={0}; links={1}; large files={2}; asset findings={3}" -f $secretFindings.Count, $linkFindings.Count, $largeFiles.Count, $assetFindings.Count)
     Write-Host ("Release audit: passed={0}, errors={1}, working_tree_clean={2}" -f $report.passed, $errors.Count, $report.working_tree_clean)

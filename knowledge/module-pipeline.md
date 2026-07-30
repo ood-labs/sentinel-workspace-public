@@ -19,7 +19,7 @@ For simple one-file post-processing, `hlslshader` may be enough.
 
 ## Fast Scaffold From Tracking Data
 
-Use `sentinel_module action=scaffold_from_ports` when a Module should consume tracking, detection, blob, corner, line, landmark, PCM, Spectrum, or Mel Bands data. Pass the upstream pipeline id and optional data port name. The tool writes `modules/<module_name>/manifest.yaml` and `render.hlsl` in the launched workspace, using the live schema from `get_data_schemas`.
+Use `sentinel_module action=scaffold_from_ports` when a Module should consume tracking, detection, blob, corner, line, landmark, PCM, Spectrum, or Mel Bands data. Pass the upstream pipeline id and optional data port name. The tool writes starter files in the launched workspace using the live schema from `get_data_schemas`; save and bundle the owning show so the final files live under `projects/<project>/modules/<module_name>/`, then remove any temporary root copy.
 
 The generated Module starts with modern controls: color palette pickers, a `point2D` composition pad, grouped toggles, and an `enum` button grid. Treat it as the starting point for creative shaping, then run `sentinel_pipeline action=compile_check project_dir=<generated_dir>` before creating the Module node.
 
@@ -74,7 +74,9 @@ ref("module_lfo/control_outputs/rate")
 
 For authored motion, include `#include "../_shared/anim/anim.hlsli"` and use `an_spring`, `an_spring_v`, the `an_stagger_*` family, `an_anticipate`, `an_squash`, and `an_loop_noise` instead of hand-rolled easing. The same equations exist in expressions (`spring`, `stagger`, ...). Rate-driven values integrate phase; never multiply a live rate by absolute time. See `knowledge/motion-choreography.md`.
 
-For measured geometry assertions on SDF modules, `modules/_shared/sdf/sdf_audit.hlsli` provides bisection dimension measurement, bounds clearance, and overlap sampling; results publish through a structured data output that `sentinel_blueprint action=audit` reads. See `knowledge/precise-construction.md`.
+For measured geometry assertions on SDF modules, bundle the audit helper with the
+owning project and publish results through a structured data output that
+`sentinel_blueprint action=audit` reads. See `knowledge/precise-construction.md`.
 
 ## Viewport Interactions And Cameras
 
@@ -84,7 +86,11 @@ For authored 3D, use the Module's internal camera by default and read `internal-
 
 ## Authored Viewport Events
 
-Modules that need ordered pointer, gesture, or keyboard edges in their shaders add `events` to `viewport.interactions` (available on installs at 0.5.30 or newer). The workspace module `modules/click_ripples/` is a complete working example: an interactive paint canvas using clicks, drags, wheel brush sizing, and key commands. Read its manifest and three shaders alongside this section.
+Modules that need ordered pointer, gesture, or keyboard edges in their shaders add
+`events` to `viewport.interactions` (available on installs at 0.5.30 or newer).
+Current bundled examples include `projects/streamdiff_canvas/modules/Paint_Canvas/`
+for paint gestures and `projects/interaction_lab/modules/Spline_Desk/` for
+selection and editing.
 
 ### Manifest
 
@@ -140,7 +146,9 @@ This is the same family as the expression rule "integrate phase, never multiply 
 
 ### Recommended architecture: reduce once, fan out through a buffer
 
-The proven pattern (used by both `modules/click_ripples/` and the engine's own replay fixture) is a small explicit-dispatch pass that reduces the event array into a persistent state buffer, with full-resolution passes consuming derived state:
+The proven pattern is a small explicit-dispatch pass that reduces the event array
+into a persistent state buffer, with full-resolution passes consuming derived
+state:
 
 1. A `dispatch: [1, 1, 1]` events pass reads `_ViewportEvents`, updates control values (palette, brush size, toggles), writes a bounded splat queue (position + strength entries), and bumps a generation counter whenever it queued work.
 2. The full-resolution pass compares the generation against the last one it consumed (remembered in its own buffer) and applies queued splats exactly once, no matter how many cooks share one input frame.

@@ -57,8 +57,22 @@ $reviewOnlyProjects = @(
         ForEach-Object { [string]$_.Key } |
         Sort-Object
 )
-$excludedProjects = @($config.ExcludedProjects | ForEach-Object { [string]$_ } | Sort-Object)
-$exclusiveSharedPaths = @($config.ExclusiveSharedPaths | ForEach-Object { [string]$_ } | Sort-Object)
+$excludedProjects = if ($config.ContainsKey('ExcludedProjects')) {
+    @(
+        $config.ExcludedProjects |
+            ForEach-Object { [string]$_ } |
+            Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+            Sort-Object
+    )
+} else { @() }
+$exclusiveSharedPaths = if ($config.ContainsKey('ExclusiveSharedPaths')) {
+    @(
+        $config.ExclusiveSharedPaths |
+            ForEach-Object { [string]$_ } |
+            Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+            Sort-Object
+    )
+} else { @() }
 
 $trackedProjectFiles = @(git -C $destinationFull ls-files -- projects)
 $actualProjects = @(

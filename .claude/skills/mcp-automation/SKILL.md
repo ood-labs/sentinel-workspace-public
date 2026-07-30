@@ -1,7 +1,6 @@
 ---
 name: mcp-automation
 description: Control Sentinel via MCP automation and IPC. Use when testing UI, automating pipelines, writing automation scripts, debugging IPC communication, setting up test environments, or working with the ZMQ automation bridge.
-distribution: true
 ---
 
 # MCP Automation

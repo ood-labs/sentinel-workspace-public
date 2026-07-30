@@ -1,10 +1,17 @@
 # Precise Construction (Blueprints, Layout Solver, SDF Audit)
 
-Precise construction turns a semantic YAML blueprint (objects, relations, clearances) into a generated Module that publishes flat 48-byte `PNodes` records for `sdf_scene_render`. Use it whenever a 3D scene is mostly objects with real dimensions and relationships: chairs tucked under tables, machines seated on counters, clear aisles, lamps facing a street. Hierarchy and relations resolve at compile time; the renderer contract never changes.
+Precise construction turns a semantic YAML blueprint (objects, relations,
+clearances) into a generated project-local Module that publishes flat 48-byte
+`PNodes` records. Use it whenever a 3D scene is mostly objects with real
+dimensions and relationships: chairs tucked under tables, machines seated on
+counters, clear aisles, lamps facing a street. Hierarchy and relations resolve at
+compile time; the renderer contract never changes. The complete bundled renderer
+reference is `projects/living_room_sdf/modules/LR_SDF_Renderer`.
 
 ## When To Use Which Lane
 
-- Pattern scatter and organic layouts with no hard relationships: the layout kit (`pl_grid`, `pl_spawn`, `pl_path`).
+- Pattern scatter and organic layouts with no hard relationships: author a small
+  project-local layout generator.
 - Scenes with dimensions, adjacency, support, clearances, or audit requirements: a blueprint through `sentinel_blueprint`.
 - Single hero objects with exact dimensions: hand-authored CSG modules (see `procedural-geometry-authoring`), optionally with an audit sidecar.
 
@@ -25,7 +32,11 @@ Author in two passes: relations first with registry-default dimensions (a semant
 
 ## Kind Registry
 
-`modules/_shared/sdf/sdf_kinds.yaml` describes each SDF object kind: numeric `id` (the record `kind_id`), real dimensions, footprint radius, and named anchors. The registry is the compiler's ground truth for relation arithmetic, validation, relaxation, and the overlap checker.
+An explicit kind-registry YAML describes each SDF object kind: numeric `id` (the
+record `kind_id`), real dimensions, footprint radius, and named anchors. The
+registry is the compiler's ground truth for relation arithmetic, validation,
+relaxation, and the overlap checker. The curated example is
+`examples/blueprints/living_room_sdf_kinds.yaml`.
 
 ## Compiler Actions (sentinel_blueprint)
 
@@ -42,7 +53,12 @@ The generated producer publishes one `PNodes` structured output, element size 48
 
 ## Audits (Measured Geometry Assertions)
 
-A `<blueprint-stem>.audit.yaml` sidecar makes `compile` emit an `Audit Results` data output. Assertions carry `id`, `type`, `expected` or `min_separation`, `tolerance`, optional `pair`; generated measures include `record_field`, `count_kind`, `flush_gap`, and `pair_separation`. Hand-authored hero modules can add their own audit pass with `modules/_shared/sdf/sdf_audit.hlsli` (bisection dimension measurement, bounds clearance, overlap sampling) and the same result-record shape.
+A `<blueprint-stem>.audit.yaml` sidecar makes `compile` emit an `Audit Results`
+data output. Assertions carry `id`, `type`, `expected` or `min_separation`,
+`tolerance`, optional `pair`; generated measures include `record_field`,
+`count_kind`, `flush_gap`, and `pair_separation`. Hand-authored hero modules can
+add an owning-project audit pass for bisection dimension measurement, bounds
+clearance, and overlap sampling using the same result-record shape.
 
 Run with explicit `max_elements` (data-port capture defaults to 20 elements and truncates silently):
 
@@ -55,8 +71,11 @@ An audit measures the live distance field, so a wrong offset fails mechanically 
 ## Proof Workflow
 
 1. `sentinel_blueprint validate` until clean (the cafe example returns `ok: true` with node/instance counts versus budget).
-2. `compile` with `create: true`; place/focus/open and prove the producer before creating `sdf_scene_render`. Create and place the renderer next, wire `PNodes`, then focus/open and prove it. Use local layout during visible authoring.
+2. `compile` with `create: true`; place/focus/open and prove the producer before
+   creating a project-local renderer. Create and place the renderer next, wire
+   `PNodes`, then focus/open and prove it. Use local layout during visible
+   authoring.
 3. Capture and evaluate with `sentinel_vision action=eval` (or one-call `action=eval_pipeline`), using the blueprint's counts and relations as the checklist. If the key is missing, follow the setup flow in `knowledge/vision-eval.md`.
 4. `audit` for measured dimensions and forbidden overlaps.
 
-Reference blueprints ship under `examples/blueprints/` (`cafe.yaml`, `cafe_grid.yaml`, `city_block.yaml`, `industrial_pipe_canyon.yaml`) with audit and solved sidecars.
+The curated reference blueprints under `examples/blueprints/` are `living_room_architecture.yaml` and `living_room_furnishings.yaml`, with solved sidecars and a project-specific kind registry.

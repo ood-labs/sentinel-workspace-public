@@ -1,7 +1,6 @@
 ---
 name: module-ui-authoring
 description: Build responsive interactive Sentinel Module interfaces with the shared scientific HLSL UI foundation, viewport controls and events, durable state, selection and gizmos, and full-bleed Canvas or follow-panel presentation. Use when creating shader-rendered control panels, HUDs, editors, spline tools, transform gizmos, dashboards, or any Module intended to behave like a UI rather than only an effect.
-distribution: true
 ---
 
 # Module UI Authoring
@@ -14,9 +13,9 @@ Read `knowledge/ui-authoring.md` before implementing. Use `knowledge/module-pipe
 
 1. Discover the live build with `sentinel_app ping`, `sentinel_pipeline list_types`, and `sentinel_app capabilities`. Canvas panels require Sentinel 0.5.32 or newer.
 2. Choose the interaction level: `viewport.controls` for fixed controls, `events` for custom pointer/keyboard behavior, `param_gestures` for parameter-backed movement, or `selection` plus state buffers for object editors and gizmos.
-3. Scaffold with `./tools/module-ui.ps1 new modules/<name> -Name "<Display Name>"`, or copy the nearest Interaction Lab example.
+3. Scaffold with `./tools/module-ui.ps1 new projects/<project>/modules/<name> -Name "<Display Name>"`, or copy the nearest Interaction Lab example into the owning project.
 4. Keep control rectangles and labels in `manifest.yaml`. Run `module-ui.ps1 generate` after every control or label change.
-5. Render through `../_shared/ui/sui_v2.hlsli`. Use named typography roles and normalized rectangles; derive every pixel measurement from `_Resolution` through `SuiContext`.
+5. Render through `../_shared/ui/sui3_controls.hlsli`. Convert generated normalized hit rectangles to pixels with the live `_Resolution`; keep strokes, typography, geometry, and layout measurements in pixel space.
 6. For a standalone full-frame panel, declare `panel.mode: canvas`, name the UI output, and choose `panel.resolution: follow_panel`. Keep the selected output pass inheriting root resolution.
 7. Write shader files before the manifest, run `module-ui.ps1 validate`, then run the real `sentinel_pipeline compile_check`.
 8. Create or force-reload the live Module, poll `compile_status`, and inspect `info` health. For Canvas, verify `info.panel.content_size` and `render_size` converge.
@@ -52,10 +51,10 @@ Canvas removes host chrome below the dock tab. `follow_panel` changes the real M
 ## Validation
 
 ```powershell
-./tools/module-ui.ps1 generate modules/<name>
-./tools/module-ui.ps1 validate modules/<name>
+./tools/module-ui.ps1 generate projects/<project>/modules/<name>
+./tools/module-ui.ps1 validate projects/<project>/modules/<name>
 ```
 
 Then run `compile_check`, poll `compile_status`, inspect `info`, and read `sentinel_viewport info` for the live instance.
 
-Use `modules/ui_kit_gallery`, `modules/ui_style_tuner`, `modules/spline_editor`, and `modules/transform_gizmo_lab` as working references. Use `projects/interaction_lab/interaction_lab.sentinel` for the complete bundled review station.
+Use `projects/interaction_lab/modules/Style_Authority`, `Spline_Desk`, `Gizmo_Desk`, and `Motion_Console` as the current working references. Use `projects/interaction_lab/interaction_lab.sentinel` for the complete bundled review station. Copy only what a new owning project needs; never link it to another project's Module directory at runtime.

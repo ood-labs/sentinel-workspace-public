@@ -7,9 +7,12 @@ updated: 2026-07-30
 
 ## Current focus
 
-Phase 6 has produced the curated public-workspace release candidate. The project
-set, manuals, knowledge, skills, promotion rails, and release audits are
-complete locally. Public push authorization remains pending at Human Gate G13.
+Phase 6 is in a corrective public-seed audit after an agent test proved that the
+old candidate still exposed stale root Modules as apparent creative authority.
+The content model is now project-owned: the curated projects and their bundled
+dependencies are the seed. The exact staged index passes a clean disposable-repo
+proof; the corrective commit and final manifest binding remain pending. Public
+push authorization remains pending at Human Gate G13.
 
 ## Curated seed
 
@@ -28,26 +31,37 @@ The distributable project lineup is:
 - `streamdiff_workflows`
 - `touchdesigner_new_project`
 
-`showcase_gallery` remains tracked as a review-only internal collection and is
-explicitly refused by the promotion tool.
+There is no root `modules/` catalog. Every saved Module path resolves inside its
+own `projects/<project>/modules/` directory. `showcase_gallery`, stale
+experimental Modules, and obsolete audio/gallery test tooling are not part of
+the candidate.
 
 The public entry manuals (`AGENTS.md`, `CLAUDE.md`, and `GEMINI.md`) are
-byte-identical. The workspace contains 20 knowledge documents and mirrored
-`.agents/skills` / `.claude/skills` trees.
+byte-identical. The workspace contains 20 knowledge documents and 11 validated,
+mirrored `.agents/skills` / `.claude/skills`.
 
 ## Validation
 
-The release candidate passes:
+The corrective working tree currently proves:
 
-- `tools/validate-official-examples.ps1`: 13 passed, 0 failed.
-- `tools/audit-public-release.ps1`: exact project set, synchronized manuals and
-  skill mirrors, tracked-secret scan, Markdown links, file-size thresholds,
-  asset/license coverage, and Sentinel version/capability compatibility.
-- `tools/plan-public-release.ps1`: exact-set release plan with no unexpected
-  project directory.
+- `tools/validate-official-examples.ps1`: 12 passed, 0 failed; 73 active
+  project-local Modules, zero shared-root dependencies, zero orphans, and zero
+  absolute paths.
+- Real Sentinel `compile_check`: all 15 Modules moved from root into
+  Interaction Lab and Scientific Organism compile with zero lints.
+- `tools/test-official-examples.ps1`: release-validator and promotion regression
+  suite passes.
+- `tools/audit-public-release.ps1`: expects exactly 12 projects and zero root
+  Modules; the generated workspace manifest contains exactly those 12 projects
+  and zero managed root Modules.
 
-Run `git rev-parse HEAD` to identify the candidate being tested. A valid agent
-test checkout must report no output from `git status --short`.
+The retained agent-test checkout is deliberately not the clean proof: it still
+contains the user-created `bureau_impossible_signals` project, captures, and
+local vision configuration that exposed the bad seed. The staged index was
+exported into a new repository and passed with zero `git status --short` lines,
+12/12 portable projects, zero root Module files, and an exact 702-file workspace
+manifest. Final acceptance still requires binding those results to the real
+corrective commit.
 
 ## Asset status
 
@@ -61,8 +75,9 @@ photo/video files were removed during release packaging.
 
 ## Blockers
 
-There are no known content, portability, link, secret, file-size, or asset-rights
-blockers in the local candidate.
+Project portability, the zero-root-module contract, and the isolated staged-index
+proof are clean. The remaining release task is to create the corrective content
+commit and regenerate the workspace manifest against that exact commit.
 
 The public remote still represents the previous release. No push, tag, or
 release is authorized until the user explicitly approves G13 after reviewing
@@ -71,4 +86,4 @@ the complete clean-checkout candidate.
 ## Last devlog
 
 `docs/devlogs/2026-07-30-phase-6n-public-seed-release-candidate.md` records the
-release assembly and clean-checkout verification.
+original assembly and the corrective post-landing audit.

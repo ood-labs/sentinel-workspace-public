@@ -1,14 +1,14 @@
 ---
 name: laser-content-authoring
 description: Author Module pipeline projects that drive physical lasers — click-driven ripples, vectorizable binary outputs, persistent trail buffers, multi-laser color routing, auto-spawn modes, and HStack composition for routing N laser channels through a single Spout/NDI sender to MadMapper. Use when building laser-show content, interactive content with mouse-driven point spawning, or multi-output Module projects that combine a "watch this" color channel with one or more "trace this" laser channels.
-distribution: true
 ---
 
 # Laser Content Authoring (Module Patterns)
 
 Patterns for Module projects that produce content for physical laser projection. The output goes Spout/NDI → MadMapper → laser DAC. The laser controller traces white pixels as beam paths, so laser channels must be **vectorizable**: pure white-on-black, crisp edges, no gradients or anti-aliasing. The color channel beside it can be lush HDR for monitor preview / video projection.
 
-The patterns below are self-contained and are intended to be authored as Module projects under `modules/`.
+The patterns below are self-contained and are intended to be authored as bundled
+Module projects under `projects/<project>/modules/`.
 
 ---
 
@@ -315,7 +315,7 @@ Wire all your laser-content module's outputs (Color + Laser 1 + Laser 2) into HS
 
 When building a Module via tool calls in sequence:
 
-1. Create folder `modules/<name>/`
+1. Create folder `projects/<project>/modules/<name>/`
 2. **Write all `.hlsl` shader files first.**
 3. **Write `manifest.yaml` last.**
 4. Now create the pipeline via MCP — first compile sees a complete project.

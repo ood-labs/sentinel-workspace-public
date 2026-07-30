@@ -43,8 +43,7 @@ The live MCP catalog is authoritative for the installed Sentinel build. Start wi
 | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` | Equivalent entry instructions for common coding agents |
 | `.agents/skills/`, `.claude/skills/` | Mirrored Sentinel authoring and automation skills |
 | `knowledge/` | Focused product and workflow reference documentation |
-| `modules/` | Curated Module library and shared HLSL includes |
-| `projects/` | Portable saved shows, focused technique collections, and authored visual examples |
+| `projects/` | Portable saved shows, focused technique collections, and their bundled Module dependencies |
 | `examples/` | Small blueprint examples for procedural construction |
 | `tools/` | Local authoring and validation helpers |
 
@@ -67,7 +66,7 @@ Open any project by loading its `.sentinel` file in Sentinel:
 | Project | What it demonstrates |
 | --- | --- |
 | [`interaction_lab`](projects/interaction_lab/) | Scientific UI controls, responsive Canvas panels, spline editing, selection, and transform gizmos |
-| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene using the shared root-level `steel_lattice` and `industrial_mono_post` modules |
+| [`industrial_lattice`](projects/industrial_lattice/) | A compact infinite steel-lattice SDF scene with its approved renderer and monochrome post pass bundled inside the project |
 | [`strata`](projects/strata/) | A modular abstract composition combining SDF blobs, wire records, marble panels, marks, compositing, and post-processing |
 | [`face_collage`](projects/face_collage/) | A tracked-face editorial collage with persistent accumulation, restrained overlays, and project-scoped performance controls |
 | [`living_room_sdf`](projects/living_room_sdf/) | A bundled, data-driven SDF interior assembled from architecture, furnishing, material, lighting, render, and grade modules |
@@ -84,8 +83,8 @@ Open any project by loading its `.sentinel` file in Sentinel:
 Use the scaffold helper from the repository root:
 
 ```powershell
-./tools/module-ui.ps1 new modules/my_ui -Name "My UI"
-./tools/module-ui.ps1 validate
+./tools/module-ui.ps1 new projects/my_project/modules/my_ui -Name "My UI"
+./tools/module-ui.ps1 validate projects/my_project/modules/my_ui
 ```
 
 The template uses the shared scientific UI foundation and opts into a full-frame Canvas panel with `follow_panel` resolution.
@@ -96,4 +95,4 @@ Captures, shader caches, recovery files, provider configuration, and other machi
 
 ## License
 
-Original repository content is available under the [MIT License](LICENSE). Scientifica font data remains covered by its bundled SIL Open Font License notice at [`modules/_shared/fonts/SCIENTIFICA_LICENSE.txt`](modules/_shared/fonts/SCIENTIFICA_LICENSE.txt).
+Original repository content is available under the [MIT License](LICENSE). Scientifica font data remains covered by its bundled SIL Open Font License notices inside the projects that use it, for example [`projects/interaction_lab/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt`](projects/interaction_lab/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt).

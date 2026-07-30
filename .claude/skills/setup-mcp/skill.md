@@ -1,8 +1,6 @@
 ---
 name: setup-mcp
 description: Set up and troubleshoot the Sentinel MCP server connection. Use when MCP tools fail, sentinel-mcp won't connect, or on a fresh machine.
-user_invocable: true
-distribution: true
 ---
 
 # Setup / Troubleshoot Sentinel MCP

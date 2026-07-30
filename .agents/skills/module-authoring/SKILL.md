@@ -1,7 +1,6 @@
 ---
 name: module-authoring
 description: Author Module pipeline projects (multi-pass YAML manifests, typed data ports, compute shaders, 3D rendering). Use when creating or editing Module manifests, working with data_inputs/data_outputs, debugging Module shader compilation, porting Shadertoy effects to Module format, or working with structured buffer I/O.
-distribution: true
 ---
 
 # Module Pipeline Authoring
@@ -10,10 +9,12 @@ The "Module" pipeline type (registered as `"module"`) supports multi-pass YAML-d
 
 ## Where to put new modules
 
-New module projects go under **`./modules/<name>/`** in the agent workspace (your cwd when launched from Sentinel's File > Launch Agent). The workspace `modules/` folder is created automatically.
+Keep releasable modules under **`./projects/<project>/modules/<name>/`** so each
+show owns every Module it needs. The public seed intentionally has no root Module
+catalog; do not make one project depend on another project's Module directory.
 
 ```
-./modules/my_module/
+./projects/my_show/modules/my_module/
 ├── manifest.yaml
 ├── pass1.hlsl
 └── pass2.hlsl
@@ -21,12 +22,19 @@ New module projects go under **`./modules/<name>/`** in the agent workspace (you
 
 After writing the files, point a Module pipeline at the directory:
 ```
-sentinel_pipeline action="create" type="module" name="my_module" project_dir="<absolute-path-to>/modules/my_module"
+sentinel_pipeline action="create" type="module" name="my_module" project_dir="<absolute-path-to>/projects/my_show/modules/my_module"
 ```
 
-`project_dir` requires an absolute path. Resolve `./modules/<name>/` against your cwd, or call `sentinel_app action="workspace"` to get the workspace dir as an absolute path.
+`project_dir` requires an absolute path. Resolve the project-local directory
+against your cwd, or call `sentinel_app action="workspace"` to get the workspace
+dir as an absolute path.
 
-For data-driven visuals, prefer `sentinel_module action="scaffold_from_ports"` after inspecting the upstream tracker. It writes the module files under the launched workspace, copies the live data schema into `data_inputs`, generates starter HLSL accessors, and uses modern controls.
+For data-driven visuals, prefer `sentinel_module action="scaffold_from_ports"`
+after inspecting the upstream tracker. It writes starter files under the launched
+workspace, copies the live data schema into `data_inputs`, generates HLSL
+accessors, and uses modern controls. Save and bundle the owning show immediately;
+verify the saved path is `modules/<id>` and remove any temporary workspace-root
+copy after the bundled project is proven.
 
 ## Bundling Modules with a Show Project
 
@@ -303,7 +311,7 @@ Author Modules so the manifest resolution is a default target, not a hidden layo
 ## MCP Workflow for Module Creation
 
 ```
-1. Create project folder: modules/<name>/
+1. Create project folder: projects/<project>/modules/<name>/
 2. Write ALL shader files first, THEN write manifest.yaml LAST (avoids the hot-reload race below).
 3. sentinel_pipeline create type=module name="Name" project_dir="path"
 4. sentinel_state set path=/sentinel/pipelines/<id>/parameters/project_dir value="path"
@@ -464,7 +472,7 @@ passes:
 
 ## Authored UI And Canvas Panels
 
-When a Module is an interface, editor, dashboard, spline tool, or gizmo rather than only an effect, use the `module-ui-authoring` skill and read `knowledge/ui-authoring.md`. The shared `modules/_shared/ui/sui_v2.hlsli` foundation provides normalized layout, Scientifica typography, monochrome controls, and generated manifest-aligned hit rectangles through `tools/module-ui.ps1`.
+When a Module is an interface, editor, dashboard, spline tool, or gizmo rather than only an effect, use the `module-ui-authoring` skill and read `knowledge/ui-authoring.md`. Bundle the SUI3 foundation under the owning project's `modules/_shared/ui/`: pixel-space scientific instrumentation, Scientifica typography, and manifest-aligned normalized hit rectangles converted with the live render extent through `tools/module-ui.ps1`.
 
 Sentinel 0.5.32 and newer add the independent panel presentation contract:
 
@@ -507,7 +515,7 @@ Pan/zoom mouse handling and the hint row follow the declared interactions, so a 
 
 For ordered pointer/keyboard/gesture events in shaders (clicks, key pulses, drags with capture semantics), add `events` to `interactions` and declare interests under `viewport.input` plus help `bindings`; the compiler then injects `_ViewportEventCount`, `_ViewportEvents[]`, pointer/key state globals, and the `ViewportKeyDown`/`ViewportButtonDown`/`ViewportModifierDown` helpers. Available on builds 0.5.30 and newer; `_Mouse` remains the simple fallback.
 
-Three verified gotchas: `bindings[].gesture` tokens differ from `input.gestures` tokens (`left_click`/`left_drag`/..., not `click`/`drag`); event positions are normalized preview coordinates matching your pass `uv`; and modules cook at an uncapped rate far above the display rate, so decay/accumulation MUST scale by `_DeltaTime` (`energy *= pow(k, _DeltaTime * 60.0)`), otherwise event visuals vanish within milliseconds and events appear "not to arrive". The proven pass structure is a `dispatch: [1,1,1]` event-reduction pass writing a persistent state buffer plus generation counter, with full-res passes consuming derived state. Full token lists, the frozen v1 event ABI, event type/phase/code tables, and router priority live in `knowledge/module-pipeline.md` (Authored Viewport Events); the workspace module `modules/click_ripples/` is a complete worked example.
+Three verified gotchas: `bindings[].gesture` tokens differ from `input.gestures` tokens (`left_click`/`left_drag`/..., not `click`/`drag`); event positions are normalized preview coordinates matching your pass `uv`; and modules cook at an uncapped rate far above the display rate, so decay/accumulation MUST scale by `_DeltaTime` (`energy *= pow(k, _DeltaTime * 60.0)`), otherwise event visuals vanish within milliseconds and events appear "not to arrive". The proven pass structure is a `dispatch: [1,1,1]` event-reduction pass writing a persistent state buffer plus generation counter, with full-res passes consuming derived state. Full token lists, the frozen v1 event ABI, event type/phase/code tables, and router priority live in `knowledge/module-pipeline.md` (Authored Viewport Events); use the bundled Paint Canvas and Interaction Lab modules as current examples.
 
 For ray-marched scenes, generate rays from camera. **Must Y-flip for DX NDC**:
 ```hlsl

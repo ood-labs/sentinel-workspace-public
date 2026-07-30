@@ -1,7 +1,6 @@
 ---
 name: modular-scene-authoring
 description: Author Sentinel scenes and procedural systems as modular Module graphs of separable generators, data lanes, editors, renderers, compositors, and post nodes wired by typed data ports. Use when recreating a reference image, building a complex or architectural procedural scene, choosing a data contract from the reference's structure, wiring producer/consumer structured buffers, preserving logical ids, or running the compile-check to live-proof iteration loop.
-distribution: true
 ---
 
 # Modular Scene Authoring (Module Graph Patterns)
@@ -12,7 +11,12 @@ For manifest syntax, HLSL compiler name mappings, structured buffer I/O, and hot
 
 If one node is meant to be a complete control surface, editor, HUD, or dashboard, use the `module-ui-authoring` skill for that node. A UI Module can declare a full-bleed Canvas and `follow_panel` resolution while remaining one semantic node in the larger scene graph.
 
-In-repo modular references worth reading before starting: `modules/compositor/`, `modules/choreo_cascade/`, `modules/timeline_hud/`, `projects/interaction_lab/interaction_lab.sentinel`, and `projects/procedural_building_system/`. For editable procedural construction systems, read `knowledge/modular-procedural-systems.md` before authoring.
+In-repo modular references worth reading before starting:
+`projects/interaction_lab/interaction_lab.sentinel`,
+`projects/scientific_organism/`, and `projects/living_room_sdf/`. Treat them as
+architectural references, not runtime dependency libraries. For editable
+procedural systems, read `knowledge/modular-procedural-systems.md` before
+authoring.
 
 ---
 
@@ -67,7 +71,7 @@ For architectural and other multi-editor procedural systems:
 - Keep HDR internal if useful, but publish 8-bit sRGB color for video consumers and a separate native depth lane for structural conditioning.
 - Treat StreamDiff or other AI interpretation as optional. Prove the procedural renderer and auxiliary outputs first.
 
-Use `projects/procedural_building_system/` as the reference implementation and `knowledge/modular-procedural-systems.md` as the complete acceptance contract.
+Use `projects/living_room_sdf/` for a dimensioned construction example, `projects/scientific_organism/` for a typed-data procedural composition, and `knowledge/modular-procedural-systems.md` as the reusable acceptance contract. Treat their node boundaries as architecture examples, not visual templates.
 
 ---
 
@@ -163,7 +167,11 @@ A finished modular scene is more valuable as an editable show project (a bundled
 
 ## Motion vocabulary
 
-For scene motion, use the shared vocabulary from `knowledge/motion-choreography.md` and `modules/_shared/anim/anim.hlsli`. Do not hand-roll independent spring or stagger equations in renderer nodes. Keep rate-driven timelines on accumulated phase, and use retarget stamps plus `an_spring_v` when a cue jump or target change must remain continuous.
+For scene motion, use the shared vocabulary from
+`knowledge/motion-choreography.md`. Bundle any HLSL motion helper with the owning
+project. Do not hand-roll independent spring or stagger equations in renderer
+nodes. Keep rate-driven timelines on accumulated phase, and use retarget stamps
+plus `an_spring_v` when a cue jump or target change must remain continuous.
 
 ---
 

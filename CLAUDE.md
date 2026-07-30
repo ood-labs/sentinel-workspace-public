@@ -203,14 +203,16 @@ Audio In is pipeline type `audio` on builds whose live `list_types` response inc
 
 Use `source_mode=Device` for live WASAPI capture or `source_mode=File` for deterministic paced PCM WAV playback. Device flow `Loopback` captures a Windows playback endpoint, while `Microphone` captures a recording endpoint. For a virtual audio cable, route the producing application's playback into the cable and select the corresponding endpoint under the appropriate flow.
 
-For beat, onset, and drum-driven work, use `modules/audio_bands`. It is the source
-of truth for audio reactivity: wire Audio In's `Spectrum` port into it, then drive
-parameters from its control outputs. Use the monotonic `kick_count` / `snare_count` /
+For beat, onset, and drum-driven work, use the project-local Audio Bands implementation
+in `projects/cloth_lab/modules/cloth_bands` as the maintained reference: wire Audio
+In's `Spectrum` port into it, then drive parameters from its control outputs. Bundle
+an owning-project copy instead of linking a new show to another project's files. Use
+the monotonic `kick_count` / `snare_count` /
 `hat_count` for per-hit edges and `kick` / `snare` / `hat` for 0-1 envelopes; its
 per-lane dB thresholds gate internally, so the counters need no extra signal gate.
-`Threshold Mode` defaults to Fixed. The `pulse2_*` and `cryo_pulse` modules are
-superseded and kept only because saved projects reference them; do not build new
-work on them. Worked example: `projects/cloth_lab/`.
+`Threshold Mode` defaults to Fixed. Superseded `pulse2_*` and `cryo_pulse`
+experiments are not part of the curated public module library; do not recreate
+or build new work on them. Worked example: `projects/cloth_lab/`.
 
 Audio In publishes three typed data ports:
 
@@ -239,7 +241,7 @@ See `knowledge/audio-reactivity.md` for wiring recipes, frozen data contracts, h
 
 ## Creative Module Authoring
 
-For a data-driven custom visual, prefer `sentinel_module action=scaffold_from_ports` after creating or inspecting the upstream tracker. It creates a user-writable Module under `modules/<name>/`, copies the upstream data schema into `data_inputs`, generates HLSL accessors, and includes modern controls (`color`, `point2D`, grouped toggles, and `enum` button grids).
+For a data-driven custom visual, prefer `sentinel_module action=scaffold_from_ports` after creating or inspecting the upstream tracker. It creates a user-writable starter Module, copies the upstream data schema into `data_inputs`, generates HLSL accessors, and includes modern controls (`color`, `point2D`, grouped toggles, and `enum` button grids). Save and bundle the owning show so its final copy lives under `projects/<project>/modules/<name>/`; do not leave a reusable-looking root module behind.
 
 Use `sentinel_pipeline action=get_data_schemas` before wiring data. The response includes the graph pin name and slot when available, so use that pin name with `sentinel_graph action=add_link`.
 
@@ -253,7 +255,7 @@ Separate the canonical Program renderer from the flexible editor Canvas. The ren
 
 ## Choreography And Sequencing
 
-For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary in `modules/_shared/anim/anim.hlsli` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, and integrate phase for anything rate-driven. The shipped `timeline_hud` module visualizes the arrangement from the Conductor's `Cue Records` port, and `choreo_cascade` is the reference stagger/spring consumer. See `knowledge/motion-choreography.md`.
+For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary described in `knowledge/motion-choreography.md` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, integrate phase for anything rate-driven, and bundle any HLSL helper with the owning project.
 
 StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` node switches variants live and its `solo_upstream` keeps only the visible variant diffusing; an `atlas` node banks aligned stills for 3D scene spawning. The focused examples under `projects/streamdiff_workflows/` cover feedback zoom, depth parallax, direct Mux switching, video depth conditioning, and procedural warp maps; open one at a time to avoid unnecessary engine-memory spikes. See `knowledge/streamdiff.md` and `knowledge/scene-system.md`.
 
@@ -261,7 +263,7 @@ To mix whole looks instead of single streams, author each look as a Scene Group 
 
 ## Precise 3D Construction
 
-When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against the kind registry `modules/_shared/sdf/sdf_kinds.yaml`, relax under-constrained layouts with warm-start stability, and compile to a generated Module publishing `PNodes` records for the shipped `sdf_scene_render` project. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints: `examples/blueprints/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
+When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against an explicit project-specific kind registry, relax under-constrained layouts with warm-start stability, and compile to a generated project-local Module publishing `PNodes` records. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints and registry: `examples/blueprints/`; complete renderer reference: `projects/living_room_sdf/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
 
 ## Scene Groups
 

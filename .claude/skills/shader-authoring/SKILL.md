@@ -1,7 +1,6 @@
 ---
 name: shader-authoring
 description: Write HLSL .fx shaders for Sentinel (Notch-compatible). Use when creating or editing .fx shaders, debugging shader compile errors, working with the HLSL parameter convention, or ensuring Notch compatibility.
-distribution: true
 ---
 
 # HLSL Shader Authoring

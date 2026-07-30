@@ -1,13 +1,19 @@
 # Modular Procedural Systems
 
-Use this contract when a Sentinel scene is a system of editable generators, structured data, and downstream renderers rather than one self-contained visual effect. The canonical example is `projects/procedural_building_system/`.
+Use this contract when a Sentinel scene is a system of editable generators,
+structured data, and downstream renderers rather than one self-contained visual
+effect. The curated public examples are `projects/living_room_sdf/` for
+dimensioned construction and `projects/scientific_organism/` for a typed-data
+procedural composition. Study their contracts and node boundaries, not their
+visual language or module names; new work should begin from a new semantic
+direction.
 
 ## 1. Decompose by semantic authority
 
 Give each node one responsibility that remains useful on its own:
 
-- plan or massing;
-- expansion or facade generation;
+- source or layout plan;
+- expansion or derived structure;
 - material records;
 - lighting records;
 - renderer;
@@ -19,13 +25,13 @@ Name the node after the concept the artist edits, not the implementation techniq
 
 Publish typed buffers for semantic records and keep producer and consumer schemas byte-for-byte identical. Put stable ids, dimensions, transforms, type/material ids, active flags, and any grouping needed by downstream nodes into the records.
 
-Do not make the preview texture the hidden source of architectural truth. The preview explains the records; data links carry them.
+Do not make the preview texture the hidden source of structural truth. The preview explains the records; data links carry them.
 
-When several nodes use the same geometry, wire the same producer records to all of them. Do not reconstruct a second approximate building in the facade, lighting, or renderer node.
+When several nodes use the same geometry, wire the same producer records to all of them. Do not reconstruct a second approximate form in a derivation, lighting, or renderer node.
 
 ## 3. Require an honest preview from every node
 
-Every generator, plan, facade, material, lighting, or transform node must render a meaningful preview of its own current records. A preview should reveal spatial arrangement, type, grouping, selection, or material response well enough to diagnose that stage without opening the final renderer.
+Every generator, plan, derivation, material, lighting, or transform node must render a meaningful preview of its own current records. A preview should reveal spatial arrangement, type, grouping, selection, or material response well enough to diagnose that stage without opening the final renderer.
 
 `has_preview_srv=true` is necessary but not sufficient. Blank, generic, constant, misleading, or illegible previews block downstream work.
 
@@ -35,7 +41,7 @@ Use Canvas for tasks whose meaning is spatial:
 
 - selecting and moving masses;
 - rotating a logical object;
-- positioning a facade feature against the elevation it changes;
+- positioning a derived feature against the region it changes;
 - placing important lights in plan.
 
 Keep dense numeric and color tuning in Properties. Do not duplicate every parameter as an authored slider rail merely to make the Canvas look like a control panel. Properties already provide reset, range editing, OSC, expressions, presets, undo, and compound color/XY widgets.
@@ -52,7 +58,7 @@ For every spatial editor:
 4. evaluate picks against those same coordinates;
 5. invert the same mapping when committing a drag.
 
-Do not independently eyeball preview placement and interaction placement. A marker that selects the wrong facade cell is a contract failure even when both pieces look plausible alone.
+Do not independently eyeball preview placement and interaction placement. A marker that selects the wrong record or cell is a contract failure even when both pieces look plausible alone.
 
 Keep drag ownership from pointer-down through commit/cancel. Store logical state in declared state buffers so save/reload, presets, and undo restore meaningful edits.
 
@@ -93,7 +99,7 @@ For depth-conditioned StreamDiff:
 - use `hold=false` for live camera work;
 - use `frame_skip=1` when the target GPU supports it.
 
-Save a successful setting snapshot, but describe the AI branch honestly. It may add useful realism while relaxing exact facade fidelity.
+Save a successful setting snapshot, but describe the AI branch honestly. It may add useful realism while relaxing exact structural fidelity.
 
 ## 10. Build and prove one node at a time
 
@@ -121,15 +127,15 @@ After the graph is complete:
 
 ## Reference graph
 
-`procedural_building_system` demonstrates the complete pattern:
+The reusable pattern is:
 
 ```text
-massing records ─┬─> facade records ─┐
-                 ├─> lighting records ┤
-                 └─────────────────────┤
-material records ──────────────────────┤
+source records ─┬─> derived records ──┐
+                ├─> lighting records ─┤
+                └──────────────────────┤
+style records ─────────────────────────┤
                                        v
-                              renderer: sRGB + depth
+                              renderer: color + depth
                                        |
                                        v
                               optional StreamDiff

@@ -1,9 +1,9 @@
 # GPU Cloth And XPBD Modules
 
 Reference for grid-based physics Modules in Sentinel. The worked implementation is
-`modules/cloth_engine/`; the reusable pieces are extracted into
-`modules/_shared/xpbd/xpbd.hlsli`, `modules/_shared/surface/bicubic.hlsli`, and
-`modules/_shared/viewport/pick3d.hlsli`.
+`projects/cloth_lab/modules/cloth_engine/`; its reusable pieces are bundled with
+the project under `projects/cloth_lab/modules/_shared/` (`xpbd/xpbd.hlsli`,
+`surface/bicubic.hlsli`, and `viewport/pick3d.hlsli`).
 
 ## The Single-Dispatch Solver
 
@@ -23,7 +23,7 @@ Verified: 16 substeps x 3 sweeps x 12 barrier-separated colours = 768 sweeps in
 
 **2048 particles is the practical ceiling** for this pattern. Above that, either
 tile the domain with halos and accept one dispatch per tile-sync, or duplicate the
-solve pass in the manifest (as `modules/rupture_fabric/` does).
+solve pass explicitly in the manifest and prove the synchronization boundary.
 
 Coarse simulation plus a subdivided bicubic render surface is the right split.
 A 64x32 sim renders smoothly at 3x subdivision; the extra 93k vertices cost

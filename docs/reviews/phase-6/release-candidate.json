@@ -1,9 +1,9 @@
 {
   "phase": "6N",
-  "content_commit": "e6464ab1784ac51a0cedacafd3c8b4b51f2d54c0",
-  "binding": "The clean-checkout audit artifacts record the exact commit under test; use git rev-parse HEAD in the candidate checkout.",
+  "content_commit": "pending-corrective-commit",
+  "binding": "The prior candidate was invalidated by an agent test. Bind this record to the corrective commit only after a fresh checkout passes the exact project, zero-root-module, manifest, and cleanliness audits.",
   "project_set": {
-    "configured_directories": 13,
+    "configured_directories": 12,
     "distributable_projects": [
       "autopsia",
       "camera_reference",
@@ -18,9 +18,7 @@
       "streamdiff_workflows",
       "touchdesigner_new_project"
     ],
-    "review_only_projects": [
-      "showcase_gallery"
-    ],
+    "review_only_projects": [],
     "missing": [],
     "unexpected": []
   },
@@ -30,11 +28,14 @@
     "claude_skill_files": 32,
     "entry_manuals_identical": true,
     "minimum_sentinel_version": "0.5.49",
-    "proof_host_version": "0.5.51"
+    "proof_host_version": "0.5.51",
+    "workspace_version": "0.5.52",
+    "root_module_directories": 0,
+    "active_project_local_modules": 73
   },
   "validation": {
     "official_examples": {
-      "passed": 13,
+      "passed": 12,
       "failed": 0
     },
     "release_audit": {
@@ -45,13 +46,19 @@
       "broken_entry_links": 0,
       "files_over_50_mib": 0,
       "asset_findings": 0,
-      "version_compatible": true
+      "version_compatible": true,
+      "zero_root_modules": true,
+      "workspace_manifest_exact": true
     },
     "clean_checkout": {
       "working_tree_clean": true,
       "official_validator_passed": true,
       "release_audit_passed": true,
-      "exact_set_plan_passed": true
+      "exact_set_plan_passed": true,
+      "root_module_files": 0,
+      "project_count": 12,
+      "manifest_files": 702,
+      "status": "exact staged index passed in a new disposable repository; final corrective commit binding pending"
     }
   },
   "assets": {

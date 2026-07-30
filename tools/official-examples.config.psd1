@@ -4,27 +4,10 @@
     CapabilityCommandCount = 152
     CapabilitySchemaHash = 'f87e5c1d5f3ae458'
 
-    ExcludedProjects = @(
-        'desert_totem',
-        'fruit_atlas_scatter',
-        'procedural_building_system',
-        'streamdiff_collage',
-        'topographic_hud'
-    )
-
-    ExclusiveSharedPaths = @(
-        'modules/pl_blueprint_procedural_building',
-        'modules/procedural_building_facade',
-        'modules/procedural_building_finish',
-        'modules/procedural_building_lighting',
-        'modules/procedural_building_materials',
-        'modules/procedural_building_render'
-    )
-
     Projects = @{
         interaction_lab = @{
             ProjectFile = 'interaction_lab.sentinel'
-            SharedModules = @('modules/data_scope', 'modules/signal_trails')
+            SharedModules = @()
             ProofRecords = @('docs/reviews/phase-6/interaction-lab.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
@@ -47,7 +30,7 @@
         }
         face_collage = @{
             ProjectFile = 'face_collage.sentinel'
-            SharedModules = @('modules/lfo', 'modules/resample')
+            SharedModules = @()
             ProofRecords = @('docs/reviews/phase-6/face-collage.json')
             MinimumSceneGroups = 1
             RequiresGroupOutput = $true
@@ -129,7 +112,7 @@
         }
         cloth_lab = @{
             ProjectFile = 'cloth_lab.sentinel'
-            SharedModules = @('modules/audio_bands')
+            SharedModules = @()
             ProofRecords = @('docs/reviews/phase-6/cloth-lab.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
@@ -142,21 +125,7 @@
         scientific_organism = @{
             ProjectFile = 'scientific_organism.sentinel'
             ProofRecords = @('docs/reviews/phase-6/scientific-organism.json')
-            SharedModules = @(
-                'modules/scientific_seed_lab',
-                'modules/scientific_organism_renderer',
-                'modules/scientific_relief_chamber',
-                'modules/scientific_topology_weaver',
-                'modules/scientific_biotic_source',
-                'modules/scientific_analysis_proxy',
-                'modules/scientific_feature_temporalizer',
-                'modules/scientific_synaptic_field',
-                'modules/scientific_filament_memory',
-                'modules/scientific_spectral_archive',
-                'modules/scientific_signal_glyphs',
-                'modules/scientific_performance_deck',
-                'modules/scientific_final_grade'
-            )
+            SharedModules = @()
             MinimumSceneGroups = 1
             RequiresGroupOutput = $true
             MinimumGroupPresets = 3
@@ -188,24 +157,6 @@
             RequireNodePreviews = $true
             Exemptions = @('scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
-        showcase_gallery = @{
-            ProjectFile = 'showcase_gallery.sentinel'
-            Promote = $false
-            SharedModules = @(
-            )
-            PassiveBuses = @(
-                @{ PipelineId = 'signal'; ProjectDir = 'modules/signal'; Width = 480; Height = 270 }
-                @{ PipelineId = 'strata_control'; ProjectDir = 'modules/strata_control'; Width = 480; Height = 270 }
-                @{ PipelineId = 'dada_control'; ProjectDir = 'modules/dada_control'; Width = 480; Height = 270 }
-            )
-            MinimumSceneGroups = 7
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 7
-            RequiresGroupsMux = $true
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 0
-            Exemptions = @('gallery-final-mux', 'scene-group-controls', 'scene-group-presets', 'object-picking')
-        }
     }
 
     AssetLedger = @(
@@ -226,14 +177,36 @@
     )
     GeneratedMediaPatterns = @(
         'projects/*/proof/*',
-        'projects/autopsia/*.png',
-        'tools/audio_test/*.wav',
-        'tools/audio_test/corpus/*.wav'
+        'projects/autopsia/*.png'
     )
+
+    WorkspaceManifest = @{
+        Prefixes = @(
+            '.agents/skills',
+            '.claude/skills',
+            'examples',
+            'knowledge',
+            'projects'
+        )
+        Files = @(
+            '.gitignore',
+            'AGENTS.md',
+            'CLAUDE.md',
+            'GEMINI.md',
+            'LICENSE',
+            'README.md',
+            'tools/generate_laservibe_hud.py',
+            'tools/module-ui.ps1',
+            'tools/official-examples.config.psd1',
+            'tools/test-official-examples.ps1',
+            'tools/validate-official-examples.ps1',
+            'tools/verify_motion_energy.py'
+        )
+    }
 
     AllowedProjectDirectories = @('assets', 'cues', 'images', 'modules', 'proof')
     AllowedTopLevelFiles = @('README*', 'LICENSE*')
-    GlobalSharedPaths = @('modules/_shared')
+    GlobalSharedPaths = @()
     ForbiddenDirectoryNames = @(
         '.cache', '.shadercache', 'captures', 'checkpoint', 'checkpoints',
         'recovery', 'shader_cache', 'shadercache'

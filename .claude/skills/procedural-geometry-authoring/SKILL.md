@@ -1,7 +1,6 @@
 ---
 name: procedural-geometry-authoring
 description: Author precise Sentinel procedural geometry from semantic blueprints, including registry-backed SDF instance kinds, relation solving, generated PNode modules, audit sidecars, and live MCP proof.
-distribution: true
 ---
 
 # Procedural Geometry Authoring
@@ -11,7 +10,8 @@ Use the precise-construction blueprint path when a scene needs real dimensions, 
 ## Blueprint-first workflow
 
 1. Write a YAML blueprint under `examples/blueprints/` or the current show folder.
-2. Use kinds from `modules/_shared/sdf/sdf_kinds.yaml`.
+2. Use an explicit project-specific kind registry. The curated example is
+   `examples/blueprints/living_room_sdf_kinds.yaml`.
 3. Author in two passes: first use registry-default dimensions and relations only, then validate and add dimension overrides only where the scene needs them.
 4. Prefer relations over raw coordinates:
    - `supported_by` for objects on surfaces.

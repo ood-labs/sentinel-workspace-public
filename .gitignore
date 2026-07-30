@@ -3,11 +3,9 @@
 #
 # This repo is NOT a dump of the local workspace.
 #   scratch/   → throwaway experiments + archived legacy. Never tracked.
-#   modules/   → the curated technique library. Fully tracked; only
-#                harvested, documented techniques live here (see
-#                knowledge/technique-catalogue.md). Junk goes to scratch/.
-#   projects/  → allowlisted; only blessed example shows are tracked.
-# To ship a new project: add a `!projects/<name>/` line below.
+#   modules/   → temporary authoring only; the public seed ships no root Modules.
+#   projects/  → saved work plus each project's bundled Module dependencies.
+# New projects remain visible to Git. The release audit owns the exact shipped set.
 # ─────────────────────────────────────────────────────────────
 
 # ── Generated / local artifacts ──────────────────────────────
@@ -22,46 +20,17 @@ projects/*/proof/
 *.log
 # compiled shader caches (regenerated on load; build/GPU-specific)
 **/shader_cache/
-# Python caches and disposable audio-scoring sweeps are regenerated locally.
+# Python caches are regenerated locally.
 **/__pycache__/
 *.py[cod]
-tools/audio_test/scores/_sweep_*.json
-tools/audio_test/scores/_sweep_*.txt
 # scratch: throwaway experiments + archived legacy modules. Never shipped.
 scratch/
 
-# ── Curated module library ───────────────────────────────────
-# modules/ is fully tracked — it holds only harvested, documented
-# techniques. Throwaway experiments live in scratch/ (ignored above),
-# never here. A harvested technique auto-tracks; no allowlist needed.
+# ── Root Modules ─────────────────────────────────────────────
+# Root modules are not ignored so temporary scaffolds remain visible. Bundle
+# finished work under projects/<project>/modules/, then remove the root copy.
+# Release validation rejects every tracked or filesystem root Module.
 
 # ── Curated projects ─────────────────────────────────────────
-# Ignore all projects, then re-include the shipped ones.
-projects/*
-!projects/pulse2/
-!projects/topographic_hud/
-!projects/fui_dashboard/
-!projects/abstract_ribbon_poster/
-!projects/skyscraper/
-!projects/desert_totem/
-!projects/strata/
-!projects/kidpix_canvas/
-!projects/fruit_atlas_scatter/
-!projects/interaction_lab/
-!projects/camera_reference/
-!projects/living_room_sdf/
-!projects/face_collage/
-!projects/industrial_lattice/
-!projects/showcase_gallery/
-!projects/streamdiff_workflows/
-!projects/streamdiff_collage/
-!projects/streamdiff_brush_canvas/
-!projects/streamdiff_canvas/
-!projects/cloth_lab/
-!projects/procedural_building_system/
-!projects/cryogram/
-!projects/autopsia/
-!projects/touchdesigner_new_project/
-
-# Generated demo signals (tools/audio_test/make_loop.py)
-tools/audio_test/loops/
+# Projects are not ignored. This keeps ordinary agent-created work visible in
+# `git status`; release validation rejects anything outside the curated set.

@@ -48,8 +48,16 @@ Use the `timeline_hud` and `choreo_cascade` modules as the reference consumers w
 
 ## Timeline HUD And Ghost Preview
 
-- `timeline_hud` (under `modules/timeline_hud`) consumes the Conductor's `Cue Records` data port (`track`, `start`, `duration`, `state`, `color_id`) and renders lanes, cue blocks, a beat grid, and a playhead. Drive `playhead_seconds` with `ref("Conductor/control_outputs/transport_seconds")` or `total_beats`.
-- `choreo_cascade` (under `modules/choreo_cascade`) is the reference stagger/spring consumer: a radial cascade over instance records with spring presets and a `ghost_mode` toggle that renders past and future evaluations of the closed-form motion as translucent onion-skin copies. Because motion is a pure function of time, the leading ghost shows where instances will be.
+A timeline HUD can consume the Conductor's `Cue Records` data port (`track`,
+`start`, `duration`, `state`, `color_id`) and render lanes, cue blocks, a beat
+grid, and a playhead. Drive `playhead_seconds` with
+`ref("Conductor/control_outputs/transport_seconds")` or `total_beats`.
+
+For a stagger/spring preview, render past and future evaluations of the same
+closed-form motion as translucent onion-skin copies. Because motion is a pure
+function of time, the leading ghost shows where instances will be. Keep both
+modules inside the owning project's `modules/` directory; the public seed does
+not ship a root Module catalog.
 
 ## Verification
 
