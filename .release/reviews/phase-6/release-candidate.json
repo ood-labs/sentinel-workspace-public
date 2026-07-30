@@ -1,6 +1,6 @@
 {
   "phase": "6N",
-  "content_commit": "15038164f328e4a26a16def48c8e8675def86e6d",
+  "content_commit": "fc10ba238d55602aed58752c0fe346f4618e5401",
   "binding": "The workspace manifest is generated from this curated content commit. The following binding commit changes only release metadata and the generated install manifest.",
   "project_set": {
     "configured_directories": 12,
