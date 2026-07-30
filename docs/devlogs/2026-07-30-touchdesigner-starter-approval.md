@@ -18,6 +18,8 @@ summary: "Approve the TouchDesigner starter presentation"
 - Replaced the original Jellybeans media with the user's selected
   `images/jellybeans.png`, removed the old JPG, saved the source as a
   project-relative reference, and re-proved the unchanged approved presentation.
+- Recorded the user's confirmation that the replacement PNG is cleared for
+  redistribution in the public workspace.
 
 ## Next
 
