@@ -1,0 +1,41 @@
+{
+  "gate_id": "G0",
+  "status": "approved",
+  "private_remote_commit": "ec9bc554d989c87593337be673a2d2ef2ebd69d5",
+  "public_commit": "e3bf65abeea3e8144612b2319d3fe3e980144f11",
+  "release_branch_commit_at_review": "a883f1d2a21665154028fad7e0b3c6dbfa5d54da",
+  "dirty_private_checkout": {
+    "path": "C:/Users/cerspense/Documents/dev/sentinel-workspace",
+    "head": "e6625482abd4e7bb3aeb00c3d1b1d870d54e5108",
+    "status_entry_count": 29,
+    "status_sha256": "75ff9650c2feb5d943c04d9f0a5f3a870c1095bc014bde1876cabc8c083c79b8",
+    "disturbed": false
+  },
+  "release_worktree": {
+    "path": "C:/Users/cerspense/Documents/dev/sentinel-workspace-phase-6",
+    "branch": "phase-6-public-refresh",
+    "clean_before_reconciliation": true,
+    "clean_after_reconciliation": true
+  },
+  "source_decisions": [
+    {
+      "project": "streamdiff_canvas",
+      "authority": "private origin/main commit ec9bc554d989c87593337be673a2d2ef2ebd69d5 plus approved G12 commits",
+      "reason": "The other-computer project was fetched, reviewed, corrected to photographic prompts, restored after the rejected sizing experiment, and explicitly approved."
+    },
+    {
+      "project": "autopsia",
+      "authority": "approved release-branch overlay at commit 76a6368",
+      "reason": "The AU Deck Y fix, presets, saved graph, and public inclusion were explicitly approved at G11."
+    },
+    {
+      "project": "streamdiff_workflows/06_procedural_warp_map.sentinel",
+      "authority": "clean committed two-node version",
+      "reason": "The dirty local alternative contained four nodes, including three StreamDiff variants, but only one graph link. The user explicitly selected the clean two-node release source."
+    }
+  ],
+  "unresolved": [],
+  "human_gate": {
+    "notes": "User decision: clean 2 node."
+  }
+}
