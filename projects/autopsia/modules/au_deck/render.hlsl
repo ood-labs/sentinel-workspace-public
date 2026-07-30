@@ -47,7 +47,8 @@ float3 drawPad(float2 P, float4 rp, float2 val, float3 ink, float3 dim, float3 a
     c += float3(0.058, 0.060, 0.056) * aa(abs(P.x - (rp.x + rp.z) * 0.5), 1.0);
     c += float3(0.058, 0.060, 0.056) * aa(abs(P.y - (rp.y + rp.w) * 0.5), 1.0);
 
-    // the live value, in pixels — y inverted so up is more
+    // The stored value is already Y-up. Pixel Y grows downward, so value 1 maps
+    // to the top edge and value 0 to the bottom edge.
     float2 vpx = lerp(rp.xy, rp.zw, float2(val.x, 1.0 - val.y));
     float2 dp = P - vpx;
     float dist = length(dp);

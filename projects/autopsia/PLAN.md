@@ -179,9 +179,10 @@ inject one. Click either preview to focus it and the events flow.
   state tree says. Level-testing them makes the last button in the chain win
   forever; edge-detecting them fires everything once then freezes. The look bank
   now hit-tests real click gestures in `au_deck/state.hlsl`.
-- Host `xypad` controls store Y increasing DOWNWARD. Flip it exactly once, at
-  publish time, so "up = more" survives without mirroring the reticle.
-  Draw all pad geometry in pixel space — `follow_panel` changes the aspect.
+- Host `xypad` controls are Y-up on both Canvas and Properties. Publish the host
+  value unchanged; only the value-to-pixel mapping accounts for screen Y growing
+  downward. Draw all pad geometry in pixel space — `follow_panel` changes the
+  aspect.
 
 Camera contract: `au_relief` owns the only navigable camera (internal, Fly,
 `camera_ref` empty). Verified by two visibly different viewpoints with geometry,

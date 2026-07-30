@@ -50,15 +50,13 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
     // point2D parameters arrive as float2 in the shader, not flattened components.
     //
-    // Y IS FLIPPED EXACTLY ONCE, HERE. The host stores pad Y increasing DOWNWARD
-    // (0 at the top of the control rect), but every macro axis is authored so
-    // that "up = more". Publishing 1-y makes the control outputs carry the
-    // semantic value, while the renderer's own 1-y undoes it and lands the
-    // reticle back on the raw pointer position. Flipping in the renderer instead
-    // mirrored the reticle against the mouse.
-    Deck[0] = float4(saturate(pad_field.x),  saturate(1.0 - pad_field.y),
-                     saturate(pad_relief.x), saturate(1.0 - pad_relief.y));
-    Deck[1] = float4(saturate(pad_print.x),  saturate(1.0 - pad_print.y), sel.x, sel.y);
+    // ZERO VALUE FLIPS. Current Sentinel host controls are Y-up on both the
+    // Canvas gesture and Properties surfaces: a pointer at the top writes a high
+    // value. Publish the host value unchanged so the parameter, printed readout,
+    // control output, durable buffer, and downstream consumer all agree.
+    Deck[0] = float4(saturate(pad_field.x),  saturate(pad_field.y),
+                     saturate(pad_relief.x), saturate(pad_relief.y));
+    Deck[1] = float4(saturate(pad_print.x),  saturate(pad_print.y), sel.x, sel.y);
     Deck[2] = sel;
     Deck[3] = float4(0.0, 0.0, 0.0, 0.0);
 }

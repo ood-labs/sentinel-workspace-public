@@ -109,6 +109,12 @@ different pieces rather than nudges:
 
 Plus a look bank: **Impression / Inspection / Register / Sectioned**.
 
+Two project-scoped AU Deck presets provide recoverable starting points:
+**Approved Register** restores the reviewed release balance, while
+**Dense Relief Study** pushes all three macro pads toward a denser,
+more dimensional interpretation. Recalling either preset changes only
+the six macro-pad axes.
+
 ![Deck](autopsia_deck.png)
 
 ## Composite looks
@@ -152,9 +158,10 @@ Both are fixed and commented in source; they will bite any Module that uses view
   tree reports. Level-testing them makes the last button in the chain win forever;
   edge-detecting them fires everything once and then freezes. The look bank hit-tests
   real click gestures instead (`au_deck/state.hlsl`).
-- **Host `xypad` controls store Y increasing downward.** Flip it exactly once, at
-  publish time, so "up = more" survives without mirroring the reticle against the
-  mouse. Draw pad geometry in **pixel** space — `follow_panel` changes the aspect.
+- **Host `xypad` controls are Y-up on both Canvas and Properties.** Publish the
+  host value unchanged; only the value-to-pixel mapping accounts for screen Y
+  growing downward. Draw pad geometry in **pixel** space — `follow_panel` changes
+  the aspect.
 
 A third, cheaper lesson: never `[unroll]` a glyph loop. It replicates the whole font
 table per call site and the shader stops compiling in reasonable time.

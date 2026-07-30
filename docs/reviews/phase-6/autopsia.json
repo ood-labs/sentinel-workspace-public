@@ -1,0 +1,136 @@
+{
+  "project": "projects/autopsia/autopsia.sentinel",
+  "source_commit": "ec9bc554d989c87593337be673a2d2ef2ebd69d5",
+  "local_overlay_commit_or_diff": "ab7166302fb517273d225b6b635dd9dc7b274e6d plus the reviewed AU Deck Y fix and saved project-scoped presets",
+  "promoted_paths": [
+    "projects/autopsia/PLAN.md",
+    "projects/autopsia/README.md",
+    "projects/autopsia/autopsia.sentinel",
+    "projects/autopsia/modules/au_deck/render.hlsl",
+    "projects/autopsia/modules/au_deck/state.hlsl"
+  ],
+  "compile": {
+    "modules": [
+      "au_specimen",
+      "au_proxy",
+      "au_stabilizer",
+      "au_relief",
+      "au_grade",
+      "au_census",
+      "au_stylus",
+      "au_deck"
+    ],
+    "status": "pass; all live modules compiled and healthy, and AU Deck passed offline compile_check after the coordinate fix"
+  },
+  "runtime": {
+    "healthy": true,
+    "health_reasons": [],
+    "frames_before": 79994,
+    "frames_after": 87581,
+    "resolution": "1280x720 Program; AU Deck follow-panel canvas",
+    "format": "BGRA8"
+  },
+  "performance": {
+    "target": {
+      "resolution": "1280x720",
+      "complete_graph_budget": "<= 6.7 ms pipeline wall time in the saved review state",
+      "heavy_node_share": "Features no worse than the documented 3.1 ms historical sample",
+      "responsiveness_check": "AU Deck pad drags and AU Stylus LMB/RMB/drag/wheel/M/X remain immediate and usable"
+    },
+    "baseline_samples": [
+      {
+        "capture": "captures/phase6_autopsia_pre_pad_fix",
+        "pipeline_wall_ms": 4.32
+      }
+    ],
+    "candidate_samples": [
+      {
+        "capture": "captures/phase6_autopsia_pad_fixed",
+        "pipeline_wall_ms": 2.43
+      },
+      {
+        "capture": "captures/phase6_autopsia_approved",
+        "pipeline_wall_ms": 3.214,
+        "features_wall_ms": 2.0393,
+        "fps": 59.0
+      }
+    ],
+    "delta": "Candidate remained below the 6.7 ms saved-state target; the final Features sample improved from the documented 3.1 ms historical sample to 2.0393 ms.",
+    "hotspots": [
+      "au_observe Features remained the dominant CPU wall-time node, with no profiler hotspot reason and bounded settings."
+    ],
+    "interaction_response": "Immediate in the user's hands; all primary AU Stylus gestures passed and every AU Deck pad remained responsive."
+  },
+  "interactions": [
+    {
+      "gesture": "AU Deck FIELD, RELIEF, and PRINT pad drags at four asymmetric points each",
+      "expected_visible_change": "Pointer, host Properties value, reticle, published value, and downstream semantic direction agree",
+      "observed": "Passed. For pointer Y values 0.22, 0.37, 0.63, and 0.78, host/published Y values were 0.78, 0.63, 0.37, and 0.22 respectively; X matched directly. The user visually confirmed the corrected direction."
+    },
+    {
+      "gesture": "AU Stylus LMB, RMB, drag, wheel, M, and X",
+      "expected_visible_change": "Place mass, place incision, paint, resize radius, change mode, and clear",
+      "observed": "Passed through real hands-on viewport input; user reported all actions work."
+    },
+    {
+      "gesture": "Recall project-scoped AU Deck presets",
+      "expected_visible_change": "Both presets apply all six macro-pad axes without skips and Approved Register restores the reviewed state",
+      "observed": "Passed; Dense Relief Study and Approved Register each applied six parameters with skipped=[]."
+    }
+  ],
+  "pad_proof": [
+    {
+      "pad": "FIELD",
+      "pointer_points": [[0.18, 0.22], [0.32, 0.37], [0.68, 0.63], [0.84, 0.78]],
+      "properties_values": [[0.18, 0.78], [0.32, 0.63], [0.68, 0.37], [0.84, 0.22]],
+      "reticle_points": ["visually aligned at all four asymmetric test points"],
+      "published_values": [[0.18, 0.78], [0.32, 0.63], [0.68, 0.37], [0.84, 0.22]],
+      "consumer_effects": ["occupancy and mass scale follow X", "cell density and sharpness follow documented Y semantics"]
+    },
+    {
+      "pad": "RELIEF",
+      "pointer_points": [[0.18, 0.22], [0.32, 0.37], [0.68, 0.63], [0.84, 0.78]],
+      "properties_values": [[0.18, 0.78], [0.32, 0.63], [0.68, 0.37], [0.84, 0.22]],
+      "reticle_points": ["visually aligned at all four asymmetric test points"],
+      "published_values": [[0.18, 0.78], [0.32, 0.63], [0.68, 0.37], [0.84, 0.22]],
+      "consumer_effects": ["relief height follows X", "contour bands and surface grid follow documented Y semantics"]
+    },
+    {
+      "pad": "PRINT",
+      "pointer_points": [[0.18, 0.22], [0.32, 0.37], [0.68, 0.63], [0.84, 0.78]],
+      "properties_values": [[0.18, 0.78], [0.32, 0.63], [0.68, 0.37], [0.84, 0.22]],
+      "reticle_points": ["visually aligned at all four asymmetric test points"],
+      "published_values": [[0.18, 0.78], [0.32, 0.63], [0.68, 0.37], [0.84, 0.22]],
+      "consumer_effects": ["ghost gain and registration slip follow X", "layer mix and halation follow documented Y semantics"]
+    }
+  ],
+  "captures": [
+    {
+      "path": "captures/phase6_autopsia_pre_pad_fix",
+      "content_assertion": "Recoverable pre-fix project state and baseline profile"
+    },
+    {
+      "path": "captures/phase6_autopsia_pad_fixed",
+      "content_assertion": "Corrected AU Deck output and profile"
+    },
+    {
+      "path": "captures/phase6_autopsia_approved",
+      "content_assertion": "User-approved final Program output, saved project, and final profile"
+    }
+  ],
+  "portability": {
+    "absolute_paths": [],
+    "forbidden_artifacts": [],
+    "validator_passed": true
+  },
+  "documentation": {
+    "requirements_current": true,
+    "controls_current": true,
+    "remix_path_current": true
+  },
+  "human_gate": {
+    "gate_id": "G11",
+    "status": "approved",
+    "notes": "User explicitly decided: include in the public release; the project is done."
+  }
+}
