@@ -203,6 +203,15 @@ Audio In is pipeline type `audio` on builds whose live `list_types` response inc
 
 Use `source_mode=Device` for live WASAPI capture or `source_mode=File` for deterministic paced PCM WAV playback. Device flow `Loopback` captures a Windows playback endpoint, while `Microphone` captures a recording endpoint. For a virtual audio cable, route the producing application's playback into the cable and select the corresponding endpoint under the appropriate flow.
 
+For beat, onset, and drum-driven work, use `modules/audio_bands`. It is the source
+of truth for audio reactivity: wire Audio In's `Spectrum` port into it, then drive
+parameters from its control outputs. Use the monotonic `kick_count` / `snare_count` /
+`hat_count` for per-hit edges and `kick` / `snare` / `hat` for 0-1 envelopes; its
+per-lane dB thresholds gate internally, so the counters need no extra signal gate.
+`Threshold Mode` defaults to Fixed. The `pulse2_*` and `cryo_pulse` modules are
+superseded and kept only because saved projects reference them; do not build new
+work on them. Worked example: `projects/cloth_lab/`.
+
 Audio In publishes three typed data ports:
 
 - `PCM`: circular stereo waveform history for oscilloscopes and time-domain processing.
@@ -297,6 +306,7 @@ Start with:
 - `knowledge/scene-system.md`
 - `knowledge/motion-choreography.md`
 - `knowledge/precise-construction.md`
+- `knowledge/gpu-cloth-and-xpbd.md`
 
 Use skills for authoring details:
 

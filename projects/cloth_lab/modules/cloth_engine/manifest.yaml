@@ -1,0 +1,272 @@
+name: "CLOTH ENGINE"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+features: [camera, noise]
+
+viewport:
+  hint: "LMB drag = grab | G grab, X cut | Z/V or Alt+wheel = brush | R reset | RMB+WASD = fly"
+  interactions: [camera, events]
+  input:
+    pointer: [left, wheel]
+    keyboard: [g, x, r, z, v, alt]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: grab, label: "Grab / Cut" }
+    - { key: z, action: brush_smaller, label: "Brush -" }
+    - { key: v, action: brush_larger, label: "Brush +" }
+    - { key: g, action: tool_grab, label: "Grab Tool" }
+    - { key: x, action: tool_cut, label: "Cut Tool" }
+    - { key: r, action: reset, label: "Reset Cloth" }
+
+buffers:
+  - name: cloth_state
+    structured: true
+    element_size: 48
+    element_count: 2048
+    persistent: true
+  - name: cloth_metrics
+    structured: true
+    element_size: 16
+    element_count: 4
+  - name: interact_state
+    structured: true
+    element_size: 64
+    element_count: 1
+    persistent: true
+
+state_buffers:
+  - name: interact_state
+    max_elements: 1
+    schema:
+      - { name: target, type: float3 }
+      - { name: active, type: float }
+      - { name: index, type: float }
+      - { name: depth, type: float }
+      - { name: radius, type: float }
+      - { name: tool, type: float }
+      - { name: resetRequest, type: float }
+      - { name: grabs, type: float }
+      - { name: hover, type: float }
+      - { name: strikeArmed, type: float }
+      - { name: strikeIndex, type: float }
+      - { name: strikeSign, type: float }
+      - { name: lastKick, type: float }
+      - { name: strikeCount, type: float }
+  - name: cloth_state
+    max_elements: 2048
+    schema:
+      - { name: position, type: float3 }
+      - { name: invMass,  type: float }
+      - { name: velocity, type: float3 }
+      - { name: strain,   type: float }
+      - { name: flags,    type: uint }
+      - { name: tearHeat, type: float }
+      - { name: pad,      type: float2 }
+
+parameters:
+  # -- fabric ---------------------------------------------------------------
+  - { name: cloth_width,  display: "Width",  type: float, min: 0.5, max: 12.0, default: 4.8, group: "Fabric" }
+  - { name: cloth_height, display: "Height", type: float, min: 0.5, max: 10.0, default: 2.9, group: "Fabric" }
+  - { name: pin_mode, display: "Pinning", type: enum, options: ["Top Edge", "Two Corners", "Single Corner", "Four Corners", "Free"], default: 0, flags: button_grid, group: "Fabric" }
+  - { name: spawn_plane, display: "Rest Plane", type: enum, options: ["Hanging", "Flat"], default: 0, flags: button_grid, group: "Fabric" }
+  - { name: spawn_height, display: "Flat Height", type: float, min: -4.0, max: 4.0, default: 0.35, group: "Fabric" }
+  - { name: spawn_wrinkle, display: "Spawn Wrinkle", type: float, min: 0.0, max: 0.5, default: 0.06, group: "Fabric" }
+  # Scales every rest length without moving the anchors. Above 1 the sheet has
+  # MORE material than its frame, so it goes slack and folds; below 1 it wants to
+  # be smaller than its frame, so it pulls itself drum-taut. Independent of
+  # stiffness: this changes what the cloth wants, not how hard it insists.
+  - { name: rest_scale, display: "Slack / Tension", type: float, min: 0.2, max: 4.0, default: 1.0, group: "Fabric" }
+  - { name: reset_cloth, display: "Reset (hold)", type: bool, default: false, group: "Fabric" }
+
+  # -- solver ---------------------------------------------------------------
+  - { name: substeps, display: "Substeps", type: int, min: 2, max: 40, default: 16, group: "Solver" }
+  - { name: sweeps, display: "Sweeps / Substep", type: int, min: 1, max: 8, default: 3, group: "Solver" }
+  # 1.0 = inextensible fabric, 0.0 = rubber band. The soft end reaches compliance
+  # 1e-1, which at 48 applications per cook corrects well under 1% of the error
+  # per cook, so the sheet stretches essentially freely. Default 0.92 is unchanged
+  # in meaning: 10^-7.44 vs the old 10^-7.6 is still effectively rigid.
+  - { name: stretch_stiffness, display: "Stretch", type: float, min: 0.0, max: 1.0, default: 0.92, group: "Solver" }
+  - { name: shear_stiffness,   display: "Shear",   type: float, min: 0.0, max: 1.0, default: 0.35, group: "Solver" }
+  # Low by design. Bending is the one constraint that must stay partial: at 0.3+
+  # it irons the sheet into a rigid plane. 0.0 = silk, 1.0 = card stock.
+  - { name: bend_stiffness,    display: "Bend",    type: float, min: 0.0, max: 1.0, default: 0.08, group: "Solver" }
+  - { name: long_range, display: "Long-Range Attach", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Solver" }
+  # THE hard ceiling on how far the sheet can travel from its anchors. At 0.01 no
+  # vertex may exceed its rest distance by more than 1%, which no amount of soft
+  # stretch stiffness can override. Raise it (or set Long-Range Attach to 0) to let
+  # the cloth run away. 4.0 = five times rest distance.
+  - { name: long_range_slack, display: "Attach Slack", type: float, min: 0.0, max: 4.0, default: 0.01, group: "Solver" }
+  - { name: damping,    display: "Damping",    type: float, min: 0.0, max: 12.0, default: 0.9, group: "Solver" }
+  - { name: time_scale, display: "Time Scale", type: float, min: 0.05, max: 2.0, default: 1.0, group: "Solver" }
+
+  # -- forces ---------------------------------------------------------------
+  - { name: gravity, display: "Gravity", type: float, min: -20.0, max: 30.0, default: 9.8, group: "Forces" }
+  - { name: wind_speed,     display: "Wind Speed",  type: float, min: 0.0, max: 25.0, default: 7.0, group: "Wind" }
+  - { name: wind_azimuth,   display: "Azimuth",     type: float, min: 0.0, max: 360.0, default: 205.0, group: "Wind" }
+  - { name: wind_elevation, display: "Elevation",   type: float, min: -60.0, max: 60.0, default: 8.0, group: "Wind" }
+  - { name: gust_amount, display: "Gust Depth", type: float, min: 0.0, max: 2.0, default: 0.7, group: "Wind" }
+  - { name: gust_rate,   display: "Gust Rate",  type: float, min: 0.0, max: 4.0, default: 0.55, group: "Wind" }
+  - { name: gust_scale,  display: "Gust Scale", type: float, min: 0.05, max: 2.5, default: 0.85, group: "Wind" }
+  - { name: turbulence,  display: "Turbulence", type: float, min: 0.0, max: 2.0, default: 0.45, group: "Wind" }
+  # Calibrated against gravity: aero acceleration is roughly aero_drag * v_n^2,
+  # so at wind 7 a value of 0.35 gives ~17 against gravity's 9.8.
+  - { name: aero_drag, display: "Aero Pressure", type: float, min: 0.0, max: 2.0, default: 0.35, group: "Wind" }
+  - { name: aero_lift, display: "Aero Flutter",  type: float, min: 0.0, max: 1.0, default: 0.10, group: "Wind" }
+
+  # -- interaction ----------------------------------------------------------
+  - { name: pick_radius, display: "Pick Radius", type: float, min: 0.01, max: 1.0, default: 0.22, group: "Interaction" }
+  - { name: grab_strength, display: "Grab Strength", type: float, min: 0.05, max: 1.0, default: 0.85, group: "Interaction" }
+
+  # -- audio strike ---------------------------------------------------------
+  - { name: strike_enabled, display: "Kick Strike", type: bool, default: true, group: "Strike" }
+  # Driven by an expression from pulse2_analyzer/control_outputs/kick_count.
+  # A monotonic COUNTER, not an envelope: it gives an unambiguous edge with no
+  # threshold of our own and cannot re-fire while the envelope decays.
+  - { name: kick_count_in, display: "Kick Count In", type: float, min: 0.0, max: 100000000.0, default: 0.0, group: "Strike" }
+  - { name: strike_gain,   display: "Strike Force",  type: float, min: 0.0, max: 40.0, default: 9.0, group: "Strike" }
+  - { name: strike_radius, display: "Strike Radius", type: float, min: 0.02, max: 2.0, default: 0.42, group: "Strike" }
+
+  # -- rupture --------------------------------------------------------------
+  - { name: tear_enabled, display: "Tearing", type: bool, default: true, group: "Rupture" }
+  # 35% stretch. Normal load measures ~1%, so nothing tears without a grab,
+  # extreme wind, or the cut tool.
+  - { name: tear_threshold, display: "Tear Strain", type: float, min: 0.02, max: 12.0, default: 0.35, group: "Rupture" }
+
+  # -- colliders ------------------------------------------------------------
+  - { name: collider_count, display: "Spheres", type: int, min: 0, max: 3, default: 1, group: "Colliders" }
+  - { name: cloth_thickness, display: "Thickness", type: float, min: 0.0, max: 0.4, default: 0.045, group: "Colliders" }
+  # Fraction of tangential sliding removed per substep. Above ~0.5 the cloth
+  # effectively sticks and has to stretch to conform to a collider instead of
+  # sliding across it.
+  - { name: friction, display: "Friction", type: float, min: 0.0, max: 1.0, default: 0.30, group: "Colliders" }
+  - { name: ground_enabled, display: "Ground Plane", type: bool, default: false, group: "Colliders" }
+  - { name: ground_y, display: "Ground Height", type: float, min: -8.0, max: 2.0, default: -3.4, group: "Colliders" }
+  - { name: sphere_a_pos, display: "Sphere A", type: vec3, min: [-8, -8, -8], max: [8, 8, 8], default: [0.0, -1.55, 0.55], group: "Colliders/A" }
+  - { name: sphere_a_radius, display: "Radius A", type: float, min: 0.05, max: 3.0, default: 0.85, group: "Colliders/A" }
+  - { name: sphere_b_pos, display: "Sphere B", type: vec3, min: [-8, -8, -8], max: [8, 8, 8], default: [-1.6, -2.3, 0.4], group: "Colliders/B" }
+  - { name: sphere_b_radius, display: "Radius B", type: float, min: 0.05, max: 3.0, default: 0.6, group: "Colliders/B" }
+  - { name: sphere_c_pos, display: "Sphere C", type: vec3, min: [-8, -8, -8], max: [8, 8, 8], default: [1.7, -2.1, 0.35], group: "Colliders/C" }
+  - { name: sphere_c_radius, display: "Radius C", type: float, min: 0.05, max: 3.0, default: 0.7, group: "Colliders/C" }
+
+  # -- material -------------------------------------------------------------
+  - { name: base_ink,     display: "Fabric Ink",   type: color, default: [0.86, 0.87, 0.85], group: "Material" }
+  - { name: accent_color, display: "Stress Accent", type: color, default: [1.0, 0.42, 0.11], group: "Material" }
+  # Measured: a settled top-edge hang in wind peaks near 2.6% strain. At a range
+  # of 0.025 that saturated the accent and washed the whole sheet warm, so the
+  # range sits well ABOVE normal load - only a grab, a collider or an imminent
+  # tear should light it up.
+  - { name: strain_range,  display: "Strain Range",  type: float, min: 0.01, max: 8.0, default: 0.09, group: "Material" }
+  - { name: strain_accent, display: "Strain Accent", type: float, min: 0.0, max: 1.0, default: 0.85, group: "Material" }
+
+  # -- lighting -------------------------------------------------------------
+  - { name: ambient_level,  display: "Ambient",  type: float, min: 0.0, max: 1.0, default: 0.06, group: "Lighting" }
+  - { name: key_intensity,  display: "Key",      type: float, min: 0.0, max: 4.0, default: 1.85, group: "Lighting" }
+  - { name: fill_intensity, display: "Fill",     type: float, min: 0.0, max: 2.0, default: 0.22, group: "Lighting" }
+  - { name: rim_intensity,  display: "Warm Rim", type: float, min: 0.0, max: 4.0, default: 0.70, group: "Lighting" }
+  - { name: specular_sheen, display: "Sheen",   type: float, min: 0.0, max: 2.0, default: 0.35, group: "Lighting" }
+  - { name: crease_gain,    display: "Crease Depth", type: float, min: 0.0, max: 20.0, default: 6.0, group: "Lighting" }
+  - { name: weave_lines,   display: "Weave Lines",   type: float, min: 0.0, max: 1.0, default: 0.18, group: "Instrument" }
+  - { name: weave_density, display: "Weave Density", type: float, min: 4.0, max: 128.0, default: 24.0, group: "Instrument" }
+  - { name: vignette_amount, display: "Vignette", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Instrument" }
+  - { name: exposure,       display: "Exposure", type: float, min: 0.25, max: 3.0, default: 1.15, group: "Lighting" }
+
+passes:
+  # Must run BEFORE solve: same-cook producer -> consumer is the only pass
+  # handoff direction the module system orders explicitly.
+  - name: interact
+    shader: interact.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1024
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:cloth_state" }
+    output: "buffer:interact_state"
+
+  - name: solve
+    shader: solve.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1024
+    thread_group_y: 1
+    # cloth_state is NOT an input here on purpose: the shader reads and writes
+    # the one UAV. See the header comment in solve.hlsl.
+    inputs:
+      - { slot: 0, source: "buffer:interact_state" }
+    output: "buffer:cloth_state"
+
+  - name: measure
+    shader: measure.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1024
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:cloth_state" }
+    output: "buffer:cloth_metrics"
+
+  - name: mesh
+    shader: mesh.hlsl
+    target: draw
+    # 6 backdrop + (63*3)*(31*3) subdivided cloth quads * 6
+    #             + 3 spheres * 24*12 quads * 6
+    vertex_count: 110652
+    topology: trianglelist
+    depth: true
+    depth_write: true
+    cull: none
+    vs_entry: VSMain
+    ps_entry: PSMain
+    inputs:
+      - { slot: 0, source: "buffer:cloth_state" }
+      - { slot: 1, source: "buffer:interact_state" }
+    output: output
+
+data_outputs:
+  - name: "Cloth Points"
+    buffer: cloth_state
+    schema:
+      - { name: position, type: float3 }
+      - { name: invMass,  type: float }
+      - { name: velocity, type: float3 }
+      - { name: strain,   type: float }
+      - { name: flags,    type: uint }
+      - { name: tearHeat, type: float }
+      - { name: pad,      type: float2 }
+  - name: "Interaction"
+    buffer: interact_state
+    schema:
+      - { name: target, type: float3 }
+      - { name: active, type: float }
+      - { name: index, type: float }
+      - { name: depth, type: float }
+      - { name: radius, type: float }
+      - { name: tool, type: float }
+      - { name: resetRequest, type: float }
+      - { name: grabs, type: float }
+      - { name: hover, type: float }
+      - { name: strikeArmed, type: float }
+      - { name: strikeIndex, type: float }
+      - { name: strikeSign, type: float }
+      - { name: lastKick, type: float }
+      - { name: strikeCount, type: float }
+  - name: "Cloth Metrics"
+    buffer: cloth_metrics
+    schema:
+      - { name: mean_strain, type: float }
+      - { name: max_strain,  type: float }
+      - { name: mean_speed,  type: float }
+      - { name: max_speed,   type: float }
+
+control_outputs:
+  - { name: mean_strain, buffer: cloth_metrics, element: 0, field_offset: 0,  description: "Mean local strain" }
+  - { name: max_strain,  buffer: cloth_metrics, element: 0, field_offset: 4,  description: "Peak local strain" }
+  - { name: mean_speed,  buffer: cloth_metrics, element: 0, field_offset: 8,  description: "Mean particle speed" }
+  - { name: max_speed,   buffer: cloth_metrics, element: 0, field_offset: 12, description: "Peak particle speed" }
+  - { name: kinetic,     buffer: cloth_metrics, element: 1, field_offset: 0,  description: "Mean kinetic energy" }
+  - { name: torn_edges,  buffer: cloth_metrics, element: 1, field_offset: 4,  description: "Torn edge count" }
+  - { name: min_clearance, buffer: cloth_metrics, element: 2, field_offset: 0, description: "Min signed distance to a collider surface; negative means penetration" }
+
+outputs:
+  - { name: "Cloth", pass: mesh }

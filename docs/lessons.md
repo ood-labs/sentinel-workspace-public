@@ -1,11 +1,107 @@
 ---
 type: lessons
-updated: 2026-07-28
+updated: 2026-07-29
 ---
 
 # Lessons
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
+
+## 2026-07-29 - Structured buffers do not ping-pong; same-pass SRV+UAV reads zeros
+
+**Symptoms**: A GPU simulation produced a completely static result. Mean particle velocity sat at exactly `gravity / framerate` forever - one frame of acceleration from rest. Compile succeeded, health was green, no warning anywhere.
+
+**Cause**: The solve pass declared `cloth_state` as both an `inputs:` entry (SRV) and `output: "buffer:cloth_state"` (UAV). D3D11 cannot bind one resource both ways at once, so the runtime silently binds a null SRV and the shader reads zeros - which the solver read as "uninitialised" and reset from rest every cook. Only *texture* buffers double-buffer and flip; the ping-pong docs do not generalise to structured buffers. `modules/rupture_fabric/manifest.yaml` has the same pattern and likely never simulated.
+
+**Fix**: Remove the SRV input and read/write the single `RWStructuredBuffer`. Safe whenever all threads load into groupshared and sync before the first store. `modules/cloth_engine/solve.hlsl:26-40`.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-29
+
+## 2026-07-29 - XPBD compliance must be calibrated against substeps x sweeps
+
+**Symptoms**: Bending appeared to do nothing (creases locked permanently, sheet stayed knotted). After "fixing" the range, bending ironed the sheet into a rigid plane instead.
+
+**Cause**: `alphaTilde = compliance / h^2` was reasoned about one application at a time, but a constraint runs `substeps * sweeps` times per cook - 48 at the defaults. A per-application correction of 1.6% compounds to ~50% per cook; 0.17% compounds to ~7%. The original bend range gave ~2% of the error removed per cook.
+
+**Fix**: Calibrate ranges against the cumulative per-cook effect. Constraints that should be fully enforced (stretch) want the rigid end; constraints that must stay partial (bending) need the soft end with a deliberately low default. Table in `modules/_shared/xpbd/xpbd.hlsli`.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-29
+
+## 2026-07-29 - Distance-based bending is satisfied by an inverted fold
+
+**Symptoms**: Sharp creases locked and never relaxed. The sheet accumulated permanent knots that no amount of wind or stiffness would open.
+
+**Cause**: Bending was a distance constraint between 2-away vertices. Once a crease folds back through itself, the rest length still holds, so the constraint reports zero error and nothing flattens it.
+
+**Fix**: Constrain the curvature vector - the centre vertex's deviation from the midpoint of its neighbours - which has a single preferred flat state. Triplets need THREE colours on a grid, not two, because centres 1 or 2 apart share a vertex. `xpbd_curvature_delta()`.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-29
+
+## 2026-07-29 - Per-substep effects compound: friction glued cloth to colliders
+
+**Symptoms**: Cloth draped over a sphere settled at 18% peak tensile strain instead of sliding across it. Frictionless measured 1.8%.
+
+**Cause**: Friction ran in every interleaved collision pass, and each call re-measured the tangential motion of the WHOLE substep and shaved it again. The compounding effectively glued the cloth, so it stretched to conform.
+
+**Fix**: Apply friction exactly once per substep, in the final collision pass only; interleaved passes project position without friction. Dropped peak strain to 0.78%. Same family as the compliance error - anything inside the substep loop needs its cumulative effect checked.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-29
+
+## 2026-07-29 - A strain metric lies if it counts compression or severed edges
+
+**Symptoms**: A healthy drape reported "56% strain" and washed its stress accent warm across the whole sheet. After tearing, peak strain read 1.77 and the accent pinned along every torn boundary permanently.
+
+**Cause**: Two bugs in one metric. It used `abs()`, so compression counted as strain - and fabric buckles constantly, squeezing edges to a fraction of rest length. And it included severed edges, whose endpoints separate freely, so their "strain" grows without bound.
+
+**Fix**: Measure tensile strain only (no `abs()`, clamp at zero) and skip edges whose broken bit is set. Only stretch indicates tension, and only stretch should tear.
+
+**Frequency**: one-time
+
+**Discovered**: 2026-07-29
+
+## 2026-07-29 - A nearest-anchor constraint creates a phantom tether at the tie line
+
+**Symptoms**: A four-corner-pinned sheet showed a hard fold at top centre that looked and behaved exactly like an attachment point, though nothing was attached there. Only appeared when a tension control went below 1.
+
+**Cause**: Two compounding mistakes. A rest-length scale below 1 was multiplied into the long-range attachment cap, converting a one-sided over-stretch guard into an active inward pull. And the constraint used only the single NEAREST anchor, selected with `if (d < bestDist)` - on the centre line the left and right corners are equidistant, so the tie-break flipped discontinuously and each half was pulled toward a different corner.
+
+**Fix**: Clamp the cap scale to `max(scale, 1.0)` so tension can never tighten it, and apply the inequality against EVERY anchor rather than the nearest (each is an independent valid bound, and applying all is continuous). Verified by prediction: spanning a fixed frame at scale k requires mean strain `1/k - 1`; at 0.629 predicted 0.590, measured 0.591 with `mean ~= max`. `solveLongRange()`.
+
+**Frequency**: one-time
+
+**Discovered**: 2026-07-29
+
+## 2026-07-29 - The drag gesture carries no button identity
+
+**Symptoms**: Holding RMB to fly the camera also grabbed and dragged the cloth.
+
+**Cause**: Handle acquisition triggered on the drag GESTURE (`type 5, code 3`), which does not identify which button is held, so an RMB camera drag is indistinguishable from a left drag.
+
+**Fix**: Acquire only on a raw left-button press edge (`type 2, code 0, phase 1`), which does carry `code`. Keep gesture-end as a safety release. Related: do not read the wheel unmodified either - the host camera consumes it for dolly and fly speed, so require a modifier and offer a key as a guaranteed alternative. `modules/cloth_engine/interact.hlsl`.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-29
+
+## 2026-07-29 - compile_check is offline; shader-only edits need force_reload
+
+**Symptoms**: A shader fix appeared to have no effect. Measurements taken after a clean `compile_check` matched pre-fix behaviour exactly, which nearly led to reverting a correct change.
+
+**Cause**: `compile_check` compiles the directory on disk and says nothing about the running node. The file watcher reacts to MANIFEST saves, so editing only a `.hlsl` does not hot-reload a live pipeline - the GPU keeps running old code.
+
+**Fix**: Call `force_reload` after any shader-only edit, before reading control outputs or capturing. Treat `compile_check` as a syntax gate only. Also `force_reload` preserves live parameter values by name, so a changed manifest `default:` does NOT apply to an existing node - set it explicitly when verifying a recalibration.
+
+**Frequency**: always
+
+**Discovered**: 2026-07-29
 
 ## 2026-07-28 - Packed SDF records still cost per sample unless the shader exits
 

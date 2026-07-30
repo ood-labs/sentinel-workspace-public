@@ -54,6 +54,8 @@ projects/*
 !projects/showcase_gallery/
 !projects/streamdiff_workflows/
 !projects/streamdiff_collage/
+!projects/streamdiff_brush_canvas/
+!projects/cloth_lab/
 !projects/procedural_building_system/
 !projects/cryogram/
 !projects/autopsia/

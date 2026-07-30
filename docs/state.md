@@ -1,11 +1,34 @@
 ---
 type: state
-updated: 2026-07-28
+updated: 2026-07-29
 ---
 
 # Workspace State
 
 ## Current focus
+
+**Cloth Lab shipped 2026-07-29 and is approved.** `modules/cloth_engine` is a
+real-time XPBD cloth engine: one dispatch, 1024 threads, 2048 particles resident in
+groupshared, every substep and graph-coloured constraint sweep barrier-separated
+inside that single dispatch. Sign-aware curvature bending, long-range attachment,
+collider projection with friction, tearing, viewport grab/cut, a Catmull-Rom
+bicubic render surface, and kick-driven strike impulses from `audio_bands`.
+0.56 ms GPU; 0.78% peak tensile strain on a sphere drape with zero penetration.
+Packaged as `projects/cloth_lab/` with a README and a `Kick Strike Membrane`
+preset.
+
+Three reusable headers came out of it: `modules/_shared/xpbd/`,
+`modules/_shared/surface/bicubic.hlsli`, `modules/_shared/viewport/pick3d.hlsli`.
+Engineering notes in `knowledge/gpu-cloth-and-xpbd.md`.
+
+**`modules/audio_bands` is now the documented source of truth for audio
+reactivity.** Its `Threshold Mode` defaults to Fixed. The `pulse2_*` and
+`cryo_pulse` modules are superseded and must not be built on; they are retained
+only because saved projects reference them (`streamdiff_brush_canvas` needs
+`pulse2_hits` and `bands_demo`). Stated at the head of
+`knowledge/audio-reactivity.md` and summarised in all three entry manuals.
+Next on cloth: snare behaviour as a distinct gesture from the kick's poke.
+
 
 Strata maintenance completed on 2026-07-28: `blob_render` now uses the native
 internal Fly camera and exposes Draft, Performance, Fidelity, and fully tunable
@@ -157,6 +180,16 @@ Settled during Phase 2, kept here as the record:
   `mu_tempo` explicitly, so it is authorization by analogy.
 
 ## Last devlog
+
+`docs/devlogs/2026-07-29-cloth-lab-xpbd-engine.md` - complete, **approved**. The
+Cloth Lab engine, its three extracted shared headers, the `audio_bands` source-of-
+truth documentation, and the packaged example. User confirmed the look and verified
+the viewport grab by hand (injected input cannot fire Module viewport events, so
+that gate needed a human).
+
+`docs/devlogs/2026-07-29-streamdiff-laser-etch-checkpoint.md` - in-progress,
+approval pending. A mid-work checkpoint from the prior session, deliberately left
+open.
 
 `docs/devlogs/2026-07-28-strata-blob-render-refresh.md` - complete, approval
 pending. Strata's blob renderer camera, SDF quality controls, and measured

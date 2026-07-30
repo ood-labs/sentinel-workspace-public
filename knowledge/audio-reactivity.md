@@ -2,6 +2,77 @@
 
 Pipeline type: `audio`
 
+## Start Here: `modules/audio_bands`
+
+**For any beat, onset, or drum-driven work, use `modules/audio_bands`. It is the
+source of truth and the only detector to build on.**
+
+The workspace contains several older audio experiments — `pulse2_analyzer`,
+`pulse2_console`, `pulse2_hits`, `pulse2_pads`, `pulse2_ringproof`, `cryo_pulse`,
+`cryo_pulse_baseline`, `bands_demo`. They are **superseded**. Do not wire new work
+to them and do not treat them as references. `pulse2_analyzer` in particular looks
+canonical (tempo PLL, 15+ control outputs) and is easy to reach for by mistake.
+They are kept only because saved projects still reference them.
+
+Only use something else if the request is genuinely outside `audio_bands`' spec, or
+if a newer module has replaced it.
+
+### The standard chain
+
+```text
+audio (Audio In)  --Spectrum-->  audio_bands  --control outputs / expressions-->  consumers
+```
+
+`audio_bands` consumes the **Spectrum** port (not Mel Bands). Wire it with the pin
+name:
+
+```text
+sentinel_graph action=add_link from_entity=<audio> from_slot="Spectrum" \
+                               to_entity=<bands>  to_slot="Spectrum"
+```
+
+### What it publishes
+
+| Output | Use |
+| --- | --- |
+| `kick_count`, `snare_count`, `hat_count` | **Monotonic hit counters.** The correct signal for per-hit EDGES. |
+| `kick`, `snare`, `hat` | 0..1 envelopes, for continuous modulation. |
+| `kick_level`, `snare_level`, `hat_level` | Absolute band level in dB. Answers "is there anything in this band at all". |
+| `kick_peak`, `snare_peak`, `hat_peak` | Recent peak flux in dB — the range a threshold must live in for this material. |
+| `kick_thresh`, `snare_thresh`, `hat_thresh` | Read-only mirrors of the state-buffer thresholds. |
+
+**Prefer a counter over an envelope for discrete events.** A counter gives an
+unambiguous edge with no threshold of your own to tune, and cannot re-fire while an
+envelope decays. Latch the last value seen and act on the change. A large counter
+jump (which happens when a driver is swapped or a project loads) should fire once,
+not burst — adopt the new value without acting when the stored cursor is fresh.
+
+The per-lane dB thresholds gate internally, so **the counters are already gated**.
+No separate `signal_present` check is needed, unlike the older `pulse2` chain.
+
+### Threshold Mode
+
+`adapt_mode` defaults to **Fixed**, deliberately. Fixed measures each threshold
+against a constant reference (`fixed_ref_db`), so a threshold is an absolute level
+you set once and trust, and a quiet passage simply cannot reach it. Adaptive
+measures against the band's own rolling level: it is immune to input gain, but the
+reference drifts with the music, so a threshold set during a loud section quietly
+changes meaning later and a dying track starts triggering on nothing.
+
+Use Adaptive only when the source gain varies unpredictably and immunity to input
+level matters more than a stable threshold.
+
+Its Canvas panel is the tuning surface — a spectrogram with per-lane trace strips
+and draggable threshold handles. Tune there, not by guessing numbers.
+
+### Worked example
+
+`projects/cloth_lab/` drives a physics simulation from `kick_count` by expression.
+See its README for the counter-edge pattern and why an impulse rather than a force.
+
+---
+
+
 Audio In captures a Windows playback endpoint, microphone endpoint, or paced PCM WAV file. It publishes timestamped PCM, Spectrum, and Mel Bands data for GPU Module consumers, plus scalar `level` and `peak` control outputs.
 
 Published builds at or below 0.5.48 may omit Audio In. Call `sentinel_pipeline action=list_types` and require an `audio` entry before using this page as an available-build contract.
