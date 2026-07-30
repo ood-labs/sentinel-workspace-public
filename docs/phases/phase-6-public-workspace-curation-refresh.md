@@ -2,9 +2,9 @@
 type: phase
 phase_number: "6"
 title: "Public Workspace Curation And Release Refresh"
-status: planned
+status: complete
 approval: pending
-summary: "Recurate the public project lineup, refresh approved projects from a clean private source, establish Interaction Lab UI and native-camera references as the default authoring foundations, and stop for operator review at every named creative gate before final publication."
+summary: "Curated public-workspace release candidate assembled and clean-checkout validated; final public push remains pending at Human Gate G13."
 ---
 
 # Phase 6 - Public Workspace Curation And Release Refresh

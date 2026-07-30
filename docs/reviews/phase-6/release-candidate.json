@@ -1,0 +1,71 @@
+{
+  "phase": "6N",
+  "content_commit": "e6464ab1784ac51a0cedacafd3c8b4b51f2d54c0",
+  "binding": "The clean-checkout audit artifacts record the exact commit under test; use git rev-parse HEAD in the candidate checkout.",
+  "project_set": {
+    "configured_directories": 13,
+    "distributable_projects": [
+      "autopsia",
+      "camera_reference",
+      "cloth_lab",
+      "face_collage",
+      "industrial_lattice",
+      "interaction_lab",
+      "living_room_sdf",
+      "scientific_organism",
+      "strata",
+      "streamdiff_canvas",
+      "streamdiff_workflows",
+      "touchdesigner_new_project"
+    ],
+    "review_only_projects": [
+      "showcase_gallery"
+    ],
+    "missing": [],
+    "unexpected": []
+  },
+  "workspace_surface": {
+    "knowledge_documents": 20,
+    "agent_skill_files": 32,
+    "claude_skill_files": 32,
+    "entry_manuals_identical": true,
+    "minimum_sentinel_version": "0.5.49",
+    "proof_host_version": "0.5.51"
+  },
+  "validation": {
+    "official_examples": {
+      "passed": 13,
+      "failed": 0
+    },
+    "release_audit": {
+      "exact_project_set": true,
+      "manuals_identical": true,
+      "skills_mirrored": true,
+      "secret_findings": 0,
+      "broken_entry_links": 0,
+      "files_over_50_mib": 0,
+      "asset_findings": 0,
+      "version_compatible": true
+    },
+    "clean_checkout": {
+      "working_tree_clean": true,
+      "official_validator_passed": true,
+      "release_audit_passed": true,
+      "exact_set_plan_passed": true
+    }
+  },
+  "assets": {
+    "cleared_input_dependencies": [
+      "projects/streamdiff_workflows/assets/dancer_vert.mp4",
+      "projects/touchdesigner_new_project/images/jellybeans.png"
+    ],
+    "living_room_external_media_dependencies": 0,
+    "unresolved_rights": []
+  },
+  "publication": {
+    "remote_baseline": "e308c8c362e1d46de16bf4ca02707066912ce0ec",
+    "push_authorized": false,
+    "gate": "G13",
+    "status": "pending"
+  }
+}

@@ -7,6 +7,27 @@ updated: 2026-07-29
 
 Gotchas worth knowing before re-hitting the same wall. Newest at top.
 
+## 2026-07-30 - A curated working tree is not a reproducible public seed
+
+**Symptoms**: The live projects and documentation looked finished, but an agent
+placed in the release worktree would have seen staged deletions, uncommitted
+manual/tooling changes, untracked generated files, and extra project directories
+that a fresh public clone would not necessarily contain.
+
+**Cause**: Creative approval proves project behavior, not repository identity.
+The release worktree accumulated valid assembly changes and unrelated local work,
+so its filesystem could not stand in for the commit that would actually ship.
+
+**Fix**: Commit the curated assembly with explicit staging, preserve unrelated
+work unstaged, create a separate detached worktree at the exact candidate commit,
+and rerun exact-set, portability, secret, link, size, asset-license, and version
+audits there. Treat an empty `git status --short` in that exact-commit checkout
+as the agent-experience proof.
+
+**Frequency**: recurring
+
+**Discovered**: 2026-07-30
+
 ## 2026-07-29 - Structured buffers do not ping-pong; same-pass SRV+UAV reads zeros
 
 **Symptoms**: A GPU simulation produced a completely static result. Mean particle velocity sat at exactly `gravity / framerate` forever - one frame of acceleration from rest. Compile succeeded, health was green, no warning anywhere.

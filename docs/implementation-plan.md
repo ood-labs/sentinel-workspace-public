@@ -13,7 +13,7 @@ This plan governs work in the user-writable Sentinel workspace and its curated p
 | 3 | Interaction Lab v2 (Instrument-Grade UI Overhaul) | In progress; 3A-3F built, awaiting the operator hands-on gesture pass | [Phase 3](phases/phase-3-interaction-lab-v2.md) |
 | 4 | Data Scope (reusable scrolling strip-chart kit) | Planned | [Phase 4](phases/phase-4-data-scope.md) |
 | 5 | Official Example UI Port (v1 `sui_*` to sui3) | Complete; approval pending | [Phase 5](phases/phase-5-example-ui-port.md) |
-| 6 | Public Workspace Curation And Release Refresh | Planned; human review required at every creative gate | [Phase 6](phases/phase-6-public-workspace-curation-refresh.md) |
+| 6 | Public Workspace Curation And Release Refresh | Complete locally; clean release candidate assembled, G13 push approval pending | [Phase 6](phases/phase-6-public-workspace-curation-refresh.md) |
 
 ## Phase 1 - Official Examples Modernization
 
