@@ -1,0 +1,139 @@
+name: "Paint Canvas"
+version: "1.2"
+mode: generator
+resolution: [960, 720]
+time_dependent: true
+
+panel:
+  mode: canvas
+  output: UI
+  resolution: follow_panel
+
+inputs:
+  - { name: "Generated Subject", slot: 0, required: true }
+  - { name: "Subject Matte", slot: 1, required: true }
+  - { name: "Subject Depth", slot: 2, required: true }
+
+parameters:
+  - { name: brush_size, display: "Brush Size", type: float, min: 0.025, max: 0.50, default: 0.18, group: "Brush" }
+  - { name: brush_aspect, display: "Brush Aspect", type: float, min: 0.25, max: 4.0, default: 1.0, group: "Brush" }
+  - { name: subject_anchor, display: "Subject Anchor", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.5, 0.5], group: "Brush" }
+  - { name: opacity, display: "Opacity", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Brush" }
+  - { name: rotation, display: "Rotation", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Brush" }
+  - { name: spacing, display: "Spacing", type: float, min: 0.05, max: 1.5, default: 0.34, group: "Stroke" }
+  - { name: feather, display: "Edge Feather", type: float, min: 0.0, max: 1.0, default: 0.08, group: "Stroke" }
+  - { name: align_to_stroke, display: "Align To Stroke", type: bool, default: true, group: "Stroke" }
+  - { name: depth_source_mix, display: "Source Depth Mix", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Depth Paint" }
+  - { name: depth_value, display: "Solid Depth", type: float, min: 0.0, max: 1.0, default: 0.65, group: "Depth Paint" }
+  - { name: depth_gain, display: "Depth Gain", type: float, min: 0.0, max: 4.0, default: 1.0, group: "Depth Paint" }
+  - { name: depth_offset, display: "Depth Offset", type: float, min: -1.0, max: 1.0, default: 0.0, group: "Depth Paint" }
+  - { name: depth_blend_mode, display: "Depth Blend", type: enum, options: [Over, Max, Add], flags: button_grid, default: 0, group: "Depth Paint", description: "Over follows paint opacity and stays responsive on overlapping strokes. Max only raises the existing relief. Add builds height cumulatively." }
+  - { name: depth_fade, display: "Depth Fade", type: float, min: 0.0, max: 8.0, default: 0.0, group: "Depth Paint" }
+  - { name: feedback_enabled, display: "Feedback", type: bool, default: false, flags: button, group: "Feedback" }
+  - { name: feedback_zoom_speed, display: "Zoom Speed", type: float, min: -0.5, max: 0.5, default: 0.0, group: "Feedback" }
+  - { name: feedback_rotation_speed, display: "Rotation Speed", type: float, min: -180.0, max: 180.0, default: 0.0, group: "Feedback" }
+  - { name: feedback_pan, display: "Drift", type: point2D, min: [-0.2, -0.2], max: [0.2, 0.2], default: [0.0, 0.0], group: "Feedback" }
+  - { name: feedback_control_gain, display: "Control Gain", type: float, min: 0.25, max: 10.0, default: 2.0, group: "Feedback" }
+  - { name: feedback_pivot, display: "Pivot", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.5, 0.5], group: "Feedback" }
+  - { name: feedback_fade, display: "Color / Mask Fade", type: float, min: 0.0, max: 8.0, default: 0.0, group: "Feedback" }
+  - { name: feedback_edge_mode, display: "Edges", type: enum, options: [Background, Clamp, Repeat, Mirror], flags: button_grid, default: 0, group: "Feedback" }
+  - { name: background_hue, display: "Background Hue", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Canvas" }
+  - { name: background_saturation, display: "Background Saturation", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Canvas" }
+  - { name: background_value, display: "Background Value", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Canvas" }
+  - { name: clear_canvas, display: "Clear Canvas", type: bool, default: false, group: "Canvas" }
+
+viewport:
+  hint: "Left click/drag paints. Middle-drag pans. Wheel zooms. Alt+wheel resizes the brush. F fits. X clears."
+  interactions: [events]
+  input:
+    pointer: [left, middle, wheel]
+    keyboard: [f, x]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: stamp, label: "Stamp Current Subject" }
+    - { gesture: left_drag, action: paint, label: "Paint Evolving Subject" }
+    - { gesture: middle_drag, action: pan_canvas, label: "Pan Canvas" }
+    - { gesture: wheel, action: zoom_canvas, label: "Zoom Canvas" }
+    - { key: f, action: fit_canvas, label: "Fit Canvas" }
+    - { key: x, action: clear, label: "Clear Canvas" }
+  # ui-label: title = PAINT CANVAS
+  # ui-label: nav = LMB PAINT  /  MMB PAN  /  WHEEL ZOOM  /  ALT WHEEL SIZE  /  F FIT  /  X CLEAR
+  # ui-label: clear = CLEAR
+
+buffers:
+  - { name: paint_state, structured: true, element_size: 16, element_count: 20, persistent: true }
+  - { name: poster, structured: true, element_size: 32, element_count: 1458000, persistent: true }
+  - { name: poster_previous, structured: true, element_size: 32, element_count: 1458000, persistent: true }
+
+passes:
+  - name: events
+    shader: events.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:paint_state"
+
+  - name: feedback_transform
+    shader: feedback_transform.hlsl
+    target: cs_5_0
+    dispatch: [135, 169, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "buffer:poster" }
+      - { slot: 1, source: "buffer:paint_state" }
+    output: "buffer:poster_previous"
+
+  - name: poster_update
+    shader: poster_update.hlsl
+    target: cs_5_0
+    dispatch: [135, 169, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "input:2" }
+      - { slot: 3, source: "buffer:paint_state" }
+      - { slot: 4, source: "buffer:poster_previous" }
+    output: "buffer:poster"
+
+  - name: clean
+    shader: clean.hlsl
+    target: cs_5_0
+    resolution: [1080, 1350]
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:poster" }
+
+  - name: depth
+    shader: depth.hlsl
+    target: cs_5_0
+    resolution: [1080, 1350]
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:poster" }
+
+  - name: mask
+    shader: mask.hlsl
+    target: cs_5_0
+    resolution: [1080, 1350]
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:poster" }
+
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    format: RGBA8
+    output: output
+    inputs:
+      - { slot: 0, source: "pass:clean" }
+      - { slot: 1, source: "buffer:paint_state" }
+
+outputs:
+  - { name: "UI", pass: ui }
+  - { name: "Canvas", pass: clean }
+  - { name: "Depth", pass: depth }
+  - { name: "Mask", pass: mask }

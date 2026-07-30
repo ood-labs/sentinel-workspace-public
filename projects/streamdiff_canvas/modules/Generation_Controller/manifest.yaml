@@ -1,0 +1,82 @@
+name: "Generation Controller"
+version: "1.0"
+mode: generator
+resolution: [960, 540]
+time_dependent: true
+
+panel:
+  mode: canvas
+  output: UI
+  resolution: follow_panel
+
+viewport:
+  hint: "Control generation mode, prompt travel speed, and Pattern Canvas stamp cadence."
+  # ui-label: manual = MANUAL
+  # ui-label: interval = INTERVAL
+  # ui-label: continuous = CONTINUOUS
+  # ui-label: run = RUN
+  # ui-label: linked = LINKED
+  # ui-label: generate = GENERATE
+  # ui-label: next = NEXT PROMPT
+  # ui-label: prompt = PROMPT
+  # ui-label: cycle = CYCLE
+  # ui-label: held = HELD
+  # ui-label: generating = GENERATING
+  # ui-label: prompt_rate = PROMPT RATE
+  # ui-label: stamp_speed = STAMP SPEED
+  controls:
+    - { id: mode, kind: slider, param: mode, rect: [0.020, 0.030, 0.360, 0.140], label: "Mode" }
+    - { id: transport, kind: toggle, param: transport_run, rect: [0.380, 0.030, 0.490, 0.140], label: "Run" }
+    - { id: linked, kind: toggle, param: link_stamps, rect: [0.510, 0.030, 0.640, 0.140], label: "Linked" }
+    - { id: generate, kind: toggle, param: generate, rect: [0.660, 0.030, 0.800, 0.140], label: "Generate" }
+    - { id: next, kind: toggle, param: next_prompt, rect: [0.820, 0.030, 0.980, 0.140], label: "Next Prompt" }
+    - { id: prompt_rate, kind: slider, param: prompt_rate, rect: [0.050, 0.270, 0.470, 0.400], label: "Prompt Rate" }
+    - { id: stamp_speed, kind: slider, param: stamp_rate, rect: [0.530, 0.270, 0.950, 0.400], label: "Stamp Speed" }
+
+parameters:
+  - { name: mode, display: "Mode", type: int, min: 0, max: 2, default: 1, group: "Generation", description: "0 Manual, 1 Interval, 2 Continuous." }
+  - { name: transport_run, display: "Run", type: bool, default: true, group: "Generation", description: "Master transport for automatic generation and Pattern Canvas stamping." }
+  - { name: link_stamps, display: "Link Stamps", type: bool, default: true, group: "Generation", description: "When enabled, Interval and manual generation events stamp only after their render window completes. When disabled, stamping follows Stamp Speed independently." }
+  - { name: generate, display: "Generate", type: bool, default: false, group: "Generation", description: "Each toggle transition releases Hold for one Render Window." }
+  - { name: next_prompt, display: "Next Prompt", type: bool, default: false, group: "Generation", description: "Each toggle transition advances one Prompt Step and releases Hold for one Render Window." }
+  - { name: render_window, display: "Render Window", type: float, min: 0.02, max: 2.0, default: 0.15, group: "Timing" }
+  - { name: prompt_rate, display: "Prompt Rate", type: float, min: 0.05, max: 8.0, default: 0.5, group: "Timing", description: "Prompt steps per second in Interval mode and continuous prompt travel speed in Continuous mode." }
+  - { name: stamp_rate, display: "Stamp Speed", type: float, min: 0.5, max: 20.0, default: 10.0, group: "Timing", description: "Pattern Canvas stamps per second. Maximum is the fastest supported cadence." }
+  - { name: prompt_start, display: "Prompt Start", type: float, min: 0.0, max: 63.0, default: 0.0, group: "Prompts" }
+  - { name: prompt_count, display: "Prompt Count", type: int, min: 1, max: 64, default: 64, group: "Prompts" }
+  - { name: prompt_step, display: "Prompt Step", type: float, min: 0.01, max: 16.0, default: 1.0, group: "Prompts" }
+
+buffers:
+  - { name: generation_state, structured: true, element_size: 16, element_count: 4, persistent: true }
+
+passes:
+  - name: update
+    shader: update.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:generation_state" }
+    output: "buffer:generation_state"
+
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:generation_state" }
+    output: output
+
+outputs:
+  - { name: "UI", pass: ui }
+
+control_outputs:
+  - { name: hold, buffer: generation_state, element: 0, field_offset: 0, description: "1 holds diffusion; 0 permits generation" }
+  - { name: prompt_position, buffer: generation_state, element: 0, field_offset: 4, description: "Prompt bank position for StreamDiff" }
+  - { name: generation_pulse, buffer: generation_state, element: 0, field_offset: 8, description: "One-frame pulse when a generation window begins" }
+  - { name: cycle, buffer: generation_state, element: 0, field_offset: 12, description: "Completed generation-window count" }
+  - { name: spawn_seconds, buffer: generation_state, element: 2, field_offset: 12, description: "Pattern Canvas stamp interval in seconds" }
+  - { name: run, buffer: generation_state, element: 2, field_offset: 8, description: "Master run state for linked downstream processes" }
+  - { name: link_stamps, buffer: generation_state, element: 3, field_offset: 4, description: "1 links Pattern Canvas stamps to generation events" }
+  - { name: stamp_cycle, buffer: generation_state, element: 3, field_offset: 0, description: "Monotonic stamp trigger incremented after linked generation completes" }

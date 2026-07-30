@@ -1,0 +1,24 @@
+name: "Radial Gradient"
+version: "1.0"
+mode: generator
+resolution: [768, 768]
+
+parameters:
+  - { name: center, display: "Center", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.5, 0.5], group: "Gradient" }
+  - { name: radius, display: "Radius", type: float, min: 0.01, max: 1.0, default: 0.32, group: "Gradient" }
+  - { name: hardness, display: "Hardness", type: float, min: 0.0, max: 1.0, default: 0.5, group: "Gradient" }
+  - { name: color, display: "Color", type: color, default: [1.0, 1.0, 1.0], group: "Gradient" }
+  - { name: noise_amount, display: "Noise Multiply", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Noise", description: "Multiplies the radial gradient by the selected noise. Zero preserves the original clean gradient." }
+  - { name: noise_scale, display: "Noise Scale", type: float, min: 0.25, max: 32.0, default: 5.0, group: "Noise" }
+  - { name: noise_type, display: "Noise Type", type: enum, options: [Smooth, Fractal, Grain], flags: button_grid, default: 1, group: "Noise" }
+  - { name: colored_noise, display: "Colored Noise", type: bool, default: false, group: "Noise", description: "Uses independent noise in each color channel instead of one monochrome multiplier." }
+
+passes:
+  - name: gradient
+    shader: gradient.hlsl
+    target: cs_5_0
+    format: RGBA8
+    output: output
+
+outputs:
+  - { name: "Gradient", pass: gradient }
