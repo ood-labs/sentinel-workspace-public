@@ -1,0 +1,73 @@
+name: "Variant Switcher UI"
+version: "1.0"
+mode: filter
+resolution: [1280, 720]
+
+panel:
+  mode: canvas
+  output: UI
+  resolution: follow_panel
+
+inputs:
+  - { name: "Mux Program", slot: 0, required: true }
+
+parameters:
+  - { name: auto_mode, display: "Auto Cycle", type: bool, default: true, flags: button, group: "Switcher" }
+  - { name: cycle_seconds, display: "Cycle Seconds", type: float, min: 1.0, max: 12.0, default: 4.0, group: "Switcher" }
+  - { name: select_1, display: "Select 1", type: button, hidden: true }
+  - { name: select_2, display: "Select 2", type: button, hidden: true }
+  - { name: select_3, display: "Select 3", type: button, hidden: true }
+
+buffers:
+  - name: switcher_state
+    structured: true
+    element_size: 32
+    element_count: 1
+    persistent: true
+
+state_buffers:
+  - name: switcher_state
+    max_elements: 1
+    schema:
+      - { name: selected, type: float }
+      - { name: elapsed, type: float }
+      - { name: auto_latch, type: float }
+      - { name: one_latch, type: float }
+      - { name: two_latch, type: float }
+      - { name: three_latch, type: float }
+      - { name: cycle_pulse, type: float }
+      - { name: reserved, type: float }
+
+viewport:
+  hint: "AUTO cycles the three Mux inputs. Click 1, 2, or 3 for a direct selection."
+  # ui-label: title = DIRECT VARIANT SWITCHER
+  # ui-label: subtitle = LIVE MUX OUTPUT / AUTO OR DIRECT SELECT
+  controls:
+    - { id: auto_mode, kind: toggle, param: auto_mode, rect: [0.55, 0.025, 0.68, 0.105], label: "AUTO" }
+    - { id: select_1, kind: button, param: select_1, rect: [0.70, 0.025, 0.78, 0.105], label: "1" }
+    - { id: select_2, kind: button, param: select_2, rect: [0.80, 0.025, 0.88, 0.105], label: "2" }
+    - { id: select_3, kind: button, param: select_3, rect: [0.90, 0.025, 0.98, 0.105], label: "3" }
+
+passes:
+  - name: update
+    shader: state.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:switcher_state"
+
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:switcher_state" }
+    output: output
+
+outputs:
+  - { name: "UI", pass: render }
+
+control_outputs:
+  - { name: selected, buffer: switcher_state, element: 0, field_offset: 0, description: "Active Mux input, 0 through 2" }
+  - { name: auto_active, buffer: switcher_state, element: 0, field_offset: 8, description: "1 while automatic cycling is active" }

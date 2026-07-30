@@ -1,0 +1,59 @@
+{
+  "project": "projects/streamdiff_workflows/04_direct_variant_mux.sentinel",
+  "source_commit": "66d076d",
+  "workflow": "04_direct_variant_mux",
+  "source_resolution": "Extended the committed Phase 6 workflow in place and saved the exact user-approved live layout and state.",
+  "graph": {
+    "pipeline_count": 5,
+    "variants": [
+      "streamdiff_0",
+      "StreamDiffusion_1",
+      "StreamDiffusion_1_1"
+    ],
+    "mux": "mux_0",
+    "final_pipeline": "Variant_Switcher_UI",
+    "video_links": 4
+  },
+  "approved_interface": {
+    "panel_mode": "canvas",
+    "resolution_mode": "follow_panel",
+    "program_fit": "aspect-correct",
+    "controls": [
+      "AUTO",
+      "1",
+      "2",
+      "3"
+    ],
+    "auto_cycle_seconds": 4.0,
+    "saved_auto_mode": true,
+    "layout_saved": true
+  },
+  "switching_contract": {
+    "expression_path": "/sentinel/pipelines/mux_0/parameters/selected",
+    "expression": "ref(\"Variant_Switcher_UI/control_outputs/selected\")",
+    "solo_upstream": true,
+    "manual_selection_verified": 2,
+    "manual_selection_evidence": "Selecting button 3 drove Mux input index 2 and left only StreamDiffusion_1_1 enabled.",
+    "automatic_selection_evidence": "The approved recording spans the automatic 1-2-3 cycle while the Mux output remains visible in the authored panel."
+  },
+  "runtime": {
+    "healthy": true,
+    "frames_progressing": true,
+    "has_preview": true,
+    "module_compile_ok": true,
+    "deferred_resource_count": 0,
+    "solo_upstream_observed": "At the final check, selected input 0 was enabled and the other two StreamDiff variants were disabled."
+  },
+  "proof": {
+    "bundle": "captures/phase6_streamdiff_workflow_04_approved",
+    "full_proof_bundle": "captures/phase6_streamdiff_workflow_04_approved/proof_bundle",
+    "auto_cycle_recording": "captures/phase6_streamdiff_workflow_04_approved/auto_cycle.mp4",
+    "project_saved": true,
+    "module_bundled": true
+  },
+  "human_gate": {
+    "gate_id": "G8",
+    "workflow_decision": "approved",
+    "notes": "The user reviewed the live authored switcher, described it as perfect, and explicitly requested that the exact current layout be saved."
+  }
+}
