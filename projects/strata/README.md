@@ -1,33 +1,21 @@
 # Strata
 
-Strata is a modular portrait composition built from independent background, marble, sculptural blob, wire, marks, live feature-thread, plate-composite, and post passes. The modernization keeps that premultiplied architecture intact and adds a movable marble focal, a compact passive composition bus, shared palette modes, and curated presets.
+Strata is a modular portrait composition built from independent background, marble, sculptural blob, wire, marks, live feature-thread, plate-composite, and post passes. The modernization keeps that premultiplied architecture intact and adds a movable marble focal, shared palette modes, curated presets, and an efficient in-node analysis path.
 
 ## What to open
 
-Open `strata.sentinel`. All twelve active nodes live in one flat `STRATA COMPOSITION DESK` Scene Group with no child groups. `post_1` is the final image node, and every pipeline node preview is visible by default.
+Open `strata.sentinel`. All ten active nodes live in one flat `STRATA` Scene Group with no child groups. `post_1` is the final image node, and every pipeline node preview is visible by default.
 
 No engine pack is required. The project uses authored Modules plus the model-free `Features` pipeline.
 
 ## Feature analysis branch
 
-`plate_comp` keeps its full 720 x 1080 path into `corner_thread` and Program.
-A separate `Feature Downscale` node resamples that plate to 320 x 480 before
-`Features #0`, so corner detection no longer receives the full-resolution
-texture. The proxy also feeds `corner_thread` as an extent reference; detected
-corner pixels are scaled from the real analysis dimensions back into Program
-space rather than being drawn in one corner of the portrait.
-
-## Composition bus
-
-`strata_control` is a control bus, not a composition interface. Edit sculpture,
-marble, wire, and graphic-mark balance alongside seed, palette, deformation,
-layout, and Feature Thread settings in the node's Properties.
-
-Its 480 x 270 texture is only a passive four-lane balance preview with the live
-corner count. It has no Canvas mode, follow-panel allocation, or authored
-controls.
-
-The bus reads the real `Feature Corners` buffer and shows its live count. It publishes the scalar controls used by visible expressions throughout the graph, so the authority remains inspectable instead of being hidden in a monolithic renderer.
+`plate_comp` keeps its full 720 x 1080 output for the composition and thread.
+`Features #0` receives that texture directly and uses its built-in
+`analysis_downsample` control at 4x, reducing feature analysis to 180 x 270
+without adding a proxy node or lowering the full-resolution video output.
+Detected corner coordinates remain normalized against the analysis extent
+before `corner_thread` renders them back into Program space.
 
 ## Direct marble placement
 
@@ -43,47 +31,43 @@ This project deliberately does not add generic object selection or transform giz
 - **Wire Cage** — dark restrained sculpture with dominant feature and cage lines.
 - **Performance** — monochrome lower-cost mode; disables Features and uses one render sample.
 
-The group exposes seven stable remix controls for sculpture gloss/reflection, marble panel size, thread width, bloom, and grain. Composition-bus setup is not duplicated there.
+The group exposes five stable remix controls for sculpture gloss/reflection,
+marble panel size, and thread width.
 
 ## Remix
 
 Start with **Clean Studio** for material and focal placement, use **Graphic
 Poster** or **Wire Cage** when changing plate balance, and return to
-**Performance** for the documented lower-cost live state. Shape exact
-plate weights, deformation, and Feature Thread behavior in `strata_control`
-Properties. The only direct-manipulation surface is the useful one:
-`marble_panel`, where the marble focal is spatially dragged.
+**Performance** for the documented lower-cost live state. Shape exact plate
+weights and deformation on the nodes that own them. The only
+direct-manipulation surface is the useful one: `marble_panel`, where the marble
+focal is spatially dragged.
 
 ## Node presets
 
-- `strata_control` / **Atelier Plate Balance** captures the complete
-  thirteen-parameter composition-bus state.
 - `blob_render` / **Hero Sculpture** captures the renderer's material, deformation, light, quality, and camera essentials.
 
-Both are project-scoped, so they travel inside the project rather than relying on a machine-local preset library.
+It is project-scoped, so it travels inside the project rather than relying on a machine-local preset library.
 
 ## Graph lanes
 
 ```text
 blob_layout -- BlobInstances --> blob_render ----+
 strata_bg ---------------------------------------+
-marble_panel ------------------------------------+--> plate_comp --> post
+marble_panel ------------------------------------+--> plate_comp --> corner_thread --> post_1
 wire_render -------------------------------------+
 marks -------------------------------------------+
-plate_comp --> Features -- Corners --> corner_thread --+
-                                  +--> strata_control
-strata_control -- control outputs / expressions -------> authored parameters
+plate_comp --> Features -- Corners ---------------------+
 ```
 
-Textures carry plates, structured buffers carry blob instances and detected corners, and expressions carry the shared scalar composition state.
+Textures carry plates, while structured buffers carry blob instances and detected corners.
 
 ## Runtime checks
 
-All nodes should be healthy in the four hero presets. `Feature Downscale`
-should report a 320 x 480 output, `Features #0` should report fifteen live
-corners at that same extent, and the full-resolution thread should span the
-portrait. The thread should visibly disappear when its `strata_control`
-Properties toggle is off. In **Performance**, `Features #0` is intentionally
-bypassed while the rest of the graph remains healthy. The project should
-contain exactly one flat Scene Group, zero child groups, no Group Output, and
+All nodes should be healthy in the five intended presets. `Features #0` should
+report `analysis_downsample = 4x`, fifteen live corners, and a full-resolution
+720 x 1080 video output; the resulting thread should span the portrait. In
+**Performance**, `Features #0` is intentionally bypassed while the rest of the
+graph remains healthy. The project should contain exactly one flat Scene
+Group, zero child groups, no Group Output, no expression drivers, and
 visible-by-default previews for every pipeline node.

@@ -5,7 +5,7 @@ resolution: [480, 720]
 
 # Authors the BlobPart buffer for strata plate 1 (the glossy organic mass). Hand-dialed
 # woven column in basePart(); external transforms (spread/jitter/seed/lift/size) drive
-# infinite variation from strata_control.
+# infinite variation from ordinary parameter and preset control.
 
 buffers:
   - name: parts

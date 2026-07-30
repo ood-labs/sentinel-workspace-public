@@ -1,18 +1,6 @@
 {
   "binds": [
     [
-      "/sentinel/pipelines/blob_layout/parameters/seed",
-      "/sentinel/pipelines/strata_control/parameters/master_seed"
-    ],
-    [
-      "/sentinel/pipelines/marble_panel/parameters/warp_amt",
-      "/sentinel/pipelines/strata_control/parameters/marble_warp_macro"
-    ],
-    [
-      "/sentinel/pipelines/plate_comp/parameters/blob_gain",
-      "/sentinel/pipelines/strata_control/parameters/blob_mix"
-    ],
-    [
       "/sentinel/groups/annotation_91/parameters/Sculpture_Gloss",
       "/sentinel/pipelines/blob_render/parameters/gloss"
     ],
@@ -33,32 +21,12 @@
       "/sentinel/pipelines/corner_thread/parameters/line_width"
     ],
     [
-      "/sentinel/pipelines/plate_comp/parameters/marble_gain",
-      "/sentinel/pipelines/strata_control/parameters/marble_mix"
-    ],
-    [
-      "/sentinel/pipelines/plate_comp/parameters/wire_gain",
-      "/sentinel/pipelines/strata_control/parameters/wire_mix"
-    ],
-    [
-      "/sentinel/pipelines/plate_comp/parameters/marks_gain",
-      "/sentinel/pipelines/strata_control/parameters/marks_mix"
-    ],
-    [
       "/sentinel/groups/annotation_91/parameters/Bloom",
       "/sentinel/pipelines/post_1/parameters/bloom_intensity"
     ],
     [
       "/sentinel/groups/annotation_91/parameters/Film_Grain",
       "/sentinel/pipelines/post_1/parameters/grain_amt"
-    ],
-    [
-      "/sentinel/pipelines/blob_layout/parameters/spread",
-      "/sentinel/pipelines/strata_control/parameters/spread_macro"
-    ],
-    [
-      "/sentinel/pipelines/strata_control/parameters/wire_scale_macro",
-      "/sentinel/pipelines/wire_render/parameters/wire_scale"
     ]
   ],
   "display": {
@@ -66,17 +34,12 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 0.9953458309173584,
+    "canvasZoom": 0.35004112124443054,
     "links": [
       {
         "endPinId": 265,
         "id": 62,
         "startPinId": 249
-      },
-      {
-        "endPinId": 244,
-        "id": 73,
-        "startPinId": 255
       },
       {
         "endPinId": 242,
@@ -104,21 +67,6 @@
         "startPinId": 243
       },
       {
-        "endPinId": 347,
-        "id": 76,
-        "startPinId": 241
-      },
-      {
-        "endPinId": 252,
-        "id": 77,
-        "startPinId": 348
-      },
-      {
-        "endPinId": 266,
-        "id": 78,
-        "startPinId": 348
-      },
-      {
         "endPinId": 349,
         "id": 79,
         "startPinId": 255
@@ -132,11 +80,21 @@
         "endPinId": 258,
         "id": 81,
         "startPinId": 241
+      },
+      {
+        "endPinId": 266,
+        "id": 87,
+        "startPinId": 256
+      },
+      {
+        "endPinId": 252,
+        "id": 88,
+        "startPinId": 241
       }
     ],
-    "nextLinkId": 82,
-    "nextNodeId": 96,
-    "nextPinId": 352,
+    "nextLinkId": 89,
+    "nextNodeId": 97,
+    "nextPinId": 354,
     "nodes": [
       {
         "displayName": "marble_panel 2",
@@ -191,16 +149,6 @@
         "type": 1
       },
       {
-        "displayName": "strata_control 2",
-        "entityId": "strata_control",
-        "id": 60,
-        "posX": 1737.0860595703125,
-        "posY": 1414.2828369140625,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 1
-      },
-      {
         "displayName": "strata_bg 2",
         "entityId": "strata_bg",
         "id": 61,
@@ -224,8 +172,8 @@
         "displayName": "Features #0 2",
         "entityId": "features_0",
         "id": 64,
-        "posX": 1495.361572265625,
-        "posY": 1182.755126953125,
+        "posX": 1332.38720703125,
+        "posY": 1140.91015625,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -362,7 +310,6 @@
               "plate_comp": true,
               "post_1": true,
               "strata_bg": true,
-              "strata_control": true,
               "wire_render": true
             },
             "pipelineValues": {
@@ -556,23 +503,6 @@
                 "resolution_height": "1080",
                 "resolution_width": "720"
               },
-              "strata_control": {
-                "blob_mix": "1.000000",
-                "feature_enabled": "true",
-                "feature_gain": "0.58",
-                "marble_mix": "0.82",
-                "marble_warp_macro": "0.75",
-                "marks_mix": "0.55",
-                "master_seed": "12.000000",
-                "melt_macro": "0.28",
-                "palette_variant": "0",
-                "resolution_height": "540",
-                "resolution_width": "960",
-                "spread_macro": "1.000000",
-                "twist_macro": "0.22",
-                "wire_mix": "0.12",
-                "wire_scale_macro": "0.82"
-              },
               "wire_render": {
                 "cage_points": "3",
                 "palette_variant": "0",
@@ -611,7 +541,6 @@
               "plate_comp": true,
               "post_1": true,
               "strata_bg": true,
-              "strata_control": true,
               "wire_render": true
             },
             "pipelineValues": {
@@ -805,23 +734,6 @@
                 "resolution_height": "1080",
                 "resolution_width": "720"
               },
-              "strata_control": {
-                "blob_mix": "1.12",
-                "feature_enabled": "true",
-                "feature_gain": "0.76",
-                "marble_mix": "1.15",
-                "marble_warp_macro": "2.05",
-                "marks_mix": "0.34",
-                "master_seed": "18.000000",
-                "melt_macro": "0.96",
-                "palette_variant": "1",
-                "resolution_height": "540",
-                "resolution_width": "960",
-                "spread_macro": "0.9",
-                "twist_macro": "0.68",
-                "wire_mix": "0.18",
-                "wire_scale_macro": "0.76"
-              },
               "wire_render": {
                 "cage_points": "3",
                 "palette_variant": "1",
@@ -860,7 +772,6 @@
               "plate_comp": true,
               "post_1": true,
               "strata_bg": true,
-              "strata_control": true,
               "wire_render": true
             },
             "pipelineValues": {
@@ -1054,23 +965,6 @@
                 "resolution_height": "1080",
                 "resolution_width": "720"
               },
-              "strata_control": {
-                "blob_mix": "0.94",
-                "feature_enabled": "false",
-                "feature_gain": "0.6",
-                "marble_mix": "1.34",
-                "marble_warp_macro": "1.65",
-                "marks_mix": "1.18",
-                "master_seed": "7.000000",
-                "melt_macro": "0.34",
-                "palette_variant": "2",
-                "resolution_height": "540",
-                "resolution_width": "960",
-                "spread_macro": "1.1",
-                "twist_macro": "0.26",
-                "wire_mix": "0.000000",
-                "wire_scale_macro": "0.88"
-              },
               "wire_render": {
                 "cage_points": "3",
                 "palette_variant": "2",
@@ -1109,7 +1003,6 @@
               "plate_comp": true,
               "post_1": true,
               "strata_bg": true,
-              "strata_control": true,
               "wire_render": true
             },
             "pipelineValues": {
@@ -1303,23 +1196,6 @@
                 "resolution_height": "1080",
                 "resolution_width": "720"
               },
-              "strata_control": {
-                "blob_mix": "0.58",
-                "feature_enabled": "true",
-                "feature_gain": "1.12",
-                "marble_mix": "0.28",
-                "marble_warp_macro": "0.52",
-                "marks_mix": "0.46",
-                "master_seed": "23.000000",
-                "melt_macro": "0.44",
-                "palette_variant": "3",
-                "resolution_height": "540",
-                "resolution_width": "960",
-                "spread_macro": "1.2",
-                "twist_macro": "0.78",
-                "wire_mix": "1.45",
-                "wire_scale_macro": "1.18"
-              },
               "wire_render": {
                 "cage_points": "3",
                 "palette_variant": "3",
@@ -1358,7 +1234,6 @@
               "plate_comp": true,
               "post_1": true,
               "strata_bg": true,
-              "strata_control": true,
               "wire_render": true
             },
             "pipelineValues": {
@@ -1552,23 +1427,6 @@
                 "resolution_height": "1080",
                 "resolution_width": "720"
               },
-              "strata_control": {
-                "blob_mix": "0.9",
-                "feature_enabled": "false",
-                "feature_gain": "0.000000",
-                "marble_mix": "0.62",
-                "marble_warp_macro": "0.58",
-                "marks_mix": "0.48",
-                "master_seed": "12.000000",
-                "melt_macro": "0.26",
-                "palette_variant": "4",
-                "resolution_height": "540",
-                "resolution_width": "960",
-                "spread_macro": "0.96",
-                "twist_macro": "0.18",
-                "wire_mix": "0.16",
-                "wire_scale_macro": "0.78"
-              },
               "wire_render": {
                 "cage_points": "3",
                 "palette_variant": "4",
@@ -1598,21 +1456,11 @@
         "width": 2129.0
       },
       {
-        "displayName": "Feature Downscale",
-        "entityId": "Feature_Downscale",
-        "id": 94,
-        "posX": 1155.3961181640625,
-        "posY": 1084.7607421875,
-        "positionSet": true,
-        "previewVisible": false,
-        "type": 1
-      },
-      {
         "displayName": "post 3",
         "entityId": "post_1",
         "id": 95,
         "inputTilesOverride": 0,
-        "posX": 2027.1439208984375,
+        "posX": 2028.2452392578125,
         "posY": 1025.977783203125,
         "positionSet": true,
         "previewVisible": true,
@@ -1629,52 +1477,12 @@
         "type": 0
       },
       {
-        "id": 276,
-        "kind": 1,
-        "name": "seed",
-        "nodeId": 60,
-        "slotIndex": 1,
-        "type": 7
-      },
-      {
-        "id": 268,
-        "kind": 1,
-        "name": "Composition Desk",
-        "nodeId": 60,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 270,
-        "kind": 1,
-        "name": "melt",
-        "nodeId": 60,
-        "slotIndex": 2,
-        "type": 7
-      },
-      {
         "id": 262,
         "kind": 0,
         "name": "BG",
         "nodeId": 58,
         "slotIndex": 0,
         "type": 0
-      },
-      {
-        "id": 280,
-        "kind": 1,
-        "name": "marble_warp",
-        "nodeId": 60,
-        "slotIndex": 4,
-        "type": 7
-      },
-      {
-        "id": 272,
-        "kind": 1,
-        "name": "twist",
-        "nodeId": 60,
-        "slotIndex": 3,
-        "type": 7
       },
       {
         "id": 256,
@@ -1739,22 +1547,6 @@
         "nodeId": 59,
         "slotIndex": 0,
         "type": 0
-      },
-      {
-        "id": 244,
-        "kind": 0,
-        "name": "Feature Corners",
-        "nodeId": 60,
-        "slotIndex": 0,
-        "type": 6
-      },
-      {
-        "id": 245,
-        "kind": 1,
-        "name": "spread",
-        "nodeId": 60,
-        "slotIndex": 5,
-        "type": 7
       },
       {
         "id": 247,
@@ -1853,99 +1645,11 @@
         "type": 6
       },
       {
-        "id": 269,
-        "kind": 1,
-        "name": "wire_scale",
-        "nodeId": 60,
-        "slotIndex": 6,
-        "type": 7
-      },
-      {
-        "id": 271,
-        "kind": 1,
-        "name": "palette",
-        "nodeId": 60,
-        "slotIndex": 7,
-        "type": 7
-      },
-      {
-        "id": 273,
-        "kind": 1,
-        "name": "blob_mix",
-        "nodeId": 60,
-        "slotIndex": 8,
-        "type": 7
-      },
-      {
-        "id": 274,
-        "kind": 1,
-        "name": "marble_mix",
-        "nodeId": 60,
-        "slotIndex": 9,
-        "type": 7
-      },
-      {
-        "id": 275,
-        "kind": 1,
-        "name": "wire_mix",
-        "nodeId": 60,
-        "slotIndex": 10,
-        "type": 7
-      },
-      {
-        "id": 277,
-        "kind": 1,
-        "name": "marks_mix",
-        "nodeId": 60,
-        "slotIndex": 11,
-        "type": 7
-      },
-      {
-        "id": 278,
-        "kind": 1,
-        "name": "feature_enabled",
-        "nodeId": 60,
-        "slotIndex": 12,
-        "type": 7
-      },
-      {
-        "id": 279,
-        "kind": 1,
-        "name": "feature_gain",
-        "nodeId": 60,
-        "slotIndex": 13,
-        "type": 7
-      },
-      {
-        "id": 281,
-        "kind": 1,
-        "name": "feature_count",
-        "nodeId": 60,
-        "slotIndex": 14,
-        "type": 7
-      },
-      {
         "id": 266,
         "kind": 0,
         "name": "Analysis Reference",
         "nodeId": 65,
         "slotIndex": 1,
-        "type": 0
-      },
-      {
-        "id": 347,
-        "kind": 0,
-        "name": "Full Resolution Plate",
-        "nodeId": 94,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
-        "id": 348,
-        "kind": 1,
-        "name": "Analysis 320 x 480",
-        "nodeId": 94,
-        "slotIndex": 0,
         "type": 0
       },
       {
@@ -1989,71 +1693,9 @@
   "input": {
     "activeSource": ""
   },
-  "layout": "[Window][Terminal]\nPos=0,1088\nSize=872,489\nCollapsed=0\nDockId=0x00000008,0\n\n[Window][Stats]\nPos=0,817\nSize=872,269\nCollapsed=0\nDockId=0x00000007,0\n\n[Window][Log]\nPos=0,1088\nSize=872,489\nCollapsed=0\nDockId=0x00000008,1\n\n[Window][Properties]\nPos=2184,25\nSize=376,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,817\nSize=1308,760\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Style_Authority]\nPos=993,25\nSize=939,691\nCollapsed=0\n\n[Window][Spline_Desk]\nPos=993,718\nSize=939,437\nCollapsed=0\n\n[Window][Gizmo_Desk]\nPos=993,25\nSize=939,1130\nCollapsed=0\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=991,463\nCollapsed=0\n\n[Window][Data_Scope]\nPos=0,833\nSize=991,322\nCollapsed=0\n\n[Window][Signal_Trails]\nPos=0,25\nSize=991,1130\nCollapsed=0\n\n[Window][post_1]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][Feature_Downscale]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][corner_thread]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,2\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1396\nCollapsed=0\n\n[Window][03_Material_Library]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][02_Facade_Generator]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][01_Building_Massing]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][04_Lighting_Rig]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][05_Architectural_Renderer]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][07_Detail_and_Relight]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\n\n[Window][signal]\nPos=0,25\nSize=1108,1396\nCollapsed=0\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\n\n[Window][label_gen]\nPos=547,459\nSize=540,427\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=2182,979\nCollapsed=0\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=2182,1190\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][blob_render]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,3\n\n[Window][plate_comp]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,1\n\n[Docking][Data]\nDockSpace         ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode        ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1222,900 Split=Y\n    DockNode      ID=0x00000003 Parent=0x00000001 SizeRef=1222,790 CentralNode=1 Selected=0x6F8F03EC\n    DockNode      ID=0x00000004 Parent=0x00000001 SizeRef=1222,760 Split=X\n      DockNode    ID=0x00000005 Parent=0x00000004 SizeRef=488,360 Split=Y Selected=0xD33228A6\n        DockNode  ID=0x00000007 Parent=0x00000005 SizeRef=872,269 Selected=0x590DF097\n        DockNode  ID=0x00000008 Parent=0x00000005 SizeRef=872,489 Selected=0xD33228A6\n      DockNode    ID=0x00000006 Parent=0x00000004 SizeRef=732,360 Selected=0xF12F3499\n  DockNode        ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
+  "layout": "[Window][Terminal]\nPos=0,1088\nSize=872,489\nCollapsed=0\nDockId=0x00000008,0\n\n[Window][Stats]\nPos=0,817\nSize=872,269\nCollapsed=0\nDockId=0x00000007,0\n\n[Window][Log]\nPos=0,1088\nSize=872,489\nCollapsed=0\nDockId=0x00000008,1\n\n[Window][Properties]\nPos=2184,25\nSize=376,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,817\nSize=1308,760\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Style_Authority]\nPos=993,25\nSize=939,691\nCollapsed=0\n\n[Window][Spline_Desk]\nPos=993,718\nSize=939,437\nCollapsed=0\n\n[Window][Gizmo_Desk]\nPos=993,25\nSize=939,1130\nCollapsed=0\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=991,463\nCollapsed=0\n\n[Window][Data_Scope]\nPos=0,833\nSize=991,322\nCollapsed=0\n\n[Window][Signal_Trails]\nPos=0,25\nSize=991,1130\nCollapsed=0\n\n[Window][post_1]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,0\n[Window][corner_thread]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,2\n[Window][03_Material_Library]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][02_Facade_Generator]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][01_Building_Massing]\nPos=0,25\nSize=650,1007\nCollapsed=0\n\n[Window][04_Lighting_Rig]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][05_Architectural_Renderer]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][07_Detail_and_Relight]\nPos=0,25\nSize=1985,1007\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\n\n[Window][signal]\nPos=0,25\nSize=1108,1396\nCollapsed=0\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\n\n[Window][label_gen]\nPos=547,459\nSize=540,427\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,4\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=2182,1190\nCollapsed=0\nDockId=0x00000003,0\n\n[Window][blob_render]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,3\n\n[Window][plate_comp]\nPos=0,25\nSize=2182,790\nCollapsed=0\nDockId=0x00000003,1\n\n[Window][Native_Camera_Reference]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=372,772\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1040\nSize=752,537\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,772\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][au_specimen]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_proxy]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_observe]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stabilizer]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_relief]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_grade]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_census]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stylus]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_deck]\nPos=0,25\nSize=751,1396\nCollapsed=0\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][AXIOM_01_PLATE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_02_ANALYSIS_LENS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_12_FRAME_REFINERY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_03_LIVE_ENGRAVER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01B_ORGANIC_MEMBRANE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01A_INTERFERENCE_MASK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_04_TOPOLOGY_COMPILER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_05_PRESSURE_DESK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_07_RESONANCE_ENGINE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_08_TEMPORAL_OSSUARY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_09_KINETIC_CORONA]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_10_IMPRESSION_PRESS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_11_RELIEF_CHAMBER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_13_LIVE_GLYPH_PLATES]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_16_POLYRHYTHM_INSPECTOR]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_06_POLYRHYTHM_RACK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][cloth_pulse]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][substrate]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][02_Stress_Feature_Analysis]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][01_Rupture_Stress_Lattice]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][05_Tactile_Weave_Material]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][03_Rupture_Constraint_Loom]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][04_Rupture_Fabric]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\n\n[Window][streamdiff_2]\nPos=0,25\nSize=1166,1396\nCollapsed=0\n\n[Window][Settings]\nPos=590,200\nSize=566,678\nCollapsed=0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Window][Industrial_Group_Output]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Docking][Data]\nDockSpace         ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode        ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1222,900 Split=Y\n    DockNode      ID=0x00000003 Parent=0x00000001 SizeRef=1222,790 CentralNode=1 Selected=0x6B7433D8\n    DockNode      ID=0x00000004 Parent=0x00000001 SizeRef=1222,760 Split=X\n      DockNode    ID=0x00000005 Parent=0x00000004 SizeRef=488,360 Split=Y Selected=0xD33228A6\n        DockNode  ID=0x00000007 Parent=0x00000005 SizeRef=872,269 Selected=0x590DF097\n        DockNode  ID=0x00000008 Parent=0x00000005 SizeRef=872,489 Selected=0xD33228A6\n      DockNode    ID=0x00000006 Parent=0x00000004 SizeRef=732,360 Selected=0xF12F3499\n  DockNode        ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
   "name": "strata",
   "nodePresets": [
-    {
-      "created": "2026-07-15T04:41:00",
-      "id": "e26b5f1c-03b0-8450-7a232258982b",
-      "modified": "2026-07-15T04:41:00",
-      "name": "Atelier Plate Balance",
-      "parameters": [
-        {
-          "name": "master_seed",
-          "value": "12.000000"
-        },
-        {
-          "name": "palette_variant",
-          "value": "4"
-        },
-        {
-          "name": "melt_macro",
-          "value": "0.26"
-        },
-        {
-          "name": "twist_macro",
-          "value": "0.18"
-        },
-        {
-          "name": "marble_warp_macro",
-          "value": "0.58"
-        },
-        {
-          "name": "spread_macro",
-          "value": "0.96"
-        },
-        {
-          "name": "wire_scale_macro",
-          "value": "0.78"
-        },
-        {
-          "name": "blob_mix",
-          "value": "0.9"
-        },
-        {
-          "name": "marble_mix",
-          "value": "0.62"
-        },
-        {
-          "name": "wire_mix",
-          "value": "0.16"
-        },
-        {
-          "name": "marks_mix",
-          "value": "0.48"
-        },
-        {
-          "name": "feature_enabled",
-          "value": "false"
-        },
-        {
-          "name": "feature_gain",
-          "value": "0.000000"
-        }
-      ],
-      "pipelineType": "module:strata_control",
-      "scope": "project"
-    },
     {
       "created": "2026-07-15T04:41:19",
       "id": "4c4dcdd2-cc1d-9d4c-b00704da9fba",
@@ -2123,10 +1765,10 @@
   ],
   "osc": {
     "enabled": true,
-    "receivePort": 9000,
+    "receivePort": 9002,
     "sendFeedback": true,
     "sendHost": "127.0.0.1",
-    "sendPort": 9001,
+    "sendPort": 9021,
     "stateTreeBridge": true
   },
   "outputObjects": [],
@@ -2135,10 +1777,7 @@
     {
       "displayName": "marble_panel 2",
       "enabled": true,
-      "expressions": {
-        "marble_seed": "ref(\"strata_control/control_outputs/seed\") * 1.7 + 5.0",
-        "palette_variant": "ref(\"strata_control/control_outputs/palette\")"
-      },
+      "expressions": null,
       "fitMode": 1,
       "id": "marble_panel",
       "inputSlotSourceIds": [],
@@ -2171,9 +1810,7 @@
     {
       "displayName": "blob_layout 2",
       "enabled": true,
-      "expressions": {
-        "palette_variant": "ref(\"strata_control/control_outputs/palette\")"
-      },
+      "expressions": null,
       "fitMode": 1,
       "id": "blob_layout",
       "inputSlotSourceIds": [],
@@ -2199,10 +1836,7 @@
     {
       "displayName": "wire_render 2",
       "enabled": true,
-      "expressions": {
-        "palette_variant": "ref(\"strata_control/control_outputs/palette\")",
-        "wire_seed": "ref(\"strata_control/control_outputs/seed\") * 0.7 + 11.0"
-      },
+      "expressions": null,
       "fitMode": 1,
       "id": "wire_render",
       "inputSlotSourceIds": [],
@@ -2235,13 +1869,14 @@
       "fitMode": 1,
       "id": "features_0",
       "inputSlotSourceIds": [
-        "Feature_Downscale"
+        "plate_comp"
       ],
       "outputFitMode": 1,
       "outputSinkId": "",
       "panelAnchorId": "features_0",
-      "panelOpen": false,
+      "panelOpen": true,
       "parameters": {
+        "analysis_downsample": "2",
         "blob_enabled": "0",
         "blob_invert": "0",
         "blob_max_count": "32",
@@ -2276,9 +1911,7 @@
     {
       "displayName": "plate_comp 2",
       "enabled": true,
-      "expressions": {
-        "palette_variant": "ref(\"strata_control/control_outputs/palette\")"
-      },
+      "expressions": null,
       "fitMode": 1,
       "id": "plate_comp",
       "inputSlotSourceIds": [
@@ -2315,11 +1948,7 @@
     {
       "displayName": "blob_render 2",
       "enabled": true,
-      "expressions": {
-        "melt_amt": "ref(\"strata_control/control_outputs/melt\") * 1.2",
-        "palette_variant": "ref(\"strata_control/control_outputs/palette\")",
-        "twist_amt": "ref(\"strata_control/control_outputs/twist\") * 0.6"
-      },
+      "expressions": null,
       "fitMode": 1,
       "id": "blob_render",
       "inputSlotSourceIds": [
@@ -2341,14 +1970,14 @@
         "camera_mode": "0",
         "camera_move_speed": "6.126316",
         "camera_near": "0.100000",
-        "camera_pitch": "0.970684",
+        "camera_pitch": "1.224777",
         "camera_pos_x": "4.355863",
         "camera_pos_y": "-6.711837",
         "camera_pos_z": "0.331417",
         "camera_target_x": "0.000000",
         "camera_target_y": "1.000000",
         "camera_target_z": "0.000000",
-        "camera_yaw": "4.755558",
+        "camera_yaw": "4.421198",
         "dist_cx": "0.000000",
         "dist_cy": "0.000000",
         "dist_cz": "0.150000",
@@ -2405,9 +2034,7 @@
     {
       "displayName": "strata_bg 2",
       "enabled": true,
-      "expressions": {
-        "palette_variant": "ref(\"strata_control/control_outputs/palette\")"
-      },
+      "expressions": null,
       "fitMode": 1,
       "id": "strata_bg",
       "inputSlotSourceIds": [],
@@ -2430,47 +2057,9 @@
       "type": "module"
     },
     {
-      "displayName": "strata_control 2",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "strata_control",
-      "inputSlotSourceIds": [
-        "features_0"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "strata_control",
-      "panelOpen": false,
-      "parameters": {
-        "blob_mix": "1.000000",
-        "feature_enabled": "1.000000",
-        "feature_gain": "0.580000",
-        "marble_mix": "0.820000",
-        "marble_warp_macro": "0.750000",
-        "marks_mix": "0.351000",
-        "master_seed": "12.000000",
-        "melt_macro": "0.280000",
-        "palette_variant": "0.000000",
-        "project_dir": "modules/strata_control",
-        "resolution_height": "540",
-        "resolution_width": "960",
-        "spread_macro": "1.000000",
-        "twist_macro": "0.220000",
-        "wire_mix": "0.000000",
-        "wire_scale_macro": "0.820000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
       "displayName": "marks 2",
       "enabled": true,
-      "expressions": {
-        "mark_seed": "ref(\"strata_control/control_outputs/seed\") * 1.3 + 3.0",
-        "palette_variant": "ref(\"strata_control/control_outputs/palette\")"
-      },
+      "expressions": null,
       "fitMode": 1,
       "id": "marks",
       "inputSlotSourceIds": [],
@@ -2498,15 +2087,12 @@
     {
       "displayName": "corner_thread 2",
       "enabled": true,
-      "expressions": {
-        "intensity": "ref(\"strata_control/control_outputs/feature_enabled\") * ref(\"strata_control/control_outputs/feature_gain\")",
-        "palette_variant": "ref(\"strata_control/control_outputs/palette\")"
-      },
+      "expressions": null,
       "fitMode": 1,
       "id": "corner_thread",
       "inputSlotSourceIds": [
         "plate_comp",
-        "Feature_Downscale",
+        "features_0",
         "features_0"
       ],
       "outputFitMode": 1,
@@ -2535,28 +2121,6 @@
         "thread_color_g": "0.752660",
         "thread_color_r": "0.687101",
         "thread_mode": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "Feature Downscale",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "Feature_Downscale",
-      "inputSlotSourceIds": [
-        "plate_comp"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "Feature_Downscale",
-      "panelOpen": false,
-      "parameters": {
-        "project_dir": "modules/feature_downscale",
-        "resolution_height": "480",
-        "resolution_width": "320"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -2599,7 +2163,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1785290884570,
+  "saved_at_ms": 1785411314277,
   "sources": [],
   "version": 5,
   "viewportTarget": "blob_render"

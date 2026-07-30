@@ -124,7 +124,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     BlobPart d = basePart(i);
 
-    // ---- external arrangement transforms (driveable from strata_control) ----
+    // ---- externally driveable arrangement transforms ----
     static const float3 CENTER = float3(0.0, 0.0, 0.15);
     float3 pos = float3(d.pos_xy.x, d.pos_xy.y, d.pos_z);
 

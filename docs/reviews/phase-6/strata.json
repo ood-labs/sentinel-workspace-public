@@ -1,0 +1,96 @@
+{
+  "project": "projects/strata/strata.sentinel",
+  "source_commit": "c188de2a73383a0822b22d0468134514585ba1b6",
+  "local_overlay_commit_or_diff": "User-tuned graph and G5 control-bus removal on 2026-07-30",
+  "promoted_paths": [
+    "projects/strata/README.md",
+    "projects/strata/strata.sentinel",
+    "projects/strata/modules/"
+  ],
+  "structure": {
+    "pipeline_count": 10,
+    "scene_groups": 1,
+    "child_groups": 0,
+    "group_outputs": 0,
+    "video_links": 9,
+    "data_links": 2,
+    "expression_drivers": 0,
+    "removed_nodes": [
+      "strata_control",
+      "Feature_Downscale"
+    ]
+  },
+  "approved_change": {
+    "control_bus": "removed completely",
+    "former_driver_count": 14,
+    "bake_strategy": "Every evaluated target value was read and written onto its owning node before the expressions were cleared.",
+    "stale_state_removed": [
+      "backward Features-to-control data link",
+      "Scene Group preset snapshots",
+      "project-scoped control-bus node preset",
+      "saved window layout entries",
+      "bundled strata_control module",
+      "bundled feature_downscale module"
+    ]
+  },
+  "features": {
+    "input": "plate_comp full-resolution output",
+    "analysis_downsample": "4x",
+    "analysis_extent": "180x270",
+    "video_output": "720x1080",
+    "corner_count_at_review": 15,
+    "separate_proxy": false
+  },
+  "scene_group": {
+    "name": "STRATA",
+    "exposed_controls": 5,
+    "presets": [
+      "Clean Studio",
+      "Melted Chrome",
+      "Graphic Poster",
+      "Wire Cage",
+      "Performance"
+    ],
+    "node_presets": [
+      "Hero Sculpture"
+    ]
+  },
+  "runtime": {
+    "healthy_nodes": 10,
+    "unhealthy_nodes": 0,
+    "renderer_resolution": "720x1080",
+    "renderer_cook_hz": 60.0,
+    "features_cook_hz": 60.0,
+    "features_wall_time_ms": 3.4516,
+    "features_analysis_downsample": "4x",
+    "graph_frame_ms_sample": 7.0252,
+    "gpu_ms_sample": 0.9603,
+    "hotspots": []
+  },
+  "motion_proof": {
+    "path": "captures/phase6_strata_approved/motion.mp4",
+    "duration_seconds": 3.918467,
+    "resolution": "720x1080",
+    "frames": 236,
+    "frame_rate": 60,
+    "assertion": "The approved composition retains continuous background, sculpture, and feature-thread evolution after the control bus is removed."
+  },
+  "proof": {
+    "bundle": "captures/phase6_strata_approved",
+    "pre_removal_checkpoint": "captures/phase6_strata_pre_control_removal",
+    "clean_reload": true,
+    "saved_project_json_valid": true
+  },
+  "portability": {
+    "module_paths": "relative projects/strata/modules/* paths",
+    "absolute_paths": [],
+    "engine_packs_required": [],
+    "validator_passed": false,
+    "notes": "Full release-set validation remains part of the pending G1/G13 flow."
+  },
+  "human_gate": {
+    "gate_id": "G5",
+    "status": "approved",
+    "notes": "The user removed the redundant control bus, tuned the built-in Features analysis downsample, reviewed the final output, and explicitly approved Strata."
+  }
+}
