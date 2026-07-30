@@ -1,0 +1,44 @@
+{
+  "project": "projects/streamdiff_workflows/02_depth_parallax_zoom.sentinel",
+  "source_commit": "cbef9e5",
+  "workflow": "02_depth_parallax_zoom",
+  "source_resolution": "Kept the committed Phase 6 source and saved the user-approved live state.",
+  "graph": {
+    "pipeline_count": 1,
+    "final_pipeline": "streamdiff_0",
+    "processing_resolution": "896x512",
+    "engine_tier": "SDXL ControlNet + IP-Adapter",
+    "engine_precision": "FP16"
+  },
+  "approved_state": {
+    "zoom": 0.02,
+    "depth_parallax": true,
+    "parallax_height": 0.039,
+    "controlnet_enabled": true,
+    "controlnet_auto_depth": true,
+    "controlnet_scale": 0.499,
+    "frame_skip": 3
+  },
+  "executing_assertion": {
+    "assertion": "Depth-enabled motion produces near/far displacement correlated with auto-depth; the flat-depth control removes the depth reprojection.",
+    "depth_enabled_evidence": "captures/phase6_streamdiff_workflow_02_approved/depth_enabled.mp4",
+    "flat_depth_control": "captures/phase6_streamdiff_workflow_02_approved/flat_depth_control.mp4",
+    "baseline_restored": true
+  },
+  "runtime": {
+    "healthy": true,
+    "frames_progressing": true,
+    "observed_fps": 57.8,
+    "has_preview": true,
+    "unresolved_project_dirs": []
+  },
+  "proof": {
+    "bundle": "captures/phase6_streamdiff_workflow_02_approved",
+    "project_saved": true
+  },
+  "human_gate": {
+    "gate_id": "G8",
+    "workflow_decision": "approved",
+    "notes": "The user reviewed the live depth-parallax zoom and explicitly approved it."
+  }
+}
