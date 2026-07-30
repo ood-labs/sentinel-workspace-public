@@ -36,6 +36,33 @@ function Get-Sha256([string]$Path) {
     return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
 }
 
+function Get-ManagedSha256([string]$Path, [string[]]$TextExtensions) {
+    $name = [IO.Path]::GetFileName($Path)
+    $extension = [IO.Path]::GetExtension($Path).ToLowerInvariant()
+    $isText = $extension -in $TextExtensions -or
+        $name -in @('.gitignore', '.sentinel-workspace-version', 'LICENSE')
+    if (-not $isText) { return Get-Sha256 $Path }
+
+    $bytes = [IO.File]::ReadAllBytes($Path)
+    $canonical = [Collections.Generic.List[byte]]::new($bytes.Length)
+    for ($index = 0; $index -lt $bytes.Length; $index++) {
+        if ($bytes[$index] -eq 13) {
+            if ($index + 1 -lt $bytes.Length -and $bytes[$index + 1] -eq 10) {
+                $index++
+            }
+            $canonical.Add(10)
+        } else {
+            $canonical.Add($bytes[$index])
+        }
+    }
+    $sha = [Security.Cryptography.SHA256]::Create()
+    try {
+        return ([BitConverter]::ToString($sha.ComputeHash($canonical.ToArray())) -replace '-', '').ToLowerInvariant()
+    } finally {
+        $sha.Dispose()
+    }
+}
+
 function Add-Unique([Collections.Generic.List[string]]$List, [string]$Value) {
     if ($Value -and -not $List.Contains($Value)) { $List.Add($Value) }
 }
@@ -780,7 +807,7 @@ if ($null -ne $workspaceManifest) {
         $relative = ([string]$entry.path).Replace('\', '/')
         $full = Join-Path $rootFull $relative.Replace('/', '\')
         if (-not (Test-Path -LiteralPath $full -PathType Leaf)) { continue }
-        $actualHash = Get-Sha256 $full
+        $actualHash = Get-ManagedSha256 $full @($config.TextExtensions)
         $declaredHash = ([string]$entry.sha256).ToLowerInvariant()
         if ($actualHash -ne $declaredHash) {
             $manifestHashMismatches.Add($relative)

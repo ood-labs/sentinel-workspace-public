@@ -50,6 +50,37 @@ function Assert-Sha256([string]$Hash, [string]$Context) {
     return $Hash
 }
 
+function Get-ManagedSha256([string]$Path, [string[]]$TextExtensions) {
+    $name = [IO.Path]::GetFileName($Path)
+    $extension = [IO.Path]::GetExtension($Path).ToLowerInvariant()
+    $isText = $extension -in $TextExtensions -or
+        $name -in @('.gitignore', '.sentinel-workspace-version', 'LICENSE')
+    if (-not $isText) {
+        return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
+    }
+
+    # Hash canonical LF bytes so the install manifest is invariant to Git's
+    # checkout-time CRLF conversion on Windows.
+    $bytes = [IO.File]::ReadAllBytes($Path)
+    $canonical = [Collections.Generic.List[byte]]::new($bytes.Length)
+    for ($index = 0; $index -lt $bytes.Length; $index++) {
+        if ($bytes[$index] -eq 13) {
+            if ($index + 1 -lt $bytes.Length -and $bytes[$index + 1] -eq 10) {
+                $index++
+            }
+            $canonical.Add(10)
+        } else {
+            $canonical.Add($bytes[$index])
+        }
+    }
+    $sha = [Security.Cryptography.SHA256]::Create()
+    try {
+        return ([BitConverter]::ToString($sha.ComputeHash($canonical.ToArray())) -replace '-', '').ToLowerInvariant()
+    } finally {
+        $sha.Dispose()
+    }
+}
+
 if (-not $SourceCommit) {
     $SourceCommit = (git -C $rootFull rev-parse HEAD)
     if ($LASTEXITCODE -ne 0) { throw 'git rev-parse HEAD failed.' }
@@ -116,7 +147,7 @@ foreach ($relative in $managedPaths) {
     }
     $files.Add([ordered]@{
         path = $relative
-        sha256 = (Get-FileHash -LiteralPath $full -Algorithm SHA256).Hash.ToLowerInvariant()
+        sha256 = Get-ManagedSha256 $full @($config.TextExtensions)
     })
 }
 

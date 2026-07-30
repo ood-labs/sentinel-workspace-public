@@ -261,6 +261,7 @@ float4 mainImage(float2 uv) { return float4(leaked_fixture(), uv, 1.0); }
         Prefixes = @()
         Files = @('README.md')
     }
+    TextExtensions = @('.md')
 }
 '@
     $manifestPath = Join-Path $manifestRoot '.sentinel-workspace-manifest.json'
@@ -316,6 +317,17 @@ float4 mainImage(float2 uv) { return float4(leaked_fixture(), uv, 1.0); }
     if (@($updatedManifest.orphan_candidates).Count -ne 1 -or
         $updatedManifest.orphan_candidates[0].path -ne 'retired/example.txt') {
         throw 'Manifest updater did not retain the safe hash-pinned tombstone.'
+    }
+    $lfManifestHash = [string]$updatedManifest.files[0].sha256
+    [IO.File]::WriteAllText(
+        (Join-Path $manifestRoot 'README.md'),
+        "fixture`r`n",
+        [Text.UTF8Encoding]::new($false)
+    )
+    & $manifestUpdater -Root $manifestRoot -ConfigPath $manifestConfig -SourceCommit $zeroCommit | Out-Null
+    $crlfManifest = [IO.File]::ReadAllText($manifestPath) | ConvertFrom-Json
+    if ([string]$crlfManifest.files[0].sha256 -ne $lfManifestHash) {
+        throw 'Managed text hash changed after LF-to-CRLF checkout conversion.'
     }
 
     $previewConfig = Join-Path $testRoot 'preview-config.psd1'

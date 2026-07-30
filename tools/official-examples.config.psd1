@@ -266,7 +266,7 @@
         '*.cso', '*.log', '*.pdb', '*.tmp'
     )
     TextExtensions = @(
-        '.fx', '.hlsl', '.hlsli', '.json', '.md', '.ps1', '.sentinel',
+        '.fx', '.hlsl', '.hlsli', '.json', '.md', '.ps1', '.py', '.sentinel',
         '.txt', '.yaml', '.yml'
     )
 }
