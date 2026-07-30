@@ -1,0 +1,51 @@
+{
+  "project": "projects/scientific_organism/scientific_organism.sentinel",
+  "candidate": "scientific_organism",
+  "source_resolution": "Preserved the user's final live tuning and layout, then saved that exact measured state as the recoverable Performance preset.",
+  "graph": {
+    "pipeline_count": 15,
+    "node_count_including_scene_group": 16,
+    "link_count": 22,
+    "scene_group": "SCIENTIFIC ORGANISM / LIVE INSTRUMENT",
+    "group_output": "Scientific_Organism_Output",
+    "final_pipeline": "Scientific_Final_Grade"
+  },
+  "scene_group": {
+    "flat": true,
+    "nested_groups": 0,
+    "contained_pipelines": 15,
+    "exposed_control_rows": 8,
+    "exposed_compounds": 1,
+    "presets": [
+      "1",
+      "2",
+      "Performance"
+    ],
+    "performance_preset_captures_approved_state": true
+  },
+  "runtime": {
+    "all_pipelines_healthy": true,
+    "all_modules_compiled": true,
+    "frames_progressing": true,
+    "representative_cook_hz": 60.0,
+    "frame_total_ms": 6.1726,
+    "pipeline_ms": 3.3336,
+    "measured_gpu_ms": 1.146816,
+    "hotspots": [],
+    "final_resolution": "1280x720",
+    "unresolved_project_dirs": []
+  },
+  "proof": {
+    "bundle": "captures/phase6_scientific_organism_approved/proof_bundle",
+    "motion": "captures/phase6_scientific_organism_approved/organism_motion.mp4",
+    "motion_frames_written": 472,
+    "motion_frames_dropped": 0,
+    "motion_duration_seconds": 8.034,
+    "project_saved": true
+  },
+  "human_gate": {
+    "gate_id": "G10",
+    "decision": "approved",
+    "notes": "After tuning the project live, the user said it was dialed in, pretty good, and that everything seemed decent."
+  }
+}
