@@ -1,0 +1,71 @@
+name: "Micro Sequencer"
+version: "1.0"
+mode: generator
+resolution: [720, 240]
+
+panel:
+  mode: canvas
+  output: "Sequencer"
+  resolution: follow_panel
+
+data_inputs:
+  - name: "Theme"
+    slot: 0
+    schema:
+      - { name: a, type: float }
+      - { name: b, type: float }
+      - { name: c, type: float }
+      - { name: d, type: float }
+
+viewport:
+  hint: "Set the step rate and click the eight gate cells."
+  controls:
+    - { id: rate, kind: slider, param: rate, rect: [0.555, 0.150, 0.955, 0.325], label: "Rate" }
+    - { id: step_1, kind: toggle, param: step_1, rect: [0.045, 0.470, 0.145, 0.880], label: "Step 1" }
+    - { id: step_2, kind: toggle, param: step_2, rect: [0.159, 0.470, 0.259, 0.880], label: "Step 2" }
+    - { id: step_3, kind: toggle, param: step_3, rect: [0.273, 0.470, 0.373, 0.880], label: "Step 3" }
+    - { id: step_4, kind: toggle, param: step_4, rect: [0.387, 0.470, 0.487, 0.880], label: "Step 4" }
+    - { id: step_5, kind: toggle, param: step_5, rect: [0.501, 0.470, 0.601, 0.880], label: "Step 5" }
+    - { id: step_6, kind: toggle, param: step_6, rect: [0.615, 0.470, 0.715, 0.880], label: "Step 6" }
+    - { id: step_7, kind: toggle, param: step_7, rect: [0.729, 0.470, 0.829, 0.880], label: "Step 7" }
+    - { id: step_8, kind: toggle, param: step_8, rect: [0.843, 0.470, 0.943, 0.880], label: "Step 8" }
+
+parameters:
+  - { name: rate, display: "Steps Per Second", type: float, min: 0.25, max: 8.0, default: 2.0 }
+  - { name: step_1, display: "Step 1", type: bool, default: true }
+  - { name: step_2, display: "Step 2", type: bool, default: false }
+  - { name: step_3, display: "Step 3", type: bool, default: true }
+  - { name: step_4, display: "Step 4", type: bool, default: false }
+  - { name: step_5, display: "Step 5", type: bool, default: true }
+  - { name: step_6, display: "Step 6", type: bool, default: false }
+  - { name: step_7, display: "Step 7", type: bool, default: true }
+  - { name: step_8, display: "Step 8", type: bool, default: false }
+
+buffers:
+  - { name: sequence_state, structured: true, element_size: 16, element_count: 2, persistent: true }
+
+passes:
+  - name: sequence
+    shader: sequence.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:sequence_state"
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:sequence_state" }
+      - { slot: 1, source: "data:0" }
+    output: output
+
+outputs:
+  - { name: "Sequencer", pass: render }
+
+control_outputs:
+  - { name: gate, buffer: sequence_state, element: 0, field_offset: 4, description: "Current step gate (0 or 1)" }
+  - { name: step, buffer: sequence_state, element: 0, field_offset: 8, description: "Current zero-based step index" }
+  - { name: step_count, buffer: sequence_state, element: 0, field_offset: 12, description: "Monotonic edge counter for reliable downstream triggers" }
+  - { name: phase, buffer: sequence_state, element: 0, field_offset: 0, description: "Continuity-safe eight-step cycle phase" }

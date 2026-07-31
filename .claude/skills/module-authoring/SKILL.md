@@ -208,6 +208,10 @@ parameters:
 - `color` is RGB (`float3`); for RGBA use `type: vec4`.
 - Compounds decompose into per-channel StateTree nodes (`tint_r/_g/_b`, `center_x/_y`),
   each independently OSC-mappable; the UI folds them into one color picker / XY pad.
+- Keep `point2D` values unmodified. When drawing or hit-testing a spatial pad, vendor
+  and use the Style Authority `sui3PadPoint` / `sui3PadValue` contract; never add a
+  local `1.0 - value.y`, never publish a flipped copy, and prove top/bottom through
+  real pad interaction plus parameter and output readback.
 - A `group: "Parent/Child"` label nests a collapsible sub-tree in the Properties panel.
 - The manifests under this skill's `examples/` directory demonstrate compound controls, enums, buffers, and multi-pass outputs.
 

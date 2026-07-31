@@ -275,6 +275,8 @@ Modules can declare viewport behavior in a manifest `viewport:` block: a `hint` 
 
 Do not build authored Canvas panels that merely duplicate Properties sliders. Keep exact numeric shaping, colors, toggles, and ordinary enums in Properties. Use viewport UI for interactions Properties cannot express well: selecting and moving objects, editing points and splines, painting fields, manipulating regions and falloffs, camera/gizmo work, spatial triggers, and performance gestures. Keep telemetry compact and contextual.
 
+Follow Interaction Lab's Style Authority contract for every `point2D` or `xypad`. The host parameter is the single source of truth and remains unmodified in state, data, and control outputs. Declare a plain non-inverted control rectangle; render through the project-local `sui3PadPoint` helper and invert through `sui3PadValue` when needed. Never hand-roll pad coordinate arithmetic, never add `1.0 - value.y` outside that shared helper, and never publish a flipped copy. Before accepting any XY control, drive the real pad at top and bottom and prove that the stored value, published value, readout, and rendered reticle all agree. Reference: `projects/interaction_lab/modules/Style_Authority/`.
+
 Separate the canonical Program renderer from the flexible editor Canvas. The renderer keeps an intentional output such as 1280x720. A `follow_panel` editor displays an aspect-correct fitted or cropped Program preview, remaps pointer coordinates into that stage rectangle, owns durable interaction state, and publishes structured control data for the renderer. Do not make the final renderer inherit an arbitrary dock aspect and do not stretch a canonical image to fill the panel. Use unused panel space for contextual tools or gutters. Prove click, drag, selection, clear, and other primary gestures with real viewport input. See `knowledge/ui-authoring.md`.
 
 ## Choreography And Sequencing
@@ -311,7 +313,7 @@ The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `renam
 
 ## Outputs
 
-Create Spout or NDI outputs with `sentinel_pipeline action=create_output`, then wire or route graph output as needed. Use `sentinel_pipeline info`, capture actions, and output object commands to verify frames are actually moving.
+Never create a Spout output, NDI output, output node, or external sender as a default finishing step. A request to make a complete graph, composition, scene, project, capture, or proof does not authorize an output node. Create one only when the user explicitly asks for Spout, NDI, an external sender, or an output node. When explicitly requested, use `sentinel_pipeline action=create_output`, wire or route it, and verify that frames are actually moving. Otherwise finish at the final processing or renderer pipeline and use its preview/capture for proof.
 
 OSC receive configuration is available through StateTree. Read or set `/sentinel/osc/receive_port`, then verify the OSC section in `sentinel_app action=diagnostic` or by sending a real OSC message.
 

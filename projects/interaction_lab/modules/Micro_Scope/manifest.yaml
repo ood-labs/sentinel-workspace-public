@@ -1,0 +1,55 @@
+name: "Micro Scope"
+version: "1.0"
+mode: generator
+resolution: [640, 260]
+
+panel:
+  mode: canvas
+  output: "Scope"
+  resolution: follow_panel
+
+data_inputs:
+  - name: "Theme"
+    slot: 0
+    schema:
+      - { name: a, type: float }
+      - { name: b, type: float }
+      - { name: c, type: float }
+      - { name: d, type: float }
+
+viewport:
+  hint: "Drive Signal with an expression; drag Span to change the visible window."
+  controls:
+    - { id: span, kind: slider, param: time_span, rect: [0.650, 0.790, 0.955, 0.930], label: "Span" }
+
+parameters:
+  - { name: signal, display: "Signal", type: float, min: -10.0, max: 10.0, default: 0.0 }
+  - { name: time_span, display: "Span Seconds", type: float, min: 0.5, max: 4.0, default: 2.0 }
+
+buffers:
+  - { name: scope, structured: true, element_size: 16, element_count: 258, persistent: true }
+
+passes:
+  - name: sample
+    shader: sample.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:scope"
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:scope" }
+      - { slot: 1, source: "data:0" }
+    output: output
+
+outputs:
+  - { name: "Scope", pass: render }
+
+control_outputs:
+  - { name: current, buffer: scope, element: 1, field_offset: 8, description: "Current scalar value" }
+  - { name: recent_min, buffer: scope, element: 1, field_offset: 0, description: "Exact minimum in the retained sample window" }
+  - { name: recent_max, buffer: scope, element: 1, field_offset: 4, description: "Exact maximum in the retained sample window" }

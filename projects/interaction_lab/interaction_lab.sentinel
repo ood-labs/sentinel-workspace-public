@@ -4,7 +4,7 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 0.24769702553749084,
+    "canvasZoom": 1.5,
     "links": [
       {
         "endPinId": 116,
@@ -15,11 +15,31 @@
         "endPinId": 123,
         "id": 6,
         "startPinId": 120
+      },
+      {
+        "endPinId": 168,
+        "id": 8,
+        "startPinId": 34
+      },
+      {
+        "endPinId": 173,
+        "id": 9,
+        "startPinId": 34
+      },
+      {
+        "endPinId": 178,
+        "id": 10,
+        "startPinId": 34
+      },
+      {
+        "endPinId": 184,
+        "id": 11,
+        "startPinId": 34
       }
     ],
-    "nextLinkId": 8,
-    "nextNodeId": 32,
-    "nextPinId": 168,
+    "nextLinkId": 12,
+    "nextNodeId": 36,
+    "nextPinId": 190,
     "nodes": [
       {
         "displayName": "Style Authority",
@@ -27,6 +47,16 @@
         "id": 14,
         "posX": -254.20193481445313,
         "posY": 382.0831298828125,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Signal Trails",
+        "entityId": "Signal_Trails",
+        "id": 31,
+        "posX": 352.5657958984375,
+        "posY": 731.8773803710938,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -92,11 +122,41 @@
         "type": 1
       },
       {
-        "displayName": "Signal Trails",
-        "entityId": "Signal_Trails",
-        "id": 31,
-        "posX": 352.5657958984375,
-        "posY": 731.8773803710938,
+        "displayName": "Micro LFO",
+        "entityId": "Micro_LFO",
+        "id": 32,
+        "posX": 332.5084228515625,
+        "posY": 382.0831298828125,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Micro Scope",
+        "entityId": "Micro_Scope",
+        "id": 33,
+        "posX": 516.0072631835938,
+        "posY": 382.0830993652344,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Micro Sequencer",
+        "entityId": "Micro_Sequencer",
+        "id": 34,
+        "posX": 751.7991943359375,
+        "posY": 382.0830993652344,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "Micro Envelope",
+        "entityId": "Micro_Envelope",
+        "id": 35,
+        "posX": 987.7991943359375,
+        "posY": 382.0830993652344,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -766,13 +826,189 @@
         "nodeId": 31,
         "slotIndex": 11,
         "type": 7
+      },
+      {
+        "id": 168,
+        "kind": 0,
+        "name": "Theme",
+        "nodeId": 32,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 169,
+        "kind": 1,
+        "name": "LFO",
+        "nodeId": 32,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 170,
+        "kind": 1,
+        "name": "value",
+        "nodeId": 32,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 171,
+        "kind": 1,
+        "name": "bipolar",
+        "nodeId": 32,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 172,
+        "kind": 1,
+        "name": "phase",
+        "nodeId": 32,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 173,
+        "kind": 0,
+        "name": "Theme",
+        "nodeId": 33,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 174,
+        "kind": 1,
+        "name": "Scope",
+        "nodeId": 33,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 175,
+        "kind": 1,
+        "name": "current",
+        "nodeId": 33,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 176,
+        "kind": 1,
+        "name": "recent_min",
+        "nodeId": 33,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 177,
+        "kind": 1,
+        "name": "recent_max",
+        "nodeId": 33,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 178,
+        "kind": 0,
+        "name": "Theme",
+        "nodeId": 34,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 179,
+        "kind": 1,
+        "name": "Sequencer",
+        "nodeId": 34,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 180,
+        "kind": 1,
+        "name": "gate",
+        "nodeId": 34,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 181,
+        "kind": 1,
+        "name": "step",
+        "nodeId": 34,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 182,
+        "kind": 1,
+        "name": "step_count",
+        "nodeId": 34,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 183,
+        "kind": 1,
+        "name": "phase",
+        "nodeId": 34,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 184,
+        "kind": 0,
+        "name": "Theme",
+        "nodeId": 35,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 185,
+        "kind": 1,
+        "name": "Envelope",
+        "nodeId": 35,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 186,
+        "kind": 1,
+        "name": "value",
+        "nodeId": 35,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 187,
+        "kind": 1,
+        "name": "gate",
+        "nodeId": 35,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 188,
+        "kind": 1,
+        "name": "rise_count",
+        "nodeId": 35,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 189,
+        "kind": 1,
+        "name": "fall_count",
+        "nodeId": 35,
+        "slotIndex": 4,
+        "type": 7
       }
     ]
   },
   "input": {
     "activeSource": ""
   },
-  "layout": "[Window][Terminal]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Sources]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Outputs]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Stats]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Log]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Properties]\nPos=2098,25\nSize=462,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,1157\nSize=1222,420\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][GridInner]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][GridOuter]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Save Group Preset##group_preset_save]\nPos=638,324\nSize=324,855\nCollapsed=0\n\n[Window][Delete Group Preset##group_preset_delete]\nPos=1784,983\nSize=272,122\nCollapsed=0\n\n[Window][Phase79_A1_Color]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Settings]\nPos=590,200\nSize=420,500\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][GroupSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][GroupRangeEdit]\nPos=653,382\nSize=294,136\nCollapsed=0\n\n[Window][Phase83_Wired_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Show_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][streamdiff_1]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][Group_Output_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,3\n\n[Window][Phase84BaselineCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase84PostFixCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase84StreamDiff]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase84OutlineTarget]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Phase84Ripple]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase84Different]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Phase84NoViewport]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][Phase84DeclaredGate]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,4\n\n[Window][Phase84CameraAuto]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][OrbitProof]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][NonCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][BoundSphere]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][View_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Camera_Mux]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Switched_View]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase85Compound]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][GroupCompoundSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][Phase85LegacyFlat]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase85DistCompound]\nPos=0,25\nSize=1571,448\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Legacy_Stream_Target]\nPos=0,25\nSize=1222,252\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Presets]\nPos=60,60\nSize=350,500\nCollapsed=0\n\n[Window][Save Preset]\nPos=600,164\nSize=400,572\nCollapsed=0\n\n[Window][Edit Preset Stack]\nPos=590,244\nSize=420,411\nCollapsed=0\n\n[Window][Rename Node Preset]\nPos=668,397\nSize=264,105\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=730,402\nSize=140,95\nCollapsed=0\n\n[Window][Save Group Preset]\nPos=570,70\nSize=460,760\nCollapsed=0\n\n[Window][Save Node Preset]\nPos=700,233\nSize=420,515\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][grid_warp]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][atmosphere]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000013,3\n\n[Window][field_gen]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][link_render]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_srv_spike]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_keyboard]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_keyboard_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_keyboard_series]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_keyboard_hold]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_control]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_double]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_drag]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_wheel]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_storm]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_idle]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_srv_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][mouse_compat_active]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][surface_split_smoke]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][final_surface_smoke]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_bindings_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_bindings_focus_reload]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_arbitration_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase_88_Arbitration]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase88_Mouse_Compat]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Viewport_Ripple]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase88_Replay]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Click_Ripples]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Controls89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Scene89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Big89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][Gizmo_Lab]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Spline_Editor]\nPos=0,25\nSize=587,834\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Spline_Output]\nPos=861,25\nSize=866,851\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][UI_Kit]\nPos=1479,25\nSize=703,834\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Font_Sampler]\nPos=0,25\nSize=1380,1346\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][UI_Kit_V2_Test]\nPos=0,25\nSize=1087,587\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][UI_Style_Tuner]\nPos=2759,25\nSize=703,1346\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Spline_V2_Test]\nPos=0,614\nSize=1087,590\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Gizmo_V2_Test]\nPos=1089,25\nSize=1093,1179\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][VP_Controls]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][VP_Ripple]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][VP_Pointer]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,3\n\n[Window][Ripple_Storm]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][HR_Precision]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,4\n\n[Window][UI_Skill_Smoke]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x00000013,4\n\n[Window][signal]\nPos=0,25\nSize=1108,1399\nCollapsed=0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1399\nCollapsed=0\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\n\n[Window][Editorial_Post]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_control]\nPos=0,25\nSize=1040,1399\nCollapsed=0\n\n[Window][post_2]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\n\n[Window][Desert_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Industrial_Group_Output]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Gallery_Scene_Switcher]\nPos=992,25\nSize=173,100\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=586,657\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_Group_Output]\nPos=133,142\nSize=1619,683\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Food_Collage]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Motion_Console]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Style_Authority]\nPos=0,25\nSize=1116,593\nCollapsed=0\nDockId=0x00000015,1\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=1116,593\nCollapsed=0\nDockId=0x00000015,0\n\n[Window][Spline_Desk]\nPos=1118,780\nSize=978,375\nCollapsed=0\nDockId=0x00000014,0\n\n[Window][Gizmo_Desk]\nPos=1118,25\nSize=978,753\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Spline_Output_V3]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x00000013,3\n\n[Window][Scope_Audio]\nPos=861,25\nSize=866,851\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][Data_Scope]\nPos=0,620\nSize=559,535\nCollapsed=0\nDockId=0x00000017,0\n\n[Window][Signal_Trails]\nPos=561,620\nSize=555,535\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][label_gen]\nPos=547,459\nSize=540,427\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=372,772\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1040\nSize=752,537\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,772\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][au_specimen]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_proxy]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_observe]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stabilizer]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_relief]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_grade]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_census]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stylus]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_deck]\nPos=0,25\nSize=751,1396\nCollapsed=0\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][AXIOM_01_PLATE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_02_ANALYSIS_LENS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_12_FRAME_REFINERY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_03_LIVE_ENGRAVER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01B_ORGANIC_MEMBRANE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01A_INTERFERENCE_MASK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_04_TOPOLOGY_COMPILER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_05_PRESSURE_DESK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_07_RESONANCE_ENGINE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_08_TEMPORAL_OSSUARY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_09_KINETIC_CORONA]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_10_IMPRESSION_PRESS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_11_RELIEF_CHAMBER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_13_LIVE_GLYPH_PLATES]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_16_POLYRHYTHM_INSPECTOR]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_06_POLYRHYTHM_RACK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][cloth_pulse]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][substrate]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][02_Stress_Feature_Analysis]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][01_Rupture_Stress_Lattice]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][05_Tactile_Weave_Material]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][03_Rupture_Constraint_Loom]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][04_Rupture_Fabric]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][streamdiff_2]\nPos=0,25\nSize=1166,1396\nCollapsed=0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Docking][Data]\nDockSpace                 ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode                ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=2096,900 Split=Y\n    DockNode              ID=0x00000003 Parent=0x00000001 SizeRef=1222,1130 Split=X Selected=0x60D1231E\n      DockNode            ID=0x00000007 Parent=0x00000003 SizeRef=878,760 Split=Y Selected=0x3B5B8D41\n        DockNode          ID=0x00000009 Parent=0x00000007 SizeRef=878,525 Selected=0x3B5B8D41\n        DockNode          ID=0x0000000A Parent=0x00000007 SizeRef=878,463 Selected=0x37544B19\n      DockNode            ID=0x00000008 Parent=0x00000003 SizeRef=1302,760 Split=X Selected=0x5A80C6E1\n        DockNode          ID=0x0000000B Parent=0x00000008 SizeRef=1087,990 Split=Y Selected=0x3B5B8D41\n          DockNode        ID=0x0000000D Parent=0x0000000B SizeRef=1087,587 Selected=0x3B5B8D41\n          DockNode        ID=0x0000000E Parent=0x0000000B SizeRef=1087,590 Selected=0x37544B19\n        DockNode          ID=0x0000000C Parent=0x00000008 SizeRef=1093,990 Split=X Selected=0x4FC197DD\n          DockNode        ID=0x0000000F Parent=0x0000000C SizeRef=517,700 Split=X Selected=0x97D3354D\n            DockNode      ID=0x00000011 Parent=0x0000000F SizeRef=1116,851 Split=Y Selected=0xBF3E555A\n              DockNode    ID=0x00000015 Parent=0x00000011 SizeRef=859,593 Selected=0xBF3E555A\n              DockNode    ID=0x00000016 Parent=0x00000011 SizeRef=859,535 Split=X Selected=0x0636636E\n                DockNode  ID=0x00000017 Parent=0x00000016 SizeRef=559,650 Selected=0x0636636E\n                DockNode  ID=0x00000018 Parent=0x00000016 SizeRef=555,650 Selected=0x97D3354D\n            DockNode      ID=0x00000012 Parent=0x0000000F SizeRef=978,851 Split=Y Selected=0x5765080A\n              DockNode    ID=0x00000013 Parent=0x00000012 SizeRef=1235,753 CentralNode=1 Selected=0x5765080A\n              DockNode    ID=0x00000014 Parent=0x00000012 SizeRef=1235,375 Selected=0xA6A64A9E\n          DockNode        ID=0x00000010 Parent=0x0000000C SizeRef=703,700 Selected=0x1BEB0585\n    DockNode              ID=0x00000004 Parent=0x00000001 SizeRef=1222,420 Split=X\n      DockNode            ID=0x00000005 Parent=0x00000004 SizeRef=872,360 Selected=0xD33228A6\n      DockNode            ID=0x00000006 Parent=0x00000004 SizeRef=1222,360 Selected=0xF12F3499\n  DockNode                ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=462,900 Selected=0x8C72BEA8\n\n",
+  "layout": "[Window][Terminal]\nPos=0,974\nSize=872,603\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Sources]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Outputs]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Stats]\nPos=0,974\nSize=872,603\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Log]\nPos=0,974\nSize=872,603\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Properties]\nPos=2098,25\nSize=462,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,974\nSize=1222,603\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][GridInner]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][GridOuter]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Save Group Preset##group_preset_save]\nPos=638,324\nSize=324,855\nCollapsed=0\n\n[Window][Delete Group Preset##group_preset_delete]\nPos=1784,983\nSize=272,122\nCollapsed=0\n\n[Window][Phase79_A1_Color]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Settings]\nPos=590,200\nSize=420,500\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][GroupSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][GroupRangeEdit]\nPos=653,382\nSize=294,136\nCollapsed=0\n\n[Window][Phase83_Wired_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Show_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][streamdiff_1]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][Group_Output_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,3\n\n[Window][Phase84BaselineCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase84PostFixCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase84StreamDiff]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase84OutlineTarget]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Phase84Ripple]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase84Different]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Phase84NoViewport]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][Phase84DeclaredGate]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,4\n\n[Window][Phase84CameraAuto]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][OrbitProof]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][NonCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][BoundSphere]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][View_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Camera_Mux]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Switched_View]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase85Compound]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][GroupCompoundSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][Phase85LegacyFlat]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase85DistCompound]\nPos=0,25\nSize=1571,448\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Legacy_Stream_Target]\nPos=0,25\nSize=1222,252\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Presets]\nPos=60,60\nSize=350,500\nCollapsed=0\n\n[Window][Save Preset]\nPos=600,164\nSize=400,572\nCollapsed=0\n\n[Window][Edit Preset Stack]\nPos=590,244\nSize=420,411\nCollapsed=0\n\n[Window][Rename Node Preset]\nPos=668,397\nSize=264,105\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=730,402\nSize=140,95\nCollapsed=0\n\n[Window][Save Group Preset]\nPos=570,70\nSize=460,760\nCollapsed=0\n\n[Window][Save Node Preset]\nPos=700,233\nSize=420,515\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][grid_warp]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][atmosphere]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000013,3\n\n[Window][field_gen]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][link_render]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_srv_spike]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_keyboard]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_keyboard_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_keyboard_series]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_keyboard_hold]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_control]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_double]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_drag]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_wheel]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_storm]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_pointer_idle]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_srv_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][mouse_compat_active]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][surface_split_smoke]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][final_surface_smoke]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_bindings_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_bindings_focus_reload]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][phase88_arbitration_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase_88_Arbitration]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase88_Mouse_Compat]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Viewport_Ripple]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Phase88_Replay]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Click_Ripples]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Controls89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Scene89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Big89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][Gizmo_Lab]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Spline_Editor]\nPos=0,25\nSize=587,834\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Spline_Output]\nPos=861,25\nSize=866,851\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][UI_Kit]\nPos=1479,25\nSize=703,834\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Font_Sampler]\nPos=0,25\nSize=1380,1346\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][UI_Kit_V2_Test]\nPos=0,25\nSize=1087,587\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][UI_Style_Tuner]\nPos=2759,25\nSize=703,1346\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Spline_V2_Test]\nPos=0,614\nSize=1087,590\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Gizmo_V2_Test]\nPos=1089,25\nSize=1093,1179\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][VP_Controls]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][VP_Ripple]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][VP_Pointer]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,3\n\n[Window][Ripple_Storm]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][HR_Precision]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000013,4\n\n[Window][UI_Skill_Smoke]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x00000013,4\n\n[Window][signal]\nPos=0,25\nSize=1108,1399\nCollapsed=0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1399\nCollapsed=0\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\n\n[Window][Editorial_Post]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_control]\nPos=0,25\nSize=1040,1399\nCollapsed=0\n\n[Window][post_2]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\n\n[Window][Desert_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Industrial_Group_Output]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Gallery_Scene_Switcher]\nPos=992,25\nSize=173,100\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=586,657\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_Group_Output]\nPos=133,142\nSize=1619,683\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Food_Collage]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Motion_Console]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x00000013,1\n\n[Window][Style_Authority]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,1\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,0\n\n[Window][Spline_Desk]\nPos=1118,583\nSize=978,389\nCollapsed=0\nDockId=0x00000014,0\n\n[Window][Gizmo_Desk]\nPos=1118,25\nSize=978,556\nCollapsed=0\nDockId=0x00000013,0\n\n[Window][Spline_Output_V3]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x00000013,3\n\n[Window][Scope_Audio]\nPos=861,25\nSize=866,851\nCollapsed=0\nDockId=0x00000013,2\n\n[Window][Data_Scope]\nPos=0,362\nSize=559,610\nCollapsed=0\nDockId=0x00000017,0\n\n[Window][Signal_Trails]\nPos=561,362\nSize=555,610\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][label_gen]\nPos=547,459\nSize=540,427\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=372,772\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1040\nSize=752,537\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,772\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][au_specimen]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_proxy]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_observe]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stabilizer]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_relief]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_grade]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_census]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stylus]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_deck]\nPos=0,25\nSize=751,1396\nCollapsed=0\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][AXIOM_01_PLATE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_02_ANALYSIS_LENS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_12_FRAME_REFINERY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_03_LIVE_ENGRAVER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01B_ORGANIC_MEMBRANE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01A_INTERFERENCE_MASK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_04_TOPOLOGY_COMPILER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_05_PRESSURE_DESK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_07_RESONANCE_ENGINE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_08_TEMPORAL_OSSUARY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_09_KINETIC_CORONA]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_10_IMPRESSION_PRESS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_11_RELIEF_CHAMBER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_13_LIVE_GLYPH_PLATES]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_16_POLYRHYTHM_INSPECTOR]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_06_POLYRHYTHM_RACK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][cloth_pulse]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][substrate]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][02_Stress_Feature_Analysis]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][01_Rupture_Stress_Lattice]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][05_Tactile_Weave_Material]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][03_Rupture_Constraint_Loom]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][04_Rupture_Fabric]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][streamdiff_2]\nPos=0,25\nSize=1166,1396\nCollapsed=0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Window][Archive_Field]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Motion_Score]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Topographic_Organism]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Optical_Pressure]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Signal_Typesetter]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Micro_LFO]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,2\n\n[Window][Micro_Scope]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,3\n\n[Window][Micro_Sequencer]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,4\n\n[Window][Micro_Envelope]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,5\n\n[Docking][Data]\nDockSpace                 ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode                ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=2096,900 Split=Y\n    DockNode              ID=0x00000003 Parent=0x00000001 SizeRef=1222,947 Split=X Selected=0x60D1231E\n      DockNode            ID=0x00000007 Parent=0x00000003 SizeRef=878,760 Split=Y Selected=0x3B5B8D41\n        DockNode          ID=0x00000009 Parent=0x00000007 SizeRef=878,525 Selected=0x3B5B8D41\n        DockNode          ID=0x0000000A Parent=0x00000007 SizeRef=878,463 Selected=0x37544B19\n      DockNode            ID=0x00000008 Parent=0x00000003 SizeRef=1302,760 Split=X Selected=0x5A80C6E1\n        DockNode          ID=0x0000000B Parent=0x00000008 SizeRef=1087,990 Split=Y Selected=0x3B5B8D41\n          DockNode        ID=0x0000000D Parent=0x0000000B SizeRef=1087,587 Selected=0x3B5B8D41\n          DockNode        ID=0x0000000E Parent=0x0000000B SizeRef=1087,590 Selected=0x37544B19\n        DockNode          ID=0x0000000C Parent=0x00000008 SizeRef=1093,990 Split=X Selected=0x4FC197DD\n          DockNode        ID=0x0000000F Parent=0x0000000C SizeRef=517,700 Split=X Selected=0x97D3354D\n            DockNode      ID=0x00000011 Parent=0x0000000F SizeRef=1116,851 Split=Y Selected=0xBF3E555A\n              DockNode    ID=0x00000015 Parent=0x00000011 SizeRef=859,335 Selected=0x720A596C\n              DockNode    ID=0x00000016 Parent=0x00000011 SizeRef=859,610 Split=X Selected=0x0636636E\n                DockNode  ID=0x00000017 Parent=0x00000016 SizeRef=559,650 Selected=0x0636636E\n                DockNode  ID=0x00000018 Parent=0x00000016 SizeRef=555,650 Selected=0x97D3354D\n            DockNode      ID=0x00000012 Parent=0x0000000F SizeRef=978,851 Split=Y Selected=0x5765080A\n              DockNode    ID=0x00000013 Parent=0x00000012 SizeRef=1235,556 CentralNode=1 Selected=0x5765080A\n              DockNode    ID=0x00000014 Parent=0x00000012 SizeRef=1235,389 Selected=0xA6A64A9E\n          DockNode        ID=0x00000010 Parent=0x0000000C SizeRef=703,700 Selected=0x1BEB0585\n    DockNode              ID=0x00000004 Parent=0x00000001 SizeRef=1222,603 Split=X\n      DockNode            ID=0x00000005 Parent=0x00000004 SizeRef=872,360 Selected=0xD33228A6\n      DockNode            ID=0x00000006 Parent=0x00000004 SizeRef=1222,360 Selected=0xF12F3499\n  DockNode                ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=462,900 Selected=0x8C72BEA8\n\n",
   "name": "interaction_lab",
   "nodePresets": [
     {
@@ -1064,15 +1300,74 @@
   ],
   "osc": {
     "enabled": true,
-    "receivePort": 9000,
+    "receivePort": 9002,
     "sendFeedback": true,
     "sendHost": "127.0.0.1",
-    "sendPort": 9001,
+    "sendPort": 9021,
     "stateTreeBridge": true
   },
   "outputObjects": [],
   "outputs": [],
   "pipelines": [
+    {
+      "displayName": "Spline_Output",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Spline_Output",
+      "inputSlotSourceIds": [
+        "Spline_Desk"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Spline_Output",
+      "panelOpen": false,
+      "parameters": {
+        "dash": "1.000000",
+        "dash_count": "48.000000",
+        "intensity": "1.000000",
+        "line_color_b": "0.740000",
+        "line_color_g": "0.720000",
+        "line_color_r": "0.720000",
+        "node_color_b": "0.970000",
+        "node_color_g": "0.960000",
+        "node_color_r": "0.960000",
+        "project_dir": "modules/Spline_Output",
+        "resolution_height": "1080",
+        "resolution_width": "1920",
+        "width": "0.003500"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Micro Envelope",
+      "enabled": true,
+      "expressions": {
+        "gate": "ref(\"Micro_Sequencer/control_outputs/gate\")"
+      },
+      "fitMode": 1,
+      "id": "Micro_Envelope",
+      "inputSlotSourceIds": [
+        "Style_Authority"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Micro_Envelope",
+      "panelOpen": true,
+      "parameters": {
+        "attack": "0.080000",
+        "gate": "1.000000",
+        "project_dir": "modules/Micro_Envelope",
+        "release": "0.350000",
+        "resolution_height": "310",
+        "resolution_width": "1116"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
     {
       "displayName": "Style Authority",
       "enabled": true,
@@ -1092,14 +1387,14 @@
         "control_gap": "8.000000",
         "control_height": "34.000000",
         "demo_bank": "2.000000",
-        "demo_pad_x": "0.752900",
-        "demo_pad_y": "0.000000",
+        "demo_pad_x": "0.340000",
+        "demo_pad_y": "0.680000",
         "demo_toggle": "1.000000",
         "demo_value": "0.620000",
         "exposure": "1.000000",
         "outer_padding": "36.000000",
         "project_dir": "modules/Style_Authority",
-        "resolution_height": "731",
+        "resolution_height": "568",
         "resolution_width": "1116",
         "section_gap": "26.000000",
         "section_scale": "2.000000",
@@ -1143,10 +1438,46 @@
         "nudge_x": "0.060000",
         "nudge_y": "-0.120000",
         "project_dir": "modules/Spline_Desk",
-        "resolution_height": "350",
+        "resolution_height": "364",
         "resolution_width": "978",
         "tangent_cycle": "1.000000",
         "tool_mode": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Signal Trails",
+      "enabled": true,
+      "expressions": {
+        "ch1": "ref(\"Motion_Console/control_outputs/lfo1\")",
+        "ch2": "ref(\"Motion_Console/control_outputs/lfo2\")",
+        "ch3": "ref(\"Motion_Console/control_outputs/lfo3\")",
+        "ch4": "ref(\"Motion_Console/control_outputs/energy\")"
+      },
+      "fitMode": 1,
+      "id": "Signal_Trails",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Signal_Trails",
+      "panelOpen": true,
+      "parameters": {
+        "accent_color_b": "0.090000",
+        "accent_color_g": "0.420000",
+        "accent_color_r": "1.000000",
+        "autoscale": "1.000000",
+        "bipolar": "0.000000",
+        "ch1": "0.578583",
+        "ch2": "0.000000",
+        "ch3": "0.590268",
+        "ch4": "0.292213",
+        "peak_halflife": "6.000000",
+        "project_dir": "modules/signal_trails",
+        "resolution_height": "585",
+        "resolution_width": "555",
+        "span_seconds": "8.000000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -1191,7 +1522,7 @@
         "orbit_axis": "1.000000",
         "orbit_degrees": "40.000000",
         "project_dir": "modules/Gizmo_Desk",
-        "resolution_height": "728",
+        "resolution_height": "531",
         "resolution_width": "978",
         "transform_mode": "0.000000"
       },
@@ -1233,44 +1564,12 @@
         "lfo4_shape": "2.959536",
         "lfo4_speed": "0.349469",
         "master_rate": "2.750714",
-        "motion_bias_x": "0.918201",
-        "motion_bias_y": "0.148360",
+        "motion_bias_x": "0.220311",
+        "motion_bias_y": "0.733675",
         "mute": "0.000000",
         "project_dir": "modules/Motion_Console",
         "resolution_height": "568",
         "resolution_width": "1116"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "Spline_Output",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "Spline_Output",
-      "inputSlotSourceIds": [
-        "Spline_Desk"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "Spline_Output",
-      "panelOpen": false,
-      "parameters": {
-        "dash": "1.000000",
-        "dash_count": "48.000000",
-        "intensity": "1.000000",
-        "line_color_b": "0.740000",
-        "line_color_g": "0.720000",
-        "line_color_r": "0.720000",
-        "node_color_b": "0.970000",
-        "node_color_g": "0.960000",
-        "node_color_r": "0.960000",
-        "project_dir": "modules/Spline_Output",
-        "resolution_height": "1080",
-        "resolution_width": "1920",
-        "width": "0.003500"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -1293,6 +1592,7 @@
         "device_fallback": "default_loopback",
         "device_flow": "0",
         "fft_size": "2",
+        "file_path": "tools/capture_verify/tone_440.wav",
         "file_start_sample": "0",
         "hop_size": "1",
         "no_signal_timeout_s": "5.000000",
@@ -1329,7 +1629,7 @@
         "peak_halflife": "4.000000",
         "project_dir": "modules/data_scope",
         "reference": "0.450000",
-        "resolution_height": "510",
+        "resolution_height": "585",
         "resolution_width": "559",
         "span_seconds": "3.000000"
       },
@@ -1338,43 +1638,89 @@
       "type": "module"
     },
     {
-      "displayName": "Signal Trails",
+      "displayName": "Micro LFO",
       "enabled": true,
-      "expressions": {
-        "ch1": "ref(\"Motion_Console/control_outputs/lfo1\")",
-        "ch2": "ref(\"Motion_Console/control_outputs/lfo2\")",
-        "ch3": "ref(\"Motion_Console/control_outputs/lfo3\")",
-        "ch4": "ref(\"Motion_Console/control_outputs/energy\")"
-      },
+      "expressions": null,
       "fitMode": 1,
-      "id": "Signal_Trails",
-      "inputSlotSourceIds": [],
+      "id": "Micro_LFO",
+      "inputSlotSourceIds": [
+        "Style_Authority"
+      ],
       "outputFitMode": 1,
       "outputSinkId": "",
-      "panelAnchorId": "Signal_Trails",
+      "panelAnchorId": "Micro_LFO",
       "panelOpen": true,
       "parameters": {
-        "accent_color_b": "0.090000",
-        "accent_color_g": "0.420000",
-        "accent_color_r": "1.000000",
-        "autoscale": "1.000000",
-        "bipolar": "0.000000",
-        "ch1": "0.984051",
-        "ch2": "0.000000",
-        "ch3": "0.416477",
-        "ch4": "0.350132",
-        "peak_halflife": "6.000000",
-        "project_dir": "modules/signal_trails",
-        "resolution_height": "510",
-        "resolution_width": "555",
-        "span_seconds": "8.000000"
+        "depth": "1.000000",
+        "project_dir": "modules/Micro_LFO",
+        "rate": "0.499997",
+        "resolution_height": "310",
+        "resolution_width": "1116",
+        "shape": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Micro Scope",
+      "enabled": true,
+      "expressions": {
+        "signal": "ref(\"Micro_LFO/control_outputs/value\")"
+      },
+      "fitMode": 1,
+      "id": "Micro_Scope",
+      "inputSlotSourceIds": [
+        "Style_Authority"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Micro_Scope",
+      "panelOpen": true,
+      "parameters": {
+        "project_dir": "modules/Micro_Scope",
+        "resolution_height": "310",
+        "resolution_width": "1116",
+        "signal": "0.087573",
+        "time_span": "2.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "Micro Sequencer",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "Micro_Sequencer",
+      "inputSlotSourceIds": [
+        "Style_Authority"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "Micro_Sequencer",
+      "panelOpen": true,
+      "parameters": {
+        "project_dir": "modules/Micro_Sequencer",
+        "rate": "1.999996",
+        "resolution_height": "310",
+        "resolution_width": "1116",
+        "step_1": "1.000000",
+        "step_2": "0.000000",
+        "step_3": "1.000000",
+        "step_4": "0.000000",
+        "step_5": "1.000000",
+        "step_6": "0.000000",
+        "step_7": "1.000000",
+        "step_8": "0.000000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
       "type": "module"
     }
   ],
-  "saved_at_ms": 1785408877636,
+  "saved_at_ms": 1785463698313,
   "sources": [],
   "statePayloads": {
     "Gizmo_Desk": {

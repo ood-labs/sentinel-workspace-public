@@ -32,6 +32,7 @@ Read `knowledge/ui-authoring.md` before implementing. Use `knowledge/module-pipe
 - Choose typography, palette, density, and motion for the current project rather than inheriting an example's aesthetic. Preserve every bundled font license.
 - Acquire drag handles on pointer-down and retain ownership through commit/cancel. Do not re-pick during a drag.
 - Use actual `_Resolution` for projection and hit-testing. A hard-coded design resolution must never distort camera-dependent gizmos.
+- Follow Interaction Lab Style Authority exactly for `point2D` and `xypad`: keep the host value unmodified, declare a plain bounding rect, and route all value-to-pixel and pixel-to-value conversion through the project-local `sui3PadPoint` / `sui3PadValue` helpers. Any hand-written `1.0 - value.y` or bare pad `lerp` outside that shared helper is a bug. Prove top and bottom through real viewport drags, parameter readback, published-value readback, and settled captures.
 - Render and hit-test 3D rotation handles from the same projected axis-plane basis.
 - Scale decay by `_DeltaTime`; Module cook rate is not display rate.
 - Do not call an immediate single capture proof of a parameter write. Require a settled frame and live health/readback.

@@ -1,0 +1,59 @@
+name: "Micro Envelope"
+version: "1.0"
+mode: generator
+resolution: [640, 260]
+
+panel:
+  mode: canvas
+  output: "Envelope"
+  resolution: follow_panel
+
+data_inputs:
+  - name: "Theme"
+    slot: 0
+    schema:
+      - { name: a, type: float }
+      - { name: b, type: float }
+      - { name: c, type: float }
+      - { name: d, type: float }
+
+viewport:
+  hint: "Toggle Gate and shape the attack/release response."
+  controls:
+    - { id: gate, kind: toggle, param: gate, rect: [0.550, 0.210, 0.950, 0.350], label: "Gate" }
+    - { id: attack, kind: slider, param: attack, rect: [0.550, 0.475, 0.950, 0.615], label: "Attack" }
+    - { id: release, kind: slider, param: release, rect: [0.550, 0.740, 0.950, 0.880], label: "Release" }
+
+parameters:
+  - { name: gate, display: "Gate", type: bool, default: false }
+  - { name: attack, display: "Attack Seconds", type: float, min: 0.01, max: 2.0, default: 0.08 }
+  - { name: release, display: "Release Seconds", type: float, min: 0.01, max: 4.0, default: 0.35 }
+
+buffers:
+  - { name: envelope_state, structured: true, element_size: 16, element_count: 2, persistent: true }
+
+passes:
+  - name: envelope
+    shader: envelope.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:envelope_state"
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:envelope_state" }
+      - { slot: 1, source: "data:0" }
+    output: output
+
+outputs:
+  - { name: "Envelope", pass: render }
+
+control_outputs:
+  - { name: value, buffer: envelope_state, element: 0, field_offset: 0, description: "Smoothed attack/release envelope (0-1)" }
+  - { name: gate, buffer: envelope_state, element: 0, field_offset: 4, description: "Current target gate (0 or 1)" }
+  - { name: rise_count, buffer: envelope_state, element: 0, field_offset: 8, description: "Monotonic rising-edge counter" }
+  - { name: fall_count, buffer: envelope_state, element: 0, field_offset: 12, description: "Monotonic falling-edge counter" }

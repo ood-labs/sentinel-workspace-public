@@ -1,0 +1,58 @@
+name: "Micro LFO"
+version: "1.0"
+mode: generator
+resolution: [640, 300]
+
+panel:
+  mode: canvas
+  output: "LFO"
+  resolution: follow_panel
+
+data_inputs:
+  - name: "Theme"
+    slot: 0
+    schema:
+      - { name: a, type: float }
+      - { name: b, type: float }
+      - { name: c, type: float }
+      - { name: d, type: float }
+
+viewport:
+  hint: "Drag rate, depth, and shape. The live scalar is published as Value."
+  controls:
+    - { id: rate,  kind: slider, param: rate,  rect: [0.560, 0.205, 0.950, 0.370], label: "Rate" }
+    - { id: depth, kind: slider, param: depth, rect: [0.560, 0.485, 0.950, 0.650], label: "Depth" }
+    - { id: shape, kind: slider, param: shape, rect: [0.560, 0.765, 0.950, 0.930], label: "Shape" }
+
+parameters:
+  - { name: rate, display: "Rate", type: float, min: 0.02, max: 8.0, default: 0.50 }
+  - { name: depth, display: "Depth", type: float, min: 0.0, max: 1.0, default: 1.0 }
+  - { name: shape, display: "Shape", type: float, min: 0.0, max: 3.0, default: 0.0 }
+
+buffers:
+  - { name: lfo_state, structured: true, element_size: 16, element_count: 1, persistent: true }
+
+passes:
+  - name: lfo
+    shader: lfo.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:lfo_state"
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:lfo_state" }
+      - { slot: 1, source: "data:0" }
+    output: output
+
+outputs:
+  - { name: "LFO", pass: render }
+
+control_outputs:
+  - { name: value, buffer: lfo_state, element: 0, field_offset: 4, description: "Depth-scaled unipolar LFO (0-1)" }
+  - { name: bipolar, buffer: lfo_state, element: 0, field_offset: 8, description: "Depth-scaled bipolar LFO (-1 to 1)" }
+  - { name: phase, buffer: lfo_state, element: 0, field_offset: 0, description: "Continuity-safe accumulated phase (0-1)" }

@@ -148,7 +148,7 @@ Max-reduce is wrong in the other direction. When the plot has more pixel columns
 
 **Scale the reference line too.** Pass any threshold or reference level into `sui3FullScale` as `refLevel`. A threshold set above the recent peak otherwise pins itself to the top edge, where it stops reading as a threshold and becomes the rect border, losing the one thing the strip is for: how far under the line the peaks are falling.
 
-The strip's Y is value-up, so value 0 sits on the bottom edge. That is the opposite of `sui3PadPoint` and it is deliberate. A pad's Y direction is forced by the host, which currently disagrees with itself about it; a plot's value is the module's own and follows the convention every measuring instrument already uses. Time runs oldest-left to newest-right, so the trace scrolls right to left.
+The strip's Y is value-up, so value 0 sits on the bottom edge. This matches Style Authority's pad contract: the host value remains unmodified everywhere, and pad rendering goes through `sui3PadPoint`. Do not reproduce the helper with local `1.0 - value.y` arithmetic; centralizing the conversion is what prevents the host, Properties, published data, readout, and reticle from drifting apart. Time runs oldest-left to newest-right, so the trace scrolls right to left.
 
 Do not reach for this when a single current value is the whole story. A number, a bar, or a meter is more legible than a trace, and a trace of a value that does not change is a horizontal line that costs a ring buffer.
 

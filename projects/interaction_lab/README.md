@@ -1,8 +1,8 @@
 # Interaction Lab
 
-Interaction Lab is a bundled example project for authored viewport tools. It is four stations,
-each a full-panel authored interface that follows its dock, plus one downstream renderer that
-exists to prove a data contract and a live Audio In analysis branch.
+Interaction Lab is a bundled example project for authored viewport tools. It contains four
+full-panel stations, four single-purpose micro instruments, one downstream renderer that proves a
+data contract, and a live Audio In analysis branch.
 
 Load `interaction_lab.sentinel` in Sentinel. Each station is boxed and labeled in the graph;
 double-click a Module node to use its viewport.
@@ -13,6 +13,37 @@ double-click a Module node to use its viewport.
 | `02 - GIZMO DESK` | `Gizmo_Desk` | Host-owned selection and a 3D transform gizmo over lit geometry |
 | `03 - MOTION CONSOLE` | `Motion_Console` | A compact interface designed around one operator workflow |
 | `04 - STYLE AUTHORITY` | `Style_Authority` | The live theme source: every v3 primitive drawn at the published values |
+
+## Micro instruments
+
+The micro set is the path of least resistance for ordinary graph work. Each Module does one job,
+has a small control surface, publishes honest scalar state, and uses Style Authority's `Theme`
+data port when it is connected. Without that link, each falls back to the same neutral amber
+theme, so it remains independently usable.
+
+| Module | Single responsibility | Important outputs |
+| --- | --- | --- |
+| `Micro_LFO` | continuity-safe scalar modulation with rate, depth, and four shapes | `value`, `bipolar`, `phase` |
+| `Micro_Scope` | fixed-cadence history for one expression-driven scalar | `current`, `recent_min`, `recent_max` |
+| `Micro_Sequencer` | eight toggleable gates at a continuity-safe step rate | `gate`, `step`, `step_count`, `phase` |
+| `Micro_Envelope` | attack/release smoothing for one gate | `value`, `gate`, `rise_count`, `fall_count` |
+
+The saved lab demonstrates the intended small chain: `Micro_LFO/value` drives
+`Micro_Scope/signal`, and `Micro_Sequencer/gate` drives `Micro_Envelope/gate`. Those are live
+expressions, not decorative wiring.
+
+To copy one into another project, run:
+
+```powershell
+./projects/interaction_lab/copy-micro-instrument.ps1 `
+  -Name Micro_LFO `
+  -TargetProject ./projects/my_project
+```
+
+The helper copies the selected Module and the exact `_shared/ui` dependency closure it needs.
+It refuses to overwrite an existing Module unless `-Force` is explicit. After copying, create one
+Module node from that project-local folder; optionally connect a Style Authority-compatible
+`Theme` data port. No source, output node, Scene Group, or other graph policy is implied.
 
 `Scope_Audio` defaults to **Device**, **Loopback**, **Default loopback** so the audio scope and
 signal trails work portably without a bundled test file. Silence is a healthy state; play audio on
@@ -136,9 +167,11 @@ mute and meters sit in a narrow rail because they affect or summarize the whole 
 The reusable lesson is not "make every UI monochrome" or "always use four lanes." It is that every
 region earns its space by changing the system or explaining live state.
 
-The XY bias pad applies the host's Y flip exactly once: the host pad increases downward, and the
-published `bias_y` increases upward, so `pad_y 0.10` publishes `0.900`. If you copy the pad, verify
-that direction rather than assuming it.
+The XY bias pad follows the resolved host contract: Properties and Canvas gestures are both
+Y-up, so a pointer near the top writes a high Y value and the published `bias_y` is that same
+unmodified value. Rendering converts that value to the Y-down canvas exactly once through
+`sui3PadPoint`. If you reimplement the pad, verify both top and bottom through real interaction
+rather than assuming the direction.
 
 Control outputs publish the four lanes, XY bias, combined energy, pulse, the burst envelope and a
 burst-fire count, so the console can drive other nodes through expressions.
@@ -213,6 +246,10 @@ This is a set of independent teaching stations, not one program-output chain.
 | `Scope_Audio` | Audio In | Windows default loopback endpoint | PCM, Spectrum, Mel Bands, level, and peak |
 | `Data_Scope` | Module | `Scope_Audio` texture/data inputs | auto-ranging low/mid/high traces |
 | `Signal_Trails` | Module | scalar expression drivers | four cook-rate trace lanes |
+| `Micro_LFO` | Module | optional `Style_Authority/Theme` | continuity-safe unipolar/bipolar scalar modulation |
+| `Micro_Scope` | Module | optional theme plus one scalar expression | fixed-cadence auto-ranged trace and exact retained bounds |
+| `Micro_Sequencer` | Module | optional theme plus rate/gate gestures | gate, step index, phase, and monotonic step counter |
+| `Micro_Envelope` | Module | optional theme plus a gate | attack/release value and monotonic edge counters |
 
 The saved workspace focuses the relevant station rather than defining a Group
 Output. Audio In requires no engine pack. Study the interaction contracts and
