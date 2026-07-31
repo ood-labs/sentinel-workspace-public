@@ -22,7 +22,7 @@
                   },
                   {
                       "path":  ".agents/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "bf5f90baf2f1a3866ad7f4b1d2dcfd4778a602e6a00025a5d98bf1c697a21367"
+                      "sha256":  "4b363413db604298cfae8b95e463cb7b8727e46020ef624e31e8fe5dcf99e57d"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -90,7 +90,7 @@
                   },
                   {
                       "path":  ".agents/skills/module-authoring/SKILL.md",
-                      "sha256":  "233457667a8fa69259bb5a06fccaebbffe4fc98655a764234cd78543a9bd15bf"
+                      "sha256":  "001ac0b977a6feb8a8de388c0c004cbca22452ece86ff4d44f44ced5a0224681"
                   },
                   {
                       "path":  ".agents/skills/module-ui-authoring/agents/openai.yaml",
@@ -98,7 +98,7 @@
                   },
                   {
                       "path":  ".agents/skills/module-ui-authoring/SKILL.md",
-                      "sha256":  "a9a835d644828cbf1cb0fe21756ca803dd9e8a79e817caad33ea7452cea6fc22"
+                      "sha256":  "af6627fa3de27f4a02bb6bb89dafd4c62a22c9fbeca52805034efad769521c16"
                   },
                   {
                       "path":  ".agents/skills/motion-eval/SKILL.md",
@@ -150,7 +150,7 @@
                   },
                   {
                       "path":  ".claude/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "bf5f90baf2f1a3866ad7f4b1d2dcfd4778a602e6a00025a5d98bf1c697a21367"
+                      "sha256":  "4b363413db604298cfae8b95e463cb7b8727e46020ef624e31e8fe5dcf99e57d"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -218,7 +218,7 @@
                   },
                   {
                       "path":  ".claude/skills/module-authoring/SKILL.md",
-                      "sha256":  "233457667a8fa69259bb5a06fccaebbffe4fc98655a764234cd78543a9bd15bf"
+                      "sha256":  "001ac0b977a6feb8a8de388c0c004cbca22452ece86ff4d44f44ced5a0224681"
                   },
                   {
                       "path":  ".claude/skills/module-ui-authoring/agents/openai.yaml",
@@ -226,7 +226,7 @@
                   },
                   {
                       "path":  ".claude/skills/module-ui-authoring/SKILL.md",
-                      "sha256":  "a9a835d644828cbf1cb0fe21756ca803dd9e8a79e817caad33ea7452cea6fc22"
+                      "sha256":  "af6627fa3de27f4a02bb6bb89dafd4c62a22c9fbeca52805034efad769521c16"
                   },
                   {
                       "path":  ".claude/skills/motion-eval/SKILL.md",
@@ -270,11 +270,11 @@
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "7acfaffc34c986498edd64f33977cd6aa6832be32709ed3cc7adcbdaa4737076"
+                      "sha256":  "287b294086fc637c9cb9e40713a5b875304cd32bc41d68591de441864912479c"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "7acfaffc34c986498edd64f33977cd6aa6832be32709ed3cc7adcbdaa4737076"
+                      "sha256":  "287b294086fc637c9cb9e40713a5b875304cd32bc41d68591de441864912479c"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -298,7 +298,7 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "7acfaffc34c986498edd64f33977cd6aa6832be32709ed3cc7adcbdaa4737076"
+                      "sha256":  "287b294086fc637c9cb9e40713a5b875304cd32bc41d68591de441864912479c"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -314,7 +314,7 @@
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
-                      "sha256":  "2f32b218e878dc9e7f7e5ff056982ab22fb9827da57419ec959924defaf598fc"
+                      "sha256":  "083fce0f9eefb34a90308899eb7af6b252f1101170ba8c87e74479b720f91bc7"
                   },
                   {
                       "path":  "knowledge/expressions-and-drivers.md",
@@ -322,7 +322,7 @@
                   },
                   {
                       "path":  "knowledge/FEATURE-MAP.md",
-                      "sha256":  "ee37df3634b99896642bead3f455eee5ad84042119de674c0eb17b15963441ec"
+                      "sha256":  "e384b254c45ce6e3c3b2a1fe34bd69ef8690c47066f3535b2103ee7642aefd39"
                   },
                   {
                       "path":  "knowledge/first-run-engines.md",
@@ -346,7 +346,7 @@
                   },
                   {
                       "path":  "knowledge/module-pipeline.md",
-                      "sha256":  "7d854530e4407b0c2aca38535ab550f8039572052485ee3c8d48d9b8fe0b2580"
+                      "sha256":  "99396dcf7b70a2dba7dd5d864d89539dcdd488bcd30159854af0f6f14924e5a0"
                   },
                   {
                       "path":  "knowledge/motion-choreography.md",
@@ -361,8 +361,12 @@
                       "sha256":  "8302a00c648a7f00765cdfe3f3c01af2de231c3a8057823646cba4f8b073e265"
                   },
                   {
+                      "path":  "knowledge/reference-build-method.md",
+                      "sha256":  "6ec63356a7c633eaf2395d2d597c365bfb06dd1039150501bcd449960bfd6a8e"
+                  },
+                  {
                       "path":  "knowledge/scene-system.md",
-                      "sha256":  "e87ad7ce5b426d15488e3cef6114a3b8be41e2a2c1d6d404686ea843b0dc4187"
+                      "sha256":  "e6c650e36bbcfd9f2cece854471b136fda9677af715e0d70ab15483f234c274b"
                   },
                   {
                       "path":  "knowledge/streamdiff.md",
@@ -374,7 +378,7 @@
                   },
                   {
                       "path":  "knowledge/ui-authoring.md",
-                      "sha256":  "4b46d155412d49b1dd81e46c4d635ef0e8e88576b092cf2c26620e5d334849fc"
+                      "sha256":  "6e2ce8c676bf296ba1274785400009779c9455dbcb09ddd4e1d59d60d7959d6a"
                   },
                   {
                       "path":  "knowledge/ui-interactions.md",
@@ -834,7 +838,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/interaction_lab.sentinel",
-                      "sha256":  "934959e38c3dbc08b05e0fda8a1cb64a86d3cda96da2de9d1acdbbdfd01ea341"
+                      "sha256":  "c6d230419650c0d117b54a15656c8390a7eb2769d4f9394216cb325c08ffd350"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/_shared/fonts/scientifica_ascii.hlsli",
@@ -931,6 +935,86 @@
                   {
                       "path":  "projects/interaction_lab/modules/Gizmo_Desk/update.hlsl",
                       "sha256":  "05613bcdc5b3e4e041ac257b3733046c0e09e8f49342a5638fd420f99752be35"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Envelope/_ui.generated.hlsli",
+                      "sha256":  "2045743503fedb573047ff0beb08c4ba446f692de7dc70165081bd5ae6535d49"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Envelope/envelope.hlsl",
+                      "sha256":  "acbd09546727be7ad9635626fb5f97acb9335e06a0aa64cc9ec16726e4f346fb"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Envelope/layout.hlsli",
+                      "sha256":  "470dff05914b7fb1c3848cddccc8b55237041f32b6457c60d2960438a687c53c"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Envelope/manifest.yaml",
+                      "sha256":  "77364344d1c26812ec699f004e79a758c6b7fa118fa9ef0862165657cf480be4"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Envelope/render.hlsl",
+                      "sha256":  "2a43b4b4e9b3e35ccb0a7c9d4fd0a05d05440d64da69d4c3031cfebd8b3b6263"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_LFO/_ui.generated.hlsli",
+                      "sha256":  "dff455862ed574db0d28394c681bb6afaa5300db43b5983fa443f15d2281d616"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_LFO/layout.hlsli",
+                      "sha256":  "20be269235e888e01290629cd2407f7f1ad2ec89bfd5627dc6808365af131101"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_LFO/lfo.hlsl",
+                      "sha256":  "9a4aed065c14e9271a49db373be504871b5350b06fd566018fc0ced8d483ab35"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_LFO/manifest.yaml",
+                      "sha256":  "15c2bc2ba5ad068ce576168552c4cd78bdacc3957c03085e996de75b56ea75a2"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_LFO/render.hlsl",
+                      "sha256":  "a2b04661df425190913108f0f5217bace85cf65f881b7afd825df1f18458945c"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Scope/_ui.generated.hlsli",
+                      "sha256":  "e161c674d68f7bc8b6cc74ade2fa5ade538b886603d7557fe552c3d4b12afc39"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Scope/layout.hlsli",
+                      "sha256":  "1a9b84014b3dd9a59d8d7a0a6ee45044c5f7eeb6ed0bcb316fbc547e7d00c364"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Scope/manifest.yaml",
+                      "sha256":  "fdc53c454b9ea33975cf928756ac407dbb997ad15cc8b12625b7b14312121875"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Scope/render.hlsl",
+                      "sha256":  "da4ac9dd5ba440c16cee41c194d5378771fe94db9fd60dfcc083794c3d3d726c"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Scope/sample.hlsl",
+                      "sha256":  "902919224c34d7a80de76bb4a2314da94bc9859dade55ccd3a48538a97298d97"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Sequencer/_ui.generated.hlsli",
+                      "sha256":  "981b964dbcb391bdaf1bd0d80fb0ffae2e2e4829d6308872c1ee7cde2174970f"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Sequencer/layout.hlsli",
+                      "sha256":  "6510fc3ba5eed8d37e45324302d638efcce3dbb16f1cc22fe2c0a6a7958c1c08"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Sequencer/manifest.yaml",
+                      "sha256":  "f4862fdcfcb02a14199f46c58623fb1faf2202bc81b0ee66fff8e992b6aeb1f4"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Sequencer/render.hlsl",
+                      "sha256":  "28b0d7a194b4f6e409cf2653b1176282bb45daa907c81669b71140ecd0b381b7"
+                  },
+                  {
+                      "path":  "projects/interaction_lab/modules/Micro_Sequencer/sequence.hlsl",
+                      "sha256":  "e6f65fc5da7dc4ac70172a9d139f314bdbd3f341f78a6a14cd1dbfa17e42ea5b"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Motion_Console/_ui.generated.hlsli",
@@ -1050,7 +1134,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/README.md",
-                      "sha256":  "c1eafb054582fb5200033a07019493914b7804565f81dc0b6a377761fb4e83b7"
+                      "sha256":  "4cc43cb9a71bfdce92e16e2657f13b5d00c043dbf35d0d45ff84156849e765b6"
                   },
                   {
                       "path":  "projects/interaction_lab/tools/data_scope_measure.py",
@@ -1239,6 +1323,98 @@
                   {
                       "path":  "projects/living_room_sdf/README.md",
                       "sha256":  "62f7dd936cdb83cedaaa4a3ed1505139e632a77decb64a905884508a97405fc3"
+                  },
+                  {
+                      "path":  "projects/matik_plate/matik_plate.sentinel",
+                      "sha256":  "33fa72034984d5d5e476ad5aab64226e2e523dbedf834e3e7411adc4aa38b823"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/_shared/microfont.hlsli",
+                      "sha256":  "353885d2815fa1a93760a89c068755a7c69d1c4378cbc3b2a1fc952415fd20e4"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/_shared/plate.hlsli",
+                      "sha256":  "6b17c8b93fadb2010c97a302d48eb69362d47b9fc35dd7be289358b80a91be22"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_circuitry/circuitry.hlsl",
+                      "sha256":  "a8fac800ffec601c073014f0c77763cb7b014f16b17a5a73b6adce7a4f2111ea"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_circuitry/manifest.yaml",
+                      "sha256":  "3a735c717c22978d80770d1dd3bf94347ec95e61592772f968263cd676d7ff18"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_composite/comp.hlsl",
+                      "sha256":  "5d2b80dc5f65465ceffdc094b20c384257fe595eee330cf5ce2f4d54a2a81283"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_composite/manifest.yaml",
+                      "sha256":  "2712502631fdc7fb020d469326306f97425b4611af5b1d9bbb1642152b1d36a2"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_console/canvas.hlsl",
+                      "sha256":  "69f4ceef3e80ff53500e0b619cbf3c7dd5f558c04fe8a5fd2fe906e9dfa18266"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_console/manifest.yaml",
+                      "sha256":  "b342879c4fd13d5512384a80879694d8764e7606492e3bd39d2afd415cd9fa71"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_console/plan.hlsl",
+                      "sha256":  "509a9a5ce97a2433bad916b94735e934491df40445f335ff1dd2f44903840bb3"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_instruments/instruments.hlsl",
+                      "sha256":  "c8475241864339f075a42397a5bc40e7479adfe709844abf82c4e79ea99529f6"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_instruments/manifest.yaml",
+                      "sha256":  "ec47b1ec127114e37b3f0dd0f34ed0eed99211fa42af4a82f8265baeb9537cc9"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_organism/grow.hlsl",
+                      "sha256":  "547d49dd316aebb2c3df615c5c2ac21b8b0dd272c4192bc3d21ceb249d90a211"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_organism/manifest.yaml",
+                      "sha256":  "349025af6b0b5158c04129bc072842dddcee40236db5ee26cf62a9a21b290cea"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_organism/preview.hlsl",
+                      "sha256":  "bef580f80053fdf31e0bd4a8d6e4a7eac314a901b78a7d6b8920153ae3246c41"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_post/final.hlsl",
+                      "sha256":  "808117775f34e5655747dc343a345327813fb55485cbb11b6144dccc98bac5d7"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_post/glow.hlsl",
+                      "sha256":  "e2f9af32cb1e43a230350998dc32f5e119d1bce9913987194b1c51415616df57"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_post/manifest.yaml",
+                      "sha256":  "5b4e34f2f4033ce8f8513fd0e1aff07888f719b03ae346f7d7ee3db42ad22b26"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_wireframe/cover.hlsl",
+                      "sha256":  "24978c33a138451315c7473908faa49912561ff36be8c0c4d50e23d8258e928e"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_wireframe/flatten.hlsl",
+                      "sha256":  "ad2f8aba098ff00716c73bebb07939b35b60859d1399b3ffa2d313c99da847e9"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_wireframe/manifest.yaml",
+                      "sha256":  "e96cea23906b38f89ee54d056b62a313a76dd34382313a8a9ba3751bd71b7a7c"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/mx_wireframe/wire.hlsl",
+                      "sha256":  "e11d19060a26f82d9d296b63047b72f8df67490ba8754671a7fa3da2ad8c1ae6"
+                  },
+                  {
+                      "path":  "projects/matik_plate/README.md",
+                      "sha256":  "d83287bf9bd7a15ae39c2b9f7901fe8a75c751f06f63c6c3edddfa9c9b2b8c86"
                   },
                   {
                       "path":  "projects/scientific_organism/modules/_shared/anim/anim.hlsli",
@@ -1483,6 +1659,146 @@
                   {
                       "path":  "projects/scientific_organism/scientific_organism.sentinel",
                       "sha256":  "0b124821e1721d841cb89f47ba3e125937e02331fad48111d94c52d37705445b"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/_shared/microfont.hlsli",
+                      "sha256":  "353885d2815fa1a93760a89c068755a7c69d1c4378cbc3b2a1fc952415fd20e4"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/_shared/sdf/sdf_noise.hlsli",
+                      "sha256":  "9cc80d5222cb82528070a9d2d6558b1eb2a462117c3811006a4f9d8b55b7425e"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/_shared/sdf/sdf_ops.hlsli",
+                      "sha256":  "3f9c6cc0acb4bb6d4a0559845445d7dfd8bf940b310ce6f112caaaa04b8d6d84"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/_shared/vitrine.hlsli",
+                      "sha256":  "291e8a1b8b571cbad91e5ca5c047cb9c9342c9c72b7de9a618bf663b4896bf37"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Composite/comp.hlsl",
+                      "sha256":  "2bb2ace268bcebafcf50d1976b449babd929c29a3d4bf8a97450f7d1567f79f0"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Composite/manifest.yaml",
+                      "sha256":  "cecde8c4806b7257f9d6dbba569acfc17e19edd9fa5e6fa0259b2ca31442aacf"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Composite/stack.hlsl",
+                      "sha256":  "80f5aabb4dff82e0f17e309fb89189f787c1771e2fda2f4746c5a91a4d70c577"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Growth/grow.hlsl",
+                      "sha256":  "e00d538d9360d41e23f4ebadb1aa6512dc12893dcdd524c26dd294888d109cc1"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Growth/manifest.yaml",
+                      "sha256":  "58b75942116b3049f2960945c515bf73e8445340d10a252ca6c736964b2aeb3d"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Growth/preview.hlsl",
+                      "sha256":  "bc8ec4dca17742d8aea84228d26e225fb2841b26db6a4e68957fde3f6027adeb"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plan/canvas.hlsl",
+                      "sha256":  "fcee11049d5ccee580eb35493cd93dafbd7250b31deec86a1fe5730f79a73271"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plan/manifest.yaml",
+                      "sha256":  "aab3b8a22893bd91d9a9b6af842d427eab554e2158e097650c5a0955e9a0437b"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plan/plan.hlsl",
+                      "sha256":  "d6af28e5031a79889172c3960d952a41f67afe4d71884372c4c3e18a23afd559"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plates/back.hlsl",
+                      "sha256":  "99ef68bf2222a4cc650f5bec8aad322336116c562e7905014134b880e6818213"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plates/back_color.hlsl",
+                      "sha256":  "3a0d8e9382e332b6455eb29f199eb9b42083dcab3c486f8dc7a1df14c985e304"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plates/back_cover.hlsl",
+                      "sha256":  "4a7483e0ca55ef461b5de8f4bcca410ae74881d2cae3a53eb7b6be95fd991e76"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plates/front.hlsl",
+                      "sha256":  "e98322a4afa2e7650d2f1fa2e2e08248ad7c001bd58668ba644855fafbcaecb7"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plates/front_color.hlsl",
+                      "sha256":  "196d21fc1173b083c51d31dd87298ffe2c4ae82994173ff836c2844089c915c9"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plates/front_cover.hlsl",
+                      "sha256":  "b81f034dfcd5c15cebc1a4e33f8feffe30a5918fca67011b0c5193a159adad01"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plates/manifest.yaml",
+                      "sha256":  "8697fdcb33e888ed1fb5560e0488fcdfcfe4d92b07b8c03207dd5e6c2aa35879"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Plates/plates_body.hlsli",
+                      "sha256":  "2ffe26c79029fc125e344e4826dbc28ab055c79a9abf167e830f97746c434c7d"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Post/manifest.yaml",
+                      "sha256":  "b6de213260a93194ea5a1d294b8556e6ed9b61f531417f140249ea8d7173fba7"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Post/post.hlsl",
+                      "sha256":  "af888d67a2094fe218e0e6146e5cc9fcb2178c2898534977d5b0eb5401ce9f64"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Stage/manifest.yaml",
+                      "sha256":  "0b52aeed1e3bc4380c30b685262bacd719fe8251b34997419fdb7d00764e4085"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Stage/stage.hlsl",
+                      "sha256":  "168f96c2a165339f8c90a4e4b5a3fc887b7a0bc8838fc1831ecc6dfcacb1f717"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Strokes/color.hlsl",
+                      "sha256":  "f1cceb10d0971677be6ecd419f502d0361667de9536d96f18863757f052eaf02"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Strokes/cover.hlsl",
+                      "sha256":  "f0a879002bc5ac3d95cf6c9c3e60dd5e782daeca0aa51da108d7c372fe42bdc6"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Strokes/manifest.yaml",
+                      "sha256":  "5c2bc25f15776dae28ef14efce4c916b49817ce067c6bde1012a356e40a11982"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Strokes/strokes.hlsl",
+                      "sha256":  "f36b31eb04a42e2adbe0eae80f87791795c18acab8b0b6f2de4e5a8d2594c4bf"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Volumes/color.hlsl",
+                      "sha256":  "f520f8303ed839de49a33d6df423e66c130d2a551695ac736540c1fde40dc51a"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Volumes/cover.hlsl",
+                      "sha256":  "b1f7a207d309e3dfa6e501ef2fe0d4ff919e7b4ae584fbd446acbc99cf2de33d"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Volumes/manifest.yaml",
+                      "sha256":  "d06cf387b4317c416db5aee7911556eb27ff264afec5aa918809f1d667175629"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/modules/VT_Volumes/march.hlsl",
+                      "sha256":  "f724d2ef62dd97396a3d7d91ab4b5aab6305294a5eff0c35d515cf72542fb3dc"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/README.md",
+                      "sha256":  "48f72d47c68ed4bfb3ed7c176462db4fd9231114a3c94be232709207cf8bb8d8"
+                  },
+                  {
+                      "path":  "projects/soft_vitrine/soft_vitrine.sentinel",
+                      "sha256":  "dd3bdcce3ec37e8b36041be257efd12633a5ce4f2a69acf00f1ff327bbb286b2"
                   },
                   {
                       "path":  "projects/strata/modules/_shared/palette.hlsli",
@@ -1994,7 +2310,7 @@
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "de39cc4f6bc2a081a7c6a234fd2df5c7344fbd6e378361e7aa45b947f930ffab"
+                      "sha256":  "236c3e23fbad705aea7ddc6f90b3fd55dfd7f7b76f3de82bf38fc65256e8d02a"
                   },
                   {
                       "path":  "tools/module-ui.ps1",
@@ -7524,5 +7840,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "fc10ba238d55602aed58752c0fe346f4618e5401"
+    "source_commit":  "955221a2e5ef874a3fc6b75387eb606469bf3460"
 }
