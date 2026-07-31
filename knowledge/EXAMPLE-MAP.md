@@ -16,6 +16,7 @@ for an explicit fork or remix. See `example-authoring.md`.
 | `industrial_lattice` | 1 | none | infinite SDF lattice → monochrome post | `Post` | a compact two-node 3D graph |
 | `interaction_lab` | 1 | Audio In | independent UI/editor stations plus two data routes | station previews | Canvas panels, splines, selection, gizmos, traces |
 | `living_room_sdf` | 1 | none | architecture/furnishings/material/light records → SDF renderer → grade | `LR_Cinematic_Grade` | modular 3D construction and spatial editing |
+| `matik_plate` | 1 | none | interactive plan authority → organisms + instruments + circuitry → composite → post | `MX_Post` | plan authority, generate-then-override editing, hybrid record contract |
 | `scientific_organism` | 1 | Features | biotic source → proxy/Features → temporal/topology/memory layers → renderer/grade | Group Output | a large, inspectable analysis-to-render system |
 | `strata` | 1 | Features | background/plates/layout/marks → feature-reactive renderers → composite/post | `post_1` | modular 2D composition and proxy analysis |
 | `streamdiff_canvas` | 1 | StreamDiff, Depth, Background Removal | paint/pattern fields → depth controls → StreamDiff → cutout | `Collage_Cutout` | direct manipulation of generative conditioning |
@@ -105,6 +106,20 @@ owns the native camera. `LR_Cinematic_Grade` is the final presentation pass.
 
 Remix seam: preserve separable plans and typed records, then define new object
 kinds, relations, materials, lighting, and rendering for the requested space.
+
+### Matik Plate
+
+`MX_Console` is the plan authority: it generates the whole plate layout procedurally and lets
+click/drag/keyboard interaction override individual records, publishing one 128-record `Plate`
+buffer where `role` separates instrument cells from organism anchors. `MX_Organism` grows
+branching molecular trees from those anchors, sizing them from the reserve discs the console
+cleared. `MX_Wireframe` rasterizes them as opaque solids with white mesh lines and owns the
+internal camera. `MX_Instruments` and `MX_Circuitry` draw the panels and the connective field.
+`MX_Composite` stacks the layers, re-deriving panel knockout from the same records, and
+`MX_Post` finishes the image.
+
+Remix seam: take the plan-authority and generate-then-override architecture, not the
+monochrome technical-plate aesthetic. See `knowledge/reference-build-method.md`.
 
 ### Scientific Organism
 

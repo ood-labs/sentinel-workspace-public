@@ -1,0 +1,1082 @@
+{
+  "binds": [
+    [
+      "/sentinel/groups/annotation_45/parameters/MX_Console_layout_preset",
+      "/sentinel/pipelines/MX_Console/parameters/layout_preset"
+    ],
+    [
+      "/sentinel/groups/annotation_45/parameters/MX_Console_seed",
+      "/sentinel/pipelines/MX_Console/parameters/seed"
+    ],
+    [
+      "/sentinel/groups/annotation_45/parameters/MX_Console_cell_count",
+      "/sentinel/pipelines/MX_Console/parameters/cell_count"
+    ],
+    [
+      "/sentinel/groups/annotation_45/parameters/MX_Console_anchor_count",
+      "/sentinel/pipelines/MX_Console/parameters/anchor_count"
+    ],
+    [
+      "/sentinel/groups/annotation_45/parameters/MX_Console_organism_scale",
+      "/sentinel/pipelines/MX_Console/parameters/organism_scale"
+    ],
+    [
+      "/sentinel/groups/annotation_45/parameters/MX_Wireframe_wire_style",
+      "/sentinel/pipelines/MX_Wireframe/parameters/wire_style"
+    ],
+    [
+      "/sentinel/groups/annotation_45/parameters/MX_Organism_growth",
+      "/sentinel/pipelines/MX_Organism/parameters/growth"
+    ],
+    [
+      "/sentinel/groups/annotation_45/parameters/MX_Post_glow_gain",
+      "/sentinel/pipelines/MX_Post/parameters/glow_gain"
+    ]
+  ],
+  "display": {
+    "fpsLimit": 0.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 0.563870370388031,
+    "links": [
+      {
+        "endPinId": 195,
+        "id": 12,
+        "startPinId": 194
+      },
+      {
+        "endPinId": 198,
+        "id": 13,
+        "startPinId": 197
+      },
+      {
+        "endPinId": 200,
+        "id": 14,
+        "startPinId": 194
+      },
+      {
+        "endPinId": 202,
+        "id": 15,
+        "startPinId": 194
+      },
+      {
+        "endPinId": 205,
+        "id": 16,
+        "startPinId": 203
+      },
+      {
+        "endPinId": 207,
+        "id": 17,
+        "startPinId": 199
+      },
+      {
+        "endPinId": 208,
+        "id": 18,
+        "startPinId": 204
+      },
+      {
+        "endPinId": 209,
+        "id": 19,
+        "startPinId": 201
+      },
+      {
+        "endPinId": 210,
+        "id": 20,
+        "startPinId": 194
+      },
+      {
+        "endPinId": 211,
+        "id": 21,
+        "startPinId": 206
+      }
+    ],
+    "nextLinkId": 22,
+    "nextNodeId": 46,
+    "nextPinId": 213,
+    "nodes": [
+      {
+        "displayName": "MX_Console",
+        "entityId": "MX_Console",
+        "id": 38,
+        "posX": -1600.0,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "MX_Organism",
+        "entityId": "MX_Organism",
+        "id": 39,
+        "posX": -1324.2049560546875,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "MX_Wireframe",
+        "entityId": "MX_Wireframe",
+        "id": 40,
+        "posX": -1048.2049560546875,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "MX_Instruments",
+        "entityId": "MX_Instruments",
+        "id": 41,
+        "posX": -1324.2049560546875,
+        "posY": 345.64422607421875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "MX_Circuitry",
+        "entityId": "MX_Circuitry",
+        "id": 42,
+        "posX": -1324.2049560546875,
+        "posY": 669.6170654296875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "MX_Composite",
+        "entityId": "MX_Composite",
+        "id": 43,
+        "posX": -732.2049560546875,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "MX_Post",
+        "entityId": "MX_Post",
+        "id": 44,
+        "posX": -436.8240966796875,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "Interactive technical plate: console plan -> organisms + instruments + circuitry -> composite -> post",
+        "annotationColor": "#1A2430FF",
+        "annotationTitle": "MATIK PLATE",
+        "displayName": "MATIK PLATE",
+        "entityId": "annotation_45",
+        "height": 1120.0,
+        "id": 45,
+        "posX": -1670.0,
+        "posY": -110.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": true,
+        "sceneGroupActivePreset": "",
+        "sceneGroupEnabled": true,
+        "sceneGroupParameters": [
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Layout",
+            "displayName": "Layout",
+            "enumValues": [
+              "Guillotine",
+              "Column Rack",
+              "Ring Array",
+              "Dense Strata"
+            ],
+            "group": "Layout",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "MX_Console_layout_preset",
+            "orderIndex": 0,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/MX_Console/parameters/layout_preset",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "7.000000",
+            "description": "Seed",
+            "displayName": "Seed",
+            "enumValues": [],
+            "group": "Layout",
+            "maxValue": 64.0,
+            "minValue": 0.0,
+            "name": "MX_Console_seed",
+            "orderIndex": 1,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/MX_Console/parameters/seed",
+            "type": "float",
+            "value": "7.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "48",
+            "description": "Cell Count",
+            "displayName": "Cell Count",
+            "enumValues": [],
+            "group": "Layout",
+            "maxValue": 64.0,
+            "minValue": 6.0,
+            "name": "MX_Console_cell_count",
+            "orderIndex": 2,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/MX_Console/parameters/cell_count",
+            "type": "int",
+            "value": "64",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "4",
+            "description": "Organisms",
+            "displayName": "Organisms",
+            "enumValues": [],
+            "group": "Organism",
+            "maxValue": 8.0,
+            "minValue": 1.0,
+            "name": "MX_Console_anchor_count",
+            "orderIndex": 3,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/MX_Console/parameters/anchor_count",
+            "type": "int",
+            "value": "4",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1.000000",
+            "description": "Organism Size",
+            "displayName": "Organism Size",
+            "enumValues": [],
+            "group": "Organism",
+            "maxValue": 2.0,
+            "minValue": 0.30000001192092896,
+            "name": "MX_Console_organism_scale",
+            "orderIndex": 4,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/MX_Console/parameters/organism_scale",
+            "type": "float",
+            "value": "1.18",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Mesh Style",
+            "displayName": "Mesh Style",
+            "enumValues": [
+              "Lat-Long",
+              "Contour Bands",
+              "Hatch Shell",
+              "Ribbon Cage"
+            ],
+            "group": "Mesh",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "MX_Wireframe_wire_style",
+            "orderIndex": 5,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/MX_Wireframe/parameters/wire_style",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1.000000",
+            "description": "Growth Reveal",
+            "displayName": "Growth Reveal",
+            "enumValues": [],
+            "group": "Motion",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "MX_Organism_growth",
+            "orderIndex": 6,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/MX_Organism/parameters/growth",
+            "type": "float",
+            "value": "1.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.420000",
+            "description": "Glow",
+            "displayName": "Glow",
+            "enumValues": [],
+            "group": "Bloom",
+            "maxValue": 2.0,
+            "minValue": 0.0,
+            "name": "MX_Post_glow_gain",
+            "orderIndex": 7,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/MX_Post/parameters/glow_gain",
+            "type": "float",
+            "value": "0.42",
+            "widget": ""
+          }
+        ],
+        "sceneGroupPresets": [],
+        "type": 4,
+        "width": 1540.0
+      }
+    ],
+    "pins": [
+      {
+        "id": 193,
+        "kind": 1,
+        "name": "Console",
+        "nodeId": 38,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 194,
+        "kind": 1,
+        "name": "Plate",
+        "nodeId": 38,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 195,
+        "kind": 0,
+        "name": "Plate",
+        "nodeId": 39,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 196,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 39,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 197,
+        "kind": 1,
+        "name": "Nodes",
+        "nodeId": 39,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 198,
+        "kind": 0,
+        "name": "Nodes",
+        "nodeId": 40,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 199,
+        "kind": 1,
+        "name": "Wire",
+        "nodeId": 40,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 200,
+        "kind": 0,
+        "name": "Plate",
+        "nodeId": 41,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 201,
+        "kind": 1,
+        "name": "Instruments",
+        "nodeId": 41,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 202,
+        "kind": 0,
+        "name": "Plate",
+        "nodeId": 42,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 203,
+        "kind": 1,
+        "name": "Circuitry",
+        "nodeId": 42,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 204,
+        "kind": 1,
+        "name": "Coverage",
+        "nodeId": 40,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 205,
+        "kind": 0,
+        "name": "Circuitry",
+        "nodeId": 43,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 206,
+        "kind": 1,
+        "name": "Comp",
+        "nodeId": 43,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 207,
+        "kind": 0,
+        "name": "Wire",
+        "nodeId": 43,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 208,
+        "kind": 0,
+        "name": "Wire Coverage",
+        "nodeId": 43,
+        "slotIndex": 2,
+        "type": 0
+      },
+      {
+        "id": 209,
+        "kind": 0,
+        "name": "Instruments",
+        "nodeId": 43,
+        "slotIndex": 3,
+        "type": 0
+      },
+      {
+        "id": 210,
+        "kind": 0,
+        "name": "Plate",
+        "nodeId": 43,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 211,
+        "kind": 0,
+        "name": "Plate",
+        "nodeId": 44,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 212,
+        "kind": 1,
+        "name": "Plate",
+        "nodeId": 44,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "hostPanelVisibility": {
+    "engines": false,
+    "graph": true,
+    "log": true,
+    "outputs": true,
+    "presets": false,
+    "properties": true,
+    "settings": false,
+    "sources": true,
+    "stats": true,
+    "terminal": true
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Terminal]\nPos=0,974\nSize=872,603\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Sources]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][Outputs]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Stats]\nPos=0,974\nSize=872,603\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Log]\nPos=0,974\nSize=872,603\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Properties]\nPos=2098,25\nSize=462,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,974\nSize=1222,603\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][GridInner]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][GridOuter]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][Save Group Preset##group_preset_save]\nPos=638,324\nSize=324,855\nCollapsed=0\n\n[Window][Delete Group Preset##group_preset_delete]\nPos=1784,983\nSize=272,122\nCollapsed=0\n\n[Window][Phase79_A1_Color]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][Settings]\nPos=1032,419\nSize=495,738\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][GroupSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][GroupRangeEdit]\nPos=653,382\nSize=294,136\nCollapsed=0\n\n[Window][Phase83_Wired_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Show_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][streamdiff_1]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,2\n\n[Window][Group_Output_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,3\n\n[Window][Phase84BaselineCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Phase84PostFixCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Phase84StreamDiff]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Phase84OutlineTarget]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][Phase84Ripple]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Phase84Different]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][Phase84NoViewport]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,2\n\n[Window][Phase84DeclaredGate]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,4\n\n[Window][Phase84CameraAuto]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][OrbitProof]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][NonCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][BoundSphere]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][View_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Camera_Mux]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Switched_View]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Phase85Compound]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][GroupCompoundSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][Phase85LegacyFlat]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Phase85DistCompound]\nPos=0,25\nSize=1571,448\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Legacy_Stream_Target]\nPos=0,25\nSize=1222,252\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Presets]\nPos=60,60\nSize=350,500\nCollapsed=0\n\n[Window][Save Preset]\nPos=600,164\nSize=400,572\nCollapsed=0\n\n[Window][Edit Preset Stack]\nPos=590,244\nSize=420,411\nCollapsed=0\n\n[Window][Rename Node Preset]\nPos=668,397\nSize=264,105\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=730,402\nSize=140,95\nCollapsed=0\n\n[Window][Save Group Preset]\nPos=570,70\nSize=460,760\nCollapsed=0\n\n[Window][Save Node Preset]\nPos=700,233\nSize=420,515\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][grid_warp]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][atmosphere]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000019,2\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x00000019,3\n\n[Window][field_gen]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][link_render]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_srv_spike]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_pointer]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_keyboard]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_pointer_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_keyboard_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_keyboard_series]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_keyboard_hold]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_pointer_control]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_pointer_double]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_pointer_drag]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_pointer_wheel]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_pointer_storm]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_pointer_idle]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_srv_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][mouse_compat_active]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][surface_split_smoke]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][final_surface_smoke]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_bindings_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_bindings_focus_reload]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][phase88_arbitration_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Phase_88_Arbitration]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Phase88_Mouse_Compat]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][Viewport_Ripple]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Phase88_Replay]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Click_Ripples]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Controls89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Scene89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][Big89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x00000019,2\n\n[Window][Gizmo_Lab]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Spline_Editor]\nPos=0,25\nSize=587,834\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Spline_Output]\nPos=861,25\nSize=866,851\nCollapsed=0\nDockId=0x00000019,2\n\n[Window][UI_Kit]\nPos=1479,25\nSize=703,834\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Font_Sampler]\nPos=0,25\nSize=1380,1346\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][UI_Kit_V2_Test]\nPos=0,25\nSize=1087,587\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][UI_Style_Tuner]\nPos=2759,25\nSize=703,1346\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Spline_V2_Test]\nPos=0,614\nSize=1087,590\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Gizmo_V2_Test]\nPos=1089,25\nSize=1093,1179\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][VP_Controls]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000019,2\n\n[Window][VP_Ripple]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][VP_Pointer]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000019,3\n\n[Window][Ripple_Storm]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][HR_Precision]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x00000019,4\n\n[Window][UI_Skill_Smoke]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x00000019,4\n\n[Window][signal]\nPos=0,25\nSize=1108,1399\nCollapsed=0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1399\nCollapsed=0\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\n\n[Window][Editorial_Post]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_control]\nPos=0,25\nSize=1040,1399\nCollapsed=0\n\n[Window][post_2]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\n\n[Window][Desert_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Industrial_Group_Output]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Gallery_Scene_Switcher]\nPos=992,25\nSize=173,100\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=586,657\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_Group_Output]\nPos=133,142\nSize=1619,683\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Food_Collage]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Motion_Console]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][Style_Authority]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,1\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,0\n\n[Window][Spline_Desk]\nPos=1118,583\nSize=978,389\nCollapsed=0\nDockId=0x00000014,0\n\n[Window][Gizmo_Desk]\nPos=1118,25\nSize=978,556\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][Spline_Output_V3]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x00000019,3\n\n[Window][Scope_Audio]\nPos=861,25\nSize=866,851\nCollapsed=0\nDockId=0x00000019,2\n\n[Window][Data_Scope]\nPos=0,362\nSize=559,610\nCollapsed=0\nDockId=0x00000017,0\n\n[Window][Signal_Trails]\nPos=561,362\nSize=555,610\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][label_gen]\nPos=547,459\nSize=540,427\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=372,772\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1040\nSize=752,537\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,772\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][au_specimen]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_proxy]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_observe]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stabilizer]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_relief]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_grade]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_census]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stylus]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_deck]\nPos=0,25\nSize=751,1396\nCollapsed=0\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][AXIOM_01_PLATE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_02_ANALYSIS_LENS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_12_FRAME_REFINERY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_03_LIVE_ENGRAVER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01B_ORGANIC_MEMBRANE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01A_INTERFERENCE_MASK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_04_TOPOLOGY_COMPILER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_05_PRESSURE_DESK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_07_RESONANCE_ENGINE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_08_TEMPORAL_OSSUARY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_09_KINETIC_CORONA]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_10_IMPRESSION_PRESS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_11_RELIEF_CHAMBER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_13_LIVE_GLYPH_PLATES]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_16_POLYRHYTHM_INSPECTOR]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_06_POLYRHYTHM_RACK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][cloth_pulse]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][substrate]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][02_Stress_Feature_Analysis]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][01_Rupture_Stress_Lattice]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][05_Tactile_Weave_Material]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][03_Rupture_Constraint_Loom]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][04_Rupture_Fabric]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][streamdiff_2]\nPos=0,25\nSize=1166,1396\nCollapsed=0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Window][Archive_Field]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Motion_Score]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Topographic_Organism]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Optical_Pressure]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Signal_Typesetter]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Micro_LFO]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,2\n\n[Window][Micro_Scope]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,3\n\n[Window][Micro_Sequencer]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,4\n\n[Window][Micro_Envelope]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,5\n\n[Window][MX_Console]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][MX_Organism]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x00000019,1\n\n[Window][MX_Wireframe]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x00000019,2\n\n[Window][MX_Instruments]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x00000019,3\n\n[Window][MX_Circuitry]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x00000019,4\n\n[Window][MX_Composite]\nPos=1051,25\nSize=1045,947\nCollapsed=0\nDockId=0x0000001A,0\n\n[Window][MX_Post]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x00000019,5\n\n[Docking][Data]\nDockSpace                 ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode                ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=2096,900 Split=Y\n    DockNode              ID=0x00000003 Parent=0x00000001 SizeRef=1222,947 Split=X Selected=0x60D1231E\n      DockNode            ID=0x00000007 Parent=0x00000003 SizeRef=878,760 Split=Y Selected=0x3B5B8D41\n        DockNode          ID=0x00000009 Parent=0x00000007 SizeRef=878,525 Selected=0x3B5B8D41\n        DockNode          ID=0x0000000A Parent=0x00000007 SizeRef=878,463 Selected=0x37544B19\n      DockNode            ID=0x00000008 Parent=0x00000003 SizeRef=1302,760 Split=X Selected=0x5A80C6E1\n        DockNode          ID=0x0000000B Parent=0x00000008 SizeRef=1087,990 Split=Y Selected=0x3B5B8D41\n          DockNode        ID=0x0000000D Parent=0x0000000B SizeRef=1087,587 Selected=0x3B5B8D41\n          DockNode        ID=0x0000000E Parent=0x0000000B SizeRef=1087,590 Selected=0x37544B19\n        DockNode          ID=0x0000000C Parent=0x00000008 SizeRef=1093,990 Split=X Selected=0x4FC197DD\n          DockNode        ID=0x0000000F Parent=0x0000000C SizeRef=517,700 Split=X Selected=0x97D3354D\n            DockNode      ID=0x00000011 Parent=0x0000000F SizeRef=1116,851 Split=Y Selected=0xBF3E555A\n              DockNode    ID=0x00000015 Parent=0x00000011 SizeRef=859,335 Selected=0x720A596C\n              DockNode    ID=0x00000016 Parent=0x00000011 SizeRef=859,610 Split=X Selected=0x0636636E\n                DockNode  ID=0x00000017 Parent=0x00000016 SizeRef=559,650 Selected=0x0636636E\n                DockNode  ID=0x00000018 Parent=0x00000016 SizeRef=555,650 Selected=0x97D3354D\n            DockNode      ID=0x00000012 Parent=0x0000000F SizeRef=978,851 Split=Y Selected=0x5765080A\n              DockNode    ID=0x00000013 Parent=0x00000012 SizeRef=1235,556 Split=X Selected=0xEC0BC2EB\n                DockNode  ID=0x00000019 Parent=0x00000013 SizeRef=1049,947 CentralNode=1 Selected=0xEC0BC2EB\n                DockNode  ID=0x0000001A Parent=0x00000013 SizeRef=1045,947 Selected=0xD3382EBF\n              DockNode    ID=0x00000014 Parent=0x00000012 SizeRef=1235,389 Selected=0xA6A64A9E\n          DockNode        ID=0x00000010 Parent=0x0000000C SizeRef=703,700 Selected=0x1BEB0585\n    DockNode              ID=0x00000004 Parent=0x00000001 SizeRef=1222,603 Split=X\n      DockNode            ID=0x00000005 Parent=0x00000004 SizeRef=872,360 Selected=0xD33228A6\n      DockNode            ID=0x00000006 Parent=0x00000004 SizeRef=1222,360 Selected=0xF12F3499\n  DockNode                ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=462,900 Selected=0x8C72BEA8\n\n",
+  "name": "matik_plate",
+  "nodePresets": [
+    {
+      "created": "2026-07-26T16:17:58",
+      "id": "33ef75d6-a7aa-0ac8-52713fc7e3f0",
+      "modified": "2026-07-26T16:17:58",
+      "name": "Spline Desk Default",
+      "parameters": [
+        {
+          "name": "tool_mode",
+          "value": "0"
+        },
+        {
+          "name": "hit_radius",
+          "value": "16.000000"
+        },
+        {
+          "name": "nudge_x",
+          "value": "0.06"
+        },
+        {
+          "name": "nudge_y",
+          "value": "-0.12"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:spline_desk",
+      "scope": "project",
+      "statePayloads": {
+        "spline_knots": {
+          "data": "93f5473ec2d81b3f2631083ec4291c3f00dd833ec0871b3f010000000000000001000000010000000000803f00540e463161ca3e7bda933eed3db83e0fa07c3e01bef63e198ac83e020000000000000001000000010000000000803f00000000f4bf273fec342b3f7aab193fec342b3f70d4353fec342b3f030000000000000001000000010000000000803f00000000e011603f1474ad3e64fd513f1474ad3e5a266e3f1474ad3e040000000000000001000000010000000000803f000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000",
+          "element_count": 64,
+          "element_size": 48,
+          "encoding": "hex",
+          "schema_signature": "8817061768651235717"
+        }
+      }
+    },
+    {
+      "created": "2026-07-26T16:17:58",
+      "id": "dc6e3042-dc7d-14c0-b83cf269b317",
+      "modified": "2026-07-26T16:17:58",
+      "name": "Gizmo Desk Default",
+      "parameters": [
+        {
+          "name": "transform_mode",
+          "value": "1"
+        },
+        {
+          "name": "local_space",
+          "value": "false"
+        },
+        {
+          "name": "orbit_axis",
+          "value": "1"
+        },
+        {
+          "name": "orbit_degrees",
+          "value": "40.000000"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:gizmo_desk",
+      "scope": "project",
+      "statePayloads": {
+        "scene_state": {
+          "data": "91e705c00000a0bf6d64983e0000000000308e4160e0e14200885b4100000000c3f5483fc3f5483fc3f5483f010000000000000007000000008c0b460000000028c84ebf0000a0bfd3cadabe000000000048b241005ea64200c49f4100000000e27a443fe27a443fe27a443f02000000010000000700000000000000000000009a99393f0000a0bfcdcc143e0000000000f8a2410000dc3f0070ad400000000090c2463f90c2463f90c2463f030000000200000007000000000000000000000034330b400000a0bf9a99993d0000000021da05c2001849420020b240000000007b14803f7b14803f7b14803f040000000300000007000000000000000000000034330bc000000000cdcc1cbd00000000008886410000a54000c0414000000000b91e813fb91e813fb91e813f05000000000000000700000000000000000000009a9939bf00000000cdcc2d3e000000000070ee41004823410000483f000000005d8f423f5d8f423f5d8f423f06000000010000000700000000000000000000009a99393fb1d470bd5d289cbd0000000013ab27c200ca0a420080093e0000000048e1843f48e1843f48e1843f070000000200000007000000000000000000000034330b40b1d4703d0c3b8a3c00000000dbeb2d4100c0e94100806d4000000000e27a6c3fe27a6c3fe27a6c3f080000000300000007000000000000000000000034330bc00000a03f333333bc000000000044cf40008c1b420050914100000000cdcc4c3fcdcc4c3fcdcc4c3f09000000000000000700000000000000000000009a9939bf0000a03f6766023e0000000000a20a4221c94e420070ad4100000000cdcc543fcdcc543fcdcc543f0a000000010000000700000000000000000000009a99393f0000a03f9a9927be00000000c99df4c200c032410080a24000000000ec51803fec51803fec51803f0b0000000200000007000000000000000000000034330b400000a03f676616be000000000070cb41001ed2418040694100000000d7a3503fd7a3503fd7a3503f0c0000000300000007000000000000000000000034330bc0000020403333b33c00000000002019400040ce4100007a41000000009a997d3f9a997d3f9a997d3f00000000000000000700000000000000000000009a9939bf00002040cdcc4c3b0000000000e91d410030364100806d410000000048e1683f48e1683f48e1683f00000000010000000700000000000000000000009a99393f000020400000603d0000000000b09f4100404e400080a2400000000090c2553f90c2553f90c2553f000000000200000007000000000000000000000034330b40000020406766063d0000000000801d4100828c4100806d4000000000c3f5583fc3f5583fc3f5583f0000000003000000070000000000000000000000",
+          "element_count": 16,
+          "element_size": 64,
+          "encoding": "hex",
+          "schema_signature": "13094422923074777944"
+        }
+      }
+    },
+    {
+      "created": "2026-07-26T16:17:59",
+      "id": "a0430fe8-aeeb-4723-9fbebbf5ff55",
+      "modified": "2026-07-26T16:17:59",
+      "name": "Motion Reference",
+      "parameters": [
+        {
+          "name": "master_rate",
+          "value": "1.000000"
+        },
+        {
+          "name": "mute",
+          "value": "false"
+        },
+        {
+          "name": "motion_bias_x",
+          "value": "0.52"
+        },
+        {
+          "name": "motion_bias_y",
+          "value": "0.64"
+        },
+        {
+          "name": "burst_decay",
+          "value": "0.45"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:motion_console",
+      "scope": "project"
+    },
+    {
+      "created": "2026-07-26T16:18:00",
+      "id": "12facd11-3de6-06f9-e424fc5f49d0",
+      "modified": "2026-07-26T16:18:00",
+      "name": "Slow Drift",
+      "parameters": [
+        {
+          "name": "master_rate",
+          "value": "0.35"
+        },
+        {
+          "name": "mute",
+          "value": "false"
+        },
+        {
+          "name": "motion_bias_x",
+          "value": "0.52"
+        },
+        {
+          "name": "motion_bias_y",
+          "value": "0.64"
+        },
+        {
+          "name": "burst_decay",
+          "value": "0.85"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:motion_console",
+      "scope": "project"
+    },
+    {
+      "created": "2026-07-26T16:18:01",
+      "id": "c23ffcd8-f3c0-fe71-79ba7d40f345",
+      "modified": "2026-07-26T16:18:01",
+      "name": "Dense Instrument",
+      "parameters": [
+        {
+          "name": "title_scale",
+          "value": "2.000000"
+        },
+        {
+          "name": "section_scale",
+          "value": "1.000000"
+        },
+        {
+          "name": "body_scale",
+          "value": "1.000000"
+        },
+        {
+          "name": "outer_padding",
+          "value": "16.000000"
+        },
+        {
+          "name": "section_gap",
+          "value": "10.000000"
+        },
+        {
+          "name": "control_gap",
+          "value": "8.000000"
+        },
+        {
+          "name": "control_height",
+          "value": "34.000000"
+        },
+        {
+          "name": "exposure",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:style_authority",
+      "scope": "project"
+    },
+    {
+      "created": "2026-07-26T16:18:02",
+      "id": "3a42c924-f9fc-2e64-a9869c8c801c",
+      "modified": "2026-07-26T16:18:02",
+      "name": "Airy Review",
+      "parameters": [
+        {
+          "name": "title_scale",
+          "value": "3.000000"
+        },
+        {
+          "name": "section_scale",
+          "value": "2.000000"
+        },
+        {
+          "name": "body_scale",
+          "value": "2.000000"
+        },
+        {
+          "name": "outer_padding",
+          "value": "36.000000"
+        },
+        {
+          "name": "section_gap",
+          "value": "26.000000"
+        },
+        {
+          "name": "control_gap",
+          "value": "8.000000"
+        },
+        {
+          "name": "control_height",
+          "value": "34.000000"
+        },
+        {
+          "name": "exposure",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:style_authority",
+      "scope": "project"
+    }
+  ],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "MX_Console",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "MX_Console",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "MX_Console",
+      "panelOpen": true,
+      "parameters": {
+        "anchor_count": "4.000000",
+        "cell_count": "64.000000",
+        "gap": "0.006000",
+        "layout_preset": "0.000000",
+        "margin": "0.022000",
+        "organism_scale": "1.180000",
+        "project_dir": "modules/mx_console",
+        "reserve": "1.000000",
+        "resolution_height": "1024",
+        "resolution_width": "1024",
+        "seed": "7.000000",
+        "thinning": "0.050000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "MX_Organism",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "MX_Organism",
+      "inputSlotSourceIds": [
+        "MX_Console"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "MX_Organism",
+      "panelOpen": true,
+      "parameters": {
+        "anim_rate": "0.899000",
+        "breathe": "0.708000",
+        "bud_swell": "2.065711",
+        "containment": "2.273636",
+        "depth_max": "7.000000",
+        "flatten": "1.000000",
+        "growth": "1.000000",
+        "node_budget": "164.000000",
+        "node_size": "0.468000",
+        "project_dir": "modules/mx_organism",
+        "radius_decay": "0.880860",
+        "radius_root": "0.728000",
+        "resolution_height": "768",
+        "resolution_width": "768",
+        "spacing": "2.500000",
+        "spin": "0.589000",
+        "spread": "0.713000",
+        "wander": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "MX_Wireframe",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "MX_Wireframe",
+      "inputSlotSourceIds": [
+        "MX_Organism"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "MX_Wireframe",
+      "panelOpen": true,
+      "parameters": {
+        "camera_distance": "1.732051",
+        "camera_far": "100.000000",
+        "camera_fov": "60.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_mode": "0",
+        "camera_move_speed": "3.000000",
+        "camera_near": "0.100000",
+        "camera_pitch": "0.000000",
+        "camera_pos_x": "0.000000",
+        "camera_pos_y": "0.000000",
+        "camera_pos_z": "-1.732051",
+        "camera_target_x": "0.000000",
+        "camera_target_y": "0.000000",
+        "camera_target_z": "0.000000",
+        "camera_yaw": "0.000000",
+        "depth_fade": "0.350000",
+        "fill_level": "0.020000",
+        "ink_gain": "1.000000",
+        "lat_lines": "9.000000",
+        "line_gain": "1.000000",
+        "line_width": "0.750000",
+        "lon_lines": "14.000000",
+        "project_dir": "modules/mx_wireframe",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "rim_width": "0.060000",
+        "tube_ratio": "0.340000",
+        "tube_ribs": "6.000000",
+        "tube_rings": "2.000000",
+        "wire_style": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "MX_Instruments",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "MX_Instruments",
+      "inputSlotSourceIds": [
+        "MX_Console"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "MX_Instruments",
+      "panelOpen": true,
+      "parameters": {
+        "anim_rate": "2.957000",
+        "border_weight": "0.573892",
+        "content_gain": "0.920000",
+        "ink_level": "0.940000",
+        "line_weight": "1.353000",
+        "plate_fill": "0.037000",
+        "project_dir": "modules/mx_instruments",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "tag_opacity": "0.350000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "MX_Circuitry",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "MX_Circuitry",
+      "inputSlotSourceIds": [
+        "MX_Console"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "MX_Circuitry",
+      "panelOpen": true,
+      "parameters": {
+        "anim_rate": "0.953000",
+        "frame_inset": "0.024000",
+        "ink_level": "0.562000",
+        "lattice_n": "43.914001",
+        "leader_amount": "0.872000",
+        "line_weight": "1.196000",
+        "mark_density": "0.290000",
+        "organism_clear": "0.436000",
+        "project_dir": "modules/mx_circuitry",
+        "rail_amount": "0.409000",
+        "rail_count": "46.000000",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "seed": "33.120998"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "MX_Composite",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "MX_Composite",
+      "inputSlotSourceIds": [
+        "MX_Circuitry",
+        "MX_Wireframe",
+        "MX_Wireframe",
+        "MX_Instruments",
+        "MX_Console"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "MX_Composite",
+      "panelOpen": true,
+      "parameters": {
+        "circuit_gain": "1.000000",
+        "panel_gain": "1.000000",
+        "panel_opacity": "1.000000",
+        "panel_pad": "0.001600",
+        "project_dir": "modules/mx_composite",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "wire_gain": "1.000000",
+        "wire_opacity": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "MX_Post",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "MX_Post",
+      "inputSlotSourceIds": [
+        "MX_Composite"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "MX_Post",
+      "panelOpen": true,
+      "parameters": {
+        "black_lift": "0.012000",
+        "contrast": "1.160000",
+        "exposure": "1.020000",
+        "gamma": "1.000000",
+        "glow_gain": "0.420000",
+        "glow_radius": "5.000000",
+        "glow_threshold": "0.320000",
+        "grain": "0.045000",
+        "grain_size": "1.300000",
+        "project_dir": "modules/mx_post",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "tint_b": "1.000000",
+        "tint_g": "1.000000",
+        "tint_r": "1.000000",
+        "vignette": "0.220000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1785467333361,
+  "sources": [],
+  "statePayloads": {
+    "MX_Console": {
+      "plate": {
+        "data": "a0d34f3d699db53d0047ba3cb18a783d00000000000040413333af410040463f000000000000453e00000000000000000fe9293ddfd0fb3eb9e35c3c4d30763d00000000000070417b140d4200c0623e000000400040553f000000000000803fd6420d3ffb08f83ef108853d2af1573d00000000000000005c8f42420000653e0000004000c0de3e00000000000000001cbad43e1644883d8b60873d0cd81d3d00000000000020413d0a784200d0a03e000000000040303e000000000000803f3d52243f1e3d373f14c21e3e94e4df3c00000000000080408fc296420080473e0000804000604f3f00000000000000008cf8213f4a1be63d4c9cf03c3ac3ac3d00000000000080400080b14200c0c03e000000000080a63e000000000000803f4cba803e3669493f90c8643ee5cb673c0000000000004040703dcc4200801a3f000080400000c83e00000000000000007ce7ca3e6e2ae03e62dca03d20e6c73b0000000000003041e1fae64200980e3f000000400010033f000000000000000054a4493f1aca663ea9c23c3eec88883c000000000000004129dc00430000133e0000803f00007a3f000000000000803f4ee10c3f87804f3facfc813d5d1d633d0000000000006041e13a0e430080a83e000080400080de3e000000000000803f7369e03ddc5e923e6311a73d5643fe3c000000000000e0409a991b4300805b3f0000803f00c0dc3e00000000000000000397423f5ef5f13e05e42e3d4054273d000000000000803f52f828430040ca3e000000400000d13e000000000000803fc664643f39ec4b3fbf81a33d7ed8293d000000000000a0400a5736430000823c000080400000943c00000000000000002e7ed23e17f3883ea5e17c3de119773d0000000000002041c2b543430030da3e0000803f0040da3e0000000000000000f454be3d21db343fe4fc843d60c75d3d000000000000e0407b14514300107c3f0000804000a07c3f0000000000000000f03d9d3de977643fbecb473da5e8a23d000000000000704133735e4300c02c3f0000a0400000b23d0000000000000000a4992b3ff232953eda2f893dcb03193d0000000000000040ebd16b4300e0653f0000803f00e03a3f000000000000803ffe1f983ee977643f2cd8513da5e8a23d0000000000000000a43079430000073f0000a04000009e3d000000000000803fb98a363f637a4d3f36bbb23d1ebb423d000000000000e040ae47834300b0133f0000804000207e3f0000000000000000663c883e88619c3dd602923def12463d000000000000e0400af7894300e0563f000000000080693f00000000000000001ab8573f4a1be63d5d683a3d3ac3ac3d000000000000504166a6904300105c3f0000000000400a3f000000000000803fa0265a3fae94003fe8ee183d1a7a903d0000000000007041c255974300807a3e0000404000a0253f000000000000803fe500483f397cac3e71ed023dffa6a93d000000000000803f1f059e430000053e0000004000404a3f0000803f0000803fce7c803e8636fc3ec475603d855d793d00000000000000407bb4a44300d46a3f000000400020623e0000000000000000aa180e3fc4e01c3f8fb78b3d3156823d0000000000000000d763ab4300e05f3f000040400020e63e0000000000000000f8d7a93eb40f2b3f85f2643c1d3fbd3d00000000000070413313b24300604f3f000080400000203c000000000000803f6dc0093f19e1893ed10c5a3df5897e3d00000000000050418fc2b84300003f3f0000803f00503e3f000000000000000057608a3ec43c903e1373893dce21dc3c0000000000002041eb71bf430000c73d0000803f00e05d3f000000000000000064de0a3f0382e43d622d483df329ab3d00000000000060414821c6430040113f000000000000103e000000000000803f57b6643ff570213f31f5a03d58a93b3d0000000000007041a4d0cc430000a03b000040400000be3d00000000000000000837283fc0c66a3f623b003dcee3603d00000000000070410080d34300a0093e0000a04000c0453e000000000000803f7cd6553f397cac3e3914253cffa6a93d00000000000080405c2fda430020403f000000400060433f000000000000803f3acfd53ee977643fcb7a6a3da5e8a23d0000000000007041b8dee0430000ea3e0000a0400000243f000000000000803f506f5c3f9638693f19ac473d6fc6793d0000000000006041148ee74300804c3f0000a0400080223f0000000000000000b0d9d73d57f34e3ea0819e3defe0263d0000000000005041703dee4300d0003f0000803f00d05e3f0000000000000000ec2d3e3ee977643f2a49453da5e8a23d0000000000002041cdecf4430040e23e0000a0400080293f0000000000000000783ed93d10251a3f68e69f3dd1721c3d000000000000a040299cfb4300d0d33e000040400070273f000000000000803f663c883e6655423ed602923db158593d000000000000803fc22501440000713d0000803f00c0e43e000000000000000081c73a3fa68f523d4a7a633d0cbfbf3c000000000000e040717d044400c0443f000000000000f03c000000000000803fd984733e21db343f66248b3d60c75d3d000000000000a0401fd507440000ee3e0000804000802d3f000000000000000006a36f3f4a1be63d771f133d3ac3ac3d0000000000007041cd2c0b4400a07c3f000000000010323f000000000000803fec76bc3eb40f2b3f3f502a3c1d3fbd3d00000000000070417b840e440020de3e000080400000ee3e000000000000000018f5633f1e3d373f34ffa63d94e4df3c000000000000804029dc114400a00b3f0000804000c0513f00000000000000002f9c2b3fc4e01c3f48a20f3d3156823d000000000000803fd73315440080283e0000404000e05f3f000000000000803f4ee10c3fe4cc6c3facfc813d8f81403d000000000000a040858b18440040aa3e0000a0400080e63e000000000000803f7369e03df3a6bf3e6311a73d25f8393d000000000000000033e31b440060a33e000000400040f63e000000000000803f2e7ed23e9470c23ea5e17c3d1fab233d0000000000007041e13a1f44003c0c3f000000400040d33e00000000000000001c296a3f43e9943e11be6a3d4eb6163d00000000000000008f9222440000173e0000803f00009c3e000000000000803f5cc62a3ffb08f83e83ff1c3d2af1573d00000000000060413dea25440000b23d0000004000602f3f000000000000803fce7c803ee4571a3fc475603d9845193d0000000000005041eb41294400002b3f000040400080f93e000000000000803f6dc0093f965ec33ed10c5a3d0c3b1c3d00000000000050419a992c440000403d0000004000e0383f0000000000000000a4992b3f20afc23eda2f893dbdb6213d000000000000704148f12f440040333f000000400000043d000000000000803f7ece6f3fae94003f0468103d1a7a903d0000000000005041f648334400000c3d0000404000009a3d000000000000803f57608a3edb84bd3e1373893dea084b3d000000000000a040a4a036440080253f0000004000503f3f00000000000000001cbad43ee2db1f3e8b60873d64e81f3d000000000000803f52f839440040343f000000000080313f000000000000803f7086dd3eb40f2b3f28c12c3d1d3fbd3d000000000000604100503d440080493f0000804000003e3e00000000000000000397423ff6d6193f05e42e3da6a49a3d000000000000e040aea740440044403f000040400000e23c000000000000803f7ce7ca3e6a86023f62dca03d80ef5c3d00000000000020415cff434400904b3f0000404000a0213f0000000000000000bf68723f9638693fde87cd3c6fc6793d00000000000040410a57474400406b3f0000a04000a0293f0000000000000000a717403fc0c66a3f95a74c3dcee3603d000000000000803fb8ae4a4400d02e3f0000a0400040523f000000000000803f1c296a3f7165c23e11be6a3d3904243d000000000000504166064e440060343f000000400000643f000000000000803f955a093e699db53d4b4c473db18a783d0000000000005041145e514400c06e3f0000000000004b3e000000000000000081c73a3f642a113e4a7a633d7813613d0000000000006041c2b5544400e0193f000000000040113f000000000000803f5492003edfd0fb3e6b00703d4d30763d0000000000006041710d584400304a3f0000004000302d3f000000000000803fc335d93ec385db3ef1f48a3e3d0a973f0000803f00000000cdccc04166de553f000000000038763f000000000000803f15eefc3dc3d5213e7d3f353e705f473f0000803f0000803f6666244200b01e3f0000803f0080133f000000000000803fcd8cf93de10a523fc954413ebc74533f0000803f0000803f6666684233b3673f000000400000c63d000000000000803f5cef613f71ad473f705f473e637f593f0000803f0000803f333396423353253f000040400000ac3e000000000000803f4829683fd7b3a73e47bffd3d97ff103f0000803f000000403333b8420000533f000080400080a53e0000000000000000a410923ed7a3703fae94e53d47bffd3e0000803f0000803f3333da4266866b3f0000a0400000883c000000000000000014de5e3f7b74013e166acd3dae94e53e0000803f000000403333fc429a396e3f0000c0400000303e000000000000000029841b3f0aa32c3ffba9f13d4aea043f0000803f000000009a190f430088433f0000e0400010293f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c534fe440000b84100000000000000000000004000000000000000000000803f0000044200008040000000000000803f",
+        "element_count": 128,
+        "element_size": 48,
+        "encoding": "hex",
+        "schema_signature": "2505793551352396581"
+      }
+    }
+  },
+  "version": 5
+}

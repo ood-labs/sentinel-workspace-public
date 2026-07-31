@@ -1,0 +1,80 @@
+name: "MX Organism"
+version: "0.1"
+mode: generator
+resolution: [768, 768]
+
+# Turns the plate's organism anchors into branching molecular trees. Each anchor's `kind`
+# (set per-anchor in MX_Console with the K key) selects chain / dendrite / burst, and its
+# growth scale sets its share of the node budget.
+#
+# Bonds are implicit in the parent index, so one record buffer carries spheres and tubes.
+
+buffers:
+  - { name: nodes, structured: true, element_size: 48, element_count: 320 }
+
+data_inputs:
+  - name: "Plate"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: node_budget,   display: "Node Budget",  type: int,   min: 32,  max: 320,  default: 300, group: "Growth" }
+  - { name: depth_max,     display: "Max Depth",    type: int,   min: 2,   max: 20,   default: 10,   group: "Growth" }
+  - { name: radius_root,   display: "Sphere Scale", type: float, min: 0.3, max: 2.0,  default: 1.000000, group: "Growth" }
+  - { name: node_size,     display: "Sphere / Bond", type: float, min: 0.25, max: 1.2, default: 0.78, group: "Growth" }
+  - { name: radius_decay,  display: "Radius Taper", type: float, min: 0.55, max: 1.0, default: 0.86, group: "Growth" }
+  - { name: spacing,       display: "Bond Length",  type: float, min: 0.5, max: 2.5,  default: 1.55, group: "Growth" }
+  - { name: spread,        display: "Branch Spread", type: float, min: 0.1, max: 1.0, default: 0.45, group: "Growth" }
+  - { name: wander,        display: "Chain Wander", type: float, min: 0.05, max: 1.0, default: 0.7, group: "Growth" }
+  - { name: flatten,       display: "Flatten Z",    type: float, min: 0.0, max: 1.0,  default: 0.45, group: "Growth" }
+  - { name: containment,   display: "Containment",  type: float, min: 0.6, max: 2.5,  default: 1.25, group: "Growth" }
+  - { name: bud_swell,     display: "Bud Swell",    type: float, min: 0.6, max: 2.2,  default: 1.35, group: "Growth" }
+
+  - { name: growth,   display: "Growth Reveal", type: float, min: 0.0, max: 1.0, default: 1.000000, group: "Motion" }
+  - { name: anim_rate, display: "Rate",         type: float, min: 0.0, max: 3.0, default: 1.000000, group: "Motion" }
+  - { name: spin,      display: "Cluster Spin", type: float, min: 0.0, max: 1.5, default: 0.22, group: "Motion" }
+  - { name: breathe,   display: "Breathe",      type: float, min: 0.0, max: 2.0, default: 0.7, group: "Motion" }
+
+passes:
+  - name: grow
+    shader: grow.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:nodes"
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:nodes" }
+
+data_outputs:
+  - name: "Nodes"
+    buffer: "nodes"
+    schema:
+      - { name: pos, type: float3 }
+      - { name: radius, type: float }
+      - { name: parent, type: float }
+      - { name: xlink, type: float }
+      - { name: cluster, type: float }
+      - { name: depth, type: float }
+      - { name: seed, type: float }
+      - { name: phase, type: float }
+      - { name: kind, type: float }
+      - { name: active, type: float }
+
+outputs:
+  - { name: "Preview", pass: preview }

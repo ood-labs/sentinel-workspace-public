@@ -1,0 +1,81 @@
+name: "MX Wireframe"
+version: "0.1"
+mode: generator
+resolution: [1080, 1080]
+features: [camera]
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed"
+  interactions: [camera]
+
+# Rasterizes the organism's node/bond records as opaque black solids with white mesh lines.
+# Owns Sentinel's internal camera; its default pose frames plate space 1:1 so the wire layer
+# registers with the instrument layer, and flying the camera is an intentional creative move.
+#
+# vertex_count = 320 nodes x (960 sphere + 96 tube) vertices. Inactive nodes and roots emit
+# degenerate triangles.
+
+data_inputs:
+  - name: "Nodes"
+    slot: 0
+    schema:
+      - { name: pos, type: float3 }
+      - { name: radius, type: float }
+      - { name: parent, type: float }
+      - { name: xlink, type: float }
+      - { name: cluster, type: float }
+      - { name: depth, type: float }
+      - { name: seed, type: float }
+      - { name: phase, type: float }
+      - { name: kind, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - name: wire_style
+    display: "Mesh Style"
+    type: enum
+    options: [Lat-Long, Contour Bands, Hatch Shell, Ribbon Cage]
+    default: 0
+    flags: button_grid
+    group: "Mesh"
+  - { name: lat_lines,   display: "Latitude Lines",  type: int,   min: 0,   max: 24,  default: 9,   group: "Mesh" }
+  - { name: lon_lines,   display: "Longitude Lines", type: int,   min: 0,   max: 32,  default: 14,  group: "Mesh" }
+  - { name: line_width,  display: "Line Weight",     type: float, min: 0.4, max: 4.0, default: 0.75, group: "Mesh" }
+  - { name: line_gain,   display: "Line Gain",       type: float, min: 0.0, max: 2.0, default: 1.000000, group: "Mesh" }
+  - { name: rim_width,   display: "Silhouette",      type: float, min: 0.0, max: 0.5, default: 0.06, group: "Mesh" }
+
+  - { name: tube_ratio,  display: "Tube Thickness",  type: float, min: 0.08, max: 1.0, default: 0.34, group: "Bonds" }
+  - { name: tube_ribs,   display: "Tube Ribs",       type: int,   min: 0,   max: 16,  default: 6,   group: "Bonds" }
+  - { name: tube_rings,  display: "Tube Rings",      type: int,   min: 0,   max: 12,  default: 2,   group: "Bonds" }
+
+  - { name: ink_gain,    display: "Ink",             type: float, min: 0.0, max: 2.0,  default: 1.000000,  group: "Ink" }
+  - { name: fill_level,  display: "Solid Fill",      type: float, min: 0.0, max: 0.30, default: 0.02, group: "Ink" }
+  - { name: depth_fade,  display: "Depth Fade",      type: float, min: 0.0, max: 1.0,  default: 0.35, group: "Ink" }
+
+passes:
+  - name: wire
+    shader: wire.hlsl
+    target: draw
+    vertex_count: 337920
+    topology: trianglelist
+    depth: true
+    depth_write: true
+    cull: none
+    vs_entry: VSMain
+    ps_entry: PSMain
+    inputs:
+      - { slot: 0, source: "data:0" }
+  - name: flatten
+    shader: flatten.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:wire" }
+  - name: cover
+    shader: cover.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:wire" }
+
+outputs:
+  - { name: "Wire", pass: flatten }
+  - { name: "Coverage", pass: cover }

@@ -1,0 +1,51 @@
+name: "MX Composite"
+version: "0.1"
+mode: generator
+resolution: [1080, 1080]
+
+# Stacks the plate bottom-to-top: circuitry, organisms, instrument panels.
+# Panel knockout is re-derived from the Plate records so it cannot drift from where the
+# panels were actually drawn.
+
+inputs:
+  - { name: "Circuitry",     slot: 0, required: true }
+  - { name: "Wire",          slot: 1, required: false }
+  - { name: "Wire Coverage", slot: 2, required: false }
+  - { name: "Instruments",   slot: 3, required: false }
+
+data_inputs:
+  - name: "Plate"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: circuit_gain,   display: "Circuitry",      type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layers" }
+  - { name: wire_gain,      display: "Organisms",      type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layers" }
+  - { name: wire_opacity,   display: "Organism Solid", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Layers" }
+  - { name: panel_gain,     display: "Instruments",    type: float, min: 0.0, max: 2.0, default: 1.0, group: "Layers" }
+  - { name: panel_opacity,  display: "Panel Knockout", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Layers" }
+  - { name: panel_pad,      display: "Panel Bleed",    type: float, min: 0.0, max: 0.01, default: 0.0016, group: "Layers" }
+
+passes:
+  - name: comp
+    shader: comp.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "input:2" }
+      - { slot: 3, source: "input:3" }
+      - { slot: 4, source: "data:0" }
+
+outputs:
+  - { name: "Comp", pass: comp }

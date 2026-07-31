@@ -90,6 +90,41 @@ Three common archetypes:
 
 If the reference is a routing problem, an atlas will fight you the whole way, and vice versa. Choosing the wrong contract is the most expensive mistake in this workflow, so name the archetype out loud before building.
 
+**Hybrids are normal.** A dense collage of technical panels wrapped around organic 3D masses is a routing problem *and* an organic problem. Do not run two parallel contracts: unify them under **one record buffer with a `role` discriminator**, so a single data link carries the whole plan and every consumer takes the records it cares about. `projects/matik_plate/` does this — one 128-record buffer where `role` separates instrument cells from organism anchors from a header record.
+
+---
+
+## Single plan authority
+
+**One node owns placement. Every other node derives from its records and never re-decides them.**
+
+This is stronger than "one layout transform, at the generator" below. The transform rule prevents drift; the authority rule is what makes a finished graph *rearrangeable*, because every question about where something is has exactly one answer. Rearrangement then falls out of the system instead of being a feature you build.
+
+- Build the authority node **first**, in signal-flow order. It is usually not the fun node.
+- Its preview becomes the diagnostic surface for the whole graph. Over-invest in it.
+- Anything derivable from the records is derived, not republished as a second lane.
+
+### Generate, then override
+
+A generative node that accepts interaction must produce a **complete, good result procedurally**, and let interaction **override individual records** on top of it.
+
+- The node is useful and unbroken from the first frame, before anyone touches it.
+- Global parameters keep working after hand edits, because edits are deltas rather than a replacement authoring model.
+- "Re-roll this record", "disable this one", "cycle its kind" become trivial, because a record already exists to mutate.
+
+Regeneration must be **signature-driven** — hash the structural parameters plus an explicit algorithm-version constant, rebuild only when it changes — or hand edits die on every cook. The failure mode this replaces is the empty editor that renders nothing until fully hand-authored and whose global controls fight the edits.
+
+### Derive magnitudes from upstream records
+
+When a downstream node needs a size, spacing, or extent that relates to something upstream already decided, compute it from the upstream record geometry. Giving that node its own parallel parameter creates two numbers that must be kept in agreement by hand and that silently disagree at every setting nobody tested.
+
+### Coverage and masking authority
+
+- **Derive the mask from the records** wherever the records determine it. A compositor recomputing panel coverage from the same records the panels were drawn from cannot drift out of registration.
+- **Publish a real coverage lane only where colour cannot carry the information** — an opaque black shape on a black background is undecidable by colour alone.
+
+Do not smuggle coverage into a colour lane's alpha to avoid declaring an output; it makes the node's own preview read wrong and breaks the honest-preview contract.
+
 ---
 
 ## Routing graphics rules
@@ -132,6 +167,12 @@ Use typed controls, and make every one visibly matter:
 - A seed, preset, or mode must change whole route structures or families, not add tiny jitter. If a control barely changes the image, redesign it. Useful controls for a routing scene: route preset, route density, expanded-canvas scale/offset, width scale, and explicit accent pattern controls.
 - Avoid hidden randomness where the user needs direct control. For a "one large dash" look, expose `dash_count` (precise float range) and `dash_offset` (explicit 0..1 phase) instead of silently hashing route ids into a phase.
 - Keep experimental controls default-off when they can damage the design language. Do not apply organic sine displacement or wavy paths to a hard graphic-design reference; controlled width profiles and rounded joins are a different language from noise.
+
+### Exploration axes are shipped presets, not throwaway variants
+
+When exploring alternatives, build the exploration axis as a permanent `enum` on the node that owns it rather than prototyping versions you intend to delete. Sweep it, capture each value, judge from the images, bake the winner as the manifest default, and **repair the losers instead of removing them**. Exploration cost then converts directly into product features, and a preset that lost on this reference is often the right answer for the next one. Record the verdict and the reasoning in the project README so the next agent does not repeat the search.
+
+Two to four axes is the useful range, and a good axis changes structure — layout strategy, mesh style, growth mode. Palette and grade are not exploration axes.
 
 ### Scene Group control surfaces
 
@@ -177,6 +218,7 @@ plus `an_spring_v` when a cue jump or target change must remain continuous.
 
 ## Cross-links
 
+- `knowledge/reference-build-method.md`: the end-to-end method for building a specific ambitious result from a reference — inventory, plan authority, generate-then-override, exploration presets, converge and prove. Read it before starting a from-scratch build.
 - `module-authoring` skill: manifest syntax, compiler name mappings, structured buffer I/O, hot-reload, control outputs.
 - `knowledge/module-pipeline.md`: data ports, `resolution_source`, bundling, write-order gotcha.
 - `laser-content-authoring` skill: multi-output Module composition and HStack routing, a concrete instance of this modular approach.

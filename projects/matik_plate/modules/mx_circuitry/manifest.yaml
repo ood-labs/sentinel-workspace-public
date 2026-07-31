@@ -1,0 +1,48 @@
+name: "MX Circuitry"
+version: "0.1"
+mode: generator
+resolution: [1080, 1080]
+
+# Frame, registration marks, edge rails and the field of micro-marks and leader hairlines
+# that fills the space between panels. Reads the Plate records only to thin the scatter over
+# the organisms; panel knockout is the compositor's job, from those same records.
+
+data_inputs:
+  - name: "Plate"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: seed,           display: "Seed",          type: float, min: 0.0, max: 64.0, default: 3.0, group: "Scatter" }
+  - { name: lattice_n,      display: "Lattice",       type: float, min: 8.0, max: 60.0, default: 34.0, group: "Scatter" }
+  - { name: mark_density,   display: "Mark Density",  type: float, min: 0.0, max: 1.0,  default: 0.45, group: "Scatter" }
+  - { name: leader_amount,  display: "Leaders",       type: float, min: 0.0, max: 1.0,  default: 0.35, group: "Scatter" }
+  - { name: organism_clear, display: "Clear Organisms", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Scatter" }
+
+  - { name: frame_inset,    display: "Frame Inset",   type: float, min: 0.0, max: 0.08, default: 0.014, group: "Frame" }
+  - { name: rail_count,     display: "Rail Beads",    type: float, min: 8.0, max: 90.0, default: 46.0, group: "Frame" }
+  - { name: rail_amount,    display: "Rail Amount",   type: float, min: 0.0, max: 1.0,  default: 0.9, group: "Frame" }
+
+  - { name: line_weight,    display: "Line Weight",   type: float, min: 0.4, max: 3.5,  default: 1.25, group: "Ink" }
+  - { name: ink_level,      display: "Ink Level",     type: float, min: 0.1, max: 1.0,  default: 0.80, group: "Ink" }
+  - { name: anim_rate,      display: "Rate",          type: float, min: 0.0, max: 4.0,  default: 1.0, group: "Motion" }
+
+passes:
+  - name: render
+    shader: circuitry.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - { name: "Circuitry", pass: render }

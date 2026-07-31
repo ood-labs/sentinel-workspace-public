@@ -47,6 +47,25 @@ Before an ambitious creative graph, establish a short direction plan covering so
 
 Every number or label must derive from real live state and remain attached to what it describes. Every authored interaction must cause an immediate, legible, creatively useful change that is meaningfully better than an ordinary Properties control. Do not add stage drags, momentary buttons, fake telemetry, or decorative controls merely to make a composition appear interactive; remove controls that prove weak, redundant, or unclear.
 
+## Ambitious Builds From A Reference
+
+When the job is to build a specific ambitious result from a reference image or brief, read
+`knowledge/reference-build-method.md` first. Before writing code, inventory every visual
+element in the reference, name the node decomposition, and name the data contract; hybrid
+references are normal and unify under one record buffer with a `role` discriminator.
+
+Elect one plan-authority node that owns placement. Downstream nodes derive from its records
+and never re-decide them, and anything derivable from those records is derived rather than
+published as a second lane. A generative node that accepts interaction must generate a
+complete result procedurally and let interaction override individual records, so it is
+useful before it is edited. Derive downstream magnitudes from upstream record geometry
+instead of adding a parallel parameter that must be kept in agreement by hand.
+
+Build exploration axes as shipped `enum` presets rather than throwaway variants: sweep them,
+judge from captures, bake the winner as the default, and repair the losers instead of
+deleting them. Bake tuned values into manifests before the final save, and state plainly
+whatever you could not verify.
+
 ## Examples Are References, Not A Stock Module Library
 
 Start with `knowledge/EXAMPLE-MAP.md` when an existing project may illuminate a
@@ -324,6 +343,7 @@ Start with:
 - `knowledge/FEATURE-MAP.md`
 - `knowledge/EXAMPLE-MAP.md`
 - `knowledge/example-authoring.md`
+- `knowledge/reference-build-method.md`
 - `knowledge/first-run-engines.md`
 - `knowledge/graph-wiring.md`
 - `knowledge/expressions-and-drivers.md`

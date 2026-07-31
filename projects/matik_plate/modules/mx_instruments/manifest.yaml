@@ -1,0 +1,42 @@
+name: "MX Instruments"
+version: "0.1"
+mode: generator
+resolution: [1080, 1080]
+
+# Renders each plate cell as the instrument its record specifies. Square generator at plate
+# resolution, so uv is plate space directly — no layout transform is re-applied here.
+# Coverage is deliberately not published: MX_Composite derives it from the same records.
+
+data_inputs:
+  - name: "Plate"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: line_weight,    display: "Line Weight",   type: float, min: 0.4, max: 4.0, default: 1.4, group: "Ink" }
+  - { name: border_weight,  display: "Panel Border",  type: float, min: 0.0, max: 4.0, default: 1.5, group: "Ink" }
+  - { name: content_gain,   display: "Content Gain",  type: float, min: 0.0, max: 1.5, default: 0.92, group: "Ink" }
+  - { name: ink_level,      display: "Ink Level",     type: float, min: 0.3, max: 1.0, default: 0.94, group: "Ink" }
+  - { name: plate_fill,     display: "Panel Fill",    type: float, min: 0.0, max: 0.25, default: 0.035, group: "Ink" }
+  - { name: tag_opacity,    display: "Tag Opacity",   type: float, min: 0.0, max: 1.0, default: 0.65, group: "Ink" }
+  - { name: anim_rate,      display: "Rate",          type: float, min: 0.0, max: 4.0, default: 1.0, group: "Motion" }
+
+passes:
+  - name: render
+    shader: instruments.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - { name: "Instruments", pass: render }

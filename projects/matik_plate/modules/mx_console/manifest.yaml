@@ -1,0 +1,96 @@
+name: "MX Console"
+version: "0.1"
+mode: generator
+resolution: [1024, 1024]
+
+# The plan authority for matik_plate. Owns PLATE SPACE (see _shared/plate.hlsli) and is the
+# only node that decides where anything sits. Publishes one Plate record buffer consumed by
+# the instrument renderer, the connective layer, and the organism grower.
+#
+# Square generator resolution on purpose: plate space, this canvas's uv, and normalized
+# viewport pointer coordinates are then the same numbers, so render / pick / drag cannot
+# drift apart. The editor draws a schematic plan, not a copy of the program image.
+
+buffers:
+  - { name: plate, structured: true, element_size: 48, element_count: 128, persistent: true }
+
+state_buffers:
+  - name: plate
+    max_elements: 128
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+viewport:
+  hint: "Click select · drag move · K kind · X on/off · N re-roll · R reseed · C clear"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [k, x, n, r, c]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select record" }
+    - { gesture: left_drag, action: move, label: "Move record" }
+    - { key: k, action: cycle_kind, label: "Cycle kind" }
+    - { key: x, action: toggle_active, label: "Toggle on/off" }
+    - { key: n, action: reroll, label: "Re-roll record" }
+    - { key: r, action: reseed, label: "Reseed layout" }
+    - { key: c, action: clear_selection, label: "Clear selection" }
+
+parameters:
+  - name: layout_preset
+    display: "Layout"
+    type: enum
+    options: [Guillotine, Column Rack, Ring Array, Dense Strata]
+    default: 0
+    flags: button_grid
+    group: "Layout"
+  - { name: seed,        display: "Seed",         type: float, min: 0.0,  max: 64.0, default: 7.000000,  group: "Layout" }
+  - { name: cell_count,  display: "Cell Count",   type: int,   min: 6,    max: 64,   default: 64,   group: "Layout" }
+  - { name: margin,      display: "Plate Margin", type: float, min: 0.0,  max: 0.12, default: 0.022, group: "Layout" }
+  - { name: gap,         display: "Cell Gap",     type: float, min: 0.0,  max: 0.03, default: 0.006, group: "Layout" }
+  - { name: thinning,    display: "Thin Out",     type: float, min: 0.0,  max: 0.6,  default: 0.05, group: "Layout" }
+
+  - { name: anchor_count,    display: "Organisms",     type: int,   min: 1,   max: 8,   default: 4,   group: "Organism" }
+  - { name: organism_scale,  display: "Organism Size", type: float, min: 0.3, max: 2.0, default: 1.18, group: "Organism" }
+  - { name: reserve,         display: "Clearance",     type: float, min: 0.4, max: 2.0, default: 1.000000, group: "Organism" }
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:plate"
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:plate" }
+
+data_outputs:
+  - name: "Plate"
+    buffer: "plate"
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+outputs:
+  - { name: "Console", pass: canvas }
