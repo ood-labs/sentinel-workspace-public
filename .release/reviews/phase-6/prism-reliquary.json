@@ -1,0 +1,30 @@
+{
+  "project": "projects/prism_reliquary/prism_reliquary.sentinel",
+  "candidate": "prism_reliquary",
+  "source_commit": "8238705986b1bbdb50dc828a01a0c63dfe363f07",
+  "reviewed_output": "PR_Post",
+  "graph": {
+    "node_count": 4,
+    "scene_group": "Prism Reliquary",
+    "scene_group_controls": 8,
+    "project_scoped_node_presets": 7,
+    "group_output_count": 0
+  },
+  "runtime": {
+    "resolution": "1080x1350",
+    "reported_cadence_fps": 60,
+    "reported_frame_time_ms": 16.7,
+    "camera_owner": "PR_Render",
+    "module_locality": "all active Modules and recursive dependencies are bundled under projects/prism_reliquary",
+    "external_assets": []
+  },
+  "review": {
+    "component_map": "projects/prism_reliquary/README.md",
+    "method_reference": "knowledge/reference-build-method.md",
+    "notes": "The example documents its interactive plan authority, typed cast records, frame contract, authored HDR studio, thin-film rendering, depth lane, post stack, antialiasing strategy, exploration axes, and remix lessons."
+  },
+  "human_gate": {
+    "status": "approved-for-seed",
+    "notes": "The user committed this example on the public seed test branch and explicitly asked to update the public workspace with those latest commits."
+  }
+}

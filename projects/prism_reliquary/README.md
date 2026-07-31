@@ -14,7 +14,7 @@ bokeh, HDR bloom, and the antialiasing strategy that makes all three hold togeth
 
 ---
 
-## Route
+## Component map
 
 ```
 PR_Plan ──Cast──> PR_Env ──Studio(tex)──┐

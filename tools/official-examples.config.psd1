@@ -40,6 +40,18 @@
             MinimumNodePresets = 6
             Exemptions = @('scene-group-presets', 'technical-workflow-output')
         }
+        prism_reliquary = @{
+            ProjectFile = 'prism_reliquary.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-6/prism-reliquary.json')
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 7
+            Exemptions = @('scene-group-presets', 'technical-workflow-output')
+        }
         face_collage = @{
             ProjectFile = 'face_collage.sentinel'
             SharedModules = @()
