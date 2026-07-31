@@ -22,7 +22,7 @@
                   },
                   {
                       "path":  ".agents/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "4b363413db604298cfae8b95e463cb7b8727e46020ef624e31e8fe5dcf99e57d"
+                      "sha256":  "d32b5350d9bcc833d67bcdd513e14995d0ebc786eb1416c4945c4c79f0b4d7ca"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -150,7 +150,7 @@
                   },
                   {
                       "path":  ".claude/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "4b363413db604298cfae8b95e463cb7b8727e46020ef624e31e8fe5dcf99e57d"
+                      "sha256":  "d32b5350d9bcc833d67bcdd513e14995d0ebc786eb1416c4945c4c79f0b4d7ca"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -270,11 +270,11 @@
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "287b294086fc637c9cb9e40713a5b875304cd32bc41d68591de441864912479c"
+                      "sha256":  "cee207d3790a4a0c4dcdd7bb064e5c2a258e00c887c5b6800c360854b1b66cd0"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "287b294086fc637c9cb9e40713a5b875304cd32bc41d68591de441864912479c"
+                      "sha256":  "cee207d3790a4a0c4dcdd7bb064e5c2a258e00c887c5b6800c360854b1b66cd0"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -298,7 +298,7 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "287b294086fc637c9cb9e40713a5b875304cd32bc41d68591de441864912479c"
+                      "sha256":  "cee207d3790a4a0c4dcdd7bb064e5c2a258e00c887c5b6800c360854b1b66cd0"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -314,7 +314,7 @@
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
-                      "sha256":  "083fce0f9eefb34a90308899eb7af6b252f1101170ba8c87e74479b720f91bc7"
+                      "sha256":  "3f4fdd01d1ee5f3db21babcdae7536e037f26dae1f769c0527a7cdb47887787e"
                   },
                   {
                       "path":  "knowledge/expressions-and-drivers.md",
@@ -362,7 +362,7 @@
                   },
                   {
                       "path":  "knowledge/reference-build-method.md",
-                      "sha256":  "6ec63356a7c633eaf2395d2d597c365bfb06dd1039150501bcd449960bfd6a8e"
+                      "sha256":  "49fbf16897626ac3eff78561d1e38f54dc7918f877af270af0bc091f8131e909"
                   },
                   {
                       "path":  "knowledge/scene-system.md",
@@ -1417,6 +1417,98 @@
                       "sha256":  "d83287bf9bd7a15ae39c2b9f7901fe8a75c751f06f63c6c3edddfa9c9b2b8c86"
                   },
                   {
+                      "path":  "projects/prism_reliquary/modules/_shared/prmath.hlsli",
+                      "sha256":  "e7998ce1c763b235c15119f8104f74eb689c6c8e52529fce20174beef20668ca"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/_shared/relic.hlsli",
+                      "sha256":  "4bd8eef06cc4fa3adce326d67d4c3e7459fe36bdb8564a728466aba744f9a4a9"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Env/env.hlsl",
+                      "sha256":  "70fab76490f844a8c5d9c7b99315b97853b0e12b7f9baf5ec19ed20fab6bebda"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Env/manifest.yaml",
+                      "sha256":  "bca8c695b95f46ee0525467a251b724b62f2e7e06b0f266fcdb2c946053027fd"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Plan/canvas.hlsl",
+                      "sha256":  "b9339bb1d7036a202e541fe260d2eb0b45f6be6b4b8114e3dd6ffa6487996a3a"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Plan/manifest.yaml",
+                      "sha256":  "5789449048058a3b67baa39e117150df0319e241086018bb9a490ef20de8b22f"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Plan/plan.hlsl",
+                      "sha256":  "6b9c56953d027a359b2e5c1e4fbae50a3393296cee39fbfc41b5a1a741d74ffa"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/_aa_common.hlsli",
+                      "sha256":  "f2123b0429d54f262427d01a04cb2414bb83af873acac0eabde6fa49844d0ae9"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/aa.hlsl",
+                      "sha256":  "f20891d01071c970c6f02f3f01f6efce93fdbffb0fd7b08f8034402abe06376d"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/aa2.hlsl",
+                      "sha256":  "27774c2b5d95f7b1b17e12248c88ceda98b43e071eb4fd2ab384590d7e425366"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/blur_h.hlsl",
+                      "sha256":  "ba1f0a06709f2c2e1eeb1f509ee402bfc1733bca3c22949c81fea95fb6d7cc15"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/blur_v.hlsl",
+                      "sha256":  "968c532419b24fe541bcb499ef8ccc0a24e3ca39a8802235094d696abbea4d05"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/bright.hlsl",
+                      "sha256":  "bf3a16d76488779faf89ab81b2e21a8177a3bdb203fc5ca8f3c69d935ca354e1"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/dof.hlsl",
+                      "sha256":  "13d95991549d3123138898bda7cd2b9b4d409121927ad5a7a9bdac1a9b7955b9"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/grade.hlsl",
+                      "sha256":  "f18c89fcd543cadd665e0d293d8cdefb408b6dbccc995fc5602773c9e56b1465"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/manifest.yaml",
+                      "sha256":  "8410e96a236c6951d8df059d3b51c454445f91456cd5567022222015de2f404d"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Post/star.hlsl",
+                      "sha256":  "3cb15622ba8b424b40324c5237ef0b930678bdad41cab6a80477164f7f92ab24"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Render/film.hlsl",
+                      "sha256":  "66012c58307f56976fc49b540b2b252267dbfeca37a900e3283c04be20ce5f0c"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Render/manifest.yaml",
+                      "sha256":  "708b9d82671c2b6e132dc138551604d95df706ed9c4b0280abce61a70d619960"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Render/scene.hlsli",
+                      "sha256":  "63a2c93b234065c81f3fff0d5a2b0a3cc4ddfd0ce3c58f4a3cf91ccde3366949"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/modules/PR_Render/solids.hlsl",
+                      "sha256":  "6a7c822801d2dece2ade939e2201a98481913b01362011447d529e68c905b4a3"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/prism_reliquary.sentinel",
+                      "sha256":  "222ae096fc4dc9479050c1483bf96bf7402ec87ae0517db4351acaa23f537841"
+                  },
+                  {
+                      "path":  "projects/prism_reliquary/README.md",
+                      "sha256":  "bc74b2cb080784c523fe1a160cfe1f6ed16f253d62d31242c7fc7afa0f38d017"
+                  },
+                  {
                       "path":  "projects/scientific_organism/modules/_shared/anim/anim.hlsli",
                       "sha256":  "a0906970e3e03538b3cf06c03534b44ce3983b31a3d0c6b9e4c0bf6d7e117341"
                   },
@@ -2310,7 +2402,7 @@
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "236c3e23fbad705aea7ddc6f90b3fd55dfd7f7b76f3de82bf38fc65256e8d02a"
+                      "sha256":  "d8d9c87bb4acacd4a7775e128fb4e191c87456d9362a6d28cccca77362e7ffc9"
                   },
                   {
                       "path":  "tools/module-ui.ps1",
@@ -7840,5 +7932,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "955221a2e5ef874a3fc6b75387eb606469bf3460"
+    "source_commit":  "7a1652b15033cf582d4480055fb231ae19eb49b8"
 }
