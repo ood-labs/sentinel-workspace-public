@@ -1,0 +1,78 @@
+name: "VT Composite"
+version: "0.1"
+mode: generator
+resolution: [1080, 1080]
+working_format: RGBA16F
+
+# Stacks the four object layers, then puts them in the room: drop shadow onto the backdrop and
+# a compressed floor reflection mirrored about the horizon the PLAN owns. Nothing structural
+# is decided here — layer order comes from the plan's F_FRONT flag and the horizon from the
+# plan's stage record.
+
+inputs:
+  - { name: "Stage",           slot: 0, required: true }
+  - { name: "Plates Back",     slot: 1, required: false }
+  - { name: "Plates Back Cov", slot: 2, required: false }
+  - { name: "Volumes",         slot: 3, required: false }
+  - { name: "Volumes Cov",     slot: 4, required: false }
+  - { name: "Strokes",         slot: 5, required: false }
+  - { name: "Strokes Cov",     slot: 6, required: false }
+  - { name: "Plates Front",    slot: 7, required: false }
+  - { name: "Plates Front Cov", slot: 8, required: false }
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: back_gain,   display: "Back Plates", type: float, min: 0.0, max: 2.0, default: 1.000000, group: "Layers" }
+  - { name: mass_gain,   display: "Masses",      type: float, min: 0.0, max: 2.0, default: 1.000000, group: "Layers" }
+  - { name: stroke_gain, display: "Strokes",     type: float, min: 0.0, max: 2.0, default: 1.000000, group: "Layers" }
+  - { name: front_gain,  display: "Front Plates", type: float, min: 0.0, max: 2.0, default: 1.000000, group: "Layers" }
+
+  - { name: shadow_amt,  display: "Drop Shadow",  type: float, min: 0.0, max: 1.0,  default: 0.7, group: "Shadow" }
+  - { name: shadow_dx,   display: "Shadow X",     type: float, min: -0.08, max: 0.08, default: -0.014, group: "Shadow" }
+  - { name: shadow_dy,   display: "Shadow Y",     type: float, min: -0.08, max: 0.08, default: -0.018, group: "Shadow" }
+  - { name: shadow_blur, display: "Shadow Blur",  type: float, min: 0.0005, max: 0.05, default: 0.016, group: "Shadow" }
+
+  - { name: refl_amt,      display: "Floor Reflection", type: float, min: 0.0, max: 1.5, default: 0.62, group: "Reflection" }
+  - { name: refl_squash,   display: "Reflection Squash", type: float, min: 0.4, max: 6.0, default: 2.1, group: "Reflection" }
+  - { name: refl_falloff,  display: "Reflection Falloff", type: float, min: 0.5, max: 24.0, default: 7.000000, group: "Reflection" }
+  - { name: refl_blur,     display: "Reflection Blur",  type: float, min: 0.0, max: 0.4, default: 0.1, group: "Reflection" }
+  - { name: refl_tint,     display: "Reflection Tint",  type: color, default: [0.3, 0.52, 1.000000], group: "Reflection" }
+  - { name: refl_tint_amt, display: "Tint Amount",      type: float, min: 0.0, max: 1.0, default: 0.45, group: "Reflection" }
+
+passes:
+  - name: stack
+    shader: stack.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:1" }
+      - { slot: 1, source: "input:2" }
+      - { slot: 2, source: "input:3" }
+      - { slot: 3, source: "input:4" }
+      - { slot: 4, source: "input:5" }
+      - { slot: 5, source: "input:6" }
+      - { slot: 6, source: "input:7" }
+      - { slot: 7, source: "input:8" }
+  - name: comp
+    shader: comp.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "pass:stack" }
+      - { slot: 2, source: "data:0" }
+
+outputs:
+  - { name: "Composite", pass: comp }

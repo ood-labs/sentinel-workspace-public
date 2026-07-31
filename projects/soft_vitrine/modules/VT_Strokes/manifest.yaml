@@ -1,0 +1,73 @@
+name: "VT Strokes"
+version: "0.1"
+mode: generator
+resolution: [1080, 1080]
+working_format: RGBA16F
+
+# Draws the stroke half of the Limbs buffer as lit tubes in stage space. Reads the plan only so
+# that colour and depth stay owned by the plan authority; all geometry comes from the limbs.
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+  - name: "Limbs"
+    slot: 1
+    schema:
+      - { name: pos, type: float3 }
+      - { name: radius, type: float }
+      - { name: parent, type: float }
+      - { name: group, type: float }
+      - { name: role, type: float }
+      - { name: material, type: float }
+      - { name: tparam, type: float }
+      - { name: seed, type: float }
+      - { name: kind, type: float }
+      - { name: active, type: float }
+
+parameters:
+  # EXPLORATION AXIS 3 — the cross-section language of every drawn mark.
+  - name: stroke_style
+    display: "Stroke Style"
+    type: enum
+    options: [Round Tube, Ribbon, Flat Marker, Beaded]
+    default: 0
+    flags: button_grid
+    group: "Stroke"
+  - { name: shine,         display: "Shine",        type: float, min: 0.0, max: 2.0, default: 1.0,  group: "Stroke" }
+  - { name: ambient,       display: "Ambient",      type: float, min: 0.0, max: 1.0, default: 0.30, group: "Stroke" }
+  - { name: gradient,      display: "Gradient",     type: float, min: 0.0, max: 1.0, default: 0.45, group: "Stroke" }
+  - { name: gradient_span, display: "Gradient Span", type: float, min: 0.0, max: 1.0, default: 0.18, group: "Stroke" }
+  - { name: exposure,      display: "Exposure",     type: float, min: 0.2, max: 3.0, default: 1.0,  group: "Stroke" }
+
+passes:
+  - name: draw
+    shader: strokes.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+  - name: color
+    shader: color.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:draw" }
+  - name: cover
+    shader: cover.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:draw" }
+
+outputs:
+  - { name: "Strokes", pass: color }
+  - { name: "Coverage", pass: cover }

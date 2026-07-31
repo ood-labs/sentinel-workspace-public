@@ -1,0 +1,34 @@
+name: "VT Post"
+version: "0.1"
+mode: filter
+
+# The reviewed program image. Finishing only — bloom, filmic curve, grade, lens separation,
+# vignette and grain. If something here changes what the composition IS, it belongs upstream.
+
+inputs:
+  - { name: "Composite", slot: 0, required: true }
+
+parameters:
+  - { name: bloom,           display: "Bloom",           type: float, min: 0.0, max: 2.0, default: 0.28, group: "Bloom" }
+  - { name: bloom_threshold, display: "Bloom Threshold", type: float, min: 0.0, max: 2.0, default: 0.85, group: "Bloom" }
+  - { name: bloom_size,      display: "Bloom Size",      type: float, min: 0.001, max: 0.08, default: 0.02, group: "Bloom" }
+
+  - { name: exposure,   display: "Exposure",   type: float, min: 0.2, max: 3.0, default: 1.06, group: "Grade" }
+  - { name: contrast,   display: "Contrast",   type: float, min: 0.5, max: 2.0, default: 1.08, group: "Grade" }
+  - { name: saturation, display: "Saturation", type: float, min: 0.0, max: 2.0, default: 1.1, group: "Grade" }
+  - { name: lift,       display: "Lift",       type: float, min: -1.0, max: 1.0, default: 0.000000, group: "Grade" }
+  - { name: tint,       display: "Tint",       type: color, default: [1.000000, 1.000000, 1.000000], group: "Grade" }
+
+  - { name: aberration, display: "Lens Separation", type: float, min: 0.0, max: 3.0, default: 0.55, group: "Lens" }
+  - { name: vignette,   display: "Vignette",        type: float, min: 0.0, max: 1.0, default: 0.22, group: "Lens" }
+  - { name: grain,      display: "Grain",           type: float, min: 0.0, max: 1.0, default: 0.16, group: "Lens" }
+
+passes:
+  - name: post
+    shader: post.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input" }
+
+outputs:
+  - { name: "Program", pass: post }

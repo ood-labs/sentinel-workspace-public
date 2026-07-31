@@ -1,0 +1,94 @@
+name: "VT Growth"
+version: "0.1"
+mode: generator
+resolution: [900, 900]
+
+# Expands the plan's mass anchors into world-space capsule chains and its stroke anchors into
+# stage-space polylines. One Limbs buffer, `role` discriminated, with a bounding-sphere group
+# header per anchor so VT_Volumes can reject a whole mass with a single test.
+#
+# Every magnitude here derives from the reserve the plan already cleared for the anchor. The
+# grower deliberately has no independent size parameter.
+
+buffers:
+  - { name: limbs, structured: true, element_size: 48, element_count: 768 }
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+parameters:
+  # EXPLORATION AXIS 2 — how a limb subdivides. Structural, not cosmetic.
+  - name: growth_mode
+    display: "Growth"
+    type: enum
+    options: [Branching, Tendril, Coral, Bundle]
+    default: 3
+    flags: button_grid
+    group: "Growth"
+  - { name: mass_budget,   display: "Mass Nodes",    type: int,   min: 32,  max: 384, default: 150, group: "Growth" }
+  - { name: depth_max,     display: "Max Depth",     type: int,   min: 2,   max: 20,  default: 6,   group: "Growth" }
+  - { name: radius_root,   display: "Limb Thickness", type: float, min: 0.3, max: 2.2, default: 1.000000, group: "Growth" }
+  - { name: radius_decay,  display: "Taper",         type: float, min: 0.55, max: 1.0, default: 0.9, group: "Growth" }
+  - { name: bond_len,      display: "Bond Length",   type: float, min: 0.4, max: 2.5, default: 1.05, group: "Growth" }
+  - { name: spread,        display: "Branch Spread", type: float, min: 0.05, max: 1.2, default: 0.58, group: "Growth" }
+  - { name: persistence,   display: "Direction Hold", type: float, min: 0.1, max: 2.5, default: 1.15, group: "Growth" }
+  - { name: wander,        display: "Curl",          type: float, min: 0.0, max: 1.5, default: 0.55, group: "Growth" }
+  - { name: containment,   display: "Containment",   type: float, min: 0.4, max: 2.5, default: 1.35, group: "Growth" }
+  - { name: bud_swell,     display: "Bud Swell",     type: float, min: 0.0, max: 2.0, default: 0.7, group: "Growth" }
+
+  - { name: stroke_budget,   display: "Stroke Points", type: int,   min: 32,  max: 352, default: 320, group: "Strokes" }
+  - { name: tube_scale,      display: "Tube Scale",    type: float, min: 0.2, max: 3.0, default: 1.000000,  group: "Strokes" }
+  - { name: bundle_strands,  display: "Bundle Strands", type: int,  min: 2,   max: 8,   default: 6,    group: "Strokes" }
+  - { name: squiggle,        display: "Squiggle",      type: float, min: 0.0, max: 2.0, default: 1.000000,  group: "Strokes" }
+  - { name: branch_spread,   display: "Vein Spread",   type: float, min: 0.1, max: 2.0, default: 0.95, group: "Strokes" }
+  - { name: rainbow,         display: "Rainbow Sweep", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Strokes" }
+
+  - { name: growth,     display: "Growth Reveal", type: float, min: 0.0, max: 1.0, default: 1.000000,  group: "Motion" }
+  - { name: anim_rate,  display: "Rate",          type: float, min: 0.0, max: 3.0, default: 1.000000,  group: "Motion" }
+  - { name: breathe,    display: "Breathe",       type: float, min: 0.0, max: 2.0, default: 0.35, group: "Motion" }
+
+passes:
+  - name: grow
+    shader: grow.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:limbs"
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:limbs" }
+
+data_outputs:
+  - name: "Limbs"
+    buffer: "limbs"
+    schema:
+      - { name: pos, type: float3 }
+      - { name: radius, type: float }
+      - { name: parent, type: float }
+      - { name: group, type: float }
+      - { name: role, type: float }
+      - { name: material, type: float }
+      - { name: tparam, type: float }
+      - { name: seed, type: float }
+      - { name: kind, type: float }
+      - { name: active, type: float }
+
+outputs:
+  - { name: "Growth View", pass: preview }

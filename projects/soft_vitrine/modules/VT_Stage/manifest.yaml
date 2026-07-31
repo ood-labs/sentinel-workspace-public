@@ -1,0 +1,58 @@
+name: "VT Stage"
+version: "0.1"
+mode: generator
+resolution: [1080, 1080]
+working_format: RGBA16F   # linear HDR: the seam is a real highlight, VT_Post needs the headroom
+
+# The cyclorama every other layer sits in. Reads the horizon from the plan's stage record so
+# the backdrop and the reflection compositor share exactly one number for the ground line.
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+parameters:
+  - { name: wall_top,    display: "Wall Top",    type: color, default: [0.016, 0.035, 0.18], group: "Wall" }
+  - { name: wall_mid,    display: "Wall Mid",    type: color, default: [0.055, 0.18, 0.76], group: "Wall" }
+  - { name: wall_low,    display: "Wall Base",   type: color, default: [0.18, 0.64, 0.96], group: "Wall" }
+  - { name: horizon_col, display: "Seam Glow",   type: color, default: [0.56, 0.9, 1.000000], group: "Wall" }
+  - { name: horizon_lift, display: "Base Lift",  type: float, min: 0.0, max: 1.0, default: 0.55, group: "Wall" }
+  - { name: side_lift,   display: "Side Lift",   type: float, min: -1.0, max: 1.0, default: 0.22, group: "Wall" }
+
+  # grain_scale multiplies a base frequency of 150-320 cycles/uv — a few pixels per cell at
+  # 1080, which is the orange-peel grain the reference wall has.
+  - { name: grain,       display: "Plaster Relief", type: float, min: 0.0, max: 1.2, default: 0.38, group: "Surface" }
+  - { name: grain_scale, display: "Grain Scale",    type: float, min: 0.2, max: 4.0, default: 2.2,  group: "Surface" }
+
+  - { name: floor_col,   display: "Floor Near",  type: color, default: [0.028, 0.052, 0.2], group: "Floor" }
+  - { name: floor_far,   display: "Floor Far",   type: color, default: [0.09, 0.24, 0.64], group: "Floor" }
+  - { name: floor_grain, display: "Floor Relief", type: float, min: 0.0, max: 1.5, default: 0.55, group: "Floor" }
+  - { name: floor_gloss, display: "Floor Sheen",  type: float, min: 0.0, max: 1.5, default: 0.55, group: "Floor" }
+  - { name: sheen_offset, display: "Sheen Offset", type: float, min: -0.5, max: 0.5, default: 0.06, group: "Floor" }
+
+  - { name: seam_gain,   display: "Seam Intensity", type: float, min: 0.0, max: 3.0, default: 0.85, group: "Seam" }
+  - { name: seam_width,  display: "Seam Width",     type: float, min: 0.15, max: 3.0, default: 1.000000, group: "Seam" }
+
+  - { name: vignette,    display: "Vignette",   type: float, min: 0.0, max: 1.5, default: 0.45, group: "Frame" }
+  - { name: exposure,    display: "Exposure",   type: float, min: 0.2, max: 3.0, default: 1.000000,  group: "Frame" }
+
+passes:
+  - name: stage
+    shader: stage.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - { name: "Stage", pass: stage }

@@ -1,0 +1,1437 @@
+{
+  "binds": [
+    [
+      "/sentinel/groups/annotation_54/parameters/Layout",
+      "/sentinel/pipelines/VT_Plan/parameters/layout_preset"
+    ],
+    [
+      "/sentinel/groups/annotation_54/parameters/Growth",
+      "/sentinel/pipelines/VT_Growth/parameters/growth_mode"
+    ],
+    [
+      "/sentinel/groups/annotation_54/parameters/Stroke_Style",
+      "/sentinel/pipelines/VT_Strokes/parameters/stroke_style"
+    ],
+    [
+      "/sentinel/groups/annotation_54/parameters/Clay_Finish",
+      "/sentinel/pipelines/VT_Volumes/parameters/clay_finish"
+    ],
+    [
+      "/sentinel/groups/annotation_54/parameters/Object_Scale",
+      "/sentinel/pipelines/VT_Plan/parameters/scale_master"
+    ],
+    [
+      "/sentinel/groups/annotation_54/parameters/Seed",
+      "/sentinel/pipelines/VT_Plan/parameters/seed"
+    ],
+    [
+      "/sentinel/groups/annotation_54/parameters/Floor_Reflection",
+      "/sentinel/pipelines/VT_Composite/parameters/refl_amt"
+    ],
+    [
+      "/sentinel/groups/annotation_54/parameters/Bloom",
+      "/sentinel/pipelines/VT_Post/parameters/bloom"
+    ],
+    [
+      "/sentinel/groups/annotation_54/parameters/Variation",
+      "/sentinel/pipelines/VT_Plan/parameters/variation"
+    ]
+  ],
+  "display": {
+    "fpsLimit": 60.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 0.8005458116531372,
+    "links": [
+      {
+        "endPinId": 216,
+        "id": 22,
+        "startPinId": 215
+      },
+      {
+        "endPinId": 218,
+        "id": 23,
+        "startPinId": 215
+      },
+      {
+        "endPinId": 221,
+        "id": 24,
+        "startPinId": 215
+      },
+      {
+        "endPinId": 223,
+        "id": 25,
+        "startPinId": 220
+      },
+      {
+        "endPinId": 225,
+        "id": 26,
+        "startPinId": 215
+      },
+      {
+        "endPinId": 227,
+        "id": 27,
+        "startPinId": 220
+      },
+      {
+        "endPinId": 229,
+        "id": 28,
+        "startPinId": 215
+      },
+      {
+        "endPinId": 234,
+        "id": 29,
+        "startPinId": 217
+      },
+      {
+        "endPinId": 236,
+        "id": 30,
+        "startPinId": 230
+      },
+      {
+        "endPinId": 237,
+        "id": 31,
+        "startPinId": 231
+      },
+      {
+        "endPinId": 238,
+        "id": 32,
+        "startPinId": 222
+      },
+      {
+        "endPinId": 239,
+        "id": 33,
+        "startPinId": 224
+      },
+      {
+        "endPinId": 240,
+        "id": 34,
+        "startPinId": 226
+      },
+      {
+        "endPinId": 241,
+        "id": 35,
+        "startPinId": 228
+      },
+      {
+        "endPinId": 242,
+        "id": 36,
+        "startPinId": 232
+      },
+      {
+        "endPinId": 243,
+        "id": 37,
+        "startPinId": 233
+      },
+      {
+        "endPinId": 244,
+        "id": 38,
+        "startPinId": 215
+      },
+      {
+        "endPinId": 245,
+        "id": 39,
+        "startPinId": 235
+      }
+    ],
+    "nextLinkId": 40,
+    "nextNodeId": 55,
+    "nextPinId": 247,
+    "nodes": [
+      {
+        "displayName": "VT_Plan",
+        "entityId": "VT_Plan",
+        "id": 46,
+        "posX": -900.0,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "VT_Stage",
+        "entityId": "VT_Stage",
+        "id": 47,
+        "posX": -664.0181274414063,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "VT_Growth",
+        "entityId": "VT_Growth",
+        "id": 48,
+        "posX": -664.0,
+        "posY": 300.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "VT_Volumes",
+        "entityId": "VT_Volumes",
+        "id": 49,
+        "posX": -380.0,
+        "posY": 300.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "VT_Strokes",
+        "entityId": "VT_Strokes",
+        "id": 50,
+        "posX": -380.0,
+        "posY": 600.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "VT_Plates",
+        "entityId": "VT_Plates",
+        "id": 51,
+        "posX": -380.0,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "VT_Composite",
+        "entityId": "VT_Composite",
+        "id": 52,
+        "posX": -80.0,
+        "posY": 300.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "VT_Post",
+        "entityId": "VT_Post",
+        "id": 53,
+        "posX": 220.0,
+        "posY": 300.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "Plan authority → stage / growth → volumes / strokes / plates → composite → post",
+        "annotationColor": "#2A1E4AFF",
+        "annotationTitle": "SOFT VITRINE",
+        "displayName": "SOFT VITRINE",
+        "entityId": "annotation_54",
+        "height": 1040.0,
+        "id": 54,
+        "posX": -970.0,
+        "posY": -110.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": true,
+        "sceneGroupActivePreset": "Vitrine (Reference)",
+        "sceneGroupEnabled": true,
+        "sceneGroupParameters": [
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Layout",
+            "displayName": "Layout",
+            "enumValues": [
+              "Vitrine",
+              "Salon Wall",
+              "Diagonal Drift",
+              "Column Rack"
+            ],
+            "group": "Layout",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "Layout",
+            "orderIndex": 0,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/VT_Plan/parameters/layout_preset",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "3",
+            "description": "Growth",
+            "displayName": "Growth",
+            "enumValues": [
+              "Branching",
+              "Tendril",
+              "Coral",
+              "Bundle"
+            ],
+            "group": "Growth",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "Growth",
+            "orderIndex": 1,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/VT_Growth/parameters/growth_mode",
+            "type": "enum",
+            "value": "3",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Stroke Style",
+            "displayName": "Stroke Style",
+            "enumValues": [
+              "Round Tube",
+              "Ribbon",
+              "Flat Marker",
+              "Beaded"
+            ],
+            "group": "Stroke",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "Stroke_Style",
+            "orderIndex": 2,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/VT_Strokes/parameters/stroke_style",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Clay Finish",
+            "displayName": "Clay Finish",
+            "enumValues": [
+              "Plaster",
+              "Wax",
+              "Sand",
+              "Smooth"
+            ],
+            "group": "Surface",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "Clay_Finish",
+            "orderIndex": 3,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/VT_Volumes/parameters/clay_finish",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1.000000",
+            "description": "Object Scale",
+            "displayName": "Object Scale",
+            "enumValues": [],
+            "group": "Layout",
+            "maxValue": 1.7999999523162842,
+            "minValue": 0.4000000059604645,
+            "name": "Object_Scale",
+            "orderIndex": 4,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/VT_Plan/parameters/scale_master",
+            "type": "float",
+            "value": "1.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "3.000000",
+            "description": "Seed",
+            "displayName": "Seed",
+            "enumValues": [],
+            "group": "Layout",
+            "maxValue": 64.0,
+            "minValue": 0.0,
+            "name": "Seed",
+            "orderIndex": 5,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/VT_Plan/parameters/seed",
+            "type": "float",
+            "value": "3.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.620000",
+            "description": "Floor Reflection",
+            "displayName": "Floor Reflection",
+            "enumValues": [],
+            "group": "Reflection",
+            "maxValue": 1.5,
+            "minValue": 0.0,
+            "name": "Floor_Reflection",
+            "orderIndex": 6,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/VT_Composite/parameters/refl_amt",
+            "type": "float",
+            "value": "0.62",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.280000",
+            "description": "Bloom",
+            "displayName": "Bloom",
+            "enumValues": [],
+            "group": "Bloom",
+            "maxValue": 2.0,
+            "minValue": 0.0,
+            "name": "Bloom",
+            "orderIndex": 7,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/VT_Post/parameters/bloom",
+            "type": "float",
+            "value": "0.28",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.000000",
+            "description": "Variation",
+            "displayName": "Variation",
+            "enumValues": [],
+            "group": "Layout",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "Variation",
+            "orderIndex": 8,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/VT_Plan/parameters/variation",
+            "type": "float",
+            "value": "0.000000",
+            "widget": ""
+          }
+        ],
+        "sceneGroupPresets": [
+          {
+            "childGroupPresets": {},
+            "name": "Diagonal Tendril",
+            "pipelineBypass": {
+              "VT_Composite": true,
+              "VT_Growth": true,
+              "VT_Plan": true,
+              "VT_Plates": true,
+              "VT_Post": true,
+              "VT_Stage": true,
+              "VT_Strokes": true,
+              "VT_Volumes": true
+            },
+            "pipelineValues": {},
+            "values": {
+              "Bloom": "0.33",
+              "Clay_Finish": "2",
+              "Floor_Reflection": "0.7",
+              "Growth": "1",
+              "Layout": "2",
+              "Object_Scale": "1.12",
+              "Seed": "5.000000",
+              "Stroke_Style": "2",
+              "Variation": "0.000000"
+            }
+          },
+          {
+            "childGroupPresets": {},
+            "name": "Vitrine (Reference)",
+            "pipelineBypass": {
+              "VT_Composite": true,
+              "VT_Growth": true,
+              "VT_Plan": true,
+              "VT_Plates": true,
+              "VT_Post": true,
+              "VT_Stage": true,
+              "VT_Strokes": true,
+              "VT_Volumes": true
+            },
+            "pipelineValues": {},
+            "values": {
+              "Bloom": "0.28",
+              "Clay_Finish": "0",
+              "Floor_Reflection": "0.62",
+              "Growth": "3",
+              "Layout": "0",
+              "Object_Scale": "1.000000",
+              "Seed": "3.000000",
+              "Stroke_Style": "0",
+              "Variation": "0.000000"
+            }
+          },
+          {
+            "childGroupPresets": {},
+            "name": "Scatter 42",
+            "pipelineBypass": {
+              "VT_Composite": true,
+              "VT_Growth": true,
+              "VT_Plan": true,
+              "VT_Plates": true,
+              "VT_Post": true,
+              "VT_Stage": true,
+              "VT_Strokes": true,
+              "VT_Volumes": true
+            },
+            "pipelineValues": {},
+            "values": {
+              "Bloom": "0.28",
+              "Clay_Finish": "0",
+              "Floor_Reflection": "0.62",
+              "Growth": "3",
+              "Layout": "0",
+              "Object_Scale": "1.000000",
+              "Seed": "42.000000",
+              "Stroke_Style": "0",
+              "Variation": "0.75"
+            }
+          }
+        ],
+        "type": 4,
+        "width": 1500.0
+      }
+    ],
+    "pins": [
+      {
+        "id": 214,
+        "kind": 1,
+        "name": "Plan View",
+        "nodeId": 46,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 215,
+        "kind": 1,
+        "name": "Plan",
+        "nodeId": 46,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 216,
+        "kind": 0,
+        "name": "Plan",
+        "nodeId": 47,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 217,
+        "kind": 1,
+        "name": "Stage",
+        "nodeId": 47,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 218,
+        "kind": 0,
+        "name": "Plan",
+        "nodeId": 48,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 219,
+        "kind": 1,
+        "name": "Growth View",
+        "nodeId": 48,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 220,
+        "kind": 1,
+        "name": "Limbs",
+        "nodeId": 48,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 221,
+        "kind": 0,
+        "name": "Plan",
+        "nodeId": 49,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 222,
+        "kind": 1,
+        "name": "Volumes",
+        "nodeId": 49,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 223,
+        "kind": 0,
+        "name": "Limbs",
+        "nodeId": 49,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 224,
+        "kind": 1,
+        "name": "Coverage",
+        "nodeId": 49,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 225,
+        "kind": 0,
+        "name": "Plan",
+        "nodeId": 50,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 226,
+        "kind": 1,
+        "name": "Strokes",
+        "nodeId": 50,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 227,
+        "kind": 0,
+        "name": "Limbs",
+        "nodeId": 50,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 228,
+        "kind": 1,
+        "name": "Coverage",
+        "nodeId": 50,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 229,
+        "kind": 0,
+        "name": "Plan",
+        "nodeId": 51,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 230,
+        "kind": 1,
+        "name": "Back",
+        "nodeId": 51,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 231,
+        "kind": 1,
+        "name": "Back Coverage",
+        "nodeId": 51,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 232,
+        "kind": 1,
+        "name": "Front",
+        "nodeId": 51,
+        "slotIndex": 2,
+        "type": 0
+      },
+      {
+        "id": 233,
+        "kind": 1,
+        "name": "Front Coverage",
+        "nodeId": 51,
+        "slotIndex": 3,
+        "type": 0
+      },
+      {
+        "id": 234,
+        "kind": 0,
+        "name": "Stage",
+        "nodeId": 52,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 235,
+        "kind": 1,
+        "name": "Composite",
+        "nodeId": 52,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 236,
+        "kind": 0,
+        "name": "Plates Back",
+        "nodeId": 52,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 237,
+        "kind": 0,
+        "name": "Plates Back Cov",
+        "nodeId": 52,
+        "slotIndex": 2,
+        "type": 0
+      },
+      {
+        "id": 238,
+        "kind": 0,
+        "name": "Volumes",
+        "nodeId": 52,
+        "slotIndex": 3,
+        "type": 0
+      },
+      {
+        "id": 239,
+        "kind": 0,
+        "name": "Volumes Cov",
+        "nodeId": 52,
+        "slotIndex": 4,
+        "type": 0
+      },
+      {
+        "id": 240,
+        "kind": 0,
+        "name": "Strokes",
+        "nodeId": 52,
+        "slotIndex": 5,
+        "type": 0
+      },
+      {
+        "id": 241,
+        "kind": 0,
+        "name": "Strokes Cov",
+        "nodeId": 52,
+        "slotIndex": 6,
+        "type": 0
+      },
+      {
+        "id": 242,
+        "kind": 0,
+        "name": "Plates Front",
+        "nodeId": 52,
+        "slotIndex": 7,
+        "type": 0
+      },
+      {
+        "id": 243,
+        "kind": 0,
+        "name": "Plates Front Cov",
+        "nodeId": 52,
+        "slotIndex": 8,
+        "type": 0
+      },
+      {
+        "id": 244,
+        "kind": 0,
+        "name": "Plan",
+        "nodeId": 52,
+        "slotIndex": 9,
+        "type": 6
+      },
+      {
+        "id": 245,
+        "kind": 0,
+        "name": "Composite",
+        "nodeId": 53,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 246,
+        "kind": 1,
+        "name": "Program",
+        "nodeId": 53,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "hostPanelVisibility": {
+    "engines": false,
+    "graph": true,
+    "log": true,
+    "outputs": true,
+    "presets": false,
+    "properties": true,
+    "settings": false,
+    "sources": true,
+    "stats": true,
+    "terminal": true
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Terminal]\nPos=0,25\nSize=518,1119\nCollapsed=0\nDockId=0x0000001D,0\n\n[Window][Sources]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000004,3\n\n[Window][Outputs]\nPos=0,1157\nSize=872,420\nCollapsed=0\nDockId=0x00000004,1\n\n[Window][Stats]\nPos=0,1146\nSize=518,222\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Log]\nPos=0,1370\nSize=518,207\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][Properties]\nPos=2110,25\nSize=450,973\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=520,1000\nSize=2040,577\nCollapsed=0\nDockId=0x00000004,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][GridInner]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][GridOuter]\nPos=0,25\nSize=1581,100\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][Save Group Preset##group_preset_save]\nPos=638,324\nSize=324,855\nCollapsed=0\n\n[Window][Delete Group Preset##group_preset_delete]\nPos=1784,983\nSize=272,122\nCollapsed=0\n\n[Window][Phase79_A1_Color]\nPos=0,25\nSize=1222,100\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][Settings]\nPos=1032,419\nSize=495,738\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][GroupSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][GroupRangeEdit]\nPos=653,382\nSize=294,136\nCollapsed=0\n\n[Window][Phase83_Wired_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Show_Mux]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][streamdiff_1]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,2\n\n[Window][Group_Output_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,3\n\n[Window][Phase84BaselineCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Phase84PostFixCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Phase84StreamDiff]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Phase84OutlineTarget]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][Phase84Ripple]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Phase84Different]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][Phase84NoViewport]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,2\n\n[Window][Phase84DeclaredGate]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,4\n\n[Window][Phase84CameraAuto]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][OrbitProof]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][NonCamera]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][BoundSphere]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][View_A]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Camera_Mux]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Switched_View]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Phase85Compound]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][GroupCompoundSectionEdit]\nPos=668,387\nSize=264,126\nCollapsed=0\n\n[Window][Phase85LegacyFlat]\nPos=0,25\nSize=1222,395\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Phase85DistCompound]\nPos=0,25\nSize=1571,448\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Legacy_Stream_Target]\nPos=0,25\nSize=1222,252\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Presets]\nPos=60,60\nSize=350,500\nCollapsed=0\n\n[Window][Save Preset]\nPos=600,164\nSize=400,572\nCollapsed=0\n\n[Window][Edit Preset Stack]\nPos=590,244\nSize=420,411\nCollapsed=0\n\n[Window][Rename Node Preset]\nPos=668,397\nSize=264,105\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=730,402\nSize=140,95\nCollapsed=0\n\n[Window][Save Group Preset]\nPos=570,70\nSize=460,760\nCollapsed=0\n\n[Window][Save Node Preset]\nPos=700,233\nSize=420,515\nCollapsed=0\n\n[Window][post]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][grid_warp]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][atmosphere]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000001F,2\n\n[Window][frame_hud]\nPos=0,25\nSize=1222,506\nCollapsed=0\nDockId=0x0000001F,3\n\n[Window][field_gen]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][link_render]\nPos=0,25\nSize=2182,732\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_srv_spike]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_pointer]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_keyboard]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_pointer_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_keyboard_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_keyboard_series]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_keyboard_hold]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_pointer_control]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_pointer_double]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_pointer_drag]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_pointer_wheel]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_pointer_storm]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_pointer_idle]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_srv_live]\nPos=0,25\nSize=1600,875\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][mouse_compat_active]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][surface_split_smoke]\nPos=0,25\nSize=1222,103\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][final_surface_smoke]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_bindings_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_bindings_focus_reload]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][phase88_arbitration_live]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Phase_88_Arbitration]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Phase88_Mouse_Compat]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][Viewport_Ripple]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Phase88_Replay]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Click_Ripples]\nPos=0,25\nSize=1222,573\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Controls89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Scene89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][Big89]\nPos=0,25\nSize=1660,690\nCollapsed=0\nDockId=0x0000001F,2\n\n[Window][Gizmo_Lab]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Spline_Editor]\nPos=0,25\nSize=587,834\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Spline_Output]\nPos=861,25\nSize=866,851\nCollapsed=0\nDockId=0x0000001F,2\n\n[Window][UI_Kit]\nPos=1479,25\nSize=703,834\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Font_Sampler]\nPos=0,25\nSize=1380,1346\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][UI_Kit_V2_Test]\nPos=0,25\nSize=1087,587\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][UI_Style_Tuner]\nPos=2759,25\nSize=703,1346\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][Spline_V2_Test]\nPos=0,614\nSize=1087,590\nCollapsed=0\nDockId=0x0000000E,0\n\n[Window][Gizmo_V2_Test]\nPos=1089,25\nSize=1093,1179\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][VP_Controls]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000001F,2\n\n[Window][VP_Ripple]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][VP_Pointer]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000001F,3\n\n[Window][Ripple_Storm]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][HR_Precision]\nPos=0,25\nSize=2182,1179\nCollapsed=0\nDockId=0x0000001F,4\n\n[Window][UI_Skill_Smoke]\nPos=0,25\nSize=132,100\nCollapsed=0\nDockId=0x0000001F,4\n\n[Window][signal]\nPos=0,25\nSize=1108,1399\nCollapsed=0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1399\nCollapsed=0\n\n[Window][Strata_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\n\n[Window][Editorial_Post]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_control]\nPos=0,25\nSize=1040,1399\nCollapsed=0\n\n[Window][post_2]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\n\n[Window][Desert_Group_Output]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Industrial_Group_Output]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Gallery_Scene_Switcher]\nPos=992,25\nSize=173,100\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=586,657\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_Group_Output]\nPos=133,142\nSize=1619,683\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=332,358\nSize=1025,210\nCollapsed=0\n\n[Window][Topo_Group_Output]\nPos=0,25\nSize=1025,210\nCollapsed=0\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\n\n[Window][Food_Collage]\nPos=0,25\nSize=3265,1399\nCollapsed=0\n\n[Window][Motion_Console]\nPos=589,25\nSize=1593,834\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][Style_Authority]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,1\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,0\n\n[Window][Spline_Desk]\nPos=1118,583\nSize=978,389\nCollapsed=0\nDockId=0x00000014,0\n\n[Window][Gizmo_Desk]\nPos=1118,25\nSize=978,556\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][Spline_Output_V3]\nPos=372,25\nSize=1355,851\nCollapsed=0\nDockId=0x0000001F,3\n\n[Window][Scope_Audio]\nPos=861,25\nSize=866,851\nCollapsed=0\nDockId=0x0000001F,2\n\n[Window][Data_Scope]\nPos=0,362\nSize=559,610\nCollapsed=0\nDockId=0x00000017,0\n\n[Window][Signal_Trails]\nPos=561,362\nSize=555,610\nCollapsed=0\nDockId=0x00000018,0\n\n[Window][label_gen]\nPos=547,459\nSize=540,427\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=372,772\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1040\nSize=752,537\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,772\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][au_specimen]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_proxy]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_observe]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stabilizer]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_relief]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_grade]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_census]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stylus]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_deck]\nPos=0,25\nSize=751,1396\nCollapsed=0\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][AXIOM_01_PLATE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_02_ANALYSIS_LENS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_12_FRAME_REFINERY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_03_LIVE_ENGRAVER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01B_ORGANIC_MEMBRANE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01A_INTERFERENCE_MASK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_04_TOPOLOGY_COMPILER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_05_PRESSURE_DESK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_07_RESONANCE_ENGINE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_08_TEMPORAL_OSSUARY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_09_KINETIC_CORONA]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_10_IMPRESSION_PRESS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_11_RELIEF_CHAMBER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_13_LIVE_GLYPH_PLATES]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_16_POLYRHYTHM_INSPECTOR]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_06_POLYRHYTHM_RACK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][cloth_pulse]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][substrate]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][02_Stress_Feature_Analysis]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][01_Rupture_Stress_Lattice]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][05_Tactile_Weave_Material]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][03_Rupture_Constraint_Loom]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][04_Rupture_Fabric]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][streamdiff_2]\nPos=0,25\nSize=1166,1396\nCollapsed=0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Window][Archive_Field]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Motion_Score]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Topographic_Organism]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Optical_Pressure]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Signal_Typesetter]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Micro_LFO]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,2\n\n[Window][Micro_Scope]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,3\n\n[Window][Micro_Sequencer]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,4\n\n[Window][Micro_Envelope]\nPos=0,25\nSize=1116,335\nCollapsed=0\nDockId=0x00000015,5\n\n[Window][MX_Console]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][MX_Organism]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][MX_Wireframe]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x0000001F,2\n\n[Window][MX_Instruments]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x0000001F,3\n\n[Window][MX_Circuitry]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x0000001F,4\n\n[Window][MX_Composite]\nPos=1051,25\nSize=1045,947\nCollapsed=0\nDockId=0x0000001A,0\n\n[Window][MX_Post]\nPos=0,25\nSize=1049,947\nCollapsed=0\nDockId=0x0000001F,5\n\n[Window][VT_Plan]\nPos=520,25\nSize=798,973\nCollapsed=0\nDockId=0x0000001F,5\n\n[Window][VT_Stage]\nPos=520,25\nSize=798,973\nCollapsed=0\nDockId=0x0000001F,0\n\n[Window][VT_Growth]\nPos=520,25\nSize=798,973\nCollapsed=0\nDockId=0x0000001F,1\n\n[Window][VT_Volumes]\nPos=520,25\nSize=798,973\nCollapsed=0\nDockId=0x0000001F,2\n\n[Window][VT_Strokes]\nPos=520,25\nSize=798,973\nCollapsed=0\nDockId=0x0000001F,3\n\n[Window][VT_Plates]\nPos=520,25\nSize=798,973\nCollapsed=0\nDockId=0x0000001F,4\n\n[Window][VT_Composite]\nPos=520,25\nSize=798,973\nCollapsed=0\nDockId=0x0000001F,6\n\n[Window][VT_Post]\nPos=1320,25\nSize=788,973\nCollapsed=0\nDockId=0x00000001,0\n\n[Docking][Data]\nDockSpace                     ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode                    ID=0x0000001B Parent=0xCCBD8CF7 SizeRef=518,1552 Split=Y Selected=0xD33228A6\n    DockNode                  ID=0x0000001D Parent=0x0000001B SizeRef=871,1119 Selected=0xD33228A6\n    DockNode                  ID=0x0000001E Parent=0x0000001B SizeRef=871,431 Split=Y Selected=0x590DF097\n      DockNode                ID=0x00000005 Parent=0x0000001E SizeRef=568,222 Selected=0x590DF097\n      DockNode                ID=0x00000006 Parent=0x0000001E SizeRef=568,207 Selected=0x139FDA3F\n  DockNode                    ID=0x0000001C Parent=0xCCBD8CF7 SizeRef=2040,1552 Split=Y\n    DockNode                  ID=0x00000003 Parent=0x0000001C SizeRef=1222,973 Split=X Selected=0x60D1231E\n      DockNode                ID=0x00000007 Parent=0x00000003 SizeRef=878,760 Split=Y Selected=0x3B5B8D41\n        DockNode              ID=0x00000009 Parent=0x00000007 SizeRef=878,525 Selected=0x3B5B8D41\n        DockNode              ID=0x0000000A Parent=0x00000007 SizeRef=878,463 Selected=0x37544B19\n      DockNode                ID=0x00000008 Parent=0x00000003 SizeRef=1302,760 Split=X Selected=0x5A80C6E1\n        DockNode              ID=0x0000000B Parent=0x00000008 SizeRef=1087,990 Split=Y Selected=0x3B5B8D41\n          DockNode            ID=0x0000000D Parent=0x0000000B SizeRef=1087,587 Selected=0x3B5B8D41\n          DockNode            ID=0x0000000E Parent=0x0000000B SizeRef=1087,590 Selected=0x37544B19\n        DockNode              ID=0x0000000C Parent=0x00000008 SizeRef=1093,990 Split=X Selected=0x4FC197DD\n          DockNode            ID=0x0000000F Parent=0x0000000C SizeRef=517,700 Split=X Selected=0x97D3354D\n            DockNode          ID=0x00000011 Parent=0x0000000F SizeRef=1116,851 Split=Y Selected=0xBF3E555A\n              DockNode        ID=0x00000015 Parent=0x00000011 SizeRef=859,335 Selected=0x720A596C\n              DockNode        ID=0x00000016 Parent=0x00000011 SizeRef=859,610 Split=X Selected=0x0636636E\n                DockNode      ID=0x00000017 Parent=0x00000016 SizeRef=559,650 Selected=0x0636636E\n                DockNode      ID=0x00000018 Parent=0x00000016 SizeRef=555,650 Selected=0x97D3354D\n            DockNode          ID=0x00000012 Parent=0x0000000F SizeRef=978,851 Split=Y Selected=0x5765080A\n              DockNode        ID=0x00000013 Parent=0x00000012 SizeRef=1235,556 Split=X Selected=0xEC0BC2EB\n                DockNode      ID=0x00000019 Parent=0x00000013 SizeRef=1049,947 Split=X Selected=0x4E77B978\n                  DockNode    ID=0x0000001F Parent=0x00000019 SizeRef=798,947 CentralNode=1 Selected=0x4E77B978\n                  DockNode    ID=0x00000020 Parent=0x00000019 SizeRef=1240,947 Split=X Selected=0xD795E9C7\n                    DockNode  ID=0x00000001 Parent=0x00000020 SizeRef=788,973 Selected=0xD795E9C7\n                    DockNode  ID=0x00000002 Parent=0x00000020 SizeRef=450,973 Selected=0x8C72BEA8\n                DockNode      ID=0x0000001A Parent=0x00000013 SizeRef=1045,947 Selected=0xD3382EBF\n              DockNode        ID=0x00000014 Parent=0x00000012 SizeRef=1235,389 Selected=0xA6A64A9E\n          DockNode            ID=0x00000010 Parent=0x0000000C SizeRef=703,700 Selected=0x1BEB0585\n    DockNode                  ID=0x00000004 Parent=0x0000001C SizeRef=1222,577 Selected=0xF12F3499\n\n",
+  "name": "soft_vitrine",
+  "nodePresets": [
+    {
+      "created": "2026-07-26T16:17:58",
+      "id": "33ef75d6-a7aa-0ac8-52713fc7e3f0",
+      "modified": "2026-07-26T16:17:58",
+      "name": "Spline Desk Default",
+      "parameters": [
+        {
+          "name": "tool_mode",
+          "value": "0"
+        },
+        {
+          "name": "hit_radius",
+          "value": "16.000000"
+        },
+        {
+          "name": "nudge_x",
+          "value": "0.06"
+        },
+        {
+          "name": "nudge_y",
+          "value": "-0.12"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:spline_desk",
+      "scope": "project",
+      "statePayloads": {
+        "spline_knots": {
+          "data": "93f5473ec2d81b3f2631083ec4291c3f00dd833ec0871b3f010000000000000001000000010000000000803f00540e463161ca3e7bda933eed3db83e0fa07c3e01bef63e198ac83e020000000000000001000000010000000000803f00000000f4bf273fec342b3f7aab193fec342b3f70d4353fec342b3f030000000000000001000000010000000000803f00000000e011603f1474ad3e64fd513f1474ad3e5a266e3f1474ad3e040000000000000001000000010000000000803f000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000",
+          "element_count": 64,
+          "element_size": 48,
+          "encoding": "hex",
+          "schema_signature": "8817061768651235717"
+        }
+      }
+    },
+    {
+      "created": "2026-07-26T16:17:58",
+      "id": "dc6e3042-dc7d-14c0-b83cf269b317",
+      "modified": "2026-07-26T16:17:58",
+      "name": "Gizmo Desk Default",
+      "parameters": [
+        {
+          "name": "transform_mode",
+          "value": "1"
+        },
+        {
+          "name": "local_space",
+          "value": "false"
+        },
+        {
+          "name": "orbit_axis",
+          "value": "1"
+        },
+        {
+          "name": "orbit_degrees",
+          "value": "40.000000"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:gizmo_desk",
+      "scope": "project",
+      "statePayloads": {
+        "scene_state": {
+          "data": "91e705c00000a0bf6d64983e0000000000308e4160e0e14200885b4100000000c3f5483fc3f5483fc3f5483f010000000000000007000000008c0b460000000028c84ebf0000a0bfd3cadabe000000000048b241005ea64200c49f4100000000e27a443fe27a443fe27a443f02000000010000000700000000000000000000009a99393f0000a0bfcdcc143e0000000000f8a2410000dc3f0070ad400000000090c2463f90c2463f90c2463f030000000200000007000000000000000000000034330b400000a0bf9a99993d0000000021da05c2001849420020b240000000007b14803f7b14803f7b14803f040000000300000007000000000000000000000034330bc000000000cdcc1cbd00000000008886410000a54000c0414000000000b91e813fb91e813fb91e813f05000000000000000700000000000000000000009a9939bf00000000cdcc2d3e000000000070ee41004823410000483f000000005d8f423f5d8f423f5d8f423f06000000010000000700000000000000000000009a99393fb1d470bd5d289cbd0000000013ab27c200ca0a420080093e0000000048e1843f48e1843f48e1843f070000000200000007000000000000000000000034330b40b1d4703d0c3b8a3c00000000dbeb2d4100c0e94100806d4000000000e27a6c3fe27a6c3fe27a6c3f080000000300000007000000000000000000000034330bc00000a03f333333bc000000000044cf40008c1b420050914100000000cdcc4c3fcdcc4c3fcdcc4c3f09000000000000000700000000000000000000009a9939bf0000a03f6766023e0000000000a20a4221c94e420070ad4100000000cdcc543fcdcc543fcdcc543f0a000000010000000700000000000000000000009a99393f0000a03f9a9927be00000000c99df4c200c032410080a24000000000ec51803fec51803fec51803f0b0000000200000007000000000000000000000034330b400000a03f676616be000000000070cb41001ed2418040694100000000d7a3503fd7a3503fd7a3503f0c0000000300000007000000000000000000000034330bc0000020403333b33c00000000002019400040ce4100007a41000000009a997d3f9a997d3f9a997d3f00000000000000000700000000000000000000009a9939bf00002040cdcc4c3b0000000000e91d410030364100806d410000000048e1683f48e1683f48e1683f00000000010000000700000000000000000000009a99393f000020400000603d0000000000b09f4100404e400080a2400000000090c2553f90c2553f90c2553f000000000200000007000000000000000000000034330b40000020406766063d0000000000801d4100828c4100806d4000000000c3f5583fc3f5583fc3f5583f0000000003000000070000000000000000000000",
+          "element_count": 16,
+          "element_size": 64,
+          "encoding": "hex",
+          "schema_signature": "13094422923074777944"
+        }
+      }
+    },
+    {
+      "created": "2026-07-26T16:17:59",
+      "id": "a0430fe8-aeeb-4723-9fbebbf5ff55",
+      "modified": "2026-07-26T16:17:59",
+      "name": "Motion Reference",
+      "parameters": [
+        {
+          "name": "master_rate",
+          "value": "1.000000"
+        },
+        {
+          "name": "mute",
+          "value": "false"
+        },
+        {
+          "name": "motion_bias_x",
+          "value": "0.52"
+        },
+        {
+          "name": "motion_bias_y",
+          "value": "0.64"
+        },
+        {
+          "name": "burst_decay",
+          "value": "0.45"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:motion_console",
+      "scope": "project"
+    },
+    {
+      "created": "2026-07-26T16:18:00",
+      "id": "12facd11-3de6-06f9-e424fc5f49d0",
+      "modified": "2026-07-26T16:18:00",
+      "name": "Slow Drift",
+      "parameters": [
+        {
+          "name": "master_rate",
+          "value": "0.35"
+        },
+        {
+          "name": "mute",
+          "value": "false"
+        },
+        {
+          "name": "motion_bias_x",
+          "value": "0.52"
+        },
+        {
+          "name": "motion_bias_y",
+          "value": "0.64"
+        },
+        {
+          "name": "burst_decay",
+          "value": "0.85"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:motion_console",
+      "scope": "project"
+    },
+    {
+      "created": "2026-07-26T16:18:01",
+      "id": "c23ffcd8-f3c0-fe71-79ba7d40f345",
+      "modified": "2026-07-26T16:18:01",
+      "name": "Dense Instrument",
+      "parameters": [
+        {
+          "name": "title_scale",
+          "value": "2.000000"
+        },
+        {
+          "name": "section_scale",
+          "value": "1.000000"
+        },
+        {
+          "name": "body_scale",
+          "value": "1.000000"
+        },
+        {
+          "name": "outer_padding",
+          "value": "16.000000"
+        },
+        {
+          "name": "section_gap",
+          "value": "10.000000"
+        },
+        {
+          "name": "control_gap",
+          "value": "8.000000"
+        },
+        {
+          "name": "control_height",
+          "value": "34.000000"
+        },
+        {
+          "name": "exposure",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:style_authority",
+      "scope": "project"
+    },
+    {
+      "created": "2026-07-26T16:18:02",
+      "id": "3a42c924-f9fc-2e64-a9869c8c801c",
+      "modified": "2026-07-26T16:18:02",
+      "name": "Airy Review",
+      "parameters": [
+        {
+          "name": "title_scale",
+          "value": "3.000000"
+        },
+        {
+          "name": "section_scale",
+          "value": "2.000000"
+        },
+        {
+          "name": "body_scale",
+          "value": "2.000000"
+        },
+        {
+          "name": "outer_padding",
+          "value": "36.000000"
+        },
+        {
+          "name": "section_gap",
+          "value": "26.000000"
+        },
+        {
+          "name": "control_gap",
+          "value": "8.000000"
+        },
+        {
+          "name": "control_height",
+          "value": "34.000000"
+        },
+        {
+          "name": "exposure",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_r",
+          "value": "1.000000"
+        },
+        {
+          "name": "accent_color_g",
+          "value": "0.42"
+        },
+        {
+          "name": "accent_color_b",
+          "value": "0.09"
+        }
+      ],
+      "pipelineType": "module:style_authority",
+      "scope": "project"
+    }
+  ],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "VT_Volumes",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "VT_Volumes",
+      "inputSlotSourceIds": [
+        "VT_Plan",
+        "VT_Growth"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "VT_Volumes",
+      "panelOpen": true,
+      "parameters": {
+        "aa_samples": "2.000000",
+        "ao_amt": "0.850000",
+        "blend": "0.030000",
+        "bounce": "0.600000",
+        "camera_distance": "5.000000",
+        "camera_far": "40.000000",
+        "camera_fov": "60.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_mode": "0",
+        "camera_move_speed": "3.000000",
+        "camera_near": "0.050000",
+        "camera_pitch": "0.000000",
+        "camera_pos_x": "0.000000",
+        "camera_pos_y": "0.000000",
+        "camera_pos_z": "-1.732051",
+        "camera_target_x": "0.000000",
+        "camera_target_y": "0.000000",
+        "camera_target_z": "0.000000",
+        "camera_yaw": "6.280000",
+        "chrome_mono": "0.800000",
+        "clay_finish": "0.000000",
+        "env_floor_b": "0.110000",
+        "env_floor_g": "0.035000",
+        "env_floor_r": "0.020000",
+        "env_glow_b": "1.000000",
+        "env_glow_g": "0.930000",
+        "env_glow_r": "0.620000",
+        "env_mid_b": "0.780000",
+        "env_mid_g": "0.230000",
+        "env_mid_r": "0.070000",
+        "env_top_b": "0.150000",
+        "env_top_g": "0.040000",
+        "env_top_r": "0.020000",
+        "exposure": "1.000000",
+        "fill_gain": "0.450000",
+        "frost_rim": "0.850000",
+        "grain": "1.900000",
+        "grain_scale": "1.300000",
+        "key_gain": "2.400000",
+        "march_steps": "110.000000",
+        "normal_eps": "0.001800",
+        "project_dir": "modules/VT_Volumes",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "shadow_amt": "0.750000",
+        "step_scale": "0.850000",
+        "surface_eps": "0.000600"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "VT_Plan",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "VT_Plan",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "VT_Plan",
+      "panelOpen": true,
+      "parameters": {
+        "confetti": "12.000000",
+        "depth_spread": "0.600000",
+        "horizon": "0.775000",
+        "jitter": "0.018000",
+        "layout_preset": "0.000000",
+        "mass_count": "8.000000",
+        "project_dir": "modules/VT_Plan",
+        "resolution_height": "1024",
+        "resolution_width": "1024",
+        "room_depth": "1.000000",
+        "scale_master": "1.000000",
+        "seed": "3.000000",
+        "spacing": "0.950000",
+        "spread": "1.000000",
+        "stroke_count": "10.000000",
+        "stroke_weight": "1.000000",
+        "variation": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "VT_Stage",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "VT_Stage",
+      "inputSlotSourceIds": [
+        "VT_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "VT_Stage",
+      "panelOpen": true,
+      "parameters": {
+        "exposure": "1.000000",
+        "floor_col_b": "0.200000",
+        "floor_col_g": "0.052000",
+        "floor_col_r": "0.028000",
+        "floor_far_b": "0.640000",
+        "floor_far_g": "0.240000",
+        "floor_far_r": "0.090000",
+        "floor_gloss": "0.550000",
+        "floor_grain": "0.550000",
+        "grain": "0.380000",
+        "grain_scale": "2.200000",
+        "horizon_col_b": "1.000000",
+        "horizon_col_g": "0.900000",
+        "horizon_col_r": "0.560000",
+        "horizon_lift": "0.550000",
+        "project_dir": "modules/VT_Stage",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "seam_gain": "0.850000",
+        "seam_width": "1.000000",
+        "sheen_offset": "0.060000",
+        "side_lift": "0.220000",
+        "vignette": "0.450000",
+        "wall_low_b": "0.960000",
+        "wall_low_g": "0.640000",
+        "wall_low_r": "0.180000",
+        "wall_mid_b": "0.760000",
+        "wall_mid_g": "0.180000",
+        "wall_mid_r": "0.055000",
+        "wall_top_b": "0.180000",
+        "wall_top_g": "0.035000",
+        "wall_top_r": "0.016000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "VT_Growth",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "VT_Growth",
+      "inputSlotSourceIds": [
+        "VT_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "VT_Growth",
+      "panelOpen": true,
+      "parameters": {
+        "anim_rate": "1.000000",
+        "bond_len": "1.050000",
+        "branch_spread": "0.950000",
+        "breathe": "0.350000",
+        "bud_swell": "0.700000",
+        "bundle_strands": "6.000000",
+        "containment": "1.350000",
+        "depth_max": "6.000000",
+        "growth": "1.000000",
+        "growth_mode": "3.000000",
+        "mass_budget": "150.000000",
+        "persistence": "1.150000",
+        "project_dir": "modules/VT_Growth",
+        "radius_decay": "0.900000",
+        "radius_root": "1.000000",
+        "rainbow": "0.620000",
+        "resolution_height": "900",
+        "resolution_width": "900",
+        "spread": "0.580000",
+        "squiggle": "1.000000",
+        "stroke_budget": "320.000000",
+        "tube_scale": "1.000000",
+        "wander": "0.550000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "VT_Strokes",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "VT_Strokes",
+      "inputSlotSourceIds": [
+        "VT_Plan",
+        "VT_Growth"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "VT_Strokes",
+      "panelOpen": true,
+      "parameters": {
+        "ambient": "0.300000",
+        "exposure": "1.000000",
+        "gradient": "0.450000",
+        "gradient_span": "0.180000",
+        "project_dir": "modules/VT_Strokes",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "shine": "0.457000",
+        "stroke_style": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "VT_Plates",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "VT_Plates",
+      "inputSlotSourceIds": [
+        "VT_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "VT_Plates",
+      "panelOpen": true,
+      "parameters": {
+        "checker_count": "13.000000",
+        "checker_tilt": "0.450000",
+        "exposure": "1.000000",
+        "grid_density": "26.000000",
+        "grid_weight": "1.000000",
+        "plate_col_b": "0.360000",
+        "plate_col_g": "0.115000",
+        "plate_col_r": "0.880000",
+        "project_dir": "modules/VT_Plates",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "star_split": "0.620000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "VT_Composite",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "VT_Composite",
+      "inputSlotSourceIds": [
+        "VT_Stage",
+        "VT_Plates",
+        "VT_Plates",
+        "VT_Volumes",
+        "VT_Volumes",
+        "VT_Strokes",
+        "VT_Strokes",
+        "VT_Plates",
+        "VT_Plates",
+        "VT_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "VT_Composite",
+      "panelOpen": true,
+      "parameters": {
+        "back_gain": "1.000000",
+        "front_gain": "1.000000",
+        "mass_gain": "1.000000",
+        "project_dir": "modules/VT_Composite",
+        "refl_amt": "0.620000",
+        "refl_blur": "0.100000",
+        "refl_falloff": "7.000000",
+        "refl_squash": "2.100000",
+        "refl_tint_amt": "0.450000",
+        "refl_tint_b": "1.000000",
+        "refl_tint_g": "0.520000",
+        "refl_tint_r": "0.300000",
+        "resolution_height": "1080",
+        "resolution_width": "1080",
+        "shadow_amt": "0.700000",
+        "shadow_blur": "0.016000",
+        "shadow_dx": "-0.014000",
+        "shadow_dy": "-0.018000",
+        "stroke_gain": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "VT_Post",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "VT_Post",
+      "inputSlotSourceIds": [
+        "VT_Composite"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "VT_Post",
+      "panelOpen": true,
+      "parameters": {
+        "aberration": "0.550000",
+        "bloom": "0.280000",
+        "bloom_size": "0.020000",
+        "bloom_threshold": "0.850000",
+        "contrast": "1.080000",
+        "exposure": "1.060000",
+        "grain": "0.160000",
+        "lift": "0.000000",
+        "project_dir": "modules/VT_Post",
+        "saturation": "1.100000",
+        "tint_b": "1.000000",
+        "tint_g": "1.000000",
+        "tint_r": "1.000000",
+        "vignette": "0.220000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1785474137086,
+  "sources": [],
+  "statePayloads": {
+    "VT_Plan": {
+      "plan": {
+        "data": "d6482c3e3769c73eb81e053ee17a943e000000000000000017d1014400000000cdcc4c3e00401a3f000000000000803f68e1413f0e4ded3e4260e53d0ad7233e0000000000000040c528054400000000cdcc4c3e0070773e000000000000803f2e32a13e2f7d023f5c8f423ea69b443c000000000000404073800844000000000000403f0000053f000080400000803ffc61bf3e122b313fe3a51b3ee3a59b3c000000000000803f21d80b44000000000000403f0080d93e000080400000803f2270693e70cd1c3fa69bc43c0ad7233d000000000000a040cf2f0f446666663f0000403f00d8f93e000080400000803f74138e3e4a0c1c3f5839b43c022b073d000000000000a0407d8712446666663f0000403f00005e3e000080400000803f4005b63e9ce4163f8fc2f53c508d173d000000000000a0402bdf15446666663f0000403f00001f3f000080400000803f31c8e23e72e80b3f4260e53c8fc2f53c000000000000a040da3619446666663f0000403f0040003e000080400000803fd723ba3e73a8973e0ad7a73c5b20a13b0000000000008040888e1c4400166a3f9a99593fc7c2ee3e000080400000803f82c0ea3ef4bd153e7b149a3cb3ea933b000000000000804036e61f4400e07d3f9a99593fba99c1be000080400000803f7463aa3efc69803d5c8f923c96b28c3b0000000000008040e43d23440080f53e9a99593f74c837bf000080400000803f13e3363f355efd3d295ce73c081bde3b0000000000008040929526440066313f9a99593f319781bf000080400000803f6a00843ee2f2693e1e05a63c12619f3b000000000000804040ed29440040473e9a99593f06e7f13e000080400000803f4f2dbc3ea09a4c3e47e1d83c6d34d03b0000000000008040ee442d440000b03b9a99593f7737abbf000080400000803f9623823e12437c3eae47b53c5f07ae3b00000000000080409c9c304400b0d53e9a99593f21ce00be000080400000803f1357443f2761073e3333e63cf3fddc3b00000000000080404af433440000733d9a99593f0cc5583d000080400000803fc400833e430ba73e85ebf13c423ee83b0000000000008040f84b374400402c3f9a99593fd110933f000080400000803f5809903e43eb013e8fc2bd3c6a2bb63b0000000000008040a6a33a4400007b3e9a99593f7b75bebf000080400000803fa61be03dc1cabf3d0ad7b33c7aa5ac3b000000000000804054fb3d440000d73d9a99593fbf8fb33f000080400000803f5f1a103fefa7323e0ad7233c51491d3b0000000000008040025341440000823e9a99593ffdca773f000080400000803f647b9f3e0cc2e73df528ec3cadb6e23b0000000000008040b1aa444400807d3d9a99593f852f783f00008040000000003e8a383e7bd4603e5c0fd93caa60d03b00000000000080405f0248440000c33d9a99593fa69163bf00008040000000004701ae3e448baa3d8fc25d3cbce3543b00000000000080400d5a4b440000683e9a99593f722864bf0000804000000000ae47623fdc24623d7b14263cd26f1f3b0000000000008040bbb14e4400d07c3f9a99593fef030bbf0000804000000000e4f58d3ea4f8283f5c8f823ecdcc8c3e0000803f00000040ea52aa44cdcc4c3f6666c93e0000803f000000000000803fc68bde3ed8a3593f1f856b3e52b81e3e0000803f00000040ea32ad44295c8f3e9a59fe3e9a99d93f000000000000803f46d6223f6265713eec51b83dc3f5283e0000803f0000803fea12b044cdcccc3d9a19d53e9a99993e000000000000803ff252d93eccccb63e3d0ad73da69b443d0000803f0000803feaf2b2449a99993e3373d63e295c8f3e000000000000803f5abc163fa0ae703fcdcccc3dec51383d0000803f00008040ead2b544cdcc0c3f9a59d43eb81e853e000000000000803f926d2b3fa2d5683fb6f37d3de3a51b3d0000803f00008040eab2b8447b142e3f9a59193f8fc2753e000000000000803f4ed2643f7b4c1a3fcdcccc3dae47613e0000803f00004040ea92bb443d0ad73e9a19cc3e0ad7a33e000000000000803ffc05333facb4af3e68916d3d295c0f3e0000803f00004040ea72be44295c0f3e9a1f233f295c8f3e000000000000803f10d8173e6ee26f3f9a99993d0ad7233d0000803f00008040ea52c144cdcc0c3f668a113fb81e853e000000000000803f02cb073ff495413f295c8f3dae47613d0000803f00000000ea32c4447b142e3f66e4083f9a99993e000000000000803f7254533f8fc2753f295c8f3d295c0f3d0000803f00008040ea12c744cdcc4c3d3467213f8fc2753e0000000000000000448bb03e4a8c3e3eae47613dec51383d0000803f00000000eaf2c9449a99993ecde4f53eb81e853e0000000000000000e6d0703f74d3fb3e8fc2753d8fc2f53d0000803f00004040ead2cc443d0ad73ecd10003f295c8f3e0000000000000000e0ff6a3e1631ec3ecdcc4c3d8fc2753d0000803f00000000eab2cf44cdcc4c3f0010b73eb81e853e00000000000000004aec0d3fd98e0f3fae47613d31082c3d0000803f00000000ea92d244295c0f3e9af9183f8fc2753e00000000000000002263463f3fad313fb81e853d295c8f3d0000803f00004040ea72d544cdcccc3d3323f03e9a99993e0000000000000000f2728a3e30e5c13e986e123e3d0a973f00000040000000008eff1d440ad7a33c34c24f3f0040b03e000000000000803f77bef43ea0da173e9eefa73d3333333f000000400000803f8e3f2244cdcc4c3e6350283f0080fe3e000000440000803f6931503fc475cf3d5839343db81e053f00000040000000408e7f26445c8fc23e15bbdc3e0040773f000080430000803f4c2b693f06160f3e9eef273d8fc2f53e00000040000000408ebf2a445c8fc23e2e31023f00e0203f000080430000803fdc19473f1f850b3f7b142e3e5c8f823f00000040000040408eff2e44cdcc0c3f437c513f0020313f000000000000803fc9a6663faac9503f6f12033e8fc2753f00000040000080408e3f3344ec51383f5b42423f0000f03c000000000000803f98ee003ede644d3fb6f37d3d1f85eb3e000000400000a0408e7f3744cdcc4c3edfe0d33e0000203f000040440000803fe410403e285cc53dcdcc4c3d0000003f00000040000000408ebf3b445c8fc23e0000063f0080103f000080430000803f2fed0b3fe1ea223fec51b83de17a143f000000400000803f8eff3f44cdcc4c3e0f0bf73e00a0b33e0000004400000000fc29aa3e35ee633f9a99993dae47e13e000000400000a0408e3f4444cdcc4c3e0d4f053f00f03c3f0000404400000000a6db6a3fc9e69f3e96438b3dcdcccc3e00000040000000408e7f48445c8fc23e0456c43e0000a53e0000804300000000c40b953d9766013fb6f37d3dec51b83e00000040000000008ebf4c440ad7a33ca5ce0d3f00106b3f0000000000000000565e223f3aa44b3f7b14ae3db81e053f00000040000080408eff5044ec51383f76cf143f00f05b3f00000000000000001283fa3ebdd4e63e68916d3d7b14ae3e000000400000803f8e3f5544cdcc4c3e855ac23e0040233f00000044000000009e27393f3596683f022b873d5c8fc23e000000400000a0408e7f5944cdcc4c3ed0d5f73e0070623f0000404400000000dea4313e1068203fbc74933d3d0ad73e00000040000040408ebf5d44cdcc0c3ff1f4de3e0020843e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006666463f0000803f0000000000000000000040400000000000000000000000000000000000000000000000000000803f78c2f945000000000000000080b8ef3d00004040442d2ebe00006c420000803f00000041000020410000a0410000803f",
+        "element_count": 64,
+        "element_size": 48,
+        "encoding": "hex",
+        "schema_signature": "9602626313737492313"
+      }
+    }
+  },
+  "version": 5
+}

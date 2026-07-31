@@ -18,6 +18,7 @@ for an explicit fork or remix. See `example-authoring.md`.
 | `living_room_sdf` | 1 | none | architecture/furnishings/material/light records → SDF renderer → grade | `LR_Cinematic_Grade` | modular 3D construction and spatial editing |
 | `matik_plate` | 1 | none | interactive plan authority → organisms + instruments + circuitry → composite → post | `MX_Post` | plan authority, generate-then-override editing, hybrid record contract |
 | `scientific_organism` | 1 | Features | biotic source → proxy/Features → temporal/topology/memory layers → renderer/grade | Group Output | a large, inspectable analysis-to-render system |
+| `soft_vitrine` | 1 | none | plan authority → stage/growth → volumes + strokes + plates → composite → post | `VT_Post` | hybrid 2D/3D record contracts, coverage lanes, seeded arrangement randomization |
 | `strata` | 1 | Features | background/plates/layout/marks → feature-reactive renderers → composite/post | `post_1` | modular 2D composition and proxy analysis |
 | `streamdiff_canvas` | 1 | StreamDiff, Depth, Background Removal | paint/pattern fields → depth controls → StreamDiff → cutout | `Collage_Cutout` | direct manipulation of generative conditioning |
 | `streamdiff_workflows` | 6 | StreamDiff; Depth and Background Removal in study 05 | one focused routing pattern per graph | named StreamDiff/Mux/composite preview | small, isolated StreamDiff techniques |
@@ -132,6 +133,25 @@ system, `Scientific_Final_Grade` finishes it, and
 
 Remix seam: study responsibility boundaries and intermediate previews in a
 large graph, not its scientific-instrument aesthetic.
+
+### Soft Vitrine
+
+`VT_Plan` is the plan authority: it owns stage space and the horizon, generates the
+whole composition procedurally, and holds click/drag/key overrides in one 64-record
+`Plan` buffer where `role` separates flat plates from stroke anchors, mass anchors and
+a global stage record. `VT_Stage` draws the cyclorama and reflective floor.
+`VT_Growth` expands the anchors into a single `Limbs` buffer — world-space capsule
+chains for the sculpted masses, stage-space polylines for the drawn marks — and
+publishes a bounding sphere per group so the renderer can cull. `VT_Volumes`
+ray-marches the masses across clay/chrome/frost/gloss and owns the internal camera,
+`VT_Strokes` draws the marks as lit tubes, and `VT_Plates` renders the flat graphic
+family split into back and front layers. `VT_Composite` stacks the four layers and
+derives the drop shadow and floor reflection from total coverage; `VT_Post` finishes.
+
+Remix seam: take the hybrid record contract — one buffer, `role` discriminated, with
+2D and 3D families living side by side — and the `Variation`/`Seed` randomizer whose
+stratified placement and preserved size hierarchy keep a random draw composed. Do not
+take the electric-blue toy-plastic palette.
 
 ### Strata
 
