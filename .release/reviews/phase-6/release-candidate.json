@@ -1,9 +1,9 @@
 {
   "phase": "6N",
-  "content_commit": "fc10ba238d55602aed58752c0fe346f4618e5401",
-  "binding": "The workspace manifest is generated from this curated content commit. The following binding commit changes only release metadata and the generated install manifest.",
+  "content_commit": "955221a2e5ef874a3fc6b75387eb606469bf3460",
+  "binding": "The workspace manifest is generated from this fourteen-project curated content commit. Commit 0d48c0d changes only the generated install manifest.",
   "project_set": {
-    "configured_directories": 12,
+    "configured_directories": 14,
     "distributable_projects": [
       "autopsia",
       "camera_reference",
@@ -12,7 +12,9 @@
       "industrial_lattice",
       "interaction_lab",
       "living_room_sdf",
+      "matik_plate",
       "scientific_organism",
+      "soft_vitrine",
       "strata",
       "streamdiff_canvas",
       "streamdiff_workflows",
@@ -23,7 +25,7 @@
     "unexpected": []
   },
   "workspace_surface": {
-    "knowledge_documents": 22,
+    "knowledge_documents": 23,
     "agent_skill_files": 32,
     "claude_skill_files": 32,
     "entry_manuals_identical": true,
@@ -31,11 +33,11 @@
     "proof_host_version": "0.5.52",
     "workspace_version": "0.5.52",
     "root_module_directories": 0,
-    "active_project_local_modules": 73
+    "active_project_local_modules": 92
   },
   "validation": {
     "official_examples": {
-      "passed": 12,
+      "passed": 14,
       "failed": 0
     },
     "release_audit": {
@@ -55,10 +57,10 @@
       "official_validator_passed": true,
       "release_audit_passed": true,
       "exact_set_plan_passed": true,
-      "verified_commit": "9d0f5ce99eaefc131c37562eb266d144674203a6",
+      "verified_commit": "0d48c0dc8c8f8abe133a3282b8bf8ed15c04434a",
       "root_module_files": 0,
-      "project_count": 12,
-      "manifest_files": 508,
+      "project_count": 14,
+      "manifest_files": 587,
       "manifest_orphan_candidates": 1372,
       "status": "fresh clone passed the exact project, zero-root-module, portability, product-surface, fixture, and manifest audits"
     }
@@ -73,8 +75,8 @@
   },
   "publication": {
     "remote_baseline": "e308c8c362e1d46de16bf4ca02707066912ce0ec",
-    "push_authorized": false,
+    "push_authorized": true,
     "gate": "G13",
-    "status": "ready locally; no push, tag, or publication performed"
+    "status": "The user explicitly authorized fast-forward promotion of the public-seed-agent-test branch to the public repository's main branch."
   }
 }
