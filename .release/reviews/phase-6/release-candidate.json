@@ -1,9 +1,9 @@
 {
   "phase": "6N",
-  "content_commit": "955221a2e5ef874a3fc6b75387eb606469bf3460",
-  "binding": "The workspace manifest is generated from this fourteen-project curated content commit. Commit 0d48c0d changes only the generated install manifest.",
+  "content_commit": "7a1652b15033cf582d4480055fb231ae19eb49b8",
+  "binding": "The workspace manifest is generated from this fifteen-project curated content commit. Commit 5db6779 changes only the generated install manifest.",
   "project_set": {
-    "configured_directories": 14,
+    "configured_directories": 15,
     "distributable_projects": [
       "autopsia",
       "camera_reference",
@@ -13,6 +13,7 @@
       "interaction_lab",
       "living_room_sdf",
       "matik_plate",
+      "prism_reliquary",
       "scientific_organism",
       "soft_vitrine",
       "strata",
@@ -33,11 +34,11 @@
     "proof_host_version": "0.5.52",
     "workspace_version": "0.5.52",
     "root_module_directories": 0,
-    "active_project_local_modules": 92
+    "active_project_local_modules": 96
   },
   "validation": {
     "official_examples": {
-      "passed": 14,
+      "passed": 15,
       "failed": 0
     },
     "release_audit": {
@@ -57,10 +58,10 @@
       "official_validator_passed": true,
       "release_audit_passed": true,
       "exact_set_plan_passed": true,
-      "verified_commit": "0d48c0dc8c8f8abe133a3282b8bf8ed15c04434a",
+      "verified_commit": "5db67794078db764fd69747023c2b3dfc23eaebd",
       "root_module_files": 0,
-      "project_count": 14,
-      "manifest_files": 587,
+      "project_count": 15,
+      "manifest_files": 610,
       "manifest_orphan_candidates": 1372,
       "status": "fresh clone passed the exact project, zero-root-module, portability, product-surface, fixture, and manifest audits"
     }
