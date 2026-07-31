@@ -49,22 +49,9 @@ Every number or label must derive from real live state and remain attached to wh
 
 ## Ambitious Builds From A Reference
 
-When the job is to build a specific ambitious result from a reference image or brief, read
-`knowledge/reference-build-method.md` first. Before writing code, inventory every visual
-element in the reference, name the node decomposition, and name the data contract; hybrid
-references are normal and unify under one record buffer with a `role` discriminator.
+When the job is to build a specific ambitious result from a reference image or brief, read `knowledge/reference-build-method.md` first. Before writing code, inventory every visual element in the reference and name the node decomposition and data contract; hybrid references are normal and unify under one record buffer with a `role` discriminator.
 
-Elect one plan-authority node that owns placement. Downstream nodes derive from its records
-and never re-decide them, and anything derivable from those records is derived rather than
-published as a second lane. A generative node that accepts interaction must generate a
-complete result procedurally and let interaction override individual records, so it is
-useful before it is edited. Derive downstream magnitudes from upstream record geometry
-instead of adding a parallel parameter that must be kept in agreement by hand.
-
-Build exploration axes as shipped `enum` presets rather than throwaway variants: sweep them,
-judge from captures, bake the winner as the default, and repair the losers instead of
-deleting them. Bake tuned values into manifests before the final save, and state plainly
-whatever you could not verify.
+Elect one plan-authority node that owns placement; downstream nodes derive from its records and never re-decide them. A generative node that accepts interaction must generate a complete result procedurally and let interaction override individual records, so it is useful before it is edited. Build exploration axes as shipped `enum` presets: sweep them, bake the winner as the default, and repair the losers instead of deleting them. Bake tuned values into manifests before the final save, and state plainly whatever you could not verify.
 
 ## Examples Are References, Not A Stock Module Library
 
@@ -89,13 +76,7 @@ Sentinel must run in the active interactive Windows desktop. Never launch `senti
 
 ## First-Run Engine Setup
 
-Some pipelines need TensorRT engine packs. A fresh install may have none.
-
-1. Call `sentinel_app action=engine_status`.
-2. Pick the needed pack for the user's GPU architecture.
-3. Call `sentinel_app action=download_pack pack_id=<pack>` or `sentinel_app action=install_pack pack_id=<pack>`.
-4. Poll `engine_status` until the pack is `complete`.
-5. Create the pipeline, wire input, and inspect health.
+Some pipelines need TensorRT engine packs, and a fresh install may have none. Call `sentinel_app action=engine_status`, pick the needed pack for the user's GPU architecture, call `download_pack` or `install_pack`, and poll `engine_status` until the pack is `complete`. See `knowledge/first-run-engines.md`.
 
 For a quick first proof, install pack `auxiliary`, create `depthestimation`, connect a meaningful live/user source or an authored generator Module, and verify `stats.healthy=true` with `framesProcessed` climbing. Never use the built-in Pattern source or diagnostic test imagery for this proof.
 
@@ -103,33 +84,9 @@ License activation is deliberately manual in the app UI.
 
 ## Pipeline Types In DIST Builds
 
-Call `list_types` for the exact current list. A normal DIST build includes:
+Call `list_types` for the exact current catalog; DIST builds intentionally omit dev-only and experimental types. The full DIST type table — roles, visibility, engine-pack requirements, and the compatibility aliases (`facemesh`, `shaderproject`) — lives in `knowledge/FEATURE-MAP.md`.
 
-| Type | Visible | Role |
-| --- | --- | --- |
-| `streamdiff` | yes | Real-time SDXL image generation. Requires StreamDiff engine packs. |
-| `mediapipe` | yes | Composable face and hand tracking, landmarks, gesture control outputs. |
-| `facemesh` | hidden | Compatibility alias for old face-only projects. Prefer `mediapipe`. |
-| `features` | yes | Model-free blob, corner, and line feature extraction. |
-| `audio` | yes | Audio In for WASAPI loopback, microphone, or paced WAV sources, with PCM, Spectrum, and Mel Bands data outputs. |
-| `detection` | yes | YOLOX-S object detections. Requires `auxiliary-detection`. |
-| `personseg` | yes | Person segmentation masks. Requires personseg engines. |
-| `pose` | yes | Human pose keypoints. Requires pose engines. |
-| `depthestimation` | yes | Monocular depth maps. Pack `auxiliary` is the small first-run proof pack. |
-| `matting` | yes | Background Removal. |
-| `module` | yes | Authored multi-pass HLSL projects with parameters, data ports, and control outputs. |
-| `hlslshader` | yes | Single HLSL post-process shader. |
-| `shaderproject` | hidden | Compatibility alias for shader project/module workflows. |
-| `opticalflow` | yes | NVIDIA hardware optical flow. |
-| `vsr` | yes | RTX Video Super Resolution. |
-| `conductor` | yes | Musical/timecode clocks, cues, macros, quantized triggers as control outputs. Cue sheets load via `sentinel_conductor`. |
-| `mux` | yes | Real-time select-1-of-N video switch; `solo_upstream` auto-holds non-selected StreamDiff variants. In `source_mode=Groups` it becomes the Scene Switcher, collecting Scene Groups wirelessly. |
-| `groupoutput` | yes | Scene Group output endpoint: marks a group's final texture, resolution, and fit mode for Scene Switcher collection. |
-| `atlas` | yes | Multi-pass still bank (color/segmentation/depth/data columns per captured still) with a self-timing capture cycle. |
-| `camera` | yes | Wireless fly/orbit camera rig (control node, no pixel output). Camera-capable modules bind via `camera_ref` or through their Scene Group. |
-| `camswitch` | yes | Camera Switcher: cut or quaternion-blend between camera nodes, with per-camera OSC triggers (control node). |
-
-Dev builds may expose extra experimental or maintainer-only types. DIST builds intentionally omit them.
+Orientation: `module` (authored multi-pass HLSL projects) and `hlslshader` for authored visuals; `streamdiff` for real-time generation; `mediapipe`, `features`, `detection`, `pose`, `depthestimation`, `personseg`, `matting`, and `opticalflow` for tracking and analysis; `audio` for WASAPI/WAV audio data; `vsr` for upscaling; `conductor`, `mux`, `groupoutput`, `atlas`, `camera`, and `camswitch` for choreography and the scene system.
 
 ## Graph Basics
 
@@ -159,54 +116,41 @@ Complete this entire cycle before authoring or creating the next node:
 
 Continue through the cycle without requiring approval after every node unless the user asks for checkpoints. The requirement is visible incremental construction, not stop-and-confirm gating.
 
-Do not use whole-graph `auto_layout` to repair a pile of bulk-created nodes. Preserve the graph's evolving layout with `place_relative`, explicit geometry, or `layout_neighborhood`. A whole-graph `auto_layout` is appropriate when the user explicitly requests it or when later topology surgery inserts, removes, or replaces nodes and the graph no longer reads in signal-flow order. Treat that as a layout-only checkpoint: inspect the graph first, run `auto_layout`, verify the new order, then refocus and reopen the active node. Never use it to hide bulk creation.
+Preserve the graph's evolving layout with `place_relative`, explicit geometry, or `layout_neighborhood`; never use whole-graph `auto_layout` to repair or hide bulk creation. Whole-graph `auto_layout` is appropriate only when the user explicitly requests it or when topology surgery leaves the graph unreadable in signal-flow order — treat that as a layout-only checkpoint: inspect the graph first, run it, verify the new order, then refocus and reopen the active node.
 
-Generator, plan, layout, assembly, and data-transform nodes must provide a meaningful visual preview of their own intermediate state. Show active records and their spatial structure, direction, grouping, weight, or type as appropriate. A downstream renderer and `capture_data_port` are additional proof, not substitutes for an inspectable node preview.
+Generator, plan, layout, assembly, and data-transform nodes must provide a meaningful visual preview of their own intermediate state, showing active records and their spatial structure, direction, grouping, weight, or type as appropriate. A downstream renderer and `capture_data_port` are additional proof, not substitutes for an inspectable node preview.
 
-For authored 3D, the renderer's native internal camera is the mandatory default; read `knowledge/internal-camera-template.md` before writing or modifying a 3D renderer. A normal 3D Module must declare `features: [camera]` and `viewport.interactions: [camera]`, keep `camera_ref` empty, construct every camera-dependent pass from the injected matrices and `_CameraPos`, save Fly as the default, and prove real viewport movement in the open renderer preview. Never create a `camera`/`camswitch` for a single renderer, multiple passes inside one Module, or a renderer plus post-processing, and never invent a shader-local orbit or parallel ray equation. Use an explicit external camera only when multiple separate camera-capable 3D renderer nodes genuinely require one synchronized viewpoint or show-level camera switching, and state that justification before creating it. Never promote camera parameters onto a Scene Group or other top-level surface.
+For authored 3D, the renderer's native internal camera is the mandatory default; read `knowledge/internal-camera-template.md` before writing or modifying a 3D renderer and follow its manifest, shader, and proof contract exactly. Use an explicit external camera only when multiple separate camera-capable 3D renderer nodes genuinely require one synchronized viewpoint or show-level camera switching, and state that justification before creating it. Never promote camera parameters onto a Scene Group or other top-level surface.
 
-Keep Scene Group control surfaces deliberately small. Start with roughly four to eight high-impact creative or construction controls, counting a color or XY compound as one control. Do not mirror internal implementation parameters. After exposure, open the Scene Group Properties and test every exposed control; remove controls that are redundant, inactive, confusing, or too low-level.
+Keep Scene Group control surfaces deliberately small — roughly four to eight high-impact controls, each tested in the open Scene Group Properties (see Scene Groups below).
 
 ## Health And Proof
 
 Trust live health, frames, and captures.
 
-Use `sentinel_pipeline action=info` and check:
+Use `sentinel_pipeline action=info` and check `stats.healthy`, `stats.health_reasons`, `stats.statusMessage`, `stats.framesProcessed`, `stats.has_preview_srv`, and output resolution and format.
 
-- `stats.healthy`
-- `stats.health_reasons`
-- `stats.statusMessage`
-- `stats.framesProcessed`
-- `stats.has_preview_srv`
-- output resolution and output format
+Use `sentinel_graph action=profile summary=true sort_by=wall_time_ms` for the latest frame breakdown, per-node wall time, rolling `cook_hz`, PipelineStats, link counts, and hotspot reasons. Use rolling cook rate for cadence comparisons because `frames_processed` is a lifetime total. This is a lightweight CPU wall-clock profiler for graph triage, not a deep GPU timestamp profiler.
 
-Use `sentinel_graph action=profile summary=true sort_by=wall_time_ms` to see the latest frame breakdown, per-node wall time, rolling `cook_hz` / `cooks_in_window` / `cook_window_ms`, PipelineStats, link counts, and hotspot reasons. Use rolling cook rate for cadence comparisons because `frames_processed` is a lifetime total. This is a lightweight CPU wall-clock profiler for graph triage, not a deep GPU timestamp profiler.
+Proof tools:
 
-Use `sentinel_capture action=capture_at` for still review with temporary parameter overrides. It can wait for compiles, settle frames, capture, and restore baseline values in one action.
+- `sentinel_capture action=capture_at`: still review with temporary parameter overrides; waits for compiles, settles, captures, and restores baseline values in one action.
+- `sentinel_capture action=proof_bundle`: user-facing creative proof folder with graph JSON, link summary, profile, health, expressions, output capture, window screenshot, and optional before/after diff.
+- `sentinel_capture action=sweep_record`: short motion proof across a parameter range. For normal stills or recordings, prefer the capture/record actions exposed by `sentinel_app action=capabilities`.
+- `sentinel_state action=snapshot` / `action=restore`: bracket experiments that mutate many parameters. `sentinel_capture action=checkpoint` bundles a capture with the state snapshot so a look can be recovered exactly.
+- `sentinel_vision action=eval_pipeline pipeline_id=<id> preset=render_quality`: one-call AI visual review of a live pipeline. First-time provider setup and key handling: `knowledge/vision-eval.md`. Never ask the user to paste API keys into chat or pass them as tool arguments.
 
-Use `sentinel_capture action=proof_bundle` for user-facing creative proof. It writes a folder with graph JSON, link summary, graph profile, pipeline health, active expressions, output capture, a full Sentinel window screenshot, and an optional before/after image-diff percentage.
-
-Use `sentinel_capture action=sweep_record` when you need a short motion proof across a parameter range. For normal stills or recordings, prefer the capture/record actions exposed by `sentinel_app action=capabilities`.
-
-Use `sentinel_state action=snapshot` / `action=restore` to bracket experiments that mutate many parameters, and `sentinel_capture action=checkpoint` to bundle a capture with the state snapshot so a look can be recovered exactly.
-
-Use `sentinel_vision action=eval_pipeline pipeline_id=<id> preset=render_quality` for one-call AI visual review of a live pipeline. It captures `<workspace>/captures/vision_<timestamp>/output.png`, evaluates it through the configured OpenAI-compatible provider, and returns `_meta.captured_png`. For first-time setup, run `sentinel_vision action=status`, open the returned `config_path`, paste the provider key into the selected provider profile's `api_key` field, then rerun `status` until `key_present` and `key_ok` are true. Environment setup is also supported with `SENTINEL_VISION_API_KEY` or `OPENROUTER_API_KEY` set before launching Codex/MCP. Never ask the user to paste API keys into chat or pass them as tool arguments; `sentinel_vision action=configure` only edits provider metadata. See `knowledge/vision-eval.md` for the full setup flow.
-
-For local diagnostics or support handoff, use `sentinel_app action=bug_report`. Use `sentinel_app action=submit_bug_report` only when the user explicitly wants to submit the report.
+For local diagnostics or support handoff, use `sentinel_app action=bug_report`. Use `submit_bug_report` only when the user explicitly wants to submit the report.
 
 ## Features Performance Discipline
 
-Treat the model-free `features` node as performance-sensitive. Threshold extremes can produce dense candidate sets and abrupt CPU cost, especially with corners, lines, or edges at large input resolutions. Never sweep several feature tasks blindly or enable every task at once.
+Treat the model-free `features` node as performance-sensitive: threshold extremes can produce dense candidate sets and abrupt CPU cost, especially with corners, lines, or edges at large input resolutions. Never sweep several feature tasks blindly or enable every task at once. Start from a measured baseline, enable and tune one task at a time, and run `sentinel_graph action=profile summary=true sort_by=wall_time_ms` before and after material changes. Keep counts bounded with conservative thresholds; if wall time, frame cadence, or UI responsiveness regresses sharply, immediately revert the last setting before continuing downstream.
 
-Start from a measured baseline, enable and tune one task at a time, and run `sentinel_graph action=profile summary=true sort_by=wall_time_ms` before and after material changes. Keep counts bounded and use conservative thresholds: avoid very low corner quality with small minimum distance, permissive line/edge thresholds, short minimum line lengths, and blob settings that fragment most of the frame. If wall time, frame cadence, or UI responsiveness regresses sharply, immediately revert the last setting before continuing downstream.
-
-For quick creative builds, keep the canonical visible chain at 1280x720 or a comparable 720p resolution. When Features is too expensive, insert an explicit analysis proxy branch that downsamples only the Features input (for example to 480x270) while the full-resolution source bypasses it into the renderer. The Features preview and coordinates then use the analysis resolution; downstream consumers must normalize with that exact size. This is an external workaround until the live node advertises a verified internal analysis scale. Preview the real Features node while tuning, inspect output counts and schemas, and require the agreed performance target before adding another node. See `knowledge/tracking-suite.md` and `knowledge/performance-proof.md`.
+For quick creative builds, keep the canonical visible chain at 1280x720 or a comparable 720p resolution. When Features is too expensive, insert an explicit analysis proxy branch that downsamples only the Features input (for example to 480x270) while the full-resolution source bypasses it into the renderer; downstream consumers must normalize with that exact analysis size. See `knowledge/tracking-suite.md` and `knowledge/performance-proof.md`.
 
 ## Scaled-Pass Coordinate Discipline
 
-When a Module pass writes to a texture buffer with `scale` below `1.0`, do not assume `_Resolution` is the scaled target extent. Derive simulation bounds, UVs, and aspect from the actual input or feedback texture with `GetDimensions`, or from another verified pass-local extent. Using the root pipeline resolution for a half-resolution field can multiply normalized positions and make only one corner of the control domain effective.
-
-Prove the effect-producing pass itself. A later full-resolution overlay can draw a marker at the correct data coordinate while an upstream scaled simulation responds somewhere else. Capture the raw field or intermediate output and test records on both sides of `0.5` on each axis before declaring producer/consumer coordinates aligned.
+When a Module pass writes to a texture buffer with `scale` below `1.0`, do not assume `_Resolution` is the scaled target extent — derive bounds, UVs, and aspect from the actual texture with `GetDimensions`, and prove the effect-producing pass itself rather than trusting a full-resolution overlay. Full discipline: `knowledge/module-pipeline.md`.
 
 ## Async Compile
 
@@ -240,55 +184,19 @@ Do not use a plain StateTree `set` to write `=ref(...)`. Use the expression comm
 
 ## Audio Reactivity
 
-Audio In is pipeline type `audio` on builds whose live `list_types` response includes it. Published builds at or below 0.5.48 may omit this feature, so discover the running catalog before creating the node.
+Audio In is pipeline type `audio` on builds whose live `list_types` response includes it; published builds at or below 0.5.48 may omit it. Use `source_mode=Device` for live WASAPI capture (flow `Loopback` for a playback endpoint, `Microphone` for a recording endpoint) or `source_mode=File` for deterministic paced PCM WAV playback. Audio In publishes three typed data ports — `PCM` (stereo waveform history), `Spectrum` (64-hop linear FFT ring), and `Mel Bands` (64-hop, 138 perceptual bands) — plus scalar `level` and `peak` control outputs that can drive parameters directly.
 
-Use `source_mode=Device` for live WASAPI capture or `source_mode=File` for deterministic paced PCM WAV playback. Device flow `Loopback` captures a Windows playback endpoint, while `Microphone` captures a recording endpoint. For a virtual audio cable, route the producing application's playback into the cable and select the corresponding endpoint under the appropriate flow.
+For beat, onset, and drum-driven work, inspect the Audio Bands architecture in `projects/cloth_lab/modules/cloth_bands` and reimplement the needed analysis in the owning project unless the user explicitly requests a Cloth Lab remix. Use the monotonic `kick_count` / `snare_count` / `hat_count` for per-hit edges and `kick` / `snare` / `hat` for 0-1 envelopes; its per-lane dB thresholds gate internally. Superseded `pulse2_*` and `cryo_pulse` experiments are not part of the curated public module library; do not recreate or build new work on them.
 
-For beat, onset, and drum-driven work, inspect the Audio Bands architecture in
-`projects/cloth_lab/modules/cloth_bands`: it wires Audio In's `Spectrum` port into a
-Module and publishes control outputs. Reimplement the needed analysis in the owning
-project unless the user explicitly requests a Cloth Lab remix. Use
-the monotonic `kick_count` / `snare_count` /
-`hat_count` for per-hit edges and `kick` / `snare` / `hat` for 0-1 envelopes; its
-per-lane dB thresholds gate internally, so the counters need no extra signal gate.
-`Threshold Mode` defaults to Fixed. Superseded `pulse2_*` and `cryo_pulse`
-experiments are not part of the curated public module library; do not recreate
-or build new work on them. Worked example: `projects/cloth_lab/`.
-
-Audio In publishes three typed data ports:
-
-- `PCM`: circular stereo waveform history for oscilloscopes and time-domain processing.
-- `Spectrum`: a 64-hop ring of linear FFT magnitudes for exact frequency-bin analysis.
-- `Mel Bands`: a 64-hop ring of 138 perceptual bands for musical analysis and onset detection.
-
-Scalar `level` and `peak` control outputs can drive parameters directly. Custom
-Modules can derive kick, snare, hi-hat, band-energy, counts, spectrum bars, and
-oscilloscope views from the typed Audio In ports.
-
-The WASAPI capture, format conversion, FFT, Mel aggregation, timestamps, and ring maintenance run on CPU threads. D3D11 structured buffers carry the completed rings to GPU HLSL Modules for detection and rendering.
-
-Default endpoint selections migrate when the Windows default changes. Explicit endpoint selections stay pinned by device GUID. If a pinned device disappears, Audio In publishes timestamped silence and retries that endpoint until it returns. Use `Rescan Devices` to refresh the dropdown after adding hardware; an unrelated new device never replaces the active selection automatically.
-
-Connected Module data inputs receive `_DataN_Generation`, `_DataN_ValueCount`,
-and `_DataN_HopCapacity`. Use them for chronological ring catch-up. Spectrum
-and Mel Bands have no standalone header record, so element zero cannot serve as
-the latest-generation source.
-
-Audio In diagnostics separate capture health from content presence. Inspect
-`capture_state`, `endpoint_active`, `last_packet_age_ms`, retry and migration
-counters, `signal_present`, and `silence_seconds`. Adaptive onset detectors
-also need a signal-presence gate so steady noise cannot accumulate confident
-false triggers.
-
-See `knowledge/audio-reactivity.md` for wiring recipes, frozen data contracts, hot-plug behavior, virtual-cable routing, authoring helpers, and proof guidance.
+Ring catch-up contracts (`_DataN_Generation`, `_DataN_ValueCount`, `_DataN_HopCapacity`), device hot-plug and endpoint-pinning behavior, capture-versus-content diagnostics (`capture_state`, `signal_present`, `last_packet_age_ms`), virtual-cable routing, wiring recipes, and authoring helpers: `knowledge/audio-reactivity.md`.
 
 ## Creative Module Authoring
 
-For a data-driven custom visual, prefer `sentinel_module action=scaffold_from_ports` after creating or inspecting the upstream tracker. It creates a user-writable starter Module, copies the upstream data schema into `data_inputs`, generates HLSL accessors, and includes modern controls (`color`, `point2D`, grouped toggles, and `enum` button grids). Save and bundle the owning show so its final copy lives under `projects/<project>/modules/<name>/`; do not leave a reusable-looking root module behind.
+For a data-driven custom visual, prefer `sentinel_module action=scaffold_from_ports` after creating or inspecting the upstream tracker. It creates a user-writable starter Module, copies the upstream data schema into `data_inputs`, generates HLSL accessors, and includes modern controls. Save and bundle the owning show so its final copy lives under `projects/<project>/modules/<name>/`; do not leave a reusable-looking root module behind.
 
 Use `sentinel_pipeline action=get_data_schemas` before wiring data. The response includes the graph pin name and slot when available, so use that pin name with `sentinel_graph action=add_link`.
 
-Modules can declare viewport behavior in a manifest `viewport:` block: a `hint` string plus `interactions` from `mouse`, `pan_zoom`, `camera`, `events`, and `selection`. Declaring `events` with a `viewport.input` interest list and `bindings` help entries delivers ordered pointer/keyboard/gesture events to the module's shaders (installs at 0.5.30 or newer). Installs at 0.5.31 or newer also support `param_gestures`, shader-rendered `controls`, durable `state_buffers`, and host-owned object selection/picking through `sentinel_viewport`. Installs at 0.5.32 or newer support `panel: { mode: canvas, output: UI, resolution: follow_panel }` for full-bleed authored panels whose real render size follows the dock content. See `knowledge/module-pipeline.md` and `knowledge/ui-authoring.md`.
+Modules can declare viewport behavior in a manifest `viewport:` block: interaction hints, ordered pointer/keyboard/gesture events, `param_gestures`, shader-rendered `controls`, durable `state_buffers`, host-owned selection/picking, and full-bleed `panel: canvas` presentation with `follow_panel` resolution. Availability is version-gated; see `knowledge/module-pipeline.md` and `knowledge/ui-authoring.md`.
 
 ## Direct-Manipulation UI Architecture
 
@@ -296,15 +204,13 @@ Do not build authored Canvas panels that merely duplicate Properties sliders. Ke
 
 Follow Interaction Lab's Style Authority contract for every `point2D` or `xypad`. The host parameter is the single source of truth and remains unmodified in state, data, and control outputs. Declare a plain non-inverted control rectangle; render through the project-local `sui3PadPoint` helper and invert through `sui3PadValue` when needed. Never hand-roll pad coordinate arithmetic, never add `1.0 - value.y` outside that shared helper, and never publish a flipped copy. Before accepting any XY control, drive the real pad at top and bottom and prove that the stored value, published value, readout, and rendered reticle all agree. Reference: `projects/interaction_lab/modules/Style_Authority/`.
 
-Separate the canonical Program renderer from the flexible editor Canvas. The renderer keeps an intentional output such as 1280x720. A `follow_panel` editor displays an aspect-correct fitted or cropped Program preview, remaps pointer coordinates into that stage rectangle, owns durable interaction state, and publishes structured control data for the renderer. Do not make the final renderer inherit an arbitrary dock aspect and do not stretch a canonical image to fill the panel. Use unused panel space for contextual tools or gutters. Prove click, drag, selection, clear, and other primary gestures with real viewport input. See `knowledge/ui-authoring.md`.
+Separate the canonical Program renderer from the flexible editor Canvas: the renderer keeps an intentional output such as 1280x720, while a `follow_panel` editor displays an aspect-correct fitted Program preview, remaps pointer coordinates into that stage rectangle, owns durable interaction state, and publishes structured control data. Do not stretch a canonical image to fill the panel. Prove click, drag, selection, clear, and other primary gestures with real viewport input. See `knowledge/ui-authoring.md`.
 
 ## Choreography And Sequencing
 
-For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters; `bake_sheet` writes live tweaks back to the YAML. Module motion uses the shared vocabulary described in `knowledge/motion-choreography.md` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, integrate phase for anything rate-driven, and bundle any HLSL helper with the owning project.
+For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters. Module motion uses the shared vocabulary in `knowledge/motion-choreography.md` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, integrate phase for anything rate-driven, and bundle any HLSL helper with the owning project.
 
-StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` node switches variants live and its `solo_upstream` keeps only the visible variant diffusing; an `atlas` node banks aligned stills for 3D scene spawning. The focused examples under `projects/streamdiff_workflows/` cover feedback zoom, depth parallax, direct Mux switching, video depth conditioning, and procedural warp maps; open one at a time to avoid unnecessary engine-memory spikes. See `knowledge/streamdiff.md` and `knowledge/scene-system.md`.
-
-To mix whole looks instead of single streams, author each look as a Scene Group containing exactly one `groupoutput` node and set a Mux to `source_mode=Groups`. The switcher collects the groups wirelessly, fully freezes non-selected looks, and offers hard cuts or `fade_time` crossfades plus one `select/<slug>` OSC trigger per look; `allowed_groups` filters the collection and accepts a string `ref()` expression. Only when multiple separate camera-capable 3D renderer nodes genuinely require one synchronized viewpoint or show-level switching should `camera` nodes own a shared fly/orbit rig through `camera_ref` (or their containing Scene Group), with `camswitch` cutting or blending between those justified external cameras. See `knowledge/scene-system.md`.
+StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` switches variants live with `solo_upstream`; an `atlas` banks aligned stills for 3D scene spawning. To mix whole looks, author each look as a Scene Group containing exactly one `groupoutput` and set a Mux to `source_mode=Groups` (the Scene Switcher, with cuts, `fade_time` crossfades, and per-look OSC triggers). The focused examples under `projects/streamdiff_workflows/` cover one routing pattern each; open one at a time to avoid engine-memory spikes. See `knowledge/streamdiff.md` and `knowledge/scene-system.md`.
 
 ## Precise 3D Construction
 
@@ -314,21 +220,17 @@ When a 3D scene is objects with real dimensions and relationships (tucked chairs
 
 Scene Groups organize graph regions and expose selected controls without flattening the graph. Use `sentinel_graph` Scene Group actions when available in `capabilities`; inspect the live command schema before calling them.
 
-Group presets snapshot every parameter of every contained pipeline plus per-node bypass state automatically, with innermost-wins nested membership and preset-of-presets recall (an outer preset can pick each inner group's preset then apply overrides). Use them as the scene-state layer under live switching.
+Group presets snapshot every parameter of every contained pipeline plus per-node bypass state automatically, with innermost-wins nested membership and preset-of-presets recall. Use them as the scene-state layer under live switching.
 
-Scene Groups can also expose selected member parameters as first-class group controls. Exposed parameters keep their authored defaults, enums, and source sections, render as normal full-width Properties rows with reset, OSC, expressions, range editing, and undo, and authored color and XY compounds expose as one complete swatch or pad unit.
+Exposed member parameters render as normal full-width Properties rows with reset, OSC, expressions, range editing, and undo; authored color and XY compounds expose as one complete swatch or pad unit. Curate exposed controls as a compact user-facing interface rather than a mirror of node internals: default to four to eight high-impact controls and verify every one in the open Scene Group Properties panel. Never expose camera ownership, binding, mode, position, orbit, target, FOV, or other camera controls there.
 
-Curate exposed controls as a compact user-facing interface rather than a mirror of node internals. Default to four to eight high-impact controls and verify every one in the open Scene Group Properties panel. Never expose camera ownership, binding, mode, position, orbit, target, FOV, or other camera controls there; keep camera operation on the actual owning renderer preview or `camera` node.
-
-Over MCP, use `sentinel_graph expose_scene_group_parameter` with the group's annotation `entity_id`, the member `pipeline_id`, and a `param_name`. Compound parameters live in StateTree as flattened components (`main_color_r/_g/_b`, `center_x/_y`); pass a COMPONENT name (the compound base name errors with parameter-not-found) and the whole compound promotes at once, returning every exposed path under `/sentinel/groups/<id>/parameters/`. Writes to a group path flow to the member parameter and back.
+Over MCP, use `sentinel_graph expose_scene_group_parameter`; compound parameters must be addressed by component name, and writes to a group path flow through to the member. Exact call shape and paths: `knowledge/scene-system.md`.
 
 Scene Groups are for control and organization. They do not replace video/data wiring, and they should not be used to hide whether a graph is healthy.
 
 ## Node Presets
 
-The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`) provides identity-aware per-node presets in library, project, or bundled scope, with grouped compound-safe parameter selection and strict or loose Recall Onto compatible nodes. Installs at 0.5.29 or newer carry it; if the tool is absent from the live tools list, presets remain available through the Properties preset strip in the UI.
-
-`save` requires an explicit `params` array and/or `groups` selection; there is no save-everything default. Identity derives from the node type and Module project, so presets follow that Module across instances and saved projects. `recall` returns `applied[]` and `skipped[]` and fails loudly when nothing applies. See `knowledge/FEATURE-MAP.md` for verified call shapes.
+The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`) provides identity-aware per-node presets in library, project, or bundled scope. Installs at 0.5.29 or newer carry it; otherwise presets remain available through the Properties preset strip. `save` requires an explicit `params` and/or `groups` selection; identity follows the node type and Module project; `recall` returns `applied[]` and `skipped[]` and fails loudly when nothing applies. Verified call shapes: `knowledge/FEATURE-MAP.md`.
 
 ## Outputs
 

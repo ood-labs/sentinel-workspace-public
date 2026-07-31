@@ -261,3 +261,9 @@ When writing a module project programmatically, write shader files first and `ma
 By default, modules match input slot 0. A manifest can select generator mode or explicit resolutions. Multi-pass modules can use per-pass resolution rules.
 
 For fixed generator visuals, use an explicit or generator resolution. For video effects, match the input.
+
+## Scaled-Pass Coordinate Discipline
+
+When a Module pass writes to a texture buffer with `scale` below `1.0`, do not assume `_Resolution` is the scaled target extent. Derive simulation bounds, UVs, and aspect from the actual input or feedback texture with `GetDimensions`, or from another verified pass-local extent. Using the root pipeline resolution for a half-resolution field can multiply normalized positions and make only one corner of the control domain effective.
+
+Prove the effect-producing pass itself. A later full-resolution overlay can draw a marker at the correct data coordinate while an upstream scaled simulation responds somewhere else. Capture the raw field or intermediate output and test records on both sides of `0.5` on each axis before declaring producer/consumer coordinates aligned.

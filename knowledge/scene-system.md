@@ -74,6 +74,12 @@ Use group presets as the scene-state layer under live switching: preset recall s
 
 Treat exposed Scene Group parameters as a deliberately authored interface, not a convenient mirror of member parameters. Start with roughly four to eight high-impact creative controls, count compound color/XY widgets as one, open the group Properties panel, and test every exposed control. Remove inactive, redundant, confusing, or implementation-level rows.
 
+## Exposing Member Parameters Over MCP
+
+Scene Groups can expose selected member parameters as first-class group controls. Exposed parameters keep their authored defaults, enums, and source sections, render as normal full-width Properties rows with reset, OSC, expressions, range editing, and undo, and authored color and XY compounds expose as one complete swatch or pad unit.
+
+Over MCP, use `sentinel_graph expose_scene_group_parameter` with the group's annotation `entity_id`, the member `pipeline_id`, and a `param_name`. Compound parameters live in StateTree as flattened components (`main_color_r/_g/_b`, `center_x/_y`); pass a COMPONENT name (the compound base name errors with parameter-not-found) and the whole compound promotes at once, returning every exposed path under `/sentinel/groups/<id>/parameters/`. Writes to a group path flow to the member parameter and back.
+
 ## Snapshot, Restore, Checkpoint
 
 For agent workflows that mutate many parameters:

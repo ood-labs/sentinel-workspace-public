@@ -95,6 +95,34 @@ Utility and output:
 
 Use `list_types` for the authoritative list in the current build.
 
+## DIST Build Type Table
+
+A normal DIST build includes the following; call `list_types` for the exact current list. Dev builds may expose extra experimental or maintainer-only types, which DIST builds intentionally omit.
+
+| Type | Visible | Role |
+| --- | --- | --- |
+| `streamdiff` | yes | Real-time SDXL image generation. Requires StreamDiff engine packs. |
+| `mediapipe` | yes | Composable face and hand tracking, landmarks, gesture control outputs. |
+| `facemesh` | hidden | Compatibility alias for old face-only projects. Prefer `mediapipe`. |
+| `features` | yes | Model-free blob, corner, and line feature extraction. |
+| `audio` | yes | Audio In for WASAPI loopback, microphone, or paced WAV sources, with PCM, Spectrum, and Mel Bands data outputs. |
+| `detection` | yes | YOLOX-S object detections. Requires `auxiliary-detection`. |
+| `personseg` | yes | Person segmentation masks. Requires personseg engines. |
+| `pose` | yes | Human pose keypoints. Requires pose engines. |
+| `depthestimation` | yes | Monocular depth maps. Pack `auxiliary` is the small first-run proof pack. |
+| `matting` | yes | Background Removal. |
+| `module` | yes | Authored multi-pass HLSL projects with parameters, data ports, and control outputs. |
+| `hlslshader` | yes | Single HLSL post-process shader. |
+| `shaderproject` | hidden | Compatibility alias for shader project/module workflows. |
+| `opticalflow` | yes | NVIDIA hardware optical flow. |
+| `vsr` | yes | RTX Video Super Resolution. |
+| `conductor` | yes | Musical/timecode clocks, cues, macros, quantized triggers as control outputs. Cue sheets load via `sentinel_conductor`. |
+| `mux` | yes | Real-time select-1-of-N video switch; `solo_upstream` auto-holds non-selected StreamDiff variants. In `source_mode=Groups` it becomes the Scene Switcher, collecting Scene Groups wirelessly. |
+| `groupoutput` | yes | Scene Group output endpoint: marks a group's final texture, resolution, and fit mode for Scene Switcher collection. |
+| `atlas` | yes | Multi-pass still bank (color/segmentation/depth/data columns per captured still) with a self-timing capture cycle. |
+| `camera` | yes | Wireless fly/orbit camera rig (control node, no pixel output). Camera-capable modules bind via `camera_ref` or through their Scene Group. |
+| `camswitch` | yes | Camera Switcher: cut or quaternion-blend between camera nodes, with per-camera OSC triggers (control node). |
+
 ## What Nodes Emit
 
 `audio`:
