@@ -32,18 +32,11 @@ The saved lab demonstrates the intended small chain: `Micro_LFO/value` drives
 `Micro_Scope/signal`, and `Micro_Sequencer/gate` drives `Micro_Envelope/gate`. Those are live
 expressions, not decorative wiring.
 
-To copy one into another project, run:
-
-```powershell
-./projects/interaction_lab/copy-micro-instrument.ps1 `
-  -Name Micro_LFO `
-  -TargetProject ./projects/my_project
-```
-
-The helper copies the selected Module and the exact `_shared/ui` dependency closure it needs.
-It refuses to overwrite an existing Module unless `-Force` is explicit. After copying, create one
-Module node from that project-local folder; optionally connect a Style Authority-compatible
-`Theme` data port. No source, output node, Scene Group, or other graph policy is implied.
+Study these Modules in place as small examples of timing, state, data ports, and responsive
+panel design. They remain project-local teaching references rather than a stock Module catalog.
+For a new project, reimplement the relevant contract for that project's actual control problem
+and visual language. Copy one only when the user explicitly asks to fork or remix Interaction
+Lab.
 
 `Scope_Audio` defaults to **Device**, **Loopback**, **Default loopback** so the audio scope and
 signal trails work portably without a bundled test file. Silence is a healthy state; play audio on

@@ -6,7 +6,7 @@ a dense field of procedural instrument panels, connective hairlines and registra
 Reviewed output: **`MX_Post`** (1080 x 1080).
 Saved graph: `matik_plate.sentinel`. Scene Group: **MATIK PLATE** (`annotation_45`).
 
-## Route
+## Component map
 
 ```
 MX_Console ──Plate──┬─────────────────► MX_Instruments ─┐

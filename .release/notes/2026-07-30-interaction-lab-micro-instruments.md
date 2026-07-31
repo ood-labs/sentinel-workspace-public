@@ -10,7 +10,8 @@ Checkpoint for the reusable single-purpose control work.
 - Added `Micro_Envelope`, with attack/release gate following and monotonic rise/fall counters.
 - Connected all four Modules to Style Authority's live `Theme` data output with standalone visual fallbacks.
 - Added live demonstration expressions from LFO to Scope and Sequencer to Envelope.
-- Added `copy-micro-instrument.ps1` to copy one Module plus its project-local SUI3 dependency closure.
+- Kept the micro instruments project-local as teaching references rather than publishing a
+  reusable stock-Module copy path.
 - Corrected and duplicated the pad-coordinate and no-implicit-output contracts across agent manuals, authoring skills, and UI knowledge.
 - Saved the four new nodes, links, expressions, window state, and relative bundled Module paths into `interaction_lab.sentinel`.
 

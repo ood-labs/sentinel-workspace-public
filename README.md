@@ -37,7 +37,7 @@ The live MCP catalog is authoritative for the installed build.
 | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` | Identical entry instructions for common agents |
 | `.agents/skills/`, `.claude/skills/` | Identical Sentinel authoring skills |
 | `knowledge/` | Product and workflow reference |
-| `projects/` | Twelve curated, self-contained example projects |
+| `projects/` | Fourteen curated, self-contained example projects |
 | `examples/` | Small generic blueprint and skill fixtures |
 | `tools/` | Supported authoring and release-validation helpers |
 | `.release/` | Maintainer approval records; not installed into user workspaces |
@@ -66,7 +66,9 @@ See `knowledge/example-authoring.md`.
 | `industrial_lattice` | Compact procedural SDF structure and post-processing |
 | `interaction_lab` | Responsive Canvas UI, splines, selection, gizmos, audio scope, and traces |
 | `living_room_sdf` | Modular architectural records, spatial editing, lighting, materials, and SDF rendering |
+| `matik_plate` | Interactive plan authority, hybrid record contracts, organisms, circuitry, and technical-plate rendering |
 | `scientific_organism` | Long modular analysis-to-render chain with temporal memory and a final Scene Group output |
+| `soft_vitrine` | Hybrid 2D/3D sculpture staging, coverage lanes, and seeded arrangement randomization |
 | `strata` | Feature-reactive modular 2D composition |
 | `streamdiff_canvas` | Persistent painting and patterned depth control for photographic StreamDiff collage |
 | `streamdiff_workflows` | Six focused StreamDiff routing and conditioning studies |

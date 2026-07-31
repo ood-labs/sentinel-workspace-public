@@ -7,7 +7,7 @@ all standing in one lit room with a reflective floor.
 Reviewed output: **`VT_Post`** (1080 x 1080).
 Saved graph: `soft_vitrine.sentinel`. Scene Group: **SOFT VITRINE** (`annotation_54`).
 
-## Route
+## Component map
 
 ```
 VT_Plan ──Plan──┬──────────────────────────► VT_Stage ────────────┐

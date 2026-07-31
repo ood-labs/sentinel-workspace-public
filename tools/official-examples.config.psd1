@@ -28,6 +28,18 @@
             MinimumNodePresets = 2
             Exemptions = @()
         }
+        matik_plate = @{
+            ProjectFile = 'matik_plate.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-6/matik-plate.json')
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 6
+            Exemptions = @('scene-group-presets', 'technical-workflow-output')
+        }
         face_collage = @{
             ProjectFile = 'face_collage.sentinel'
             SharedModules = @()
@@ -132,6 +144,18 @@
             MinimumNodePresets = 4
             RequireNodePreviews = $true
             Exemptions = @()
+        }
+        soft_vitrine = @{
+            ProjectFile = 'soft_vitrine.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-6/soft-vitrine.json')
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
+            MinimumGroupPresets = 3
+            MinimumNodePresets = 6
+            Exemptions = @('scene-group-presets', 'technical-workflow-output')
         }
         autopsia = @{
             ProjectFile = 'autopsia.sentinel'

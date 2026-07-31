@@ -1,0 +1,38 @@
+{
+  "project": "projects/soft_vitrine/soft_vitrine.sentinel",
+  "candidate": "soft_vitrine",
+  "source_commits": [
+    "4d4da42",
+    "9069978"
+  ],
+  "reviewed_output": "VT_Post",
+  "graph": {
+    "node_count": 8,
+    "scene_group": "SOFT VITRINE",
+    "scene_group_controls": 9,
+    "scene_group_presets": 3,
+    "project_scoped_node_presets": 6,
+    "group_output_count": 0
+  },
+  "runtime": {
+    "resolution": "1080x1080",
+    "reported_frame_time_ms": 2.3,
+    "reported_cadence_fps": 61,
+    "camera_owner": "VT_Volumes",
+    "module_locality": "all active Modules and recursive dependencies are bundled under projects/soft_vitrine"
+  },
+  "approved_state": {
+    "scene_group_seed": 64,
+    "variation": 0.331,
+    "layout_and_panel_state_saved": true
+  },
+  "review": {
+    "component_map": "projects/soft_vitrine/README.md",
+    "method_reference": "knowledge/reference-build-method.md",
+    "notes": "The example documents its hybrid 2D/3D record contract, coverage lanes, internal camera, seeded randomizer, exploration record, and remix seam."
+  },
+  "human_gate": {
+    "status": "approved",
+    "notes": "The user described this new agent-authored example as super good, made final visual and layout adjustments, and explicitly requested promoting the branch containing it to the main public workspace seed."
+  }
+}

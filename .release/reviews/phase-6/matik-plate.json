@@ -1,0 +1,28 @@
+{
+  "project": "projects/matik_plate/matik_plate.sentinel",
+  "candidate": "matik_plate",
+  "source_commit": "ab3150f",
+  "reviewed_output": "MX_Post",
+  "graph": {
+    "node_count": 7,
+    "scene_group": "MATIK PLATE",
+    "scene_group_controls": 8,
+    "project_scoped_node_presets": 6,
+    "group_output_count": 0
+  },
+  "runtime": {
+    "resolution": "1080x1080",
+    "reported_frame_time_ms": 1.2,
+    "camera_owner": "MX_Wireframe",
+    "module_locality": "all active Modules and recursive dependencies are bundled under projects/matik_plate"
+  },
+  "review": {
+    "component_map": "projects/matik_plate/README.md",
+    "method_reference": "knowledge/reference-build-method.md",
+    "notes": "The example documents its plan-authority contract, interactive overrides, record roles, camera ownership, exploration record, and remix seam."
+  },
+  "human_gate": {
+    "status": "approved",
+    "notes": "The user described this new agent-authored example as super good and explicitly requested promoting the branch containing it to the main public workspace seed."
+  }
+}
