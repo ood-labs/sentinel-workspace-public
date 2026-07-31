@@ -106,7 +106,9 @@ This is stronger than "one layout transform, at the generator" below. The transf
 
 ### Generate, then override
 
-A generative node that accepts interaction must produce a **complete, good result procedurally**, and let interaction **override individual records** on top of it.
+If the composition has an arrangement worth randomizing or exploring, the plan authority must be **directly manipulable** — not only when interaction is asked for. It must produce a **complete, good result procedurally**, and let interaction **override individual records** on top of it.
+
+Select-and-move is close to universal; beyond that, design the edit verbs around the two or three properties that actually define an element in *this* subject rather than copying a keymap. Back it with a persistent buffer, an editor header record, and signature-driven regeneration. Study `projects/soft_vitrine/modules/VT_Plan` as the bar to clear — for how cheaply it lets you explore, and for a randomizer whose draws still read as compositions. A plan that offers only a seed and a variation slider is an **opaque plan**: it looks finished and is not.
 
 - The node is useful and unbroken from the first frame, before anyone touches it.
 - Global parameters keep working after hand edits, because edits are deltas rather than a replacement authoring model.

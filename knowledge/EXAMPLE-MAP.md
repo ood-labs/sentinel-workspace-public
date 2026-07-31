@@ -17,6 +17,7 @@ for an explicit fork or remix. See `example-authoring.md`.
 | `interaction_lab` | 1 | Audio In | independent UI/editor stations plus two data routes | station previews | Canvas panels, splines, selection, gizmos, traces |
 | `living_room_sdf` | 1 | none | architecture/furnishings/material/light records → SDF renderer → grade | `LR_Cinematic_Grade` | modular 3D construction and spatial editing |
 | `matik_plate` | 1 | none | interactive plan authority → organisms + instruments + circuitry → composite → post | `MX_Post` | plan authority, generate-then-override editing, hybrid record contract |
+| `prism_reliquary` | 1 | none | plan authority/editor → studio env → SDF renderer → filmic post | `PR_Post` | filmic rendering: thin-film refraction, bokeh depth of field, HDR bloom, layered antialiasing |
 | `scientific_organism` | 1 | Features | biotic source → proxy/Features → temporal/topology/memory layers → renderer/grade | Group Output | a large, inspectable analysis-to-render system |
 | `soft_vitrine` | 1 | none | plan authority → stage/growth → volumes + strokes + plates → composite → post | `VT_Post` | hybrid 2D/3D record contracts, coverage lanes, seeded arrangement randomization |
 | `strata` | 1 | Features | background/plates/layout/marks → feature-reactive renderers → composite/post | `post_1` | modular 2D composition and proxy analysis |
@@ -121,6 +122,25 @@ internal camera. `MX_Instruments` and `MX_Circuitry` draw the panels and the con
 
 Remix seam: take the plan-authority and generate-then-override architecture, not the
 monochrome technical-plate aesthetic. See `knowledge/reference-build-method.md`.
+
+### Prism Reliquary
+
+`PR_Plan` is the plan authority AND a direct-manipulation editor: it generates the whole
+composition from reference-image coordinates, lets you click-select, drag, and re-material
+individual elements over a persistent signature-driven buffer, and owns the show clock.
+`PR_Env` authors the studio as a lat-long HDR panorama, so every chrome, glass and fur
+highlight in the scene is reading one light rig. `PR_Render` ray-marches the whole cast with
+its internal camera and publishes RGBA16F **with linear depth in alpha**. `PR_Post` is the
+lens: gather-bokeh defocus, bloom, flare, aberration, grade, ACES, edge AA.
+
+Study it for **filmic quality** — a real thin-film interference model for the refractive
+membrane, depth of field with proper bokeh rather than a gaussian, HDR that survives the node
+boundary, and an antialiasing strategy that treats three different aliasing sources with
+three different tools. Its README documents the traps, including the `working_format` vs
+`output_format` distinction that silently kills a depth lane.
+
+Remix seam: take the optics and the plan-authority-as-editor architecture. Do not take the
+specific cast of objects.
 
 ### Scientific Organism
 

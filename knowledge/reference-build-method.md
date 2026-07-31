@@ -54,10 +54,15 @@ Build the authority **first**, in signal-flow order. It is usually not the fun n
 
 ## 3. Generate, then override
 
-**A generative node that accepts interaction must produce a complete, good result
-procedurally, and let interaction override individual records on top of it.**
+**The plan authority is a direct-manipulation editor. This is the default, not an option.**
 
-This is the single highest-value pattern for interactive generative work.
+Build it that way unless the user has explicitly said they want a fixed non-interactive
+image. "The brief was a picture, not an editor" is **not** a reason to skip it — a plan you
+cannot click is a dead end the moment the user wants the composition changed, and changing
+the composition is the whole reason the plan authority exists.
+
+**It must produce a complete, good result procedurally, and let interaction override
+individual records on top of it.**
 
 - The node is useful and unbroken from the first frame, before anyone touches it.
 - Global parameters keep working after hand edits, because edits are deltas, not a
@@ -67,18 +72,74 @@ This is the single highest-value pattern for interactive generative work.
 - Persistence stays cheap and meaningful — only the deltas matter.
 
 The failure mode this replaces is the empty editor: a node that renders nothing until the
-user authors everything by hand, and whose global controls fight the hand edits.
+user authors everything by hand, and whose global controls fight the hand edits. The *other*
+failure mode — the one that is easier to ship by accident — is the **opaque plan**: a node
+that generates a good composition and then offers nothing but a seed and a variation slider.
+It looks finished and it is not.
+
+### When this applies
+
+Whenever the build has **an arrangement worth randomizing or exploring** — which is most
+reference work — it gets a plan authority, and that plan authority is manipulable. A plan
+whose entire interface is a seed and a variation slider is an **opaque plan**: it looks
+finished, and the first time anyone wants *that one element* moved, the system has nothing
+to offer.
+
+### The bar, not the template
+
+`projects/soft_vitrine/modules/VT_Plan` is the benchmark. Read it before authoring a new plan
+authority — not to clone its record layout or its keymap, but because it is the clearest
+example of the bar being cleared: every element reachable and changeable, exploration cheap,
+and a randomizer whose draws still read as compositions rather than scatter.
+
+**Design the verbs for the subject.** VT_Plan cycles kind and material because its cast is
+kinds and materials; a typographic plate might want to cycle weight and alignment, a
+lighting rig to cycle beam shape. Pick the two or three properties that actually define an
+element in *this* reference and make those the edits. Click-to-select and drag-to-move are
+close to universal; past that, invent what fits.
+
+What is **not** negotiable, because these are correctness properties rather than style:
+
+- **Persistent records.** A `state_buffers` set so edits survive cooks, saves, presets, undo.
+- **Signature-driven regeneration.** Structural parameters only (see below).
+- **Selection stored once.** Derive every "am I selected" test from that single value rather
+  than mirroring a flag onto records and keeping the two in sync.
+- **Pick in the same space you draw in.** If the preview and the hit test derive their
+  coordinates independently they will disagree, and it will look like a maths bug.
+  Smallest-hit-wins, so a small record resting on a large one stays reachable.
+- **A preview that shows editor state** — what is selected, what has been hand-edited, what
+  has been switched off.
+- **Randomness that still composes.** Stratify placement and preserve the size hierarchy so
+  a random seed reads as a composition. `variation = 0` should be exactly the transcribed
+  reference, so it can never be lost.
 
 Implementation shape:
 
 ```
-persistent buffer of resolved records
-  signature = hash(all structural parameters + algorithm version)
+persistent buffer of resolved records + one editor header record
+  signature = hash(all STRUCTURAL parameters + algorithm version + reseed salt)
   if (never initialised || signature changed) -> regenerate everything, clear selection
   else                                        -> keep the buffer, apply this frame's edits
+  then, every cook: refresh appearance-only fields in place (they must not force a rebuild)
 ```
 
-Regeneration must be signature-driven, not unconditional, or edits die every cook.
+Regeneration must be signature-driven, not unconditional, or edits die every cook. Keep
+pure-appearance parameters *out* of the signature and republish them each cook instead, or
+every colour tweak wipes the user's layout work.
+
+### Derived records follow their parent
+
+When one record's placement derives from another (chips on a plate, leaves on a branch),
+dragging the parent must carry the unedited children with it, while children the user has
+hand-moved keep their own position. That is what the per-record `edited` flag is for.
+
+### You will not be able to machine-prove the gestures — build them anyway
+
+Injected input does not reach Module viewport events, so click/drag/key paths generally
+cannot be verified over MCP. **This is a reporting obligation, not a reason to omit the
+feature.** Build the full gesture set, verify everything reachable (buffer persistence,
+signature behaviour, pick maths against known record coordinates, the preview's selection
+readout), then say plainly which gestures the user needs to exercise by hand.
 
 ---
 
