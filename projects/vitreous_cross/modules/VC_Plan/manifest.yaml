@@ -1,0 +1,136 @@
+name: "VC Plan"
+version: "0.1"
+mode: generator
+resolution: [1200, 800]
+
+# The plan authority for vitreous_cross. Owns STAGE SPACE (see _shared/vitreous.hlsli) and is
+# the only node that decides where anything sits, how big it is, or what material it wears.
+# Publishes one Plan record buffer consumed by VC_Env and VC_Render.
+#
+# 3:2 generator resolution on purpose: stage space, this canvas's uv and normalized viewport
+# pointer coordinates then map through ONE shared conversion, so draw and pick cannot drift.
+
+buffers:
+  - { name: plan, structured: true, element_size: 64, element_count: 48, persistent: true }
+
+state_buffers:
+  - name: plan
+    max_elements: 48
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: mat,    type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+
+viewport:
+  hint: "Click select · drag move · M material · G/H bigger/smaller · A/Z nearer/deeper · X on/off · N re-roll · R reseed · C clear"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [m, g, h, a, z, x, n, r, c]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select element" }
+    - { gesture: left_drag, action: move, label: "Move element" }
+    - { key: m, action: cycle_material, label: "Cycle material" }
+    - { key: g, action: grow, label: "Bigger" }
+    - { key: h, action: shrink, label: "Smaller" }
+    - { key: a, action: pull_near, label: "Pull nearer" }
+    - { key: z, action: push_deep, label: "Push deeper" }
+    - { key: x, action: toggle_active, label: "Toggle on/off" }
+    - { key: n, action: reroll, label: "Re-roll element" }
+    - { key: r, action: reseed, label: "Reseed layout" }
+    - { key: c, action: clear_selection, label: "Clear selection" }
+
+parameters:
+  # EXPLORATION AXIS: how the glass volumes are arranged. Structural, so it ships as a
+  # permanent enum rather than a throwaway variant. Swept, judged, winner baked.
+  - name: arrangement
+    display: "Arrangement"
+    type: enum
+    options: [Cross, Pinwheel, Colonnade, Cascade]
+    default: 0
+    flags: button_grid
+    group: "Layout"
+
+  # ARRANGEMENT RANDOMISER. `variation` blends the transcribed reference (0) into a free draw
+  # from the same vocabulary (1): positions, extents and materials all re-roll, while the
+  # PROPORTION hierarchy — long bars, tall columns, compact blocks — is preserved, so a random
+  # seed still reads as a composition. The reference look is exactly variation = 0.
+  - { name: variation,    display: "Variation",     type: float, min: 0.0, max: 1.0,   default: 0.000000,  group: "Layout" }
+  - { name: seed,         display: "Seed",          type: float, min: 0.0, max: 512.0, default: 7.000000,  group: "Layout" }
+  - { name: spread,       display: "Spread",        type: float, min: 0.5, max: 1.5,   default: 1.000000,  group: "Layout" }
+  - { name: scale_master, display: "Element Scale", type: float, min: 0.5, max: 1.6,   default: 1.000000,  group: "Layout" }
+  - { name: depth_spread, display: "Depth Spread",  type: float, min: 0.0, max: 2.5,   default: 1.000000,  group: "Layout" }
+  - { name: jitter,       display: "Jitter",        type: float, min: 0.0, max: 0.20,  default: 0.000000,  group: "Layout" }
+
+  - { name: slab_count,      display: "Glass Volumes", type: int, min: 0, max: 12, default: 9,  group: "Cast" }
+  - { name: inclusion_count, display: "Inclusions",    type: int, min: 0, max: 24, default: 24, group: "Cast" }
+  - { name: panel_count,     display: "Panels",        type: int, min: 0, max: 10, default: 8,  group: "Cast" }
+
+  # EXPLORATION AXIS: where the organic mass lives relative to the glass. Structural — it
+  # changes which volumes the light has to travel through, so the whole image reorganises.
+  - name: inclusion_form
+    display: "Inclusion Form"
+    type: enum
+    options: [Cluster, Spill, Column, Scatter]
+    default: 0
+    flags: button_grid
+    group: "Inclusions"
+  - { name: inclusion_scale,  display: "Mass Scale",  type: float, min: 0.3, max: 2.0,  default: 1.000000,  group: "Inclusions" }
+  - { name: inclusion_fuse,   display: "Fusion",      type: float, min: 0.01, max: 0.5, default: 0.085, group: "Inclusions" }
+  - { name: inclusion_wobble, display: "Surface Wobble", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Inclusions" }
+  - { name: fluid_mix,        display: "Dense Pockets", type: float, min: 0.0, max: 1.0, default: 0.22,  group: "Inclusions" }
+
+  # Appearance. Deliberately OUT of the regeneration signature: republished onto whatever
+  # records exist each cook, so a colour tweak never wipes a hand-arranged layout.
+  - { name: glass_clarity,  display: "Glass Clarity",  type: float, min: 0.0, max: 1.6, default: 1.000000,  group: "Material" }
+  - { name: amber_tint,     display: "Amber",          type: color, default: [1.000000, 0.55, 0.22],        group: "Material" }
+  - { name: smoke_density,  display: "Smoke Density",  type: float, min: 0.0, max: 2.0, default: 0.55, group: "Material" }
+  - { name: copper_tint,    display: "Copper Plate",   type: color, default: [1.000000, 0.48, 0.2],        group: "Material" }
+  - { name: plate_value,    display: "Plate Value",    type: float, min: 0.3, max: 1.4, default: 1.000000,  group: "Material" }
+  - { name: edge_bevel,     display: "Edge Bevel",     type: float, min: 0.0, max: 0.05, default: 0.006, group: "Material" }
+
+  # The assembly's global orientation is a PLACEMENT decision, so it lives here and not in the
+  # renderer: it decides which faces of the boxes the picture shows.
+  - { name: assembly_yaw,    display: "Assembly Yaw",   type: float, min: -0.6, max: 0.6, default: 0.1, group: "Stage" }
+  - { name: assembly_pitch,  display: "Assembly Pitch", type: float, min: -0.4, max: 0.4, default: 0.05, group: "Stage" }
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:plan"
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+
+data_outputs:
+  - name: "Plan"
+    buffer: "plan"
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: mat,    type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+
+outputs:
+  # named distinctly from the "Plan" DATA output so a link never has to disambiguate by slot
+  - { name: "Plan View", pass: canvas }

@@ -11,6 +11,7 @@
 //     visible instead of silent.
 
 #include "../_shared/relic.hlsli"
+#include "../_shared/plan_theme.hlsli"
 
 StructuredBuffer<CastRec> Cast : register(t0);
 RWTexture2D<float4> OutputUAV : register(u0);
@@ -36,7 +37,7 @@ float dRect(float2 p, float2 c, float2 h)
     return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
 }
 
-float3 roleColor(float role)
+float3 roleColorRaw(float role)
 {
     if (role == ROLE_TORUS)  return float3(1.00, 0.60, 0.24);
     if (role == ROLE_GLYPH)  return float3(0.34, 0.84, 1.00);
@@ -48,6 +49,11 @@ float3 roleColor(float role)
     if (role == ROLE_POST)   return float3(0.42, 0.92, 0.52);
     return float3(0.55, 0.55, 0.55);
 }
+
+// Role/material identity IS information, so its hue survives — but damped to instrument level.
+// At full strength a saturated cast makes the schematic louder than the render it exists to
+// explain, and drowns the reserved accent.
+float3 roleColor(float role) { return ptSampleFill(roleColorRaw(role)); }
 
 // Nearer records read brighter, so the elevation carries depth without the inset.
 float depthKey(float z) { return 0.42 + 0.58 * saturate((z + 2.0) / 3.6); }
@@ -74,20 +80,20 @@ void main(uint3 DTid : SV_DispatchThreadID)
     int     sel = (int)ed.pos.y - 1;          // -1 = nothing selected
 
     // ---- field -------------------------------------------------------------
-    float3 col = float3(0.055, 0.058, 0.068) * (1.0 - 0.35 * uv.y);
+    float3 col = PT_FIELD * (1.0 - 0.35 * uv.y);
 
     // 1/8 graticule, so displacements are readable as quantities
     float2 g8 = abs(frac(float2(uv.x, uv.y) * 8.0) - 0.5) / 8.0;
     float  gl = min(g8.x * PR_AR, g8.y);
-    over(col, float3(0.10, 0.11, 0.13), (1.0 - smoothstep(0.0, 0.0012, gl)) * 0.55);
+    over(col, PT_GRID, (1.0 - smoothstep(0.0, 0.0012, gl)) * 0.55);
 
     // ground line — where world y = 0 actually lands at the hero's depth
     float horizonQ = toQ(float3(0.0, 0.0, 0.0)).y;
-    over(col, float3(0.30, 0.33, 0.40), (1.0 - smoothstep(lw, lw + aa, abs(q.y - horizonQ))) * 0.85);
+    over(col, PT_RULE, (1.0 - smoothstep(lw, lw + aa, abs(q.y - horizonQ))) * 0.85);
 
     // frame border
     float border = min(min(q.x, PR_AR - q.x), min(q.y, 1.0 - q.y));
-    over(col, float3(0.22, 0.24, 0.30), 1.0 - smoothstep(0.004, 0.006, border));
+    over(col, PT_RULE, 1.0 - smoothstep(0.004, 0.006, border));
 
     // ---- elevation: boxes, spheres, chips, membrane -------------------------
     [loop] for (uint i = 0u; i < (uint)CAST_COUNT; i++)
@@ -167,13 +173,13 @@ void main(uint3 DTid : SV_DispatchThreadID)
         // A hand-edited record gets a small solid tick at its top-right, so at a glance you
         // can see which of the composition is procedural and which you placed yourself.
         if (edited)
-            over(col, float3(1.00, 0.82, 0.30),
+            over(col, PT_MID,
                  1.0 - smoothstep(0.0, aa, dRect(q, c + hbox + 0.010, float2(0.0035, 0.0035))));
 
         if ((int)i == sel)
         {
             float db2 = abs(dRect(q, c, hbox + 0.014));
-            over(col, float3(1.0, 1.0, 1.0), (1.0 - smoothstep(lw, lw + aa, db2)) * 0.95);
+            over(col, PT_ACCENT, (1.0 - smoothstep(lw, lw + aa, db2)) * 0.95);
         }
     }
 
@@ -208,7 +214,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         if ((int)((pass2 == 0u) ? SLOT_TORUS : SLOT_RING) == sel)
         {
             float rq = qHalf(r.radius + r.dims.x, r.pos.z) + 0.014;
-            over(col, float3(1.0, 1.0, 1.0),
+            over(col, PT_ACCENT,
                  (1.0 - smoothstep(lw, lw + aa, abs(dRect(q, toQ(r.pos), rq.xx)))) * 0.95);
         }
 
@@ -218,7 +224,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
             float3 axis = pr_qrot(r.rot, float3(0, 1, 0));
             float2 a2   = toQ(r.pos);
             float2 b2   = toQ(r.pos + axis * r.radius * 0.85);
-            over(col, float3(1.0, 0.85, 0.45), (1.0 - smoothstep(lw, lw + aa, dSeg(q, a2, b2))) * 0.9);
+            over(col, PT_MID, (1.0 - smoothstep(lw, lw + aa, dSeg(q, a2, b2))) * 0.9);
         }
     }
 
@@ -231,14 +237,14 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float  dIn    = dRect(q, ic, stripH);
     if (dIn < 0.0)
     {
-        over(col, float3(0.028, 0.031, 0.038), 0.94);
+        over(col, PT_FIELD, 0.94);
 
         float2 t = (q - (ic - stripH)) / (stripH * 2.0);
 
         // z = 0 plane, and the optical axis at x = 0
-        over(col, float3(0.20, 0.22, 0.28),
+        over(col, PT_RULE,
              (1.0 - smoothstep(0.0, 0.0018, abs(t.y - (0.0 + 2.2) / 4.0) * stripH.y * 2.0)) * 0.9);
-        over(col, float3(0.18, 0.20, 0.26),
+        over(col, PT_RULE,
              (1.0 - smoothstep(0.0, 0.0018, abs(t.x - 0.5) * stripH.x * 2.0)) * 0.6);
 
         [loop] for (uint j = 0u; j < (uint)CAST_COUNT; j++)
@@ -256,10 +262,10 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
         // the camera sits at z = +12, far past the plotted range: mark the near edge
         float camY = (ic - stripH).y + 1.0 * stripH.y * 2.0;
-        over(col, float3(0.95, 0.75, 0.30),
+        over(col, PT_MID,
              (1.0 - smoothstep(0.0016, 0.0030, abs(q.y - camY + 0.004))) * 0.8);
     }
-    over(col, float3(0.26, 0.29, 0.36), 1.0 - smoothstep(lw, lw + aa, abs(dIn)));
+    over(col, PT_RULE, 1.0 - smoothstep(lw, lw + aa, abs(dIn)));
 
     // ---- role tallies -------------------------------------------------------
     // One tick per ACTIVE record, grouped by role. A gem loop that silently drops emits
@@ -295,7 +301,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         {
             float2 bp = float2(0.020 + (float)s2 * 0.014, 0.026 + (float)ax * 0.016);
             float  on = (abs(v - (float)s2) < 0.5) ? 1.0 : 0.18;
-            over(col, float3(0.85, 0.88, 0.95) * on,
+            over(col, PT_MID * on,
                  1.0 - smoothstep(0.0, aa, dRect(q, bp, float2(0.005, 0.0035))));
         }
     }

@@ -1,0 +1,99 @@
+name: "RS Shaft"
+version: "0.1"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+output_format: RGBA16F
+features: [camera]
+
+# Ray-marches the shaft RS_Plan authored. It owns Sentinel's internal camera; the canonical pose
+# sits inside the tube at the origin looking down +z, which is where the geometry is built to be
+# seen from. Flying it is an intentional creative move, not a mistake — the plan's clearance
+# section tells you the moment the eye leaves the clear bore.
+#
+# output_format is declared explicitly: without it the node publishes RGBA8, the emitters clip
+# flat before RS_Lens ever sees them, and the linear depth in alpha is destroyed.
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed"
+  interactions: [camera]
+
+data_inputs:
+  - name: "Shaft"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+parameters:
+  # How far ahead the cut sits. This is the dream-logic distance: you fly forever and the core
+  # never arrives, because the hole travels with you.
+  - { name: core_z,        display: "Core Distance",  type: float, min: 8.0, max: 60.0, default: 20.000000, group: "Shaft" }
+  - { name: rail_amount,   display: "Conduit Rails",  type: float, min: 0.0, max: 2.0,  default: 1.000000,  group: "Shaft" }
+
+  - { name: panel_edge,    display: "Panel Edges",    type: float, min: 0.0, max: 2.0,  default: 1.000000,  group: "Surface" }
+  # Wall micro-relief. Records own the readable structure; this owns the DENSITY — the hundreds
+  # of small units the reference's walls are actually made of, without a record per rivet.
+  - { name: relief_amount, display: "Wall Relief",    type: float, min: 0.0, max: 2.0,  default: 1.000000,  group: "Surface" }
+  # Relief LOD, in world units. Sub-pixel geometry boils; these two say where it stops existing.
+  - { name: relief_near,   display: "Relief Hold",    type: float, min: 0.5, max: 24.0, default: 6.000000,  group: "Surface" }
+  - { name: relief_fade,   display: "Relief Fade",    type: float, min: 1.0, max: 40.0, default: 15.000000, group: "Surface" }
+  - { name: telltale_gain, display: "Telltales",      type: float, min: 0.0, max: 6.0,  default: 1.2,  group: "Surface" }
+  - { name: emitter_gain,  display: "Emitter Gain",   type: float, min: 0.0, max: 12.0, default: 4.000000,  group: "Surface" }
+
+  # LIGHT. The core is a POSITION just past the cut, so light arrives ALONG the shaft: bright
+  # throat, foreground falling into shadow. Walls run nearly parallel to it, so they are lit
+  # through a wrapped term rather than a plain lambert that would black them out.
+  - { name: key_gain,   display: "Core Key",     type: float, min: 0.0, max: 6.0,  default: 3.000000,  group: "Light" }
+  - { name: neon_gain,  display: "Neon Fill",    type: float, min: 0.0, max: 6.0,  default: 1.8,  group: "Light" }
+  - { name: neon_reach, display: "Neon Reach",   type: float, min: 0.5, max: 12.0, default: 6.5,  group: "Light" }
+  - { name: ambient,    display: "Ambient",      type: float, min: 0.0, max: 4.0,  default: 0.24, group: "Light" }
+  - { name: rim_gain,   display: "Cold Rim",     type: float, min: 0.0, max: 2.0,  default: 0.42, group: "Light" }
+  - { name: spec_gain,  display: "Specular",     type: float, min: 0.0, max: 4.0,  default: 0.55, group: "Light" }
+  - { name: ao_amt,     display: "Occlusion",    type: float, min: 0.0, max: 1.0,  default: 0.88, group: "Light" }
+  - { name: ao_reach,   display: "Occlusion Reach", type: float, min: 0.2, max: 3.0, default: 1.000000, group: "Light" }
+  - { name: exposure,   display: "Exposure",     type: float, min: 0.1, max: 4.0,  default: 0.75,  group: "Light" }
+
+  # VOLUME. The reference is at least half atmosphere — teal near, magenta at the core, and a
+  # bloom of colour in the air around every tube.
+  - { name: fog_density, display: "Haze",        type: float, min: 0.0, max: 0.35, default: 0.045, group: "Volume" }
+  - { name: core_wash,   display: "Core Wash",   type: float, min: 0.0, max: 3.0,  default: 0.8,  group: "Volume" }
+  - { name: glow_gain,   display: "Neon Glow",   type: float, min: 0.0, max: 3.0,  default: 0.45,  group: "Volume" }
+
+  # QUALITY LADDER. The manifest default is a rung you can comfortably WORK in, never the top
+  # one; the top rung is capture-only. See the project README for measured ratios.
+  - { name: aa_samples,   display: "Rays Per Axis",  type: int,   min: 1, max: 3,      default: 2,      group: "Quality" }
+  - { name: march_steps,  display: "March Steps",    type: int,   min: 24, max: 320,   default: 120,    group: "Quality" }
+  - { name: volume_steps, display: "Volume Steps",   type: int,   min: 2, max: 64,     default: 18,     group: "Quality" }
+  - { name: detail_amount, display: "Cut Detail",    type: float, min: 0.0, max: 1.0,  default: 1.000000,    group: "Quality" }
+  - { name: surface_eps,  display: "Surface Epsilon", type: float, min: 0.0002, max: 0.02, default: 0.0022, group: "Quality" }
+  # The section is swept along a drifting, twisting centreline, so the field gradient exceeds 1
+  # wherever the shaft bends. Push Axis Drift or Twist hard on RS_Plan and this is the control
+  # that pays for it.
+  - { name: step_scale,   display: "Step Scale",     type: float, min: 0.3, max: 1.0, default: 0.76,   group: "Quality" }
+  - { name: normal_eps,   display: "Normal Epsilon", type: float, min: 0.0005, max: 0.03, default: 0.003, group: "Quality" }
+  - name: view_mode
+    display: "View"
+    type: enum
+    options: [Beauty, Material, Steps, Normals, Depth]
+    default: 0
+    flags: button_grid
+    group: "Quality"
+
+passes:
+  - name: march
+    shader: march.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - { name: "Shaft", pass: march }

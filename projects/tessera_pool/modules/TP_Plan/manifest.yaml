@@ -1,0 +1,153 @@
+name: "TP Plan"
+version: "0.1"
+mode: generator
+resolution: [1200, 800]
+
+# The plan authority for tessera_pool. It owns the tank, the lining, the palette, the light
+# and every ripple source, and it is the ONLY node that decides any of them. TP_Sim,
+# TP_Caustics and TP_Render all derive from these records.
+#
+# 3:2 canvas on purpose: the plan strip, the section strip and normalized viewport pointer
+# coordinates all pass through the one conversion in layout.hlsli, so what you click is what
+# you see.
+
+buffers:
+  - { name: plan, structured: true, element_size: 80, element_count: 32, persistent: true }
+
+state_buffers:
+  - name: plan
+    max_elements: 32
+    schema: &planschema
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: p2,     type: float }
+      - { name: p3,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: pad0,   type: float }
+      - { name: pad1,   type: float }
+
+viewport:
+  hint: "Click select · drag move · M kind · G/H stronger/weaker · A/Z wavelength · X on/off · N re-roll · R reseed · P palette · C clear"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [m, g, h, a, z, x, n, r, p, c]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select source" }
+    - { gesture: left_drag, action: move, label: "Move source" }
+    - { key: m, action: cycle_kind, label: "Cycle kind" }
+    - { key: g, action: stronger, label: "Stronger" }
+    - { key: h, action: weaker, label: "Weaker" }
+    - { key: a, action: longer, label: "Longer wave" }
+    - { key: z, action: shorter, label: "Shorter wave" }
+    - { key: x, action: toggle_active, label: "Toggle on/off" }
+    - { key: n, action: reroll, label: "Re-roll source" }
+    - { key: r, action: reseed, label: "Reseed layout" }
+    - { key: p, action: reroll_palette, label: "Re-roll palette" }
+    - { key: c, action: clear_selection, label: "Clear selection" }
+
+parameters:
+  # EXPLORATION AXIS 1 — how the surface is driven. Structural: it changes what the water is
+  # doing, not how it looks. Swept, judged, winner baked, losers repaired and kept.
+  - name: arrangement
+    display: "Arrangement"
+    type: enum
+    options: [Single Drop, Rain, Corner Swell, Lattice]
+    default: 0
+    flags: button_grid
+    group: "Layout"
+
+  # variation = 0 is EXACTLY the transcribed reference and can never be lost. Above 0 the
+  # positions, amplitudes and wavelengths lerp toward a stratified free draw, under guarantees
+  # that keep every seed presentable: margin, separation, preserved amplitude hierarchy, a
+  # centroid fit, and a total-energy normalisation that no draw can escape.
+  - { name: variation,    display: "Variation",    type: float, min: 0.0, max: 1.0,   default: 0.0,  group: "Layout" }
+  - { name: seed,         display: "Seed",         type: float, min: 0.0, max: 512.0, default: 11.0, group: "Layout" }
+  - { name: source_count, display: "Sources",      type: int,   min: 1,   max: 16,    default: 4,    group: "Layout" }
+  - { name: spread,       display: "Spread",       type: float, min: 0.4, max: 1.4,   default: 1.0,  group: "Layout" }
+
+  # EXPLORATION AXIS 2 — the vessel's proportions. Structural: it re-frames the whole image and
+  # changes how much water the light has to cross.
+  - name: basin
+    display: "Basin"
+    type: enum
+    options: [Square, Wide, Deep Well, Shallow Pan]
+    default: 0
+    flags: button_grid
+    group: "Basin"
+  - { name: basin_scale, display: "Basin Scale",  type: float, min: 0.6,  max: 1.6,  default: 1.0,   group: "Basin" }
+  - { name: water_depth, display: "Water Depth",  type: float, min: 0.25, max: 2.4,  default: 1.10,  group: "Basin" }
+  - { name: freeboard,   display: "Freeboard",    type: float, min: 0.02, max: 0.60, default: 0.15,  group: "Basin" }
+  - { name: glass_thick, display: "Glass",        type: float, min: 0.008, max: 0.14, default: 0.045, group: "Basin" }
+
+  # EXPLORATION AXIS 3 — the lining. Structural for the image even though it is only surface:
+  # the tile grid is the ruler the refraction is measured against, so its pattern changes how
+  # legible every ripple is.
+  - name: tiling
+    display: "Lining"
+    type: enum
+    options: [Mosaic, Running Bond, Penny Round, Banded]
+    default: 0
+    flags: button_grid
+    group: "Lining"
+  - { name: tile_pitch,    display: "Tile Pitch",   type: float, min: 0.025, max: 0.30, default: 0.085, group: "Lining" }
+  - { name: grout_width,   display: "Grout",        type: float, min: 0.0,   max: 0.45, default: 0.15,  group: "Lining" }
+  - { name: tile_variance, display: "Tile Variance", type: float, min: 0.0,  max: 1.0,  default: 0.55,  group: "Lining" }
+  - { name: tile_gloss,    display: "Tile Gloss",   type: float, min: 0.0,   max: 2.0,  default: 0.85,  group: "Lining" }
+  - { name: tile_seed,     display: "Tile Seed",    type: float, min: 0.0,   max: 512.0, default: 3.0,  group: "Lining" }
+  - { name: grout_color,   display: "Grout Colour", type: color, default: [0.085, 0.135, 0.165],        group: "Lining" }
+
+  # The mosaic palette, read off the reference sheet: deep ultramarine through cerulean and
+  # teal to a pale aqua, with one green and one near-white for the sparkle.
+  - { name: pal_a, display: "Swatch A", type: color, default: [0.055, 0.180, 0.470], group: "Palette" }
+  - { name: pal_b, display: "Swatch B", type: color, default: [0.090, 0.400, 0.680], group: "Palette" }
+  - { name: pal_c, display: "Swatch C", type: color, default: [0.110, 0.620, 0.640], group: "Palette" }
+  - { name: pal_d, display: "Swatch D", type: color, default: [0.420, 0.800, 0.760], group: "Palette" }
+  - { name: pal_e, display: "Swatch E", type: color, default: [0.180, 0.560, 0.360], group: "Palette" }
+  - { name: pal_f, display: "Swatch F", type: color, default: [0.760, 0.880, 0.820], group: "Palette" }
+
+  # One owner for the light. TP_Caustics refracts this direction and TP_Render shades with it;
+  # neither has a second copy to drift out of sync.
+  - { name: sun_azimuth,   display: "Sun Azimuth",   type: float, min: 0.0, max: 360.0, default: 128.0, group: "Light" }
+  - { name: sun_elev,      display: "Sun Elevation", type: float, min: 5.0, max: 89.0,  default: 68.0,  group: "Light" }
+  - { name: sun_color,     display: "Sun Colour",    type: color, default: [1.0, 0.972, 0.915],         group: "Light" }
+  - { name: sun_intensity, display: "Sun",           type: float, min: 0.0, max: 6.0,   default: 1.85,  group: "Light" }
+  - { name: sky_level,     display: "Sky",           type: float, min: 0.0, max: 3.0,   default: 0.42,  group: "Light" }
+  - { name: caustic_gain,  display: "Caustic Gain",  type: float, min: 0.0, max: 6.0,   default: 1.60,  group: "Light" }
+  - { name: spec_power,    display: "Glint Tightness", type: float, min: 8.0, max: 900.0, default: 240.0, group: "Light" }
+
+  # LIVE STATE, not a control. Driven by expression from TP_Sim's wave_peak control output so
+  # the section strip draws the wave envelope that is actually in the tank. Left at 0 the plan
+  # says it has no measurement rather than inventing one.
+  - { name: sim_peak, display: "Measured Peak", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Live" }
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:plan"
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+
+data_outputs:
+  - name: "Plan"
+    buffer: "plan"
+    schema: *planschema
+
+outputs:
+  # named distinctly from the "Plan" DATA output so a link never has to disambiguate by slot
+  - { name: "Plan View", pass: canvas }

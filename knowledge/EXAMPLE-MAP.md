@@ -10,6 +10,7 @@ for an explicit fork or remix. See `example-authoring.md`.
 | Project | Saved graphs | Live/AI dependencies | Core route | Reviewed output | Study it for |
 | --- | ---: | --- | --- | --- | --- |
 | `autopsia` | 1 | Features | authored specimen → proxy → Features → stabilizer → relief/census → grade | `au_grade` | closed analysis loops, stable identities, data-driven annotation |
+| `axon_press` | 1 | none | plan authority → press renderer → screen-fixed ink surface | `AX_Ink` | endless axonometric fall, fractal plate collage, print-finish post |
 | `camera_reference` | 1 | none | camera-capable grid renderer | `Native_Camera_Reference` | the native internal camera contract |
 | `cloth_lab` | 1 | Audio In | loopback audio → band analysis → XPBD cloth | `cloth_engine` | audio data ports, simulation, grabbing, tearing |
 | `face_collage` | 1 | MediaPipe, StreamDiff, Background Removal | face tracking/guide → StreamDiff → accumulation/cutout/composite/post | Group Output | tracking-conditioned generative collage |
@@ -18,12 +19,16 @@ for an explicit fork or remix. See `example-authoring.md`.
 | `living_room_sdf` | 1 | none | architecture/furnishings/material/light records → SDF renderer → grade | `LR_Cinematic_Grade` | modular 3D construction and spatial editing |
 | `matik_plate` | 1 | none | interactive plan authority → organisms + instruments + circuitry → composite → post | `MX_Post` | plan authority, generate-then-override editing, hybrid record contract |
 | `prism_reliquary` | 1 | none | plan authority/editor → studio env → SDF renderer → filmic post | `PR_Post` | filmic rendering: thin-film refraction, bokeh depth of field, HDR bloom, layered antialiasing |
+| `reactor_shaft` | 1 | none | plan authority/editor → shaft renderer → lens finish | `RS_Lens` | endless machine-shaft zoom, role-discriminated record cast, emissive machinery |
 | `scientific_organism` | 1 | Features | biotic source → proxy/Features → temporal/topology/memory layers → renderer/grade | Group Output | a large, inspectable analysis-to-render system |
 | `soft_vitrine` | 1 | none | plan authority → stage/growth → volumes + strokes + plates → composite → post | `VT_Post` | hybrid 2D/3D record contracts, coverage lanes, seeded arrangement randomization |
 | `strata` | 1 | Features | background/plates/layout/marks → feature-reactive renderers → composite/post | `post_1` | modular 2D composition and proxy analysis |
 | `streamdiff_canvas` | 1 | StreamDiff, Depth, Background Removal | paint/pattern fields → depth controls → StreamDiff → cutout | `Collage_Cutout` | direct manipulation of generative conditioning |
 | `streamdiff_workflows` | 6 | StreamDiff; Depth and Background Removal in study 05 | one focused routing pattern per graph | named StreamDiff/Mux/composite preview | small, isolated StreamDiff techniques |
+| `sunward_corridor` | 1 | none | plan authority/editor → corridor renderer → grid finish | `SC_Grid` | endless periodic zoom, one record contract for architecture and organic masses |
+| `tessera_pool` | 1 | none | plan → wave sim → caustics → refraction render → post | `TP_Post` | interactive water simulation, photon caustics, control-output feedback without graph cycles |
 | `touchdesigner_new_project` | 1 | image asset only | Hermite signal → texture → image displacement → geometry → output | `Out` | typed signal-to-texture modulation |
+| `vitreous_cross` | 1 | none | plan authority/editor → studio env → SDF renderer → filmic post | `VC_Post` | ray-marched glass with real air-cavity lenses, HDR studio lighting, interior plates |
 
 ## Dependency and portability notes
 

@@ -1,0 +1,124 @@
+name: "SC Plan"
+version: "0.1"
+mode: generator
+resolution: [1024, 576]
+
+# The plan authority for sunward_corridor. Owns CORRIDOR SPACE and is the only node that
+# decides where a wall, a mass or the sun sits — and the only node that integrates travel.
+# Publishes one record buffer consumed by SC_Corridor.
+#
+# Wide canvas on purpose: the diagram is a plan over an elevation sharing one z axis, which is
+# how a corridor is actually drawn. All maths is normalized uv, so the canvas, the pick test
+# and the normalized viewport pointer are the same numbers and cannot drift apart.
+
+buffers:
+  - { name: plan, structured: true, element_size: 48, element_count: 24, persistent: true }
+
+state_buffers:
+  - name: plan
+    max_elements: 24
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+viewport:
+  hint: "Click select · drag move (plan strip = lateral, elevation strip = rise) · Q/E narrow/widen · K kind · X on/off · N re-roll · R reseed · C clear"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [k, q, e, x, n, r, c]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select station / mass / sun" }
+    - { gesture: left_drag, action: move, label: "Move (axis follows the strip)" }
+    - { key: q, action: narrow, label: "Narrow / shrink" }
+    - { key: e, action: widen, label: "Widen / grow" }
+    - { key: k, action: cycle_kind, label: "Cycle palette / mass kind" }
+    - { key: x, action: toggle_active, label: "Straighten / toggle off" }
+    - { key: n, action: reroll, label: "Re-roll record" }
+    - { key: r, action: reseed, label: "Reseed corridor" }
+    - { key: c, action: clear_selection, label: "Clear selection" }
+
+parameters:
+  # ARRANGEMENT RANDOMIZER.
+  # `variation` blends the transcribed reference corridor (0) into a free draw from the same
+  # vocabulary (1): station offsets, aperture, roll, checker cadence, palette zoning and mass
+  # placement all re-roll, while the aperture RHYTHM and the mass size hierarchy are preserved
+  # so a random seed still reads as a corridor. The reference is exactly variation = 0, so it
+  # can never be lost.
+  - { name: variation,   display: "Variation",     type: float, min: 0.0, max: 1.0,   default: 0.000000, group: "Corridor" }
+  - { name: seed,        display: "Seed",          type: float, min: 0.0, max: 512.0, default: 7.000000, group: "Corridor" }
+  - { name: bend,        display: "Bend",          type: float, min: 0.0, max: 2.2,   default: 0.28, group: "Corridor" }
+  - { name: flare,       display: "Pinch / Flare", type: float, min: 0.0, max: 2.5,   default: 0.55, group: "Corridor" }
+  - { name: aperture,    display: "Aperture",      type: float, min: 0.45, max: 2.0,  default: 1.000000, group: "Corridor" }
+  # The eye rides HIGH in the tunnel, which is what puts a broad floor and no ceiling in frame.
+  # It is a placement decision, so it lives with the plan rather than on the camera.
+  - { name: eye_height,  display: "Eye Height",    type: float, min: -1.2, max: 1.2,  default: -0.52, group: "Corridor" }
+  - { name: bay_count,   display: "Live Stations", type: int,   min: 0, max: 12,      default: 12,  group: "Corridor" }
+
+  - name: palette_set
+    display: "Palette"
+    type: enum
+    options: [Sunset Deck, Ember, Sherbet, Ink, Chalk]
+    default: 0
+    flags: button_grid
+    group: "Surface"
+  - { name: accent,      display: "Accent Cells",  type: float, min: 0.0, max: 0.7,  default: 0.2, group: "Surface" }
+
+  - { name: mass_count,  display: "Organic Masses", type: int,  min: 0, max: 10,     default: 10,  group: "Masses" }
+  - { name: mass_scale,  display: "Mass Scale",     type: float, min: 0.2, max: 2.2, default: 1.000000, group: "Masses" }
+
+  # Sun geometry. Appearance-only: refreshed every cook and kept OUT of the signature, so
+  # tuning the disc never wipes a corridor the user dragged into place.
+  - { name: sun_x,       display: "Sun X",        type: float, min: -1.2, max: 1.2,  default: 0.000000,  group: "Sun" }
+  - { name: sun_y,       display: "Sun Y",        type: float, min: -1.0, max: 1.2,  default: 0.05, group: "Sun" }
+  - { name: sun_radius,  display: "Sun Radius",   type: float, min: 0.06, max: 1.40, default: 0.72, group: "Sun" }
+  - { name: horizon,     display: "Horizon",      type: float, min: -1.0, max: 1.0,  default: -0.3, group: "Sun" }
+  - { name: stripe_count, display: "Sea Stripes", type: int,   min: 3, max: 48,      default: 11,   group: "Sun" }
+
+  # FLIGHT. travel integrates against _DeltaTime inside plan.hlsl and wraps at the loop period,
+  # so the flight is endless and the seam is bit-exact. `phase` rides on top as the sweepable
+  # loop coordinate: 0 -> 1 is exactly one period, which is what makes motion proof deterministic.
+  - { name: flight_speed, display: "Flight Speed", type: float, min: 0.0, max: 14.0, default: 3.2, group: "Flight" }
+  - { name: phase,        display: "Phase",        type: float, min: 0.0, max: 1.0,  default: 0.000000, group: "Flight" }
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:plan"
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+
+data_outputs:
+  - name: "Plan"
+    buffer: "plan"
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+outputs:
+  # named distinctly from the "Plan" DATA output so a link never has to disambiguate by slot
+  - { name: "Plan View", pass: canvas }

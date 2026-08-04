@@ -4,6 +4,7 @@ This folder is the shipped agent reference for Sentinel. Start here when a user 
 
 Reusable existing-state creative continuation prompts and the hybrid workflow vocabulary live in `knowledge/creative-exploration-goals.md`.
 The mandatory internal-camera default for authored 3D, including the narrow external-camera exception and proof contract, lives in `knowledge/internal-camera-template.md`.
+For unstable GPU feedback, exact ABAB flicker, runaway driven fields, and persistent-state corruption, use `knowledge/feedback-simulation-troubleshooting.md`.
 
 ## Discover The Current Build
 

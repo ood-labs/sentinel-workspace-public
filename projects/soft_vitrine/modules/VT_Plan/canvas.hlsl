@@ -6,34 +6,41 @@
 // image — 1:1 with stage space so pick and drag cannot drift from what is drawn.
 #include "../_shared/vitrine.hlsli"
 #include "../_shared/microfont.hlsli"
+#include "../_shared/plan_theme.hlsli"
 
 StructuredBuffer<PlanRec> Plan : register(t0);
 RWTexture2D<float4> OutputUAV : register(u0);
 
 static const float3 ROLE_TINT[4] = {
-    float3(0.55, 0.72, 0.88),   // plate  — cool slate
-    float3(0.98, 0.72, 0.28),   // stroke — amber
-    float3(0.96, 0.34, 0.62),   // mass   — magenta
-    float3(0.60, 0.60, 0.60)    // header
+    PT_ID_A,   // plate
+    PT_ID_C,   // stroke  (not PT_ACCENT: role identity must not impersonate selection)
+    PT_ID_B,   // mass
+    PT_DIM     // header
 };
 
 // material marker: a small badge shape drawn beside each mass
 static const float3 MAT_TINT[4] = {
-    float3(0.92, 0.46, 0.30),   // clay
-    float3(0.85, 0.90, 1.00),   // chrome
-    float3(0.72, 0.78, 0.98),   // frost
-    float3(0.55, 0.95, 0.70)    // gloss
+    ptRamp(0.15),   // clay   — a VALUE ramp, so it cannot compete with the role hues
+    ptRamp(1.00),   // chrome
+    ptRamp(0.70),   // frost
+    ptRamp(0.42)    // gloss
 };
 
 float ring(float d, float w, float px) { return vt_fill(abs(d) - w, px); }
 
-// Preview-only legibility lift. The show's real palette includes a near-black accent and dark
-// bodies; on a dark schematic those vanish, so the PLAN re-maps them to a readable brightness.
+// Preview-only legibility lift, then INSTRUMENT DAMPING.
+//
+// The show's real palette includes a near-black accent and dark bodies; on a dark schematic
+// those vanish, so the plan first re-maps them to a readable brightness. It then puts them
+// through ptSampleColour: an element's own colour is genuine information (rule 4), but EVERY
+// element carries one here, and at full strength that turns the whole diagram into a louder
+// version of the render it exists to explain — and drowns the reserved accent.
 // This affects the diagnostic drawing only — no consumer reads a colour from this node.
 float3 pv(float3 c)
 {
     float l = dot(c, float3(0.299, 0.587, 0.114));
-    return lerp(normalize(c + 0.08) * 0.62, c, saturate(l * 3.2));
+    float3 lifted = lerp(normalize(c + 0.08) * 0.62, c, saturate(l * 3.2));
+    return ptSampleFill(lifted);
 }
 
 // dashed ring, for the growth reserve
@@ -54,7 +61,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float px = 1.0 / _Resolution.y;
 
     // --- ground: dark slate with a faint decimal grid so positions are readable ---
-    float3 col = float3(0.055, 0.062, 0.078);
+    float3 col = PT_FIELD;
     float d10 = min(abs(frac(uv.x * 10.0) - 0.5), abs(frac(uv.y * 10.0) - 0.5)) * 0.1;  // uv units
     col += 0.030 * (1.0 - smoothstep(0.0, 1.2 * px, d10));
     float d2 = min(abs(frac(uv.x * 2.0) - 0.5), abs(frac(uv.y * 2.0) - 0.5)) * 0.5;
@@ -65,8 +72,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     // horizon line, read from the same stage record the backdrop and compositor read
     float hz = Plan[PLAN_STAGE].pos.x;
-    col = lerp(col, float3(0.30, 0.85, 1.0), vt_fill(abs(uv.y - hz) - 0.0008, px) * 0.55);
-    col += float3(0.05, 0.14, 0.18) * exp(-abs(uv.y - hz) * 55.0) * 0.5;
+    col = lerp(col, PT_DIM, vt_fill(abs(uv.y - hz) - 0.0008, px) * 0.55);
+    col += PT_GRID * exp(-abs(uv.y - hz) * 55.0) * 0.5;
 
     // ---------------------------------------------------------------- plates
     for (uint i = 0u; i < PLAN_PLATES; i++)
@@ -90,17 +97,17 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
         // front/back band: a tick on the top edge means "composited in front of the masses"
         if ((fl & F_FRONT) != 0u && alive > 0.5)
-            col = lerp(col, float3(1.0, 0.95, 0.6),
+            col = lerp(col, PT_MID,
                        vt_fill(vt_dBox(q - float2(0.0, -r.size.y - 0.006), float2(r.size.x * 0.5, 0.0015)), px));
 
         // kind digit, only where there is room
         if (alive > 0.5 && r.size.x > 0.030 && r.size.y > 0.022)
         {
             float2 tp = (q - float2(-r.size.x + 0.010, -r.size.y + 0.006)) / float2(0.014, 0.016);
-            col = lerp(col, float3(0.95, 0.98, 1.0), mf_num(tp, (uint)r.kind, 1u) * 0.9);
+            col = lerp(col, PT_INK, mf_num(tp, (uint)r.kind, 1u) * 0.9);
         }
         if (sel == PLAN_PLATE_0 + i + 1u)
-            col = lerp(col, float3(1, 1, 1), ring(d - 0.006, 1.3 * px, px));
+            col = lerp(col, PT_INK, ring(d - 0.006, 1.3 * px, px));
     }
 
     // ---------------------------------------------------------------- strokes
@@ -162,10 +169,10 @@ void main(uint3 DTid : SV_DispatchThreadID)
         if (alive > 0.5)
         {
             float2 tp = (q - float2(-e.x + 0.008, -e.y - 0.004)) / float2(0.013, 0.015);
-            col = lerp(col, float3(0.98, 0.90, 0.60), mf_num(tp, (uint)r.kind, 1u) * 0.85);
+            col = lerp(col, PT_MID, mf_num(tp, (uint)r.kind, 1u) * 0.85);
         }
         if (sel == PLAN_STROKE_0 + s + 1u)
-            col = lerp(col, float3(1, 1, 1), ring(den - 0.008, 1.3 * px, px));
+            col = lerp(col, PT_INK, ring(den - 0.008, 1.3 * px, px));
     }
 
     // ---------------------------------------------------------------- masses
@@ -179,14 +186,14 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float3 body = pv(vt_body(r.tone));
 
         // dashed reserve ring — the clearance this mass owns, which VT_Growth sizes from
-        col = lerp(col, float3(0.98, 0.55, 0.78),
+        col = lerp(col, PT_DIM,
                    dashRing(q, r.size.x, 0.7 * px, px, 34.0) * lerp(0.10, 0.65, alive));
 
         // core disc, radius from the GROWTH SCALE so the two numbers are visibly different
         float core = r.size.x * 0.34 * saturate(r.size.y);
         float dc = length(q) - max(core, 0.006);
         col = lerp(col, body * lerp(0.14, 1.0, alive), vt_fill(dc, px));
-        col = lerp(col, float3(0.03, 0.03, 0.05), ring(dc, 0.9 * px, px) * 0.6);
+        col = lerp(col, PT_FIELD, ring(dc, 0.9 * px, px) * 0.6);
 
         // material badge: a small chip whose colour names the surface
         float2 bq = q - float2(max(core, 0.006) + 0.010, 0.0);
@@ -197,20 +204,20 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float ang = atan2(q.y, q.x);
         float arcT = saturate((ang + 3.14159) / 6.2831853);
         float dr = abs(length(q) - (max(core, 0.006) + 0.017)) - 0.0022;
-        col = lerp(col, float3(0.45, 0.95, 1.0),
+        col = lerp(col, PT_MID,
                    vt_fill(dr, px) * step(arcT, saturate(r.grp)) * lerp(0.2, 0.9, alive));
 
         if (alive > 0.5)
         {
             float2 tp = (q - float2(-0.009, -core - 0.024)) / float2(0.016, 0.018);
-            col = lerp(col, float3(1, 1, 1), mf_num(tp, (uint)r.kind, 1u) * 0.95);
+            col = lerp(col, PT_INK, mf_num(tp, (uint)r.kind, 1u) * 0.95);
         }
         if ((fl & F_EDITED) != 0u)
-            col = lerp(col, float3(1.0, 0.85, 0.25), ring(length(q) - core - 0.028, 1.0 * px, px));
+            col = lerp(col, PT_MID, ring(length(q) - core - 0.028, 1.0 * px, px));
         if (sel == PLAN_MASS_0 + m + 1u)
         {
-            col = lerp(col, float3(1, 1, 1), ring(length(q) - r.size.x - 0.010, 1.4 * px, px));
-            col = lerp(col, float3(1, 1, 1),
+            col = lerp(col, PT_ACCENT, ring(length(q) - r.size.x - 0.010, 1.4 * px, px));
+            col = lerp(col, PT_ACCENT,
                        vt_fill(min(vt_dBox(q, float2(0.030, 0.0006)), vt_dBox(q, float2(0.0006, 0.030))), px));
         }
     }
@@ -233,12 +240,12 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float2 sp = uv - float2(0.905, 0.016);
         float st = mf_glyph(sp / cell, MF_GT);   // '>' selection marker
         st += mf_num((sp - float2(cell.x * 1.4, 0.0)) / float2(cell.x * 2.0, cell.y), sel, 2u);
-        col = lerp(col, float3(1, 1, 1), saturate(st) * (sel > 0u ? 0.95 : 0.30));
+        col = lerp(col, PT_ACCENT, saturate(st) * (sel > 0u ? 0.95 : 0.30));
     }
 
     // frame
     float2 fq = abs(uv - 0.5) - 0.5 + 0.004;
-    col = lerp(col, float3(0.30, 0.34, 0.42), ring(max(fq.x, fq.y), 0.7 * px, px));
+    col = lerp(col, PT_RULE, ring(max(fq.x, fq.y), 0.7 * px, px));
 
     OutputUAV[pixel] = float4(col, 1.0);
 }

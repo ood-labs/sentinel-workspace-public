@@ -1,0 +1,147 @@
+name: "TP Render"
+version: "0.3"
+mode: generator
+resolution: [1280, 720]
+
+# TWO DIFFERENT FORMATS, AND THE DISTINCTION IS LOAD-BEARING.
+#   working_format governs INTERMEDIATE pass buffers.
+#   output_format  governs the texture this node hands to the NEXT NODE.
+# Setting only working_format leaves the node publishing RGBA8, which clamps alpha to [0,1] —
+# and this module carries LINEAR DEPTH in alpha for TP_Post. It would also clip the HDR, so the
+# bloom downstream would run on [0,1] data instead of on the real specular range, and the sun
+# glints on the ripples are the brightest thing in the frame by an order of magnitude.
+working_format: RGBA16F
+output_format: RGBA16F
+features: [camera]
+
+viewport:
+  hint: "LMB water only · RMB camera only · WASD move · wheel speed"
+  interactions: [camera, events]
+  input:
+    pointer: [left]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: push_water, label: "Push the water" }
+    - { gesture: left_click, action: drop, label: "Drop" }
+
+buffers:
+  # Element 0 publishes the water pick. Element 1 owns pointer-button routing so ABI-v1 generic
+  # drag gestures cannot confuse camera RMB movement with a water LMB stroke.
+  - { name: pick, structured: true, element_size: 16, element_count: 2, persistent: true }
+
+inputs:
+  - { name: "Surface",  slot: 0, required: true }
+  - { name: "Caustics", slot: 1, required: true }
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: p2,     type: float }
+      - { name: p3,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: pad0,   type: float }
+      - { name: pad1,   type: float }
+
+parameters:
+  # ---- Water optics
+  - { name: slope_gain,   display: "Surface Relief", type: float, min: 0.0, max: 4.0,  default: 2.4,  group: "Water" }
+  - { name: fresnel_gain, display: "Reflectivity",   type: float, min: 0.0, max: 2.0,  default: 1.0,  group: "Water" }
+  - { name: water_tint,   display: "Water Tint",     type: color, default: [0.16, 0.62, 0.66],        group: "Water" }
+  - { name: water_density, display: "Absorption",    type: float, min: 0.0, max: 6.0,  default: 1.6, group: "Water" }
+  - { name: water_scatter, display: "In-scatter",    type: float, min: 0.0, max: 2.0,  default: 0.22, group: "Water" }
+  - { name: glint_gain,   display: "Glint",          type: float, min: 0.0, max: 12.0, default: 6.000000,  group: "Water" }
+  - { name: glint_power,  display: "Glint Tightness", type: float, min: 8.0, max: 4000.0, default: 260.000000, group: "Water" }
+  # TP_Caustics publishes an energy-neutral RGB irradiance multiplier, so this mix preserves its
+  # subtle wavelength separation instead of collapsing the atlas back to the red channel.
+  - { name: caustic_mix,  display: "Caustic Mix",    type: float, min: 0.0, max: 1.0,  default: 1.0,  group: "Water" }
+
+  # ---- The glass shell
+  - { name: glass_ior,     display: "Glass Index",    type: float, min: 1.0, max: 2.0,  default: 1.52, group: "Glass" }
+  - { name: glass_reflect, display: "Glass Reflect",  type: float, min: 0.0, max: 2.0,  default: 1.0,  group: "Glass" }
+  - { name: glass_absorb,  display: "Glass Tint",     type: float, min: 0.0, max: 4.0,  default: 0.35, group: "Glass" }
+  - { name: rim_gain,      display: "Rim",            type: float, min: 0.0, max: 4.0,  default: 1.15, group: "Glass" }
+
+  # ---- The lining
+  - { name: ambient_gain, display: "Ambient",   type: float, min: 0.0, max: 3.0, default: 0.85, group: "Lining" }
+  - { name: sun_gain,     display: "Sun",       type: float, min: 0.0, max: 4.0, default: 0.85, group: "Lining" }
+  - { name: tile_dome,    display: "Tile Dome", type: float, min: 0.0, max: 1.0, default: 0.12, group: "Lining" }
+
+  # TEXTURE FILTERING, done by hand — a compute shader has no derivatives to do it with.
+  #
+  # The mosaic has infinitely sharp edges and the refracted lookup is a single point sample whose
+  # footprint the water surface magnifies enormously. Unfiltered, every tile boundary crawls with
+  # the tiniest residual motion in the surface: the image reads as violent jitter while the water
+  # is nearly still, and no damping setting can touch it because the water is not what is moving.
+  # Set filter_gain to 0 to see the aliasing this replaces.
+  - { name: filter_gain,     display: "Tile Filter",     type: float, min: 0.0, max: 6.0,  default: 1.6, group: "Lining" }
+  # How much a tilted surface fans neighbouring refracted rays apart. This is the term that makes
+  # the filter follow the ripples instead of only the distance.
+  - { name: refract_spread,  display: "Refraction Fan",  type: float, min: 0.0, max: 12.0, default: 3.5, group: "Lining" }
+
+  # ---- The studio. A flat backdrop colour gives a mirror nothing to reflect and the water
+  # goes dead, so this is a gradient with a real key in it.
+  - { name: sky_low,  display: "Studio Low",  type: color, default: [0.470, 0.505, 0.560], group: "Studio" }
+  - { name: sky_high, display: "Studio High", type: color, default: [0.720, 0.760, 0.820], group: "Studio" }
+  - { name: sky_key,  display: "Key",         type: float, min: 0.0, max: 4.0, default: 0.8, group: "Studio" }
+  - { name: exposure, display: "Exposure",    type: float, min: 0.05, max: 6.0, default: 1.0, group: "Studio" }
+
+  - { name: cursor_show, display: "Show Contact Point", type: bool, default: true, group: "Interaction" }
+
+  # ---- Quality. These change nothing about the look's intent, only how finely it is resolved.
+  # Cost is LINEAR in march_steps and QUADRATIC in aa_samples, so the rays are the first thing
+  # to drop and the last thing to add back. Ships as a preset ladder; the manifest default is a
+  # rung you can comfortably work in.
+  - { name: march_steps, display: "Surface Steps", type: int, min: 4, max: 192, default: 88, group: "Quality" }
+  - { name: aa_samples,  display: "Rays Per Axis", type: int, min: 1, max: 3,   default: 1,  group: "Quality" }
+
+  - name: view_mode
+    display: "View"
+    type: enum
+    options: [Beauty, Surface, Normals, Caustics, Steps, Depth]
+    default: 0
+    flags: button_grid
+    group: "Quality"
+  - { name: step_budget, display: "Step Budget (view)", type: float, min: 4.0, max: 400.0, default: 60.0, group: "Quality" }
+  - { name: depth_near,  display: "Depth Near (view)",  type: float, min: 0.0, max: 40.0,  default: 2.0,  group: "Quality" }
+  - { name: depth_far,   display: "Depth Far (view)",   type: float, min: 0.1, max: 60.0,  default: 9.0,  group: "Quality" }
+
+passes:
+  # Must run before the march so the contact ring is drawn at this cook's pick, not the last.
+  - name: pick
+    shader: pick.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "data:0" }
+    output: "buffer:pick"
+
+  - name: march
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:pick" }
+      - { slot: 2, source: "input:0" }
+      - { slot: 3, source: "input:1" }
+
+control_outputs:
+  # These drive TP_Sim's ext_u / ext_v / ext_down through expressions. That is what turns a drag
+  # across the rendered water into ripples in the simulation, without a graph cycle.
+  - { name: pick_u,    buffer: pick, element: 0, field_offset: 0,  description: "Pointer contact point on the water, footprint u" }
+  - { name: pick_v,    buffer: pick, element: 0, field_offset: 4,  description: "Pointer contact point on the water, footprint v" }
+  - { name: pick_down, buffer: pick, element: 0, field_offset: 8,  description: "1 while the pointer is pushing the water" }
+
+outputs:
+  - { name: "Beauty", pass: march }

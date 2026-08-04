@@ -1,0 +1,77 @@
+name: "VC Post"
+version: "0.1"
+mode: generator
+resolution: [1536, 1024]
+working_format: RGBA16F
+output_format: RGBA16F
+
+# The lens and film finish. Glare produced BY the lens (bloom), the lens's own chromatic
+# spread, exposure, a max-channel filmic tonemap, grade, grain and edge antialiasing.
+#
+# Nothing here decides anything about the scene. If the image is wrong in a way this node can
+# only mask, the fix belongs upstream.
+
+inputs:
+  - { name: "Beauty", slot: 0, required: true }
+
+buffers:
+  - { name: bloom_a, format: RGBA16F, scale: 0.25 }
+  - { name: bloom_b, format: RGBA16F, scale: 0.25 }
+
+parameters:
+  - { name: exposure,    display: "Exposure",    type: float, min: 0.05, max: 6.0, default: 1.25, group: "Grade" }
+  - { name: white_point, display: "White Point", type: float, min: 1.05, max: 16.0, default: 3.2, group: "Grade" }
+  - { name: black_lift,  display: "Black Lift",  type: float, min: -0.05, max: 0.15, default: 0.000000, group: "Grade" }
+  - { name: gamma_adj,   display: "Gamma",       type: float, min: 0.4, max: 2.5, default: 1.000000, group: "Grade" }
+  - { name: saturation,  display: "Saturation",  type: float, min: 0.0, max: 2.0, default: 1.000000, group: "Grade" }
+  - { name: tint,        display: "Tint",        type: color, default: [1.000000, 1.000000, 1.000000],         group: "Grade" }
+
+  - { name: bloom_gain,      display: "Bloom",           type: float, min: 0.0, max: 2.0, default: 0.16, group: "Lens" }
+  - { name: bloom_threshold, display: "Bloom Threshold", type: float, min: 0.0, max: 8.0, default: 1.05, group: "Lens" }
+  - { name: bloom_knee,      display: "Bloom Knee",      type: float, min: 0.01, max: 2.0, default: 0.45, group: "Lens" }
+  - { name: bloom_radius,    display: "Bloom Radius",    type: float, min: 0.5, max: 8.0, default: 2.6, group: "Lens" }
+  - { name: aberration,      display: "Aberration",      type: float, min: 0.0, max: 3.0, default: 0.35, group: "Lens" }
+  - { name: vignette,        display: "Vignette",        type: float, min: 0.0, max: 1.5, default: 0.3, group: "Lens" }
+
+  - { name: grain,      display: "Grain",      type: float, min: 0.0, max: 1.0, default: 0.1, group: "Film" }
+  - { name: grain_seed, display: "Grain Seed", type: float, min: 0.0, max: 100.0, default: 11.000000, group: "Film" }
+
+  - { name: aa_strength,  display: "Edge AA",         type: float, min: 0.0, max: 1.0, default: 0.85, group: "Antialias" }
+  - { name: aa_threshold, display: "Edge Threshold",  type: float, min: 0.005, max: 0.5, default: 0.045, group: "Antialias" }
+  - { name: aa_reach,     display: "Edge Reach",      type: float, min: 0.2, max: 2.0, default: 0.75, group: "Antialias" }
+
+passes:
+  - name: bright
+    shader: bright.hlsl
+    target: cs_5_0
+    output: "buffer:bloom_a"
+    inputs:
+      - { slot: 0, source: "input:0" }
+  - name: blur_h
+    shader: blur_h.hlsl
+    target: cs_5_0
+    output: "buffer:bloom_b"
+    inputs:
+      - { slot: 0, source: "buffer:bloom_a" }
+  - name: blur_v
+    shader: blur_v.hlsl
+    target: cs_5_0
+    output: "buffer:bloom_a"
+    inputs:
+      - { slot: 0, source: "buffer:bloom_b" }
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:bloom_a" }
+  - name: aa
+    shader: aa.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "pass:grade" }
+
+outputs:
+  - { name: "Program", pass: aa }

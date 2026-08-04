@@ -1,0 +1,90 @@
+{
+ "project": "projects/tessera_pool/tessera_pool.sentinel",
+ "source_commit": "b650818 (public-seed-agent-test)",
+ "assembly": "Curated onto the twenty-project seed from the public-seed-agent-test branch; five of the ten branch projects were promoted. See release-candidate.json.",
+ "promoted_paths": [
+  "projects/tessera_pool/README.md",
+  "projects/tessera_pool/tessera_pool.sentinel",
+  "projects/tessera_pool/modules/"
+ ],
+ "approved_structure": {
+  "pipelines": [
+   "TP_Sim",
+   "TP_Plan",
+   "TP_Caustics",
+   "TP_Render",
+   "TP_Post",
+   "TP_Flicker"
+  ],
+  "node_presets": [
+   "Frame \u2014 Composed Descent",
+   "Q0 Draft",
+   "Q1 Live",
+   "Q2 Beauty",
+   "Q3 Hero (capture only)",
+   "Frame \u2014 Street Level",
+   "Quality \u2014 Live (default)",
+   "Quality \u2014 Beauty",
+   "Quality \u2014 Hero (capture only)",
+   "Quality \u2014 Draft",
+   "Frame - Reference View",
+   "Q3 Hero (capture only)",
+   "Q2 Beauty",
+   "Q0 Draft",
+   "Q1 Live (default)",
+   "Q1 Live (default)",
+   "Q2 Beauty (4x photons)",
+   "Q0 Draft (1/16 photons)"
+  ],
+  "scene_groups": 0,
+  "scene_group_controls": [],
+  "group_outputs": 0,
+  "notes": "Curated by the user from the agent-authored branch; layouts saved on the branch head."
+ },
+ "compile": {
+  "method": "offline compile_check through the real injection preamble on the 2026-08-04 dev instance",
+  "modules": {
+   "TP_Sim": {
+    "passes": 7,
+    "params": 25,
+    "compile_ok": true,
+    "lints": []
+   },
+   "TP_Plan": {
+    "passes": 2,
+    "params": 31,
+    "compile_ok": true,
+    "lints": []
+   },
+   "TP_Caustics": {
+    "passes": 5,
+    "params": 13,
+    "compile_ok": true,
+    "lints": []
+   },
+   "TP_Render": {
+    "passes": 2,
+    "params": 28,
+    "compile_ok": true,
+    "lints": []
+   },
+   "TP_Post": {
+    "passes": 4,
+    "params": 14,
+    "compile_ok": true,
+    "lints": []
+   },
+   "TP_Flicker": {
+    "passes": 3,
+    "params": 6,
+    "compile_ok": true,
+    "lints": []
+   }
+  },
+  "status": "pass; every module compiled with zero errors"
+ },
+ "runtime": {
+  "status": "fresh-load battery not run at assembly time; authoring-time live proof is described in the project README. A fresh-load pass is owed before the next installer ships this seed."
+ },
+ "validation": "validate-official-examples.ps1 and audit-public-release.ps1 run at the assembly commit; results recorded in release-candidate.json."
+}

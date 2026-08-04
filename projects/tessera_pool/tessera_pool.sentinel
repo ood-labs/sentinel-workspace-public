@@ -1,0 +1,1319 @@
+{
+  "display": {
+    "fpsLimit": 60.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 1.5,
+    "links": [
+      {
+        "endPinId": 43,
+        "id": 20,
+        "startPinId": 66
+      },
+      {
+        "endPinId": 45,
+        "id": 12,
+        "startPinId": 36
+      },
+      {
+        "endPinId": 48,
+        "id": 21,
+        "startPinId": 66
+      },
+      {
+        "endPinId": 51,
+        "id": 13,
+        "startPinId": 36
+      },
+      {
+        "endPinId": 50,
+        "id": 15,
+        "startPinId": 46
+      },
+      {
+        "endPinId": 55,
+        "id": 16,
+        "startPinId": 49
+      },
+      {
+        "endPinId": 59,
+        "id": 18,
+        "startPinId": 65
+      },
+      {
+        "endPinId": 64,
+        "id": 19,
+        "startPinId": 36
+      }
+    ],
+    "nextLinkId": 22,
+    "nextNodeId": 26,
+    "nextPinId": 71,
+    "nodes": [
+      {
+        "displayName": "TP_Plan",
+        "entityId": "TP_Plan",
+        "id": 19,
+        "posX": -564.0067749023438,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "TP_Caustics",
+        "entityId": "TP_Caustics",
+        "id": 21,
+        "posX": -128.38575744628906,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "TP_Render",
+        "entityId": "TP_Render",
+        "id": 22,
+        "posX": 88.00933837890625,
+        "posY": -0.6666717529296875,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "TP_Post",
+        "entityId": "TP_Post",
+        "id": 23,
+        "inputTilesOverride": 0,
+        "posX": 308.1720275878906,
+        "posY": -1.3333396911621094,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "TP_Flicker",
+        "entityId": "TP_Flicker",
+        "id": 24,
+        "posX": -129.58758544921875,
+        "posY": 240.9609832763672,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "TP_Sim",
+        "entityId": "TP_Sim",
+        "id": 25,
+        "posX": -350.49310302734375,
+        "posY": 6.6764678955078125,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      }
+    ],
+    "pins": [
+      {
+        "id": 35,
+        "kind": 1,
+        "name": "Plan View",
+        "nodeId": 19,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 36,
+        "kind": 1,
+        "name": "Plan",
+        "nodeId": 19,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 43,
+        "kind": 0,
+        "name": "Surface",
+        "nodeId": 21,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 44,
+        "kind": 1,
+        "name": "Atlas View",
+        "nodeId": 21,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 45,
+        "kind": 0,
+        "name": "Plan",
+        "nodeId": 21,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 46,
+        "kind": 1,
+        "name": "Caustics",
+        "nodeId": 21,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 48,
+        "kind": 0,
+        "name": "Surface",
+        "nodeId": 22,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 49,
+        "kind": 1,
+        "name": "Beauty",
+        "nodeId": 22,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 50,
+        "kind": 0,
+        "name": "Caustics",
+        "nodeId": 22,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 51,
+        "kind": 0,
+        "name": "Plan",
+        "nodeId": 22,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 52,
+        "kind": 1,
+        "name": "pick_u",
+        "nodeId": 22,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 53,
+        "kind": 1,
+        "name": "pick_v",
+        "nodeId": 22,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 54,
+        "kind": 1,
+        "name": "pick_down",
+        "nodeId": 22,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 55,
+        "kind": 0,
+        "name": "Beauty",
+        "nodeId": 23,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 56,
+        "kind": 1,
+        "name": "Program",
+        "nodeId": 23,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 59,
+        "kind": 0,
+        "name": "Watch",
+        "nodeId": 24,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 60,
+        "kind": 1,
+        "name": "Flicker",
+        "nodeId": 24,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 61,
+        "kind": 1,
+        "name": "flicker_mean",
+        "nodeId": 24,
+        "slotIndex": 1,
+        "type": 7
+      },
+      {
+        "id": 62,
+        "kind": 1,
+        "name": "flicker_peak",
+        "nodeId": 24,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 63,
+        "kind": 1,
+        "name": "flicker_area",
+        "nodeId": 24,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 64,
+        "kind": 0,
+        "name": "Plan",
+        "nodeId": 25,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 65,
+        "kind": 1,
+        "name": "Relief",
+        "nodeId": 25,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 66,
+        "kind": 1,
+        "name": "Field",
+        "nodeId": 25,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 67,
+        "kind": 1,
+        "name": "wave_peak",
+        "nodeId": 25,
+        "slotIndex": 2,
+        "type": 7
+      },
+      {
+        "id": 68,
+        "kind": 1,
+        "name": "wave_rms",
+        "nodeId": 25,
+        "slotIndex": 3,
+        "type": 7
+      },
+      {
+        "id": 69,
+        "kind": 1,
+        "name": "motion_peak",
+        "nodeId": 25,
+        "slotIndex": 4,
+        "type": 7
+      },
+      {
+        "id": 70,
+        "kind": 1,
+        "name": "motion_rms",
+        "nodeId": 25,
+        "slotIndex": 5,
+        "type": 7
+      }
+    ]
+  },
+  "hostPanelVisibility": {
+    "engines": false,
+    "graph": true,
+    "log": true,
+    "outputs": true,
+    "presets": false,
+    "properties": true,
+    "settings": false,
+    "sources": true,
+    "stats": true,
+    "terminal": true
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Sources]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000004,1\n\n[Window][Outputs]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000004,2\n\n[Window][Stats]\nPos=0,1746\nSize=842,343\nCollapsed=0\nDockId=0x00000034,0\n\n[Window][Log]\nPos=0,1746\nSize=842,343\nCollapsed=0\nDockId=0x00000034,1\n\n[Window][Properties]\nPos=3501,25\nSize=339,1417\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=844,1444\nSize=2996,645\nCollapsed=0\nDockId=0x00000004,0\n\n[Window][DockSpace]\nPos=0,25\nSize=3840,2064\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=997,419\nSize=566,738\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][##LoadingOverlay]\nPos=1812,1014\nSize=215,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=699,249\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000032,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000032,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000032,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000032,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][Terminal]\nPos=0,967\nSize=842,777\nCollapsed=0\nDockId=0x00000038,0\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000032,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000032,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000032,3\n\n[Window][CE_Plan]\nPos=0,25\nSize=923,795\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][CE_Cast]\nPos=925,25\nSize=100,795\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][CE_Grade]\nPos=925,25\nSize=100,795\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][sc_plan]\nPos=0,25\nSize=927,815\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][sc_corridor]\nPos=929,25\nSize=1290,905\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][sc_grid]\nPos=929,25\nSize=1290,905\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][VC_Plan]\nPos=0,25\nSize=909,1396\nCollapsed=0\n\n[Window][VC_Env]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][VC_Render]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][VC_Post]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][vsr_0]\nPos=0,25\nSize=909,771\nCollapsed=0\n\n[Window][EF_Plan]\nPos=621,25\nSize=1598,905\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][EF_Structure]\nPos=621,25\nSize=1598,905\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][EF_Post]\nPos=621,25\nSize=1598,905\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][NR_Route]\nPos=0,25\nSize=785,642\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][NR_City]\nPos=787,25\nSize=1432,905\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][NR_Grade]\nPos=787,25\nSize=1432,905\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][TP_Plan]\nPos=1457,25\nSize=2042,1417\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][TP_Sim]\nPos=844,25\nSize=611,721\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][TP_Caustics]\nPos=0,25\nSize=842,940\nCollapsed=0\nDockId=0x00000037,0\n\n[Window][TP_Render]\nPos=1457,25\nSize=2042,1417\nCollapsed=0\nDockId=0x00000032,1\n\n[Window][TP_Post]\nPos=1457,25\nSize=2042,1417\nCollapsed=0\nDockId=0x00000032,2\n\n[Window][TP_Flicker]\nPos=844,748\nSize=611,694\nCollapsed=0\nDockId=0x00000036,0\n\n[Docking][Data]\nDockSpace                                         ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=3840,2064 Split=X\n  DockNode                                        ID=0x0000002F Parent=0xCCBD8CF7 SizeRef=842,1552 Split=Y Selected=0xD171E058\n    DockNode                                      ID=0x00000033 Parent=0x0000002F SizeRef=806,611 Split=Y Selected=0xD33228A6\n      DockNode                                    ID=0x00000005 Parent=0x00000033 SizeRef=619,642 Selected=0xC38AA1A1\n      DockNode                                    ID=0x00000006 Parent=0x00000033 SizeRef=619,648 Split=Y Selected=0xD33228A6\n        DockNode                                  ID=0x00000037 Parent=0x00000006 SizeRef=785,940 Selected=0x149D6BD2\n        DockNode                                  ID=0x00000038 Parent=0x00000006 SizeRef=785,777 Selected=0xD33228A6\n    DockNode                                      ID=0x00000034 Parent=0x0000002F SizeRef=806,122 Selected=0x590DF097\n  DockNode                                        ID=0x00000030 Parent=0xCCBD8CF7 SizeRef=2996,1552 Split=Y\n    DockNode                                      ID=0x00000003 Parent=0x00000030 SizeRef=1222,905 Split=X Selected=0x376FDC27\n      DockNode                                    ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n        DockNode                                  ID=0x00000001 Parent=0x00000007 SizeRef=2655,1284 Split=X Selected=0x5AAC8CBA\n          DockNode                                ID=0x00000009 Parent=0x00000001 SizeRef=742,790 Selected=0x9E38CE87\n          DockNode                                ID=0x0000000A Parent=0x00000001 SizeRef=749,790 Split=X Selected=0x376FDC27\n            DockNode                              ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n              DockNode                            ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n              DockNode                            ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n                DockNode                          ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n                DockNode                          ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                  DockNode                        ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                  DockNode                        ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                    DockNode                      ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                      DockNode                    ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                        DockNode                  ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                          DockNode                ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                            DockNode              ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                            DockNode              ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                          DockNode                ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                        DockNode                  ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                          DockNode                ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                            DockNode              ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                            DockNode              ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                              DockNode            ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                              DockNode            ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                          DockNode                ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                            DockNode              ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                            DockNode              ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                              DockNode            ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                              DockNode            ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                                DockNode          ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                  DockNode        ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                  DockNode        ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                                DockNode          ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                  DockNode        ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                  DockNode        ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                    DockNode      ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                    DockNode      ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 Split=X Selected=0x861C6F44\n                                      DockNode    ID=0x00000031 Parent=0x0000002E SizeRef=611,1417 Split=Y Selected=0x49D9CB3B\n                                        DockNode  ID=0x00000035 Parent=0x00000031 SizeRef=1352,721 Selected=0x49D9CB3B\n                                        DockNode  ID=0x00000036 Parent=0x00000031 SizeRef=1352,694 Selected=0xC1B11450\n                                      DockNode    ID=0x00000032 Parent=0x0000002E SizeRef=2042,1417 CentralNode=1 Selected=0xDFF70533\n                      DockNode                    ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                    DockNode                      ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n            DockNode                              ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n        DockNode                                  ID=0x00000002 Parent=0x00000007 SizeRef=339,1284 Selected=0x8C72BEA8\n      DockNode                                    ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n    DockNode                                      ID=0x00000004 Parent=0x00000030 SizeRef=1222,645 Selected=0xF12F3499\n\n",
+  "name": "tessera_pool",
+  "nodePresets": [
+    {
+      "created": "2026-08-03T10:59:33",
+      "id": "1f195016-15ee-4d49-7f4cc53d6577",
+      "modified": "2026-08-03T10:59:33",
+      "name": "Frame — Composed Descent",
+      "parameters": [
+        {
+          "name": "camera_pos_x",
+          "value": "0.1"
+        },
+        {
+          "name": "camera_pos_y",
+          "value": "0.2"
+        },
+        {
+          "name": "camera_pos_z",
+          "value": "-2.2"
+        },
+        {
+          "name": "camera_yaw",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_pitch",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_fov",
+          "value": "60.000000"
+        },
+        {
+          "name": "camera_mode",
+          "value": "0"
+        },
+        {
+          "name": "camera_near",
+          "value": "0.1"
+        },
+        {
+          "name": "camera_far",
+          "value": "100.000000"
+        }
+      ],
+      "pipelineType": "module:EF_Structure",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T11:11:26",
+      "id": "c79072c2-2e38-3c99-5ed76311ca82",
+      "modified": "2026-08-03T11:11:26",
+      "name": "Q0 Draft",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "64"
+        },
+        {
+          "name": "max_dist",
+          "value": "34.000000"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.003"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.85"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.005"
+        },
+        {
+          "name": "detail_band",
+          "value": "0.12"
+        },
+        {
+          "name": "min_scale",
+          "value": "0.03"
+        },
+        {
+          "name": "ao_samples",
+          "value": "2"
+        },
+        {
+          "name": "ao_radius",
+          "value": "0.32"
+        },
+        {
+          "name": "shadow_steps",
+          "value": "0"
+        },
+        {
+          "name": "aa_samples",
+          "value": "1"
+        }
+      ],
+      "pipelineType": "module:EF_Structure",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T11:11:38",
+      "id": "aa78f633-d8a6-27a2-4878d6600d46",
+      "modified": "2026-08-03T11:11:38",
+      "name": "Q1 Live",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "104"
+        },
+        {
+          "name": "max_dist",
+          "value": "46.000000"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.0016"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.72"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.0032"
+        },
+        {
+          "name": "detail_band",
+          "value": "0.18"
+        },
+        {
+          "name": "min_scale",
+          "value": "0.012"
+        },
+        {
+          "name": "ao_samples",
+          "value": "4"
+        },
+        {
+          "name": "ao_radius",
+          "value": "0.32"
+        },
+        {
+          "name": "shadow_steps",
+          "value": "0"
+        },
+        {
+          "name": "aa_samples",
+          "value": "1"
+        }
+      ],
+      "pipelineType": "module:EF_Structure",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T11:11:57",
+      "id": "6cd027f4-2286-d140-0ce477a3494d",
+      "modified": "2026-08-03T11:11:57",
+      "name": "Q2 Beauty",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "168"
+        },
+        {
+          "name": "max_dist",
+          "value": "62.000000"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.0011"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.62"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.0022"
+        },
+        {
+          "name": "detail_band",
+          "value": "0.26"
+        },
+        {
+          "name": "min_scale",
+          "value": "0.0065"
+        },
+        {
+          "name": "ao_samples",
+          "value": "5"
+        },
+        {
+          "name": "ao_radius",
+          "value": "0.32"
+        },
+        {
+          "name": "shadow_steps",
+          "value": "14"
+        },
+        {
+          "name": "aa_samples",
+          "value": "2"
+        }
+      ],
+      "pipelineType": "module:EF_Structure",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T11:12:12",
+      "id": "f658a1c6-b3f9-d558-b8d278b9efe0",
+      "modified": "2026-08-03T11:12:12",
+      "name": "Q3 Hero (capture only)",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "250"
+        },
+        {
+          "name": "max_dist",
+          "value": "84.000000"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.0007"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.55"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.0014"
+        },
+        {
+          "name": "detail_band",
+          "value": "0.34"
+        },
+        {
+          "name": "min_scale",
+          "value": "0.0035"
+        },
+        {
+          "name": "ao_samples",
+          "value": "6"
+        },
+        {
+          "name": "ao_radius",
+          "value": "0.32"
+        },
+        {
+          "name": "shadow_steps",
+          "value": "26"
+        },
+        {
+          "name": "aa_samples",
+          "value": "3"
+        }
+      ],
+      "pipelineType": "module:EF_Structure",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T12:56:34",
+      "id": "05fc791b-2b92-3682-317fc0491a77",
+      "modified": "2026-08-03T12:56:34",
+      "name": "Frame — Street Level",
+      "parameters": [
+        {
+          "name": "camera_pos_x",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_pos_y",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_pos_z",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_yaw",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_pitch",
+          "value": "0.07"
+        },
+        {
+          "name": "camera_fov",
+          "value": "78.000000"
+        },
+        {
+          "name": "camera_mode",
+          "value": "0"
+        },
+        {
+          "name": "camera_near",
+          "value": "0.1"
+        },
+        {
+          "name": "camera_far",
+          "value": "100.000000"
+        }
+      ],
+      "pipelineType": "module:NR_City",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T13:01:56",
+      "id": "52c43e78-a5af-1950-7c9eae68df21",
+      "modified": "2026-08-03T13:01:56",
+      "name": "Quality — Live (default)",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "128"
+        },
+        {
+          "name": "reflect_steps",
+          "value": "44"
+        },
+        {
+          "name": "aa_samples",
+          "value": "1"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.004"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.7"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.012"
+        },
+        {
+          "name": "max_dist",
+          "value": "240.000000"
+        }
+      ],
+      "pipelineType": "module:NR_City",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T13:02:16",
+      "id": "78fc1ecf-063f-b0d7-b910757bd3c7",
+      "modified": "2026-08-03T13:02:16",
+      "name": "Quality — Beauty",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "190"
+        },
+        {
+          "name": "reflect_steps",
+          "value": "80"
+        },
+        {
+          "name": "aa_samples",
+          "value": "2"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.0028"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.62"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.012"
+        },
+        {
+          "name": "max_dist",
+          "value": "320.000000"
+        }
+      ],
+      "pipelineType": "module:NR_City",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T13:02:45",
+      "id": "feb1244b-0ec5-500d-b89124e9fa26",
+      "modified": "2026-08-03T13:02:45",
+      "name": "Quality — Hero (capture only)",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "300"
+        },
+        {
+          "name": "reflect_steps",
+          "value": "150"
+        },
+        {
+          "name": "aa_samples",
+          "value": "3"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.0012"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.45"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.012"
+        },
+        {
+          "name": "max_dist",
+          "value": "400.000000"
+        }
+      ],
+      "pipelineType": "module:NR_City",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T13:02:55",
+      "id": "b20ebbd1-c9ec-0874-432bc2952dee",
+      "modified": "2026-08-03T13:02:55",
+      "name": "Quality — Draft",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "80"
+        },
+        {
+          "name": "reflect_steps",
+          "value": "0"
+        },
+        {
+          "name": "aa_samples",
+          "value": "1"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.007"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.82"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.012"
+        },
+        {
+          "name": "max_dist",
+          "value": "140.000000"
+        }
+      ],
+      "pipelineType": "module:NR_City",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T14:57:45",
+      "id": "2dac4a1d-37d4-d877-989ce60488b3",
+      "modified": "2026-08-03T14:57:45",
+      "name": "Frame - Reference View",
+      "parameters": [
+        {
+          "name": "camera_pos_x",
+          "value": "2.1"
+        },
+        {
+          "name": "camera_pos_y",
+          "value": "2.35"
+        },
+        {
+          "name": "camera_pos_z",
+          "value": "3.42"
+        },
+        {
+          "name": "camera_yaw",
+          "value": "-2.59"
+        },
+        {
+          "name": "camera_pitch",
+          "value": "-0.55"
+        },
+        {
+          "name": "camera_fov",
+          "value": "42.000000"
+        },
+        {
+          "name": "camera_near",
+          "value": "0.1"
+        },
+        {
+          "name": "camera_far",
+          "value": "100.000000"
+        },
+        {
+          "name": "camera_mode",
+          "value": "0"
+        }
+      ],
+      "pipelineType": "module:TP_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T14:58:53",
+      "id": "aa9729ae-5f6e-77d6-8f997a1dae01",
+      "modified": "2026-08-03T14:58:53",
+      "name": "Q3 Hero (capture only)",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "176"
+        },
+        {
+          "name": "aa_samples",
+          "value": "3"
+        }
+      ],
+      "pipelineType": "module:TP_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T14:59:03",
+      "id": "506560c1-4b96-7c96-be042d657daa",
+      "modified": "2026-08-03T14:59:03",
+      "name": "Q2 Beauty",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "128"
+        },
+        {
+          "name": "aa_samples",
+          "value": "2"
+        }
+      ],
+      "pipelineType": "module:TP_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T14:59:13",
+      "id": "afbbd1b5-9b3f-db34-2b2988aa4364",
+      "modified": "2026-08-03T14:59:13",
+      "name": "Q0 Draft",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "24"
+        },
+        {
+          "name": "aa_samples",
+          "value": "1"
+        }
+      ],
+      "pipelineType": "module:TP_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T14:59:28",
+      "id": "93d10fda-a1ec-a57f-2aca628ace1b",
+      "modified": "2026-08-03T14:59:28",
+      "name": "Q1 Live (default)",
+      "parameters": [
+        {
+          "name": "march_steps",
+          "value": "88"
+        },
+        {
+          "name": "aa_samples",
+          "value": "1"
+        }
+      ],
+      "pipelineType": "module:TP_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T14:59:33",
+      "id": "b6880e21-244f-1729-bfc0563986fb",
+      "modified": "2026-08-03T14:59:33",
+      "name": "Q1 Live (default)",
+      "parameters": [
+        {
+          "name": "sample_step",
+          "value": "2"
+        },
+        {
+          "name": "blur_radius",
+          "value": "1"
+        }
+      ],
+      "pipelineType": "module:TP_Caustics",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T14:59:49",
+      "id": "5ef0a6b5-f860-ba74-3ef0d28637cf",
+      "modified": "2026-08-03T14:59:49",
+      "name": "Q2 Beauty (4x photons)",
+      "parameters": [
+        {
+          "name": "sample_step",
+          "value": "1"
+        },
+        {
+          "name": "blur_radius",
+          "value": "2"
+        }
+      ],
+      "pipelineType": "module:TP_Caustics",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T14:59:59",
+      "id": "ec1a549f-670c-556d-febb952216ec",
+      "modified": "2026-08-03T14:59:59",
+      "name": "Q0 Draft (1/16 photons)",
+      "parameters": [
+        {
+          "name": "sample_step",
+          "value": "4"
+        },
+        {
+          "name": "blur_radius",
+          "value": "3"
+        }
+      ],
+      "pipelineType": "module:TP_Caustics",
+      "scope": "project"
+    }
+  ],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "TP_Sim",
+      "enabled": true,
+      "expressions": {
+        "ext_down": "ref(\"TP_Render/control_outputs/pick_down\")",
+        "ext_u": "ref(\"TP_Render/control_outputs/pick_u\")",
+        "ext_v": "ref(\"TP_Render/control_outputs/pick_v\")"
+      },
+      "fitMode": 1,
+      "id": "TP_Sim",
+      "inputSlotSourceIds": [
+        "TP_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "TP_Sim",
+      "panelOpen": true,
+      "parameters": {
+        "auto_sources": "0.000000",
+        "break_gain": "45.000000",
+        "break_slope": "0.950000",
+        "chop_couple": "1.000000",
+        "chop_ref": "0.012000",
+        "contour_step": "0.006000",
+        "damping": "0.340000",
+        "detail_amp": "2.099000",
+        "detail_scale": "1.182000",
+        "drive_stiffness": "320.000000",
+        "ext_down": "0.000000",
+        "ext_u": "0.871766",
+        "ext_v": "0.332531",
+        "motion_scale": "0.150000",
+        "motion_tau": "0.080000",
+        "pointer_depth": "0.035000",
+        "pointer_radius": "0.055000",
+        "project_dir": "modules/TP_Sim",
+        "relief_scale": "0.450000",
+        "resolution_height": "512",
+        "resolution_width": "512",
+        "sim_reset": "0.000000",
+        "time_scale": "2.241000",
+        "view_mode": "0.000000",
+        "wall_band": "0.110000",
+        "wall_reflect": "0.784000",
+        "wave_gain": "3.200000",
+        "wave_speed": "0.300000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "TP_Plan",
+      "enabled": true,
+      "expressions": {
+        "sim_peak": "ref(\"TP_Sim/control_outputs/wave_peak\")"
+      },
+      "fitMode": 1,
+      "id": "TP_Plan",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "TP_Plan",
+      "panelOpen": true,
+      "parameters": {
+        "arrangement": "0.000000",
+        "basin": "0.000000",
+        "basin_scale": "1.000000",
+        "caustic_gain": "1.600000",
+        "freeboard": "0.150000",
+        "glass_thick": "0.045000",
+        "grout_color_b": "0.165000",
+        "grout_color_g": "0.135000",
+        "grout_color_r": "0.085000",
+        "grout_width": "0.150000",
+        "pal_a_b": "0.470000",
+        "pal_a_g": "0.180000",
+        "pal_a_r": "0.055000",
+        "pal_b_b": "0.680000",
+        "pal_b_g": "0.400000",
+        "pal_b_r": "0.090000",
+        "pal_c_b": "0.640000",
+        "pal_c_g": "0.620000",
+        "pal_c_r": "0.110000",
+        "pal_d_b": "0.760000",
+        "pal_d_g": "0.800000",
+        "pal_d_r": "0.420000",
+        "pal_e_b": "0.360000",
+        "pal_e_g": "0.560000",
+        "pal_e_r": "0.180000",
+        "pal_f_b": "0.820000",
+        "pal_f_g": "0.880000",
+        "pal_f_r": "0.760000",
+        "project_dir": "modules/TP_Plan",
+        "resolution_height": "800",
+        "resolution_width": "1200",
+        "seed": "11.000000",
+        "sim_peak": "0.001628",
+        "sky_level": "0.420000",
+        "source_count": "4.000000",
+        "spec_power": "240.000000",
+        "spread": "1.000000",
+        "sun_azimuth": "128.000000",
+        "sun_color_b": "0.915000",
+        "sun_color_g": "0.972000",
+        "sun_color_r": "1.000000",
+        "sun_elev": "68.000000",
+        "sun_intensity": "1.850000",
+        "tile_gloss": "0.850000",
+        "tile_pitch": "0.085000",
+        "tile_seed": "3.000000",
+        "tile_variance": "0.550000",
+        "tiling": "0.000000",
+        "variation": "0.000000",
+        "water_depth": "1.100000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "TP_Caustics",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "TP_Caustics",
+      "inputSlotSourceIds": [
+        "TP_Sim",
+        "TP_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "TP_Caustics",
+      "panelOpen": true,
+      "parameters": {
+        "atlas_size": "512.000000",
+        "blur_radius": "2.000000",
+        "contrast": "1.350000",
+        "count_scale": "3.000000",
+        "dispersion": "0.850000",
+        "gain": "1.000000",
+        "jitter_amount": "1.000000",
+        "method": "0.000000",
+        "project_dir": "modules/TP_Caustics",
+        "resolution_height": "512",
+        "resolution_width": "512",
+        "sample_grid": "2048.000000",
+        "sample_step": "2.000000",
+        "slope_gain": "1.100000",
+        "surface_smooth": "0.020000",
+        "view_mode": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "TP_Render",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "TP_Render",
+      "inputSlotSourceIds": [
+        "TP_Sim",
+        "TP_Caustics",
+        "TP_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "TP_Render",
+      "panelOpen": true,
+      "parameters": {
+        "aa_samples": "1.000000",
+        "ambient_gain": "0.850000",
+        "camera_distance": "4.591932",
+        "camera_far": "100.000000",
+        "camera_fov": "42.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_mode": "1",
+        "camera_move_speed": "3.000000",
+        "camera_near": "0.100000",
+        "camera_pitch": "-0.538434",
+        "camera_pos_x": "-2.735677",
+        "camera_pos_y": "1.729621",
+        "camera_pos_z": "-2.844981",
+        "camera_target_x": "0.067711",
+        "camera_target_y": "-0.625086",
+        "camera_target_z": "-0.073301",
+        "camera_yaw": "-5.492100",
+        "caustic_mix": "1.000000",
+        "cursor_show": "1.000000",
+        "depth_far": "9.000000",
+        "depth_near": "2.000000",
+        "exposure": "1.000000",
+        "filter_gain": "1.600000",
+        "fresnel_gain": "1.000000",
+        "glass_absorb": "0.350000",
+        "glass_ior": "1.542000",
+        "glass_reflect": "1.203000",
+        "glint_gain": "6.000000",
+        "glint_power": "260.000000",
+        "march_steps": "88.000000",
+        "project_dir": "modules/TP_Render",
+        "refract_spread": "3.500000",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "rim_gain": "1.150000",
+        "sky_high_b": "0.820000",
+        "sky_high_g": "0.760000",
+        "sky_high_r": "0.720000",
+        "sky_key": "0.800000",
+        "sky_low_b": "0.560000",
+        "sky_low_g": "0.505000",
+        "sky_low_r": "0.470000",
+        "slope_gain": "2.400000",
+        "step_budget": "60.000000",
+        "sun_gain": "0.850000",
+        "tile_dome": "0.120000",
+        "view_mode": "0.000000",
+        "water_density": "1.600000",
+        "water_scatter": "0.220000",
+        "water_tint_b": "0.660000",
+        "water_tint_g": "0.620000",
+        "water_tint_r": "0.160000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "TP_Post",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "TP_Post",
+      "inputSlotSourceIds": [
+        "TP_Render"
+      ],
+      "mousePassthroughSlot": 0,
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "TP_Post",
+      "panelOpen": true,
+      "parameters": {
+        "aa_amount": "1.926000",
+        "aa_crispness": "1.000000",
+        "aa_threshold": "0.164000",
+        "bloom": "0.000000",
+        "bloom_rad": "1.700000",
+        "bloom_thr": "1.250000",
+        "contrast": "1.140000",
+        "exposure": "1.060000",
+        "highlight_tint_b": "0.980000",
+        "highlight_tint_g": "1.000000",
+        "highlight_tint_r": "1.000000",
+        "lift": "0.008000",
+        "project_dir": "modules/TP_Post",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "roll_knee": "0.820000",
+        "saturation": "1.100000",
+        "shadow_tint_b": "1.000000",
+        "shadow_tint_g": "0.960000",
+        "shadow_tint_r": "0.900000",
+        "vignette": "0.128000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "TP_Flicker",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "TP_Flicker",
+      "inputSlotSourceIds": [
+        "TP_Sim"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "TP_Flicker",
+      "panelOpen": true,
+      "parameters": {
+        "area_alarm": "0.020000",
+        "area_threshold": "0.004000",
+        "hold_release": "1.200000",
+        "project_dir": "modules/TP_Flicker",
+        "resolution_height": "512",
+        "resolution_width": "512",
+        "src_height": "512.000000",
+        "src_width": "512.000000",
+        "view_scale": "0.060000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1785830052039,
+  "sources": [],
+  "statePayloads": {
+    "TP_Plan": {
+      "plan": {
+        "data": "707daa44000000000000000000000000000000000000000000000000000000000000803f00008040bd01803f0000000080c2f53bc2f5283e0000000000000000000000000000803f000000000000000000000000cdcc0c3f9a99593f0000803fcdcc8c3f0000803f0000803f000000007b14ae3d713d0a3ec3f5283e00004040ec51383d9a99193e7b14ae3d9a99193e000000000000803f0000000000000000ac23973eea5b6d3f7d2a6cbe00000000000000000000000000000040000000000000803ffed4783f713d6a3f00000000cdccec3f3d0ad73ecdcccc3f00007043000000000000803f00000000000000000000000000000000000000000000000000000000000000000000404000000000ae47613dec51383ed7a3f03e000000000000803f000000000000000000000000000000000000803f00000000000000000000000000000000000000000000000000000000000000000000404000000000ec51b83dcdcccc3e7b142e3f000000000000803f000000000000000000000000000000000000803f00000000000000000000000000000000000000000000000000000000000000000000404000000000ae47e13d52b81e3f0ad7233f000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000000000000000000000000000000000004040000000003d0ad73ecdcc4c3f5c8f423f000000000000803f000000000000000000000000000000000000803f00000000000000000000000000000000000000000000000000000000000000000000404000000000ec51383e295c0f3fec51b83e000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000000000000000000000000000000000004040000000005c8f423fae47613f85eb513f000000000000803f000000000000000000000000000000000000803f00000000000000009a99993e00000000ae4761beae47613d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733fcdcc2242bd01803f000010419a99193e00000000000000000000803f0000000000000000cdcc0cbf000000003d0ad73eec51383e00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733fec516742b7ce0c3f000070411f856b3e52b81e3f000000000000803f00000000000000007b14aebe000000008fc275bda69b443d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733f85eb95428769e63e0000d0403d0ad73d00000000000000000000803f000000000000000052b81e3f00000000b81e053fe3a51b3d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733f142eb842b09b993e000030419eefa73d00000000000000000000803f00000000000000007247c0bd00000000504f94be3477143d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733fa470da420148783e7ac69d406d65de3d0000000000000000000000000000000000000000adcc383f00000000c80bfabeacd00f3d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733f32b3fc4214af433ecc6b3340cc0caf3d00000000000000000000000000000000000000000cb6133e000000007e07b83ed40c0a3d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733fe17a0f4379141f3e39fa7e401fa38f3d0000000000000000000000000000000000000000c18bb9bc000000004b5957bf6f272a3d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733f299c20435283d93db57482408511a63d00000000000000000000000000000000000000006196863f0000000049de5e3db667143d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733f70bd3143f2a38e3dd120aa404dcc833d0000000000000000000000000000000000000000a42a08bf000000009bc6fc3dc2735d3d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733fb8de4243f0b1403d15cd864085a89a3d0000000000000000000000000000000000000000f34b393f00000000881890bf05ad123d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733fffff5343a124143df2184140ba989d3d0000000000000000000000000000000000000000a516213f00000000915e543fb043fa3c00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733f472165430101e33c6e369b409628a53d0000000000000000000000000000000000000000c2ff3cbf000000007d5752bf777c193d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733f8f427643549d953c94cc2a407df2813d0000000000000000000000000000000000000000d0eac83f000000003296ffbe0c87473d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733febb18343405e5c3ca5535240b162d73d0000000000000000000000000000000000000000f64f01bf0000000026e26c3fc8b1213d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733f8f428c435a6c353c7fa761400cd5833d00000000000000000000000000000000000000006376db3d000000001491dabf9b87563d00000000000000000000804000000000cdcc0c3fcdcc4c3f3333733f33d3944330b3f23b4b172240505b7f3d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "element_count": 32,
+        "element_size": 80,
+        "encoding": "hex",
+        "schema_signature": "17465410866532352871"
+      }
+    },
+    "TP_Sim": {
+      "ctl": {
+        "data": "0000803f94630d4582fe183d00167a4877092e3f2b4f983e77092e3f2b4f983e0e2c5f3f8141aa3e0e2c5f3f8141aa3e0000000000000000000000000000000077092e3f2b4f983e0e2c5f3f8141aa3e00000000000000000000003f0000003f0000000000000000000000000000000000000000000000000000000000000000",
+        "element_count": 2,
+        "element_size": 64,
+        "encoding": "hex",
+        "schema_signature": "2828924506588023338"
+      }
+    }
+  },
+  "version": 5
+}

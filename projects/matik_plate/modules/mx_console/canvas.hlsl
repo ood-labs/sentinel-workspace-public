@@ -9,14 +9,17 @@
 // handle you see is exactly the handle you pick.
 #include "../_shared/plate.hlsli"
 #include "../_shared/microfont.hlsli"
+#include "../_shared/plan_theme.hlsli"
 
 StructuredBuffer<PlateRec> Plate : register(t0);
 RWTexture2D<float4> OutputUAV : register(u0);
 
-static const float3 INK    = float3(0.86, 0.88, 0.90);
-static const float3 DIM    = float3(0.30, 0.33, 0.36);
-static const float3 ACCENT = float3(1.00, 0.66, 0.20);
-static const float3 ORGAN  = float3(0.42, 0.78, 0.92);
+// INSTRUMENT PALETTE — see plan_theme.hlsli. Mostly monochrome; hue only where it informs.
+static const float3 INK    = PT_INK;
+static const float3 DIM    = PT_DIM;
+static const float3 ACCENT = PT_ACCENT;   // RESERVED: selection & live handle
+// role identity: organism anchors vs instrument cells — a closed two-member set, so hue earns it
+static const float3 ORGAN  = PT_ID_A;
 
 float txt(float2 p, float2 org, float gh, uint2 packed, uint count)
 {
@@ -132,11 +135,11 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float2 uv = ((float2)px + 0.5) / _Resolution.xy;
     float pxs = 1.0 / _Resolution.x;
 
-    float3 col = float3(0.031, 0.035, 0.041);
+    float3 col = PT_FIELD;
 
     // reference lattice — the plan is spatial, so give the eye a ruler
     float gl = min(abs(frac(uv.x * 12.0) - 0.5), abs(frac(uv.y * 12.0) - 0.5));
-    col += float3(0.020, 0.023, 0.028) * (1.0 - smoothstep(0.0, 0.03, gl));
+    col += PT_GRID * 0.55 * (1.0 - smoothstep(0.0, 0.03, gl));
 
     PlateRec hdr = Plate[PLATE_HEADER];
 

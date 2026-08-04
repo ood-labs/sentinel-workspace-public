@@ -1,0 +1,64 @@
+{
+ "project": "projects/reactor_shaft/reactor_shaft.sentinel",
+ "source_commit": "b650818 (public-seed-agent-test)",
+ "assembly": "Curated onto the twenty-project seed from the public-seed-agent-test branch; five of the ten branch projects were promoted. See release-candidate.json.",
+ "promoted_paths": [
+  "projects/reactor_shaft/README.md",
+  "projects/reactor_shaft/reactor_shaft.sentinel",
+  "projects/reactor_shaft/modules/"
+ ],
+ "approved_structure": {
+  "pipelines": [
+   "RS_Plan",
+   "RS_Shaft",
+   "RS_Lens"
+  ],
+  "node_presets": [
+   "Frame \u2014 Down The Shaft",
+   "Quality 1 \u2014 Draft",
+   "Quality 4 \u2014 Hero (capture only)",
+   "Quality 3 \u2014 Beauty",
+   "Quality 2 \u2014 Live (default)"
+  ],
+  "scene_groups": 1,
+  "scene_group_controls": [
+   9
+  ],
+  "group_outputs": 0,
+  "notes": "Curated by the user from the agent-authored branch; layouts saved on the branch head."
+ },
+ "compile": {
+  "method": "offline compile_check through the real injection preamble on the 2026-08-04 dev instance",
+  "modules": {
+   "RS_Plan": {
+    "passes": 2,
+    "params": 27,
+    "compile_ok": true,
+    "lints": []
+   },
+   "RS_Shaft": {
+    "passes": 1,
+    "params": 28,
+    "compile_ok": true,
+    "lints": []
+   },
+   "RS_Lens": {
+    "passes": 7,
+    "params": 30,
+    "compile_ok": true,
+    "lints": [
+     {
+      "code": "final_output_format_mismatch",
+      "severity": "warning",
+      "message": "Final output pass 'grade' resolves to RGBA16F while the pipeline publishes BGRA8."
+     }
+    ]
+   }
+  },
+  "status": "pass; every module compiled with zero errors"
+ },
+ "runtime": {
+  "status": "fresh-load battery not run at assembly time; authoring-time live proof is described in the project README. A fresh-load pass is owed before the next installer ships this seed."
+ },
+ "validation": "validate-official-examples.ps1 and audit-public-release.ps1 run at the assembly commit; results recorded in release-candidate.json."
+}

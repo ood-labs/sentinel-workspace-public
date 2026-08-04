@@ -7,21 +7,37 @@ This is a different mode from `knowledge/creative-exploration-goals.md`, which e
 existing project indefinitely. Here there is a target, the graph starts empty, and the run
 ends with a saved, proven show.
 
-Worked example: `projects/matik_plate/` (read its README for the applied form).
+Worked examples, each strong in a different place — read the README of whichever is closest:
+
+| Project | Read it for |
+| --- | --- |
+| `projects/matik_plate/` | the applied form of this method end to end |
+| `projects/sunward_corridor/` | a scaffold **tailored** to its subject: plan-over-elevation, path scrub, a correctness readout |
+| `projects/soft_vitrine/` | editing flexibility, and a coordinate randomiser that still composes |
+| `projects/vitreous_cross/` | a **relational** randomiser, and quality as a shipped preset ladder |
 
 ---
 
 ## 1. Inventory before you build
 
-Before writing any code, produce three things in the response:
+Before writing any code, produce five things in the response:
 
 1. **A complete element inventory of the reference.** Every distinct visual family, not a
    summary. Missing a family early is what forces a rewrite late.
 2. **The node decomposition.** Name every node and its one responsibility.
 3. **The data contract.** The record structs and which node owns each.
+4. **The scaffold's projection.** What a draughtsman would draw for this subject, and why one
+   view is or is not enough (§2.5).
+5. **What a re-roll means.** Which arrangement handles exist, and whether this subject's
+   identity is positional or relational (§3).
 
 Do this even when the user did not ask for a plan. The cost is one message; the cost of
 discovering the layout authority after building three renderers is the whole build.
+
+Items 4 and 5 are on this list because both are cheap to decide now and expensive to retrofit:
+a second projection is one more strip while the schematic is being written and a rewrite
+afterwards, and a randomiser that has to preserve relationships wants a parent tree transcribed
+at the same time as the positions.
 
 State the archetype out loud (see `modular-scene-authoring`). **Hybrids are normal** — a
 dense collage of technical panels plus organic 3D masses is a routing problem *and* an
@@ -49,6 +65,53 @@ Consequences to hold onto:
 - The authority's preview becomes the diagnostic surface for the entire system. Invest in it.
 
 Build the authority **first**, in signal-flow order. It is usually not the fun node.
+
+---
+
+## 2.5 Design the scaffold for the subject
+
+**The plan authority is a contract, not a template.** Four things are fixed: single authority,
+persistent records, direct manipulation, an honest preview. Everything else — the projection,
+the verbs, the readouts — is a design problem you are expected to solve freshly for each
+subject, and it is where most of the expressiveness of the finished tool comes from.
+
+The failure to avoid is reflexively reaching for "a plan node that draws a front elevation with
+click-select and drag-move". That is one good answer. It became the default because it fits
+frontal collages, and it silently becomes the wrong answer the moment the subject is organised
+along an axis that a front elevation cannot show.
+
+**Ask what a draughtsman would actually draw for this thing.** Then build that.
+
+| If the subject is organised by… | The scaffold probably wants… |
+| --- | --- |
+| a frontal arrangement on a plane | one elevation (the classic case) |
+| depth or height that carries the composition | two orthographic strips sharing an axis — plan over elevation |
+| extent along a path or tunnel | a section scrubbed along that path, plus a route diagram |
+| time, cues, or sequence | a timeline with the records on it |
+| connection, flow, or dependency | a network/graph view, not a spatial one |
+| a repeating period | one period drawn once, with the wrap marked |
+
+`projects/sunward_corridor/modules/SC_Plan` is the bar for tailoring. Its preview is a
+draughtsman's **plan over elevation sharing one z axis** — the plan strip owns lateral drift,
+the elevation strip owns rise, and the *same handle* edits both, which is how you draw a
+corridor on paper rather than two sliders that disagree. It also carries a correctness readout
+the renderer cannot give you: the flight axis drawn as a dashed line that **turns red where it
+leaves the tunnel**, so a corridor bent through its own wall is visible in the diagram instead
+of being discovered later as a black frame.
+
+Two things to steal from that, whatever you are building:
+
+- **A second projection costs one more strip and pays for itself immediately.** If one view
+  cannot show the axis the subject is organised along, the scaffold is hiding its own subject.
+  Adding a top view to a front elevation is cheap; discovering that depth was unreadable after
+  building three renderers is not.
+- **Put the failure mode in the diagram.** Whatever "this arrangement is broken" means for this
+  subject — self-intersection, leaving the frame, a gap in a run, a mass outside its container —
+  draw it. A scaffold that can only show what *is* is worth less than one that shows what is
+  *wrong*.
+
+State the projection choice and its justification in the response before building it, the same
+way you state the archetype.
 
 ---
 
@@ -127,11 +190,83 @@ Regeneration must be signature-driven, not unconditional, or edits die every coo
 pure-appearance parameters *out* of the signature and republish them each cook instead, or
 every colour tweak wipes the user's layout work.
 
+### Randomise relationships, not coordinates
+
+Decide what a re-roll *means* while you are still inventorying — it is a layout-time design
+decision, not something to bolt on after the renderer works. Name the exploration handles
+alongside the node decomposition and the data contract.
+
+Then ask the question that decides the whole design:
+
+> **What relationships make this the thing it is?**
+
+If the honest answer is "none — these are objects arranged on a plane", randomise coordinates.
+Stratify the draw, preserve the size hierarchy, and you are done; that is `VT_Plan`, and it is
+correct there because a vitrine full of objects genuinely is a scatter.
+
+If the answer names **interlocking, containment, attachment, adjacency, periodicity, or
+support**, then coordinates are not what the subject is made of, and drawing them fresh per
+record destroys exactly the relationships that make it recognisable. It does not look like a
+different arrangement of the same thing; it looks like debris. `vitreous_cross` is a worked
+case: a first randomiser drew stratified coordinates for every record and produced bubbles
+floating in open air with no glass to lens them, plates detached into space, and volumes that
+no longer touched — from code that was, considered per record, perfectly reasonable.
+
+The fix is to randomise each family **against what it actually depends on**:
+
+```
+volumes      attach to a PARENT volume, at an offset drawn to guarantee shared solid
+inclusions   hosted INSIDE a volume, in groups, radius derived from that volume's extent
+plates       hosted INSIDE a volume, extent derived from that volume's face
+```
+
+This is the same rule as §4 — derive a magnitude from the upstream record rather than from a
+parallel parameter — applied to the randomiser instead of to the renderer. The upstream record
+is just the parent element.
+
+Transcribe a **parent tree** from the reference at the same time you transcribe positions. Then
+`variation` can lerp each child's *attach offset* from "exactly where the reference put it" to a
+free draw, and stay continuous and valid the whole way, with `variation = 0` still exact.
+
+### Guarantee the draw; do not hope for it
+
+A relational randomiser needs explicit guarantees or it fails in ways that look like bugs.
+Every one of these was added to `vitreous_cross` because a seed looked broken without it:
+
+| Guarantee | Without it |
+| --- | --- |
+| Draw attach offsets **below** the touching distance | elements drift apart; the cluster is pieces |
+| Clamp **both** ways — out *and* in | clamping only outward lets a small child sit concentric inside a big one and vanish |
+| Bias the parent draw toward the root | a transcribed tree is usually a chain, and a chain with random directions grows a straggling procession that walks off frame |
+| A **fit pass**: measure the result, apply one uniform similarity transform to recentre and zoom into frame | growth produces a valid cluster but says nothing about where it ends up or how big it is — the single most common way a seed looks broken. Run it *before* dependent families so they inherit the framing free. Uniform, so no proportion changes. |
+| Temper extremes toward the record's own mean | the reference's most slender elements read only because the transcribed arrangement packs things across them; a random draw does not, so slivers read as wire |
+| Cap a contained family's scale against its container | the mass swallows the container and the composition stops being what it was |
+
+Gate every correction on `variation > 0`. The transcription is valid by construction, and
+running a clamp over it will nudge records off their transcribed coordinates — which quietly
+breaks the "`variation = 0` is exactly the reference" promise. Verify that promise by reading
+records back and comparing against the tables, not by eye.
+
 ### Derived records follow their parent
 
 When one record's placement derives from another (chips on a plate, leaves on a branch),
 dragging the parent must carry the unedited children with it, while children the user has
 hand-moved keep their own position. That is what the per-record `edited` flag is for.
+
+### A generated family is still just records
+
+Some families are cheaper or better to *generate* than to draw — a photoreal hand, a carved
+profile, a real leaf. That does not exempt them from the authority rule. Route the generator
+through a stamp node that reads the plan's records, so the generated plate supplies **pixels
+only** and never decides its own position, size, lean, or side of the depth plane. Done that way
+a family's drawn and generated versions occupy identical records, the compositor cannot tell them
+apart, and one gain crossfades between them — which also means the drawn version stays as the
+fallback when a generation comes back wrong.
+
+The generator-side craft — why to generate photoreal on black even for a drawn look, why prompt
+lighting words decide mattability, why exposure must be measured rather than tuned, and the
+feedback hygiene that stops held stills degrading — is in `knowledge/streamdiff.md`
+("Generated Subjects In An Authored Composition").
 
 ### You will not be able to machine-prove the gestures — build them anyway
 
@@ -194,6 +329,18 @@ the search.
 Two to four axes is the useful range. Good axes change structure (layout strategy, mesh
 style, growth mode). Palette and grade are not exploration axes.
 
+### The transcription is the floor, not the ceiling
+
+Matching the reference is the point at which the interesting work *starts*, not the point at
+which it stops. Once it is transcribed, proven and saved — so the match can always be recovered
+— push past it. The randomiser and the arrangement enums exist partly for this: they are the
+cheapest possible way to find out what else the system you just built can do.
+
+The order matters. Explore *after* the reference is locked and recoverable, never instead of
+reaching it, and never so far that the saved default drifts off the brief. `variation = 0` and
+the baked manifest defaults are what make the exploration free — you can go anywhere because
+you can always come back.
+
 ---
 
 ## 7. Judge from the image after every change
@@ -221,6 +368,22 @@ Before reporting done:
 
 - **Bake tuned values into the manifests** (`sentinel_module action=bake_defaults`) so the
   saved project reopens in the state you tuned, not in the state you first guessed.
+- **Ship narrow-scoped node presets.** A preset that saves everything is a snapshot; a preset
+  that saves one concern is a tool. Save to project scope with an explicit `params` list.
+  - **A frame contract** on the renderer, camera parameters *alone*. The internal camera is
+    meant to be flown, so the composed pose is lost the first time anyone explores it and is
+    recoverable from nothing else in the project. Save it as soon as the pose is chosen — not
+    at the end, by which point it may already be gone.
+  - **A quality ladder** on any heavy node, quality parameters *alone* — Draft / Live / Beauty /
+    Hero. Bake a rung you can comfortably work in as the manifest default; never the top one.
+    Make the top rung explicitly capture-only, because past some cost a setting stops being slow
+    and starts making the whole application unusable, which is a worse failure than looking
+    slightly worse. Prefer buying quality along the axis the *image* is about rather than
+    reflexively supersampling: for a dispersive subject, two more wavelengths beat four times
+    the rays at a sixth of the cost.
+  - Measure every rung **in one sitting** and publish the numbers as ratios. Identical presets
+    measured 3–5× apart in this workspace depending only on how many node previews were open;
+    a number quoted without its conditions is not a measurement.
 - Save with `save_project bundle_modules=true` so the show travels with its Module files.
 - Curate the Scene Group surface to 4–8 high-impact controls and **test every one through
   the group path**, confirming it reaches the member parameter.

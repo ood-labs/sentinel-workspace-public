@@ -1,0 +1,46 @@
+name: "AX Ink"
+version: "0.1"
+mode: filter
+
+# The printed surface. Misregistration, dot gain, the reproduction's own halftone screen, paper
+# fibre, and the tone of ink on stock — the process the reference has visibly been through.
+#
+# Nothing here decides composition. If a change would alter what the image IS, it belongs
+# upstream in AX_Plan (placement, focus, travel) or AX_Press (form, plate, ink weight).
+#
+# The surface is SCREEN-FIXED on purpose: it is the sheet you are looking through, not anything
+# in the collage, so it must not travel with the fall.
+
+inputs:
+  - { name: "Press", slot: 0, required: true }
+
+parameters:
+  # `soften` is a genuine press property — a sheet does not resolve infinitely — and it is also
+  # the last line of defence against sub-pixel shimmer coming out of a scene that is fractal by
+  # construction. Keep it small; the collage lives on hard cut edges.
+  - { name: soften,     display: "Press Softness",  type: float, min: 0.0, max: 1.5, default: 0.3, group: "Press" }
+  - { name: reg,        display: "Misregistration", type: float, min: 0.0, max: 3.0, default: 0.45, group: "Press" }
+  - { name: bleed,      display: "Dot Gain",        type: float, min: 0.0, max: 1.0, default: 0.16, group: "Press" }
+
+  - { name: screen_amt, display: "Screen",          type: float, min: 0.0, max: 1.0,   default: 0.1, group: "Screen" }
+  - { name: screen_lpi, display: "Screen Pitch",    type: float, min: 40.0, max: 600.0, default: 210.000000, group: "Screen" }
+
+  - { name: grain,       display: "Paper Grain",    type: float, min: 0.0, max: 1.0, default: 0.3, group: "Stock" }
+  - { name: grain_scale, display: "Fibre Size",     type: float, min: 0.5, max: 8.0, default: 1.6, group: "Stock" }
+  - { name: warmth,      display: "Stock Tone",     type: float, min: 0.0, max: 1.0, default: 0.3, group: "Stock" }
+  - { name: desat,       display: "Ink Bite",       type: float, min: 0.0, max: 0.6, default: 0.1, group: "Stock" }
+  - { name: black_lift,  display: "Shadow Lift",    type: float, min: 0.0, max: 1.0, default: 0.18, group: "Stock" }
+  - { name: white_cap,   display: "Sheet Ceiling",  type: float, min: 0.0, max: 1.0, default: 0.22, group: "Stock" }
+
+  - { name: vignette,   display: "Sheet Falloff",   type: float, min: 0.0, max: 1.0, default: 0.18, group: "Sheet" }
+  - { name: gain,       display: "Gain",            type: float, min: 0.3, max: 2.0, default: 1.08, group: "Sheet" }
+
+passes:
+  - name: ink
+    shader: ink.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input" }
+
+outputs:
+  - { name: "Program", pass: ink }

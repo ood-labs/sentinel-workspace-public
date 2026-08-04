@@ -1,0 +1,65 @@
+{
+ "project": "projects/vitreous_cross/vitreous_cross.sentinel",
+ "source_commit": "b650818 (public-seed-agent-test)",
+ "assembly": "Curated onto the twenty-project seed from the public-seed-agent-test branch; five of the ten branch projects were promoted. See release-candidate.json.",
+ "promoted_paths": [
+  "projects/vitreous_cross/README.md",
+  "projects/vitreous_cross/vitreous_cross.sentinel",
+  "projects/vitreous_cross/modules/"
+ ],
+ "approved_structure": {
+  "pipelines": [
+   "VC_Plan",
+   "VC_Env",
+   "VC_Render",
+   "VC_Post"
+  ],
+  "node_presets": [
+   "Q0 Draft",
+   "Q1 Live",
+   "Q2 Beauty",
+   "Q3 Hero",
+   "Frame Contract"
+  ],
+  "scene_groups": 1,
+  "scene_group_controls": [
+   6
+  ],
+  "group_outputs": 0,
+  "notes": "Curated by the user from the agent-authored branch; layouts saved on the branch head."
+ },
+ "compile": {
+  "method": "offline compile_check through the real injection preamble on the 2026-08-04 dev instance",
+  "modules": {
+   "VC_Plan": {
+    "passes": 2,
+    "params": 23,
+    "compile_ok": true,
+    "lints": []
+   },
+   "VC_Env": {
+    "passes": 4,
+    "params": 18,
+    "compile_ok": true,
+    "lints": []
+   },
+   "VC_Render": {
+    "passes": 1,
+    "params": 40,
+    "compile_ok": true,
+    "lints": []
+   },
+   "VC_Post": {
+    "passes": 5,
+    "params": 17,
+    "compile_ok": true,
+    "lints": []
+   }
+  },
+  "status": "pass; every module compiled with zero errors"
+ },
+ "runtime": {
+  "status": "fresh-load battery not run at assembly time; authoring-time live proof is described in the project README. A fresh-load pass is owed before the next installer ships this seed."
+ },
+ "validation": "validate-official-examples.ps1 and audit-public-release.ps1 run at the assembly commit; results recorded in release-candidate.json."
+}

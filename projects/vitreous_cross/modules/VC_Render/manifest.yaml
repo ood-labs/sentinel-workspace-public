@@ -1,0 +1,137 @@
+name: "VC Render"
+version: "0.1"
+mode: generator
+resolution: [1536, 1024]
+
+# TWO DIFFERENT FORMATS, AND THE DISTINCTION IS LOAD-BEARING.
+#   working_format governs INTERMEDIATE pass buffers.
+#   output_format  governs the texture this node hands to the NEXT NODE.
+# Setting only working_format leaves the node publishing RGBA8, which clamps alpha to [0,1] —
+# and this module carries LINEAR DEPTH in alpha for VC_Post's defocus. It would also clip the
+# HDR, so the bloom downstream would run on [0,1] data instead of the real specular range.
+working_format: RGBA16F
+output_format: RGBA16F
+features: [camera]
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed"
+  interactions: [camera]
+
+# The transport engine. Owns Sentinel's internal camera and NOTHING about the composition:
+# every volume, every inclusion and every plate is a record VC_Plan published, and every light
+# is a texel of VC_Env's panorama. What lives here is optics.
+
+inputs:
+  - { name: "Studio", slot: 0, required: true }
+  - { name: "Irradiance", slot: 1, required: true }
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: mat,    type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+
+parameters:
+  # ---- Optics
+  # Real optical glass splits by about 0.008 across the visible band, which at this scale is
+  # invisible, and the reference plainly does not obey it. dispersion = 1 is the true material;
+  # the default runs several times physical so the fringes read as they do in the reference.
+  - { name: dispersion,       display: "Dispersion",       type: float, min: 0.0, max: 40.0, default: 16.000000, group: "Optics" }
+  - { name: spectral_samples, display: "Spectral Samples", type: int,   min: 1, max: 7, default: 3, group: "Optics" }
+  - { name: spec_gain,        display: "Interface Reflection", type: float, min: 0.0, max: 3.0, default: 1.15, group: "Optics" }
+  - { name: absorb_gain,      display: "Absorption",       type: float, min: 0.0, max: 4.0, default: 1.000000,  group: "Optics" }
+
+  # ---- Thin film on the cavity membranes
+  - { name: film_amount,    display: "Film Strength",   type: float, min: 0.0, max: 1.0, default: 0.72, group: "Membrane" }
+  - { name: film_thickness, display: "Film Thickness",  type: float, min: 80.0, max: 1400.0, default: 720.000000, group: "Membrane" }
+  - { name: film_variance,  display: "Thickness Variance", type: float, min: 0.0, max: 1.0, default: 0.26, group: "Membrane" }
+  - { name: film_grain,     display: "Thickness Grain", type: float, min: 0.3, max: 12.0, default: 6.5, group: "Membrane" }
+  - { name: film_ior,       display: "Film Index",      type: float, min: 1.05, max: 2.2, default: 1.34, group: "Membrane" }
+  # How much of the transmitted energy the membrane scatters into a wide lobe. This is the
+  # single control that decides whether the organic masses read as clear bubbles showing the
+  # dark seamless behind them, or as the reference's milky opalescent substance.
+  - { name: inclusion_frost, display: "Membrane Frost", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Membrane" }
+  - { name: glass_frost,     display: "Glass Frost",    type: float, min: 0.0, max: 1.0, default: 0.03, group: "Membrane" }
+  - { name: frost_tint,      display: "Frost Tint",     type: color, default: [1.000000, 0.985, 0.97],       group: "Membrane" }
+  - { name: wobble_freq,    display: "Cavity Wobble Frequency", type: float, min: 1.0, max: 18.0, default: 6.000000, group: "Membrane" }
+
+  # ---- Opaque surfaces
+  - { name: plate_diffuse, display: "Plate Diffuse",  type: float, min: 0.0, max: 4.0, default: 0.72,  group: "Surfaces" }
+  - { name: plate_spec,    display: "Plate Gloss",    type: float, min: 0.0, max: 4.0, default: 0.85, group: "Surfaces" }
+  - { name: cyc_spec,      display: "Cyclorama Gloss", type: float, min: 0.0, max: 2.0, default: 0.1, group: "Surfaces" }
+  - { name: cyc_albedo,    display: "Cyclorama",      type: color, default: [0.085, 0.08, 0.073],     group: "Surfaces" }
+
+  # ---- Stage geometry: a seamless studio sweep, floor filleted into the back wall
+  - { name: cyc_floor,  display: "Floor Height",  type: float, min: -6.0, max: 0.0, default: -1.85, group: "Stage" }
+  - { name: cyc_back,   display: "Wall Distance", type: float, min: -14.0, max: -1.0, default: -4.2, group: "Stage" }
+  - { name: cyc_fillet, display: "Sweep Radius",  type: float, min: 0.05, max: 4.0, default: 1.6,  group: "Stage" }
+
+  # ---- Contact shadow. Its DIRECTION is not authored here: it is driven by expression from
+  # VC_Env's key_dir control outputs, so moving the studio light moves the shadow.
+  - { name: key_dir_x, display: "Key Dir X", type: float, min: -1.0, max: 1.0, default: -0.61153, group: "Shadow" }
+  - { name: key_dir_y, display: "Key Dir Y", type: float, min: -1.0, max: 1.0, default: 0.659385,  group: "Shadow" }
+  - { name: key_dir_z, display: "Key Dir Z", type: float, min: -1.0, max: 1.0, default: 0.437313,  group: "Shadow" }
+  - { name: shadow_strength, display: "Shadow Strength", type: float, min: 0.0, max: 1.0, default: 1.000000, group: "Shadow" }
+  - { name: shadow_transmit, display: "Glass Transmission", type: float, min: 0.0, max: 1.0, default: 0.24, group: "Shadow" }
+  - { name: shadow_sharp,    display: "Shadow Sharpness",   type: float, min: 1.0, max: 64.0, default: 5.000000, group: "Shadow" }
+  - { name: shadow_steps,    display: "Shadow Steps",       type: int,   min: 4, max: 64, default: 26, group: "Shadow" }
+
+  - { name: exposure, display: "Exposure", type: float, min: 0.05, max: 6.0, default: 1.000000, group: "Grade" }
+
+  # ---- Quality
+  #
+  # These eight parameters are the whole cost of the node and they change NOTHING about the
+  # look's intent — only how finely it is resolved. They ship as four node presets so the trade
+  # is one click, and the manifest defaults are Q1 Live so the project does not open at 1.4 fps:
+  #
+  #   Q0 Draft   1 spectral, 1 ray,  52 steps,  5 interfaces   ~60 fps  (no dispersion)
+  #   Q1 Live    3 spectral, 1 ray,  72 steps,  8 interfaces   ~17 fps  <- default
+  #   Q2 Beauty  3 spectral, 2x2,    88 steps, 10 interfaces   ~2.7 fps
+  #   Q3 Hero    5 spectral, 2x2,    96 steps, 12 interfaces   ~1.4 fps
+  #
+  # Cost scales LINEARLY in spectral_samples and QUADRATICALLY in aa_samples, so the ray count
+  # is the first thing to drop and the last thing to add back. max_bounces is the parameter that
+  # most changes the IMAGE rather than its sharpness — see the path-exhaustion note in
+  # render.hlsl for why a low budget no longer renders black.
+  - { name: march_steps,      display: "March Steps",      type: int,   min: 16, max: 320, default: 72,  group: "Quality" }
+  - { name: max_bounces,      display: "Max Interfaces",   type: int,   min: 1, max: 24, default: 8,   group: "Quality" }
+  - { name: surface_eps,      display: "Surface Epsilon",  type: float, min: 0.0002, max: 0.01, default: 0.0025, group: "Quality" }
+  - { name: step_scale,       display: "Step Scale",       type: float, min: 0.3, max: 1.0, default: 0.75, group: "Quality" }
+  - { name: normal_eps,       display: "Normal Epsilon",   type: float, min: 0.0004, max: 0.02, default: 0.003, group: "Quality" }
+  - { name: throughput_floor, display: "Throughput Cutoff", type: float, min: 0.0005, max: 0.1, default: 0.012, group: "Quality" }
+  - { name: far_clip,         display: "Far Clip",         type: float, min: 4.0, max: 60.0, default: 26.000000, group: "Quality" }
+  - { name: aa_samples,       display: "Rays Per Axis",    type: int,   min: 1, max: 3, default: 1, group: "Quality" }
+
+  # Ships as a real control, not a debug define. In a renderer whose whole behaviour is
+  # invisible bookkeeping these are the only way to tell a dead lane from a dark one.
+  - name: view_mode
+    display: "View"
+    type: enum
+    options: [Beauty, Medium, Steps, Normals, Depth]
+    default: 0
+    flags: button_grid
+    group: "Quality"
+  - { name: step_budget, display: "Step Budget (view)", type: float, min: 32.0, max: 6000.0, default: 900.000000, group: "Quality" }
+  - { name: depth_near,  display: "Depth Near (view)",  type: float, min: 0.0, max: 40.0, default: 4.000000,  group: "Quality" }
+  - { name: depth_far,   display: "Depth Far (view)",   type: float, min: 0.1, max: 60.0, default: 14.000000, group: "Quality" }
+
+passes:
+  - name: march
+    shader: render.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "input:0" }
+      - { slot: 2, source: "input:1" }
+
+outputs:
+  - { name: "Beauty", pass: march }

@@ -1,0 +1,154 @@
+name: "RS Plan"
+version: "0.1"
+mode: generator
+resolution: [1152, 648]
+
+# The plan authority for reactor_shaft. Owns SHAFT SPACE and is the only node that decides the
+# bore section, what is bolted to which wall, where the lights are, what the core looks like —
+# and the only node that integrates travel. Publishes one record buffer consumed by RS_Shaft.
+#
+# The canvas is a draughtsman's CLEARANCE SECTION over a CROSS-SECTION ROSETTE. The program
+# image looks straight down the axis, which is exactly the projection that cannot show the axis,
+# so the diagram shows what that view hides — including whether anything is in the way.
+
+buffers:
+  - { name: plan, structured: true, element_size: 48, element_count: 74, persistent: true }
+
+state_buffers:
+  - name: plan
+    max_elements: 74
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+viewport:
+  hint: "SPACE play/pause · drag the top ruler to scrub · click select · drag: section = z + reach, rosette = wall + slide · Q/E width · A/D run · K kind · F face · X on/off · N re-roll · R reseed · C clear"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [space, a, d, q, e, k, f, x, n, r, c]
+    gestures: [click, drag]
+  bindings:
+    - { key: space, action: transport, label: "Play / Pause flight" }
+    - { gesture: left_drag, action: scrub, label: "Scrub flight (top ruler)" }
+    - { gesture: left_click, action: select, label: "Select fixture / light / station / core" }
+    - { gesture: left_drag, action: move, label: "Move (section = axial, rosette = radial)" }
+    - { key: q, action: narrow, label: "Narrow" }
+    - { key: e, action: widen, label: "Widen" }
+    - { key: a, action: shorten, label: "Shorten run" }
+    - { key: d, action: lengthen, label: "Lengthen run" }
+    - { key: k, action: cycle_kind, label: "Cycle kind" }
+    - { key: f, action: cycle_face, label: "Cycle wall / corner" }
+    - { key: x, action: toggle_active, label: "Toggle off" }
+    - { key: n, action: reroll, label: "Re-roll record" }
+    - { key: r, action: reseed, label: "Reseed shaft" }
+    - { key: c, action: clear_selection, label: "Clear selection" }
+
+parameters:
+  # ARRANGEMENT RANDOMIZER.
+  # This subject's identity is RELATIONAL, not positional: a fixture is a thing bolted to a
+  # WALL at a STATION, and a light is a thing mounted on a FIXTURE. Drawing free coordinates per
+  # record would scatter machinery into the air. `variation` re-rolls the relationships instead
+  # — which wall carries which rank of block, where in its own slice it sits, what kind it is —
+  # while three guarantees hold: a block stays on its face, never intrudes into the flight tube,
+  # and never leaves its station's slice. The reference is exactly variation = 0.
+  - { name: variation,     display: "Variation",    type: float, min: 0.0, max: 1.0,   default: 0.000000, group: "Shaft" }
+  - { name: seed,          display: "Seed",         type: float, min: 0.0, max: 512.0, default: 11.000000, group: "Shaft" }
+  # EXPLORATION AXIS — what the bore is cut as. Every style is 3-fold symmetric, so the three
+  # attachment faces stay put and not a single fixture record is invalidated by changing it.
+  - name: section_style
+    display: "Section"
+    type: enum
+    options: [Triangle, Chamfered, Hex Bore, Trefoil]
+    default: 0
+    flags: button_grid
+    group: "Shaft"
+  - { name: bore,          display: "Bore",         type: float, min: 0.5, max: 2.0,  default: 1.7, group: "Shaft" }
+  - { name: drift,         display: "Axis Drift",   type: float, min: 0.0, max: 3.0,  default: 1.000000, group: "Shaft" }
+  - { name: twist,         display: "Twist",        type: float, min: 0.0, max: 2.5,  default: 1.000000, group: "Shaft" }
+  - { name: corner,        display: "Corner Round", type: float, min: 0.0, max: 2.5,  default: 1.000000, group: "Shaft" }
+  - { name: station_count, display: "Live Stations", type: int,  min: 0, max: 12,     default: 12,   group: "Shaft" }
+  # The radius the eye needs kept clear. Anything reaching inside it is drawn red in the
+  # diagram and counted in the alarm row.
+  - { name: flight_clear,  display: "Flight Clearance", type: float, min: 0.10, max: 1.20, default: 0.42, group: "Shaft" }
+
+  - name: greeble_set
+    display: "Machinery"
+    type: enum
+    options: [Heat Exchange, Cargo Deck, Sensor Array, Bare Structure]
+    default: 0
+    flags: button_grid
+    group: "Machinery"
+  - name: palette_set
+    display: "Palette"
+    type: enum
+    options: [Reactor, Coolant, Furnace, Sodium]
+    default: 0
+    flags: button_grid
+    group: "Machinery"
+  - { name: fix_count, display: "Fixtures / Station", type: int,   min: 0, max: 3,     default: 3,   group: "Machinery" }
+  - { name: fix_scale, display: "Fixture Scale",      type: float, min: 0.3, max: 1.8, default: 1.000000, group: "Machinery" }
+  - { name: density,   display: "Surface Density",    type: float, min: 0.2, max: 1.6, default: 1.000000, group: "Machinery" }
+
+  - { name: light_count, display: "Lights / Station", type: int,   min: 0, max: 2,     default: 2,   group: "Lights" }
+  - { name: light_gain,  display: "Neon Gain",        type: float, min: 0.0, max: 4.0, default: 1.6, group: "Lights" }
+  - { name: flood_gain,  display: "Flood Gain",       type: float, min: 0.0, max: 8.0, default: 5.000000, group: "Lights" }
+
+  # Core geometry. Appearance-only: refreshed every cook and kept OUT of the signature, so
+  # tuning the core never wipes a shaft the user dragged into place.
+  - { name: core_x,      display: "Core X",      type: float, min: -1.0, max: 1.0,  default: 0.000000,  group: "Core" }
+  - { name: core_y,      display: "Core Y",      type: float, min: -1.0, max: 1.0,  default: 0.000000,  group: "Core" }
+  - { name: core_radius, display: "Core Radius", type: float, min: 0.04, max: 0.90, default: 0.78, group: "Core" }
+  - { name: core_hot,    display: "Hot Centre",  type: float, min: 0.02, max: 0.90, default: 0.26, group: "Core" }
+  - { name: core_ring,   display: "Ring Depth",  type: float, min: 0.02, max: 0.60, default: 0.22, group: "Core" }
+  - { name: core_spokes, display: "Spokes",      type: int,   min: 0, max: 24,      default: 0,    group: "Core" }
+  - { name: core_gain,   display: "Core Gain",   type: float, min: 0.0, max: 6.0,   default: 1.6,  group: "Core" }
+  - { name: core_spin,   display: "Core Spin",   type: float, min: 0.0, max: 4.0,   default: 0.35, group: "Core" }
+
+  # FLIGHT. travel integrates against _DeltaTime inside plan.hlsl and wraps at the loop period,
+  # so the flight is endless and the seam is bit-exact. `phase` rides on top as the sweepable
+  # loop coordinate: 0 -> 1 is exactly one period, which makes motion proof deterministic.
+  # Set Flight Speed to 0 and scrub Phase to hold a station still while editing it.
+  - { name: flight_speed, display: "Flight Speed", type: float, min: 0.0, max: 16.0, default: 3.6, group: "Flight" }
+  - { name: phase,        display: "Phase",        type: float, min: 0.0, max: 1.0,  default: 0.000000, group: "Flight" }
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:plan"
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+
+data_outputs:
+  - name: "Shaft"
+    buffer: "plan"
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+outputs:
+  # named distinctly from the "Shaft" DATA output so a link never has to disambiguate by slot
+  - { name: "Shaft View", pass: canvas }

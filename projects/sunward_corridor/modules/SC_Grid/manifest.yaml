@@ -1,0 +1,39 @@
+name: "SC Grid"
+version: "0.1"
+mode: filter
+
+# The finish. Quantization, column smear, posterization and the black frame — the process the
+# reference has visibly been through. Nothing here decides composition; if a change would alter
+# what the image IS, it belongs in SC_Plan or SC_Corridor.
+
+inputs:
+  - { name: "Corridor", slot: 0, required: true }
+
+parameters:
+  # EXPLORATION AXIS — which artifact the image is quantized THROUGH. Structural: each mode is
+  # a different resampling process, not a grade. Swept, judged and baked.
+  - name: grain_mode
+    display: "Grid Artifact"
+    type: enum
+    options: [Clean Grid, Column Smear, Scanline Drift, Mosaic Bleed]
+    default: 1
+    flags: button_grid
+    group: "Grid"
+  - { name: grid_cols, display: "Columns",     type: float, min: 8.0, max: 640.0, default: 260.000000, group: "Grid" }
+  - { name: smear,     display: "Smear",       type: float, min: 0.0, max: 1.0,   default: 0.18,  group: "Grid" }
+  - { name: chroma,    display: "Chroma Split", type: float, min: 0.0, max: 2.0,  default: 0.12,  group: "Grid" }
+
+  - { name: levels,    display: "Colour Steps", type: float, min: 2.0, max: 64.0, default: 22.000000, group: "Colour" }
+  - { name: gain,      display: "Gain",         type: float, min: 0.5, max: 2.0,  default: 1.04, group: "Colour" }
+
+  - { name: frame,     display: "Black Frame",  type: float, min: 0.0, max: 0.15, default: 0.03, group: "Frame" }
+
+passes:
+  - name: grid
+    shader: grid.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input" }
+
+outputs:
+  - { name: "Program", pass: grid }

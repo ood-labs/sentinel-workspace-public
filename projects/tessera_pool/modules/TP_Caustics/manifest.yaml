@@ -1,0 +1,148 @@
+name: "TP Caustics"
+version: "0.2"
+mode: generator
+resolution: [512, 512]
+working_format: RGBA16F
+output_format: RGBA16F
+
+# Where the sun goes after it enters the water.
+#
+# The output is an IRRADIANCE MULTIPLIER on the tank's interior lining, normalised so a
+# perfectly flat surface resolves to exactly 1.0. That makes it directly usable by the renderer
+# and makes correctness checkable with a number rather than by eye: still the water, and every
+# lit texel of the atlas should read 1.
+#
+# output_format is RGBA16F because a caustic cusp routinely exceeds 4x. Published as RGBA8 the
+# focus lines — the entire point of the pass — would clip flat to white.
+
+buffers:
+  # A uint accumulator, not a float one: the splat is a scatter, and a scatter needs atomics.
+  # TWO halves of 512x512. Cook parity picks which one this cook fills and which one it wipes
+  # for the next; they are never touched together, so there is nothing to race and nothing to
+  # order. See the header of splat.hlsl.
+  - { name: acc,  structured: true, element_size: 4, element_count: 524289 }
+  - { name: tick, structured: true, element_size: 16, element_count: 1, persistent: true }
+  - { name: caus, format: RGBA16F, scale: 1.0 }
+
+inputs:
+  - { name: "Surface", slot: 0, required: true }
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: p2,     type: float }
+      - { name: p3,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: pad0,   type: float }
+      - { name: pad1,   type: float }
+
+parameters:
+  # EXPLORATION AXIS — how the caustic is computed at all. Photon is the real answer and the
+  # default; Divergence is the cheap floor-only estimate, kept because it is the draft rung and
+  # because it is the fallback if atomics are ever unavailable.
+  - name: method
+    display: "Method"
+    type: enum
+    options: [Photon, Divergence]
+    default: 0
+    flags: button_grid
+    group: "Caustics"
+
+  - { name: gain,     display: "Gain",     type: float, min: 0.0, max: 4.0, default: 1.0,  group: "Caustics" }
+  # A gamma on the normalised irradiance. Above 1 it deepens the dark water between the focus
+  # lines without touching the neutral level, because 1.0 to any power is still 1.0 — which is
+  # the whole reason the output is normalised the way it is.
+  - { name: contrast, display: "Contrast", type: float, min: 0.2, max: 3.0, default: 1.35, group: "Caustics" }
+  # Multiplies the surface slope the photons are refracted through. Physically it should be 1;
+  # above that the caustics sharpen and separate beyond what the wave amplitude alone gives,
+  # which is how the reference's pool actually looks under a bright sky.
+  - { name: slope_gain, display: "Slope Gain", type: float, min: 0.0, max: 4.0, default: 1.1, group: "Caustics" }
+  # How wide a patch of surface each photon is refracted through, in footprint units. Stands in
+  # for the angular size of the sun: light from a finite source cannot focus detail finer than
+  # itself, so the capillary chop washes out instead of printing a crosshatch on the floor.
+  - { name: surface_smooth, display: "Sun Softness", type: float, min: 0.0, max: 0.08, default: 0.020, group: "Caustics" }
+  # Sub-pixel wavelength separation around focus-line gradients. This changes chroma while the
+  # output pass preserves scalar irradiance, so zero is the old monochrome solve and flat water
+  # remains exactly neutral at every setting.
+  - { name: dispersion, display: "Spectral Spread", type: float, min: 0.0, max: 4.0, default: 0.85, group: "Caustics" }
+
+  # ---- Quality ladder. sample_step is the real cost knob: photon count scales as 1/step^2.
+  # atlas_size and sample_grid are fixed by the buffer and dispatch sizes and are exposed only
+  # so the shaders and the manifest cannot disagree about them.
+  - { name: sample_step, display: "Photon Step", type: int, min: 1, max: 6, default: 2, group: "Quality" }
+  - { name: blur_radius, display: "Reconstruct", type: int, min: 0, max: 3, default: 2, group: "Quality" }
+  - { name: atlas_size,  display: "Atlas Size",  type: int, min: 512, max: 512, default: 512, group: "Quality" }
+  - { name: sample_grid, display: "Sample Grid", type: int, min: 2048, max: 2048, default: 2048, group: "Quality" }
+
+  # A scatter into a buffer is invisible by construction. Raw Counts is the shipped view that
+  # separates "no photons arrived" from "photons arrived and the normalisation ate them".
+  - name: view_mode
+    display: "View"
+    type: enum
+    options: [Irradiance, Raw Counts, Opposite Half]
+    default: 0
+    flags: button_grid
+    group: "Quality"
+  - { name: count_scale, display: "Count Scale (view)", type: float, min: 0.1, max: 200.0, default: 12.0, group: "Quality" }
+  # Breaks the beat between the photon lattice and the atlas bin lattice. Deterministic per
+  # sample, so it costs nothing in temporal stability.
+  - { name: jitter_amount, display: "Sample Jitter", type: float, min: 0.0, max: 3.0, default: 0.0, group: "Quality" }
+
+passes:
+  - name: tick
+    shader: tick.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:tick"
+
+  - name: splat
+    shader: splat.hlsl
+    target: cs_5_0
+    dispatch: [256, 256, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "buffer:tick" }
+    output: "buffer:acc"
+
+  - name: resolve
+    shader: resolve.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:acc" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "input:0" }
+    output: "buffer:caus"
+
+  - name: atlas
+    shader: atlas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:caus" }
+      - { slot: 1, source: "data:0" }
+
+  - name: caustics_out
+    shader: caustics_out.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:caus" }
+
+outputs:
+  # Atlas View first so the node's own preview is readable; Caustics publishes the spectral RGB
+  # multiplier consumed by the renderer while the raw-count diagnostics stay private in `caus`.
+  - { name: "Atlas View", pass: atlas }
+  - { name: "Caustics",   pass: caustics_out }

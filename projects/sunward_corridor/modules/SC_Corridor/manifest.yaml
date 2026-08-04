@@ -1,0 +1,109 @@
+name: "SC Corridor"
+version: "0.1"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+output_format: RGBA16F
+features: [camera]
+
+# Ray-marches the corridor SC_Plan authored. It owns Sentinel's internal camera; the canonical
+# pose sits just inside the tube at the origin looking down +z, which is where the corridor
+# geometry is built to be seen from. Flying it is an intentional creative move, not a mistake —
+# the plan view's cyan flight axis tells you when you have left the tunnel.
+#
+# output_format is declared explicitly: without it the node publishes RGBA8 and the sun's
+# highlight clips flat before SC_Grid ever sees it.
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed"
+  interactions: [camera]
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: tone, type: float }
+      - { name: grp, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+
+parameters:
+  # EXPLORATION AXIS — what the corridor is built from. Structural: it changes the silhouette
+  # the checker is painted on, not the grade. Swept, judged and baked.
+  - name: tunnel_style
+    display: "Tunnel"
+    type: enum
+    options: [Box, Rounded, Colonnade, Ribbed]
+    default: 0
+    flags: button_grid
+    group: "Corridor"
+  # How far ahead the sky opening sits. This is the dream-logic distance: you fly forever and
+  # the sun never arrives, because the opening travels with you.
+  - { name: aperture_z, display: "Sky Distance", type: float, min: 6.0, max: 60.0, default: 6.000000, group: "Corridor" }
+  - { name: sun_track,  display: "Sun Follows Corridor", type: float, min: 0.0, max: 1.0, default: 0.75, group: "Corridor" }
+
+  - { name: checker_cells, display: "Tiles Per Loop", type: int, min: 4, max: 96, default: 36, group: "Surface" }
+  - { name: cell_lateral,  display: "Tile Width",     type: float, min: 0.08, max: 1.2, default: 0.34, group: "Surface" }
+  - { name: haze_amount,   display: "Sun Wash",       type: float, min: 0.0, max: 1.0, default: 0.4, group: "Surface" }
+  - { name: haze_falloff,  display: "Wash Falloff",   type: float, min: 0.2, max: 6.0, default: 3.2, group: "Surface" }
+
+  # The MK_LENS mass kind drags the checker's coordinates rather than the distance field, so the
+  # grid bends across the swell AND across the wall beside it. Negative Lens Warp pinches.
+  - { name: lens_warp,   display: "Lens Warp",  type: float, min: -1.5, max: 1.5, default: 0.85, group: "Surface" }
+  - { name: lens_swirl,  display: "Lens Swirl", type: float, min: -1.5, max: 1.5, default: 0.45, group: "Surface" }
+  - { name: lens_reach,  display: "Lens Reach", type: float, min: 1.0, max: 6.0, default: 3.000000,  group: "Surface" }
+
+  # LIGHT. One source — the opening — shared by the walls and the masses. The walls are lit by
+  # VISIBILITY rather than by N.L, because they run nearly parallel to the light and a plain
+  # lambert term would black them out.
+  - { name: ambient_floor, display: "Shade Floor",      type: float, min: 0.0, max: 1.0, default: 0.752, group: "Light" }
+  - { name: wall_ao,       display: "Wall Occlusion",   type: float, min: 0.0, max: 1.0, default: 0.34, group: "Light" }
+  - { name: shadow_amt,    display: "Cast Shadow",      type: float, min: 0.0, max: 1.0, default: 0.131, group: "Light" }
+  - { name: shadow_soft,   display: "Shadow Hardness",  type: float, min: 1.0, max: 24.0, default: 5.66, group: "Light" }
+  - { name: shadow_reach,  display: "Shadow Reach",     type: float, min: 0.5, max: 8.0, default: 0.843, group: "Light" }
+  # Growing normal bias for the shadow ray. Below ~0.15 the walls begin shadowing themselves,
+  # because the opening lies almost in their own plane.
+  - { name: shadow_bias,   display: "Shadow Bias",      type: float, min: 0.02, max: 1.0, default: 0.34, group: "Light" }
+  - { name: shadow_tint,   display: "Shadow Tint",      type: color, default: [0.74, 0.36, 0.5], group: "Light" }
+  - { name: near_shade,    display: "Foreground Shade", type: float, min: 0.2, max: 1.0, default: 0.88, group: "Light" }
+
+  - { name: mass_tint,   display: "Mass Tint", type: color, default: [0.972, 0.949, 0.925], group: "Masses" }
+  - { name: key_gain,    display: "Key",       type: float, min: 0.0, max: 3.0, default: 1.3, group: "Masses" }
+  - { name: ambient,     display: "Ambient",   type: float, min: 0.0, max: 2.0, default: 0.62, group: "Masses" }
+  - { name: rim_gain,    display: "Sun Rim",   type: float, min: 0.0, max: 3.0, default: 0.3, group: "Masses" }
+  - { name: ao_amt,      display: "Contact Occlusion", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Masses" }
+  - { name: spec_gain,   display: "Specular",  type: float, min: 0.0, max: 4.0, default: 1.1, group: "Masses" }
+  - { name: spec_tight,  display: "Highlight Tightness", type: float, min: 4.0, max: 220.0, default: 46.000000, group: "Masses" }
+  - { name: exposure,    display: "Exposure",  type: float, min: 0.2, max: 3.0, default: 1.9, group: "Masses" }
+
+  - { name: aa_samples,  display: "Rays Per Axis",   type: int,   min: 1, max: 3, default: 1, group: "Quality" }
+  - { name: march_steps, display: "March Steps",     type: int,   min: 24, max: 260, default: 101, group: "Quality" }
+  - { name: surface_eps, display: "Surface Epsilon", type: float, min: 0.0002, max: 0.02, default: 0.0022, group: "Quality" }
+  # The corridor field is a cross-section swept along a curve, so its gradient exceeds 1 wherever
+  # the centreline slopes. 0.72 covers the default bend with margin; push Bend hard on SC_Plan
+  # and this is the control that pays for it.
+  - { name: step_scale,  display: "Step Scale",      type: float, min: 0.3, max: 1.0, default: 0.72, group: "Quality" }
+  - { name: normal_eps,  display: "Normal Epsilon",  type: float, min: 0.0005, max: 0.03, default: 0.008, group: "Quality" }
+  - name: view_mode
+    display: "View"
+    type: enum
+    options: [Beauty, Material, Steps, Normals, Depth]
+    default: 0
+    flags: button_grid
+    group: "Quality"
+
+passes:
+  - name: march
+    shader: march.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - { name: "Corridor", pass: march }

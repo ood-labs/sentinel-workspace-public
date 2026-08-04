@@ -1,0 +1,97 @@
+name: "AX Press"
+version: "0.1"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+output_format: RGBA16F
+
+# The axonometric octave renderer. Reads AX_Plan's records and draws them at `levels` scales at
+# once about the focus, compositing far to near.
+#
+# NO CAMERA, DELIBERATELY. This is a flat axonometric drawing: the reference's identity is that
+# parallel edges never converge, and a perspective camera flown through the scene destroys it.
+# The endless flight is a uniform scale of the drawing about the focus instead — which is also
+# the only version of "fly into it" that can actually be endless, because a self-similar zoom
+# closes on itself exactly once per octave.
+#
+# The projection, the octave ratio and the loop period are NOT declared here. AX_Plan owns them
+# and publishes them in the record header; a second copy would be a second authority.
+#
+# output_format is explicit: without it the node publishes RGBA8 and the flat saturated plates
+# band visibly before AX_Ink ever sees them.
+
+data_inputs:
+  - name: "Plate"
+    slot: 0
+    schema:
+      - { name: pos, type: float3 }
+      - { name: ext, type: float3 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: mat, type: float }
+      - { name: col, type: float }
+      - { name: host, type: float }
+      - { name: rmin, type: float }
+      - { name: rmax, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+      - { name: pad0, type: float }
+      - { name: pad1, type: float }
+      - { name: pad2, type: float }
+
+parameters:
+  # THE FRAME CONTRACT. These three are the composed viewpoint and nothing else in the project
+  # records it, so they ship as a narrow-scoped node preset. The focus itself lives on AX_Plan.
+  - { name: frame_x,    display: "Frame X",    type: float, min: -2.0, max: 2.0, default: 0.000000, group: "Frame" }
+  - { name: frame_y,    display: "Frame Y",    type: float, min: -2.0, max: 2.0, default: 0.000000, group: "Frame" }
+  - { name: frame_zoom, display: "Frame Zoom", type: float, min: 0.25, max: 4.0, default: 1.000000, group: "Frame" }
+
+  # EXPLORATION AXIS — what decides which scrap of paper a given FACE wears. Per Facet is the
+  # reference's own answer: every facet of every box is a different cutting.
+  - name: facet_mode
+    display: "Facing"
+    type: enum
+    options: [Per Facet, Per Volume, Per Axis, Split]
+    default: 0
+    flags: button_grid
+    group: "Collage"
+
+  # EXPLORATION AXIS — the line treatment over the facets.
+  - name: ink_mode
+    display: "Ink"
+    type: enum
+    options: [Hairline, Heavy, Halo, None]
+    default: 0
+    flags: button_grid
+    group: "Collage"
+
+  - { name: ink_px,    display: "Ink Weight",    type: float, min: 0.4, max: 4.0, default: 1.1, group: "Collage" }
+  # Trace weight is in LATTICE units so a line has the same weight relative to the boxes it
+  # routes between at every octave, exactly like the reference's ribbons.
+  - { name: trace_w,   display: "Trace Weight",  type: float, min: 0.01, max: 0.40, default: 0.1, group: "Collage" }
+  - { name: accent,    display: "Accent Tiles",  type: float, min: 0.0, max: 0.7, default: 0.22, group: "Collage" }
+  - { name: drip,      display: "Paint Runs",    type: float, min: 0.0, max: 1.0, default: 0.35, group: "Collage" }
+  - { name: shade,     display: "Face Separation", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Collage" }
+
+  - { name: haze,      display: "Depth Wash",    type: float, min: 0.0, max: 1.0, default: 0.45, group: "Depth" }
+  - { name: exposure,  display: "Exposure",      type: float, min: 0.2, max: 3.0, default: 1.000000, group: "Depth" }
+
+  # THE QUALITY LADDER. `levels` is how many octaves are composited — too few and the deep end
+  # of the funnel goes empty; `lod_scale` is how fine the printed detail resolves, and it is the
+  # axis this image is actually about, so buy quality there before reaching for supersampling.
+  # The defaults below are the Live rung: comfortable to work in, never the top one.
+  - { name: levels,     display: "Octaves",       type: int,   min: 3, max: 18, default: 11, group: "Quality" }
+  - { name: aa_samples, display: "Rays Per Axis", type: int,   min: 1, max: 3,  default: 1, group: "Quality" }
+  - { name: lod_scale,  display: "Detail Scale",  type: float, min: 0.3, max: 3.0, default: 1.000000, group: "Quality" }
+
+passes:
+  - name: press
+    shader: press.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - { name: "Press", pass: press }

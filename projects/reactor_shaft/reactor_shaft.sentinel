@@ -1,0 +1,779 @@
+{
+  "binds": [
+    [
+      "/sentinel/groups/annotation_35/parameters/Flight_Speed",
+      "/sentinel/pipelines/RS_Plan/parameters/flight_speed"
+    ],
+    [
+      "/sentinel/groups/annotation_35/parameters/Variation",
+      "/sentinel/pipelines/RS_Plan/parameters/variation"
+    ],
+    [
+      "/sentinel/groups/annotation_35/parameters/Seed",
+      "/sentinel/pipelines/RS_Plan/parameters/seed"
+    ],
+    [
+      "/sentinel/groups/annotation_35/parameters/Machinery",
+      "/sentinel/pipelines/RS_Plan/parameters/greeble_set"
+    ],
+    [
+      "/sentinel/groups/annotation_35/parameters/Palette",
+      "/sentinel/pipelines/RS_Plan/parameters/palette_set"
+    ],
+    [
+      "/sentinel/groups/annotation_35/parameters/Core_Distance",
+      "/sentinel/pipelines/RS_Shaft/parameters/core_z"
+    ],
+    [
+      "/sentinel/groups/annotation_35/parameters/Haze",
+      "/sentinel/pipelines/RS_Shaft/parameters/fog_density"
+    ],
+    [
+      "/sentinel/groups/annotation_35/parameters/Flare",
+      "/sentinel/pipelines/RS_Lens/parameters/flare_style"
+    ],
+    [
+      "/sentinel/groups/annotation_35/parameters/Glare",
+      "/sentinel/pipelines/RS_Lens/parameters/bloom_gain"
+    ]
+  ],
+  "display": {
+    "fpsLimit": 30.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 1.0032854080200195,
+    "links": [
+      {
+        "endPinId": 172,
+        "id": 62,
+        "startPinId": 171
+      },
+      {
+        "endPinId": 174,
+        "id": 63,
+        "startPinId": 173
+      }
+    ],
+    "nextLinkId": 64,
+    "nextNodeId": 36,
+    "nextPinId": 176,
+    "nodes": [
+      {
+        "displayName": "RS_Plan",
+        "entityId": "RS_Plan",
+        "id": 32,
+        "posX": -618.6143798828125,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "RS_Shaft",
+        "entityId": "RS_Shaft",
+        "id": 33,
+        "posX": -374.1839599609375,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "displayName": "RS_Lens",
+        "entityId": "RS_Lens",
+        "id": 34,
+        "inputTilesOverride": 0,
+        "posX": -128.2794952392578,
+        "posY": 0.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "Plan authority → marcher → lens. Infinite triangular shaft; the camera never moves.",
+        "annotationColor": "#2A3A5AFF",
+        "annotationTitle": "Reactor Shaft",
+        "displayName": "Reactor Shaft",
+        "entityId": "annotation_35",
+        "height": 380.0,
+        "id": 35,
+        "posX": -670.0,
+        "posY": -80.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": true,
+        "sceneGroupActivePreset": "",
+        "sceneGroupEnabled": true,
+        "sceneGroupParameters": [
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "3.600000",
+            "description": "Flight Speed",
+            "displayName": "Flight Speed",
+            "enumValues": [],
+            "group": "Flight",
+            "maxValue": 16.0,
+            "minValue": 0.0,
+            "name": "Flight_Speed",
+            "orderIndex": 0,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/RS_Plan/parameters/flight_speed",
+            "type": "float",
+            "value": "0.779",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.000000",
+            "description": "Variation",
+            "displayName": "Variation",
+            "enumValues": [],
+            "group": "Shaft",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "Variation",
+            "orderIndex": 1,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/RS_Plan/parameters/variation",
+            "type": "float",
+            "value": "0.792",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "11.000000",
+            "description": "Seed",
+            "displayName": "Seed",
+            "enumValues": [],
+            "group": "Shaft",
+            "maxValue": 512.0,
+            "minValue": 0.0,
+            "name": "Seed",
+            "orderIndex": 2,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/RS_Plan/parameters/seed",
+            "type": "float",
+            "value": "183.505005",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Machinery",
+            "displayName": "Machinery",
+            "enumValues": [
+              "Heat Exchange",
+              "Cargo Deck",
+              "Sensor Array",
+              "Bare Structure"
+            ],
+            "group": "Machinery",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "Machinery",
+            "orderIndex": 3,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/RS_Plan/parameters/greeble_set",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Palette",
+            "displayName": "Palette",
+            "enumValues": [
+              "Reactor",
+              "Coolant",
+              "Furnace",
+              "Sodium"
+            ],
+            "group": "Machinery",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "Palette",
+            "orderIndex": 4,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/RS_Plan/parameters/palette_set",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "20.000000",
+            "description": "Core Distance",
+            "displayName": "Core Distance",
+            "enumValues": [],
+            "group": "Shaft",
+            "maxValue": 60.0,
+            "minValue": 8.0,
+            "name": "Core_Distance",
+            "orderIndex": 5,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/RS_Shaft/parameters/core_z",
+            "type": "float",
+            "value": "20.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.045000",
+            "description": "Haze",
+            "displayName": "Haze",
+            "enumValues": [],
+            "group": "Volume",
+            "maxValue": 0.3499999940395355,
+            "minValue": 0.0,
+            "name": "Haze",
+            "orderIndex": 6,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/RS_Shaft/parameters/fog_density",
+            "type": "float",
+            "value": "0.24",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Flare",
+            "displayName": "Flare",
+            "enumValues": [
+              "Anamorphic",
+              "Star",
+              "Halo",
+              "Off"
+            ],
+            "group": "Flare",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "Flare",
+            "orderIndex": 7,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/RS_Lens/parameters/flare_style",
+            "type": "enum",
+            "value": "2",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.500000",
+            "description": "Bloom Gain",
+            "displayName": "Bloom Gain",
+            "enumValues": [],
+            "group": "Bloom",
+            "maxValue": 4.0,
+            "minValue": 0.0,
+            "name": "Glare",
+            "orderIndex": 8,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/RS_Lens/parameters/bloom_gain",
+            "type": "float",
+            "value": "0.5",
+            "widget": ""
+          }
+        ],
+        "sceneGroupPresets": [],
+        "type": 4,
+        "width": 830.0
+      }
+    ],
+    "pins": [
+      {
+        "id": 170,
+        "kind": 1,
+        "name": "Shaft View",
+        "nodeId": 32,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 171,
+        "kind": 1,
+        "name": "Shaft",
+        "nodeId": 32,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 172,
+        "kind": 0,
+        "name": "Shaft",
+        "nodeId": 33,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 173,
+        "kind": 1,
+        "name": "Shaft",
+        "nodeId": 33,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 174,
+        "kind": 0,
+        "name": "Shaft",
+        "nodeId": 34,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 175,
+        "kind": 1,
+        "name": "Program",
+        "nodeId": 34,
+        "slotIndex": 0,
+        "type": 0
+      }
+    ]
+  },
+  "hostPanelVisibility": {
+    "engines": false,
+    "graph": true,
+    "log": true,
+    "outputs": true,
+    "presets": false,
+    "properties": true,
+    "settings": false,
+    "sources": true,
+    "stats": true,
+    "terminal": true
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Log]\nPos=2115,1041\nSize=445,536\nCollapsed=0\nDockId=0x00000006,1\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Sources]\nPos=1586,1041\nSize=974,488\nCollapsed=0\nDockId=0x00000006,3\n\n[Window][Outputs]\nPos=1586,1041\nSize=974,488\nCollapsed=0\nDockId=0x00000006,2\n\n[Window][Properties]\nPos=2115,25\nSize=445,1014\nCollapsed=0\nDockId=0x00000012,0\n\n[Window][Presets]\nPos=0,25\nSize=318,134\nCollapsed=0\nDockId=0x00000001,0\n\n[Window][Stats]\nPos=2115,1041\nSize=445,536\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][Streamdiff - streamdiff_0]\nPos=541,25\nSize=387,534\nCollapsed=0\nDockId=0x00000009,0\n\n[Window][Graph]\nPos=1044,1121\nSize=1069,456\nCollapsed=0\nDockId=0x0000001A,0\n\n[Window][Engines]\nPos=540,175\nSize=590,768\nCollapsed=0\n\n[Window][Shaderfx - shaderfx_0]\nPos=372,25\nSize=753,643\nCollapsed=0\nDockId=0x00000009,0\n\n[Window][Depthestimation - depthestimation_0]\nPos=187,176\nSize=600,450\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1168,745\nSize=24,24\nCollapsed=0\n\n[Window][About Sentinel]\nPos=689,351\nSize=221,198\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=1094,25\nSize=1064,1504\nCollapsed=0\nDockId=0x00000010,0\n\n[Window][module_0]\nPos=0,25\nSize=2560,748\nCollapsed=0\nDockId=0x0000000B,0\n\n[Window][scale_0]\nPos=0,25\nSize=1600,433\nCollapsed=0\nDockId=0x0000000D,0\n\n[Window][colorcorrect_0]\nPos=0,25\nSize=1600,433\nCollapsed=0\nDockId=0x0000000D,1\n\n[Window][module_4]\nPos=0,25\nSize=2560,748\nCollapsed=0\nDockId=0x0000000B,1\n\n[Window][module_3]\nPos=0,25\nSize=100,49\nCollapsed=0\nDockId=0x0000000B,1\n\n[Window][module_5]\nPos=0,25\nSize=2560,748\nCollapsed=0\nDockId=0x0000000B,2\n\n[Window][module_6]\nPos=0,25\nSize=2560,748\nCollapsed=0\nDockId=0x0000000B,5\n\n[Window][module_7]\nPos=0,25\nSize=2560,748\nCollapsed=0\nDockId=0x0000000B,3\n\n[Window][module_1]\nPos=0,25\nSize=2560,748\nCollapsed=0\nDockId=0x0000000B,1\n\n[Window][module_2]\nPos=0,25\nSize=2560,748\nCollapsed=0\nDockId=0x0000000B,2\n\n[Window][Settings]\nPos=712,171\nSize=495,738\nCollapsed=0\n\n[Window][New Project?]\nPos=775,699\nSize=272,122\nCollapsed=0\n\n[Window][kilian_post]\nPos=320,25\nSize=1100,749\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][kilian_sdf_props]\nPos=320,25\nSize=1100,749\nCollapsed=0\nDockId=0x00000006,1\n\n[Window][kilian_comp]\nPos=320,25\nSize=1100,749\nCollapsed=0\nDockId=0x00000006,3\n\n[Window][kilian_stage_render]\nPos=320,25\nSize=1100,749\nCollapsed=0\nDockId=0x00000006,2\n\n[Window][prim_atlas]\nPos=320,25\nSize=1100,749\nCollapsed=0\nDockId=0x00000006,4\n\n[Window][kscene_comp]\nPos=320,25\nSize=1100,749\nCollapsed=0\nDockId=0x00000006,5\n\n[Window][klayout]\nPos=320,25\nSize=1100,749\nCollapsed=0\nDockId=0x00000006,7\n\n[Window][kplatform]\nPos=320,25\nSize=1100,749\nCollapsed=0\nDockId=0x00000006,6\n\n[Window][dada_totem]\nPos=320,25\nSize=1029,1169\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][post]\nPos=1586,1041\nSize=974,488\nCollapsed=0\nDockId=0x00000006,5\n\n[Window][dada_render]\nPos=1586,1041\nSize=974,488\nCollapsed=0\nDockId=0x00000006,4\n\n[Window][dada_layout]\nPos=320,25\nSize=1029,1175\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][dada_scatter]\nPos=320,25\nSize=1029,771\nCollapsed=0\nDockId=0x00000006,3\n\n[Window][blob_render]\nPos=1368,25\nSize=850,1014\nCollapsed=0\nDockId=0x00000011,0\n\n[Window][marble_panel]\nPos=929,25\nSize=923,1495\nCollapsed=0\nDockId=0x00000014,0\n\n[Window][plate_comp]\nPos=819,25\nSize=765,1495\nCollapsed=0\nDockId=0x00000008,1\n\n[Window][wire_render]\nPos=588,25\nSize=339,1100\nCollapsed=0\nDockId=0x00000006,1\n\n[Window][strata_bg]\nPos=588,25\nSize=339,1100\nCollapsed=0\nDockId=0x00000006,2\n\n[Window][marks]\nPos=588,25\nSize=339,1100\nCollapsed=0\nDockId=0x00000006,1\n\n[Window][blob_layout]\nPos=929,25\nSize=923,1495\nCollapsed=0\nDockId=0x00000014,0\n\n[Window][features_0]\nPos=819,25\nSize=765,1495\nCollapsed=0\nDockId=0x00000008,2\n\n[Window][corner_thread]\nPos=819,25\nSize=765,1495\nCollapsed=0\nDockId=0x00000008,3\n\n[Window][Terminal]\nPos=0,603\nSize=1042,974\nCollapsed=0\nDockId=0x0000001C,0\n\n[Window][OG_Plan]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,0\n\n[Window][OG_Void]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,1\n\n[Window][OG_Mosaic]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,2\n\n[Window][OG_Orbs]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,3\n\n[Window][OG_Flora]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,4\n\n[Window][OG_Stage]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,5\n\n[Window][OG_Masks]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,6\n\n[Window][OG_Weave]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,7\n\n[Window][OG_Tubes]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,8\n\n[Window][OG_Hands]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,9\n\n[Window][OG_Eye]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,10\n\n[Window][OG_Composite]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,11\n\n[Window][OG_Print]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,12\n\n[Window][OG_Cond]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,13\n\n[Window][SD_Plate]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,14\n\n[Window][OG_Cadence]\nPos=507,25\nSize=559,902\nCollapsed=0\nDockId=0x00000017,0\n\n[Window][SD_Hands]\nPos=507,25\nSize=1606,777\nCollapsed=0\nDockId=0x00000015,15\n\n[Window][SD_Flora]\nPos=2115,1041\nSize=445,536\nCollapsed=0\nDockId=0x00000006,2\n\n[Window][OG_Stamp_Hands]\nPos=2115,1041\nSize=445,536\nCollapsed=0\nDockId=0x00000006,2\n\n[Window][RS_Plan]\nPos=0,25\nSize=1042,576\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][RS_Shaft]\nPos=1044,25\nSize=1069,1094\nCollapsed=0\nDockId=0x00000019,0\n\n[Window][RS_Lens]\nPos=1044,25\nSize=1069,1094\nCollapsed=0\nDockId=0x00000019,1\n\n[Docking][Data]\nDockSpace                   ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode                  ID=0x00000013 Parent=0xCCBD8CF7 SizeRef=1042,875 Split=Y Selected=0xD33228A6\n    DockNode                ID=0x0000001B Parent=0x00000013 SizeRef=505,576 Selected=0x63130407\n    DockNode                ID=0x0000001C Parent=0x00000013 SizeRef=505,974 Selected=0xD33228A6\n  DockNode                  ID=0x00000014 Parent=0xCCBD8CF7 SizeRef=1516,875 Split=X\n    DockNode                ID=0x00000003 Parent=0x00000014 SizeRef=1069,1495 Split=X Selected=0xF12F3499\n      DockNode              ID=0x00000007 Parent=0x00000003 SizeRef=817,1504 Split=X Selected=0xF12F3499\n        DockNode            ID=0x00000017 Parent=0x00000007 SizeRef=559,902 Selected=0x98FD4E9B\n        DockNode            ID=0x00000018 Parent=0x00000007 SizeRef=1045,902 Split=Y Selected=0x96DB6123\n          DockNode          ID=0x00000015 Parent=0x00000018 SizeRef=1606,777 Selected=0x96DB6123\n          DockNode          ID=0x00000016 Parent=0x00000018 SizeRef=1606,773 Split=Y Selected=0xF12F3499\n            DockNode        ID=0x00000019 Parent=0x00000016 SizeRef=1606,1094 Selected=0xD6330573\n            DockNode        ID=0x0000001A Parent=0x00000016 SizeRef=1606,456 Selected=0xF12F3499\n      DockNode              ID=0x00000008 Parent=0x00000003 SizeRef=765,1504 Selected=0xE74F9D53\n    DockNode                ID=0x00000004 Parent=0x00000014 SizeRef=445,1495 Split=Y\n      DockNode              ID=0x0000000B Parent=0x00000004 SizeRef=2560,748 Selected=0x4744F3AC\n      DockNode              ID=0x0000000C Parent=0x00000004 SizeRef=2560,754 Split=Y\n        DockNode            ID=0x0000000D Parent=0x0000000C SizeRef=1600,433 Selected=0xC77871F4\n        DockNode            ID=0x0000000E Parent=0x0000000C SizeRef=1600,440 Split=X\n          DockNode          ID=0x00000001 Parent=0x0000000E SizeRef=318,695 Selected=0x590DF097\n          DockNode          ID=0x00000002 Parent=0x0000000E SizeRef=1838,695 Split=Y Selected=0xF12F3499\n            DockNode        ID=0x00000009 Parent=0x00000002 SizeRef=753,534 Selected=0x782A97A1\n            DockNode        ID=0x0000000A Parent=0x00000002 SizeRef=753,383 Split=X Selected=0xF12F3499\n              DockNode      ID=0x0000000F Parent=0x0000000A SizeRef=772,875 Split=Y Selected=0x1843FE13\n                DockNode    ID=0x00000005 Parent=0x0000000F SizeRef=580,1014 Split=X Selected=0xE74F9D53\n                  DockNode  ID=0x00000011 Parent=0x00000005 SizeRef=850,1014 Selected=0x6F8F03EC\n                  DockNode  ID=0x00000012 Parent=0x00000005 SizeRef=340,1014 Selected=0x8C72BEA8\n                DockNode    ID=0x00000006 Parent=0x0000000F SizeRef=580,488 CentralNode=1 Selected=0x590DF097\n              DockNode      ID=0x00000010 Parent=0x0000000A SizeRef=1064,875 Selected=0x376FDC27\n\n",
+  "name": "reactor_shaft",
+  "nodePresets": [
+    {
+      "created": "2026-08-03T11:30:58",
+      "id": "305ba83f-1eca-e915-00fa54419729",
+      "modified": "2026-08-03T11:30:58",
+      "name": "Frame — Down The Shaft",
+      "parameters": [
+        {
+          "name": "camera_mode",
+          "value": "0"
+        },
+        {
+          "name": "camera_pos_x",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_pos_y",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_pos_z",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_yaw",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_pitch",
+          "value": "0.000000"
+        },
+        {
+          "name": "camera_fov",
+          "value": "52.000000"
+        }
+      ],
+      "pipelineType": "module:RS_Shaft",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T11:31:17",
+      "id": "9f3859b3-cbe4-023f-f0d4a4f953f5",
+      "modified": "2026-08-03T11:31:17",
+      "name": "Quality 1 — Draft",
+      "parameters": [
+        {
+          "name": "aa_samples",
+          "value": "1"
+        },
+        {
+          "name": "march_steps",
+          "value": "64"
+        },
+        {
+          "name": "volume_steps",
+          "value": "8"
+        },
+        {
+          "name": "detail_amount",
+          "value": "0.000000"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.0045"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.72"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.006"
+        },
+        {
+          "name": "relief_near",
+          "value": "3.000000"
+        },
+        {
+          "name": "relief_fade",
+          "value": "7.000000"
+        }
+      ],
+      "pipelineType": "module:RS_Shaft",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T11:36:51",
+      "id": "01932282-0bb8-1b1b-b9cd675a9b9b",
+      "modified": "2026-08-03T11:36:51",
+      "name": "Quality 4 — Hero (capture only)",
+      "parameters": [
+        {
+          "name": "aa_samples",
+          "value": "3"
+        },
+        {
+          "name": "march_steps",
+          "value": "320"
+        },
+        {
+          "name": "volume_steps",
+          "value": "64"
+        },
+        {
+          "name": "detail_amount",
+          "value": "1.000000"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.0007"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.92"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.0015"
+        },
+        {
+          "name": "relief_near",
+          "value": "14.000000"
+        },
+        {
+          "name": "relief_fade",
+          "value": "36.000000"
+        }
+      ],
+      "pipelineType": "module:RS_Shaft",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T11:37:02",
+      "id": "6f6ca76a-a1c9-6ecb-171afbccd920",
+      "modified": "2026-08-03T11:37:02",
+      "name": "Quality 3 — Beauty",
+      "parameters": [
+        {
+          "name": "aa_samples",
+          "value": "3"
+        },
+        {
+          "name": "march_steps",
+          "value": "180"
+        },
+        {
+          "name": "volume_steps",
+          "value": "30"
+        },
+        {
+          "name": "detail_amount",
+          "value": "1.000000"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.0014"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.82"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.0022"
+        },
+        {
+          "name": "relief_near",
+          "value": "9.000000"
+        },
+        {
+          "name": "relief_fade",
+          "value": "22.000000"
+        }
+      ],
+      "pipelineType": "module:RS_Shaft",
+      "scope": "project"
+    },
+    {
+      "created": "2026-08-03T11:37:15",
+      "id": "e0fc2cdf-b3a8-3d9b-fdddbf61b43a",
+      "modified": "2026-08-03T11:37:15",
+      "name": "Quality 2 — Live (default)",
+      "parameters": [
+        {
+          "name": "aa_samples",
+          "value": "2"
+        },
+        {
+          "name": "march_steps",
+          "value": "120"
+        },
+        {
+          "name": "volume_steps",
+          "value": "18"
+        },
+        {
+          "name": "detail_amount",
+          "value": "1.000000"
+        },
+        {
+          "name": "surface_eps",
+          "value": "0.0022"
+        },
+        {
+          "name": "step_scale",
+          "value": "0.76"
+        },
+        {
+          "name": "normal_eps",
+          "value": "0.003"
+        },
+        {
+          "name": "relief_near",
+          "value": "6.000000"
+        },
+        {
+          "name": "relief_fade",
+          "value": "15.000000"
+        }
+      ],
+      "pipelineType": "module:RS_Shaft",
+      "scope": "project"
+    }
+  ],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9000,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9001,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "RS_Plan",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "RS_Plan",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "RS_Plan",
+      "panelOpen": true,
+      "parameters": {
+        "bore": "0.878000",
+        "core_gain": "0.702512",
+        "core_hot": "0.441409",
+        "core_radius": "0.432023",
+        "core_ring": "0.194333",
+        "core_spin": "1.627119",
+        "core_spokes": "15.000000",
+        "core_x": "0.594622",
+        "core_y": "-0.242604",
+        "corner": "1.881000",
+        "density": "1.439000",
+        "drift": "1.752000",
+        "fix_count": "3.000000",
+        "fix_scale": "0.977000",
+        "flight_clear": "0.523000",
+        "flight_speed": "0.779000",
+        "flood_gain": "1.204000",
+        "greeble_set": "0.000000",
+        "light_count": "2.000000",
+        "light_gain": "1.841000",
+        "palette_set": "0.000000",
+        "phase": "0.597000",
+        "project_dir": "modules/RS_Plan",
+        "resolution_height": "648",
+        "resolution_width": "1152",
+        "section_style": "1.000000",
+        "seed": "183.505005",
+        "station_count": "3.000000",
+        "twist": "1.936000",
+        "variation": "0.792000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "RS_Shaft",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "RS_Shaft",
+      "inputSlotSourceIds": [
+        "RS_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "RS_Shaft",
+      "panelOpen": true,
+      "parameters": {
+        "aa_samples": "2.000000",
+        "ambient": "0.000000",
+        "ao_amt": "0.265000",
+        "ao_reach": "1.000000",
+        "camera_distance": "5.000000",
+        "camera_far": "100.000000",
+        "camera_fov": "52.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_mode": "0",
+        "camera_move_speed": "3.000000",
+        "camera_near": "0.100000",
+        "camera_pitch": "0.000000",
+        "camera_pos_x": "0.000000",
+        "camera_pos_y": "0.000000",
+        "camera_pos_z": "0.000000",
+        "camera_target_x": "0.188209",
+        "camera_target_y": "0.011022",
+        "camera_target_z": "4.981790",
+        "camera_yaw": "0.000000",
+        "core_wash": "0.178000",
+        "core_z": "20.000000",
+        "detail_amount": "1.000000",
+        "emitter_gain": "1.699000",
+        "exposure": "0.795000",
+        "fog_density": "0.240000",
+        "glow_gain": "0.397000",
+        "key_gain": "3.000000",
+        "march_steps": "120.000000",
+        "neon_gain": "1.800000",
+        "neon_reach": "6.500000",
+        "normal_eps": "0.008000",
+        "panel_edge": "1.425000",
+        "project_dir": "modules/RS_Shaft",
+        "rail_amount": "1.000000",
+        "relief_amount": "0.311000",
+        "relief_fade": "18.274000",
+        "relief_near": "8.361000",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "rim_gain": "0.438000",
+        "spec_gain": "0.475000",
+        "step_scale": "0.840000",
+        "surface_eps": "0.002200",
+        "telltale_gain": "2.000000",
+        "view_mode": "0.000000",
+        "volume_steps": "18.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "RS_Lens",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "RS_Lens",
+      "inputSlotSourceIds": [
+        "RS_Shaft"
+      ],
+      "mousePassthroughSlot": 0,
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "RS_Lens",
+      "panelOpen": true,
+      "parameters": {
+        "aberration": "0.980000",
+        "bloom_gain": "0.500000",
+        "bloom_knee": "0.550000",
+        "bloom_radius": "3.200000",
+        "bloom_threshold": "1.700000",
+        "bloom_tight": "0.850000",
+        "bloom_wide": "4.000000",
+        "bloom_wide_gain": "0.750000",
+        "contrast": "0.936000",
+        "depth_amt": "0.300000",
+        "depth_ref": "22.000000",
+        "depth_tint_b": "0.560000",
+        "depth_tint_g": "0.520000",
+        "depth_tint_r": "0.420000",
+        "exposure": "0.459000",
+        "flare_angle": "0.000000",
+        "flare_decay": "0.900000",
+        "flare_gain": "0.280000",
+        "flare_length": "0.100000",
+        "flare_style": "2.000000",
+        "flare_taps": "14.000000",
+        "flare_threshold": "2.200000",
+        "grain": "0.028000",
+        "high_amt": "1.000000",
+        "high_tint_b": "0.045000",
+        "high_tint_g": "0.010000",
+        "high_tint_r": "0.070000",
+        "lift": "-0.035000",
+        "project_dir": "modules/RS_Lens",
+        "saturation": "1.220000",
+        "shadow_amt": "1.000000",
+        "shadow_tint_b": "0.105000",
+        "shadow_tint_g": "0.085000",
+        "shadow_tint_r": "0.030000",
+        "tone_sat": "0.350000",
+        "vignette": "0.620000",
+        "vignette_start": "0.420000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1785785448239,
+  "sources": [],
+  "statePayloads": {
+    "RS_Plan": {
+      "plan": {
+        "data": "924728be676a34be87608a3fe1919c3e0000000000000040a26144444fa4613f5bc6a9be95dd703f000000000000803f1769463ee8453abdd1245f3f9a99193f0000000000000040a2a14844d4fb753f8f39043e739c2f3f000000000000803f927966be33a40cbd2cf6643fa5aac03e0000000000000040a2e14c4458df403f5ad2afbe4b70603f000000000000803f242243becc6b2abe410e643f47b8893e0000000000000000a2215144265d0b3f29f41cbff88e9f3f000000000000000096ccf5bc5ad17bbecf7a4f3f8d3aeb3e0000000000000000a2615544423e7f3f3ac3363fc55f793f0000000000000000d0bb973e042c0fbe3714793f5394093f0000000000000000a2a15944268d6d3f38fade3d82b8663f00000000000000001bd1ef3d18f5193e627d7a3f0a1dd13e0000000000000040a2e15d44bd7e4e3fd4923ebfb786953f0000000000000000b39ec53d2de36ebe8be2803f9a99193f0000000000000000a221624441d6623f09e2a1be17254a3f000000000000000042127cbe3bd3f2bd8690803fa227713e0000000000000000a2616644d429203f9badcd3dbddd513f0000000000000000e4808a3d3d0b59be0401643f9935c03e0000000000000000a2a16a440000803f1bbf383fee7dba3f0000000000000000831390be39b4cc3c75e0533f9a99193f0000000000000000a2e16e440000803f1cf9043f5172b53f00000000000000002a36573ec6c944beff44713f2a7cb73e0000000000004040a22173440000803f8680b5be2db95d3f000000000000000066669e3d31eb0dbe7d83403f1e73343e0000803f0000a040649dd3444783333f0000803f61e3753f000000000000803f9485f93e4479803ecfdac53ed8102c3e0000803f00000000ca13d4444fc7533f000000400714f53e000000000000803f448e103d505dc93e2110843e596d143e0000803f00008040318ad444f2d8243f000000009263ac3e000000000000803fd0cccc3d319bb23cbc36d63e83ba753d0000803f00000000647dd644e61dd33e000000403333933f000000000000803f57c76ebe222c773ecdcccc3d83ba753d0000803f0000a040caf3d644283b0f3f0000803f38a12e3f000000000000803f38faf8bc222c773ecdcccc3d83ba753d0000803f0000a040316ad744d0d4093f00000000133ca83e000000000000803fd0cccc3d63f92cbd71c8573f7c169a3d0000803f00000000645dd944b537213f000000403333933f000000000000803f26fdea3e59c5873e7b21973e7c169a3d0000803f0000a040cad3d944a988253f00000000f01c263f000000000000803f1b69fdbe44e57b3e15ae743e7c169a3d0000803f0000803f314ada445a912e3f0000803f1e0ec63e000000000000803fa4707d3dc4eb823e9f8c363f9e54953d0000803f00004040643ddc4470f03a3f00000000e2c04c3f000000000000803fa292df3dd16056bee4a9a63e9e54953d0000803f00000000cab3dc449326063f0000803fcd47b13e000000000000803f378120bf7edc86bc1c8b9b3e9e54953d0000803f0000a040312add44aaf3ba3e0000004050ee8f3e000000000000803f7109093c3a0b0bbe14f0053f0ad7a33c0000803f00004040641ddf44e07ed53e0000004085af553f000000000000803fb63aea3ed6f294be2d4e993e0ad7a33c0000803f00004040ca93df444f8eed3e0000803f23e1c33e000000000000803f5399a6bead599c3ea9928e3e0ad7a33c0000803f00004040310ae04449942d3f00000000d4e18c3e000000000000803f8cdbb3be53c89e3ececccc3d51d0fa3d0000803f0000a04064fde1444881103f00000000a53a4e3f000000000000803f0c368d3e365d9ebe103acf3d51d0fa3d0000803f00008040ca73e244edec013f00000040ab35e93e000000000000803f9c35b4bef0db883dbda0813eb419b43d0000803f0000804031eae24439a7083f0000803f9414af3e000000000000803f0a57a43e585b09be91800d3fcd81003e0000803f0000000064dde4448d8a403f0000000087aa5c3f000000000000803f3db9063e9f7e01bfd8cccc3dcd81003e0000803f00000000ca53e54420f6123f0000803f31fe283f000000000000803f20c0c5be9f7e013fd8cccc3dd22cd53d0000803f0000404031cae544b8cb2b3f00000040fd6bd43e000000000000803f32352b3f933f00be826b893e13f70f3e0000803f0000004064bde74453960e3f0000803fceca143f000000000000803f03e4f83ea599fcbd1ad58a3e13f70f3e0000803f00000000ca33e844dbd8473f000000400a93fe3e000000000000803fc65c1abf222c773ecdcccc3d13f70f3e0000803f0000004031aae844dd04d03e0000000061e3ef3e000000000000803f5928963e34aea43eb53c293fc1a30e3e0000803f00000000649dea44ccee093f000000008e86503f000000000000803f0021dd3e1722ecbe8181c23e48530b3e0000803f0000803fca13eb440fc3333f0000803f1d37073f000000000000803f0812453f7c8997bea295723ec1a30e3e0000803f0000803f318aeb44cf2eca3e00000040f0dbf53e000000000000803f8a6affbe3dda583d57f90a3fce0e953d0000803f00000040647ded443e0a0d3f0000803fbb4a403f000000000000803f6152aabeaf38a03efc88c83ece0e953d0000803f0000a040caf3ed44d1322c3f00000040e41e263f000000000000803f9d672abf82510e3fd4cccc3dce0e953d0000803f0000803f316aee44e73e183f00000000c17cf83e000000000000803f2c15f33e222c77becdcccc3dae13e63c0000803f00000040645df044fb5cfa3e000000006a75463f000000000000803fa129f3bd222c773ecdcccc3dae13e63c0000803f00004040cad3f044448d373f0000004089fb1f3f000000000000803f3c299a3e4a14e7bd4e0f8f3eae13e63c0000803f00004040314af1447540263f0000803f7517bb3e000000000000803f7ef1ea3e982f0f3e9075f03e452ed73d0000803f00000000643df3440a79453f0000000041874a3f000000000000803f29893bbf91a1babe7780d43e452ed73d0000803f0000a040cab3f3443861b13e00000040d776043f000000000000803fcb3e2c3fb381cabe14f46a3ed9a7cb3d0000803f0000803f312af444a887133f0000803f2b84e23e000000000000803f66669e3d02d941bf5f17813f0b72713d000000400000000079501045b921d23f0000803f67c2d83e000000000000803fda7c893f4479803ef696e03ed97b2b3d000000400000803f46a510457c910d400000004000a4c13d000000000000803fd0cccc3d51c5bbbe3333933fdf120f3d000000400000000079401245c05d0940000000409a49753e000000000000803f6728423e00000000d337563d4c2c613d000000400000404046951245fa3e863f0000a04000000000000000000000803fd0cccc3dde9a233f3333933fbf3f0c3d000000400000000079301445825a0940000000400060183e000000000000803f26fdea3e7999113f2f6b2e3fcec6393d00000040000000004685144564d7ca3f0000000033d3933c000000000000803fec51903e00000000f6ee5a3d19656a3d0000004000004040792016450d5d9c3f0000404000000000000000000000803ff5d8f1be6ecd8b3e8056cc3c6e87e93c000000400000004046751645a7c6b73f0000004000803d3e000000000000803f7109093c7c6ba63eb15e603f3e640a3d000000400000000079101845355fd53f0000004033cf6a3e000000000000803f68cd6b3fd6f294be2476823e4fab163d000000400000803f4665184582dcfc3f0000803fccdcb13c000000000000803f8cdbb3bef94af53e608a583f30923a3d000000400000000079001a454748de3f0000000033335d3c000000000000803f8a2307be00000000a51d6f3dae7f863d000000400000404046551a45af348c3f0000404000000000000000000000803f0a57a43ee5861dbf0db3673f24f34c3d000000400000000079f01b45dff3e33f000000003313e73d000000000000803f0ab9633f9f7e01bf5d69d23d2b1b563d000000400000803f46451c4518f1d23f0000803fcca0c93e000000000000803fa8c4233f49b2233e583b1c3f5fe11c3d000000400000000079e01d459389cc3f0000803f3373db3d000000000000803fe7545cbf7043bd3d39f6e63c6afa033d000000400000004046351e450c38d03f000000000000933e000000000000803fe2281fbf34aea43e947b323f079c5e3d000000400000803f79d01f451f2d0a4000000000ccacd83c000000000000803f0fbf873f1722ecbec521cd3eaac4393d000000400000803f46252045f95d01400000803f66dad23c000000000000803fde2fecbe1cc8d7be11e8493f7961183d000000400000000079c02145a5f6f43f0000803f000c393e000000000000803f88b962bf0000000041e25a3d06d4793d000000400000404046152245aec4913f0000804000000000000000000000803f90b1663f7043bdbd73d7bd3c3bf6d83c000000400000004079b02345e333da3f0000000000004b3f000000000000803fc99053bf222c773efcf9b13d217d063d000000400000803f460524452303054000000040cd81a63e000000000000803fc6b0d63ee47091be9da7543f25e04f3d000000400000000079a0254575e7cf3f000000000000f83a000000000000803fbfd9e73e00000000659e673d54bb8c3d000000400000404046f525455dc2b03f0000404000000000000000000000803f2639183f2f6d78be1e32dd3e8e46433e000040400000704100009841d4d7333f3bff463e6f45d03f000000000000803f24e49f4500000000000000009d57eb3e00008040e72d7dbd000088410000404068d2dc412d34784180c480480000803f",
+        "element_count": 74,
+        "element_size": 48,
+        "encoding": "hex",
+        "schema_signature": "11528764442872639710"
+      }
+    }
+  },
+  "version": 5
+}

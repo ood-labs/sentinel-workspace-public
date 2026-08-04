@@ -1,0 +1,87 @@
+name: "VC Env"
+version: "0.1"
+mode: generator
+resolution: [2048, 1024]
+# HDR both ways. working_format governs the intermediate pass buffer; output_format governs
+# the texture handed to VC_Render. Leaving output_format at its RGBA8 default would clamp the
+# key from gain 45 down to 1.0 and silently destroy every specular in the finished image.
+working_format: RGBA16F
+output_format: RGBA16F
+
+# The studio as a lat-long HDR panorama. In a refractive image this is the subject: every
+# glass pixel is a bent sample of this texture, so the SHAPE of the sources here is what the
+# picture is made of. Its own output is its preview — a panorama is legible as itself.
+
+parameters:
+  # EXPLORATION AXIS: the studio. Structural, because a refracting sculpture transports these
+  # sources through a dozen interfaces — changing the rig reorganises the whole image.
+  - name: light_rig
+    display: "Light Rig"
+    type: enum
+    options: [Softbox, Twin Strip, Overhead Wash, Window]
+    default: 0
+    flags: button_grid
+    group: "Rig"
+
+  - { name: key_gain,      display: "Key",            type: float, min: 0.0, max: 120.0, default: 45.000000, group: "Key" }
+  - { name: key_tint,      display: "Key Tint",       type: color, default: [1.000000, 0.985, 0.965],        group: "Key" }
+  - { name: key_azimuth,   display: "Key Azimuth",    type: float, min: -3.15, max: 3.15, default: -0.95, group: "Key" }
+  - { name: key_elevation, display: "Key Elevation",  type: float, min: -0.6, max: 1.45, default: 0.72,  group: "Key" }
+  - { name: key_width,     display: "Key Width",      type: float, min: 0.05, max: 2.0, default: 0.34,  group: "Key" }
+  - { name: key_height,    display: "Key Height",     type: float, min: 0.05, max: 2.0, default: 0.26,  group: "Key" }
+  - { name: key_soft,      display: "Key Softness",   type: float, min: 0.005, max: 1.0, default: 0.12, group: "Key" }
+
+  - { name: fill_gain,  display: "Fill",       type: float, min: 0.0, max: 20.0, default: 2.6, group: "Fill" }
+  - { name: fill_tint,  display: "Fill Tint",  type: color, default: [0.9, 0.93, 1.000000],          group: "Fill" }
+  - { name: rim_gain,   display: "Rim Strip",  type: float, min: 0.0, max: 60.0, default: 14.000000, group: "Fill" }
+  - { name: rim_tint,   display: "Rim Tint",   type: color, default: [1.000000, 0.96, 0.92],          group: "Fill" }
+  - { name: neg_fill,   display: "Negative Fill", type: float, min: 0.0, max: 1.0, default: 0.42, group: "Fill" }
+
+  - { name: backdrop_value, display: "Backdrop Value", type: float, min: 0.0, max: 1.0, default: 0.55, group: "Cyclorama" }
+  - { name: backdrop_tint,  display: "Backdrop Tint",  type: color, default: [1.000000, 0.97, 0.93],          group: "Cyclorama" }
+  - { name: ceiling_lift,   display: "Ceiling Lift",   type: float, min: 0.0, max: 1.0, default: 0.7,  group: "Cyclorama" }
+  - { name: horizon_height, display: "Horizon Height", type: float, min: -0.8, max: 0.8, default: -0.06, group: "Cyclorama" }
+  - { name: horizon_gain,   display: "Horizon Band",   type: float, min: 0.0, max: 8.0, default: 1.4,  group: "Cyclorama" }
+
+buffers:
+  - { name: rig, structured: true, element_size: 16, element_count: 2, persistent: false }
+  # 64x32 against a 2048x1024 root. A cosine lobe carries no higher frequency than this, so
+  # anything larger is memory bandwidth spent on detail the convolution has already removed.
+  - { name: irr, format: RGBA16F, scale: 0.03125 }
+
+passes:
+  - name: rig
+    shader: rig.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:rig"
+  - name: env
+    shader: env.hlsl
+    target: cs_5_0
+  - name: irradiance
+    shader: irradiance.hlsl
+    target: cs_5_0
+    output: "buffer:irr"
+    inputs:
+      - { slot: 0, source: "pass:env" }
+  - name: irr_out
+    shader: irr_out.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "buffer:irr" }
+
+# The studio publishes its own key vector. VC_Render's contact-shadow direction is DRIVEN from
+# these by expressions, so the renderer holds no second copy of where the light is and moving
+# the key moves the shadow.
+control_outputs:
+  - { name: key_dir_x, buffer: rig, element: 0, field_offset: 0,  description: "Unit vector toward the key, x" }
+  - { name: key_dir_y, buffer: rig, element: 0, field_offset: 4,  description: "Unit vector toward the key, y" }
+  - { name: key_dir_z, buffer: rig, element: 0, field_offset: 8,  description: "Unit vector toward the key, z" }
+  - { name: key_power, buffer: rig, element: 0, field_offset: 12, description: "Key gain, so a shadow can scale with the light that casts it" }
+
+outputs:
+  - { name: "Studio", pass: env }
+  - { name: "Irradiance", pass: irr_out }

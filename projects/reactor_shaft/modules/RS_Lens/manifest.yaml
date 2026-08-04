@@ -1,0 +1,107 @@
+name: "RS Lens"
+version: "0.1"
+working_format: RGBA16F
+
+# The finish. Deliberately a separate node from the marcher: bloom, flare, aberration, grade and
+# grain are LENS and FILM properties, not scene properties, and keeping them out of RS_Shaft
+# means the renderer's own preview stays an honest picture of what it actually computed.
+#
+# Full resolution throughout rather than a half-res bloom chain. RS_Shaft is by far the
+# expensive node here, so the pixels are affordable, and it avoids the scaled-pass coordinate
+# trap entirely.
+#
+# Two bloom scales, the wide one CHAINED off the tight one: a single kernel can give a crisp
+# core or a very large halo and never both, and the reference's emitters have both.
+
+inputs:
+  - { name: "Shaft", slot: 0, required: true }
+
+parameters:
+  - { name: bloom_threshold, display: "Bloom Threshold", type: float, min: 0.0,  max: 4.0,  default: 1.7, group: "Bloom" }
+  - { name: bloom_knee,      display: "Bloom Knee",      type: float, min: 0.01, max: 2.0,  default: 0.55, group: "Bloom" }
+  - { name: bloom_radius,    display: "Bloom Radius",    type: float, min: 0.5,  max: 16.0, default: 3.2,  group: "Bloom" }
+  - { name: bloom_wide,      display: "Wide Multiplier", type: float, min: 1.0,  max: 8.0,  default: 4.000000,  group: "Bloom" }
+  - { name: bloom_gain,      display: "Bloom Gain",      type: float, min: 0.0,  max: 4.0,  default: 0.5,  group: "Bloom" }
+  - { name: bloom_tight,     display: "Tight Mix",       type: float, min: 0.0,  max: 3.0,  default: 0.85, group: "Bloom" }
+  - { name: bloom_wide_gain, display: "Wide Mix",        type: float, min: 0.0,  max: 3.0,  default: 0.75, group: "Bloom" }
+
+  # EXPLORATION AXIS — what lens the shaft was shot on. Structural to the look rather than a
+  # grade tweak: it changes the shape every emitter throws across the frame.
+  - name: flare_style
+    display: "Flare"
+    type: enum
+    options: [Anamorphic, Star, Halo, Off]
+    default: 0
+    flags: button_grid
+    group: "Flare"
+  - { name: flare_gain,   display: "Flare Gain",   type: float, min: 0.0, max: 4.0,   default: 0.28, group: "Flare" }
+  - { name: flare_length, display: "Flare Length", type: float, min: 0.0, max: 0.45,  default: 0.1, group: "Flare" }
+  - { name: flare_decay,  display: "Flare Decay",  type: float, min: 0.5, max: 0.99,  default: 0.9, group: "Flare" }
+  - { name: flare_angle,  display: "Flare Angle",  type: float, min: -90.0, max: 90.0, default: 0.000000, group: "Flare" }
+  - { name: flare_taps,   display: "Flare Taps",   type: int,   min: 2, max: 32,      default: 14,   group: "Flare" }
+  # The flare needs a HIGHER bar than the bloom. Sharing the bloom threshold lets a merely
+  # bright wall throw arms, and a wall with arms is smear rather than a lens.
+  - { name: flare_threshold, display: "Flare Threshold", type: float, min: 0.0, max: 12.0, default: 2.2, group: "Flare" }
+
+  - { name: exposure,   display: "Exposure",   type: float, min: 0.05, max: 4.0, default: 1.000000, group: "Grade" }
+  - { name: aberration, display: "Aberration", type: float, min: 0.0,  max: 3.0, default: 0.35, group: "Grade" }
+  - { name: tone_sat,   display: "Highlight Colour", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Grade" }
+  - { name: saturation, display: "Saturation", type: float, min: 0.0,  max: 2.5, default: 1.22, group: "Grade" }
+  - { name: contrast,   display: "Contrast",   type: float, min: 0.4,  max: 2.5, default: 1.32, group: "Grade" }
+  - { name: lift,       display: "Lift",       type: float, min: -0.2, max: 0.2, default: -0.035, group: "Grade" }
+  - { name: shadow_tint, display: "Shadow Tint", type: color, default: [0.03, 0.085, 0.105], group: "Grade" }
+  - { name: shadow_amt,  display: "Shadow Tint Amount", type: float, min: 0.0, max: 3.0, default: 1.000000, group: "Grade" }
+  - { name: high_tint,   display: "Highlight Tint", type: color, default: [0.07, 0.01, 0.045], group: "Grade" }
+  - { name: high_amt,    display: "Highlight Tint Amount", type: float, min: 0.0, max: 3.0, default: 1.000000, group: "Grade" }
+  - { name: depth_tint,  display: "Near Tint",  type: color, default: [0.42, 0.52, 0.56], group: "Grade" }
+  - { name: depth_amt,   display: "Near Tint Amount", type: float, min: 0.0, max: 1.0, default: 0.3, group: "Grade" }
+  - { name: depth_ref,   display: "Depth Reference", type: float, min: 2.0, max: 80.0, default: 22.000000, group: "Grade" }
+
+  - { name: vignette,       display: "Vignette",       type: float, min: 0.0, max: 1.0, default: 0.62, group: "Film" }
+  - { name: vignette_start, display: "Vignette Start", type: float, min: 0.0, max: 1.2, default: 0.42, group: "Film" }
+  - { name: grain,          display: "Grain",          type: float, min: 0.0, max: 0.2, default: 0.028, group: "Film" }
+
+passes:
+  - name: bright
+    shader: bright.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+  - name: blur1_h
+    shader: blur1_h.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:bright" }
+  - name: blur1_v
+    shader: blur1_v.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:blur1_h" }
+  # the wide chain runs off the ALREADY BLURRED tight result, which is what buys a very large
+  # kernel for two more 13-tap passes instead of a 60-tap one
+  - name: blur2_h
+    shader: blur2_h.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:blur1_v" }
+  - name: blur2_v
+    shader: blur2_v.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:blur2_h" }
+  - name: streak
+    shader: streak.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:bright" }
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "pass:blur1_v" }
+      - { slot: 2, source: "pass:blur2_v" }
+      - { slot: 3, source: "pass:streak" }
+
+outputs:
+  - { name: "Program", pass: grade }

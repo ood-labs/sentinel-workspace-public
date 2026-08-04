@@ -81,6 +81,111 @@ All three are StateTree parameters, so OSC, expressions, MCP, and scene-group pr
 
 Several StreamDiff variants using the same engine files share loaded TensorRT engines through a ref-counted pool, so N variants cost one engine load (execution is one at a time). Switch between variants live with a `mux` node (`selected` picks 1-of-8 inputs); enable the mux's `solo_upstream` so the non-selected variants auto-hold and only the visible one diffuses. See `knowledge/scene-system.md`.
 
+## Generated Subjects In An Authored Composition
+
+Placing generated imagery into a graph that already has a plan authority: author each family
+twice, drawn and generated, at the *same* plan records, so the compositor cannot tell them apart
+and a single gain crossfades between them.
+
+The chain, one per family:
+
+```
+conditioning records -> streamdiff -> matting -> stamp (reads the plan) -> compositor
+```
+
+The stamp reads the plan's records and the generated plate never decides placement. That is what
+makes drawn and generated versions interchangeable; it is the same "one authority owns placement"
+rule from `knowledge/reference-build-method.md`, applied to a generator.
+
+### Generate photoreal on black, never a drawing
+
+Counter-intuitive and load-bearing. A matting node is trained on photographs and cuts a real object
+far more cleanly than a flat illustration, so ask for **hyper-real 4K on a solid pure black
+background** even when the finished look is a drawing. Apply the drawn look — posterize, edge
+detect, ink — as a **post effect in the stamp, after the cut**, where tuning it cannot damage the
+matte. A lit subject on black also gives you a luminance key to cross-check the matte with, which
+the next point depends on.
+
+### Prompt lighting words decide whether the plate is mattable
+
+| Say | Not |
+|-----|-----|
+| brightly lit, large softbox, bright even studio lighting, bright frontal illumination | dramatic lighting, rim lighting, hard raking light, chiaroscuro |
+
+Asking for a subject *on black* plus *dramatic light* returns a subject that is itself in shadow — a
+smoky mass with no silhouette for the matte to find. This is the single highest-leverage line in the
+prompt; changing only these words turned an empty stamp into a clean marble profile.
+
+### Never fix a dark plate with the `brightness` parameter
+
+`brightness` lifts the **whole image**, including the black background. The luma key dies, the matte
+claims the entire frame, and the stamp lands as a rectangular slab. Exposure belongs downstream,
+where it can be measured against the matte. Keep `brightness` near 0 and fix darkness in the prompt
+or in the stamp.
+
+### Auto-expose in the stamp, do not tune levels by hand
+
+Generator output brightness is **not repeatable**. The same prompt bank returns a chalk-white marble
+hand on one fire and a hand almost entirely in shadow on the next, so fixed levels can only ever be
+correct for the plate that happened to be on screen when they were set — fatal for an unattended
+cadence. Add a measurement pass ahead of the stamp pass:
+
+- walk the plate on a coarse grid (a few thousand taps, one thread, no atomics needed);
+- count only pixels the **matte** calls foreground;
+- publish the subject's black point and a luminance **percentile**, not a max — a max is hostage to
+  one specular glint on a knuckle, which would set the white point for the whole subject;
+- fall back to authored values when coverage is near zero, so a mid-generation plate does not drive
+  the exposure off sixteen stray pixels.
+
+### The matte is saliency, not a key — gate it with luminance
+
+A background-removal matte decides what a picture is *about*. It will happily annex the empty
+backdrop beside a subject as part of the same object; on a studio bust it returned a matte covering
+the entire left half of the frame. Multiply it by a soft luminance gate — the lit-on-black plate
+makes that an independent and reliable second opinion — and keep a mix parameter so a plate where
+the matte is genuinely better can turn the gate off.
+
+### Ordered duotone beats nearest-ink snapping on desaturated subjects
+
+Snapping generated colour to the nearest palette entry is a per-pixel decision with no memory of its
+neighbours. On a saturated subject it is fine — a green frond lands on the greens and stays. On a
+**desaturated** one it falls apart: a pale marble hand is a field of near-equal greys, grey sits
+almost equidistant from several inks, and neighbouring pixels leapfrog between them, mottling the
+subject into camouflage. Ramp between a dark and a light ink by luminance instead. The choice
+becomes ordered, adjacent tones cannot swap, and it is also what a two-colour riso separation
+physically is.
+
+### Feedback hygiene for held stills
+
+Three silent failures. Nothing errors, the node reports healthy, and the damage only shows up as a
+slowly degrading image several generations later.
+
+| Rule | Without it |
+|------|------------|
+| Invoke `reset_feedback` **before every** `render_one` | `render_one` refines the *previous* frame; at high feedback each generation compounds on the last and the subject degrades within a few fires |
+| Zero `zoom`, `pan_x`, `pan_y`, `rotation` | default `zoom` is `0.02`, which combined with feedback progressively zooms the loop every frame and smears the plate |
+| Keep `controlnet_scale` around **0.6–0.7** | tighter glues the output to the control image and kills the model's contribution; much looser and the conditioning stops steering at all. Expect to dial it in |
+
+The `zoom 0.0` in the Atlas Still Capture table above is this same rule.
+
+### Cadence: publish a level, not a pulse
+
+To regenerate families on independent clocks, drive `hold` from a controller's control output and
+`prompt_position` from a monotonic fire counter (`fires % N` walks the prompt bank). Publish `hold`
+as a **level**, not a one-cook pulse: the controller cooks far faster than its consumers, so a pulse
+is unsamplable and will be missed. Stagger the lanes with offsets so families never fire together.
+
+### Crop and size are separate decisions
+
+A stamp needs `plate_zoom` (which part of the plate fills the record) independent of `stamp_scale`
+(how big the record is). Scale alone does both at once — it widens the record's extent *and*, since
+the same coordinates span a bigger box, narrows the plate region sampled — so framing a bust on its
+head also doubles it in the composition. Related trap: test the record's footprint **independently**
+of the plate crop. Deriving it from "is the plate coordinate inside `[0,1]`" ties them together, and
+zooming in then shrinks that range, lets more of the canvas pass, and silently grows the stamp until
+it covers everything. Feather both boundaries, or a subject leaving the record ends in a square
+corner that reads as a compositing bug.
+
 ## Focused Workflow Examples
 
 The portable collection at `projects/streamdiff_workflows/` isolates six patterns that are easy to confuse in a larger show:

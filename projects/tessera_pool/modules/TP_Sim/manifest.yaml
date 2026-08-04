@@ -1,0 +1,233 @@
+name: "TP Sim"
+version: "0.2"
+mode: generator
+resolution: [512, 512]
+working_format: RGBA16F
+output_format: RGBA16F
+
+# The water surface. Consumes TP_Plan's records, integrates a damped wave equation over the
+# tank footprint, and publishes one field every consumer reads.
+#
+# output_format matters here and is not the same thing as working_format. This node's Field
+# output carries SIGNED world-unit heights and gradients; published as the default RGBA8 the
+# negative half of every wave would clamp to zero and the water would only ever bulge upward.
+
+buffers:
+  # The solver runs at half resolution. That is where the wave equation is both comfortably
+  # inside its stability limit at ordinary frame rates AND still resolves a 0.13-unit ripple
+  # over sixteen cells. Detail finer than the grid is added analytically in field.hlsl.
+  # The three wave passes read and write this SAME persistent ping-pong buffer. The Module
+  # runtime flips after every write, so each substep reads the result of the preceding one and
+  # the next cook reads the finished third substep. Separate named scratch buffers plus a final
+  # copy-back left one stale half visible and produced a perfect real/flat ABAB frame sequence.
+  - { name: state, format: RGBA16F, scale: 0.5, persistent: true }
+  - { name: ctl,     structured: true, element_size: 64, element_count: 2, persistent: true }
+  - { name: metrics, structured: true, element_size: 16, element_count: 2 }
+
+state_buffers:
+  - name: ctl
+    max_elements: 2
+    schema:
+      - { name: a, type: float4 }
+      - { name: b, type: float4 }
+      - { name: c, type: float4 }
+      - { name: d, type: float4 }
+
+viewport:
+  hint: "Drag on the surface to push ripples · click to drop · this preview is the water plane, one pixel per position"
+  interactions: [events]
+  input:
+    pointer: [left]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: push, label: "Push the surface" }
+    - { gesture: left_click, action: drop, label: "Drop" }
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: p2,     type: float }
+      - { name: p3,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: pad0,   type: float }
+      - { name: pad1,   type: float }
+
+parameters:
+  # Wave speed is in world units per second. The solver silently clamps it to whatever the
+  # current cook interval can carry stably, so a slow frame calms the water instead of
+  # detonating it — see the header of wave.hlsli.
+  - { name: wave_speed, display: "Wave Speed",  type: float, min: 0.05, max: 2.0, default: 0.3, group: "Water" }
+  # 0.08 was tuned so a ring train could cross the tank before dying, which is right for a
+  # continuously driven surface and wrong for one made of discrete drops: between impacts you
+  # want to SEE it settle. An e-fold of about three seconds reads as water rather than as syrup.
+  - { name: damping,    display: "Damping",     type: float, min: 0.0,  max: 4.0, default: 0.55, group: "Water" }
+  - { name: wave_gain,  display: "Wave Gain",   type: float, min: 0.0,  max: 4.0, default: 3.2,  group: "Water" }
+  - { name: time_scale, display: "Time Scale",  type: float, min: 0.0,  max: 3.0, default: 1.000000,  group: "Water" }
+  - { name: sim_reset,  display: "Reset (hold)", type: bool, default: false, group: "Water" }
+
+  # Master gate for TP_Plan's fixed-position records. Off by default so the tank can settle and
+  # the user owns every ripple; turn it on to restore periodic drops, emitters, and swells.
+  - { name: auto_sources, display: "Auto Sources", type: bool, default: false, flags: button, group: "Sources" }
+
+  # How much of a wave the tank walls send back. At 1.0 the walls are perfect mirrors — which
+  # is physically what glass does, and which turns any ring system into isotropic chop within
+  # one crossing. Below 1.0 a graded absorbing band inside the wall eats the return, which is
+  # what keeps the reference's concentric rings concentric.
+  - { name: wall_reflect, display: "Wall Reflect", type: float, min: 0.0, max: 1.0, default: 0.22, group: "Water" }
+  - { name: wall_band,    display: "Absorb Band",  type: float, min: 0.02, max: 0.5, default: 0.16, group: "Water" }
+
+  # BREAKING — the term that makes the surface self-limiting.
+  #
+  # A tank with sources in it is a resonant cavity, and linear damping alone only sets a steady
+  # state proportional to drive over damping; with damping low enough for ring trains to cross
+  # the tank, that steady state is enormous and the surface climbs until it thrashes. Real water
+  # breaks past a steepness around 0.6 and dumps the energy instead. Below the threshold this
+  # costs exactly nothing, so it bounds the runaway without touching the look.
+  #
+  # Set break_gain to 0 to see the unbounded behaviour it replaces.
+  - { name: break_slope, display: "Breaking Slope", type: float, min: 0.05, max: 4.0,   default: 0.95, group: "Water" }
+  - { name: break_gain,  display: "Breaking Loss",  type: float, min: 0.0,  max: 200.0, default: 45.000000, group: "Water" }
+
+  # How hard a continuous source pulls the surface toward it. This is a SPRING, not a piston —
+  # see the source loop in wave.hlsli for why a displacement clamp cannot be bounded.
+  - { name: drive_stiffness, display: "Drive Stiffness", type: float, min: 5.0, max: 3000.0, default: 320.000000, group: "Water" }
+
+  # Capillary chop. Not simulated — added to the gradient, where it is the entire difference
+  # between water and a sheet of plastic.
+  # Calibrated against the caustics, not by eye on the surface. Chop carries a gradient of
+  # amplitude times wavenumber and a CURVATURE of amplitude times wavenumber squared, so at 1.0
+  # its curvature rivalled the ripples it is supposed to decorate and the caustic atlas came out
+  # as a crosshatch with the ripple rings buried underneath it.
+  - { name: detail_amp,   display: "Chop",       type: float, min: 0.0,  max: 4.0, default: 0.25, group: "Detail" }
+  - { name: detail_scale, display: "Chop Scale", type: float, min: 0.15, max: 4.0, default: 1.0,  group: "Detail" }
+
+  # The chop is analytic, added after the solver, and animated by its own clock — so ungated it
+  # runs forever and no sim control can reach it. At 1.0 its amplitude follows the local wave
+  # envelope, so still water is genuinely still. Set to 0 for the old always-on behaviour.
+  - { name: chop_couple, display: "Chop Follows Waves", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Detail" }
+  # The wave envelope at which the chop reaches full strength, in world units.
+  - { name: chop_ref,    display: "Chop Reference",     type: float, min: 0.001, max: 0.2, default: 0.012, group: "Detail" }
+
+  # The pointer is a finger pressing on the surface, not an energy source. Depth is how far it
+  # pushes; radius is how wide the fingertip is.
+  - { name: pointer_depth,  display: "Pointer Depth",  type: float, min: 0.0,   max: 0.30, default: 0.035, group: "Pointer" }
+  - { name: pointer_radius, display: "Pointer Radius", type: float, min: 0.005, max: 0.40, default: 0.055, group: "Pointer" }
+
+  # Driven by expression from TP_Render's pick control outputs, so dragging on the BEAUTY
+  # image makes ripples. Left undriven these sit at 0.5/0.5/off and do nothing.
+  - { name: ext_u,    display: "Ext U",    type: float, min: 0.0, max: 1.0, default: 0.5, group: "Pointer/External" }
+  - { name: ext_v,    display: "Ext V",    type: float, min: 0.0, max: 1.0, default: 0.5, group: "Pointer/External" }
+  - { name: ext_down, display: "Ext Down", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Pointer/External" }
+
+  - { name: contour_step, display: "Contour Step", type: float, min: 0.001, max: 0.05, default: 0.006, group: "Preview" }
+
+  # Relief display full-scale, as a FRACTION OF THE FREEBOARD — a fixed physical reference, never
+  # the running peak. An auto-ranging preview amplifies a decaying signal without bound, so calm
+  # water reads as chaos and no physics change can appear to help. 1.0 means the display
+  # saturates exactly when a wave reaches the rim.
+  - { name: relief_scale, display: "Relief Full Scale", type: float, min: 0.02, max: 2.0, default: 0.45, group: "Preview" }
+
+  # OSCILLATION DETECTION. A height reading cannot tell a standing wave from still water — both
+  # hold a steady profile — so the motion ENVELOPE sqrt(v^2 + (h/tau)^2) is measured instead. It
+  # is zero at rest and large and steady for anything oscillating in place. `Motion` view maps it
+  # per texel so a fault can be LOCATED, not just detected.
+  - name: view_mode
+    display: "View"
+    type: enum
+    options: [Relief, Motion]
+    default: 0
+    flags: button_grid
+    group: "Preview"
+  - { name: motion_tau,   display: "Motion Tau",   type: float, min: 0.005, max: 1.0, default: 0.08, group: "Preview" }
+  - { name: motion_scale, display: "Motion Scale", type: float, min: 0.001, max: 2.0, default: 0.15, group: "Preview" }
+
+passes:
+  # Must run FIRST: same-cook producer -> consumer is the ordering the module system guarantees.
+  - name: ctl
+    shader: ctl.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ctl"
+
+  # Three substeps through one persistent ping-pong buffer. A texture cannot be bound as SRV
+  # and UAV simultaneously, so the runtime binds opposite halves and flips after every pass.
+  # Explicit integration cannot take one 60 Hz step at this spacing and speed safely.
+  - name: wave_a
+    shader: wave_a.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "buffer:ctl" }
+      - { slot: 2, source: "data:0" }
+    output: "buffer:state"
+  - name: wave_b
+    shader: wave_b.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "buffer:ctl" }
+      - { slot: 2, source: "data:0" }
+    output: "buffer:state"
+  - name: wave_c
+    shader: wave_c.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "buffer:ctl" }
+      - { slot: 2, source: "data:0" }
+    output: "buffer:state"
+
+  - name: measure
+    shader: measure.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 256
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:metrics"
+
+  - name: relief
+    shader: relief.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "buffer:ctl" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:metrics" }
+
+  - name: field
+    shader: field.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "buffer:ctl" }
+      - { slot: 2, source: "data:0" }
+
+control_outputs:
+  # wave_peak drives TP_Plan's section strip. It is the reason the plan can draw a measured
+  # envelope instead of a predicted one.
+  - { name: wave_peak, buffer: metrics, element: 0, field_offset: 0, description: "Peak |height| on the surface, world units" }
+  - { name: wave_rms,  buffer: metrics, element: 0, field_offset: 4, description: "RMS surface height, world units" }
+  # THE ones that can see a standing wave. Height metrics cannot: they are constant for both a
+  # thrashing surface and a still one.
+  - { name: motion_peak, buffer: metrics, element: 0, field_offset: 8,  description: "Peak local oscillation envelope; 0 only when the surface is truly at rest" }
+  - { name: motion_rms,  buffer: metrics, element: 0, field_offset: 12, description: "RMS local oscillation envelope; 0 only when the surface is truly at rest" }
+
+outputs:
+  # Relief is slot 0 so the node's own preview is the readable instrument view; Field is the
+  # data every consumer actually links to.
+  - { name: "Relief", pass: relief }
+  - { name: "Field",  pass: field }

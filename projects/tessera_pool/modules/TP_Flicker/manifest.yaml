@@ -1,0 +1,85 @@
+name: "TP Flicker"
+version: "0.3"
+mode: generator
+resolution: [512, 512]
+working_format: RGBA16F
+
+# AN INDEPENDENT FLASHING DETECTOR.
+#
+# Point it at any node's output. It remembers the previous frame and the previous frame-to-frame
+# change, then measures the TEMPORAL SECOND DIFFERENCE. A first difference is merely motion and
+# lights up a smooth traveling ripple; a second difference isolates abrupt or alternating
+# brightness changes while remaining quiet on coherent motion.
+#
+#   - height peak and RMS are constant for a standing wave and for still water alike;
+#   - a motion metric inside the sim watches the sim's own buffer, not the preview the eye
+#     actually judges — and a preview can manufacture flashing of its own, which is exactly what
+#     an auto-ranging display does as the signal it scales to decays toward zero.
+#
+# Measuring delivered pixels closes both holes. Nothing here trusts anything upstream.
+
+buffers:
+  # Structured, not a texture, and read+written by ONE pass. Splitting the history into a
+  # separate "store previous frame" pass creates a dependency the scheduler resolves by running
+  # the store FIRST — so `prev` already equals the current frame, every difference is zero, and
+  # the detector always reports success. A detector that cannot fail is worthless.
+  - { name: hist,    structured: true, element_size: 16, element_count: 262144, persistent: true }
+  - { name: metrics, structured: true, element_size: 16, element_count: 2 }
+
+inputs:
+  - { name: "Watch", slot: 0, required: true }
+
+parameters:
+  # Source extent. The history is indexed per source texel, so this must match the input.
+  - { name: src_width,  display: "Source Width",  type: int, min: 64, max: 2048, default: 512, group: "Source" }
+  - { name: src_height, display: "Source Height", type: int, min: 64, max: 2048, default: 512, group: "Source" }
+
+  # Peak hold with exponential release, so a flash a moment ago is still on screen when you look.
+  # An instantaneous difference map is nearly useless: the frame you capture may be one where the
+  # flicker was mid-cycle and momentarily near zero.
+  - { name: hold_release, display: "Hold Release", type: float, min: 0.0, max: 20.0, default: 1.2, group: "Detect" }
+
+  # A pixel counts as flickering when its temporal second difference exceeds this threshold.
+  # 0.004 is roughly one 8-bit level and rejects ordinary smooth motion at 60 Hz.
+  - { name: area_threshold, display: "Flicker Threshold", type: float, min: 0.0005, max: 0.2, default: 0.004, group: "Detect" }
+  - { name: area_alarm,     display: "Area Alarm",       type: float, min: 0.0, max: 1.0, default: 0.02, group: "Detect" }
+
+  # FIXED display scale, never auto-ranged — see the header of view.hlsl.
+  - { name: view_scale, display: "View Full Scale", type: float, min: 0.002, max: 1.0, default: 0.06, group: "View" }
+
+passes:
+  - name: analyse
+    shader: analyse.hlsl
+    target: cs_5_0
+    dispatch: [64, 64, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: "buffer:hist"
+
+  - name: reduce
+    shader: reduce.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 256
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:hist" }
+    output: "buffer:metrics"
+
+  - name: view
+    shader: view.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "buffer:hist" }
+      - { slot: 1, source: "buffer:metrics" }
+
+control_outputs:
+  - { name: flicker_mean, buffer: metrics, element: 0, field_offset: 0, description: "Mean per-pixel temporal second difference" }
+  - { name: flicker_peak, buffer: metrics, element: 0, field_offset: 4, description: "Peak-held per-pixel temporal second difference" }
+  - { name: flicker_area, buffer: metrics, element: 0, field_offset: 8, description: "Fraction of the image flickering above threshold on the current frame" }
+
+outputs:
+  - { name: "Flicker", pass: view }

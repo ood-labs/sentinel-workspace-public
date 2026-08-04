@@ -1,0 +1,75 @@
+name: "TP Post"
+version: "0.2"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+
+buffers:
+  # THREE buffers, not a two-buffer ping-pong. Writing the vertical blur back into the buffer the
+  # bright pass filled leaves the composite reading the UNBLURRED extraction — which presents as
+  # hard stair-stepped glare around the rim and reads as a geometry bug.
+  - { name: bloom_a, format: RGBA16F, scale: 0.25 }
+  - { name: bloom_b, format: RGBA16F, scale: 0.25 }
+  - { name: bloom_c, format: RGBA16F, scale: 0.25 }
+
+inputs:
+  - { name: "Beauty", slot: 0, required: true }
+
+parameters:
+  # Threshold sits ABOVE the studio backdrop on purpose. Below it the whole background blooms
+  # and the image reads as fog rather than as glare off glass.
+  - { name: bloom,     display: "Bloom",           type: float, min: 0.0, max: 3.0, default: 0.42, group: "Bloom" }
+  - { name: bloom_thr, display: "Bloom Threshold", type: float, min: 0.2, max: 8.0, default: 1.25, group: "Bloom" }
+  - { name: bloom_rad, display: "Bloom Radius",    type: float, min: 0.3, max: 8.0, default: 1.7,  group: "Bloom" }
+
+  - { name: exposure,   display: "Exposure",   type: float, min: 0.05, max: 6.0, default: 1.06, group: "Grade" }
+  - { name: contrast,   display: "Contrast",   type: float, min: 0.2,  max: 2.6, default: 1.14, group: "Grade" }
+  - { name: saturation, display: "Saturation", type: float, min: 0.0,  max: 2.0, default: 1.10, group: "Grade" }
+  - { name: lift,       display: "Lift",       type: float, min: -0.1, max: 0.3, default: 0.008, group: "Grade" }
+  - { name: roll_knee,  display: "Highlight Knee", type: float, min: 0.3, max: 1.2, default: 0.82, group: "Grade" }
+  - { name: shadow_tint,    display: "Shadow Tint",    type: color, default: [0.90, 0.96, 1.06], group: "Grade" }
+  - { name: highlight_tint, display: "Highlight Tint", type: color, default: [1.02, 1.00, 0.98], group: "Grade" }
+
+  - { name: vignette, display: "Vignette", type: float, min: 0.0, max: 1.6, default: 0.30, group: "Lens" }
+
+  # Gradient-directed edge blur. The renderer's geometry is analytic, so the ONLY aliasing in
+  # the frame is on silhouettes — which is exactly what this removes, at a fraction of the cost
+  # of a second ray per pixel.
+  - { name: aa_amount,    display: "Edge AA",        type: float, min: 0.0, max: 3.0, default: 1.0,  group: "Lens" }
+  - { name: aa_threshold, display: "Edge Threshold", type: float, min: 0.002, max: 0.4, default: 0.035, group: "Lens" }
+  # Center weight in the edge reconstruction. At 1 the source remains nearly untouched; lower
+  # values trade definition for stronger diagonal stabilization.
+  - { name: aa_crispness, display: "AA Crispness", type: float, min: 0.0, max: 1.0, default: 0.72, group: "Lens" }
+
+passes:
+  - name: bright
+    shader: bright.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+    output: "buffer:bloom_a"
+  - name: blur_h
+    shader: blur_h.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:bloom_a" }
+    output: "buffer:bloom_b"
+  - name: blur_v
+    shader: blur_v.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:bloom_b" }
+    output: "buffer:bloom_c"
+  - name: comp
+    shader: comp.hlsl
+    target: cs_5_0
+    # Explicitly display-referred. This is the end of the chain: the grade has already rolled
+    # the highlights into range, so publishing 8-bit is the intent rather than a loss, and
+    # saying so stops the manifest lint flagging a mismatch it cannot otherwise resolve.
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:bloom_c" }
+
+outputs:
+  - { name: "Program", pass: comp }

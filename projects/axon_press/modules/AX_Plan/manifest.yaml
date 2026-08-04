@@ -1,0 +1,164 @@
+name: "AX Plan"
+version: "0.1"
+mode: generator
+resolution: [1152, 648]
+
+# The plan authority for axon_press. Owns PLATE SPACE and is the only node that decides where a
+# volume, sheet, wedge or trace sits, what paper it wears, where the fall converges, or how far
+# through the octave loop the flight has travelled. Publishes one record buffer to AX_Press.
+#
+# The diagram is THE PLATE over THE OCTAVE LADDER, sharing the radius axis, because this subject
+# is organised two ways at once: an axonometric arrangement (which the plate shows and the ladder
+# cannot) and a repeating log-radius period (which the ladder shows and the plate cannot). All
+# maths is normalized uv, so the canvas, the pick test and the viewport pointer are the same
+# numbers and cannot drift apart.
+
+buffers:
+  - { name: plan, structured: true, element_size: 80, element_count: 80, persistent: true }
+
+state_buffers:
+  - name: plan
+    max_elements: 80
+    schema:
+      - { name: pos, type: float3 }
+      - { name: ext, type: float3 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: mat, type: float }
+      - { name: col, type: float }
+      - { name: host, type: float }
+      - { name: rmin, type: float }
+      - { name: rmax, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+      - { name: pad0, type: float }
+      - { name: pad1, type: float }
+      - { name: pad2, type: float }
+
+viewport:
+  hint: "Click select · drag move (plate = position, ladder = radius) · drag focus reticle · F focus at pointer · W/S raise/lower · Q/E shrink/grow · K form · M paper · P colour · X on/off · N re-roll · R reseed · Z REVERT · C clear"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [w, s, q, e, k, m, p, x, n, r, c, f, z]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select record / focus" }
+    - { gesture: left_drag, action: move, label: "Move (plate = position, ladder = radius)" }
+    - { key: f, action: set_focus, label: "Focus At Pointer" }
+    - { key: w, action: raise, label: "Raise" }
+    - { key: s, action: lower, label: "Lower" }
+    - { key: e, action: grow, label: "Grow" }
+    - { key: q, action: shrink, label: "Shrink" }
+    - { key: k, action: cycle_form, label: "Cycle Form" }
+    - { key: m, action: cycle_paper, label: "Cycle Paper" }
+    - { key: p, action: cycle_colour, label: "Cycle Colour" }
+    - { key: x, action: toggle_active, label: "On / Off" }
+    - { key: n, action: reroll, label: "Re-roll Record" }
+    - { key: r, action: reseed, label: "Reseed Arrangement" }
+    - { key: z, action: revert, label: "Revert To Shipped" }
+    - { key: c, action: clear_selection, label: "Clear Selection" }
+
+parameters:
+  # ARRANGEMENT RANDOMIZER. `variation` blends the transcribed vocabulary (0) into a free draw
+  # from the same vocabulary (1): ring angles, radial strata, shape ratios, forms and attachment
+  # all re-roll, while the LATTICE SNAP, the size-to-radius law and the size hierarchy are
+  # preserved, so a random seed still interlocks and still reads as a composition rather than as
+  # debris. variation = 0 is exactly the reference transcription and can never be lost.
+  - { name: variation,    display: "Variation",     type: float, min: 0.0, max: 1.0,   default: 0.000000, group: "Arrangement" }
+  - { name: seed,         display: "Seed",          type: float, min: 0.0, max: 512.0, default: 11.000000, group: "Arrangement" }
+
+  # EXPLORATION AXIS — what a volume's relationship to its parent IS. Structural: it changes how
+  # the masses lock together, not how they are shaded.
+  - name: weave
+    display: "Weave"
+    type: enum
+    options: [Interlock, Stacked, Nested, Drift]
+    default: 0
+    flags: button_grid
+    group: "Arrangement"
+
+  # EXPLORATION AXIS — the projection. Every parallel stays parallel in all four; what changes is
+  # how much of the top face you see and therefore how much the collage reads as architecture.
+  - name: lattice
+    display: "Projection"
+    type: enum
+    options: [Isometric, Dimetric, Cabinet, Steep]
+    default: 0
+    flags: button_grid
+    group: "Arrangement"
+
+  - { name: vol_count,    display: "Volumes",       type: int, min: 0, max: 32, default: 32, group: "Cast" }
+  - { name: pan_count,    display: "Sheets",        type: int, min: 0, max: 20, default: 20, group: "Cast" }
+  - { name: wdg_count,    display: "Wedges",        type: int, min: 0, max: 10, default: 10, group: "Cast" }
+  - { name: trc_count,    display: "Traces",        type: int, min: 0, max: 10, default: 10, group: "Cast" }
+  - { name: mass,         display: "Mass",          type: float, min: 0.35, max: 2.2, default: 1.000000, group: "Cast" }
+  - { name: vertical,     display: "Rise",          type: float, min: 0.05, max: 2.2, default: 1.000000, group: "Cast" }
+
+  # THE LOOP. `span` is how many octaves of radius the arrangement occupies: below 1 the octaves
+  # separate into visible rings with field between them, above ~2 you are always inside two or
+  # three layers of collage at once. `period` is how many octaves the loop takes before the frame
+  # repeats exactly — anything that varies per octave is indexed by the integer octave slot
+  # reduced mod this, so the wrap is bit-exact at any value.
+  - { name: span,         display: "Radial Span",   type: float, min: 0.6, max: 3.6, default: 2.2, group: "Loop" }
+  - { name: octave_ratio, display: "Octave Ratio",  type: float, min: 1.6, max: 3.2, default: 2.2, group: "Loop" }
+  - { name: period,       display: "Loop Octaves",  type: int, min: 1, max: 4, default: 3, group: "Loop" }
+  - { name: aperture,     display: "Aperture",      type: float, min: 0.04, max: 0.60, default: 0.18, group: "Loop" }
+
+  # FALL. travel integrates against _DeltaTime inside plan.hlsl and wraps at `period` octaves, so
+  # the flight is endless and the seam is bit-exact. `phase` rides on top as the sweepable loop
+  # coordinate: 0 -> 1 is exactly one full period, which is what makes motion proof deterministic.
+  - { name: fall_speed,   display: "Fall Speed",    type: float, min: 0.0, max: 1.6, default: 0.22, group: "Fall" }
+  - { name: phase,        display: "Phase",         type: float, min: 0.0, max: 1.0, default: 0.000000, group: "Fall" }
+
+  # Where the fall converges, in lattice ground coordinates. These SEED the focus; the live value
+  # lives in the record buffer so dragging the reticle survives cooks, saves and undo. Kept out of
+  # the signature: re-aiming the fall must never re-roll the arrangement it is aimed through.
+  - { name: focus_x,      display: "Focus X",       type: float, min: -24.0, max: 24.0, default: 0.000000, group: "Fall" }
+  - { name: focus_y,      display: "Focus Y",       type: float, min: -24.0, max: 24.0, default: 0.000000, group: "Fall" }
+
+  # Appearance-only: republished every cook and kept OUT of the signature, so restyling the paper
+  # never wipes an arrangement the user dragged into place. A record whose paper was set by hand
+  # is locked and skipped.
+  - { name: paper,        display: "Printed Stock", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Surface" }
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:plan"
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+
+data_outputs:
+  - name: "Plate"
+    buffer: "plan"
+    schema:
+      - { name: pos, type: float3 }
+      - { name: ext, type: float3 }
+      - { name: role, type: float }
+      - { name: kind, type: float }
+      - { name: seed, type: float }
+      - { name: mat, type: float }
+      - { name: col, type: float }
+      - { name: host, type: float }
+      - { name: rmin, type: float }
+      - { name: rmax, type: float }
+      - { name: phase, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+      - { name: pad0, type: float }
+      - { name: pad1, type: float }
+      - { name: pad2, type: float }
+
+outputs:
+  # named distinctly from the "Plate" DATA output so a link never has to disambiguate by slot
+  - { name: "Plan View", pass: canvas }

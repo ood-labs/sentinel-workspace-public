@@ -193,6 +193,61 @@
             RequireNodePreviews = $true
             Exemptions = @('scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
+        vitreous_cross = @{
+            ProjectFile = 'vitreous_cross.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-7/vitreous-cross.json')
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 4
+            Exemptions = @('scene-group-presets', 'technical-workflow-output')
+        }
+        sunward_corridor = @{
+            ProjectFile = 'sunward_corridor.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-7/sunward-corridor.json')
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 0
+            Exemptions = @('scene-group-presets', 'technical-workflow-output')
+        }
+        axon_press = @{
+            ProjectFile = 'axon_press.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-7/axon-press.json')
+            MinimumSceneGroups = 0
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 8
+            Exemptions = @('approved-compact-study', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
+        }
+        tessera_pool = @{
+            ProjectFile = 'tessera_pool.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-7/tessera-pool.json')
+            MinimumSceneGroups = 0
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 8
+            Exemptions = @('approved-compact-study', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
+        }
+        reactor_shaft = @{
+            ProjectFile = 'reactor_shaft.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-7/reactor-shaft.json')
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 4
+            Exemptions = @('scene-group-presets', 'technical-workflow-output')
+        }
     }
 
     AssetLedger = @(
