@@ -75,6 +75,27 @@ uint tpHashU(uint x)
 }
 float tpH1(uint a) { return (float)(tpHashU(a) & 0x00FFFFFFu) * (1.0 / 16777216.0); }
 
+// Value noise on the same integer mixer. Used for glaze mottle and for cast-stone grain — both
+// want a CONTINUOUS field, not the per-cell draws above, so this interpolates a lattice.
+float tpHash2(float2 i)
+{
+    uint x = (uint)(i.x + 8192.0);
+    uint y = (uint)(i.y + 8192.0);
+    return tpH1(tpHashU(x * 374761393u) ^ tpHashU(y * 668265263u));
+}
+
+float tpVNoise(float2 p)
+{
+    float2 i = floor(p);
+    float2 f = frac(p);
+    f = f * f * (3.0 - 2.0 * f);
+    float a = tpHash2(i);
+    float b = tpHash2(i + float2(1.0, 0.0));
+    float c = tpHash2(i + float2(0.0, 1.0));
+    float d = tpHash2(i + float2(1.0, 1.0));
+    return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
+}
+
 float tpRnd(float a, float b)
 {
     return tpH1(tpHashU(asuint(a * 1.0 + 12.3456)) ^ (tpHashU(asuint(b * 1.0 + 78.9012)) * 2654435761u));
@@ -175,12 +196,32 @@ float2 tpFaceCoord(float3 p, int face, float3 half3)
     return float2(p.x, p.y);
 }
 
+// Face-tangent basis. MUST agree with tpFaceCoord above — this is the inverse of it, and any
+// disagreement shows up as tile relief lit from the wrong side on two of the five faces.
+float3 tpFaceTangent(int face, float2 v)
+{
+    if (face == TP_FACE_FLOOR) return float3(v.x, 0.0, v.y);
+    if (face == TP_FACE_NX || face == TP_FACE_PX) return float3(0.0, v.y, v.x);
+    return float3(v.x, v.y, 0.0);
+}
+
 struct TpTile
 {
     float3 albedo;
     float  grout;      // 1 inside the grout line, 0 on the tile face
     float2 local;      // -1..1 within the tile, for the bevel
+    float2 tilt;       // face-tangent slope from this tile sitting off true
     float  gloss;
+};
+
+// The four things that separate "six flat colours in a grid" from fired ceramic. Grouped into a
+// struct so the tile function keeps one call shape as the finish gains knobs.
+struct TpTileFinish
+{
+    float mottle;      // depth of the in-glaze colour cloud
+    float tilt;        // how far a hand-laid tile sits off true, as a tangent slope
+    float glossVar;    // spread of per-tile glaze gloss; a real sheet fires unevenly
+    float edgeAO;      // contact darkening into the grout line
 };
 
 // `filt` is the WORLD-SPACE WIDTH OF THE SAMPLE FOOTPRINT at this point — how much lining one
@@ -194,7 +235,7 @@ struct TpTile
 // footprint, and fading toward the palette mean once one pixel covers more than a tile, is
 // texture filtering done by hand because a compute shader has no derivatives to do it with.
 TpTile tpTile(float2 q, float pitch, float groutFrac, float variance, float tileSeed,
-              int pattern, float3 pal[6], float3 groutCol, float filt)
+              int pattern, float3 pal[6], float3 groutCol, float filt, TpTileFinish fin)
 {
     TpTile o;
     pitch = max(pitch, 0.004);
@@ -225,6 +266,14 @@ TpTile tpTile(float2 q, float pitch, float groutFrac, float variance, float tile
     float r1 = (float)((h >> 8) & 0xFFFFu) * (1.0 / 65536.0);
     float r2 = (float)((h >> 16) & 0xFFFFu) * (1.0 / 65536.0);
 
+    // A SECOND independent draw. The finish must not correlate with the colour: reusing r1/r2
+    // would tie "how far this tile sits off true" to "how light it is", and the wall would come
+    // out with all its dark tiles tipped the same way — a pattern the eye finds immediately.
+    uint  h2 = tpHashU(h ^ 0x9E3779B9u);
+    float r3 = (float)(h2 & 0xFFFFu) * (1.0 / 65536.0);
+    float r4 = (float)((h2 >> 8) & 0xFFFFu) * (1.0 / 65536.0);
+    float r5 = (float)((h2 >> 16) & 0xFFFFu) * (1.0 / 65536.0);
+
     // Banded: the palette index follows the row, so the lining reads as horizontal courses
     // instead of confetti. Everything else draws the index per tile.
     float sel = (pattern == 3) ? frac(tpH1(tpHashU(asuint(id.y + 96.0)) ^ tpHashU(asuint(tileSeed))) + r0 * 0.22)
@@ -243,24 +292,52 @@ TpTile tpTile(float2 q, float pitch, float groutFrac, float variance, float tile
     // Edge softness is at least the footprint, expressed in cell units.
     float soft = saturate(filt / max(pitch, 1e-4));
 
-    float g;
+    // ---- THE FINISH ---------------------------------------------------------------------
+    //
+    // Everything from here down is high-frequency, so ALL of it fades with the footprint on the
+    // same schedule as the tile edges. Detail that outlives the point where one pixel covers a
+    // whole tile is not detail, it is noise — and it is noise that CRAWLS, because under a
+    // rippled surface the point being sampled moves every frame. This one factor is the
+    // difference between a texture and a boil.
+    float dfade = saturate(1.0 - soft * 2.5);
+
+    // Glaze mottle. Two octaves of cloud in FACE space rather than tile space, so it drifts
+    // across the joints the way a fired glaze does instead of stamping the same patch into every
+    // tile; the per-tile offset then breaks the repeat that face-space alone would leave.
+    float2 mp = cell * 3.1 + float2(r1, r2) * 11.0;
+    float mott = tpVNoise(mp) * 0.66 + tpVNoise(mp * 2.7 + 19.3) * 0.34;
+    alb *= lerp(1.0, 0.74 + 0.52 * mott, saturate(fin.mottle) * dfade);
+
+    // Hand-laid tiles do not sit on one plane. This is the term that makes a mosaic sparkle in
+    // PIECES instead of flashing as a single sheet, and it is most of why a real wall reads as
+    // thousands of separate objects rather than as a printed grid with a highlight on it.
+    o.tilt = (float2(r3, r4) - 0.5) * 2.0 * fin.tilt * dfade;
+
+    // Cement is not a flat colour either, and a perfectly even joint is a giveaway.
+    float3 gcol = groutCol * lerp(1.0, 0.84 + 0.30 * tpVNoise(cell * 7.3 + 3.1), dfade);
+
+    float g, d;
     if (pattern == 2)                       // circular faces: grout is everything outside the disc
     {
-        float d = length(f - 0.5) * 2.0;
+        d = length(f - 0.5) * 2.0;
         float w = max(max(groutFrac, 0.02) * 1.6, soft * 2.0);
         g = smoothstep(1.0 - w, 1.0 + w * 0.25, d);
     }
     else
     {
         float2 e = abs(f - 0.5) * 2.0;
-        float d = max(e.x, e.y);
+        d = max(e.x, e.y);
         float lo = 1.0 - max(max(groutFrac, 0.01) * 1.3, soft * 2.0);
         float hi = 1.0 - max(max(groutFrac, 0.01) * 0.35, soft * 0.5);
         g = smoothstep(lo, max(hi, lo + 1e-4), d);
     }
 
+    // Contact darkening. The glaze rolls off into the joint and the joint is occluded by the two
+    // tiles standing over it, so the last stretch before the grout is never at full value.
+    alb *= 1.0 - saturate(fin.edgeAO) * 0.55 * smoothstep(0.30, 1.0, d) * dfade;
+
     o.grout  = g;
-    o.albedo = lerp(alb, groutCol, g);
+    o.albedo = lerp(alb, gcol, g);
 
     // Once a pixel covers a whole tile there is no tile left to resolve — resolve to the mean
     // instead of to whichever tile the point sample happened to land in, which is what makes an
@@ -269,7 +346,11 @@ TpTile tpTile(float2 q, float pitch, float groutFrac, float variance, float tile
     mean = lerp(mean, groutCol, saturate(groutFrac * 1.2));
     o.albedo = lerp(o.albedo, mean, saturate(soft - 0.55));
 
-    o.gloss  = lerp(1.0, 0.25, g);
+    // Per-tile glaze. A real sheet fires unevenly — some tiles come out near-mirror, some come
+    // out satin — and that variation is what lets a bank of ceiling strips land on a mosaic as
+    // scattered individual glints instead of as one flat sheen laid over the whole wall.
+    o.gloss  = lerp(1.0, 0.25, g) * lerp(1.0 - saturate(fin.glossVar) * 0.85,
+                                         1.0 + saturate(fin.glossVar) * 0.75, r5);
     return o;
 }
 

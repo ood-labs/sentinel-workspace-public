@@ -32,7 +32,7 @@
  },
  "provenance": {
   "base_seed_commit": "21371725ffefab872bbfdd3c42f704b3ab46c932",
-  "curated_branch_head": "b650818 (public-seed-agent-test)",
+  "curated_branch_head": "a627d3e (public-seed-agent-test)",
   "promoted_projects": [
    "vitreous_cross",
    "sunward_corridor",
@@ -47,11 +47,11 @@
    "ossuary_bloom",
    "pulse_vitrine"
   ],
-  "carried_branch_changes": "knowledge docs, modular-scene-authoring skill (mirrored to .agents), agent manuals, plan_theme template, and plan-theme cleanups in matik_plate, prism_reliquary, soft_vitrine"
+  "carried_branch_changes": "knowledge docs, modular-scene-authoring skill (mirrored to .agents), agent manuals, plan_theme template, and plan-theme cleanups in matik_plate, prism_reliquary, soft_vitrine; follow-up integration of the tessera_pool koi-school/scope update and revised expressions-and-drivers, graph-wiring, module-pipeline, EXAMPLE-MAP docs"
  },
  "validation": {
   "official_examples": "recorded below after the bind commit's validator run",
-  "compile": "all 19 promoted-project modules passed offline compile_check with zero errors; one warning (reactor_shaft RS_Lens final_output_format_mismatch)",
+  "compile": "19 modules passed offline compile_check at b650818 (one warning: reactor_shaft RS_Lens final_output_format_mismatch); tessera TP_School/TP_Scope and koi-update shader revisions lack compile evidence, owed with the fresh-load battery",
   "runtime": "fresh-load battery owed before the next installer ships this seed; per-project records in .release/reviews/phase-7/"
  }
 }

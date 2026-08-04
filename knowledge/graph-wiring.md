@@ -31,6 +31,25 @@ Examples of data ports:
 - Features `Blobs`, `Corners`, and `Lines`
 - Module-authored data ports
 
+## Data Input Pin Order Is Creation Order, Not Manifest Order
+
+`data:N` in a Module pass input list indexes the node's data pins in **pin creation order**, which is not necessarily the order the `data_inputs` appear in the manifest. Reordering the manifest does not renumber existing pins.
+
+This matters when adding a data input to a Module that already exists in a graph:
+
+- The new pin may be created **ahead** of an existing one. Every `data:N` reference in every pass then shifts meaning.
+- Links are rebound by pin index, so an existing link can silently slide onto the new pin.
+
+Both failure modes are silent. The shader still compiles, still runs, and reads one record type as another — producing plausible-looking garbage rather than an error. A tank rendered as one solid block of palette colour, and a pointer raycast that tracked correctly at frame centre and drifted everywhere else, were both this.
+
+After adding a data input to a live node:
+
+1. `sentinel_graph action=inspect entity_id=<id> include_pins=true` and read the actual pin `slot_index` order.
+2. Map every `data:N` in the manifest to that order explicitly and comment it.
+3. Re-verify every existing link into the node, including ones you did not touch.
+
+Append new data inputs rather than inserting them, and check every pass — not only the one you were editing. A `pick` pass reading `data:0` breaks the same way the main pass does.
+
 ## Control Outputs
 
 Control outputs are scalar values published after a pipeline processes a frame. They are read by expressions through `ref()`.

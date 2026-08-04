@@ -59,14 +59,44 @@ parameters:
     group: "Caustics"
 
   - { name: gain,     display: "Gain",     type: float, min: 0.0, max: 4.0, default: 1.0,  group: "Caustics" }
+
+  # RENAMED FROM contrast / slope_gain, and the rename is the point.
+  #
+  # A live parameter keeps its REGISTERED range across a module reload — only the default is
+  # re-read — so editing min/max in place leaves the old end-stops on the slider no matter how
+  # many times the module is rebuilt. Both of these needed a wider ceiling than they shipped
+  # with, and a new name is the only way that reaches the UI.
+
   # A gamma on the normalised irradiance. Above 1 it deepens the dark water between the focus
   # lines without touching the neutral level, because 1.0 to any power is still 1.0 — which is
-  # the whole reason the output is normalised the way it is.
-  - { name: contrast, display: "Contrast", type: float, min: 0.2, max: 3.0, default: 1.35, group: "Caustics" }
+  # the whole reason the output is normalised the way it is. Note what that also means: on FLAT
+  # water every bin is already 1.0, so no setting of this can produce a caustic. It sharpens
+  # structure; it cannot create it.
+  - { name: focus_contrast, display: "Contrast", type: float, min: 0.2, max: 6.0, default: 1.35, group: "Caustics" }
+
+  # THE ONE KNOB THAT CAN MAKE CAUSTICS EXIST.
+  #
   # Multiplies the surface slope the photons are refracted through. Physically it should be 1;
   # above that the caustics sharpen and separate beyond what the wave amplitude alone gives,
-  # which is how the reference's pool actually looks under a bright sky.
-  - { name: slope_gain, display: "Slope Gain", type: float, min: 0.0, max: 4.0, default: 1.1, group: "Caustics" }
+  # which is how a real pool looks under a bright sky. Its old ceiling of 4 was set when the
+  # surface was driven by large ripples — against a minimal ambient swell, four times almost
+  # nothing is still almost nothing, so the whole control was unusable exactly when it was most
+  # needed.
+  - { name: focus_gain, display: "Focus", type: float, min: 0.0, max: 24.0, default: 3.2, group: "Caustics" }
+
+  # ---- MICRO-DETAIL: the surface structure this field is too coarse to carry.
+  #
+  # See the long note in splat.hlsl. Briefly: a 512-texel field cannot hold millimetre-scale
+  # surface structure, that structure is too fine to see but focuses light at about a pool's
+  # depth, and it is why a real pool throws a vivid net on a day the water looks like glass.
+  # This adds it back for the PHOTONS ONLY — the shading normal never sees it, so the water goes
+  # on reading exactly as calm as the swell says while the floor comes alive.
+  #
+  # This is the control that decouples "how choppy the water looks" from "how strong the
+  # caustics are", which is the thing no existing knob could do.
+  - { name: caus_detail, display: "Micro-Detail",  type: float, min: 0.0,  max: 1.0, default: 0.35, group: "Caustics" }
+  - { name: caus_scale,  display: "Micro Scale",   type: float, min: 0.25, max: 4.0, default: 1.0,  group: "Caustics" }
+  - { name: caus_speed,  display: "Micro Speed",   type: float, min: 0.0,  max: 3.0, default: 1.0,  group: "Caustics" }
   # How wide a patch of surface each photon is refracted through, in footprint units. Stands in
   # for the angular size of the sun: light from a finite source cannot focus detail finer than
   # itself, so the capillary chop washes out instead of printing a crosshatch on the floor.

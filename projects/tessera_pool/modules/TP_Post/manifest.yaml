@@ -35,7 +35,40 @@ parameters:
   # Gradient-directed edge blur. The renderer's geometry is analytic, so the ONLY aliasing in
   # the frame is on silhouettes — which is exactly what this removes, at a fraction of the cost
   # of a second ray per pixel.
-  - { name: aa_amount,    display: "Edge AA",        type: float, min: 0.0, max: 3.0, default: 1.0,  group: "Lens" }
+  # ---- ANTIALIAS.
+  #
+  # The gradient filter guesses: it reconstructs along the local luma gradient with no idea how
+  # long the edge it is standing on actually is, so it treats a one-pixel speck and a fifty-pixel
+  # silhouette identically. On the long near-horizontal edges this frame is full of — waterline,
+  # lip, tile courses in perspective — that under-corrects the staircase while still softening
+  # detail that was never aliased.
+  #
+  # FXAA finds the edge orientation from the second derivative of luma and then SEARCHES along
+  # the edge for its ends, so the sub-pixel offset ramps correctly across a long span. The two
+  # tiers are search length: 4 resolves roughly twice the edge length 2 can, for four more taps.
+  - name: aa_mode
+    display: "Antialias"
+    type: enum
+    options: [Off, Gradient, FXAA 2, FXAA 4]
+    default: 3
+    flags: button_grid
+    group: "Lens"
+  # Relative threshold: an edge must be this fraction of the local maximum luma to be filtered.
+  # The absolute floor beneath it is what stops the filter chewing on the dark backdrop.
+  - { name: fxaa_thr,     display: "FXAA Threshold", type: float, min: 0.02, max: 0.5,  default: 0.125,  group: "Lens" }
+  - { name: fxaa_thr_min, display: "FXAA Floor",     type: float, min: 0.0,  max: 0.15, default: 0.0312, group: "Lens" }
+  # Sub-pixel term. Catches single-pixel features the edge search cannot see — here that means
+  # the specular glints and caustic cusps. At 1 it is strongest and softest; 0 disables it.
+  - { name: fxaa_sharp,   display: "FXAA Subpixel",  type: float, min: 0.0,  max: 1.0,  default: 0.72,   group: "Lens" }
+
+  # ---- LATERAL CHROMATIC ABERRATION. Real glass focuses short wavelengths nearer than long
+  # ones, so the fringing is RADIAL and grows toward the corners while the centre stays clean —
+  # a uniform offset across the frame reads as a broken signal rather than as a lens.
+  - { name: ca_amount,  display: "Aberration",       type: float, min: 0.0, max: 4.0, default: 0.55, group: "Lens" }
+  # How fast it ramps from centre to corner. Higher keeps the middle of the frame cleaner.
+  - { name: ca_falloff, display: "Aberration Falloff", type: float, min: 0.5, max: 4.0, default: 1.8, group: "Lens" }
+
+  - { name: aa_amount,    display: "Edge AA (Gradient)", type: float, min: 0.0, max: 3.0, default: 1.0,  group: "Lens" }
   - { name: aa_threshold, display: "Edge Threshold", type: float, min: 0.002, max: 0.4, default: 0.035, group: "Lens" }
   # Center weight in the edge reconstruction. At 1 the source remains nearly untouched; lower
   # values trade definition for stronger diagonal stabilization.

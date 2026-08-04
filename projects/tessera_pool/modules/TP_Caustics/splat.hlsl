@@ -39,6 +39,44 @@
 
 StructuredBuffer<TpRec> Plan : register(t1);
 StructuredBuffer<float4> Tick : register(t2);
+
+// Three crossing trains at incommensurable headings, returning a GRADIENT only — the height is
+// never wanted here, because this scale is defined as being too fine to see. Wavelengths sit
+// deliberately above the capillary chop the surface_smooth taps exist to suppress: fine enough
+// to focus, coarse enough not to print the fixed crosshatch that smoothing was added to kill.
+float2 tpCausDetail(float2 wp, float t, float amp, float scale, float speed)
+{
+    if (amp <= 1e-7) return float2(0.0, 0.0);
+
+    // A SLOW WARP FIRST, and it is not optional polish.
+    //
+    // Pure sine trains sum to something quasi-periodic: three of them produce an even lattice of
+    // identical cells, which is precisely the fixed crosshatch the surface_smooth taps exist to
+    // suppress — reintroduced by the back door and, being regular, far more obviously synthetic
+    // than the chop ever was. A real caustic net has cells of visibly different sizes that
+    // wander and merge.
+    //
+    // Displacing the sample point by a long, slow wave before evaluating breaks the lattice
+    // apart for two cosines: cells stretch and compress across the floor and the repeat stops
+    // being findable.
+    float2 w = wp + float2(sin(wp.y * 2.1 - t * speed * 0.21), cos(wp.x * 1.7 + t * speed * 0.17)) * 0.16;
+
+    float2 g = float2(0.0, 0.0);
+    float2 dirs[4] = { float2(0.8660, 0.5000), float2(-0.2588, 0.9659),
+                       float2(0.6428, -0.7660), float2(-0.9397, -0.3420) };
+    float wl[4] = { 0.213, 0.139, 0.091, 0.061 };
+    float sp[4] = { 0.55, 0.74, 0.98, 1.27 };
+    float wt[4] = { 1.00, 0.66, 0.40, 0.22 };
+
+    [unroll]
+    for (int i = 0; i < 4; i++)
+    {
+        float k = 6.2831853 / max(wl[i] * scale, 1e-3);
+        float ph = dot(w, dirs[i]) * k - t * speed * sp[i] * k * 0.30;
+        g += dirs[i] * (cos(ph) * k * wt[i]);
+    }
+    return g * amp;
+}
 RWStructuredBuffer<uint> Acc : register(u0);
 
 // Fixed-point scale for the atomic accumulator. 1024 was not enough: the conversion to uint
@@ -130,7 +168,28 @@ void main(uint3 tid : SV_DispatchThreadID)
               + _Tex0.SampleLevel(LinearSampler, uv + float2(-sm, -sm), 0)) * 0.25;
 
     float3 p = float3((uv.x * 2.0 - 1.0) * half3.x, f.x, (uv.y * 2.0 - 1.0) * half3.z);
-    float3 nrm = normalize(float3(-f.z * slope_gain, 1.0, -f.w * slope_gain));
+
+    // CAUSTIC-ONLY MICRO-DETAIL.
+    //
+    // Caustics ARE curvature. A flat surface focuses nothing, so on calm water there is no
+    // structure for gain or contrast to act on — those multiply structure, they cannot invent
+    // it. That is why turning the swell down turned the caustics off entirely, and why no
+    // downstream knob could bring them back.
+    //
+    // But real water is never as flat as this field claims. A height field resolved at 512
+    // texels across the tank cannot carry millimetre-scale surface structure — structure far
+    // too fine to SEE, and yet with a focal length of the order of a pool's depth. That is
+    // exactly why a real pool throws a vivid net on a day the surface looks like glass.
+    //
+    // So this restores that missing scale, and restores it HERE ONLY. It never reaches the
+    // shading normal, so the water goes on reading as calm as the swell says it is while the
+    // floor comes alive. Physically it is the honest term; artistically it is the one that
+    // decouples "how choppy the water looks" from "how strong the caustics are".
+    float2 wxz = float2(p.x, p.z);
+    float2 dg = tpCausDetail(wxz, Tick[0].y, saturate(caus_detail) * 0.0025,
+                             max(caus_scale, 0.05), caus_speed);
+
+    float3 nrm = normalize(float3(-(f.z * focus_gain + dg.x), 1.0, -(f.w * focus_gain + dg.y)));
 
     float3 sun = normalize(lamp.pos);
     float3 d = -sun;                                              // travelling down toward the water

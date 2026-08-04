@@ -118,6 +118,51 @@ parameters:
   # The wave envelope at which the chop reaches full strength, in world units.
   - { name: chop_ref,    display: "Chop Reference",     type: float, min: 0.001, max: 0.2, default: 0.012, group: "Detail" }
 
+  # AMBIENT SWELL — the layer that is never gated and never stops.
+  #
+  # Chop above follows the solver, so a settled tank goes to a perfect mirror. That is right
+  # physics and a dead image: standing water in a room always carries a slow long wander from
+  # air movement, and the eye reads its absence immediately as a sheet of plastic rather than as
+  # water. This is deliberately deaf to every sim control, which is the whole point of it.
+  # Set amb_amp to 0 for the old mirror-when-still behaviour.
+  # It is a SPECTRUM, not a stack of sines — see the header of tpSwellH for why a handful of
+  # fixed trains reads as synthetic within about a second. Every term below is a real axis of
+  # the spectrum; sweep them one at a time.
+  # AMOUNT IS A NORMALISED 0-1 SLIDER. field.hlsl maps it linearly onto the world-unit range
+  # the shader actually wants, which is 0 to 0.002.
+  #
+  # Exposing the raw world value made the control physically undraggable: the whole useful span
+  # sat inside two thousandths, so the Properties field displayed "0.00" across its entire
+  # travel and a click-drag could not resolve a single usable step.
+  #
+  # NOTE THE RENAME from amb_amp. A parameter that already exists keeps its registered range
+  # across a module reload — only its default is re-read — so editing min/max in place left the
+  # old 0-0.002 end-stops live in the UI no matter how many times the module was rebuilt. A new
+  # name registers a new parameter, which is the only way this range change actually reaches the
+  # slider. The same trap applies to any future min/max edit on a live parameter.
+  - { name: amb_amount,  display: "Amount",      type: float, min: 0.0,  max: 1.0,  default: 0.5,   group: "Ambient Swell" }
+  # The largest scale present. Everything else is derived from it by Octave Ratio.
+  - { name: amb_wl,      display: "Base Scale",  type: float, min: 0.05, max: 3.0,  default: 0.95,  group: "Ambient Swell" }
+  # How many scales. Cost is linear in this and it is the difference between "a wave" and "water".
+  - { name: amb_octaves, display: "Octaves",     type: int,   min: 1,    max: 8,    default: 5,     group: "Ambient Swell" }
+  # Persistence: how much amplitude each octave keeps relative to the one below. High values make
+  # a rough, detailed, busy surface; low values a smooth swell with only a whisper of fine scale.
+  - { name: amb_gain,    display: "Octave Falloff", type: float, min: 0.15, max: 0.92, default: 0.56, group: "Ambient Swell" }
+  # Lacunarity: how much SMALLER each octave is. Near 2 is the natural-looking default; pushing
+  # it up spaces the scales apart and each one becomes individually legible.
+  - { name: amb_lac,     display: "Octave Ratio", type: float, min: 1.2,  max: 3.5,  default: 1.90,  group: "Ambient Swell" }
+  # 0 = every octave runs the same heading, a clean directional swell.
+  # 1 = headings scattered over a full turn, confused chop. This one changes the read the most.
+  - { name: amb_spread,  display: "Direction Spread", type: float, min: 0.0, max: 1.0, default: 0.45, group: "Ambient Swell" }
+  - { name: amb_dir,     display: "Heading",     type: float, min: 0.0,  max: 360.0, default: 28.0, group: "Ambient Swell" }
+  # Gravity waves have sharp crests and broad flat troughs. A sine is symmetric, which is exactly
+  # why an unsharpened sum reads as rippled cloth. At 0 this is off and you can see that.
+  - { name: amb_sharp,   display: "Crest Sharpness", type: float, min: 0.0, max: 1.0, default: 0.45, group: "Ambient Swell" }
+  # Each octave is advected by the ones under it rather than laid on top of them. Without it the
+  # octaves stay independent gratings no matter how many you add.
+  - { name: amb_warp,    display: "Warp",        type: float, min: 0.0,  max: 1.5,  default: 0.55,  group: "Ambient Swell" }
+  - { name: amb_speed,   display: "Speed",       type: float, min: 0.0,  max: 3.0,  default: 1.0,   group: "Ambient Swell" }
+
   # The pointer is a finger pressing on the surface, not an energy source. Depth is how far it
   # pushes; radius is how wide the fingertip is.
   - { name: pointer_depth,  display: "Pointer Depth",  type: float, min: 0.0,   max: 0.30, default: 0.035, group: "Pointer" }

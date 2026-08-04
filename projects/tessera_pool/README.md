@@ -26,8 +26,10 @@ Open `tessera_pool.sentinel`. The Program output is `TP_Post`.
 | `TP_Plan` | Plan authority: tank, lining, palette, light, ripple sources. |
 | `TP_Sim` | The water simulation with live pointer injection. |
 | `TP_Caustics` | Photon caustics splatted onto the unfolded tank interior. |
+| `TP_School` | School authority: where the koi are, where they point, how hard they swim. |
 | `TP_Render` | Optics and the internal camera. |
-| `TP_Post` | Bloom, grade, edge antialias. |
+| `TP_Scope` | Exploded instrument overlay; depth-composited 3D, draws nothing of its own. |
+| `TP_Post` | FXAA, chromatic aberration, bloom, grade. |
 | `TP_Flicker` | Delivered-pixel temporal probe; diagnostic only. |
 
 ## The graph
@@ -46,8 +48,10 @@ TP_Plan ──(Plan records)──┬──────────────�
 | `TP_Plan` | the tank, the lining, the palette, the light, and every ripple source. Nothing else decides any of them. |
 | `TP_Sim` | the water surface: a damped wave equation over the tank footprint, plus live pointer injection. |
 | `TP_Caustics` | where the sun goes after it enters the water, splatted onto an unfolded tank interior. |
+| `TP_School` | the koi: flocking, envelope, per-fish drifting depth, tail beat. Publishes records; decides nothing about how they look. |
 | `TP_Render` | optics. Owns Sentinel's internal camera. Decides nothing about the composition. |
-| `TP_Post` | bloom, grade, edge antialias. |
+| `TP_Scope` | the exploded instrument view. Draws nothing of its own; every mark stands for a number another node published. |
+| `TP_Post` | FXAA, lateral chromatic aberration, bloom, grade. |
 | `TP_Flicker` | an independent delivered-pixel temporal probe; diagnostic only, never part of the image path. |
 
 The loop from `TP_Render` back to `TP_Sim` runs through **control outputs and expressions**, not
@@ -135,6 +139,67 @@ manifest default and the near-left grazing region is visibly cleaner at Q2 and a
 ---
 
 ## Traps found here, worth not rediscovering
+
+**A live parameter keeps the range it was first registered with.** Editing `min`/`max` in the
+manifest does nothing to a node that already exists; only the `default` is re-read, and that does
+not apply to a parameter already holding a value. Renaming the parameter is the only way a new
+range reaches the slider. This cost three separate rounds here before the pattern was recognised.
+Prefer a normalised `0..1` control mapped to world units inside the shader: a range that turns out
+wrong is expensive to fix, and a control whose useful span is a thousandth of its travel cannot be
+dragged at all.
+
+**`data:N` indexes data pins in creation order, not manifest order.** Adding `School` to
+`TP_Render` put its pin ahead of `Plan`, so `data:0` silently changed meaning and the renderer read
+fish records as tank geometry, drawing the whole tank as one block of palette colour. The same
+mistake broke the pointer pick far more misleadingly: the raycast still produced a plausible
+number, just one scaled by a fish position, so it tracked at frame centre and drifted everywhere
+else, which reads as a broken projection rather than a wiring error. Check EVERY pass after adding
+a data input, not only the one being edited.
+
+**`camera_ref` disables authored viewport interaction.** With an external camera the host takes
+over the viewport pointer events, and a Module reducer correctly skips anything flagged
+`HOST_CONSUMED`, so click-to-ripple stopped working with nothing in health or logs to say why. Two
+renderers needing one viewpoint is a real requirement, but the fix is to let the interactive node
+keep its internal camera and drive the follower's camera PARAMETERS by expression. Mirror the
+inputs (target, distance, yaw, pitch, fov, near, far) and set `camera_mode` as a plain value:
+mirroring the derived `camera_pos_*` fights the follower's own orbit solver, and leaving the
+follower in Fly mode while the leader is in Orbit gives a mismatch subtle enough to look like a
+projection bug.
+
+**Never draw a ring buffer's wrap seam.** Walking back N slots gives N-1 consecutive pairs; the
+Nth joins oldest directly to newest and draws a chord across the whole trail. Culling it by length
+only works while the subject has moved far enough, so it flickers and re-forms every time the head
+advances, presenting as a flash locked to the write interval. Bound the loop at N-1, treat `w <= 0`
+as never-written, and validate segments by TIMESTAMP ORDER rather than ring index: a same-cook
+write is not guaranteed visible to a later pass, and comparing recorded times makes the question of
+which buffer generation was served irrelevant.
+
+**Compile time scales with inlined function copies.** The koi field ends up inlined seven times in
+`march` (hit march, four-tap normal, two shadow marches) inside the AA loop. That took the pass
+from compiling in seconds to compiling in minutes, which makes hot reload unusable regardless of
+runtime cost. Shadows use a cheap body-only proxy for exactly this reason: a blurred underwater
+shadow carries no fin detail, so the full field buys nothing there.
+
+**Never normalise a cross-section by a radius that reaches zero.** The first koi divided its
+section by the body profile, which goes to zero at nose and tail, so the distance estimate exploded
+at both ends and the march stalled on a shell around each: a disc floating in front of the fish and
+another behind it. The radius belongs on the right of the subtraction, where a zero is a point
+rather than a division.
+
+**A steering projection that removes the along-heading component is blind to reversals.** A fish
+pointing at the floor while the floor pushes up has its entire correction deleted, so nose-down
+became an attractor no parameter could reach. Separately, a soft boundary whose skin is wider than
+the band it guards turns two one-sided pushes into a centering spring: the school was not choosing
+to swim on one plane, it was being held there, and widening the band widened the spring with it.
+
+**Caustics are curvature, so gain cannot create them.** On flat water every atlas bin resolves to
+1.0 and any downstream gain or contrast multiplies structure that does not exist. The control that
+makes caustics EXIST is the slope the photons are refracted through. Separately, a 512-texel field
+cannot carry the millimetre-scale surface structure that makes a real pool throw a vivid net on a
+day the water looks like glass, so `TP_Caustics` adds that scale back for the photons only. It
+never reaches the shading normal, which is what decouples how choppy the water looks from how
+strong the caustics are.
+
 
 **Passes are scheduled by buffer dependency, not by manifest order.** A clear-then-accumulate
 pair has nothing linking it, so the clear is free to run *after* the splat — and it does. The

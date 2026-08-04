@@ -98,7 +98,7 @@ void main(uint3 tid : SV_DispatchThreadID)
             float2 gU = _Tex2.SampleLevel(LinearSampler, fuv + float2(0, texel.y), 0).zw;
 
             float2 world = 2.0 * float2(half3.x, half3.z) * texel;
-            float k = half3.y * (1.0 / 1.333) * slope_gain;
+            float k = half3.y * (1.0 / 1.333) * focus_gain;
             float dxx = 1.0 + k * (gR.x - gL.x) / (2.0 * world.x);
             float dzz = 1.0 + k * (gU.y - gD.y) / (2.0 * world.y);
             float dxz = k * (gU.x - gD.x) / (2.0 * world.y);
@@ -116,7 +116,7 @@ void main(uint3 tid : SV_DispatchThreadID)
     int2 ob = clamp(int2(uv * (float)n), int2(0, 0), int2((int)n - 1, (int)n - 1));
     float other = (float)Acc[otherBase + (uint)ob.y * n + (uint)ob.x] * (1.0 / TP_FIX);
 
-    e = pow(max(e, 0.0), max(contrast, 0.05)) * max(gain, 0.0);
+    e = pow(max(e, 0.0), max(focus_contrast, 0.05)) * max(gain, 0.0);
 
     // .g carries the raw per-cook photon count so the instrument view can show it without
     // needing its own copy of the accumulator or its own idea of what a count means.

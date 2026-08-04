@@ -67,4 +67,114 @@ float2 tpCapillary(float2 p, float t, float amp, float scale, out float hOut)
     return g * amp;
 }
 
+// ---------------------------------------------------------------------------
+// AMBIENT SWELL. The one thing on this surface that is never allowed to stop.
+//
+// The capillary chop above is deliberately gated by the wave envelope, so a settled tank goes
+// genuinely still — correct physics, dead image. Standing water in a room is never a mirror: it
+// always carries a slow wander from air movement and building vibration, and the eye reads its
+// ABSENCE instantly as "this is a sheet of plastic". So this layer is ungated on purpose. That
+// is the opposite decision from tpCapillary and the reason it is a separate function rather
+// than a flag on that one: nothing about the solver's state may reach it, because its entire
+// job is to still be there after the solver has settled.
+//
+// WHY A SPECTRUM AND NOT A FIXED SET OF TRAINS.
+//
+// A handful of sines at hand-picked wavelengths sums to something periodic and obviously
+// synthetic — the eye finds the repeat in about a second. Water has an energy spectrum: many
+// scales at once, each smaller one an octave up and proportionally weaker, all of them riding
+// on the larger ones underneath. Three properties do the convincing, and none of them survive
+// a fixed sine stack:
+//
+//   OCTAVES      a decaying amplitude ladder, so detail exists at every scale you look at
+//   CREST SHAPE  gravity waves have sharp crests and broad flat troughs. A sine is symmetric,
+//                which is why an unsharpened sum reads as rippled cloth rather than as water
+//   WARP         each octave is ADVECTED by the ones below it instead of being laid over them,
+//                which is what stops the sum reading as N independent gratings
+//
+// plus dispersion — longer waves travel faster — without which the whole field slides as one
+// scrolling texture.
+// ---------------------------------------------------------------------------
+struct TpSwell
+{
+    float amp;       // world units, peak of the summed spectrum
+    float wl;        // wavelength of the FIRST (largest) octave, world units
+    int   octaves;   // how many scales
+    float gain;      // amplitude multiplier per octave (persistence)
+    float lac;       // wavelength divisor per octave (lacunarity)
+    float spread;    // 0 = every octave runs one way (clean swell), 1 = scattered (confused chop)
+    float dir;       // heading of the base train, degrees
+    float sharp;     // 0 = raw sine, 1 = hard peaked crests over flat troughs
+    float warp;      // how hard each octave is advected by the ones below it
+    float speed;
+};
+
+float tpSwellH(float2 p, float t, TpSwell w)
+{
+    float h    = 0.0;
+    float amp  = 1.0;
+    float norm = 0.0;
+    float wl   = max(w.wl, 0.03);
+    float2 q   = p;
+
+    int n = clamp(w.octaves, 1, 8);
+
+    [loop]
+    for (int i = 0; i < 8; i++)
+    {
+        if (i >= n) break;
+
+        // Heading. At spread 0 every octave runs the same way and the tank reads as a clean
+        // directional swell; at 1 the headings scatter over a full turn and it reads as confused
+        // chop. This is the control that decides open water versus bathtub.
+        float ang = radians(w.dir) + (tpH1((uint)i * 2654435761u + 17u) - 0.5) * 6.2831853 * w.spread;
+        float2 dir = float2(cos(ang), sin(ang));
+
+        float k = 6.2831853 / wl;
+
+        // Deep-water dispersion: omega goes as sqrt(k), so the long octaves outrun the short
+        // ones. Give every octave one speed and the field slides as a single texture.
+        float ph = -t * w.speed * 0.55 * sqrt(k) + tpH1((uint)i * 374761393u + 91u) * 6.2831853;
+
+        // Crest shaping. pow() above 1 pushes everything below the peak toward zero, which
+        // broadens the trough and narrows the crest — the asymmetry a sine does not have.
+        float sn = sin(dot(q, dir) * k + ph) * 0.5 + 0.5;
+        float oct = pow(sn, 1.0 + w.sharp * 3.0) * 2.0 - 1.0;
+
+        h    += oct * amp;
+        norm += amp;
+
+        // Advect the next octave by what is under it. Without this the octaves are independent
+        // gratings and the sum has visible axis-aligned structure however many you add.
+        q += dir * (h * w.warp * wl);
+
+        amp *= clamp(w.gain, 0.05, 0.95);
+        wl  /= max(w.lac, 1.05);
+    }
+
+    return h / max(norm, 1e-4);
+}
+
+// Height and world-space gradient. The gradient is taken by central difference rather than
+// analytically because the crest shaping and the inter-octave warp both make the closed form a
+// mess, and this is pure ALU on a 512-wide pass — five evaluations of a few sines is nothing
+// next to being unable to change the shaping function without re-deriving it.
+//
+// The step is a sixteenth of the SHORTEST octave present: large enough not to lose precision,
+// small enough that the finest scale in the spectrum is still resolved by the difference.
+float2 tpAmbient(float2 p, float t, TpSwell w, out float hOut)
+{
+    if (w.amp <= 1e-7) { hOut = 0.0; return float2(0.0, 0.0); }
+
+    float shortest = max(w.wl, 0.03) / pow(max(w.lac, 1.05), (float)(clamp(w.octaves, 1, 8) - 1));
+    float eps = max(shortest * 0.0625, 1e-4);
+
+    float h  = tpSwellH(p, t, w);
+    float hx = tpSwellH(p + float2(eps, 0.0), t, w) - tpSwellH(p - float2(eps, 0.0), t, w);
+    float hz = tpSwellH(p + float2(0.0, eps), t, w) - tpSwellH(p - float2(0.0, eps), t, w);
+
+    hOut = h * w.amp;
+    return float2(hx, hz) * (w.amp / (2.0 * eps));
+}
+
 #endif // TP_SIM_HLSLI

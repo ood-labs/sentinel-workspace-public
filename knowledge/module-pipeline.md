@@ -38,6 +38,70 @@ Supported parameter types include:
 - vec3
 - vec4
 
+## A Live Parameter Keeps Its Registered Range
+
+On a Module reload, an existing parameter keeps the `min`/`max` it was first registered with. Only the `default` is re-read, and the default does not apply to a parameter that already holds a value.
+
+So editing `min`/`max` in a manifest has **no effect on a node that already exists**. The slider keeps its old end-stops through any number of rebuilds, and there is no error to notice.
+
+To actually change a range, **rename the parameter**. A new name registers a new parameter with the new range.
+
+The same rule explains why changing a `default` appears to do nothing: set the live value with `sentinel_state action=set` as well.
+
+This is worth designing around, not just remembering. Prefer a normalised `0..1` control mapped to world units inside the shader over exposing a raw physical quantity — a range that turns out wrong is otherwise expensive to fix, and a control whose useful span is a thousandth of its travel cannot be dragged at all.
+
+## Two Passes Reading One Counter Can Disagree By A Cook
+
+A producer pass and a consumer pass in the same Module can observe a shared counter one cook apart. Any scheme where both derive the same decision independently — most often a ping-pong parity — will eventually have the consumer read the half the producer just wiped, and the output goes uniformly blank while the data sits safely in the other half.
+
+**The producer must publish its choice**, in a buffer it owns, and the consumer must read that statement rather than re-deriving it:
+
+```hlsl
+// producer, once per dispatch
+if (idx == 0u) Acc[stampIndex] = parity;
+
+// consumer
+uint parity = Acc[stampIndex] & 1u;
+```
+
+The same caution applies to any same-cook write a later pass depends on. Where the data can carry its own ordering — a timestamp per record — validate against that instead of against an index, and the question of which generation was served stops mattering at all.
+
+## Ring Buffers: Never Draw The Wrap Seam
+
+Walking back `N` slots from a ring head yields `N-1` **consecutive** pairs. The `N`th pair joins the oldest sample directly to the newest and draws as a chord across the whole history. Culling it by segment length only works while the subject has moved far enough, so it flickers in and out and re-forms every time the head advances — presenting as a flash locked to the write interval.
+
+Bound the loop at `N-1`. Separately, a never-written slot is all zeroes, so "not yet valid" must test `<= 0` rather than `< 0`, or a fresh ring draws every slot converging on the origin.
+
+## Compile Time Scales With Inlined Function Copies
+
+HLSL inlines everything. A large distance field called from a hit march, a four-tap normal, and two shadow marches is **seven copies** of that function in one pass — and if it sits inside an AA loop, the compiler's work multiplies again.
+
+A `march` pass carrying one koi field went from compiling in seconds to compiling in **minutes**, which makes every hot reload unusable regardless of how fast it runs. Budget the call sites:
+
+- Count inline sites before adding a feature, not after.
+- Shadows and occlusion do not need the full field. A cheap proxy — the body without fins or animation — is visually identical in a blurred shadow and removes two copies.
+- Loop trip-count constants (`MAX_INSTANCES`, step caps) are compile-time work too. Halving a cap halves the analysis over every site.
+- Keep a heavyweight field out of a shader that must stay iterable. A separate node compiles independently.
+
+## Scatter Versus Per-Pixel Is A Cost Decision
+
+Two ways to draw into a compute target, and picking the wrong one dominates the cost:
+
+- **Continuous fields** — plates, sheets, anything a ray meets once — resolve analytically per pixel. A ray/plane intersection is a few instructions and antialiases for free.
+- **Sparse one-dimensional marks** — lines, trails, vectors — should be **scattered**: one thread per sample, stamping where it lands. Cost becomes proportional to the ink drawn rather than to the screen area it might occupy.
+
+A per-pixel loop over ~1500 line segments is a million distance tests per pixel. Scattering a full-screen sheet is equally absurd in the other direction.
+
+Where a per-pixel loop over sparse marks is unavoidable (a 2D instrument panel, say), reject each subject first against a cheap bound — a circle sized by how far it could have travelled — so most pixels do no work.
+
+## Depth In Alpha Enables Downstream 3D Overlays
+
+A renderer publishing `RGBA16F` can carry **linear ray distance in alpha** alongside colour. Any node inserted downstream can then depth-test its own 3D geometry against the real scene, compositing overlays that genuinely pass behind and in front of rendered surfaces rather than floating on top.
+
+Check what the consumer does with alpha: a post node that ignores it lets the depth survive to anything placed between them. Publish the same depth onward so the node stays a transparent link in the chain.
+
+Note which depth convention is written. Euclidean distance from the camera, view-space z, and normalised depth are not interchangeable, and mixing them gives occlusion that is correct at frame centre and wrong everywhere else.
+
 ## Data Ports
 
 Modules can declare `data_inputs` and `data_outputs`. These are structured buffers, wired through `sentinel_graph add_link`.

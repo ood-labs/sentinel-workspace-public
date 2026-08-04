@@ -84,6 +84,40 @@ ref("Conductor/control_outputs/tightness")
 
 Cue sheets loaded with `sentinel_conductor action=load_sheet` generate these expressions automatically and register live-tweakable sheet parameters; see `knowledge/motion-choreography.md`.
 
+## ref() Reads Parameters, Not Only Control Outputs
+
+`ref()` resolves any StateTree value path, including another node's **parameters**:
+
+```text
+ref("TP_Render/parameters/camera_distance")
+```
+
+That makes one node's control surface drivable from another's without a data link, a control output, or a graph edge.
+
+## Mirroring A Camera Instead Of Sharing One
+
+When two camera-capable renderers must show the same viewpoint, the obvious answer is one `camera` node with both nodes' `camera_ref` pointed at it. That is correct for show-level camera switching, and **wrong whenever either node needs viewport interaction**.
+
+With `camera_ref` set, the host takes over the viewport's pointer events to drive the external camera. A Module's own event reducer will see them flagged `HOST_CONSUMED` and skip them — which is the correct thing for it to do, but it means any authored pointer interaction on that node silently stops working. A click-to-interact surface simply stops responding, with nothing in health or logs to say why.
+
+The alternative keeps interaction intact: let the **interactive** node own its internal camera, and drive the follower's camera parameters by expression.
+
+```text
+ref("TP_Render/parameters/camera_target_x")   # and target_y/z
+ref("TP_Render/parameters/camera_distance")
+ref("TP_Render/parameters/camera_yaw")
+ref("TP_Render/parameters/camera_pitch")
+ref("TP_Render/parameters/camera_fov")
+ref("TP_Render/parameters/camera_near")       # and camera_far
+```
+
+Two things to get right:
+
+- **Match `camera_mode` as a plain value**, not an expression. A follower left in Fly mode while the leader is in Orbit builds its view from yaw/pitch and ignores the target entirely, and the result is close enough to look like a subtle projection bug rather than a mode mismatch.
+- **Do not mirror derived values.** In Orbit mode `camera_pos_*` is computed from target/distance/yaw/pitch. Forcing it as well fights the follower's own solver. Mirror the inputs and let it derive the same result.
+
+Cost: expressions evaluate a cook behind, so the follower trails by one frame **while the camera is moving** and is exact the moment it stops. For a zero-lag follower, have the leader publish its view matrix as a data output and consume it downstream in the same cook.
+
 ## Rename Safety
 
 Use real rename operations, not delete-and-recreate, when changing node names. Sentinel rewrites stored expressions during true renames so references keep working.

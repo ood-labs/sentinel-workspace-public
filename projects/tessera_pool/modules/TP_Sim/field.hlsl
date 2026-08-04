@@ -66,5 +66,30 @@ void main(uint3 tid : SV_DispatchThreadID)
     float env = sqrt(s.x * s.x + (s.y * 0.16) * (s.y * 0.16));
     float act = lerp(1.0, saturate(env / max(chop_ref, 1e-5)), saturate(chop_couple));
 
-    FieldOut[tid.xy] = float4(s.x + dh * act, s.y, g.x + dg.x * act, g.y + dg.y * act);
+    // The ambient swell is added OUTSIDE `act` on purpose — see tpAmbient. Gating it would
+    // reintroduce exactly the mirror-when-still it exists to prevent.
+    // Normalised 0-1 slider -> the 0-0.002 world-unit span the shader wants. Linear, so the
+    // slider reading is a straight fraction of full swell and the number in the UI means
+    // something. Raise TP_AMB_FULL if the top of the slider ever needs more headroom; do not
+    // widen the slider itself, or the control goes back to being undraggable.
+    #define TP_AMB_FULL 0.002
+    TpSwell sw;
+    sw.amp     = saturate(amb_amount) * TP_AMB_FULL;
+    sw.wl      = amb_wl;
+    sw.octaves = (int)amb_octaves;
+    sw.gain    = amb_gain;
+    sw.lac     = amb_lac;
+    sw.spread  = amb_spread;
+    sw.dir     = amb_dir;
+    sw.sharp   = amb_sharp;
+    sw.warp    = amb_warp;
+    sw.speed   = amb_speed;
+
+    float ah;
+    float2 ag = tpAmbient(wp, time, sw, ah);
+
+    FieldOut[tid.xy] = float4(s.x + dh * act + ah,
+                              s.y,
+                              g.x + dg.x * act + ag.x,
+                              g.y + dg.y * act + ag.y);
 }

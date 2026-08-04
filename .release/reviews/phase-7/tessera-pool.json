@@ -1,6 +1,6 @@
 {
  "project": "projects/tessera_pool/tessera_pool.sentinel",
- "source_commit": "b650818 (public-seed-agent-test)",
+ "source_commit": "a627d3e (public-seed-agent-test)",
  "assembly": "Curated onto the twenty-project seed from the public-seed-agent-test branch; five of the ten branch projects were promoted. See release-candidate.json.",
  "promoted_paths": [
   "projects/tessera_pool/README.md",
@@ -12,9 +12,11 @@
    "TP_Sim",
    "TP_Plan",
    "TP_Caustics",
+   "TP_School",
    "TP_Render",
    "TP_Post",
-   "TP_Flicker"
+   "TP_Flicker",
+   "TP_Scope"
   ],
   "node_presets": [
    "Frame \u2014 Composed Descent",
@@ -39,7 +41,7 @@
   "scene_groups": 0,
   "scene_group_controls": [],
   "group_outputs": 0,
-  "notes": "Curated by the user from the agent-authored branch; layouts saved on the branch head."
+  "notes": "Curated by the user from the agent-authored branch; the koi-school and scope-instrument update (0f6863a, a627d3e) was integrated after the initial promotion."
  },
  "compile": {
   "method": "offline compile_check through the real injection preamble on the 2026-08-04 dev instance",
@@ -81,7 +83,7 @@
     "lints": []
    }
   },
-  "status": "pass; every module compiled with zero errors"
+  "status": "pass at b650818 for the original six modules; TP_School, TP_Scope, and the koi-update shader revisions have no compile evidence yet and are owed with the fresh-load battery"
  },
  "runtime": {
   "status": "fresh-load battery not run at assembly time; authoring-time live proof is described in the project README. A fresh-load pass is owed before the next installer ships this seed."

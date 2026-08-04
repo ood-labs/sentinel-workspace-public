@@ -52,6 +52,25 @@ data_inputs:
       - { name: pad0,   type: float }
       - { name: pad1,   type: float }
 
+  # DECLARED SECOND ON PURPOSE. Graph pin order follows declaration order here, not the `slot:`
+  # number — and `slot:` only decides the register the buffer binds to. Declaring School first
+  # inserted a pin ahead of Plan, and the EXISTING TP_Plan link, which is bound by pin index,
+  # silently slid onto the School pin: the renderer was handed the tank records where it expected
+  # fish and nothing where it expected the tank. Append new data inputs; never insert them.
+  - name: "School"
+    slot: 4
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dir,    type: float3 }
+      - { name: phase,  type: float }
+      - { name: len,    type: float }
+      - { name: tint,   type: float3 }
+      - { name: speed,  type: float }
+      - { name: bank,   type: float }
+      - { name: seed,   type: float }
+      - { name: active, type: float }
+      - { name: sweep,  type: float }
+
 parameters:
   # ---- Water optics
   - { name: slope_gain,   display: "Surface Relief", type: float, min: 0.0, max: 4.0,  default: 2.4,  group: "Water" }
@@ -71,10 +90,86 @@ parameters:
   - { name: glass_absorb,  display: "Glass Tint",     type: float, min: 0.0, max: 4.0,  default: 0.35, group: "Glass" }
   - { name: rim_gain,      display: "Rim",            type: float, min: 0.0, max: 4.0,  default: 1.15, group: "Glass" }
 
+  # WHAT THE LIP IS MADE OF.
+  #
+  # End-grain glass is bright by construction — it transmits the backdrop AND adds its own
+  # reflection on top — so it draws a white halo all the way around the silhouette, and in a
+  # frame that is supposed to be about water that halo is the first thing the eye lands on.
+  # These are the four honest answers, not a brightness slider on the same wrong material.
+  #   Glass       the original end-grain bevel
+  #   Cast Stone  a matte coping, DARKER than the backdrop, so the lip reads as a shadow line
+  #   Tiled       the mosaic carried over the top, so the tank has no trim at all
+  #   Open        no shell above the water: the silhouette ends at the lining
+  - name: edge_style
+    display: "Lip"
+    type: enum
+    options: [Glass, Cast Stone, Tiled, Open]
+    default: 0
+    flags: button_grid
+    group: "Glass"
+
+  # HOW MUCH SHELL THERE IS, as a fraction of the plan's wall thickness.
+  #
+  # Open (above) removes the lip completely, which fixes the halo and breaks the object: with no
+  # shell there is no vertical corner, so at three-quarter view the two walls meet at nothing and
+  # the tank stops reading as a container. This is the middle answer — a shell thin enough to be
+  # a line of light down each corner and a hairline across the top, not a frame around the piece.
+  - { name: lip_scale, display: "Lip Thickness", type: float, min: 0.02, max: 1.0, default: 0.22, group: "Glass" }
+
+  # THE VERTICAL CORNERS, given their own width because the lip cannot give it to them.
+  #
+  # The lip reads because it is a face. The corners are only where two parallel slabs meet, so
+  # the shell standing there is one wall thick — thin the lip to something tasteful and the near
+  # corner goes sub-pixel and shows nothing at three-quarter view. This widens ONLY the corner
+  # chamfer, so the corners can be legible without the walls becoming clumsy.
+  # Keep this SMALL. It is a chamfer on a sheet of glass, not a post: a few millimetres of edge
+  # catching a line of light. Widened past that it stops reading as a corner and starts reading
+  # as a soft blurry column stuck to the front of the tank.
+  - { name: corner_w, display: "Corner Edge", type: float, min: 0.0, max: 0.06, default: 0.007, group: "Glass" }
+  - { name: coping_col,  display: "Coping Colour", type: color, default: [0.255, 0.258, 0.268], group: "Glass" }
+
+  # ---- DRIED WATER SPOTS on the outside of the glass. Flawless glass reads as a render; this
+  # gives the wall a history. See tpGlassSpots — the blur of the reflection matters more than the
+  # extra reflectance, because reflectance alone just looks like smudge.
+  - { name: spot_amount, display: "Water Spots",  type: float, min: 0.0, max: 1.0,  default: 0.30, group: "Glass" }
+  - { name: spot_scale,  display: "Spot Scale",   type: float, min: 1.0, max: 60.0, default: 16.0, group: "Glass" }
+  - { name: spot_gain,   display: "Spot Reflect", type: float, min: 0.0, max: 0.5,  default: 0.10, group: "Glass" }
+
   # ---- The lining
   - { name: ambient_gain, display: "Ambient",   type: float, min: 0.0, max: 3.0, default: 0.85, group: "Lining" }
   - { name: sun_gain,     display: "Sun",       type: float, min: 0.0, max: 4.0, default: 0.85, group: "Lining" }
   - { name: tile_dome,    display: "Tile Dome", type: float, min: 0.0, max: 1.0, default: 0.12, group: "Lining" }
+
+  # ---- The glaze. Six flat colours in a grid is a chart, not a mosaic; these four are what
+  # make it ceramic. All of them fade out with the sample footprint inside tpTile — see the
+  # comment on `dfade` there for why that is mandatory rather than tidy.
+  - { name: tile_mottle,    display: "Glaze Mottle",  type: float, min: 0.0, max: 1.0,  default: 0.55, group: "Lining" }
+  # The single strongest one: hand-laid tiles sit slightly off true, so a mosaic sparkles in
+  # pieces instead of flashing as one sheet.
+  - { name: tile_tilt,      display: "Lay-up Tilt",   type: float, min: 0.0, max: 0.40, default: 0.085, group: "Lining" }
+  - { name: tile_gloss_var, display: "Glaze Variance", type: float, min: 0.0, max: 1.0, default: 0.65, group: "Lining" }
+  - { name: tile_ao,        display: "Joint Shadow",  type: float, min: 0.0, max: 1.0,  default: 0.50, group: "Lining" }
+
+  # ---- The waterline. Two terms, both aimed at the same problem: untreated, the lining goes
+  # from dry ceramic to a water mirror across a single pixel, and that hard cut is the whole
+  # reason a rendered pool edge reads as raw.
+  #
+  # The meniscus is capillary rise at the wall — real water climbs its container, and that curve
+  # is what makes the junction read as liquid instead of as a plane intersecting a box.
+  #
+  # WIDTH IS THE ONE THAT MATTERS, AND IT HAS TO BE TINY. The rise/width ratio IS the contact
+  # angle, and water on glass meets it steeply — around 0.35 here — whatever the amplitude. So a
+  # wide meniscus is not a soft meniscus, it is a RAMP: a band that steep, spread over 5% of the
+  # tank, overwhelms every wave slope on the surface, goes perfectly smooth, and renders as a
+  # solid grey curb running around the inside of the pool. Keep the width down where it costs a
+  # few pixels and it does its actual job — a hairline of contact.
+  - { name: meniscus_h, display: "Meniscus Rise",  type: float, min: 0.0,   max: 0.030, default: 0.0035, group: "Water" }
+  - { name: meniscus_w, display: "Meniscus Width", type: float, min: 0.002, max: 0.080, default: 0.010,  group: "Water" }
+  # The tide line: lining just above the water is WET — darker, because a film kills the diffuse
+  # scatter out of the glaze, and glossier, because the film is a mirror.
+  - { name: wet_height, display: "Wet Band",       type: float, min: 0.002, max: 0.20, default: 0.030, group: "Water" }
+  - { name: wet_dark,   display: "Wet Darkening",  type: float, min: 0.0,   max: 1.0,  default: 0.55,  group: "Water" }
+  - { name: wet_gloss,  display: "Wet Sheen",      type: float, min: 1.0,   max: 6.0,  default: 3.0,   group: "Water" }
 
   # TEXTURE FILTERING, done by hand — a compute shader has no derivatives to do it with.
   #
@@ -88,12 +183,95 @@ parameters:
   # the filter follow the ripples instead of only the distance.
   - { name: refract_spread,  display: "Refraction Fan",  type: float, min: 0.0, max: 12.0, default: 3.5, group: "Lining" }
 
-  # ---- The studio. A flat backdrop colour gives a mirror nothing to reflect and the water
-  # goes dead, so this is a gradient with a real key in it.
-  - { name: sky_low,  display: "Studio Low",  type: color, default: [0.470, 0.505, 0.560], group: "Studio" }
-  - { name: sky_high, display: "Studio High", type: color, default: [0.720, 0.760, 0.820], group: "Studio" }
-  - { name: sky_key,  display: "Key",         type: float, min: 0.0, max: 4.0, default: 0.8, group: "Studio" }
+  # ---- The studio. A small procedural HDRI, not a backdrop colour.
+  #
+  # A mirror can only show what the environment HAS in it. A two-stop vertical ramp has no
+  # SHAPES, so a rippled surface reflecting it produces smooth tonal wobble and nothing that
+  # reads as a reflection. sky_low is now the HORIZON band, sky_high the zenith, and the three
+  # things below the dome — floor, softbox, ceiling strips — are what the water actually finds.
+  - { name: sky_low,    display: "Horizon",      type: color, default: [0.470, 0.505, 0.560], group: "Studio" }
+  - { name: sky_high,   display: "Zenith",       type: color, default: [0.720, 0.760, 0.820], group: "Studio" }
+  - { name: sky_ground, display: "Studio Floor", type: color, default: [0.105, 0.116, 0.138], group: "Studio" }
+  - { name: horizon_soft, display: "Horizon Softness", type: float, min: 0.004, max: 0.8, default: 0.115, group: "Studio" }
+  - { name: env_rot,    display: "Studio Rotation", type: float, min: 0.0, max: 360.0, default: 34.0, group: "Studio" }
+  # Leans the whole room. A dead-level horizon in every shot is one of the tells that an image is
+  # a render rather than a photograph.
+  - { name: env_tilt,   display: "Studio Tilt",  type: float, min: -60.0, max: 60.0, default: 0.0, group: "Studio" }
+  # Slides the horizon up or down the dome. Raising it puts more dark floor into everything the
+  # water reflects at grazing angles; lowering it opens the room out. Stronger than it sounds.
+  - { name: horizon_height, display: "Horizon Height", type: float, min: -0.6, max: 0.6, default: 0.0, group: "Studio" }
+
+  # KEY AIM. By default the softbox IS the light — welding them keeps the specular highlight and
+  # the reflected source in agreement, which is why it was built that way. The cost is that
+  # Studio Rotation spins the room and leaves the key behind. Turn Follow Light off to aim the
+  # softbox independently when the composition wants the highlight where the light is not.
+  - { name: key_follow, display: "Key Follows Light", type: bool, default: true, group: "Studio" }
+  - { name: key_yaw,    display: "Key Yaw",    type: float, min: 0.0,   max: 360.0, default: 40.0, group: "Studio" }
+  - { name: key_pitch,  display: "Key Pitch",  type: float, min: -10.0, max: 89.0,  default: 35.0, group: "Studio" }
+
+  # THE CEILING RIG. Previously three strips at fixed spacing, baked into the shader. These are
+  # the reflection's actual composition — count and spacing change the rhythm of bright bars the
+  # ripples chop up, which is the single most legible thing about the water's surface.
+  - { name: strip_count, display: "Strip Count",   type: int,   min: 0,    max: 6,   default: 3,     group: "Studio" }
+  - { name: strip_gap,   display: "Strip Spacing", type: float, min: 0.2,  max: 3.0, default: 1.10,  group: "Studio" }
+  - { name: strip_w,     display: "Strip Width",   type: float, min: 0.01, max: 0.6, default: 0.075, group: "Studio" }
+  - { name: strip_len,   display: "Strip Length",  type: float, min: 0.2,  max: 6.0, default: 1.80,  group: "Studio" }
+  - { name: env_gain,   display: "Studio Gain",  type: float, min: 0.0, max: 3.0, default: 1.0, group: "Studio" }
+  - { name: fill_gain,  display: "Fill",         type: float, min: 0.0, max: 2.0, default: 0.30, group: "Studio" }
+
+  # The key softbox: a rectangle, not a disc. A round highlight on water reads as a sun in an
+  # empty sky; a rectangle broken up by ripples reads as a room.
+  - { name: key_gain,   display: "Softbox",      type: float, min: 0.0, max: 20.0, default: 5.0,  group: "Studio" }
+  - { name: key_size,   display: "Softbox Size", type: float, min: 0.02, max: 1.5, default: 0.34, group: "Studio" }
+
+  # The ceiling bank. This is the load-bearing part of the reflection: long bright bars, chopped
+  # up by the surface, are the single strongest "this is water" cue the frame has.
+  - { name: strip_col,  display: "Strip Colour", type: color, default: [1.000, 0.965, 0.915], group: "Studio" }
+  - { name: strip_gain, display: "Strips",       type: float, min: 0.0, max: 20.0, default: 4.2,  group: "Studio" }
+  - { name: strip_soft, display: "Strip Softness", type: float, min: 0.01, max: 1.0, default: 0.14, group: "Studio" }
+
+  - { name: sky_key,  display: "Sun Core",     type: float, min: 0.0, max: 4.0, default: 0.8, group: "Studio" }
   - { name: exposure, display: "Exposure",    type: float, min: 0.05, max: 6.0, default: 1.0, group: "Studio" }
+
+  # ---- The school. The RECORDS come from TP_School and are never re-decided here; these are
+  # only how the shape it publishes is lit.
+  - { name: fish_show,  display: "Show Fish",   type: bool,  default: true, group: "School" }
+  # Countershading: dark back, pale belly. The strongest single cue that a shape is a fish and
+  # not a painted lozenge — it is the pattern real fish use to disappear when seen from above or
+  # below, and the eye reads its absence as "toy" long before it can say why.
+  - { name: fish_belly, display: "Countershading", type: float, min: 0.0, max: 1.0, default: 0.72, group: "School" }
+  - { name: fish_gloss, display: "Wet Sheen",   type: float, min: 0.0, max: 3.0, default: 0.85, group: "School" }
+  # The markings. Hard-edged crimson over a white ground is what a koi IS; these decide how much
+  # of the animal it covers and how much black sits over the top of it. The crimson itself comes
+  # from TP_School's Body Colour, per fish.
+  - { name: koi_amount, display: "Marking Coverage", type: float, min: 0.0, max: 1.0, default: 0.55, group: "School" }
+  - { name: koi_sumi,   display: "Sumi (black)",     type: float, min: 0.0, max: 1.0, default: 0.30, group: "School" }
+
+  # SHADOWS. Without them the school floats: nothing states that a fish is between the light and
+  # the tiles, so it reads as a decal on the water. Keep them SOFT and shallow — underwater light
+  # arrives from a broad scattered hemisphere, and a hard black shadow down there is a stage light
+  # in a swimming pool.
+  - { name: shadow_gain,  display: "Fish Shadow",   type: float, min: 0.0, max: 1.0,  default: 0.70, group: "School" }
+  # Penumbra tightness. LOW is soft. The estimate is already distance-over-travel, so a fish near
+  # the floor throws a crisper shadow than one near the surface without this being touched.
+  - { name: shadow_soft,  display: "Shadow Sharpness", type: float, min: 1.0, max: 40.0, default: 8.0, group: "School" }
+  - { name: shadow_steps, display: "Shadow Steps",  type: int,   min: 4,   max: 24,   default: 14,   group: "School" }
+  # Marching steps per fish. Cost is paid ONLY by rays whose bounding-sphere test passes, so this
+  # is far cheaper than the surface march it sits inside.
+  - { name: fish_steps, display: "Fish Steps",  type: int,   min: 8,  max: 64,  default: 36,  group: "School" }
+
+  # ---- SUSPENDED PARTICULATE. Clear water renders as nothing, so an empty tank reads as a box
+  # with a picture on the bottom. See tpMotes: a smooth lattice sampled along the ray already
+  # being traced, not a particle system — a few ALU per step, nothing stored or simulated.
+  - { name: mote_gain,    display: "Motes",        type: float, min: 0.0,   max: 2.0,  default: 0.45,  group: "Motes" }
+  # Cell size in world units. Small is the point — this is fine suspended matter, not snow.
+  - { name: mote_scale,   display: "Mote Scale",   type: float, min: 0.005, max: 0.30, default: 0.045, group: "Motes" }
+  - { name: mote_density, display: "Mote Density", type: float, min: 0.0,   max: 1.0,  default: 0.45,  group: "Motes" }
+  # Motes rise and wander; they do not fall and they do not sit still.
+  - { name: mote_drift,   display: "Drift",        type: float, min: 0.0,   max: 2.0,  default: 0.30,  group: "Motes" }
+  # The cost knob. Samples along the water segment; raise it only if the motes look sparse in
+  # deep water, because every step is paid by every ray that crosses the tank.
+  - { name: mote_steps,   display: "Mote Steps",   type: int,   min: 2,     max: 24,   default: 8,     group: "Motes" }
 
   - { name: cursor_show, display: "Show Contact Point", type: bool, default: true, group: "Interaction" }
 
@@ -124,17 +302,31 @@ passes:
     thread_group_x: 1
     thread_group_y: 1
     inputs:
-      - { slot: 1, source: "data:0" }
+      # data:1 IS THE PLAN. See the note on the march pass below: data:N indexes the data pins in
+      # pin-creation order, and adding the School input put its pin ahead of Plan's. This pass
+      # reads the tank geometry to turn a pointer ray into a footprint coordinate, so when it was
+      # silently handed fish records instead, the pick still produced a number — just one scaled
+      # by a fish's position. Dead centre still landed near centre and everything off-axis drifted,
+      # which is the most misleading way for this to fail, because it looks like a maths error in
+      # the raycast rather than a wiring error feeding it.
+      - { slot: 1, source: "data:1" }
     output: "buffer:pick"
 
   - name: march
     shader: render.hlsl
     target: cs_5_0
     inputs:
-      - { slot: 0, source: "data:0" }
+      # data:N INDEXES THE DATA PINS IN PIN ORDER, NOT MANIFEST DECLARATION ORDER, and the two
+      # stopped agreeing the moment a second data input was added: the School pin was created
+      # first and kept the lower index, so data:0 is School and data:1 is Plan regardless of how
+      # they are written below. Bound the obvious way round, the renderer read fish records as
+      # tank geometry and tank records as fish — which rendered the entire tank as one solid
+      # block of palette colour. Keep the mapping explicit and verified, not inferred.
+      - { slot: 0, source: "data:1" }        # Plan   -> t0
       - { slot: 1, source: "buffer:pick" }
       - { slot: 2, source: "input:0" }
       - { slot: 3, source: "input:1" }
+      - { slot: 4, source: "data:0" }        # School -> t4
 
 control_outputs:
   # These drive TP_Sim's ext_u / ext_v / ext_down through expressions. That is what turns a drag
