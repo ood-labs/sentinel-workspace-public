@@ -22,7 +22,7 @@
                   },
                   {
                       "path":  ".agents/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "d32b5350d9bcc833d67bcdd513e14995d0ebc786eb1416c4945c4c79f0b4d7ca"
+                      "sha256":  "3726fdd1673e05a60930ab00c41499d33f26adfb5fc37cd021366ed07820d215"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -150,7 +150,7 @@
                   },
                   {
                       "path":  ".claude/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "d32b5350d9bcc833d67bcdd513e14995d0ebc786eb1416c4945c4c79f0b4d7ca"
+                      "sha256":  "3726fdd1673e05a60930ab00c41499d33f26adfb5fc37cd021366ed07820d215"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -270,11 +270,11 @@
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "cee207d3790a4a0c4dcdd7bb064e5c2a258e00c887c5b6800c360854b1b66cd0"
+                      "sha256":  "e63516c8aec2fe6a330943ca3138cb784cdbaf69433a5f46d01146af7f1bfb83"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "cee207d3790a4a0c4dcdd7bb064e5c2a258e00c887c5b6800c360854b1b66cd0"
+                      "sha256":  "e63516c8aec2fe6a330943ca3138cb784cdbaf69433a5f46d01146af7f1bfb83"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -298,7 +298,7 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "cee207d3790a4a0c4dcdd7bb064e5c2a258e00c887c5b6800c360854b1b66cd0"
+                      "sha256":  "e63516c8aec2fe6a330943ca3138cb784cdbaf69433a5f46d01146af7f1bfb83"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -314,7 +314,7 @@
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
-                      "sha256":  "3f4fdd01d1ee5f3db21babcdae7536e037f26dae1f769c0527a7cdb47887787e"
+                      "sha256":  "0575215835a93fae88542dc0368d73a78c179e9839123f934e944dbd074f0887"
                   },
                   {
                       "path":  "knowledge/expressions-and-drivers.md",
@@ -322,7 +322,11 @@
                   },
                   {
                       "path":  "knowledge/FEATURE-MAP.md",
-                      "sha256":  "e384b254c45ce6e3c3b2a1fe34bd69ef8690c47066f3535b2103ee7642aefd39"
+                      "sha256":  "8c135915e64cff74e8a44b93a01be44c45936e85013f965139684bdf46cbe85e"
+                  },
+                  {
+                      "path":  "knowledge/feedback-simulation-troubleshooting.md",
+                      "sha256":  "37f5bf6cb7e56ab00b10946a86319ca0ac1ce9576dfd7fc9d66f5edfb7c1ee7d"
                   },
                   {
                       "path":  "knowledge/first-run-engines.md",
@@ -362,7 +366,7 @@
                   },
                   {
                       "path":  "knowledge/reference-build-method.md",
-                      "sha256":  "49fbf16897626ac3eff78561d1e38f54dc7918f877af270af0bc091f8131e909"
+                      "sha256":  "e4cfb866a0a3b72acd8e2d161822fdf8b1cbd56b861647c73254ad69d45cf8ff"
                   },
                   {
                       "path":  "knowledge/scene-system.md",
@@ -370,7 +374,7 @@
                   },
                   {
                       "path":  "knowledge/streamdiff.md",
-                      "sha256":  "ce0b4433645aca179355c90e437a986c918384b3e290cf8a849a55c049169d6e"
+                      "sha256":  "2b06977b2bdf017ce359aa3f882bfa6ae0c7c4062a434646d1032f3e8a3a8a06"
                   },
                   {
                       "path":  "knowledge/tracking-suite.md",
@@ -563,6 +567,54 @@
                   {
                       "path":  "projects/autopsia/README.md",
                       "sha256":  "5f98f95bd7c41f2793bc1050eeec8dbb03f7f8533fded4727b3f744c2fcdf796"
+                  },
+                  {
+                      "path":  "projects/axon_press/axon_press.sentinel",
+                      "sha256":  "fff1368ceee6945bae60fd73e4b1fea1d70fc7dbb1469ac12220af6ffe2f9eca"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/_shared/axon.hlsli",
+                      "sha256":  "806c9b942a72f3429d2116aaa0bc384875cf8496976925d56cfcf229503cdf69"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/_shared/plates.hlsli",
+                      "sha256":  "ea0be236feb002ae64f6ab6f117a403df8dde4088475fc69bbdebdcb1fb1defb"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/AX_Ink/ink.hlsl",
+                      "sha256":  "7c225b2a56b71c4d3ee4eb6cb022aac2084fef38f04eeec855c76846d07ee37b"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/AX_Ink/manifest.yaml",
+                      "sha256":  "ffcf0226810b639092ca7821f06b8e3d269206e0ab93d2dc92f42122680994c8"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/AX_Plan/canvas.hlsl",
+                      "sha256":  "9447e135d2cca51d257ef1366f7584730b34126bc07debfdb525cdc2b530744d"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/AX_Plan/manifest.yaml",
+                      "sha256":  "ee3dfacff635550fc330cf4b5f9bf852ba9c72f4701d95bb06cee228a2b3c1c0"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/AX_Plan/plan.hlsl",
+                      "sha256":  "685c444bfa98864ec7b57977df00c424756bfb2936561a176555cf08323f92cf"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/AX_Press/manifest.yaml",
+                      "sha256":  "ffc57c089c86a39f9bd9df1a836ee4eac0f16edeb9973c80bb57350d836b5c8c"
+                  },
+                  {
+                      "path":  "projects/axon_press/modules/AX_Press/press.hlsl",
+                      "sha256":  "789bd703e72eaee3a11adb21c5ab7948da285d87a3c8e0574409d62f08a2ae11"
+                  },
+                  {
+                      "path":  "projects/axon_press/README.md",
+                      "sha256":  "9fdef2145a3d6a87304aa1a906c6f5f99aee4ff47397ef158d59687e0051196e"
                   },
                   {
                       "path":  "projects/camera_reference/camera_reference.sentinel",
@@ -1326,11 +1378,15 @@
                   },
                   {
                       "path":  "projects/matik_plate/matik_plate.sentinel",
-                      "sha256":  "33fa72034984d5d5e476ad5aab64226e2e523dbedf834e3e7411adc4aa38b823"
+                      "sha256":  "947e28ddb0716ceb75516c58ec180423e4a49f75db77ddb8dee07c07b5e467dd"
                   },
                   {
                       "path":  "projects/matik_plate/modules/_shared/microfont.hlsli",
                       "sha256":  "353885d2815fa1a93760a89c068755a7c69d1c4378cbc3b2a1fc952415fd20e4"
+                  },
+                  {
+                      "path":  "projects/matik_plate/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
                   },
                   {
                       "path":  "projects/matik_plate/modules/_shared/plate.hlsli",
@@ -1354,7 +1410,7 @@
                   },
                   {
                       "path":  "projects/matik_plate/modules/mx_console/canvas.hlsl",
-                      "sha256":  "69f4ceef3e80ff53500e0b619cbf3c7dd5f558c04fe8a5fd2fe906e9dfa18266"
+                      "sha256":  "187817a5f3884c65173eb9d397de965c6934957fbbb029af58dad0a810e1272d"
                   },
                   {
                       "path":  "projects/matik_plate/modules/mx_console/manifest.yaml",
@@ -1417,6 +1473,10 @@
                       "sha256":  "d83287bf9bd7a15ae39c2b9f7901fe8a75c751f06f63c6c3edddfa9c9b2b8c86"
                   },
                   {
+                      "path":  "projects/prism_reliquary/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
                       "path":  "projects/prism_reliquary/modules/_shared/prmath.hlsli",
                       "sha256":  "e7998ce1c763b235c15119f8104f74eb689c6c8e52529fce20174beef20668ca"
                   },
@@ -1434,7 +1494,7 @@
                   },
                   {
                       "path":  "projects/prism_reliquary/modules/PR_Plan/canvas.hlsl",
-                      "sha256":  "b9339bb1d7036a202e541fe260d2eb0b45f6be6b4b8114e3dd6ffa6487996a3a"
+                      "sha256":  "902d601586879718a8b4412fc2759aff8f9d087cf63d7b08f99029140bab9acb"
                   },
                   {
                       "path":  "projects/prism_reliquary/modules/PR_Plan/manifest.yaml",
@@ -1502,11 +1562,79 @@
                   },
                   {
                       "path":  "projects/prism_reliquary/prism_reliquary.sentinel",
-                      "sha256":  "222ae096fc4dc9479050c1483bf96bf7402ec87ae0517db4351acaa23f537841"
+                      "sha256":  "f0d16ffb9d78ecde494e0182d47e348e8a498a8e89cef7dfd012d03582f35c1b"
                   },
                   {
                       "path":  "projects/prism_reliquary/README.md",
                       "sha256":  "bc74b2cb080784c523fe1a160cfe1f6ed16f253d62d31242c7fc7afa0f38d017"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/_shared/shaft.hlsli",
+                      "sha256":  "fcce7cc29f84ae9339f84ab8f7d13f61f4e98b3fc7ded3e689dfb6c4e766fd9f"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Lens/blur_common.hlsli",
+                      "sha256":  "bae8eb836c51ba1cd22a07a5e7387e9a097eac5029c63ca59838a0def38a534e"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Lens/blur1_h.hlsl",
+                      "sha256":  "39daf1ccb5ef8bc9194bd16914b360ce520f34114fc0cac0208ce2c4327b4d56"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Lens/blur1_v.hlsl",
+                      "sha256":  "464aa52d7274e88dcd0772670c0c21ff4c60d67ac22721459f6db9524f388f23"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Lens/blur2_h.hlsl",
+                      "sha256":  "f345ee3b9a6751aec9e8ab45acd461dc459ca7dae8fa6674b313ee00c2cab4da"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Lens/blur2_v.hlsl",
+                      "sha256":  "885695ed6564f203a288d16f6abcbc299f81e0ba6dd751045d1ac77e779f040d"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Lens/bright.hlsl",
+                      "sha256":  "4d93de6292a850054cfddb658313e37357d84c33ff546121f84107d33e81bc15"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Lens/grade.hlsl",
+                      "sha256":  "e0fed9f6aae7b35c6566ada584b7cf97665fe2420ee7eca629832a77e3b8d472"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Lens/manifest.yaml",
+                      "sha256":  "091e8312b69ea6c22ae95ebf994a4dae33bec57345a2d39de62d54c762c7ac27"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Lens/streak.hlsl",
+                      "sha256":  "d289b3ebe3deadab84be93041c6aed9a40f14da9d4e29e47756a8e9e662b30c6"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Plan/canvas.hlsl",
+                      "sha256":  "3013037d140413eec82bde88a220e58ac04525cf6bff3e12a99d7421e02b8c48"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Plan/manifest.yaml",
+                      "sha256":  "c8c6da98ff48d73cfa5479fe461145fc90b49bda263fb9fb3c766cd2ed3bd62e"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Plan/plan.hlsl",
+                      "sha256":  "9dac395f7f1544df8a9aa1cf731be284dba009421ca660dd859a6a6cc2a3a06b"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Shaft/manifest.yaml",
+                      "sha256":  "0c490424b1c51a6864eaef2ea4399c621716d9d7d58d03aba0a99e31851a5634"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/modules/RS_Shaft/march.hlsl",
+                      "sha256":  "1269d0ed72ee68db6a7171ca462bb776a243b348bdfaacad0ed2c508785d3ecd"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/reactor_shaft.sentinel",
+                      "sha256":  "20c45db24542308acf5ba7cd20601db4c6475dafc265f27eb2ac197f4c8b02bc"
+                  },
+                  {
+                      "path":  "projects/reactor_shaft/README.md",
+                      "sha256":  "8f9d43fb44e1d5eb01c16993bdd88db1e7a590ad9795f186450fb7cc091cd5c8"
                   },
                   {
                       "path":  "projects/scientific_organism/modules/_shared/anim/anim.hlsli",
@@ -1757,6 +1885,10 @@
                       "sha256":  "353885d2815fa1a93760a89c068755a7c69d1c4378cbc3b2a1fc952415fd20e4"
                   },
                   {
+                      "path":  "projects/soft_vitrine/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
                       "path":  "projects/soft_vitrine/modules/_shared/sdf/sdf_noise.hlsli",
                       "sha256":  "9cc80d5222cb82528070a9d2d6558b1eb2a462117c3811006a4f9d8b55b7425e"
                   },
@@ -1794,7 +1926,7 @@
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Plan/canvas.hlsl",
-                      "sha256":  "fcee11049d5ccee580eb35493cd93dafbd7250b31deec86a1fe5730f79a73271"
+                      "sha256":  "057ba9b64d707f6bd1eaf36e62d776707bcfc0fa9a69d14a3422321566582d22"
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Plan/manifest.yaml",
@@ -1890,7 +2022,7 @@
                   },
                   {
                       "path":  "projects/soft_vitrine/soft_vitrine.sentinel",
-                      "sha256":  "dd3bdcce3ec37e8b36041be257efd12633a5ce4f2a69acf00f1ff327bbb286b2"
+                      "sha256":  "0b620a1c7a3f65ee2f3e0a34a46ed5142965c61140e371c3c1763d0aa7c6c851"
                   },
                   {
                       "path":  "projects/strata/modules/_shared/palette.hlsli",
@@ -2289,6 +2421,202 @@
                       "sha256":  "f93442857b9784861dcf94eab9051a8631a1f16caf01a0a107e19ee668cd855c"
                   },
                   {
+                      "path":  "projects/sunward_corridor/modules/_shared/corridor.hlsli",
+                      "sha256":  "c55f6dcc37f28d5c36c7ff6a3d96179e2f7038846c62481fa8d687e8ee4cbe45"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/modules/SC_Corridor/manifest.yaml",
+                      "sha256":  "85b7e6a0e919673e0b629177bd67462b9a40b9f7006b744aedc01633898c0d3e"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/modules/SC_Corridor/march.hlsl",
+                      "sha256":  "b14ccc93ce2489fe84e494caca21746631f4f6c28d2ac5171d3c12e8e36953f9"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/modules/SC_Grid/grid.hlsl",
+                      "sha256":  "a0e4a02dd8f0c2230ed4ba8c96a116911147b4770148e5b3acfa566588c94274"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/modules/SC_Grid/manifest.yaml",
+                      "sha256":  "563a3ed14ee8ba83c5e16e8ace5bfaef0648a661c656a1c5158f8bb375b1f906"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/modules/SC_Plan/canvas.hlsl",
+                      "sha256":  "1aac20d0576b39b2e36d301d3df2c0ffd66498e49e1ab7e763bf23c82ae2468b"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/modules/SC_Plan/manifest.yaml",
+                      "sha256":  "bda7d70ae490196f32acc0177cc82d324ce089570c9ca4f1312934f01b2a1cc9"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/modules/SC_Plan/plan.hlsl",
+                      "sha256":  "0aff084ab9b040b06b277cd3e4bc38508de5262a30bf0224d2c6637d6dcccf68"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/README.md",
+                      "sha256":  "f8ed631b6e3310dda6ceb84f5ad849c05f3638a30e559ffd9716e2ef94dd8a54"
+                  },
+                  {
+                      "path":  "projects/sunward_corridor/sunward_corridor.sentinel",
+                      "sha256":  "2626fb6ec0d20bb0b712ee2b7e66f7c82613570fb7a62a6c39e4bc09a8652764"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/_shared/microfont.hlsli",
+                      "sha256":  "353885d2815fa1a93760a89c068755a7c69d1c4378cbc3b2a1fc952415fd20e4"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/_shared/tessera.hlsli",
+                      "sha256":  "4f5d5c9113e9676aa541c01ad7bdc382bb698915cfb5a39c1cd01391754cb06a"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Caustics/atlas.hlsl",
+                      "sha256":  "798df5cf0aff4991d76b641bb13a9baefbcfb813b5acd5776b7b69d54b8be368"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Caustics/caustics_out.hlsl",
+                      "sha256":  "e8dd0bc3f7683a3196575bef91baabf47f2d205214e0b9b959733bb13cb5c644"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Caustics/manifest.yaml",
+                      "sha256":  "b3ea465c71402bcd4263210a8fe019d81a40fef35e7118af455bd944e9723b92"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Caustics/resolve.hlsl",
+                      "sha256":  "8453370869577c3ef02de83287e8c8c77442bafdcda57550bf6c60fe87d01380"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Caustics/splat.hlsl",
+                      "sha256":  "da99660b1903150f7cd0c567aed4a82202e2b6e526dc98569cd7dac1f7bb03f7"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Caustics/tick.hlsl",
+                      "sha256":  "4456c769256e94683998350598d159746f60502729ef12ebebe63dc008fcbb22"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Flicker/analyse.hlsl",
+                      "sha256":  "984e62dbf09b7597955d961e31629939ae428477e9c7acf9f41a4aa2d3ed924b"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Flicker/manifest.yaml",
+                      "sha256":  "49b5cf3eb3deab4e7d0aa9861d954d37ffa2d0f62255222d9162c3658598da86"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Flicker/reduce.hlsl",
+                      "sha256":  "4a63a29e6efb995ae4a62f56d48207bb362befd7640e166dcd70463f6064b3cc"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Flicker/view.hlsl",
+                      "sha256":  "7c51dab104cf79405074983925ad7b0a200f057fe90f15dd861003ad938c5672"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Plan/canvas.hlsl",
+                      "sha256":  "8b7f8f9c0d1f0a46acd09e75391064a3202086d094329e57ab7f05e9bf1d9e7b"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Plan/layout.hlsli",
+                      "sha256":  "91b707488efe8a79f4f295e0fc02fb9444a5e34ab3eb17f67f0c2527159e8883"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Plan/manifest.yaml",
+                      "sha256":  "3351c68b1696781824da36ddffd485368a4dbdb32a9babad18ac459c04e0135e"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Plan/plan.hlsl",
+                      "sha256":  "e40f1a8d69fa9266bc8345ba289b3145a9ab0fe3344cbdb2b3784bcb56eca8a5"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Post/blur_h.hlsl",
+                      "sha256":  "14503332160c3c266a8f1aaea6aa0747b528a68bf9ad48744c48f55e170feedf"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Post/blur_v.hlsl",
+                      "sha256":  "9c60057c10c8f27646e09783bd1bf04790e4fa5f564dff3e72f1fcd6c6226754"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Post/bright.hlsl",
+                      "sha256":  "4e684f7728555657c450d0bc082f63a70a7dd99f0a6e159321de9f6638940739"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Post/comp.hlsl",
+                      "sha256":  "0cf0149bcc30fec15d4f7cd3ee7d31e4c5a791d2f2bb066a0043b2d3f95ba9b3"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Post/manifest.yaml",
+                      "sha256":  "a760cfcd462be02affc1067ac78a393eb9afa7ede88001d1cefdacc2ceb2c5d0"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Render/manifest.yaml",
+                      "sha256":  "7400ff01f4add02c9fff550248ef3979f302c0084c317e24d306ee58071c5e8a"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Render/pick.hlsl",
+                      "sha256":  "cf24448e4195197c5a74b206cc2f4eb153499255a1ed55a773ab2bc1aec708ef"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Render/render.hlsl",
+                      "sha256":  "1e6e5303fac18d5ac8c2f1f67de1b9f3151844710f19c468693d3d3344d6f1c9"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/ctl.hlsl",
+                      "sha256":  "b0e9333f6e89906d55e96efe97a1d7a213ad643e0d49639f69e20b775ba7eb36"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/field.hlsl",
+                      "sha256":  "03ffe155b94494e86fb1e76bfea464ca4d5b3a0625d3ba7b272b7f64362949fb"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/keep.hlsl",
+                      "sha256":  "8e43837856260ce1bc6c2214c41f05add3c86e5b7f80e556507e7cc7383219e8"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/manifest.yaml",
+                      "sha256":  "5022d37e7381377d9ebd7e5ce9985be3cb3f7724ac9f40355c3415d08addd62b"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/measure.hlsl",
+                      "sha256":  "c279766855879d1e725b8f736e871db4d88754ac3130c42c3a633941b6db84a8"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/relief.hlsl",
+                      "sha256":  "18aab4f27de71928562f1fec92d5345e1d79ee5fe9e0846ba7bdb6957d2da0fc"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/sim.hlsli",
+                      "sha256":  "ef4d8bfee8e53e6604136d880df989692d922e3607bac6bb706ad76ea9ce217d"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/wave.hlsli",
+                      "sha256":  "5a034c96e3555913cc761c5c2efad19f9683c0cee174ccda12e10b6d413aba04"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/wave_a.hlsl",
+                      "sha256":  "740ca3ba4e3358b3fae470c1c904e264c03d807213e7d3c0a45864dd9a0aa145"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/wave_b.hlsl",
+                      "sha256":  "ecc8df080d764ba1dd5b2d4d886663080e98f0e61cc1aaf82de24244e5ad6de7"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/modules/TP_Sim/wave_c.hlsl",
+                      "sha256":  "cd6080bbd84017ffed9abe40b8235fb001987979a2d11acbb3b6646b26fffd1c"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/README.md",
+                      "sha256":  "a4fd490e4eed44ae9bfac4b3707a557fc33a2781e4686726ace18ebe65a19f5e"
+                  },
+                  {
+                      "path":  "projects/tessera_pool/tessera_pool.sentinel",
+                      "sha256":  "8290b5eee84c3fe3816685ec8301b9613466d6c9c3bbbfb6a678c01b82388887"
+                  },
+                  {
                       "path":  "projects/touchdesigner_new_project/.gitignore",
                       "sha256":  "61dabcd0f00c5570de946ec70b8ff6eb387e161254abe6bc2f8fafeef521d3b9"
                   },
@@ -2401,6 +2729,94 @@
                       "sha256":  "f67243313314fe5f9613ba227ce1eff83f29171603b3a38663628365f6c49af9"
                   },
                   {
+                      "path":  "projects/vitreous_cross/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/_shared/vitreous.hlsli",
+                      "sha256":  "665135257bd5b4da874f6883a35cb17c4d7f58de9b40d79134e18dd17bc4aa36"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Env/env.hlsl",
+                      "sha256":  "23ae588663734b734f54812e97cfa385339eeea5f69daabd6091a087ed3af91c"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Env/irr_out.hlsl",
+                      "sha256":  "c7f03f2114e3f2ffa1015e7e3d2ca1af58d684aca0a21d266ccb892bb9bab76a"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Env/irradiance.hlsl",
+                      "sha256":  "028affa77d2b24f0d749424188e9c8664e09f276f9d53993c9a6e50900a96390"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Env/manifest.yaml",
+                      "sha256":  "470cca573c981bb17a212ab79fc79795f190943fbe3dbe70708257d13f7840cb"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Env/rig.hlsl",
+                      "sha256":  "c4fc1b5eb92e5b583d8cf56e289d594a4ab1ef75825544f7f7a51c77d0419e3d"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Env/rig.hlsli",
+                      "sha256":  "d9bbf4e0ca918616b4eeee6f85f4c7cf7cf3d1327089c6894aecc04d2128018c"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Plan/canvas.hlsl",
+                      "sha256":  "4cbb6f0dbc888a50c4ed6f47a2e5973d2325b81cd86ddec7a06bb58d0908e509"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Plan/manifest.yaml",
+                      "sha256":  "7405b4a5318fd99c887f900ba931288ffa12af21341ae7f2dfdbb61d3a9ba6ea"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Plan/plan.hlsl",
+                      "sha256":  "a4a304299fdfda0ea1e6fca9ef27cb44ac98df3d9969934f1300498a4e896869"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Post/aa.hlsl",
+                      "sha256":  "8142a75bfed56bebf93acff75bbc4f736d2a660b8e8ca5ef274fc80887e0ff03"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Post/blur_h.hlsl",
+                      "sha256":  "a81e428ea77e8a43037cb353f506b6248df68698a5a1cdd557fef95f429ca680"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Post/blur_v.hlsl",
+                      "sha256":  "6c642e53fdbff62e9275a495d1217f89892793af6dfc03e9654c4399b88821e5"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Post/bright.hlsl",
+                      "sha256":  "b5ed074337ae65cffe0916a90fd13e48b17153f2aa62ac4261c755059f7531e3"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Post/grade.hlsl",
+                      "sha256":  "9e959b35b9d889c8a60572227efef30876a2ad604cd19b8c7400035d1468aeb9"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Post/manifest.yaml",
+                      "sha256":  "f1f2ec15c950440fe326e329b11694314fc5ef38f972f7bc516ca481bde4c8a7"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Render/manifest.yaml",
+                      "sha256":  "fe61068f3674e64666a4afd025846e04e4f2f19e3da4dca7bf1b6b45a54edd47"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Render/render.hlsl",
+                      "sha256":  "685a53d210bd0497d19915633ce9668e774450b2f91d10922f810f06e0e34287"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/modules/VC_Render/scene.hlsli",
+                      "sha256":  "6e2637713fc25e3459033eadb11854f01669549bdddfa270d33bfd55b6135618"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/README.md",
+                      "sha256":  "8f75ae1ba5c345b5573b7384967302e3036493cc883f2fdad19c4d48d378ad1c"
+                  },
+                  {
+                      "path":  "projects/vitreous_cross/vitreous_cross.sentinel",
+                      "sha256":  "c7d48d62505fb6a86b0c1fbaa0cfa3097e2363e61d9be8d5be72121247d138b9"
+                  },
+                  {
                       "path":  "README.md",
                       "sha256":  "d8d9c87bb4acacd4a7775e128fb4e191c87456d9362a6d28cccca77362e7ffc9"
                   },
@@ -2423,6 +2839,10 @@
                   {
                       "path":  "tools/templates/module-ui/shared/fonts/SCIENTIFICA_LICENSE.txt",
                       "sha256":  "5fe3133335d5a3a32865f2b5cc133ed092c12aa65fcde525b68045e14312cd61"
+                  },
+                  {
+                      "path":  "tools/templates/module-ui/shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
                   },
                   {
                       "path":  "tools/templates/module-ui/shared/ui/sui3_controls.hlsli",
@@ -7932,5 +8352,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "7a1652b15033cf582d4480055fb231ae19eb49b8"
+    "source_commit":  "9a32bc7f99b158769c3a5cc31c6ed72a0b0768ce"
 }

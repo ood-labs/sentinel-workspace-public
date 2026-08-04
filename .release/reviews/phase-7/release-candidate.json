@@ -1,0 +1,57 @@
+{
+ "phase": "7A",
+ "content_commit": "9a32bc7f99b158769c3a5cc31c6ed72a0b0768ce",
+ "binding": "The workspace manifest is generated from this twenty-project curated content commit. The follow-up commit changes only the generated install manifest and this record.",
+ "project_set": {
+  "configured_directories": 20,
+  "distributable_projects": [
+   "autopsia",
+   "axon_press",
+   "camera_reference",
+   "cloth_lab",
+   "face_collage",
+   "industrial_lattice",
+   "interaction_lab",
+   "living_room_sdf",
+   "matik_plate",
+   "prism_reliquary",
+   "reactor_shaft",
+   "scientific_organism",
+   "soft_vitrine",
+   "strata",
+   "streamdiff_canvas",
+   "streamdiff_workflows",
+   "sunward_corridor",
+   "tessera_pool",
+   "touchdesigner_new_project",
+   "vitreous_cross"
+  ],
+  "review_only_projects": [],
+  "missing": [],
+  "unexpected": []
+ },
+ "provenance": {
+  "base_seed_commit": "21371725ffefab872bbfdd3c42f704b3ab46c932",
+  "curated_branch_head": "b650818 (public-seed-agent-test)",
+  "promoted_projects": [
+   "vitreous_cross",
+   "sunward_corridor",
+   "axon_press",
+   "tessera_pool",
+   "reactor_shaft"
+  ],
+  "excluded_branch_projects": [
+   "candy_effigy",
+   "drop_pod_os",
+   "ocular_gate",
+   "ossuary_bloom",
+   "pulse_vitrine"
+  ],
+  "carried_branch_changes": "knowledge docs, modular-scene-authoring skill (mirrored to .agents), agent manuals, plan_theme template, and plan-theme cleanups in matik_plate, prism_reliquary, soft_vitrine"
+ },
+ "validation": {
+  "official_examples": "recorded below after the bind commit's validator run",
+  "compile": "all 19 promoted-project modules passed offline compile_check with zero errors; one warning (reactor_shaft RS_Lens final_output_format_mismatch)",
+  "runtime": "fresh-load battery owed before the next installer ships this seed; per-project records in .release/reviews/phase-7/"
+ }
+}
