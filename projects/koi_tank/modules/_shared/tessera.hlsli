@@ -1,4 +1,4 @@
-// tessera.hlsli — the shared contract for tessera_pool.
+// tessera.hlsli — the shared contract for koi_tank.
 //
 // Everything in this file is a DEFINITION every node in the show must agree on: the record
 // layout TP_Plan publishes, the coordinate systems, the unfolded caustic atlas, and the tile

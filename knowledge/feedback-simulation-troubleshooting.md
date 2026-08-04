@@ -3,7 +3,7 @@
 Use this playbook when an authored Sentinel Module contains a persistent field, iterative GPU
 solver, accumulation buffer, or temporal feedback path and the result flickers, alternates,
 explodes, refuses to settle, or remains damaged after reload. The worked water example is
-`projects/tessera_pool/`; structured-buffer-specific solver guidance also lives in
+`projects/koi_tank/`; structured-buffer-specific solver guidance also lives in
 `knowledge/gpu-cloth-and-xpbd.md`.
 
 ## Classify Before Tuning
@@ -30,7 +30,7 @@ whether the pixels delivered to the viewer are flickering. Neither substitutes f
 
 For a wave state with height `h` and velocity `v`, absolute height is a poor activity metric: a
 standing wave and still water can have the same height peak at the instant sampled. Measure a
-motion envelope such as `sqrt(v*v + (h/tau)*(h/tau))`, and publish peak plus RMS. Tessera Pool
+motion envelope such as `sqrt(v*v + (h/tau)*(h/tau))`, and publish peak plus RMS. Koi Tank
 does this in `TP_Sim/measure.hlsl`.
 
 For the visible output, use temporal second difference:
@@ -55,7 +55,7 @@ Do not infer a runtime sequence from adjacent manifest entries.
 
 Texture buffers ping-pong after writes. In a multi-pass substepped solver, separate named
 scratch targets can expose alternating old and new halves and create exact ABAB output even when
-the equation is stable. Tessera Pool's reliable contract is three passes reading and writing the
+the equation is stable. Koi Tank's reliable contract is three passes reading and writing the
 same persistent `state` texture: each runtime flip exposes the preceding substep, and the final
 write is already the state for the next cook. Structured buffers have different semantics; see
 `knowledge/gpu-cloth-and-xpbd.md` before applying the texture pattern to them.

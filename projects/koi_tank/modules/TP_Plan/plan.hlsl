@@ -1,4 +1,4 @@
-// TP_Plan / plan.hlsl — the plan authority for tessera_pool.
+// TP_Plan / plan.hlsl — the plan authority for koi_tank.
 //
 // One node decides the tank, the lining, the palette, the light and every ripple source.
 // TP_Sim, TP_Caustics and TP_Render all read those records and none of them re-decides

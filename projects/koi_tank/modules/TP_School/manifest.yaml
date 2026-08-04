@@ -3,7 +3,7 @@ version: "0.1"
 mode: generator
 resolution: [960, 640]
 
-# The school authority for tessera_pool. It owns where the fish are, where they are pointing and
+# The school authority for koi_tank. It owns where the fish are, where they are pointing and
 # how hard they are swimming, and it is the ONLY node that decides any of that. TP_Render
 # consumes the records and marches the shape; it never re-decides a position.
 #

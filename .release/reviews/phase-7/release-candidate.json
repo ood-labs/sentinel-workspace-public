@@ -22,7 +22,7 @@
    "streamdiff_canvas",
    "streamdiff_workflows",
    "sunward_corridor",
-   "tessera_pool",
+   "koi_tank",
    "touchdesigner_new_project",
    "vitreous_cross"
   ],
@@ -37,7 +37,7 @@
    "vitreous_cross",
    "sunward_corridor",
    "axon_press",
-   "tessera_pool",
+   "koi_tank",
    "reactor_shaft"
   ],
   "excluded_branch_projects": [
@@ -47,7 +47,7 @@
    "ossuary_bloom",
    "pulse_vitrine"
   ],
-  "carried_branch_changes": "knowledge docs, modular-scene-authoring skill (mirrored to .agents), agent manuals, plan_theme template, and plan-theme cleanups in matik_plate, prism_reliquary, soft_vitrine; follow-up integration of the tessera_pool koi-school/scope update and revised expressions-and-drivers, graph-wiring, module-pipeline, EXAMPLE-MAP docs"
+  "carried_branch_changes": "knowledge docs, modular-scene-authoring skill (mirrored to .agents), agent manuals, plan_theme template, and plan-theme cleanups in matik_plate, prism_reliquary, soft_vitrine; follow-up integration of the koi_tank koi-school/scope update and revised expressions-and-drivers, graph-wiring, module-pipeline, EXAMPLE-MAP docs"
  },
  "validation": {
   "official_examples": "recorded below after the bind commit's validator run",

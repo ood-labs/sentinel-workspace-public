@@ -3,7 +3,7 @@ version: "0.1"
 mode: generator
 resolution: [1200, 800]
 
-# The plan authority for tessera_pool. It owns the tank, the lining, the palette, the light
+# The plan authority for koi_tank. It owns the tank, the lining, the palette, the light
 # and every ripple source, and it is the ONLY node that decides any of them. TP_Sim,
 # TP_Caustics and TP_Render all derive from these records.
 #

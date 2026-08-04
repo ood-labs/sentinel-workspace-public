@@ -226,10 +226,10 @@
             MinimumNodePresets = 8
             Exemptions = @('approved-compact-study', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
-        tessera_pool = @{
-            ProjectFile = 'tessera_pool.sentinel'
+        koi_tank = @{
+            ProjectFile = 'koi_tank.sentinel'
             SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-7/tessera-pool.json')
+            ProofRecords = @('.release/reviews/phase-7/koi-tank.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0

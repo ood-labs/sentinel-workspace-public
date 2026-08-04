@@ -1,11 +1,11 @@
 {
- "project": "projects/tessera_pool/tessera_pool.sentinel",
+ "project": "projects/koi_tank/koi_tank.sentinel",
  "source_commit": "a627d3e (public-seed-agent-test)",
  "assembly": "Curated onto the twenty-project seed from the public-seed-agent-test branch; five of the ten branch projects were promoted. See release-candidate.json.",
  "promoted_paths": [
-  "projects/tessera_pool/README.md",
-  "projects/tessera_pool/tessera_pool.sentinel",
-  "projects/tessera_pool/modules/"
+  "projects/koi_tank/README.md",
+  "projects/koi_tank/koi_tank.sentinel",
+  "projects/koi_tank/modules/"
  ],
  "approved_structure": {
   "pipelines": [

@@ -1,4 +1,4 @@
-# tessera_pool
+# koi_tank
 
 A glass tank of mosaic-tiled water, transcribed from a reference image: a displaced surface
 refracting the lining, photon caustics on the floor and the submerged walls, Beer-Lambert depth
@@ -15,7 +15,7 @@ wavelengths only around irradiance gradients (`0` is the exact monochrome solve)
 `TP_Post / Lens / AA Crispness` controls how much center detail the diagonal-edge resolve keeps.
 The defaults are subtle rather than a whole-frame chromatic-aberration look.
 
-Open `tessera_pool.sentinel`. The Program output is `TP_Post`.
+Open `koi_tank.sentinel`. The Program output is `TP_Post`.
 
 ---
 

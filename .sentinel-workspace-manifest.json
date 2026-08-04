@@ -314,7 +314,7 @@
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
-                      "sha256":  "e40bae1ede39a3b5aa2b7cb71d6bae7756d2910f90ffa4b32f67618bdc5b1449"
+                      "sha256":  "88c68a757c5509b70c48e7386ec3fe86cac9855a60211defd59adfaf3ef0dcf8"
                   },
                   {
                       "path":  "knowledge/expressions-and-drivers.md",
@@ -326,7 +326,7 @@
                   },
                   {
                       "path":  "knowledge/feedback-simulation-troubleshooting.md",
-                      "sha256":  "37f5bf6cb7e56ab00b10946a86319ca0ac1ce9576dfd7fc9d66f5edfb7c1ee7d"
+                      "sha256":  "371bb3bae13f46d47db516a877695f29a8fff6ae91ef125ad74ed58e675e8b29"
                   },
                   {
                       "path":  "knowledge/first-run-engines.md",
@@ -1195,6 +1195,210 @@
                   {
                       "path":  "projects/interaction_lab/tools/data_scope_proof.py",
                       "sha256":  "d3b338702bbb5c6f37067b8ec451100f6c06b7756f742e170fc4c454c620238b"
+                  },
+                  {
+                      "path":  "projects/koi_tank/koi_tank.sentinel",
+                      "sha256":  "195bc3475237adb74ef06a510fab7a38ebd96c067bec55a3db8f16724cc0c72a"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/_shared/fish.hlsli",
+                      "sha256":  "2f21e86060d906ab0a9ec0b7cfdb193a0d738ff65bbe18a99a47bd1ffed67ffc"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/_shared/microfont.hlsli",
+                      "sha256":  "353885d2815fa1a93760a89c068755a7c69d1c4378cbc3b2a1fc952415fd20e4"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/_shared/tessera.hlsli",
+                      "sha256":  "093be3faa7b120c248850aafdcf7acace5045426db31c1061697ee1b24b07634"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Caustics/atlas.hlsl",
+                      "sha256":  "798df5cf0aff4991d76b641bb13a9baefbcfb813b5acd5776b7b69d54b8be368"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Caustics/caustics_out.hlsl",
+                      "sha256":  "e8dd0bc3f7683a3196575bef91baabf47f2d205214e0b9b959733bb13cb5c644"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Caustics/manifest.yaml",
+                      "sha256":  "6d11db5057e4b9b66666b0dccb045cc723ab2db8794f4584a2553c0167c877e0"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Caustics/resolve.hlsl",
+                      "sha256":  "c632ae8dc2d7185911839ab64ffacfa669a1e022f9d8ca34310008ffc8d983b8"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Caustics/splat.hlsl",
+                      "sha256":  "c7047888856668e2b073231e7ca5b75e161c5dd7517753ef9123d138f9445a47"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Caustics/tick.hlsl",
+                      "sha256":  "7b89237f244c1eb7d4fa2d9f8500826155c368d245f961043db8fe531d182076"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Flicker/analyse.hlsl",
+                      "sha256":  "984e62dbf09b7597955d961e31629939ae428477e9c7acf9f41a4aa2d3ed924b"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Flicker/manifest.yaml",
+                      "sha256":  "49b5cf3eb3deab4e7d0aa9861d954d37ffa2d0f62255222d9162c3658598da86"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Flicker/reduce.hlsl",
+                      "sha256":  "4a63a29e6efb995ae4a62f56d48207bb362befd7640e166dcd70463f6064b3cc"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Flicker/view.hlsl",
+                      "sha256":  "7c51dab104cf79405074983925ad7b0a200f057fe90f15dd861003ad938c5672"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Plan/canvas.hlsl",
+                      "sha256":  "8b7f8f9c0d1f0a46acd09e75391064a3202086d094329e57ab7f05e9bf1d9e7b"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Plan/layout.hlsli",
+                      "sha256":  "91b707488efe8a79f4f295e0fc02fb9444a5e34ab3eb17f67f0c2527159e8883"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Plan/manifest.yaml",
+                      "sha256":  "d3ad70a3aea56a94814eb644278ef23717edd56c3c63a477edcf7eb8eb4e391b"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Plan/plan.hlsl",
+                      "sha256":  "5dfb6096a486da2fac1687c54edd14985a89f827a6f9c6c4312ef34ad6f7803c"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Post/blur_h.hlsl",
+                      "sha256":  "14503332160c3c266a8f1aaea6aa0747b528a68bf9ad48744c48f55e170feedf"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Post/blur_v.hlsl",
+                      "sha256":  "9c60057c10c8f27646e09783bd1bf04790e4fa5f564dff3e72f1fcd6c6226754"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Post/bright.hlsl",
+                      "sha256":  "4e684f7728555657c450d0bc082f63a70a7dd99f0a6e159321de9f6638940739"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Post/comp.hlsl",
+                      "sha256":  "bfe0d84bd8bc26fe97f3e4c6c60abab397db687304e5e31e7611ab0720674be6"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Post/manifest.yaml",
+                      "sha256":  "65f13d597bb01e2dc6288ad5fcfe674013b0fa72a2b312a1560dc26fae5d9846"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Render/manifest.yaml",
+                      "sha256":  "03dec2c0df4c493d7f7140d0eb33d663bf8dc7777381dd327f1f09451c0ec128"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Render/pick.hlsl",
+                      "sha256":  "cf24448e4195197c5a74b206cc2f4eb153499255a1ed55a773ab2bc1aec708ef"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Render/render.hlsl",
+                      "sha256":  "5198ff467ff05395188952a697d9eef219b8b09e47d8b88bf15a18d281563add"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_School/canvas.hlsl",
+                      "sha256":  "7e2c7a9028846659459e733d24cc5c8421ce1515df6b87211af36fd27827eb91"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_School/ctl.hlsl",
+                      "sha256":  "11a80e4697b242aba5ef74dfea534e04175f8ce1afcb6622b4221e6a42bef8fe"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_School/manifest.yaml",
+                      "sha256":  "eabf5ffbcf98482b7cd0717a3f2357126b7063d1a4e8b715bc03fa1bd0c89046"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_School/school.hlsli",
+                      "sha256":  "a226401f90ac38423991c7322c183bcce4ea63d2b28af048c99d649772a43971"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_School/swim.hlsl",
+                      "sha256":  "9d589018fe295a7804c28633bb65272e38f32277d1e47ab59da0c56599669476"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_School/trail.hlsl",
+                      "sha256":  "784f47498a79f4e2fd4f43a9ea09e1d35f2c1797d0588b8be0af70e2c84a7073"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Scope/draw.hlsl",
+                      "sha256":  "d4fec2a4934ec1275b49ebd7a22147c5b44e899370137146a3bcd2d3e2f69655"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Scope/manifest.yaml",
+                      "sha256":  "4e77de85e774fb2e1e73b63ec2b176254ca8181bab05a972ba2bb93e732cef8b"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Scope/scope.hlsli",
+                      "sha256":  "d5b81b0402a65c1a1bde032180eda8736654bfc13832ed00b744904e926a599d"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Scope/splat.hlsl",
+                      "sha256":  "11d814da5d4203bbbc1babdc7ae2309ae8015f4df7fefa000731bb89e8ab3137"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Scope/tick.hlsl",
+                      "sha256":  "d5eee3dd3cd1d7556b4db89de1c53a607d5c342ceb196b0faa1cf434a5dddfeb"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Scope/trail.hlsl",
+                      "sha256":  "f61d2422363efb518b73d9226da8b639e51b4869521a6239ec263d894542072d"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/ctl.hlsl",
+                      "sha256":  "b0e9333f6e89906d55e96efe97a1d7a213ad643e0d49639f69e20b775ba7eb36"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/field.hlsl",
+                      "sha256":  "3fb5dfe990983aac1a646483cc473b72a4362bf6ea2497ad338e28cefada16db"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/keep.hlsl",
+                      "sha256":  "8e43837856260ce1bc6c2214c41f05add3c86e5b7f80e556507e7cc7383219e8"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/manifest.yaml",
+                      "sha256":  "2e4fc44112be62dc5337c36ffa4a6b8b158b6a44d4db49ecdd19c2379f70b32e"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/measure.hlsl",
+                      "sha256":  "c279766855879d1e725b8f736e871db4d88754ac3130c42c3a633941b6db84a8"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/relief.hlsl",
+                      "sha256":  "18aab4f27de71928562f1fec92d5345e1d79ee5fe9e0846ba7bdb6957d2da0fc"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/sim.hlsli",
+                      "sha256":  "ad40e6861c8c533e96113eb0b482981a479b36be875f5bda36e3007be535580c"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/wave.hlsli",
+                      "sha256":  "5a034c96e3555913cc761c5c2efad19f9683c0cee174ccda12e10b6d413aba04"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/wave_a.hlsl",
+                      "sha256":  "740ca3ba4e3358b3fae470c1c904e264c03d807213e7d3c0a45864dd9a0aa145"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/wave_b.hlsl",
+                      "sha256":  "ecc8df080d764ba1dd5b2d4d886663080e98f0e61cc1aaf82de24244e5ad6de7"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Sim/wave_c.hlsl",
+                      "sha256":  "cd6080bbd84017ffed9abe40b8235fb001987979a2d11acbb3b6646b26fffd1c"
+                  },
+                  {
+                      "path":  "projects/koi_tank/README.md",
+                      "sha256":  "bdc91077263e6dd1adc06b62c97a34a4da77cef45591d49b2e2ef0b9a8cfbd5c"
                   },
                   {
                       "path":  "projects/living_room_sdf/living_room_sdf.sentinel",
@@ -2463,210 +2667,6 @@
                   {
                       "path":  "projects/sunward_corridor/sunward_corridor.sentinel",
                       "sha256":  "2626fb6ec0d20bb0b712ee2b7e66f7c82613570fb7a62a6c39e4bc09a8652764"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/_shared/fish.hlsli",
-                      "sha256":  "2f21e86060d906ab0a9ec0b7cfdb193a0d738ff65bbe18a99a47bd1ffed67ffc"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/_shared/microfont.hlsli",
-                      "sha256":  "353885d2815fa1a93760a89c068755a7c69d1c4378cbc3b2a1fc952415fd20e4"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/_shared/plan_theme.hlsli",
-                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/_shared/tessera.hlsli",
-                      "sha256":  "2154eb05b428152c985c632739ef51b0f81dc6c95b947a438ca88eab0ddf2df2"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Caustics/atlas.hlsl",
-                      "sha256":  "798df5cf0aff4991d76b641bb13a9baefbcfb813b5acd5776b7b69d54b8be368"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Caustics/caustics_out.hlsl",
-                      "sha256":  "e8dd0bc3f7683a3196575bef91baabf47f2d205214e0b9b959733bb13cb5c644"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Caustics/manifest.yaml",
-                      "sha256":  "6d11db5057e4b9b66666b0dccb045cc723ab2db8794f4584a2553c0167c877e0"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Caustics/resolve.hlsl",
-                      "sha256":  "c632ae8dc2d7185911839ab64ffacfa669a1e022f9d8ca34310008ffc8d983b8"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Caustics/splat.hlsl",
-                      "sha256":  "c7047888856668e2b073231e7ca5b75e161c5dd7517753ef9123d138f9445a47"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Caustics/tick.hlsl",
-                      "sha256":  "7b89237f244c1eb7d4fa2d9f8500826155c368d245f961043db8fe531d182076"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Flicker/analyse.hlsl",
-                      "sha256":  "984e62dbf09b7597955d961e31629939ae428477e9c7acf9f41a4aa2d3ed924b"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Flicker/manifest.yaml",
-                      "sha256":  "49b5cf3eb3deab4e7d0aa9861d954d37ffa2d0f62255222d9162c3658598da86"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Flicker/reduce.hlsl",
-                      "sha256":  "4a63a29e6efb995ae4a62f56d48207bb362befd7640e166dcd70463f6064b3cc"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Flicker/view.hlsl",
-                      "sha256":  "7c51dab104cf79405074983925ad7b0a200f057fe90f15dd861003ad938c5672"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Plan/canvas.hlsl",
-                      "sha256":  "8b7f8f9c0d1f0a46acd09e75391064a3202086d094329e57ab7f05e9bf1d9e7b"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Plan/layout.hlsli",
-                      "sha256":  "91b707488efe8a79f4f295e0fc02fb9444a5e34ab3eb17f67f0c2527159e8883"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Plan/manifest.yaml",
-                      "sha256":  "3351c68b1696781824da36ddffd485368a4dbdb32a9babad18ac459c04e0135e"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Plan/plan.hlsl",
-                      "sha256":  "e40f1a8d69fa9266bc8345ba289b3145a9ab0fe3344cbdb2b3784bcb56eca8a5"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Post/blur_h.hlsl",
-                      "sha256":  "14503332160c3c266a8f1aaea6aa0747b528a68bf9ad48744c48f55e170feedf"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Post/blur_v.hlsl",
-                      "sha256":  "9c60057c10c8f27646e09783bd1bf04790e4fa5f564dff3e72f1fcd6c6226754"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Post/bright.hlsl",
-                      "sha256":  "4e684f7728555657c450d0bc082f63a70a7dd99f0a6e159321de9f6638940739"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Post/comp.hlsl",
-                      "sha256":  "bfe0d84bd8bc26fe97f3e4c6c60abab397db687304e5e31e7611ab0720674be6"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Post/manifest.yaml",
-                      "sha256":  "65f13d597bb01e2dc6288ad5fcfe674013b0fa72a2b312a1560dc26fae5d9846"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Render/manifest.yaml",
-                      "sha256":  "03dec2c0df4c493d7f7140d0eb33d663bf8dc7777381dd327f1f09451c0ec128"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Render/pick.hlsl",
-                      "sha256":  "cf24448e4195197c5a74b206cc2f4eb153499255a1ed55a773ab2bc1aec708ef"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Render/render.hlsl",
-                      "sha256":  "5198ff467ff05395188952a697d9eef219b8b09e47d8b88bf15a18d281563add"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_School/canvas.hlsl",
-                      "sha256":  "7e2c7a9028846659459e733d24cc5c8421ce1515df6b87211af36fd27827eb91"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_School/ctl.hlsl",
-                      "sha256":  "11a80e4697b242aba5ef74dfea534e04175f8ce1afcb6622b4221e6a42bef8fe"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_School/manifest.yaml",
-                      "sha256":  "9fee6ce77c184c03ec805dc18a0b26c768615957f31870f2a868bf455d0948b1"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_School/school.hlsli",
-                      "sha256":  "a226401f90ac38423991c7322c183bcce4ea63d2b28af048c99d649772a43971"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_School/swim.hlsl",
-                      "sha256":  "9d589018fe295a7804c28633bb65272e38f32277d1e47ab59da0c56599669476"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_School/trail.hlsl",
-                      "sha256":  "784f47498a79f4e2fd4f43a9ea09e1d35f2c1797d0588b8be0af70e2c84a7073"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Scope/draw.hlsl",
-                      "sha256":  "d4fec2a4934ec1275b49ebd7a22147c5b44e899370137146a3bcd2d3e2f69655"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Scope/manifest.yaml",
-                      "sha256":  "4e77de85e774fb2e1e73b63ec2b176254ca8181bab05a972ba2bb93e732cef8b"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Scope/scope.hlsli",
-                      "sha256":  "d5b81b0402a65c1a1bde032180eda8736654bfc13832ed00b744904e926a599d"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Scope/splat.hlsl",
-                      "sha256":  "11d814da5d4203bbbc1babdc7ae2309ae8015f4df7fefa000731bb89e8ab3137"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Scope/tick.hlsl",
-                      "sha256":  "d5eee3dd3cd1d7556b4db89de1c53a607d5c342ceb196b0faa1cf434a5dddfeb"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Scope/trail.hlsl",
-                      "sha256":  "f61d2422363efb518b73d9226da8b639e51b4869521a6239ec263d894542072d"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/ctl.hlsl",
-                      "sha256":  "b0e9333f6e89906d55e96efe97a1d7a213ad643e0d49639f69e20b775ba7eb36"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/field.hlsl",
-                      "sha256":  "3fb5dfe990983aac1a646483cc473b72a4362bf6ea2497ad338e28cefada16db"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/keep.hlsl",
-                      "sha256":  "8e43837856260ce1bc6c2214c41f05add3c86e5b7f80e556507e7cc7383219e8"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/manifest.yaml",
-                      "sha256":  "2e4fc44112be62dc5337c36ffa4a6b8b158b6a44d4db49ecdd19c2379f70b32e"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/measure.hlsl",
-                      "sha256":  "c279766855879d1e725b8f736e871db4d88754ac3130c42c3a633941b6db84a8"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/relief.hlsl",
-                      "sha256":  "18aab4f27de71928562f1fec92d5345e1d79ee5fe9e0846ba7bdb6957d2da0fc"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/sim.hlsli",
-                      "sha256":  "ad40e6861c8c533e96113eb0b482981a479b36be875f5bda36e3007be535580c"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/wave.hlsli",
-                      "sha256":  "5a034c96e3555913cc761c5c2efad19f9683c0cee174ccda12e10b6d413aba04"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/wave_a.hlsl",
-                      "sha256":  "740ca3ba4e3358b3fae470c1c904e264c03d807213e7d3c0a45864dd9a0aa145"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/wave_b.hlsl",
-                      "sha256":  "ecc8df080d764ba1dd5b2d4d886663080e98f0e61cc1aaf82de24244e5ad6de7"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/modules/TP_Sim/wave_c.hlsl",
-                      "sha256":  "cd6080bbd84017ffed9abe40b8235fb001987979a2d11acbb3b6646b26fffd1c"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/README.md",
-                      "sha256":  "e5a41b9a4f41d4c2afce7da2f317a826302d697067b4a68a49a8635843e1d63e"
-                  },
-                  {
-                      "path":  "projects/tessera_pool/tessera_pool.sentinel",
-                      "sha256":  "25186737dd3042a37a17ab21b815acf901d9e13f99e9bb36638ddfda69779c4d"
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/.gitignore",
@@ -8023,6 +8023,210 @@
                                   "sha256":  "3f354f8f3cdc8e2716b4e2e4961e4af9746adcc48060c730eec805c925ab24d4"
                               },
                               {
+                                  "path":  "projects/tessera_pool/modules/_shared/fish.hlsli",
+                                  "sha256":  "2f21e86060d906ab0a9ec0b7cfdb193a0d738ff65bbe18a99a47bd1ffed67ffc"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/_shared/microfont.hlsli",
+                                  "sha256":  "353885d2815fa1a93760a89c068755a7c69d1c4378cbc3b2a1fc952415fd20e4"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/_shared/plan_theme.hlsli",
+                                  "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/_shared/tessera.hlsli",
+                                  "sha256":  "2154eb05b428152c985c632739ef51b0f81dc6c95b947a438ca88eab0ddf2df2"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Caustics/atlas.hlsl",
+                                  "sha256":  "798df5cf0aff4991d76b641bb13a9baefbcfb813b5acd5776b7b69d54b8be368"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Caustics/caustics_out.hlsl",
+                                  "sha256":  "e8dd0bc3f7683a3196575bef91baabf47f2d205214e0b9b959733bb13cb5c644"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Caustics/manifest.yaml",
+                                  "sha256":  "6d11db5057e4b9b66666b0dccb045cc723ab2db8794f4584a2553c0167c877e0"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Caustics/resolve.hlsl",
+                                  "sha256":  "c632ae8dc2d7185911839ab64ffacfa669a1e022f9d8ca34310008ffc8d983b8"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Caustics/splat.hlsl",
+                                  "sha256":  "c7047888856668e2b073231e7ca5b75e161c5dd7517753ef9123d138f9445a47"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Caustics/tick.hlsl",
+                                  "sha256":  "7b89237f244c1eb7d4fa2d9f8500826155c368d245f961043db8fe531d182076"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Flicker/analyse.hlsl",
+                                  "sha256":  "984e62dbf09b7597955d961e31629939ae428477e9c7acf9f41a4aa2d3ed924b"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Flicker/manifest.yaml",
+                                  "sha256":  "49b5cf3eb3deab4e7d0aa9861d954d37ffa2d0f62255222d9162c3658598da86"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Flicker/reduce.hlsl",
+                                  "sha256":  "4a63a29e6efb995ae4a62f56d48207bb362befd7640e166dcd70463f6064b3cc"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Flicker/view.hlsl",
+                                  "sha256":  "7c51dab104cf79405074983925ad7b0a200f057fe90f15dd861003ad938c5672"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Plan/canvas.hlsl",
+                                  "sha256":  "8b7f8f9c0d1f0a46acd09e75391064a3202086d094329e57ab7f05e9bf1d9e7b"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Plan/layout.hlsli",
+                                  "sha256":  "91b707488efe8a79f4f295e0fc02fb9444a5e34ab3eb17f67f0c2527159e8883"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Plan/manifest.yaml",
+                                  "sha256":  "3351c68b1696781824da36ddffd485368a4dbdb32a9babad18ac459c04e0135e"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Plan/plan.hlsl",
+                                  "sha256":  "e40f1a8d69fa9266bc8345ba289b3145a9ab0fe3344cbdb2b3784bcb56eca8a5"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Post/blur_h.hlsl",
+                                  "sha256":  "14503332160c3c266a8f1aaea6aa0747b528a68bf9ad48744c48f55e170feedf"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Post/blur_v.hlsl",
+                                  "sha256":  "9c60057c10c8f27646e09783bd1bf04790e4fa5f564dff3e72f1fcd6c6226754"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Post/bright.hlsl",
+                                  "sha256":  "4e684f7728555657c450d0bc082f63a70a7dd99f0a6e159321de9f6638940739"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Post/comp.hlsl",
+                                  "sha256":  "bfe0d84bd8bc26fe97f3e4c6c60abab397db687304e5e31e7611ab0720674be6"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Post/manifest.yaml",
+                                  "sha256":  "65f13d597bb01e2dc6288ad5fcfe674013b0fa72a2b312a1560dc26fae5d9846"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Render/manifest.yaml",
+                                  "sha256":  "03dec2c0df4c493d7f7140d0eb33d663bf8dc7777381dd327f1f09451c0ec128"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Render/pick.hlsl",
+                                  "sha256":  "cf24448e4195197c5a74b206cc2f4eb153499255a1ed55a773ab2bc1aec708ef"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Render/render.hlsl",
+                                  "sha256":  "5198ff467ff05395188952a697d9eef219b8b09e47d8b88bf15a18d281563add"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_School/canvas.hlsl",
+                                  "sha256":  "7e2c7a9028846659459e733d24cc5c8421ce1515df6b87211af36fd27827eb91"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_School/ctl.hlsl",
+                                  "sha256":  "11a80e4697b242aba5ef74dfea534e04175f8ce1afcb6622b4221e6a42bef8fe"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_School/manifest.yaml",
+                                  "sha256":  "9fee6ce77c184c03ec805dc18a0b26c768615957f31870f2a868bf455d0948b1"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_School/school.hlsli",
+                                  "sha256":  "a226401f90ac38423991c7322c183bcce4ea63d2b28af048c99d649772a43971"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_School/swim.hlsl",
+                                  "sha256":  "9d589018fe295a7804c28633bb65272e38f32277d1e47ab59da0c56599669476"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_School/trail.hlsl",
+                                  "sha256":  "784f47498a79f4e2fd4f43a9ea09e1d35f2c1797d0588b8be0af70e2c84a7073"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Scope/draw.hlsl",
+                                  "sha256":  "d4fec2a4934ec1275b49ebd7a22147c5b44e899370137146a3bcd2d3e2f69655"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Scope/manifest.yaml",
+                                  "sha256":  "4e77de85e774fb2e1e73b63ec2b176254ca8181bab05a972ba2bb93e732cef8b"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Scope/scope.hlsli",
+                                  "sha256":  "d5b81b0402a65c1a1bde032180eda8736654bfc13832ed00b744904e926a599d"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Scope/splat.hlsl",
+                                  "sha256":  "11d814da5d4203bbbc1babdc7ae2309ae8015f4df7fefa000731bb89e8ab3137"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Scope/tick.hlsl",
+                                  "sha256":  "d5eee3dd3cd1d7556b4db89de1c53a607d5c342ceb196b0faa1cf434a5dddfeb"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Scope/trail.hlsl",
+                                  "sha256":  "f61d2422363efb518b73d9226da8b639e51b4869521a6239ec263d894542072d"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/ctl.hlsl",
+                                  "sha256":  "b0e9333f6e89906d55e96efe97a1d7a213ad643e0d49639f69e20b775ba7eb36"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/field.hlsl",
+                                  "sha256":  "3fb5dfe990983aac1a646483cc473b72a4362bf6ea2497ad338e28cefada16db"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/keep.hlsl",
+                                  "sha256":  "8e43837856260ce1bc6c2214c41f05add3c86e5b7f80e556507e7cc7383219e8"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/manifest.yaml",
+                                  "sha256":  "2e4fc44112be62dc5337c36ffa4a6b8b158b6a44d4db49ecdd19c2379f70b32e"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/measure.hlsl",
+                                  "sha256":  "c279766855879d1e725b8f736e871db4d88754ac3130c42c3a633941b6db84a8"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/relief.hlsl",
+                                  "sha256":  "18aab4f27de71928562f1fec92d5345e1d79ee5fe9e0846ba7bdb6957d2da0fc"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/sim.hlsli",
+                                  "sha256":  "ad40e6861c8c533e96113eb0b482981a479b36be875f5bda36e3007be535580c"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/wave.hlsli",
+                                  "sha256":  "5a034c96e3555913cc761c5c2efad19f9683c0cee174ccda12e10b6d413aba04"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/wave_a.hlsl",
+                                  "sha256":  "740ca3ba4e3358b3fae470c1c904e264c03d807213e7d3c0a45864dd9a0aa145"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/wave_b.hlsl",
+                                  "sha256":  "ecc8df080d764ba1dd5b2d4d886663080e98f0e61cc1aaf82de24244e5ad6de7"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/modules/TP_Sim/wave_c.hlsl",
+                                  "sha256":  "cd6080bbd84017ffed9abe40b8235fb001987979a2d11acbb3b6646b26fffd1c"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/README.md",
+                                  "sha256":  "e5a41b9a4f41d4c2afce7da2f317a826302d697067b4a68a49a8635843e1d63e"
+                              },
+                              {
+                                  "path":  "projects/tessera_pool/tessera_pool.sentinel",
+                                  "sha256":  "25186737dd3042a37a17ab21b815acf901d9e13f99e9bb36638ddfda69779c4d"
+                              },
+                              {
                                   "path":  "projects/tg6SMjlAs3yrFGLN/modules/C1_BG_2/bg.hlsl",
                                   "sha256":  "e7563ad6d2214dd3927ea2eac506153440f3260fab4b731efd9e2c172573c5cb"
                               },
@@ -8404,5 +8608,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "4923e212cb337975002beac73a420332456d50e9"
+    "source_commit":  "7f28e91bc221bcbdfe2cdcaac6f92568c0571a01"
 }
