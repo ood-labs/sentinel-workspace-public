@@ -1,6 +1,6 @@
 {
  "phase": "7A",
- "content_commit": "9a32bc7f99b158769c3a5cc31c6ed72a0b0768ce",
+ "content_commit": "4923e212cb337975002beac73a420332456d50e9",
  "binding": "The workspace manifest is generated from this twenty-project curated content commit. The follow-up commit changes only the generated install manifest and this record.",
  "project_set": {
   "configured_directories": 20,
