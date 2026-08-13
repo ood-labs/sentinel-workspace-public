@@ -1,6 +1,14 @@
 {
     "files":  [
                   {
+                      "path":  ".agents/skills/deterministic-rendering/agents/openai.yaml",
+                      "sha256":  "216e7fc4350fa1818d44ec33affb7a97fb8c8d853091e3fa5858e76bb63042b4"
+                  },
+                  {
+                      "path":  ".agents/skills/deterministic-rendering/SKILL.md",
+                      "sha256":  "7bcfd66a5e7c200bc8e1620adedbab1d7656ca350e5e5548270c2ede935ead4b"
+                  },
+                  {
                       "path":  ".agents/skills/laser-content-authoring/SKILL.md",
                       "sha256":  "f41dc33d1eef01bf4d33aafaced90b0638e27559586963a32fe36748ae678223"
                   },
@@ -14,7 +22,7 @@
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/SKILL.md",
-                      "sha256":  "8d10027f600d106dd9eb8cd27b9642123c74443e3d62cd6c84843412b4d18277"
+                      "sha256":  "70af701e0dbe4c29c6290f777fd56e6f25b1cd1faf9db109bbb75e0f3ece910a"
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/state-tree.md",
@@ -129,6 +137,14 @@
                       "sha256":  "dbb0c24e3f79d26dcd16fe25a80d86351130c4c800719df5340974a4bb253440"
                   },
                   {
+                      "path":  ".claude/skills/deterministic-rendering/agents/openai.yaml",
+                      "sha256":  "216e7fc4350fa1818d44ec33affb7a97fb8c8d853091e3fa5858e76bb63042b4"
+                  },
+                  {
+                      "path":  ".claude/skills/deterministic-rendering/SKILL.md",
+                      "sha256":  "7bcfd66a5e7c200bc8e1620adedbab1d7656ca350e5e5548270c2ede935ead4b"
+                  },
+                  {
                       "path":  ".claude/skills/laser-content-authoring/SKILL.md",
                       "sha256":  "f41dc33d1eef01bf4d33aafaced90b0638e27559586963a32fe36748ae678223"
                   },
@@ -142,7 +158,7 @@
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/SKILL.md",
-                      "sha256":  "8d10027f600d106dd9eb8cd27b9642123c74443e3d62cd6c84843412b4d18277"
+                      "sha256":  "70af701e0dbe4c29c6290f777fd56e6f25b1cd1faf9db109bbb75e0f3ece910a"
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/state-tree.md",
@@ -270,11 +286,11 @@
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "e63516c8aec2fe6a330943ca3138cb784cdbaf69433a5f46d01146af7f1bfb83"
+                      "sha256":  "8c5ac1fd40826ff952d14f92a999fa80ed515ebf614a593428d9fe77beab267b"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "e63516c8aec2fe6a330943ca3138cb784cdbaf69433a5f46d01146af7f1bfb83"
+                      "sha256":  "8c5ac1fd40826ff952d14f92a999fa80ed515ebf614a593428d9fe77beab267b"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -298,7 +314,7 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "e63516c8aec2fe6a330943ca3138cb784cdbaf69433a5f46d01146af7f1bfb83"
+                      "sha256":  "8c5ac1fd40826ff952d14f92a999fa80ed515ebf614a593428d9fe77beab267b"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -8608,5 +8624,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "7461396164501563928f49da93e5cc5a4aa695f4"
+    "source_commit":  "5bfe9b6b1c3b304993be7e0de93d173052f5bed6"
 }
