@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deterministic Rendering"
+  short_description: "Render exact frame-locked PNG sequences"
+  default_prompt: "Use $deterministic-rendering to render an exact frame-locked PNG sequence from this Sentinel pipeline."

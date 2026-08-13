@@ -102,6 +102,7 @@ sentinel_pipeline action="info" pipeline_id="hlslshader_0"
 - **Async compiles**: module shaders compile on a worker thread. Poll `compile_status` for progress and structured errors; `sentinel_app status` shows `busy` + `compiling[]` after a project load; `force_reload` recovers from a compile-error state; `compile_check` validates a project dir without creating a node.
 - **Batch writes**: `sentinel_state set_many` applies many parameter writes in one call with per-path results.
 - **One-call review stills**: `sentinel_capture capture_at` applies overrides, waits for compiles, settles, captures, and restores. Use it instead of hand-rolling set / sleep / capture / set-back chains.
+- **Deterministic sequence renders**: `sentinel_capture render_sequence` starts an exact fixed-step PNG job; poll `render_status` and use `render_cancel` when needed. Follow the `deterministic-rendering` skill for tracks, Conductor coupling, manifest checks, and determinism claims.
 - **Authored panel proof**: for a Module UI, read `sentinel_pipeline info.panel` and verify declared/effective mode, named output, resolution mode, content size, render size, recreation counts, and deferred-resource count. Canvas/follow-panel behavior ships in 0.5.32+. An immediate capture concurrent with a parameter write is not sufficient proof; require a settled frame plus live interaction/readback.
 - **Runtime proof**: `sentinel_graph profile` reports frame buckets, per-node wall time, rolling `cook_hz` / `cooks_in_window` / `cook_window_ms`, graph link counts, PipelineStats, and hotspot reasons. Use cook rate when comparing nodes created at different times; lifetime `frames_processed` totals are not cadence measurements. `sentinel_capture proof_bundle` includes `graph_profile.json` plus a Performance section.
 - **Project safety**: `load_project`/`new_project` refuse over unsaved changes unless `confirm: true`; `import_project` merges another .sentinel into the live project with id remap.
@@ -245,6 +246,9 @@ NOT display names like "Background Removal" — those won't work.
 | `list_audio_devices` | Active render-loopback and microphone endpoints with IDs and default flags |
 | `session_start` / `session_stop` / `session_marker` / `session_status` | Capture Session: frame-aligned window recording with input/event JSONL, layout control, `chroma_format` |
 | `sweep_record` | Frame-locked parameter sweep recorded to MP4, blocking; for motion eval (see `motion-eval` skill). `loop_mode`: trim_wrap (default when loops > 1) / pingpong / none; `restore_baseline` (default true) |
+| `render_sequence` | Start an asynchronous fixed-step PNG job. Requires `pipeline_id`, `fps`, and `frame_count`; accepts `slot`, `start_time`, `format`, `filepath`, `use_conductor`, and `tracks`; returns `job_id` |
+| `render_status` | Poll stepped, accepted, encoded, in-flight, manifest, and terminal fields for `job_id` |
+| `render_cancel` | Request cancellation of `job_id` after its in-flight frame; poll status until terminal |
 
 ### `sentinel_screenshot` — Screen capture (inline image)
 | Action | Description |

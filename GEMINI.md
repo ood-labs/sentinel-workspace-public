@@ -148,6 +148,7 @@ Proof tools:
 - `sentinel_capture action=capture_at`: still review with temporary parameter overrides; waits for compiles, settles, captures, and restores baseline values in one action.
 - `sentinel_capture action=proof_bundle`: user-facing creative proof folder with graph JSON, link summary, profile, health, expressions, output capture, window screenshot, and optional before/after diff.
 - `sentinel_capture action=sweep_record`: short motion proof across a parameter range. For normal stills or recordings, prefer the capture/record actions exposed by `sentinel_app action=capabilities`.
+- `sentinel_capture action=render_sequence` / `render_status` / `render_cancel`: exact fixed-step PNG8 or PNG16 sequence rendering with optional parameter tracks and Conductor time. Follow the `deterministic-rendering` skill for preflight, polling, manifests, restoration, and determinism claims.
 - `sentinel_state action=snapshot` / `action=restore`: bracket experiments that mutate many parameters. `sentinel_capture action=checkpoint` bundles a capture with the state snapshot so a look can be recovered exactly.
 - `sentinel_vision action=eval_pipeline pipeline_id=<id> preset=render_quality`: one-call AI visual review of a live pipeline. First-time provider setup and key handling: `knowledge/vision-eval.md`. Never ask the user to paste API keys into chat or pass them as tool arguments.
 
@@ -294,6 +295,7 @@ Use skills for authoring details:
 - `procedural-geometry-authoring`
 - `shader-authoring`
 - `mcp-automation`
+- `deterministic-rendering`
 - `motion-eval`
 - `laser-content-authoring`
 - `sentinel-bug-report`
