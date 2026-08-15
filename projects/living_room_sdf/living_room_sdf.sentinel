@@ -30,7 +30,7 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 1.5,
+    "canvasZoom": 0.5668703317642212,
     "links": [
       {
         "endPinId": 24,
@@ -134,7 +134,7 @@
         "type": 1
       },
       {
-        "annotationBody": "Gallery look Ãƒâ€šÃ‚Â· architectural SDF scene",
+        "annotationBody": "",
         "annotationColor": "#D0A24A3D",
         "annotationTitle": "LIVING ROOM SDF",
         "displayName": "LIVING ROOM SDF",
@@ -1768,7 +1768,7 @@
   "input": {
     "activeSource": ""
   },
-  "layout": "[Window][Terminal]\nPos=0,867\nSize=872,710\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Stats]\nPos=0,867\nSize=872,710\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Log]\nPos=0,867\nSize=872,710\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Properties]\nPos=2184,25\nSize=376,1552\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,867\nSize=1308,710\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=0,25\nSize=2182,689\nCollapsed=0\nDockId=0x00000008,0\n\n[Window][LR_Cinematic_Grade]\nPos=811,25\nSize=1371,840\nCollapsed=0\nDockId=0x00000008,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=770,1097\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][Prompt_LFO]\nPos=0,25\nSize=530,429\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\n\n[Window][plate_comp]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\n\n[Window][post_1]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1396\nCollapsed=0\n\n[Window][Native_Camera_Reference]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Style_Authority]\nPos=993,25\nSize=939,691\nCollapsed=0\n\n[Window][Spline_Desk]\nPos=993,718\nSize=939,437\nCollapsed=0\n\n[Window][Gizmo_Desk]\nPos=993,25\nSize=939,1130\nCollapsed=0\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=991,463\nCollapsed=0\n\n[Window][Data_Scope]\nPos=0,833\nSize=991,322\nCollapsed=0\n\n[Window][Signal_Trails]\nPos=0,25\nSize=991,1130\nCollapsed=0\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=1117,748\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=0,25\nSize=1117,748\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=0,25\nSize=2242,748\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=0,25\nSize=2242,748\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=0,243\nSize=2242,367\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][au_specimen]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_proxy]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_observe]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stabilizer]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_relief]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_grade]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_census]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stylus]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_deck]\nPos=0,25\nSize=751,1396\nCollapsed=0\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][AXIOM_01_PLATE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_02_ANALYSIS_LENS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_12_FRAME_REFINERY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_03_LIVE_ENGRAVER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01B_ORGANIC_MEMBRANE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01A_INTERFERENCE_MASK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_04_TOPOLOGY_COMPILER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_05_PRESSURE_DESK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_07_RESONANCE_ENGINE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_08_TEMPORAL_OSSUARY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_09_KINETIC_CORONA]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_10_IMPRESSION_PRESS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_11_RELIEF_CHAMBER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_13_LIVE_GLYPH_PLATES]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_16_POLYRHYTHM_INSPECTOR]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_06_POLYRHYTHM_RACK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][cloth_pulse]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][substrate]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][02_Stress_Feature_Analysis]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][01_Rupture_Stress_Lattice]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][05_Tactile_Weave_Material]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][03_Rupture_Constraint_Loom]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][04_Rupture_Fabric]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\n\n[Window][streamdiff_2]\nPos=0,25\nSize=1166,1396\nCollapsed=0\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][Settings]\nPos=1032,419\nSize=495,738\nCollapsed=0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1111,727\nSize=337,122\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1181,769\nSize=198,39\nCollapsed=0\n\n[Window][Industrial_Group_Output]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=809,840\nCollapsed=0\nDockId=0x00000007,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=809,840\nCollapsed=0\nDockId=0x00000007,0\n\n[Docking][Data]\nDockSpace       ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode      ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1222,900 Split=Y\n    DockNode    ID=0x00000003 Parent=0x00000001 SizeRef=1222,840 Split=X Selected=0x42F69FEE\n      DockNode  ID=0x00000007 Parent=0x00000003 SizeRef=809,689 Selected=0x5143A3F3\n      DockNode  ID=0x00000008 Parent=0x00000003 SizeRef=1371,689 CentralNode=1 Selected=0x42F69FEE\n    DockNode    ID=0x00000004 Parent=0x00000001 SizeRef=1222,710 Split=X\n      DockNode  ID=0x00000005 Parent=0x00000004 SizeRef=488,360 Selected=0xD33228A6\n      DockNode  ID=0x00000006 Parent=0x00000004 SizeRef=732,360 Selected=0xF12F3499\n  DockNode      ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
+  "layout": "[Window][Terminal]\nPos=0,819\nSize=872,710\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Stats]\nPos=0,819\nSize=872,710\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Log]\nPos=0,819\nSize=872,710\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Properties]\nPos=2184,25\nSize=376,1504\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=874,819\nSize=1308,710\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1504\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][LR_Group_Output]\nPos=0,25\nSize=2182,689\nCollapsed=0\nDockId=0x00000008,0\n\n[Window][LR_Cinematic_Grade]\nPos=811,25\nSize=1371,792\nCollapsed=0\nDockId=0x00000008,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=770,1097\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][Prompt_LFO]\nPos=0,25\nSize=530,429\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\n\n[Window][plate_comp]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\n\n[Window][post_1]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][strata_control]\nPos=0,25\nSize=1628,1396\nCollapsed=0\n\n[Window][Native_Camera_Reference]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][Style_Authority]\nPos=993,25\nSize=939,691\nCollapsed=0\n\n[Window][Spline_Desk]\nPos=993,718\nSize=939,437\nCollapsed=0\n\n[Window][Gizmo_Desk]\nPos=993,25\nSize=939,1130\nCollapsed=0\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=991,463\nCollapsed=0\n\n[Window][Data_Scope]\nPos=0,833\nSize=991,322\nCollapsed=0\n\n[Window][Signal_Trails]\nPos=0,25\nSize=991,1130\nCollapsed=0\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=1117,748\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=0,25\nSize=1117,748\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=0,25\nSize=2242,748\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Audio_Bands]\nPos=0,25\nSize=1288,669\nCollapsed=0\n\n[Window][Pattern_Spatial_SDF]\nPos=0,25\nSize=2242,748\nCollapsed=0\n\n[Window][Film_Grade_Post]\nPos=0,243\nSize=2242,367\nCollapsed=0\n\n[Window][Laser_Calibration_Grid]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][Laser_Etch_Atmosphere]\nPos=790,25\nSize=1343,669\nCollapsed=0\n\n[Window][au_specimen]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_proxy]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_observe]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stabilizer]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_relief]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_grade]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_census]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_stylus]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_deck]\nPos=0,25\nSize=751,1396\nCollapsed=0\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][AXIOM_01_PLATE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_02_ANALYSIS_LENS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_12_FRAME_REFINERY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_03_LIVE_ENGRAVER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01B_ORGANIC_MEMBRANE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_01A_INTERFERENCE_MASK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_04_TOPOLOGY_COMPILER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_05_PRESSURE_DESK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_07_RESONANCE_ENGINE]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_08_TEMPORAL_OSSUARY]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_09_KINETIC_CORONA]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_10_IMPRESSION_PRESS]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_11_RELIEF_CHAMBER]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_13_LIVE_GLYPH_PLATES]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_16_POLYRHYTHM_INSPECTOR]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][AXIOM_06_POLYRHYTHM_RACK]\nPos=547,25\nSize=2304,1396\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][cloth_pulse]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][substrate]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][02_Stress_Feature_Analysis]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][01_Rupture_Stress_Lattice]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][05_Tactile_Weave_Material]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][03_Rupture_Constraint_Loom]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][04_Rupture_Fabric]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\n\n[Window][streamdiff_2]\nPos=0,25\nSize=1166,1396\nCollapsed=0\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][Settings]\nPos=1032,419\nSize=495,738\nCollapsed=0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1111,727\nSize=337,122\nCollapsed=0\n\n[Window][##LoadingOverlay]\nPos=1181,769\nSize=198,39\nCollapsed=0\n\n[Window][Industrial_Group_Output]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=809,792\nCollapsed=0\nDockId=0x00000007,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=809,792\nCollapsed=0\nDockId=0x00000007,0\n\n[Window][KA_Rally]\nPos=0,25\nSize=1058,817\nCollapsed=0\n\n[Window][KA_Robot]\nPos=0,25\nSize=2304,817\nCollapsed=0\n\n[Window][KA_Pose]\nPos=524,844\nSize=2036,685\nCollapsed=0\n\n[Window][Micro_Envelope]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Micro_LFO]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Micro_Scope]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Micro_Sequencer]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][FM_Plan]\nPos=751,846\nSize=1809,683\nCollapsed=0\n\n[Window][FM_Post]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Colony]\nPos=751,846\nSize=1809,683\nCollapsed=0\n\n[Window][FM_Bands]\nPos=0,25\nSize=749,1353\nCollapsed=0\n\n[Window][FM_Stage]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Render]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Scope]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][AX_Plan]\nPos=0,25\nSize=876,899\nCollapsed=0\n\n[Window][AX_Press]\nPos=878,25\nSize=1477,899\nCollapsed=0\n\n[Window][AX_Ink]\nPos=878,25\nSize=1477,899\nCollapsed=0\n\n[Window][VC_Plan]\nPos=0,25\nSize=909,1353\nCollapsed=0\n\n[Window][VC_Post]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][TP_Render]\nPos=0,25\nSize=2304,100\nCollapsed=0\n\n[Window][TP_Post]\nPos=0,25\nSize=2304,929\nCollapsed=0\n\n[Window][TP_Plan]\nPos=0,25\nSize=848,706\nCollapsed=0\n\n[Docking][Data]\nDockSpace       ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1504 Split=X\n  DockNode      ID=0x00000001 Parent=0xCCBD8CF7 SizeRef=1222,900 Split=Y\n    DockNode    ID=0x00000003 Parent=0x00000001 SizeRef=1222,840 Split=X Selected=0x42F69FEE\n      DockNode  ID=0x00000007 Parent=0x00000003 SizeRef=809,689 Selected=0x5143A3F3\n      DockNode  ID=0x00000008 Parent=0x00000003 SizeRef=1371,689 CentralNode=1 Selected=0x42F69FEE\n    DockNode    ID=0x00000004 Parent=0x00000001 SizeRef=1222,710 Split=X\n      DockNode  ID=0x00000005 Parent=0x00000004 SizeRef=488,360 Selected=0xD33228A6\n      DockNode  ID=0x00000006 Parent=0x00000004 SizeRef=732,360 Selected=0xF12F3499\n  DockNode      ID=0x00000002 Parent=0xCCBD8CF7 SizeRef=376,900 Selected=0x8C72BEA8\n\n",
   "name": "living_room_sdf",
   "nodePresets": [
     {
@@ -2055,7 +2055,7 @@
         "project_dir": "modules/LR_Furnishings",
         "reset_all": "1.000000",
         "reset_selected": "1.000000",
-        "resolution_height": "771",
+        "resolution_height": "767",
         "resolution_width": "809",
         "right_chair_offset_x": "0.000000",
         "right_chair_offset_y": "0.000000",
@@ -2067,6 +2067,46 @@
         "sofa_offset_x": "0.000000",
         "sofa_offset_y": "0.000000",
         "tool_mode": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "LR Architecture 2",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "LR_Architecture",
+      "inputSlotSourceIds": [],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "LR_Architecture",
+      "panelOpen": true,
+      "parameters": {
+        "art_center_x": "-0.250000",
+        "art_height": "1.320000",
+        "art_spread": "2.050000",
+        "ceiling_height": "3.600000",
+        "door_position_x": "4.210000",
+        "door_position_y": "1.850000",
+        "door_yaw": "-1.570800",
+        "pendant_drop": "0.780000",
+        "pendant_spread": "2.400000",
+        "pendant_z": "0.350000",
+        "project_dir": "modules/LR_Architecture",
+        "resolution_height": "767",
+        "resolution_width": "809",
+        "room_depth": "7.200000",
+        "room_offset_x": "0.000000",
+        "room_offset_y": "0.000000",
+        "room_width": "8.800000",
+        "rug_position_x": "-0.300000",
+        "rug_position_y": "0.450000",
+        "rug_size": "1.050000",
+        "window_position_x": "-2.450000",
+        "window_position_y": "0.720000",
+        "window_scale": "1.000000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -2153,46 +2193,6 @@
         "w2_yaw": "-3.150000",
         "wave_amt": "0.000000",
         "wave_freq": "2.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "LR Architecture 2",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "LR_Architecture",
-      "inputSlotSourceIds": [],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "LR_Architecture",
-      "panelOpen": true,
-      "parameters": {
-        "art_center_x": "-0.250000",
-        "art_height": "1.320000",
-        "art_spread": "2.050000",
-        "ceiling_height": "3.600000",
-        "door_position_x": "4.210000",
-        "door_position_y": "1.850000",
-        "door_yaw": "-1.570800",
-        "pendant_drop": "0.780000",
-        "pendant_spread": "2.400000",
-        "pendant_z": "0.350000",
-        "project_dir": "modules/LR_Architecture",
-        "resolution_height": "815",
-        "resolution_width": "809",
-        "room_depth": "7.200000",
-        "room_offset_x": "0.000000",
-        "room_offset_y": "0.000000",
-        "room_width": "8.800000",
-        "rug_position_x": "-0.300000",
-        "rug_position_y": "0.450000",
-        "rug_size": "1.050000",
-        "window_position_x": "-2.450000",
-        "window_position_y": "0.720000",
-        "window_scale": "1.000000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -2288,7 +2288,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1785413574102,
+  "saved_at_ms": 1786786174874,
   "sources": [],
   "statePayloads": {
     "LR_Furnishings": {

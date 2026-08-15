@@ -4,17 +4,17 @@
     "vsyncEnabled": false
   },
   "graph": {
-    "canvasZoom": 0.6355852484703064,
+    "canvasZoom": 0.9136411547660828,
     "links": [
-      {
-        "endPinId": 45,
-        "id": 12,
-        "startPinId": 36
-      },
       {
         "endPinId": 43,
         "id": 20,
         "startPinId": 66
+      },
+      {
+        "endPinId": 45,
+        "id": 12,
+        "startPinId": 36
       },
       {
         "endPinId": 48,
@@ -22,14 +22,14 @@
         "startPinId": 66
       },
       {
-        "endPinId": 51,
-        "id": 23,
-        "startPinId": 73
-      },
-      {
         "endPinId": 50,
         "id": 15,
         "startPinId": 46
+      },
+      {
+        "endPinId": 51,
+        "id": 23,
+        "startPinId": 73
       },
       {
         "endPinId": 59,
@@ -65,7 +65,7 @@
         "displayName": "TP_Plan",
         "entityId": "TP_Plan",
         "id": 19,
-        "posX": 82.7998046875,
+        "posX": 83.89431762695313,
         "posY": 48.91813659667969,
         "positionSet": true,
         "previewVisible": true,
@@ -86,8 +86,8 @@
         "entityId": "TP_Render",
         "id": 22,
         "inputTilesOverride": 0,
-        "posX": 780.6895141601563,
-        "posY": 44.11262512207031,
+        "posX": 779.5950317382813,
+        "posY": 52.86878967285156,
         "positionSet": true,
         "previewVisible": true,
         "type": 1
@@ -136,14 +136,6 @@
     ],
     "pins": [
       {
-        "id": 43,
-        "kind": 0,
-        "name": "Surface",
-        "nodeId": 21,
-        "slotIndex": 0,
-        "type": 0
-      },
-      {
         "id": 35,
         "kind": 1,
         "name": "Plan View",
@@ -152,9 +144,9 @@
         "type": 0
       },
       {
-        "id": 44,
-        "kind": 1,
-        "name": "Atlas View",
+        "id": 43,
+        "kind": 0,
+        "name": "Surface",
         "nodeId": 21,
         "slotIndex": 0,
         "type": 0
@@ -166,6 +158,14 @@
         "nodeId": 19,
         "slotIndex": 1,
         "type": 6
+      },
+      {
+        "id": 44,
+        "kind": 1,
+        "name": "Atlas View",
+        "nodeId": 21,
+        "slotIndex": 0,
+        "type": 0
       },
       {
         "id": 45,
@@ -408,7 +408,7 @@
   "input": {
     "activeSource": ""
   },
-  "layout": "[Window][Sources]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000034,1\n\n[Window][Outputs]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000034,2\n\n[Window][Stats]\nPos=0,908\nSize=662,621\nCollapsed=0\nDockId=0x00000039,2\n\n[Window][Log]\nPos=0,908\nSize=662,621\nCollapsed=0\nDockId=0x00000039,1\n\n[Window][Properties]\nPos=2222,25\nSize=338,881\nCollapsed=0\nDockId=0x00000036,0\n\n[Window][Graph]\nPos=664,908\nSize=1896,621\nCollapsed=0\nDockId=0x00000034,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1504\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=997,419\nSize=566,738\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][##LoadingOverlay]\nPos=1812,1014\nSize=215,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=699,249\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Terminal]\nPos=0,908\nSize=662,621\nCollapsed=0\nDockId=0x00000039,0\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][CE_Plan]\nPos=0,25\nSize=923,795\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][CE_Cast]\nPos=925,25\nSize=100,795\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][CE_Grade]\nPos=925,25\nSize=100,795\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][sc_plan]\nPos=0,25\nSize=927,815\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][sc_corridor]\nPos=929,25\nSize=1290,905\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][sc_grid]\nPos=929,25\nSize=1290,905\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][VC_Plan]\nPos=0,25\nSize=909,1396\nCollapsed=0\n\n[Window][VC_Env]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][VC_Render]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][VC_Post]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][vsr_0]\nPos=0,25\nSize=909,771\nCollapsed=0\n\n[Window][EF_Plan]\nPos=621,25\nSize=1598,905\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][EF_Structure]\nPos=621,25\nSize=1598,905\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][EF_Post]\nPos=621,25\nSize=1598,905\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][NR_Route]\nPos=0,25\nSize=785,642\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][NR_City]\nPos=787,25\nSize=1432,905\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][NR_Grade]\nPos=787,25\nSize=1432,905\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][TP_Plan]\nPos=0,25\nSize=848,706\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][TP_Sim]\nPos=0,25\nSize=998,446\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][TP_Caustics]\nPos=0,25\nSize=639,881\nCollapsed=0\nDockId=0x00000001,0\n\n[Window][TP_Render]\nPos=0,25\nSize=2220,881\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][TP_Post]\nPos=0,25\nSize=2220,881\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][TP_Flicker]\nPos=0,25\nSize=998,881\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][post_1]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][VT_Plan]\nPos=620,25\nSize=801,836\nCollapsed=0\n\n[Window][VT_Post]\nPos=620,25\nSize=1940,836\nCollapsed=0\n\n[Window][PR_Plan]\nPos=563,25\nSize=714,818\nCollapsed=0\n\n[Window][PR_Post]\nPos=563,25\nSize=1533,818\nCollapsed=0\n\n[Window][MX_Console]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Composite]\nPos=1051,25\nSize=1045,947\nCollapsed=0\n\n[Window][MX_Post]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Circuitry]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Instruments]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Wireframe]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Organism]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][RS_Plan]\nPos=0,25\nSize=1042,1396\nCollapsed=0\n\n[Window][RS_Shaft]\nPos=1044,25\nSize=1069,1396\nCollapsed=0\n\n[Window][RS_Lens]\nPos=1044,25\nSize=1069,1396\nCollapsed=0\n\n[Window][OB_Plan]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OB_Growth]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OB_Env]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OB_Render]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OB_Post]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OG_Plan]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Void]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Flora]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Orbs]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Mosaic]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Weave]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Stage]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Masks]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][SD_Hands]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Tubes]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Hands]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Eye]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Composite]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Print]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Cond]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][SD_Plate]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][DP_Schema]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Sheet]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Kit]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Raster]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Console]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Telemetry]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Graphics]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][AX_Plan]\nPos=0,25\nSize=876,899\nCollapsed=0\n\n[Window][AX_Press]\nPos=878,25\nSize=1477,899\nCollapsed=0\n\n[Window][AX_Ink]\nPos=878,25\nSize=1477,899\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][Face_DS]\nPos=0,25\nSize=1203,899\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=586,657\nSize=1025,210\nCollapsed=0\n\n[Window][VT_Bands]\nPos=0,25\nSize=618,338\nCollapsed=0\n\n[Window][VT_LaserGrid]\nPos=0,25\nSize=618,338\nCollapsed=0\n\n[Window][VT_Laser]\nPos=0,25\nSize=618,338\nCollapsed=0\n\n[Window][VT_VolGlitch]\nPos=0,25\nSize=618,338\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Window][PR_Env]\nPos=1279,25\nSize=2097,1396\nCollapsed=0\n\n[Window][PR_Render]\nPos=1279,25\nSize=2097,1396\nCollapsed=0\n\n[Window][VT_Growth]\nPos=520,25\nSize=798,794\nCollapsed=0\n\n[Window][TP_Pulse]\nPos=1008,25\nSize=1211,905\nCollapsed=0\n\n[Window][Style_Authority]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Spline_Desk]\nPos=1118,583\nSize=978,389\nCollapsed=0\n\n[Window][Signal_Trails]\nPos=561,635\nSize=555,337\nCollapsed=0\n\n[Window][Gizmo_Desk]\nPos=1118,25\nSize=978,947\nCollapsed=0\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Data_Scope]\nPos=0,25\nSize=1116,947\nCollapsed=0\n\n[Window][Micro_LFO]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Micro_Envelope]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Micro_Sequencer]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Micro_Scope]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=372,772\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1040\nSize=752,537\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,772\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Native_Camera_Reference]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][au_stabilizer]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_grade]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_census]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_deck]\nPos=0,25\nSize=751,1396\nCollapsed=0\n\n[Window][au_stylus]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_relief]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_observe]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_proxy]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_specimen]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][Geometry_Pass]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][TP_School]\nPos=484,908\nSize=457,621\nCollapsed=0\nDockId=0x00000033,0\n\n[Window][TP_Scope]\nPos=0,25\nSize=2560,100\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Delete Node Preset]\nPos=1210,741\nSize=140,95\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][SK_Field]\nPos=0,606\nSize=731,923\nCollapsed=0\n\n[Window][SK_Sky]\nPos=733,25\nSize=1827,1353\nCollapsed=0\n\n[Window][SK_Flock]\nPos=0,25\nSize=731,1353\nCollapsed=0\n\n[Window][SK_Render]\nPos=0,25\nSize=2304,1353\nCollapsed=0\n\n[Window][SK_Grade]\nPos=0,25\nSize=2304,1353\nCollapsed=0\n\n[Window][KA_Rally]\nPos=0,25\nSize=1058,817\nCollapsed=0\n\n[Window][KA_Robot]\nPos=0,25\nSize=2304,817\nCollapsed=0\n\n[Window][KA_Pose]\nPos=524,844\nSize=2036,685\nCollapsed=0\n\n[Window][PC_Prism]\nPos=0,25\nSize=1092,1064\nCollapsed=0\n\n[Window][PC_Plan]\nPos=0,25\nSize=1092,1064\nCollapsed=0\n\n[Window][PC_Fly]\nPos=1094,25\nSize=1088,1064\nCollapsed=0\n\n[Window][LT_Lens]\nPos=891,25\nSize=1246,936\nCollapsed=0\n\n[Window][LT_Field]\nPos=891,25\nSize=1246,936\nCollapsed=0\n\n[Window][LT_Bench]\nPos=0,25\nSize=889,1290\nCollapsed=0\n\n[Window][LT_Trace]\nPos=891,25\nSize=1246,936\nCollapsed=0\n\n[Window][FM_Plan]\nPos=751,846\nSize=1809,683\nCollapsed=0\n\n[Window][FM_Post]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Colony]\nPos=751,846\nSize=1809,683\nCollapsed=0\n\n[Window][FM_Render]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Scope]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Stage]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Bands]\nPos=0,25\nSize=749,1353\nCollapsed=0\n\n[Window][Dist062_Wave_Field]\nPos=0,25\nSize=2186,700\nCollapsed=0\n\n[Window][Dist062_Reticle]\nPos=0,25\nSize=2186,700\nCollapsed=0\n\n[Docking][Data]\nDockSpace                                         ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1504 Split=X\n  DockNode                                        ID=0x0000002F Parent=0xCCBD8CF7 SizeRef=420,1552 Selected=0xD171E058\n  DockNode                                        ID=0x00000030 Parent=0xCCBD8CF7 SizeRef=1018,1552 Split=Y\n    DockNode                                      ID=0x00000003 Parent=0x00000030 SizeRef=1222,929 Split=X Selected=0x376FDC27\n      DockNode                                    ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n        DockNode                                  ID=0x00000009 Parent=0x00000007 SizeRef=742,790 Selected=0x9E38CE87\n        DockNode                                  ID=0x0000000A Parent=0x00000007 SizeRef=749,790 Split=X Selected=0x376FDC27\n          DockNode                                ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n            DockNode                              ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n            DockNode                              ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n              DockNode                            ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n              DockNode                            ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                DockNode                          ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                DockNode                          ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                  DockNode                        ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                    DockNode                      ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                      DockNode                    ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                        DockNode                  ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                          DockNode                ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                          DockNode                ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                        DockNode                  ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                      DockNode                    ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                        DockNode                  ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                          DockNode                ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                          DockNode                ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                            DockNode              ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                            DockNode              ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                        DockNode                  ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                          DockNode                ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                          DockNode                ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                            DockNode              ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                            DockNode              ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                              DockNode            ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                DockNode          ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                DockNode          ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                              DockNode            ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                DockNode          ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                DockNode          ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                  DockNode        ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                  DockNode        ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 Split=X Selected=0x861C6F44\n                                    DockNode      ID=0x00000037 Parent=0x0000002E SizeRef=998,353 Split=X Selected=0x149D6BD2\n                                      DockNode    ID=0x00000001 Parent=0x00000037 SizeRef=639,353 Selected=0x149D6BD2\n                                      DockNode    ID=0x00000002 Parent=0x00000037 SizeRef=357,353 Split=Y Selected=0x49D9CB3B\n                                        DockNode  ID=0x00000031 Parent=0x00000002 SizeRef=635,178 Selected=0x49D9CB3B\n                                        DockNode  ID=0x00000032 Parent=0x00000002 SizeRef=635,173 Selected=0xC1B11450\n                                    DockNode      ID=0x00000038 Parent=0x0000002E SizeRef=1560,353 Split=X Selected=0xDFF70533\n                                      DockNode    ID=0x00000035 Parent=0x00000038 SizeRef=1220,929 CentralNode=1 Selected=0x861C6F44\n                                      DockNode    ID=0x00000036 Parent=0x00000038 SizeRef=338,929 Selected=0x8C72BEA8\n                    DockNode                      ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                  DockNode                        ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n          DockNode                                ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n      DockNode                                    ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n    DockNode                                      ID=0x00000004 Parent=0x00000030 SizeRef=1222,621 Split=X Selected=0xF12F3499\n      DockNode                                    ID=0x00000039 Parent=0x00000004 SizeRef=662,645 Selected=0xD33228A6\n      DockNode                                    ID=0x0000003A Parent=0x00000004 SizeRef=1896,645 Split=X Selected=0xF12F3499\n        DockNode                                  ID=0x00000033 Parent=0x0000003A SizeRef=457,745 Selected=0x5AF14FED\n        DockNode                                  ID=0x00000034 Parent=0x0000003A SizeRef=1617,745 Selected=0xF12F3499\n\n",
+  "layout": "[Window][Sources]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000034,1\n\n[Window][Outputs]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000034,2\n\n[Window][Stats]\nPos=0,908\nSize=662,621\nCollapsed=0\nDockId=0x00000039,2\n\n[Window][Log]\nPos=0,908\nSize=662,621\nCollapsed=0\nDockId=0x00000039,1\n\n[Window][Properties]\nPos=2222,25\nSize=338,881\nCollapsed=0\nDockId=0x00000036,0\n\n[Window][Graph]\nPos=664,908\nSize=1896,621\nCollapsed=0\nDockId=0x00000034,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1504\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=997,419\nSize=566,738\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][##LoadingOverlay]\nPos=1812,1014\nSize=215,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=699,249\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000035,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x00000035,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Terminal]\nPos=0,908\nSize=662,621\nCollapsed=0\nDockId=0x00000039,0\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x00000035,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x00000035,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x00000035,3\n\n[Window][CE_Plan]\nPos=0,25\nSize=923,795\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][CE_Cast]\nPos=925,25\nSize=100,795\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][CE_Grade]\nPos=925,25\nSize=100,795\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][sc_plan]\nPos=0,25\nSize=927,815\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][sc_corridor]\nPos=929,25\nSize=1290,905\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][sc_grid]\nPos=929,25\nSize=1290,905\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][VC_Plan]\nPos=0,25\nSize=909,1396\nCollapsed=0\n\n[Window][VC_Env]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][VC_Render]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][VC_Post]\nPos=911,25\nSize=1308,970\nCollapsed=0\n\n[Window][vsr_0]\nPos=0,25\nSize=909,771\nCollapsed=0\n\n[Window][EF_Plan]\nPos=621,25\nSize=1598,905\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][EF_Structure]\nPos=621,25\nSize=1598,905\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][EF_Post]\nPos=621,25\nSize=1598,905\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][NR_Route]\nPos=0,25\nSize=785,642\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][NR_City]\nPos=787,25\nSize=1432,905\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][NR_Grade]\nPos=787,25\nSize=1432,905\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][TP_Plan]\nPos=0,25\nSize=2220,881\nCollapsed=0\nDockId=0x00000035,2\n\n[Window][TP_Sim]\nPos=0,25\nSize=998,446\nCollapsed=0\nDockId=0x00000031,0\n\n[Window][TP_Caustics]\nPos=0,25\nSize=639,881\nCollapsed=0\nDockId=0x00000001,0\n\n[Window][TP_Render]\nPos=0,25\nSize=2220,881\nCollapsed=0\nDockId=0x00000035,1\n\n[Window][TP_Post]\nPos=0,25\nSize=2220,881\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][TP_Flicker]\nPos=0,25\nSize=998,881\nCollapsed=0\nDockId=0x00000032,0\n\n[Window][post_1]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][VT_Plan]\nPos=620,25\nSize=801,836\nCollapsed=0\n\n[Window][VT_Post]\nPos=620,25\nSize=1940,836\nCollapsed=0\n\n[Window][PR_Plan]\nPos=563,25\nSize=714,818\nCollapsed=0\n\n[Window][PR_Post]\nPos=563,25\nSize=1533,818\nCollapsed=0\n\n[Window][MX_Console]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Composite]\nPos=1051,25\nSize=1045,947\nCollapsed=0\n\n[Window][MX_Post]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Circuitry]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Instruments]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Wireframe]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][MX_Organism]\nPos=0,25\nSize=1049,947\nCollapsed=0\n\n[Window][Scientific_Seed_Lab]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Topology_Weaver]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Analysis_Proxy]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Feature_Temporalizer]\nPos=0,511\nSize=704,474\nCollapsed=0\n\n[Window][Scientific_Features]\nPos=0,25\nSize=704,484\nCollapsed=0\n\n[Window][Scientific_Synaptic_Field]\nPos=0,25\nSize=704,960\nCollapsed=0\n\n[Window][Scientific_Final_Grade]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Performance_Deck]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Biotic_Source]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Signal_Glyphs]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Spectral_Archive]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Relief_Chamber]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Filament_Memory]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][Scientific_Organism_Renderer]\nPos=706,25\nSize=1511,960\nCollapsed=0\n\n[Window][Scientific_Organism_Output]\nPos=0,25\nSize=2217,960\nCollapsed=0\n\n[Window][RS_Plan]\nPos=0,25\nSize=1042,1396\nCollapsed=0\n\n[Window][RS_Shaft]\nPos=1044,25\nSize=1069,1396\nCollapsed=0\n\n[Window][RS_Lens]\nPos=1044,25\nSize=1069,1396\nCollapsed=0\n\n[Window][OB_Plan]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OB_Growth]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OB_Env]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OB_Render]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OB_Post]\nPos=808,25\nSize=1477,899\nCollapsed=0\n\n[Window][OG_Plan]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Void]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Flora]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Orbs]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Mosaic]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Weave]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Stage]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Masks]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][SD_Hands]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Tubes]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Hands]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Eye]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Composite]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Print]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][OG_Cond]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][SD_Plate]\nPos=507,25\nSize=1606,777\nCollapsed=0\n\n[Window][DP_Schema]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Sheet]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Kit]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Raster]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Console]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Telemetry]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][DP_Graphics]\nPos=530,25\nSize=1477,899\nCollapsed=0\n\n[Window][AX_Plan]\nPos=0,25\nSize=876,899\nCollapsed=0\n\n[Window][AX_Press]\nPos=878,25\nSize=1477,899\nCollapsed=0\n\n[Window][AX_Ink]\nPos=878,25\nSize=1477,899\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,887\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,887\nCollapsed=0\n\n[Window][Face_DS]\nPos=0,25\nSize=1203,899\nCollapsed=0\n\n[Window][Face_Collage_Group_Output]\nPos=586,657\nSize=1025,210\nCollapsed=0\n\n[Window][VT_Bands]\nPos=0,25\nSize=618,338\nCollapsed=0\n\n[Window][VT_LaserGrid]\nPos=0,25\nSize=618,338\nCollapsed=0\n\n[Window][VT_Laser]\nPos=0,25\nSize=618,338\nCollapsed=0\n\n[Window][VT_VolGlitch]\nPos=0,25\nSize=618,338\nCollapsed=0\n\n[Window][Project Engine Missing##missing_engine_modal]\nPos=1098,55\nSize=364,191\nCollapsed=0\n\n[Window][PR_Env]\nPos=1279,25\nSize=2097,1396\nCollapsed=0\n\n[Window][PR_Render]\nPos=1279,25\nSize=2097,1396\nCollapsed=0\n\n[Window][VT_Growth]\nPos=520,25\nSize=798,794\nCollapsed=0\n\n[Window][TP_Pulse]\nPos=1008,25\nSize=1211,905\nCollapsed=0\n\n[Window][Style_Authority]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Spline_Desk]\nPos=1118,583\nSize=978,389\nCollapsed=0\n\n[Window][Signal_Trails]\nPos=561,635\nSize=555,337\nCollapsed=0\n\n[Window][Gizmo_Desk]\nPos=1118,25\nSize=978,947\nCollapsed=0\n\n[Window][Motion_Console_V3]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Data_Scope]\nPos=0,25\nSize=1116,947\nCollapsed=0\n\n[Window][Micro_LFO]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Micro_Envelope]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Micro_Sequencer]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Micro_Scope]\nPos=0,25\nSize=1116,608\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=372,772\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=713,1040\nSize=752,537\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=1543,25\nSize=590,772\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=2133,772\nCollapsed=0\n\n[Window][Native_Camera_Reference]\nPos=0,25\nSize=1985,887\nCollapsed=0\n\n[Window][au_stabilizer]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_grade]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_census]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_deck]\nPos=0,25\nSize=751,1396\nCollapsed=0\n\n[Window][au_stylus]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_relief]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_observe]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_proxy]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][au_specimen]\nPos=753,25\nSize=1332,887\nCollapsed=0\n\n[Window][Geometry_Pass]\nPos=0,25\nSize=2304,1396\nCollapsed=0\n\n[Window][TP_School]\nPos=484,908\nSize=457,621\nCollapsed=0\nDockId=0x00000033,0\n\n[Window][TP_Scope]\nPos=0,25\nSize=2560,100\nCollapsed=0\nDockId=0x00000035,0\n\n[Window][Delete Node Preset]\nPos=1210,741\nSize=140,95\nCollapsed=0\n\n[Window][post_3]\nPos=0,25\nSize=1619,683\nCollapsed=0\n\n[Window][SK_Field]\nPos=0,606\nSize=731,923\nCollapsed=0\n\n[Window][SK_Sky]\nPos=733,25\nSize=1827,1353\nCollapsed=0\n\n[Window][SK_Flock]\nPos=0,25\nSize=731,1353\nCollapsed=0\n\n[Window][SK_Render]\nPos=0,25\nSize=2304,1353\nCollapsed=0\n\n[Window][SK_Grade]\nPos=0,25\nSize=2304,1353\nCollapsed=0\n\n[Window][KA_Rally]\nPos=0,25\nSize=1058,817\nCollapsed=0\n\n[Window][KA_Robot]\nPos=0,25\nSize=2304,817\nCollapsed=0\n\n[Window][KA_Pose]\nPos=524,844\nSize=2036,685\nCollapsed=0\n\n[Window][PC_Prism]\nPos=0,25\nSize=1092,1064\nCollapsed=0\n\n[Window][PC_Plan]\nPos=0,25\nSize=1092,1064\nCollapsed=0\n\n[Window][PC_Fly]\nPos=1094,25\nSize=1088,1064\nCollapsed=0\n\n[Window][LT_Lens]\nPos=891,25\nSize=1246,936\nCollapsed=0\n\n[Window][LT_Field]\nPos=891,25\nSize=1246,936\nCollapsed=0\n\n[Window][LT_Bench]\nPos=0,25\nSize=889,1290\nCollapsed=0\n\n[Window][LT_Trace]\nPos=891,25\nSize=1246,936\nCollapsed=0\n\n[Window][FM_Plan]\nPos=751,846\nSize=1809,683\nCollapsed=0\n\n[Window][FM_Post]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Colony]\nPos=751,846\nSize=1809,683\nCollapsed=0\n\n[Window][FM_Render]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Scope]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Stage]\nPos=751,25\nSize=1809,819\nCollapsed=0\n\n[Window][FM_Bands]\nPos=0,25\nSize=749,1353\nCollapsed=0\n\n[Window][Dist062_Wave_Field]\nPos=0,25\nSize=2186,700\nCollapsed=0\n\n[Window][Dist062_Reticle]\nPos=0,25\nSize=2186,700\nCollapsed=0\n\n[Docking][Data]\nDockSpace                                         ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1504 Split=X\n  DockNode                                        ID=0x0000002F Parent=0xCCBD8CF7 SizeRef=420,1552 Selected=0xD171E058\n  DockNode                                        ID=0x00000030 Parent=0xCCBD8CF7 SizeRef=1018,1552 Split=Y\n    DockNode                                      ID=0x00000003 Parent=0x00000030 SizeRef=1222,929 Split=X Selected=0x376FDC27\n      DockNode                                    ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n        DockNode                                  ID=0x00000009 Parent=0x00000007 SizeRef=742,790 Selected=0x9E38CE87\n        DockNode                                  ID=0x0000000A Parent=0x00000007 SizeRef=749,790 Split=X Selected=0x376FDC27\n          DockNode                                ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n            DockNode                              ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n            DockNode                              ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n              DockNode                            ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n              DockNode                            ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                DockNode                          ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                DockNode                          ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                  DockNode                        ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                    DockNode                      ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                      DockNode                    ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                        DockNode                  ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                          DockNode                ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                          DockNode                ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                        DockNode                  ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                      DockNode                    ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                        DockNode                  ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                          DockNode                ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                          DockNode                ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                            DockNode              ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                            DockNode              ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                        DockNode                  ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                          DockNode                ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                          DockNode                ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                            DockNode              ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                            DockNode              ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                              DockNode            ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                DockNode          ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                DockNode          ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                              DockNode            ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                DockNode          ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                DockNode          ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                  DockNode        ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                  DockNode        ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 Split=X Selected=0x861C6F44\n                                    DockNode      ID=0x00000037 Parent=0x0000002E SizeRef=998,353 Split=X Selected=0x149D6BD2\n                                      DockNode    ID=0x00000001 Parent=0x00000037 SizeRef=639,353 Selected=0x149D6BD2\n                                      DockNode    ID=0x00000002 Parent=0x00000037 SizeRef=357,353 Split=Y Selected=0x49D9CB3B\n                                        DockNode  ID=0x00000031 Parent=0x00000002 SizeRef=635,178 Selected=0x49D9CB3B\n                                        DockNode  ID=0x00000032 Parent=0x00000002 SizeRef=635,173 Selected=0xC1B11450\n                                    DockNode      ID=0x00000038 Parent=0x0000002E SizeRef=1560,353 Split=X Selected=0xDFF70533\n                                      DockNode    ID=0x00000035 Parent=0x00000038 SizeRef=1220,929 CentralNode=1 Selected=0x4615558C\n                                      DockNode    ID=0x00000036 Parent=0x00000038 SizeRef=338,929 Selected=0x8C72BEA8\n                    DockNode                      ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                  DockNode                        ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n          DockNode                                ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n      DockNode                                    ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n    DockNode                                      ID=0x00000004 Parent=0x00000030 SizeRef=1222,621 Split=X Selected=0xF12F3499\n      DockNode                                    ID=0x00000039 Parent=0x00000004 SizeRef=662,645 Selected=0xD33228A6\n      DockNode                                    ID=0x0000003A Parent=0x00000004 SizeRef=1896,645 Split=X Selected=0xF12F3499\n        DockNode                                  ID=0x00000033 Parent=0x0000003A SizeRef=457,745 Selected=0x5AF14FED\n        DockNode                                  ID=0x00000034 Parent=0x0000003A SizeRef=1617,745 Selected=0xF12F3499\n\n",
   "name": "koi_tank",
   "nodePresets": [
     {
@@ -1056,6 +1056,67 @@
   "outputs": [],
   "pipelines": [
     {
+      "displayName": "TP_Sim",
+      "enabled": true,
+      "expressions": {
+        "ext_down": "ref(\"TP_Render/control_outputs/pick_down\")",
+        "ext_u": "ref(\"TP_Render/control_outputs/pick_u\")",
+        "ext_v": "ref(\"TP_Render/control_outputs/pick_v\")"
+      },
+      "fitMode": 1,
+      "id": "TP_Sim",
+      "inputSlotSourceIds": [
+        "TP_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "TP_Sim",
+      "panelOpen": false,
+      "parameters": {
+        "amb_amount": "0.209000",
+        "amb_dir": "157.412003",
+        "amb_gain": "0.517000",
+        "amb_lac": "2.252000",
+        "amb_octaves": "4.000000",
+        "amb_sharp": "0.216000",
+        "amb_speed": "0.392000",
+        "amb_spread": "1.000000",
+        "amb_warp": "0.765000",
+        "amb_wl": "2.113000",
+        "auto_sources": "0.000000",
+        "break_gain": "45.000000",
+        "break_slope": "0.950000",
+        "chop_couple": "1.000000",
+        "chop_ref": "0.012000",
+        "contour_step": "0.006000",
+        "damping": "0.340000",
+        "detail_amp": "2.099000",
+        "detail_scale": "1.000000",
+        "drive_stiffness": "320.000000",
+        "ext_down": "0.000000",
+        "ext_u": "0.930562",
+        "ext_v": "0.782586",
+        "motion_scale": "0.150000",
+        "motion_tau": "0.080000",
+        "pointer_depth": "0.035000",
+        "pointer_radius": "0.055000",
+        "project_dir": "modules/TP_Sim",
+        "relief_scale": "0.450000",
+        "resolution_height": "512",
+        "resolution_width": "512",
+        "sim_reset": "0.000000",
+        "time_scale": "2.241000",
+        "view_mode": "0.000000",
+        "wall_band": "0.110000",
+        "wall_reflect": "0.784000",
+        "wave_gain": "3.200000",
+        "wave_speed": "0.300000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
       "displayName": "TP_Plan",
       "enabled": true,
       "expressions": {
@@ -1101,7 +1162,7 @@
         "resolution_height": "800",
         "resolution_width": "1200",
         "seed": "11.000000",
-        "sim_peak": "0.000000",
+        "sim_peak": "0.006069",
         "sky_level": "0.420000",
         "source_count": "4.000000",
         "spec_power": "240.000000",
@@ -1119,67 +1180,6 @@
         "tiling": "0.000000",
         "variation": "0.000000",
         "water_depth": "1.100000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
-      "displayName": "TP_Sim",
-      "enabled": true,
-      "expressions": {
-        "ext_down": "ref(\"TP_Render/control_outputs/pick_down\")",
-        "ext_u": "ref(\"TP_Render/control_outputs/pick_u\")",
-        "ext_v": "ref(\"TP_Render/control_outputs/pick_v\")"
-      },
-      "fitMode": 1,
-      "id": "TP_Sim",
-      "inputSlotSourceIds": [
-        "TP_Plan"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "TP_Sim",
-      "panelOpen": false,
-      "parameters": {
-        "amb_amount": "0.209000",
-        "amb_dir": "157.412003",
-        "amb_gain": "0.517000",
-        "amb_lac": "2.252000",
-        "amb_octaves": "4.000000",
-        "amb_sharp": "0.216000",
-        "amb_speed": "0.392000",
-        "amb_spread": "1.000000",
-        "amb_warp": "0.765000",
-        "amb_wl": "2.113000",
-        "auto_sources": "0.000000",
-        "break_gain": "45.000000",
-        "break_slope": "0.950000",
-        "chop_couple": "1.000000",
-        "chop_ref": "0.012000",
-        "contour_step": "0.006000",
-        "damping": "0.340000",
-        "detail_amp": "2.099000",
-        "detail_scale": "1.000000",
-        "drive_stiffness": "320.000000",
-        "ext_down": "0.000000",
-        "ext_u": "0.368351",
-        "ext_v": "0.989710",
-        "motion_scale": "0.150000",
-        "motion_tau": "0.080000",
-        "pointer_depth": "0.035000",
-        "pointer_radius": "0.055000",
-        "project_dir": "modules/TP_Sim",
-        "relief_scale": "0.450000",
-        "resolution_height": "512",
-        "resolution_width": "512",
-        "sim_reset": "0.000000",
-        "time_scale": "2.241000",
-        "view_mode": "0.000000",
-        "wall_band": "0.110000",
-        "wall_reflect": "0.784000",
-        "wave_gain": "3.200000",
-        "wave_speed": "0.300000"
       },
       "running": true,
       "secondaryInputFilePaths": null,
@@ -1225,61 +1225,6 @@
       "type": "module"
     },
     {
-      "displayName": "TP_School",
-      "enabled": true,
-      "expressions": null,
-      "fitMode": 1,
-      "id": "TP_School",
-      "inputSlotSourceIds": [
-        "TP_Plan"
-      ],
-      "outputFitMode": 1,
-      "outputSinkId": "",
-      "panelAnchorId": "TP_School",
-      "panelOpen": false,
-      "parameters": {
-        "avoid_gain": "3.200000",
-        "beat_amp": "0.518000",
-        "beat_rate": "1.882000",
-        "body_col_b": "0.160000",
-        "body_col_g": "0.420000",
-        "body_col_r": "0.780000",
-        "body_len": "0.155000",
-        "col_var": "0.400000",
-        "depth_band": "0.900000",
-        "depth_bias": "0.450000",
-        "depth_roam": "1.600000",
-        "f_align": "0.326000",
-        "f_cohere": "0.654000",
-        "f_radius": "1.138000",
-        "f_separate": "3.953000",
-        "fcast_time": "1.771000",
-        "fish_count": "8.000000",
-        "gizmo_size": "0.800000",
-        "len_var": "1.000000",
-        "level_bias": "0.900000",
-        "project_dir": "modules/TP_School",
-        "resolution_height": "640",
-        "resolution_width": "410",
-        "school_seed": "23.000000",
-        "show_fcast": "1.000000",
-        "show_gizmo": "1.000000",
-        "show_trail": "1.000000",
-        "sim_reset": "0.000000",
-        "speed_var": "0.350000",
-        "swim_speed": "0.300000",
-        "trail_fade": "1.000000",
-        "trail_rate": "0.070000",
-        "turn_rate": "1.900000",
-        "view_mode": "0.000000",
-        "wall_margin": "0.140000",
-        "wander": "1.000000"
-      },
-      "running": true,
-      "secondaryInputFilePaths": null,
-      "type": "module"
-    },
-    {
       "displayName": "TP_Render",
       "enabled": true,
       "expressions": null,
@@ -1303,17 +1248,17 @@
         "camera_far": "100.000000",
         "camera_fov": "42.000000",
         "camera_look_sensitivity": "6.000000",
-        "camera_mode": "0",
+        "camera_mode": "1",
         "camera_move_speed": "3.000000",
         "camera_near": "0.100000",
-        "camera_pitch": "-0.550000",
-        "camera_pos_x": "1.583994",
-        "camera_pos_y": "1.153736",
-        "camera_pos_z": "2.721387",
-        "camera_target_x": "-0.049127",
-        "camera_target_y": "-0.756932",
-        "camera_target_z": "0.067196",
-        "camera_yaw": "-2.590000",
+        "camera_pitch": "-0.495159",
+        "camera_pos_x": "2.234537",
+        "camera_pos_y": "0.955389",
+        "camera_pos_z": "2.296674",
+        "camera_target_x": "0.042421",
+        "camera_target_y": "-0.781587",
+        "camera_target_z": "-0.057049",
+        "camera_yaw": "-2.391730",
         "caustic_mix": "1.000000",
         "coping_col_b": "0.268000",
         "coping_col_g": "0.258000",
@@ -1436,6 +1381,61 @@
       "type": "module"
     },
     {
+      "displayName": "TP_School",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "TP_School",
+      "inputSlotSourceIds": [
+        "TP_Plan"
+      ],
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "TP_School",
+      "panelOpen": false,
+      "parameters": {
+        "avoid_gain": "3.200000",
+        "beat_amp": "0.518000",
+        "beat_rate": "1.882000",
+        "body_col_b": "0.160000",
+        "body_col_g": "0.420000",
+        "body_col_r": "0.780000",
+        "body_len": "0.155000",
+        "col_var": "0.400000",
+        "depth_band": "0.900000",
+        "depth_bias": "0.450000",
+        "depth_roam": "1.600000",
+        "f_align": "0.326000",
+        "f_cohere": "0.654000",
+        "f_radius": "1.138000",
+        "f_separate": "3.953000",
+        "fcast_time": "1.771000",
+        "fish_count": "8.000000",
+        "gizmo_size": "0.800000",
+        "len_var": "1.000000",
+        "level_bias": "0.900000",
+        "project_dir": "modules/TP_School",
+        "resolution_height": "640",
+        "resolution_width": "410",
+        "school_seed": "23.000000",
+        "show_fcast": "1.000000",
+        "show_gizmo": "1.000000",
+        "show_trail": "1.000000",
+        "sim_reset": "0.000000",
+        "speed_var": "0.350000",
+        "swim_speed": "0.300000",
+        "trail_fade": "1.000000",
+        "trail_rate": "0.070000",
+        "turn_rate": "1.900000",
+        "view_mode": "0.000000",
+        "wall_margin": "0.140000",
+        "wander": "1.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
       "displayName": "TP_Post",
       "enabled": true,
       "expressions": null,
@@ -1448,7 +1448,7 @@
       "outputFitMode": 1,
       "outputSinkId": "",
       "panelAnchorId": "TP_Post",
-      "panelOpen": true,
+      "panelOpen": false,
       "parameters": {
         "aa_amount": "3.000000",
         "aa_crispness": "1.000000",
@@ -1511,7 +1511,7 @@
       "type": "module"
     }
   ],
-  "saved_at_ms": 1786784326495,
+  "saved_at_ms": 1786785897264,
   "sources": [],
   "statePayloads": {
     "TP_Plan": {
@@ -1525,7 +1525,7 @@
     },
     "TP_School": {
       "school": {
-        "data": "a395873e0913debe16ef963ec5470ebd255b34be4dd77bbfc2969d4047d6f43da2d55d3f1940d63e9f04363e27f4a93e3adadbbd0000b8410000803fa69b043f8e03263e35b20dbf63d9a73e3f86253f276f38be74c43dbfdc1a98403990203e1ec6553fad30cf3e7b672f3ecca28f3eeb2fc63c000020420000803fa69b043f1094933ebc743cbf2cddce3e2118193fff012e3c0a294dbf63d610409c383d3e74db393fb9ceb53e8d7f183e5d2eaa3e8fb2033d000064420000803fa69b043f05d8183f91f729bfeaa38e3e8567193fc510a43e20d03bbfad9e1040713a123ec9b0383f6dd8ab3e7d8a173e4ff5933eb858453c000094420000803fa69b043f38008cbd14baacbef5fda33e8249443fd448af3d39df223fc9dd0f4019c6293eacaa533f383ac53edcac2d3e51bf903e65c6893e0000b6420000803fa69b043fa618293f526b9fbeeeaf0f3f33a2d6be8536b7be099b553f2cb7a1408eef5a3ea0014b3fafc2b73ebf91263edb4d993e26d800bf0000d8420000803fa69b043fba80a5bec44fcfbef74ecd3cc7835e3f7478093ee4a7f33e3d75f23fd267353e032a3b3f54eeac3e0f92193e3acda33e9f3a06be0000fa420000803fa69b043fb2d9b53e288ffebe128df23ec18d7ebf952b713d3ce0b4bdd04daf405d2dc83d18fc353f9205b13e2152153ee9e3863e04a614be00000e430000803fa69b043fc46c41bf484ff4be6117bf3cfb6f763f37cf84bd789886beda2cf53f43f8273e5e49483fb61dc53e7556243e01b6953e0000000000001f4300000000a69b043f2920cfbe9972bebe1df31fbf1d4178bff45a46be912418be77428b409ce0373e9d6e373f6ed3b33e2582163e62398b3e000000000000304300000000a69b043f274538bf3dbae7bee2054c3fe1cb033faf7268be26a253bf0d88434090af2b3eaa675c3f62a6d53e57d8343e4e7a883e000000000000414300000000a69b043f7071b3bd62228cbd5d7e02bf8591763fca527cbec3a9dc3d1336b640ffc6653e9d6c3a3fdb59b33ea8f6183ee4dd863e000000000000524300000000a69b043f0c4d5abfc7322bbec332a93da3dfa7bd75798bbced197fbf9512c840e1d7563e13d4493f7580c73e529a253e2b92993e000000000000634300000000a69b043f5628a73e1a5e15bf2c9f0fbfac9c903d26234fbe240e7abf61ad9c4051e5173e3817393f1aadae3e8ade173ec3848a3e000000000000744300000000a69b043f0dde53bfecf927bf040de63c4376d83d87f4453c198c7e3f7719843f6ce70c3e0869483f2802c63e6f70243e18eb9b3e000000000080824300000000a69b043fe57d0bbfc2294abfd0f6f3bd4ecf8c3e01d2013ea7fa733f8c73273fc96bf13d0c95443fa0c9bf3e594c213ee831a53e0000000000008b4300000000a69b043f",
+        "data": "77b9c43d61539ebeaee5e7bea2fc73bfe19bf1bdb6bf8e3ef2018e4047d6f43da2d55d3f1940d63e9f04363e27f4a93e808f0cbc0000b8410000803fa69b043f2ada223fdba9bebe5f90dcbe8e0601bf14a0bebe568247bfeabfb23f3990203e1ec6553fad30cf3e7b672f3ecca28f3edd888abc000020420000803fa69b043f7282953e9a181bbf88950bbfa3258b3e592448beea3a71bfe66468409c383d3e74db393fb9ceb53e8d7f183e5d2eaa3e977431be000064420000803fa69b043fc9e80c3f1df334bf00a106be1dbf8dbe2790adbb78fd75bf5c47983f713a123ec9b0383f6dd8ab3e7d8a173e4ff5933e546f903d000094420000803fa69b043f6c77203f04fe27bf3c13c4bea5231fbe88c88b3e2d0a73bfe8fba94019c6293eacaa533f383ac53edcac2d3e51bf903ef90acc3d0000b6420000803fa69b043f40a83a3f20e9e4be34e83abf5e24393f86f4033f1657ebbe949a97408eef5a3ea0014b3fafc2b73ebf91263edb4d993e02b8a5bd0000d8420000803fa69b043f320f923e8b53e0be821339bf458d91be04c6e43d1dc4733fa43b7040d267353e032a3b3f54eeac3e0f92193e3acda33e309c0a3f0000fa420000803fa69b043f72f3dd3e6913dbbe09f3d5bebf8612bfc75d2f3e364a4dbf9c09c0405d2dc83d18fc353f9205b13e2152153ee9e3863e401b6e3d00000e430000803fa69b043fc46c41bf484ff4be6117bf3cfb6f763f37cf84bd789886beda2cf53f43f8273e5e49483fb61dc53e7556243e01b6953e0000000000001f4300000000a69b043f2920cfbe9972bebe1df31fbf1d4178bff45a46be912418be77428b409ce0373e9d6e373f6ed3b33e2582163e62398b3e000000000000304300000000a69b043f274538bf3dbae7bee2054c3fe1cb033faf7268be26a253bf0d88434090af2b3eaa675c3f62a6d53e57d8343e4e7a883e000000000000414300000000a69b043f7071b3bd62228cbd5d7e02bf8591763fca527cbec3a9dc3d1336b640ffc6653e9d6c3a3fdb59b33ea8f6183ee4dd863e000000000000524300000000a69b043f0c4d5abfc7322bbec332a93da3dfa7bd75798bbced197fbf9512c840e1d7563e13d4493f7580c73e529a253e2b92993e000000000000634300000000a69b043f5628a73e1a5e15bf2c9f0fbfac9c903d26234fbe240e7abf61ad9c4051e5173e3817393f1aadae3e8ade173ec3848a3e000000000000744300000000a69b043f0dde53bfecf927bf040de63c4376d83d87f4453c198c7e3f7719843f6ce70c3e0869483f2802c63e6f70243e18eb9b3e000000000080824300000000a69b043fe57d0bbfc2294abfd0f6f3bd4ecf8c3e01d2013ea7fa733f8c73273fc96bf13d0c95443fa0c9bf3e594c213ee831a53e0000000000008b4300000000a69b043f",
         "element_count": 16,
         "element_size": 64,
         "encoding": "hex",
@@ -1534,7 +1534,7 @@
     },
     "TP_Sim": {
       "ctl": {
-        "data": "0000803f9f2f45475c3f193d28c0bb4980830a3fba2c063f80830a3fba2c063f8198bc3ea25d7d3f8198bc3ea25d7d3f0000000000000000000000000000000080830a3fba2c063f8198bc3ea25d7d3f00000000000000000000003f0000003f0000000000000000000000000000000000000000000000000000000000000000",
+        "data": "0000803fadc445472bef223d183bbc4980830a3fba2c063f80830a3fba2c063f50396e3f8e57483f50396e3f8e57483f0000000000000000000000000000000080830a3fba2c063f50396e3f8e57483f00000000000000000000003f0000003f0000000000000000000000000000000000000000000000000000000000000000",
         "element_count": 2,
         "element_size": 64,
         "encoding": "hex",
