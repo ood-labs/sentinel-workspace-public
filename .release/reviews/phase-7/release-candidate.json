@@ -1,7 +1,7 @@
 {
- "phase": "7A",
- "content_commit": "7461396164501563928f49da93e5cc5a4aa695f4",
- "binding": "The workspace manifest is generated from this twenty-project curated content commit. The follow-up commit changes only the generated install manifest and this record.",
+ "phase": "7B",
+ "content_commit": "79fb47d5aa5d11fc3001f3b6f1b24ab8a7c5064c",
+ "binding": "The workspace manifest is generated from this twenty-project curated public content commit. The follow-up commit changes only the generated install manifest and this release record.",
  "project_set": {
   "configured_directories": 20,
   "distributable_projects": [
@@ -32,7 +32,7 @@
  },
  "provenance": {
   "base_seed_commit": "21371725ffefab872bbfdd3c42f704b3ab46c932",
-  "curated_branch_head": "a627d3e (public-seed-agent-test)",
+  "curated_branch_head": "79fb47d (public main)",
   "promoted_projects": [
    "vitreous_cross",
    "sunward_corridor",
@@ -47,11 +47,11 @@
    "ossuary_bloom",
    "pulse_vitrine"
   ],
-  "carried_branch_changes": "knowledge docs, modular-scene-authoring skill (mirrored to .agents), agent manuals, plan_theme template, and plan-theme cleanups in matik_plate, prism_reliquary, soft_vitrine; follow-up integration of the koi_tank koi-school/scope update and revised expressions-and-drivers, graph-wiring, module-pipeline, EXAMPLE-MAP docs"
+  "carried_branch_changes": "knowledge docs, mirrored agent skills, entry manuals, twenty curated projects, deterministic rendering guidance, imported-mesh workflow guidance, and demand-driven execution on twenty-four individually audited static Modules"
  },
  "validation": {
-  "official_examples": "recorded below after the bind commit's validator run",
-  "compile": "19 modules passed offline compile_check at b650818 (one warning: reactor_shaft RS_Lens final_output_format_mismatch); tessera TP_School/TP_Scope and koi-update shader revisions lack compile evidence, owed with the fresh-load battery",
-  "runtime": "fresh-load battery owed before the next installer ships this seed; per-project records in .release/reviews/phase-7/"
+  "official_examples": "20 of 20 official examples passed the portability validator and the official fixture suite passed on 2026-08-14",
+  "compile": "24 of 24 newly eligible execution: on_dirty Modules passed the real Sentinel offline compiler with the expected on_dirty policy on 2026-08-14",
+  "runtime": "The exact staged DIST application must complete workspace provisioning, OnDirty idle/wake proof, Mesh Source catalog proof, and deterministic sequence rendering before the installer is accepted"
  }
 }

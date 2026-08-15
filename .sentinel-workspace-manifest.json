@@ -10,7 +10,7 @@
                   },
                   {
                       "path":  ".agents/skills/laser-content-authoring/SKILL.md",
-                      "sha256":  "f41dc33d1eef01bf4d33aafaced90b0638e27559586963a32fe36748ae678223"
+                      "sha256":  "d6f781bff7c33951ac8097950f2da464d864f2c02f8d698709848f95ed77b999"
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/ipc-reference.md",
@@ -98,7 +98,7 @@
                   },
                   {
                       "path":  ".agents/skills/module-authoring/SKILL.md",
-                      "sha256":  "001ac0b977a6feb8a8de388c0c004cbca22452ece86ff4d44f44ced5a0224681"
+                      "sha256":  "60e36512eaca66348531e983efceed475db56a6de9b36830d2669bf22034f0ae"
                   },
                   {
                       "path":  ".agents/skills/module-ui-authoring/agents/openai.yaml",
@@ -146,7 +146,7 @@
                   },
                   {
                       "path":  ".claude/skills/laser-content-authoring/SKILL.md",
-                      "sha256":  "f41dc33d1eef01bf4d33aafaced90b0638e27559586963a32fe36748ae678223"
+                      "sha256":  "d6f781bff7c33951ac8097950f2da464d864f2c02f8d698709848f95ed77b999"
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/ipc-reference.md",
@@ -234,7 +234,7 @@
                   },
                   {
                       "path":  ".claude/skills/module-authoring/SKILL.md",
-                      "sha256":  "001ac0b977a6feb8a8de388c0c004cbca22452ece86ff4d44f44ced5a0224681"
+                      "sha256":  "60e36512eaca66348531e983efceed475db56a6de9b36830d2669bf22034f0ae"
                   },
                   {
                       "path":  ".claude/skills/module-ui-authoring/agents/openai.yaml",
@@ -274,7 +274,7 @@
                   },
                   {
                       "path":  ".gitignore",
-                      "sha256":  "b2a6a5320d4f60a3f88adef56ceafa24fe618889c348f2bc3d4edec75209db7f"
+                      "sha256":  "a41ff08bb3bf2164a20cc2ff9ce21e9a4a79404f3d6448e4f3155d2b19da65e5"
                   },
                   {
                       "path":  ".mcp.json",
@@ -282,15 +282,15 @@
                   },
                   {
                       "path":  ".sentinel-workspace-version",
-                      "sha256":  "d314528c4dc3accc32e5ccd927a0fb9b9d87b98e5ae0cbd6194923ff5ecbc2bc"
+                      "sha256":  "ede4fd447295e128f1b8d4bacc826af576a6e686541420fc61bc9e219d84daaa"
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "8c5ac1fd40826ff952d14f92a999fa80ed515ebf614a593428d9fe77beab267b"
+                      "sha256":  "1ecb188752dd4d51dc9cf10b0349d384e28ccf53076df852bbb775016fb57b98"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "8c5ac1fd40826ff952d14f92a999fa80ed515ebf614a593428d9fe77beab267b"
+                      "sha256":  "1ecb188752dd4d51dc9cf10b0349d384e28ccf53076df852bbb775016fb57b98"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -314,7 +314,7 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "8c5ac1fd40826ff952d14f92a999fa80ed515ebf614a593428d9fe77beab267b"
+                      "sha256":  "1ecb188752dd4d51dc9cf10b0349d384e28ccf53076df852bbb775016fb57b98"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -330,7 +330,7 @@
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
-                      "sha256":  "88c68a757c5509b70c48e7386ec3fe86cac9855a60211defd59adfaf3ef0dcf8"
+                      "sha256":  "d84b34352f5ddc99366f3083d4336070bed1af3ecc90b02393cc3f26374b91cf"
                   },
                   {
                       "path":  "knowledge/expressions-and-drivers.md",
@@ -338,7 +338,7 @@
                   },
                   {
                       "path":  "knowledge/FEATURE-MAP.md",
-                      "sha256":  "8c135915e64cff74e8a44b93a01be44c45936e85013f965139684bdf46cbe85e"
+                      "sha256":  "8aa0d75601275432a44e52756695d900aee601eb44b182525e3d5debbb0b523f"
                   },
                   {
                       "path":  "knowledge/feedback-simulation-troubleshooting.md",
@@ -347,6 +347,10 @@
                   {
                       "path":  "knowledge/first-run-engines.md",
                       "sha256":  "7e97ab64573f8d1e03cf6d7bd19c80887b8e9775cdef6d2ceb84749efbb75e2a"
+                  },
+                  {
+                      "path":  "knowledge/flat-cartoon-3d.md",
+                      "sha256":  "6e544a4fbd0a1cd3d9cd4bcb35ad22403b4ad8be8a2972761f8d3c54f83b9755"
                   },
                   {
                       "path":  "knowledge/gpu-cloth-and-xpbd.md",
@@ -358,7 +362,11 @@
                   },
                   {
                       "path":  "knowledge/internal-camera-template.md",
-                      "sha256":  "33bac9492256f9bbaf968568d2c8930e0c077a538a45bb0e4af697b4267cfbaf"
+                      "sha256":  "6f1cd37a72e9d4bb36be36eabbac4bef42fc4869badfa57b43d257f5faebbcc6"
+                  },
+                  {
+                      "path":  "knowledge/mesh-import.md",
+                      "sha256":  "8f8353d8879b316a62c57d893f65b08319feab6a59d46d26d877dd596858295c"
                   },
                   {
                       "path":  "knowledge/modular-procedural-systems.md",
@@ -366,7 +374,7 @@
                   },
                   {
                       "path":  "knowledge/module-pipeline.md",
-                      "sha256":  "3d0d386ffa4ad3557095b93c30ea283b5f0eee9f12991e8e621c928ae9c136d1"
+                      "sha256":  "7093adfe91921d436365adbad9d831b391b8424b9a3d5e29745c4cae074555d0"
                   },
                   {
                       "path":  "knowledge/motion-choreography.md",
@@ -382,7 +390,7 @@
                   },
                   {
                       "path":  "knowledge/reference-build-method.md",
-                      "sha256":  "e4cfb866a0a3b72acd8e2d161822fdf8b1cbd56b861647c73254ad69d45cf8ff"
+                      "sha256":  "bf10a0e18e8bd24b405eef57437321076871f37a31c5069231f5bed9e6d01c6f"
                   },
                   {
                       "path":  "knowledge/scene-system.md",
@@ -589,6 +597,10 @@
                       "sha256":  "fff1368ceee6945bae60fd73e4b1fea1d70fc7dbb1469ac12220af6ffe2f9eca"
                   },
                   {
+                      "path":  "projects/axon_press/hero.png",
+                      "sha256":  "0487f5fc1989a88737fc95a3f101c62b2134df942e437f8e50c134900dc575a3"
+                  },
+                  {
                       "path":  "projects/axon_press/modules/_shared/axon.hlsli",
                       "sha256":  "806c9b942a72f3429d2116aaa0bc384875cf8496976925d56cfcf229503cdf69"
                   },
@@ -622,7 +634,7 @@
                   },
                   {
                       "path":  "projects/axon_press/modules/AX_Press/manifest.yaml",
-                      "sha256":  "ffc57c089c86a39f9bd9df1a836ee4eac0f16edeb9973c80bb57350d836b5c8c"
+                      "sha256":  "9fa58e3fadf6007fb457d12bb9cb6cccdefc7dae9bea290c5ed3a469e6edd866"
                   },
                   {
                       "path":  "projects/axon_press/modules/AX_Press/press.hlsl",
@@ -630,7 +642,7 @@
                   },
                   {
                       "path":  "projects/axon_press/README.md",
-                      "sha256":  "9fdef2145a3d6a87304aa1a906c6f5f99aee4ff47397ef158d59687e0051196e"
+                      "sha256":  "7f8978b978bfa0b9596a7b71eda8766a96f21a6ea7505040776bceac08ea8e59"
                   },
                   {
                       "path":  "projects/camera_reference/camera_reference.sentinel",
@@ -650,7 +662,7 @@
                   },
                   {
                       "path":  "projects/camera_reference/modules/camera_reference/manifest.yaml",
-                      "sha256":  "fd32ac3488199654927d5968947c10b78cb94c360727f1bfef48ed5791ff5fd2"
+                      "sha256":  "af984b4fd900669607c3a677105a65af41ff2549d258fd2e2692795712745841"
                   },
                   {
                       "path":  "projects/camera_reference/modules/camera_reference/render.hlsl",
@@ -822,7 +834,7 @@
                   },
                   {
                       "path":  "projects/face_collage/modules/face_guide/manifest.yaml",
-                      "sha256":  "d5de1b03a0d2866d1747a23d47f2cd7b8f61718f79b19944a594df2254096669"
+                      "sha256":  "4a89db01aeda61e0d50602f2301a4dff1857c995978d3b0792ec5e45b92e4c41"
                   },
                   {
                       "path":  "projects/face_collage/modules/face_stitch/compute.hlsl",
@@ -906,7 +918,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/interaction_lab.sentinel",
-                      "sha256":  "c6d230419650c0d117b54a15656c8390a7eb2769d4f9394216cb325c08ffd350"
+                      "sha256":  "2f25f6edea198c0931c7dec1358ae25bf16756de96aaedb66f1a54ab60c1704d"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/_shared/fonts/scientifica_ascii.hlsli",
@@ -1174,7 +1186,7 @@
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Spline_Output/manifest.yaml",
-                      "sha256":  "38182acea1806dfd12ba6844f2f020e9663e52bf168d348bd3aaf6cd60203e37"
+                      "sha256":  "99e58a97fe797f264a66578a4b9473f3a0a18818b6e8a53d560ceec5d896d9be"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/Spline_Output/render.hlsl",
@@ -1282,7 +1294,7 @@
                   },
                   {
                       "path":  "projects/koi_tank/modules/TP_Plan/manifest.yaml",
-                      "sha256":  "d3ad70a3aea56a94814eb644278ef23717edd56c3c63a477edcf7eb8eb4e391b"
+                      "sha256":  "2e92ee37dde5bf364c2020003ac0c488c8b6f57105e3f5882bf8088f3e74b985"
                   },
                   {
                       "path":  "projects/koi_tank/modules/TP_Plan/plan.hlsl",
@@ -1558,7 +1570,7 @@
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/LR_Materials/manifest.yaml",
-                      "sha256":  "9303d9e6f327183583cef4f3463f9e4a31af636510da60d990769a1549ce0285"
+                      "sha256":  "c1d5219ffd20cc7c384fd8ecbd9f95bfd0d99dd38e797fac8172bbfaa6ef95ed"
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/LR_Materials/preview.hlsl",
@@ -1634,7 +1646,7 @@
                   },
                   {
                       "path":  "projects/matik_plate/modules/mx_console/manifest.yaml",
-                      "sha256":  "b342879c4fd13d5512384a80879694d8764e7606492e3bd39d2afd415cd9fa71"
+                      "sha256":  "227d3385dafd39b16b2299c85c68822b7a7b038dbbe2c2cd4f102cd4902bf14e"
                   },
                   {
                       "path":  "projects/matik_plate/modules/mx_console/plan.hlsl",
@@ -1682,7 +1694,7 @@
                   },
                   {
                       "path":  "projects/matik_plate/modules/mx_wireframe/manifest.yaml",
-                      "sha256":  "e96cea23906b38f89ee54d056b62a313a76dd34382313a8a9ba3751bd71b7a7c"
+                      "sha256":  "aadb728e2c0d34533f21bc700f73a683fbcf6039e90ce1bc9052bf8b0a5fcee3"
                   },
                   {
                       "path":  "projects/matik_plate/modules/mx_wireframe/wire.hlsl",
@@ -1710,7 +1722,7 @@
                   },
                   {
                       "path":  "projects/prism_reliquary/modules/PR_Env/manifest.yaml",
-                      "sha256":  "bca8c695b95f46ee0525467a251b724b62f2e7e06b0f266fcdb2c946053027fd"
+                      "sha256":  "f10151c2755984168c478ccec60e83ab0c5cbf0ce81c4bc3351f1af51bf175cd"
                   },
                   {
                       "path":  "projects/prism_reliquary/modules/PR_Plan/canvas.hlsl",
@@ -1782,7 +1794,7 @@
                   },
                   {
                       "path":  "projects/prism_reliquary/prism_reliquary.sentinel",
-                      "sha256":  "f0d16ffb9d78ecde494e0182d47e348e8a498a8e89cef7dfd012d03582f35c1b"
+                      "sha256":  "7114868fc767072a051ad566bc38dade23fa128ed3a60786433c0156d96857ef"
                   },
                   {
                       "path":  "projects/prism_reliquary/README.md",
@@ -2082,7 +2094,7 @@
                   },
                   {
                       "path":  "projects/scientific_organism/modules/scientific_topology_weaver/manifest.yaml",
-                      "sha256":  "42a2948ff41bbb234e42483d492a3b923dd9c03a0338e81ac2a8a3df0ca3d197"
+                      "sha256":  "05f42aba1932d5e1869d8ac7fc15e0e09bd80c4959e36f5e07343b5e56fa8cdf"
                   },
                   {
                       "path":  "projects/scientific_organism/modules/scientific_topology_weaver/preview.hlsl",
@@ -2150,7 +2162,7 @@
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Plan/manifest.yaml",
-                      "sha256":  "aab3b8a22893bd91d9a9b6af842d427eab554e2158e097650c5a0955e9a0437b"
+                      "sha256":  "fffc46bcd542085371b175c0755ce796f890c23cb4a16fe25a0e747581fd7c36"
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Plan/plan.hlsl",
@@ -2182,7 +2194,7 @@
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Plates/manifest.yaml",
-                      "sha256":  "8697fdcb33e888ed1fb5560e0488fcdfcfe4d92b07b8c03207dd5e6c2aa35879"
+                      "sha256":  "1cc9ce34fd7898b6e49d9d03f45f98293eea85cb4a1ff7b7bda2aa931e101ab6"
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Plates/plates_body.hlsli",
@@ -2198,7 +2210,7 @@
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Stage/manifest.yaml",
-                      "sha256":  "0b52aeed1e3bc4380c30b685262bacd719fe8251b34997419fdb7d00764e4085"
+                      "sha256":  "13fba08ff567ea822e9824a318244e668f1a847671019eff87fb3f46f0f8c430"
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Stage/stage.hlsl",
@@ -2214,7 +2226,7 @@
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Strokes/manifest.yaml",
-                      "sha256":  "5c2bc25f15776dae28ef14efce4c916b49817ce067c6bde1012a356e40a11982"
+                      "sha256":  "afd2bdf0e3f4b77a0a2d4377675b805152bd47a2d1d3b2bf28ec985685dd4784"
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Strokes/strokes.hlsl",
@@ -2230,7 +2242,7 @@
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Volumes/manifest.yaml",
-                      "sha256":  "d06cf387b4317c416db5aee7911556eb27ff264afec5aa918809f1d667175629"
+                      "sha256":  "8b886f593a839d637c2abc8ee8da3d2629d22456fecd80c138ee00e91bd096d4"
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/VT_Volumes/march.hlsl",
@@ -2266,7 +2278,7 @@
                   },
                   {
                       "path":  "projects/strata/modules/blob_layout/manifest.yaml",
-                      "sha256":  "d90595fb0d75de8fc67c746b141cd9e3d57171c387d8204727d02acc2fd0c176"
+                      "sha256":  "180769ee60564456c191884587977efa8ea3a0450788a5b7614b473acb2e4798"
                   },
                   {
                       "path":  "projects/strata/modules/blob_layout/preview.hlsl",
@@ -2298,7 +2310,7 @@
                   },
                   {
                       "path":  "projects/strata/modules/marks/manifest.yaml",
-                      "sha256":  "69f72ee220339fe4510b804f440e3c91235097fe83be7d606415bfde7c34bd48"
+                      "sha256":  "6c3fc0cca70d2f4825ba9a370472c1b0bb1ee9b8de29b1e5e9db722b2033ea8e"
                   },
                   {
                       "path":  "projects/strata/modules/marks/marks.hlsl",
@@ -2326,11 +2338,11 @@
                   },
                   {
                       "path":  "projects/strata/modules/strata_bg/manifest.yaml",
-                      "sha256":  "9221b38af2679d4c270a88dc275ceb9792a147821dc7e831fbaf4a05f6dd1871"
+                      "sha256":  "76390b4ac5f16d3924eecb0a06663f3db9b921598396f25fd216ba5abd713f29"
                   },
                   {
                       "path":  "projects/strata/modules/wire_render/manifest.yaml",
-                      "sha256":  "560c57a2b7446c817747a01759656c3c42b7df8f7e8e09f6acacd7ea5164e0bd"
+                      "sha256":  "3551a42e22ee74a8de765d3088d022508e424a3eb3ed74337a96ea7404aa83ab"
                   },
                   {
                       "path":  "projects/strata/modules/wire_render/wire.hlsl",
@@ -2342,7 +2354,7 @@
                   },
                   {
                       "path":  "projects/strata/strata.sentinel",
-                      "sha256":  "6df4aa0e4f59c5cadbe8e4f6b7496fba92dfed3f22bf6c1de10ac5e6d40435fb"
+                      "sha256":  "519d50b7486b7792f3893d29fafe60abb0f99395a194ae369e08de8467f061e8"
                   },
                   {
                       "path":  "projects/streamdiff_canvas/modules/_shared/fonts/scientifica_ascii.hlsli",
@@ -2506,7 +2518,7 @@
                   },
                   {
                       "path":  "projects/streamdiff_canvas/modules/Radial_Gradient/manifest.yaml",
-                      "sha256":  "c3db8ac4d7c6363ded45a990a6b0be5693117287c35ea34d6001d1bb719eb98a"
+                      "sha256":  "055b2f2b64414e350a6f0e53a01fd5fecb1b0672975fdcb5644d219042d7ce5a"
                   },
                   {
                       "path":  "projects/streamdiff_canvas/README.md",
@@ -2530,11 +2542,11 @@
                   },
                   {
                       "path":  "projects/streamdiff_workflows/04_direct_variant_mux.sentinel",
-                      "sha256":  "8f0dc006d5da7b079f9699801b29bffacb04f10b99aa19f8255591ce8d1294c8"
+                      "sha256":  "0acf6c57fdbb1ed912db762ba7ef30447066a225692d3aff8e3f53c2788c6e22"
                   },
                   {
                       "path":  "projects/streamdiff_workflows/05_video_depth_control.sentinel",
-                      "sha256":  "89443c8d26b4c4829398d3c0c2549e6379ffc2d2b6e2f81dc33bf2cbee7d17c2"
+                      "sha256":  "2fa1ea20bdb9f9a11c04ca64d1f8bcccfe2677dbf3ed20962d762affd9ab9629"
                   },
                   {
                       "path":  "projects/streamdiff_workflows/06_procedural_warp_map.sentinel",
@@ -2650,7 +2662,7 @@
                   },
                   {
                       "path":  "projects/sunward_corridor/modules/SC_Corridor/manifest.yaml",
-                      "sha256":  "85b7e6a0e919673e0b629177bd67462b9a40b9f7006b744aedc01633898c0d3e"
+                      "sha256":  "20bc06013c0650774c7c93080b984ad80ca5c6ab4b6993713638669074b3cfe3"
                   },
                   {
                       "path":  "projects/sunward_corridor/modules/SC_Corridor/march.hlsl",
@@ -2778,7 +2790,7 @@
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/modules/Signal_to_Texture/manifest.yaml",
-                      "sha256":  "e00fae83f0765ea61d04167aab06801be5c533b85ec6405fb39953739143cd4c"
+                      "sha256":  "90c1a3460231342e8d1fbaeb552c885803f8a8b1f6fb946d45c9d3add9f0ada4"
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/modules/Vertical_Displace/displace.hlsl",
@@ -2818,7 +2830,7 @@
                   },
                   {
                       "path":  "projects/vitreous_cross/modules/VC_Env/manifest.yaml",
-                      "sha256":  "470cca573c981bb17a212ab79fc79795f190943fbe3dbe70708257d13f7840cb"
+                      "sha256":  "030c25e8ff11034e37a01c1725d9bec915c50fcc410450e3e329705438ddf64f"
                   },
                   {
                       "path":  "projects/vitreous_cross/modules/VC_Env/rig.hlsl",
@@ -2834,7 +2846,7 @@
                   },
                   {
                       "path":  "projects/vitreous_cross/modules/VC_Plan/manifest.yaml",
-                      "sha256":  "7405b4a5318fd99c887f900ba931288ffa12af21341ae7f2dfdbb61d3a9ba6ea"
+                      "sha256":  "c3b684d5f6e4f83816e25ec5a95937d6ea9839841b784ab648119695762db672"
                   },
                   {
                       "path":  "projects/vitreous_cross/modules/VC_Plan/plan.hlsl",
@@ -2882,11 +2894,11 @@
                   },
                   {
                       "path":  "projects/vitreous_cross/vitreous_cross.sentinel",
-                      "sha256":  "c7d48d62505fb6a86b0c1fbaa0cfa3097e2363e61d9be8d5be72121247d138b9"
+                      "sha256":  "e68e90b38e681289a630796cb093c619d6fcee38dd9f91f5f65ae6f7035946ca"
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "d8d9c87bb4acacd4a7775e128fb4e191c87456d9362a6d28cccca77362e7ffc9"
+                      "sha256":  "1c27aa9765c733640996027cc32c05898dc605007d322161d5cda48b35f22ef8"
                   },
                   {
                       "path":  "tools/module-ui.ps1",
@@ -8624,5 +8636,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "5bfe9b6b1c3b304993be7e0de93d173052f5bed6"
+    "source_commit":  "79fb47d5aa5d11fc3001f3b6f1b24ab8a7c5064c"
 }
