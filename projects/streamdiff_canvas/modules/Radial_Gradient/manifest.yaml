@@ -1,6 +1,7 @@
 name: "Radial Gradient"
 version: "1.0"
 mode: generator
+execution: on_dirty
 resolution: [768, 768]
 
 parameters:
@@ -16,6 +17,7 @@ parameters:
 passes:
   - name: gradient
     shader: gradient.hlsl
+    time_dependent: false
     target: cs_5_0
     format: RGBA8
     output: output

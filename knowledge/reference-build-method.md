@@ -115,6 +115,75 @@ way you state the archetype.
 
 ---
 
+## 2.6 Elements must be constructed, and they must belong to something
+
+Two failures look identical from the outside — the work reads as "random" and "lacking
+intention" — and they have completely different causes. Diagnose which one you have before
+touching anything, because the fix for one does nothing for the other.
+
+### The element itself has no construction
+
+A shape built from a single primitive with one flat fill reads as a blob no matter how good
+the silhouette is. Round-capped tapers are the usual culprit: a capsule with a small end
+radius is a lozenge, and no amount of tuning makes it a horn.
+
+Whatever else varies, a form has to answer three questions, and a variant that cannot answer
+all three is a silhouette rather than a form:
+
+| | |
+| --- | --- |
+| How does it **meet** its neighbour or host? | a flange, a root chord, a plain cut — never nothing |
+| How does it **carry** its length? | a ridge splitting two values, ribs, rings, segments |
+| How does it **end**? | a hard point, an open mouth with a visible inner wall, a flat cut face |
+
+Find the elements in the composition that *already* read as objects and ask what they have
+that the others do not. It is almost never a more interesting outline — it is an edge
+condition and an interior. A ridge dividing two flat values, or a frame with a rim and an
+inside, does more than any amount of added detail.
+
+Two corollaries worth knowing in advance:
+
+- **Articulation beats features.** A figure that melts into one mass gets read through its
+  face, which is why it reads as "a box with a face attached". Flat-ended members between named
+  joints, with the joints *drawn*, make a body legible at forty pixels. Track the nearest and
+  second-nearest member and stroke the gap between them: that draws every joint in one pass
+  without enumerating any of them.
+- **Give each variant its own proportions before you call it a variant.** Drawing one aspect
+  ratio for every archetype and calling the difference `kind` is how N archetypes collapse back
+  into one blob with decorations.
+
+### The elements are fine but belong to nothing
+
+If placement is a ray from a centre to a hull, that is *scatter with a direction*. Every
+element is attached to the mass and none is attached to any other, and no arrangement of
+independently-placed elements reads as intentional however well each one is drawn.
+
+Two levers, in this order:
+
+1. **An angle family.** Snap headings to a shared step (90/45/30), with a phase offset so the
+   family is not aligned to the frame. Snap **last** — after the transcription blend and the
+   variation blend, because the average of two snapped angles is not snapped — and snap
+   **again** before anything is derived from the heading, or an element attaches on one bearing
+   and points down another. Apply it to every family that leaves the same hull; a family that
+   covers half the elements is not a family.
+2. **An armature.** A small set of curves derived from the mass, along which elements are
+   *strung* rather than sprinkled, with stratified stations so they read as a sequence. Take
+   each element's heading from the run's tangent and the motion follows for free — a
+   travel-along-own-heading entrance archetype then runs along the armature without the motion
+   system being told armatures exist.
+
+Both must be **derived from the mass** (its own long axis, its own bounds) so the structure
+turns with the architecture instead of staying pinned to a screen direction. Draw the armature
+in the plan's diagram, rebuilt from the same records the layout measured rather than from a
+published copy — and give it **no seed**, so the diagram can reconstruct exactly what the
+layout used. If a structure needs the generator's salt to be drawn, it is not a structure.
+
+Counter-intuitively, draw it **heavier and brighter** than the record hairlines. The
+construction-line instinct is to recede, but a skeleton at hairline weight is
+indistinguishable from the hundred outlines it exists to explain.
+
+---
+
 ## 3. Generate, then override
 
 **The plan authority is a direct-manipulation editor. This is the default, not an option.**
@@ -340,6 +409,41 @@ The order matters. Explore *after* the reference is locked and recoverable, neve
 reaching it, and never so far that the saved default drifts off the brief. `variation = 0` and
 the baked manifest defaults are what make the exploration free — you can go anywhere because
 you can always come back.
+
+### A preset is not a handle
+
+A shipped `enum` answers *"which of these arrangements do you want?"*. It does not answer
+*"less of that one"*, and when a user asks the second question, offering the first again is
+not a smaller version of the right answer — it is the wrong kind of control.
+
+The tell is a user asking for the same thing more than once while presets keep arriving. When
+you hear "I want to reduce", "get rid of", "how much of each", "as X as possible", the ask is
+a **continuous weight per category**, and it should compose with the presets rather than
+replace them:
+
+- Define a small set of categories over the vocabulary — four is usually right. Nine variants
+  is too many to give one handle each; four axes is what somebody actually reaches for.
+- Make the weights **multiply** whatever the preset chose. At 1.0 across the board the preset
+  behaves exactly as authored, so nothing that already worked changes.
+- Implement it as **rejection and redraw**, not by reweighting the table. A cast table is a
+  fixed sequence, and the only way to honour "none of these" against a fixed sequence is to
+  refuse the draw and take another from the categories still wanted.
+- Give the *degree* its own control alongside the *share*. "Fewer curved ones" and "less
+  curved" are different requests, and a vocabulary is only steerable when both exist.
+- Never let a muted set produce an undefined result. If every weight is zero the element still
+  has to be something — fall back to the most neutral category.
+
+### A design control must reach the setting the work ships at
+
+A parameter that only takes effect once a layout is being generated is unreachable at
+`variation = 0`, which is exactly where a transcribed reference sits. This bites twice in a
+normal build — once when a structural control is folded into the variation blend, and once
+when an explicit design choice is gated behind the same randomness it is meant to override.
+
+The rule: **randomization controls may key off `variation`; design choices must not.** Give an
+explicit choice its own axis, defaulted so the transcription is unchanged, and let it apply at
+every variation including zero. `pink_monolith` has two of these — `armature_pull` and
+`blade_cast` — and both were initially wrong in the same way.
 
 ---
 

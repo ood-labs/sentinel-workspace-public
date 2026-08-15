@@ -1,6 +1,7 @@
 name: "MX Wireframe"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1080, 1080]
 features: [camera]
 
@@ -55,6 +56,7 @@ parameters:
 passes:
   - name: wire
     shader: wire.hlsl
+    time_dependent: false
     target: draw
     vertex_count: 337920
     topology: trianglelist
@@ -67,11 +69,13 @@ passes:
       - { slot: 0, source: "data:0" }
   - name: flatten
     shader: flatten.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "pass:wire" }
   - name: cover
     shader: cover.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "pass:wire" }

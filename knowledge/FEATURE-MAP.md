@@ -58,6 +58,11 @@ Tracking and analysis:
 - `matting`: Background Removal.
 - `opticalflow`: NVIDIA hardware optical flow.
 
+Geometry:
+
+- `meshsource`: imports OBJ, FBX, GLB, or glTF geometry and publishes one canonical semantic Mesh output. Route that Mesh pin directly into a Module with `mesh_inputs`. See `mesh-import.md`.
+- `meshunpack`: specialized zero-copy adapter exposing the semantic Mesh as separate vertex, index, and submesh pins. Normal imported-mesh renderers should consume the semantic Mesh directly.
+
 Shading and generative tools:
 
 - `conductor`:
@@ -112,6 +117,8 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 | `pose` | yes | Human pose keypoints. Requires pose engines. |
 | `depthestimation` | yes | Monocular depth maps. Pack `auxiliary` is the small first-run proof pack. |
 | `matting` | yes | Background Removal. |
+| `meshsource` | yes | Static OBJ, FBX, GLB, or glTF import with one canonical semantic Mesh output. |
+| `meshunpack` | yes | Specialized zero-copy breakout from semantic Mesh to three raw data pins. |
 | `module` | yes | Authored multi-pass HLSL projects with parameters, data ports, and control outputs. |
 | `hlslshader` | yes | Single HLSL post-process shader. |
 | `shaderproject` | hidden | Compatibility alias for shader project/module workflows. |
@@ -158,6 +165,13 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 - User-authored data inputs, data outputs, texture outputs, and control outputs declared by the module manifest.
 - Authored viewport controls, events, persistent state, object selection, spline editors, and transform gizmos.
 - Sentinel 0.5.32+ full-bleed Canvas panels and optional `follow_panel` render resolution. See [Authored Module UI](ui-authoring.md).
+- Sentinel 0.5.59+ `execution: on_dirty` for eligible time-independent Modules with retained outputs. See [Module Pipeline](module-pipeline.md).
+
+`meshsource`:
+
+- Data port: one semantic `Mesh` group carrying canonical vertices, indices, and submeshes.
+- Supported files: OBJ, FBX, GLB, and glTF.
+- Import controls include uniform scale, Y-up or Z-up conversion, winding inversion, normal recomputation, and manual refresh.
 
 ## Driving A Parameter From A Hand Pinch
 

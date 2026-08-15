@@ -1,6 +1,7 @@
 name: "VT Strokes"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1080, 1080]
 working_format: RGBA16F
 
@@ -53,17 +54,20 @@ parameters:
 passes:
   - name: draw
     shader: strokes.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "data:0" }
       - { slot: 1, source: "data:1" }
   - name: color
     shader: color.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "pass:draw" }
   - name: cover
     shader: cover.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "pass:draw" }

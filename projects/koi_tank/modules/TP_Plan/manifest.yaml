@@ -1,6 +1,7 @@
 name: "TP Plan"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1200, 800]
 
 # The plan authority for koi_tank. It owns the tank, the lining, the palette, the light
@@ -132,6 +133,7 @@ parameters:
 passes:
   - name: plan
     shader: plan.hlsl
+    time_dependent: false
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 1
@@ -139,6 +141,7 @@ passes:
     output: "buffer:plan"
   - name: canvas
     shader: canvas.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:plan" }

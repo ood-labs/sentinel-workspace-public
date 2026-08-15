@@ -1,6 +1,7 @@
 name: "Living Room Procedural Materials"
 version: "1.0"
 mode: generator
+execution: on_dirty
 resolution: [480, 270]
 
 parameters:
@@ -28,6 +29,7 @@ buffers:
 passes:
   - name: emit
     shader: emit_materials.hlsl
+    time_dependent: false
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 32
@@ -35,6 +37,7 @@ passes:
     output: "buffer:materials"
   - name: preview
     shader: preview.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:materials" }

@@ -1,6 +1,7 @@
 name: "Marks"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [720, 1080]
 
 # strata top plate — sharp red rules / squares / rivets / registration frame that frame the
@@ -19,6 +20,7 @@ parameters:
 passes:
   - name: marks
     shader: marks.hlsl
+    time_dependent: false
     target: cs_5_0
 
 outputs:

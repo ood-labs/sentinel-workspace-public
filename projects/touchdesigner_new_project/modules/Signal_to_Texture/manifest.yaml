@@ -1,6 +1,7 @@
 name: "TD Signal to Texture"
 version: "1.0"
 mode: generator
+execution: on_dirty
 resolution: [128, 64]
 working_format: RGBA32F
 output_format: RGBA32F
@@ -20,6 +21,7 @@ data_inputs:
 passes:
   - name: convert
     shader: convert.hlsl
+    time_dependent: false
     target: cs_5_0
     format: RGBA32F
     inputs:

@@ -1,6 +1,7 @@
 name: "Spline Render"
 version: "1.0"
 mode: generator
+execution: on_dirty
 resolution: [1920, 1080]
 working_format: RGBA16F
 output_format: RGBA16F
@@ -29,7 +30,7 @@ parameters:
   - { name: node_color, display: "Node Color", type: color, default: [0.96, 0.96, 0.97], group: "Color" }
 
 passes:
-  - { name: render, shader: render.hlsl, target: cs_5_0, inputs: [ { slot: 0, source: "data:0" } ] }
+  - { name: render, shader: render.hlsl, target: cs_5_0, time_dependent: false, inputs: [ { slot: 0, source: "data:0" } ] }
 
 outputs:
   - { name: "Splines", pass: render }

@@ -1,6 +1,7 @@
 name: "VT Stage"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1080, 1080]
 working_format: RGBA16F   # linear HDR: the seam is a real highlight, VT_Post needs the headroom
 
@@ -50,6 +51,7 @@ parameters:
 passes:
   - name: stage
     shader: stage.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "data:0" }

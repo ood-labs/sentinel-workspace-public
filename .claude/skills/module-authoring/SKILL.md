@@ -80,6 +80,41 @@ Reserve whole-graph `auto_layout` for explicit batch work or smoke tests.
 - **Generator mode `getInputSlots()`** — must NOT return early when data inputs exist. The early return for "no texture inputs" was skipping the data input append loop.
 - **Hot-reload is live** — save the manifest; the pipeline picks up the change in place. Param values preserved by name (new/reshaped params take manifest defaults), orphaned GPU buffers deferred-released, orphaned StateTree nodes + expression bindings pruned, graph links survive wherever a pin name still exists. Only a ping-pong buffer pixel-format change currently requires destroy+recreate.
 
+## Demand-driven execution
+
+Use `execution: on_dirty` for a Module whose output changes only in response to
+parameters, structured data, authored viewport input, durable state, camera
+state, resolution, or recompilation:
+
+```yaml
+execution: on_dirty
+
+passes:
+  - name: update
+    shader: update.hlsl
+    time_dependent: false
+    inputs:
+      - { slot: 0, source: "data:0" }
+```
+
+Omitting `execution` preserves `every_frame`. Eligibility is strict. The
+compiler rejects video inputs, `time_dependent: true` passes,
+`panel.resolution: follow_panel`, and input-following resolution without a
+video input. Passes default to time-dependent, so every pass in a qualifying
+manifest must state `time_dependent: false`.
+
+Parameter changes, data generations, viewport interaction, local and wireless
+camera changes, resolution changes, and recompiles wake the Module. Exact
+repeated parameter writes remain idle. The most recent texture and structured
+data outputs stay available while the Module is idle.
+
+Treat `time_dependent: false` as an author assertion. A shader that reads
+`_Time`, `_DeltaTime`, or another frame-driven value will freeze between cooks.
+Keep video processors, simulations, feedback, audio-rate analysis, and animated
+renderers on `every_frame`. Verify adoption with `sentinel_pipeline info` and
+`sentinel_graph profile`: the node should reach a near-zero idle `cook_hz`, cook
+once when an effective input changes, and retain the last valid output.
+
 ## Manifest data_inputs/data_outputs Syntax
 
 ```yaml
@@ -104,6 +139,32 @@ Pass inputs reference data with `source: "data:0"` (data input slot 0). The
 compiler generates `StructuredBuffer<T>` declarations plus `_DataN_Count`,
 `_DataN_Generation`, `_DataN_ValueCount`, and `_DataN_HopCapacity` cbuffer
 fields.
+
+### Semantic Mesh inputs
+
+Mesh Source publishes canonical vertex, index, and submesh buffers through one
+semantic Mesh pin. A renderer Module should group the three matching
+`data_inputs` so the graph exposes one Mesh input and one atomic cable:
+
+```yaml
+mesh_inputs:
+  - name: Mesh
+    vertices: "Mesh Vertices"
+    indices: "Mesh Indices"
+    submeshes: "Mesh Submeshes"
+```
+
+Start from the live schemas returned by `sentinel_pipeline get_data_schemas` or
+`sentinel_module scaffold_from_ports`. Connect the group by pin name:
+
+```text
+sentinel_graph action="add_link" from_entity="Imported_Mesh" from_slot="Mesh" to_entity="Mesh_Renderer" to_slot="Mesh"
+```
+
+Use this direct semantic cable for normal imported-mesh rendering. The built-in
+Mesh Unpack node is reserved for specialized graphs that genuinely require
+three separate raw buffer pins. See `knowledge/mesh-import.md` for import,
+bundling, inspection, and proof.
 
 ### Audio hop-ring inputs
 

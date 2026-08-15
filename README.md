@@ -9,7 +9,7 @@ not the application, model engines, or proprietary source.
 
 ## Requirements
 
-- Sentinel 0.5.52 or newer on Windows 10 or 11.
+- Sentinel 0.5.61 or newer on Windows 10 or 11.
 - A supported NVIDIA GPU.
 - An MCP-capable coding agent for the included automation workflows.
 

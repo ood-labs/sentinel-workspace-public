@@ -34,3 +34,6 @@ scratch/
 # ── Curated projects ─────────────────────────────────────────
 # Projects are not ignored. This keeps ordinary agent-created work visible in
 # `git status`; release validation rejects anything outside the curated set.
+
+# Module shader caches are compiled artifacts, rebuilt on load
+**/.sentinel/shader_cache/

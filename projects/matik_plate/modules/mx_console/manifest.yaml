@@ -1,6 +1,7 @@
 name: "MX Console"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1024, 1024]
 
 # The plan authority for matik_plate. Owns PLATE SPACE (see _shared/plate.hlsli) and is the
@@ -66,6 +67,7 @@ parameters:
 passes:
   - name: plan
     shader: plan.hlsl
+    time_dependent: false
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 1
@@ -73,6 +75,7 @@ passes:
     output: "buffer:plate"
   - name: canvas
     shader: canvas.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:plate" }

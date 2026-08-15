@@ -1,6 +1,7 @@
 name: "VT Plan"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1024, 1024]
 
 # The plan authority for soft_vitrine. Owns STAGE SPACE (see _shared/vitrine.hlsli) and is the
@@ -81,6 +82,7 @@ parameters:
 passes:
   - name: plan
     shader: plan.hlsl
+    time_dependent: false
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 1
@@ -88,6 +90,7 @@ passes:
     output: "buffer:plan"
   - name: canvas
     shader: canvas.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:plan" }

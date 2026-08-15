@@ -1,6 +1,7 @@
 name: "PR Env"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1024, 512]
 working_format: RGBA16F
 
@@ -61,6 +62,7 @@ parameters:
 passes:
   - name: env
     shader: env.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "data:0" }

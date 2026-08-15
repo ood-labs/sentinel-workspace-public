@@ -1,6 +1,7 @@
 name: "VC Env"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [2048, 1024]
 # HDR both ways. working_format governs the intermediate pass buffer; output_format governs
 # the texture handed to VC_Render. Leaving output_format at its RGBA8 default would clamp the
@@ -52,6 +53,7 @@ buffers:
 passes:
   - name: rig
     shader: rig.hlsl
+    time_dependent: false
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 1
@@ -59,15 +61,18 @@ passes:
     output: "buffer:rig"
   - name: env
     shader: env.hlsl
+    time_dependent: false
     target: cs_5_0
   - name: irradiance
     shader: irradiance.hlsl
+    time_dependent: false
     target: cs_5_0
     output: "buffer:irr"
     inputs:
       - { slot: 0, source: "pass:env" }
   - name: irr_out
     shader: irr_out.hlsl
+    time_dependent: false
     target: cs_5_0
     format: RGBA16F
     inputs:

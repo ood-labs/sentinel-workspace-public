@@ -1,6 +1,6 @@
 ---
 name: laser-content-authoring
-description: Author Module pipeline projects that drive physical lasers — click-driven ripples, vectorizable binary outputs, persistent trail buffers, multi-laser color routing, auto-spawn modes, and HStack composition for routing N laser channels through a single Spout/NDI sender to MadMapper. Use when building laser-show content, interactive content with mouse-driven point spawning, or multi-output Module projects that combine a "watch this" color channel with one or more "trace this" laser channels.
+description: Author Module pipeline projects that drive physical lasers — vectorizable binary outputs, pixel-exact stroke and dot sizing, blanking margins, calibration sources, persistent trail buffers, click-driven spawning, multi-laser color routing, and HStack composition for routing N laser channels through a single Spout/NDI sender to MadMapper. Use when building laser-show content, calibrating real line and dot sizes, or multi-output Module projects that combine a "watch this" color channel with one or more "trace this" laser channels.
 ---
 
 # Laser Content Authoring (Module Patterns)
@@ -12,18 +12,33 @@ Module projects under `projects/<project>/modules/`.
 
 ---
 
-## Design bar: these are AV instruments, not demos
+## Design bar: every control must earn its slot
 
-Every laser-content module ships as an **expressive instrument** for live laser shows. The artist should be able to tweak, play, sequence, and perform on it in tempo with music. Minimum standards for every new module:
+A laser module is an instrument, but that is an argument for controls that do
+something, not for a quota of them. There is no minimum parameter count and no
+mandatory knob vocabulary. Derive the controls from the piece: name the quantities
+the operator actually needs to change mid-show, ship those, and cut the rest.
 
-- **At least 10 user-facing parameters**, not counting the laser color RGBs. `anim_speed` + laser colors alone is a first-draft sketch, not a finished module.
-- **Every range of every param must stay interesting**. No dead zones. Curate min/max so the two extremes and every point between produce something expressive.
-- **Three categories of knobs per module**: (1) shared trace-control vocabulary (see "Trace Control Pattern" below), (2) 3-5 module-specific shape/arrangement knobs, (3) post-FX / look modifiers.
-- **Reducing traced geometry makes lasers brighter**. Always provide `trace_count` / `trace_reveal` / `flash_strobe` so the operator can concentrate beam energy into a small moving section + periodic full-shape flashes. This is the canonical "chase + flash" pattern for laser-safe high-impact visuals.
-- **Dark mode by default**. Pitch-black background (not bluish, not grey). If the reference image has a white bg, invert the palette so it reads on a dark-booth wall.
-- **Always in motion**. Static frames waste expressivity. Every module must have at least 2-3 continuously-moving elements even with zero user input.
-- **Viewport interactivity**. Click/drag + WASD camera where it makes sense. Click ring buffers for spawn-driven modules; `_RayDirection(_Mouse.xy)` for 3D raycasts to world hit points.
-- **Input fallback**. If a module declares a texture input, the procedural fallback for "unwired" state must always look good on its own. Don't assume an input is connected.
+- **Name every control after the thing it changes.** `line_thickness_px`,
+  `dot_radius_px`, `zip_time`, `outline_ms` — sizes in pixels, times in seconds or
+  milliseconds. An operator dialing a laser is matching a physical result on a wall,
+  so an abstract 0-1 knob is worse than a real unit.
+- **Every range must stay usable.** No dead zones. Curate min/max so both extremes
+  and everything between produce something you would actually run.
+- **Reducing traced geometry makes lasers brighter.** A galvo concentrates its
+  energy on however many pixels are lit, so a small moving section reads far brighter
+  than a full static shape. This is a real physical property and worth exploiting —
+  but express it however the piece calls for, and only if the piece calls for it. Do
+  NOT bolt on a generic chase/strobe control surface.
+- **No strobe, flash, or shutter controls unless explicitly requested.** They are
+  rarely what the work needs, they crowd out the controls that matter, and a strobing
+  laser is a safety question rather than a default.
+- **Dark by default.** Pitch black, not bluish, not grey. Invert a light reference so
+  it reads on a dark booth wall.
+- **Viewport interactivity** where it earns its place. Click ring buffers for
+  spawn-driven modules; `_RayDirection(_Mouse.xy)` for 3D raycasts to world hit points.
+- **Input fallback.** If a module declares a texture input, the unwired procedural
+  fallback must look good on its own.
 
 ---
 
@@ -328,104 +343,70 @@ For LIVE iteration on an already-loaded module, the order doesn't matter — eve
 
 ## Param Conventions for Laser Content
 
-Suggested parameter groups (match `laser_ripples` reference project):
+Group parameters by the thing they control, and size everything in real units.
 
-- **Spawn**: `random_spawn_rate` (0-20, default 0)
-- **Laser shared**: `dot_radius`, `trail_decay`, `trail_threshold`
-- **Laser N color**: `laserN_r`, `laserN_g`, `laserN_b` (defaults: 1,0,0 / 0,1,1 / 1,1,0 / etc.)
-- **Visual**: ripple frequency, speed, lifetime, falloff, caustic mix, specular, water tint RGB
+- **Layout**: `edge_buffer_px` (blanking margin), `pattern_scale`
+- **Lines**: `line_thickness_px` — the TOTAL stroke width, never a half-width
+- **Dots**: `dot_radius_px`, plus whatever count/spacing the piece needs
+- **Trail**: `trail_decay`, `trail_threshold`
+- **Laser N color**: `laserN_r`, `laserN_g`, `laserN_b`
+- **Laser output**: a `laser_output_mode` enum selecting which masks reach the DAC
 
-All laser-output passes that produce colors should write `OutputUAV[pixel] = float4(col, 1.0)` — alpha = 1.0 keeps the output visible in downstream ImGui previews and sinks.
+All laser-output passes that produce colors should write
+`OutputUAV[pixel] = float4(col, 1.0)` — alpha = 1.0 keeps the output visible in
+downstream ImGui previews and sinks.
 
----
+### The blanking margin is not optional
 
-## Pattern: Shared Trace-Control Vocabulary
+`edge_buffer_px` (8 px is a sane default at 1080p) keeps every element off the frame
+edge. A galvo has to decelerate and turn around somewhere, and content that runs to
+the edge gets clipped or smeared by the scanner rather than by anything visible in
+the preview. Apply it first, then scale the working rect inside it.
 
-Every finished laser module should expose the same 8-knob "trace control" surface so the operator has a consistent performative vocabulary across the whole module set. Keep the shared trace helpers in a project-local `_shared/trace_utils.hlsli` and include that header from each related Module.
+### Sizes must be pixel-exact, which means minding parity
 
-### Shared params (always present in the manifest)
-
-| Param | Range | Default | Meaning |
-|---|---|---|---|
-| `trace_reveal` | 0..1 | 1.0 | Progressive build-up. 0 = nothing drawn, 1 = everything |
-| `trace_count` | -1..32 | -1 | Window of elements visible at once. -1 = all |
-| `trace_mode` | 0..5 | 0 | Order: sequential / scan / radial / random / reverse / breath |
-| `trace_speed` | 0..8 | 1.0 | Chase loop speed multiplier |
-| `trace_cycle` | 0.05..10 | 2.0 | Full cycle period (seconds) |
-| `flash_strobe` | 0..1 | 0.0 | Full-shape flash brightness mix |
-| `flash_rate` | 0..10 | 2.0 | Flashes per second |
-| `flash_width` | 0..0.5 | 0.1 | Duty cycle of each flash |
-
-All eight params must be declared as `type: float` in the manifest (including `trace_count` and `trace_mode` despite being integer-valued). The ShaderProject cbuffer writer stores every param value as a float in the cbuffer slot, but HLSL reads slots declared as `int` with bit-level reinterpretation — so `type: int` in the manifest gives garbage values in the shader. Use float + threshold comparisons everywhere. The canonical snippet lives inline in each module's `manifest.yaml`:
-
-```yaml
-parameters:
-  - { name: trace_reveal,  display: "Reveal",       type: float, min: 0.0,  max: 1.0,  default: 1.0, group: "Trace" }
-  - { name: trace_count,   display: "Count",        type: float, min: -1.0, max: 32.0, default: -1.0, group: "Trace" }
-  - { name: trace_mode,    display: "Mode",         type: float, min: 0.0,  max: 5.0,  default: 0.0, group: "Trace" }
-  - { name: trace_speed,   display: "Speed",        type: float, min: 0.0,  max: 8.0,  default: 1.0, group: "Trace" }
-  - { name: trace_cycle,   display: "Cycle (s)",    type: float, min: 0.05, max: 10.0, default: 2.0, group: "Trace" }
-  - { name: flash_strobe,  display: "Flash Strobe", type: float, min: 0.0,  max: 1.0,  default: 0.0, group: "Flash" }
-  - { name: flash_rate,    display: "Flash Rate",   type: float, min: 0.0,  max: 10.0, default: 2.0, group: "Flash" }
-  - { name: flash_width,   display: "Flash Width",  type: float, min: 0.0,  max: 0.5,  default: 0.1, group: "Flash" }
-```
-
-### HLSL API
+A calibration number is worthless if it lies. Build coverage so the binary threshold
+lands on the true geometric edge:
 
 ```hlsl
-#include "../_shared/trace_utils.hlsli"
-
-// Per-element intensity (0..1), including flash contribution. Use this as a
-// brightness multiplier on every discrete element your module renders.
-float elementIntensity(int idx, int total, float time);
-
-// Rank-aware variant for modules that have a natural spatial rank (distance
-// from centre, bin index, path length, etc.) instead of a flat element index.
-// Pass rank in [0,1]; `total` is used for window-width math.
-float elementIntensityRank(float rank, int total, float time);
-
-// Convenience: true if this element is currently visible at all.
-bool shouldTrace(int idx, int total, float time);
-
-// 0..1 global flash pulse; modules can multiply output by (1 + flashMask * flash_strobe * 2).
-float flashMask(float time);
-```
-
-Modules with per-pixel procedural geometry (quadtree cells, voronoi cells, radial elements without a discrete idx) use the `elementIntensityRank` variant. Derive a mode-aware `cellRank(spatialPos)` helper in the module shader that mirrors the vocabulary:
-
-```hlsl
-float cellRank(float2 cellCenter) {
-    if (trace_mode < 0.5)      return saturate((cellCenter.x + cellCenter.y) * 0.5);        // seq: diag sweep
-    else if (trace_mode < 1.5) return saturate(cellCenter.x);                               // scan: left→right
-    else if (trace_mode < 2.5) return saturate(length(cellCenter - 0.5) * 1.4142);          // radial
-    else if (trace_mode < 3.5) return hash21(cellCenter * 13.371 + 0.5);                    // random
-    else if (trace_mode < 4.5) return saturate(1.0 - (cellCenter.x + cellCenter.y) * 0.5);  // reverse
-    else                       return saturate(length(cellCenter - 0.5) * 1.4142);          // breath
-}
-static const int TRACE_TOTAL_HINT = 64;  // rough element count; used for window-width math.
-```
-
-Then multiply the module's output brightness by `elementIntensityRank(cellRank(pos), TRACE_TOTAL_HINT, _Time)`. For modules with a literal element loop (bars, bolts, glyphs), use `elementIntensity(i, N, time)` directly with `i` as the discrete index.
-
-### Canonical render loop
-
-```hlsl
-float ap = _Time * anim_speed;
-for (int i = 0; i < N; i++) {
-    float I = elementIntensity(i, N, ap);
-    if (I < 0.001) continue;
-    // ... draw element i, multiply its brightness by I
+// s is the signed distance to the stroke's own edge, so the 0.5 crossing sits on
+// that edge for any feather. Feather then softens the preview without ever moving
+// the edge the laser actually sees.
+float strokeCov(float dPx, float totalWidthPx, float featherPx)
+{
+    float s = dPx - totalWidthPx * 0.5;
+    return saturate(0.5 - s / max(featherPx, 0.001));
 }
 ```
 
-### Chase-plus-flash laser brightness pattern
+That is necessary but not sufficient. Pixel centres sit at integer+0.5, so a feature
+centred on a pixel BOUNDARY is symmetric about it and can only ever light an EVEN
+number of pixels. Ask for 5 px and both edge pixels land at exactly half-width,
+coverage ties at exactly 0.5, `step(0.5, cov)` loses the tie to float rounding, and
+you measure 4. Snap the centre by the parity of the extent:
 
-Physical lasers concentrate their energy on however many pixels are "on" — fewer traced pixels = higher perceived brightness. The canonical expressive pattern is: trace a small moving section fast (e.g. `trace_count=1, trace_cycle=0.3`), then strobe the full shape occasionally (`flash_strobe=1, flash_rate=2`). This feels dramatically brighter than a static full-shape trace and gives the show a rhythmic quality. Every module should support this by default.
+```hlsl
+float snapCentre(float cFrame, float extentPx)
+{
+    float e = max(round(extentPx), 0.0);
+    return (fmod(e, 2.0) >= 1.0) ? (floor(cFrame) + 0.5) : round(cFrame);
+}
+```
+
+Snapping also stops a moving dot shimmering between D and D+1 px as it drifts, which
+otherwise makes a size impossible to dial in at all. Prove it by capturing the binary
+output and counting lit pixels across BOTH parities — a test at only 2 and 4 px
+passes while the bug is still there.
+
+### Output naming
+
+When a project sends both channels over Spout, the output nodes are named `Laser` and
+`Projector`, with sender names `Sentinel-Laser` and `Sentinel-Projector`. MadMapper
+and the DAC get patched once against those names; a per-project sender name means
+re-patching every show. Only create output nodes when the user explicitly asks for
+them — they are never a default finishing step.
 
 ---
-
----
-
 ## Performance Notes
 
 - Click ring buffer (16 entries) loop in a fragment-rate pass: trivial. Don't worry about it.
@@ -436,7 +417,7 @@ Physical lasers concentrate their energy on however many pixels are "on" — few
 
 ---
 
-## Pattern: 3D Camera Fly-Through (laser_cube_chaser, laser_wavefield)
+## Pattern: 3D Camera Fly-Through
 
 Add `features: [camera]` to the manifest — WASD + right-click drag fly-through works with zero additional code. The feature auto-injects cbuffer fields `_ViewMatrix`, `_ProjMatrix`, `_ViewProjMatrix`, `_InvViewProjMatrix`, `_CameraPos`, `_CameraNear`, `_CameraFar`, `_CameraFOV`, plus the helper `_RayDirection(uv)`. It also auto-exposes user params: `camera_pos_x/y/z`, `camera_yaw/pitch`, `camera_fov` (deg), `camera_move_speed`, `camera_look_sensitivity`, `camera_near/far`.
 
@@ -454,7 +435,9 @@ float3 project(float3 p) {
 }
 ```
 
-`laser_cube_chaser` uses this for 8 cubes × 12 edges × N chaser beads per edge, all per-pixel in a single compute dispatch, at 59 FPS on RTX 5090.
+This scales to a few hundred projected edges per frame in a single compute dispatch
+before it costs anything noticeable; measure with `sentinel_graph action=profile`
+rather than assuming.
 
 **Inverse projection (screen UV → world ray)** via `_RayDirection(uv)`. Standard ray-plane intersection with y=0 ground:
 
@@ -473,7 +456,7 @@ For click-to-world (spawn passes), pass `_Mouse.xy` as the UV.
 
 ---
 
-## Pattern: Heightfield Raymarching (laser_wavefield)
+## Pattern: Heightfield Raymarching
 
 For a 3D generative landscape with displaced ripples, raymarch an implicit heightfield. Use the same `sceneH` in every pass (color, laser1, laser2, spawn) so the hit point is consistent.
 
@@ -522,7 +505,8 @@ for (int i = 0; i < 96; i++) {
 }
 ```
 
-96 steps at 1920×1080: `laser_wavefield` runs color + laser1 + laser2 all at 57 FPS on a 5090.
+96 steps at 1920×1080 with color plus two laser passes is comfortably real-time on
+current hardware, but step count is the dominant cost — profile before raising it.
 
 ---
 
@@ -537,13 +521,21 @@ Each module gets its own dedicated `HStack 3` pipeline at **5760×1080** wired:
 
 Multiple modules + HStacks can render simultaneously. A downstream switcher/mux module routes one HStack's Out at a time into the single `FullOut` Spout sender — MadMapper sees one 5760×1080 stream and slices it into three 1920-wide zones.
 
-HStack resolution cap lifted to 16384 in commit `59e9483`. If you see HStack silently clamping to 3840, the source tree wasn't rebuilt — check `ShaderProjectPipeline.cpp` lines ~1672 and ~1793.
+If an HStack silently clamps its width, check the module's declared `resolution`
+against what the node reports in `sentinel_pipeline action=info` before assuming
+anything about the host build.
 
 ---
 
-## Pattern: Shared Post-FX Recipe
+## Optional: Post-FX On The Color Channel Only
 
-All laser-content color passes apply the same post-fx stack (bottom of `color.hlsl`, after composition). Never apply to laser outputs — those stay binary/crisp on black.
+Post-fx is a per-piece decision, not a house stack. Nothing here is required, and
+**every one of these defaults to 0** — a laser piece that wants grain or scanlines is
+unusual, and switching them on by default buries whatever the module is actually for.
+Never apply any of it to a laser output; those stay binary and crisp on black.
+
+Bloom deserves particular suspicion while you are still building: it smears exactly
+the structure you are trying to judge, so tune the renderer with it off.
 
 ```hlsl
 // Bloom (cheap additive highlight boost)
@@ -575,13 +567,41 @@ if (fx_grain > 0.01) {
 }
 ```
 
-Default param group `"Post FX"` with typical values: `fx_grain` (0-0.3, default 0.04), `fx_aberration` (0-20, default 3), `fx_scanlines` (0-1, default 0.15), `fx_vignette` (0-1, default 0.5), `fx_bloom` (0-3, default 1.2).
+If a piece genuinely wants these, put them in a `"Post FX"` group with ranges
+`fx_grain` (0-0.3), `fx_aberration` (0-20), `fx_scanlines` (0-1), `fx_vignette`
+(0-1), `fx_bloom` (0-3) — every default 0. Ship only the ones the piece uses.
 
 ---
 
 ## Gotchas
 
-- **`hash11` / `hash21` / `fbm2D` / `voronoi2D` / `sdTorus` are auto-injected by feature libraries.** Redeclaring them locally gives `error X3003: redefinition`. If copying helpers from a `laser_ripples`-era shader, strip the local `hash11` definition.
+- **`hash11` / `hash21` / `fbm2D` / `voronoi2D` / `sdTorus` are auto-injected by feature libraries.** Redeclaring them locally gives `error X3003: redefinition`. If copying helpers from an older shader, strip the local `hash11` definition.
 - **`line` is an HLSL reserved keyword** (also `sample`, `texture`, `point`, `linear`, `register`, `half`). `float line = ...` fails with `error X3000: syntax error: unexpected token 'line'`. Rename to `ln`.
 - **Re-setting `project_dir` to the same path doesn't always reload** after rapid manifest saves. Workaround: set to `""` first, then back to the path. Two separate `set` calls.
 - **MediaPipe Face Depth is not a binary mask.** It's a per-triangle depth rasterization with hole-fill + alpha blur. Edge detection on it produces internal gradient edges everywhere. For face-outline lasers, trace the FACE_OVAL landmark polyline (36 points) directly instead.
+- **`type: int`, `type: enum`, and `type: bool` all work.** Older guidance here claimed
+  integer-typed manifest params arrive as garbage through bit reinterpretation and that
+  everything had to be declared `float`. That is not true on current builds — `VT_LaserGrid`
+  and `VT_LaserTest` both ship `int`, `enum` (read in HLSL as `mode == 1` / `>= 2`), and
+  `bool` params that behave correctly. Use the type that matches the quantity.
+- **`compile_check` is offline.** It validates the files on disk and tells you nothing
+  about the running node. After editing a shader, `force_reload` the live pipeline before
+  capturing or measuring anything, or you will be grading the previous build.
+
+---
+
+## Reference implementations
+
+Real, inspectable modules in `projects/pulse_vitrine/modules/`. Read them rather than
+copying them — they solve their own project's problem.
+
+- **`VT_LaserTest`** — the calibration source. Reference line, rotating polygon, and
+  moving dots, each independently switchable, all sized in exact pixels with the parity
+  snap above. This is where line and dot sizes get dialed in before a show. Ships
+  narrow-scoped presets: sizes and view isolation saved separately.
+- **`VT_LaserGrid`** — alignment grid with the `render` → `video` + `laser` three-pass
+  split, where `render` writes channel-separated masks (R = lines, G = dots) and the
+  laser pass picks channels via a `laser_output_mode` enum and hard-thresholds at 0.5.
+- **`VT_Laser`** — the show-side lane: a beat-triggered zip point travelling a path,
+  path hold, and a snare outline flash, with every control named for what it does
+  (`zip_time`, `tail_frac`, `outline_ms`) and an explicit on/off per lane.

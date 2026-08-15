@@ -1,6 +1,7 @@
 name: "Wire Render"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [720, 1080]
 
 # strata wire plate — thin ellipse rings + loose strands + a triangulated cage. Bright thin
@@ -20,6 +21,7 @@ parameters:
 passes:
   - name: wire
     shader: wire.hlsl
+    time_dependent: false
     target: cs_5_0
 
 outputs:

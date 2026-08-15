@@ -1,6 +1,7 @@
 name: "AX Press"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1280, 720]
 working_format: RGBA16F
 output_format: RGBA16F
@@ -89,6 +90,7 @@ parameters:
 passes:
   - name: press
     shader: press.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "data:0" }

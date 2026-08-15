@@ -1,6 +1,7 @@
 name: "VT Plates"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1080, 1080]
 working_format: RGBA16F
 
@@ -38,31 +39,37 @@ parameters:
 passes:
   - name: back
     shader: back.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "data:0" }
   - name: front
     shader: front.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "data:0" }
   - name: back_color
     shader: back_color.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "pass:back" }
   - name: back_cover
     shader: back_cover.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "pass:back" }
   - name: front_color
     shader: front_color.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "pass:front" }
   - name: front_cover
     shader: front_cover.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "pass:front" }

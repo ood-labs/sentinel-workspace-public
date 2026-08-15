@@ -1,6 +1,7 @@
 name: "Scientific Topology Weaver"
 version: "1.0"
 mode: generator
+execution: on_dirty
 resolution: [960, 540]
 
 viewport:
@@ -46,6 +47,7 @@ parameters:
 passes:
   - name: weave
     shader: weave.hlsl
+    time_dependent: false
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 96
@@ -56,6 +58,7 @@ passes:
 
   - name: preview
     shader: preview.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:edges" }

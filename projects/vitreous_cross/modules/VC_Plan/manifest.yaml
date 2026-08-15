@@ -1,6 +1,7 @@
 name: "VC Plan"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [1200, 800]
 
 # The plan authority for vitreous_cross. Owns STAGE SPACE (see _shared/vitreous.hlsli) and is
@@ -105,6 +106,7 @@ parameters:
 passes:
   - name: plan
     shader: plan.hlsl
+    time_dependent: false
     target: cs_5_0
     dispatch: [1, 1, 1]
     thread_group_x: 1
@@ -112,6 +114,7 @@ passes:
     output: "buffer:plan"
   - name: canvas
     shader: canvas.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:plan" }

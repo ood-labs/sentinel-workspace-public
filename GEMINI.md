@@ -97,7 +97,7 @@ License activation is deliberately manual in the app UI.
 
 Call `list_types` for the exact current catalog; DIST builds intentionally omit dev-only and experimental types. The full DIST type table — roles, visibility, engine-pack requirements, and the compatibility aliases (`facemesh`, `shaderproject`) — lives in `knowledge/FEATURE-MAP.md`.
 
-Orientation: `module` (authored multi-pass HLSL projects) and `hlslshader` for authored visuals; `streamdiff` for real-time generation; `mediapipe`, `features`, `detection`, `pose`, `depthestimation`, `personseg`, `matting`, and `opticalflow` for tracking and analysis; `audio` for WASAPI/WAV audio data; `vsr` for upscaling; `conductor`, `mux`, `groupoutput`, `atlas`, `camera`, and `camswitch` for choreography and the scene system.
+Orientation: `module` (authored multi-pass HLSL projects) and `hlslshader` for authored visuals; `streamdiff` for real-time generation; `mediapipe`, `features`, `detection`, `pose`, `depthestimation`, `personseg`, `matting`, and `opticalflow` for tracking and analysis; `meshsource` for static 3D import; `audio` for WASAPI/WAV audio data; `vsr` for upscaling; `conductor`, `mux`, `groupoutput`, `atlas`, `camera`, and `camswitch` for choreography and the scene system.
 
 ## Graph Basics
 
@@ -163,6 +163,19 @@ For quick creative builds, keep the canonical visible chain at 1280x720 or a com
 ## Scaled-Pass Coordinate Discipline
 
 When a Module pass writes to a texture buffer with `scale` below `1.0`, do not assume `_Resolution` is the scaled target extent — derive bounds, UVs, and aspect from the actual texture with `GetDimensions`, and prove the effect-producing pass itself rather than trusting a full-resolution overlay. Full discipline: `knowledge/module-pipeline.md`.
+
+## Demand-Driven Module Execution
+
+Static and event-driven Modules should declare `execution: on_dirty` only when
+every pass is explicitly `time_dependent: false`, the Module has no video
+inputs, and its resolution does not follow a panel or missing video input.
+Parameter, structured-data, viewport, camera, resolution, and recompile changes
+wake eligible Modules while their last texture and data outputs remain valid.
+Keep simulations, feedback, video processors, audio-rate analysis, and any
+shader reading `_Time` or `_DeltaTime` on the default `every_frame` policy.
+Prove each adoption with near-zero idle `cook_hz`, then one prompt cook and a
+changed retained output after a real input change. See
+`knowledge/module-pipeline.md` and the `module-authoring` skill.
 
 ## Async Compile
 
@@ -243,6 +256,15 @@ StreamDiff nodes support `hold` (freeze diffusion while staying live) and `rende
 
 When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against an explicit project-specific kind registry, relax under-constrained layouts with warm-start stability, and compile to a generated project-local Module publishing `PNodes` records. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints and registry: `examples/blueprints/`; complete renderer reference: `projects/living_room_sdf/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
 
+## Imported 3D Meshes
+
+Use `meshsource` for static OBJ, FBX, GLB, or glTF files. Inspect its live data
+schemas, then connect the source's single semantic `Mesh` pin directly to a
+renderer Module that declares `mesh_inputs`. This keeps vertices, indices, and
+submeshes on one atomic graph cable. Leave Mesh Unpack out of the normal path;
+use it only when a specialized graph truly needs three separate raw data pins.
+See `knowledge/mesh-import.md`.
+
 ## Scene Groups
 
 Scene Groups organize graph regions and expose selected controls without flattening the graph. Use `sentinel_graph` Scene Group actions when available in `capabilities`; inspect the live command schema before calling them.
@@ -279,6 +301,7 @@ Start with:
 - `knowledge/audio-reactivity.md`
 - `knowledge/tracking-suite.md`
 - `knowledge/module-pipeline.md`
+- `knowledge/mesh-import.md`
 - `knowledge/ui-authoring.md`
 - `knowledge/video-source.md`
 - `knowledge/streamdiff.md`

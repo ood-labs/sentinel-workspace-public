@@ -1,6 +1,7 @@
 name: "Face Guide"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [512, 896]
 
 # Procedural frontal-face structure plate for StreamDiff img2img (SD_Face video input).
@@ -35,6 +36,7 @@ parameters:
 passes:
   - name: blob
     shader: guide.hlsl
+    time_dependent: false
     target: ps_5_0
     format: RGBA8
     output: output

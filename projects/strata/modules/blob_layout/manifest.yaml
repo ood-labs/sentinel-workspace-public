@@ -1,6 +1,7 @@
 name: "Blob Layout"
 version: "0.1"
 mode: generator
+execution: on_dirty
 resolution: [480, 720]
 
 # Authors the BlobPart buffer for strata plate 1 (the glossy organic mass). Hand-dialed
@@ -24,6 +25,7 @@ parameters:
 passes:
   - name: compute
     shader: compute.hlsl
+    time_dependent: false
     target: cs_5_0
     dispatch: [2, 1, 1]
     thread_group_x: 64
@@ -31,6 +33,7 @@ passes:
     output: "buffer:parts"
   - name: preview
     shader: preview.hlsl
+    time_dependent: false
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:parts" }

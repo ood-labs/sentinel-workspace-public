@@ -1,6 +1,7 @@
 name: "Native Camera Reference"
 version: "1.0.0"
 mode: generator
+execution: on_dirty
 resolution: [1280, 720]
 features: [camera]
 
@@ -68,20 +69,24 @@ parameters:
 passes:
   - name: scene
     shader: render.hlsl
+    time_dependent: false
     target: cs_5_0
 
   - name: aa_color
     shader: aa.hlsl
+    time_dependent: false
     inputs:
       - { slot: 0, source: "pass:scene" }
 
   - name: color_output
     shader: color_out.hlsl
+    time_dependent: false
     inputs:
       - { slot: 0, source: "pass:aa_color" }
 
   - name: depth_output
     shader: depth_out.hlsl
+    time_dependent: false
     inputs:
       - { slot: 0, source: "pass:scene" }
 

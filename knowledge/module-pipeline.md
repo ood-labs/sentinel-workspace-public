@@ -17,6 +17,33 @@ Use a Module when you need:
 
 For simple one-file post-processing, `hlslshader` may be enough.
 
+## Demand-driven execution
+
+Static and event-driven Modules can opt into retained-output execution:
+
+```yaml
+execution: on_dirty
+
+passes:
+  - name: build
+    shader: build.hlsl
+    time_dependent: false
+```
+
+Every pass must explicitly declare `time_dependent: false`. Eligible Modules
+have no video inputs, no `follow_panel` resolution, and no input-following
+resolution without a video input. Parameter changes, structured-data
+generations, viewport input, durable state, camera changes, resolution changes,
+and recompilation request a cook. Exact repeated writes stay idle, and the most
+recent texture and data outputs remain valid between cooks.
+
+Keep a Module on the default `every_frame` policy when it processes video,
+integrates simulation or feedback, performs audio-rate analysis, or reads
+`_Time` or `_DeltaTime`. Prove an `on_dirty` conversion with both sides of the
+contract: near-zero idle `cook_hz` in `sentinel_graph profile`, then one prompt
+cook and a changed retained output after a real parameter, data, viewport, or
+camera change.
+
 ## Fast Scaffold From Tracking Data
 
 Use `sentinel_module action=scaffold_from_ports` when a Module should consume tracking, detection, blob, corner, line, landmark, PCM, Spectrum, or Mel Bands data. Pass the upstream pipeline id and optional data port name. The tool writes starter files in the launched workspace using the live schema from `get_data_schemas`; save and bundle the owning show so the final files live under `projects/<project>/modules/<module_name>/`, then remove any temporary root copy.
@@ -108,9 +135,32 @@ Modules can declare `data_inputs` and `data_outputs`. These are structured buffe
 
 Use data inputs for landmarks, detections, blobs, corners, lines, or records produced by another module.
 
+Imported geometry uses one semantic Mesh cable. Create a Mesh Source, inspect
+its canonical schemas, declare matching `data_inputs` plus a `mesh_inputs`
+group in the renderer Module, and connect `Mesh` to `Mesh`. Ordinary imported
+mesh graphs do not need a Mesh Unpack node. Use Mesh Unpack only when a
+specialized consumer must see separate vertex, index, and submesh pins. See
+`mesh-import.md` for the complete workflow.
+
 `sentinel_pipeline action=get_data_schemas` reports the data schema and, when the graph node exists, the matching graph pin name and slot. Use that reported pin name with `sentinel_graph action=add_link` instead of guessing singular/plural labels.
 
 Audio In Spectrum and Mel Bands inputs are flattened 64-hop rings. Add `features: [audio]`, store a next-unread generation in a persistent buffer, and use `_DataN_Generation`, `_DataN_ValueCount`, `_DataN_HopCapacity`, `AudioRingCatchupStart`, and `AudioRingGenerationToSlot` to process retained hops in chronological order. Spectrum and Mel Bands have no standalone header record, so `_DataN[0].generation_counter` is not the latest-generation source. See `knowledge/audio-reactivity.md`.
+
+### Adding A Video Input Renumbers The Data Input's Graph Slot And Silently Drops Its Link
+
+`getInputSlots()` appends data inputs **after** video inputs, so a data input's graph slot is
+`videoSlotCount + manifestDataIndex`. Adding one video input to an existing Module therefore
+shifts every data input's graph slot by one, and **the existing link does not survive the
+renumber**.
+
+The failure is silent and looks like nothing is wrong. The node reloads, compiles clean, reports
+`healthy: true` with `has_preview_srv: true` and frames climbing — and draws nothing at all,
+because the structured buffer is unbound and every record reads back as zero.
+
+After adding or removing a video input on a Module that also has data inputs, run
+`sentinel_graph action=inspect` and confirm the data pin still has an incoming link. Re-link it
+with the pin name reported by `get_data_schemas`. Do not treat a successful compile as proof
+that the graph survived the manifest change.
 
 ## Meaningful Intermediate Previews
 

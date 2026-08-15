@@ -452,7 +452,7 @@ shared axis reads as motion blur.
 
 ```
 axon_press.sentinel          the show
-hero.png                     final capture (Beauty rung) — LOCAL ONLY, not tracked
+hero.png                     reviewed final capture (Beauty rung)
 proof/                       graph, links, health, profile, capture, window — LOCAL ONLY
 modules/_shared/axon.hlsli   contract, lattice projection, palette, editor geometry
 modules/_shared/plates.hlsli the printed stock
