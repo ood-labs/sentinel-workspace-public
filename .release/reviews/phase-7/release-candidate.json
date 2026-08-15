@@ -1,6 +1,6 @@
 {
  "phase": "7B",
- "content_commit": "79fb47d5aa5d11fc3001f3b6f1b24ab8a7c5064c",
+ "content_commit": "b91297151c733fbf336ea539d3fd0967ba1e5193",
  "binding": "The workspace manifest is generated from this twenty-project curated public content commit. The follow-up commit changes only the generated install manifest and this release record.",
  "project_set": {
   "configured_directories": 20,
@@ -32,7 +32,7 @@
  },
  "provenance": {
   "base_seed_commit": "21371725ffefab872bbfdd3c42f704b3ab46c932",
-  "curated_branch_head": "79fb47d (public main)",
+  "curated_branch_head": "b912971 (public main)",
   "promoted_projects": [
    "vitreous_cross",
    "sunward_corridor",
