@@ -282,7 +282,7 @@
                   },
                   {
                       "path":  ".sentinel-workspace-version",
-                      "sha256":  "ede4fd447295e128f1b8d4bacc826af576a6e686541420fc61bc9e219d84daaa"
+                      "sha256":  "90f34e18b4c85dfb4dc3dedf9b68e4047720ebe25fe2eb9d72c2df348c66c209"
                   },
                   {
                       "path":  "AGENTS.md",
@@ -870,7 +870,7 @@
                   },
                   {
                       "path":  "projects/formicary/formicary.sentinel",
-                      "sha256":  "3972f374673703fc02035653db02c16425a1f215bd682f7d7325e1763841e3a7"
+                      "sha256":  "f6530cea2896ae4db4e482277690344a0d0ce871cf5b24b48984ee468f06be9f"
                   },
                   {
                       "path":  "projects/formicary/modules/_shared/au_hud/au_text.hlsli",
@@ -1430,7 +1430,7 @@
                   },
                   {
                       "path":  "projects/koi_tank/koi_tank.sentinel",
-                      "sha256":  "a7181fee6a2b13bb3baa5e644faedbedcab1e9443a806c4630d9060d99d89712"
+                      "sha256":  "b059921b1b2fde9768659f9c53bbee4faedb75df96ad71180dcca8e8449fdaf4"
                   },
                   {
                       "path":  "projects/koi_tank/modules/_shared/fish.hlsli",
@@ -1722,7 +1722,7 @@
                   },
                   {
                       "path":  "projects/living_room_sdf/living_room_sdf.sentinel",
-                      "sha256":  "df633779b36a0f4e88f08927db9a016503fd1bac543a1bdf19ccf080b9ecf41b"
+                      "sha256":  "4d7a250741339cf6b84fba4aeee1c526f18e0fd17907041e8611b1d091648df9"
                   },
                   {
                       "path":  "projects/living_room_sdf/modules/_shared/fonts/scientifica_ascii.hlsli",
@@ -9092,5 +9092,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "c6d1f1d0d92e7024bf3efa292f80fc682d44a717"
+    "source_commit":  "3615720f045caf662b701c7548598f4ff211011c"
 }
