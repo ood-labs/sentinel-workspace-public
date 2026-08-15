@@ -40,17 +40,41 @@
             MinimumNodePresets = 6
             Exemptions = @('scene-group-presets', 'technical-workflow-output')
         }
-        prism_reliquary = @{
-            ProjectFile = 'prism_reliquary.sentinel'
+        formicary = @{
+            ProjectFile = 'formicary.sentinel'
             SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-6/prism-reliquary.json')
+            ProofRecords = @('.release/reviews/phase-8/formicary.json')
+            MinimumSceneGroups = 0
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 30
+            Exemptions = @('approved-ungrouped-instrument', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
+        }
+        kuka_cell = @{
+            ProjectFile = 'kuka_cell.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-8/kuka-cell.json')
             MinimumSceneGroups = 1
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
             RequireNodePreviews = $true
             MinimumGroupPresets = 0
-            MinimumNodePresets = 7
-            Exemptions = @('scene-group-presets', 'technical-workflow-output')
+            MinimumNodePresets = 10
+            Exemptions = @('scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
+        }
+        spectral_bench = @{
+            ProjectFile = 'spectral_bench.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-8/spectral-bench.json')
+            MinimumSceneGroups = 1
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 5
+            Exemptions = @('scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
         face_collage = @{
             ProjectFile = 'face_collage.sentinel'

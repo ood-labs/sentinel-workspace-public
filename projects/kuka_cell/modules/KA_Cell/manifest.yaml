@@ -1,0 +1,157 @@
+name: "KA Cell"
+version: "0.1"
+mode: generator
+resolution: [1024, 640]
+
+# The plan authority for kuka_cell. Owns CELL SPACE: where every robot base sits, which way it
+# faces, how big a frame it is, which control channel drives it, and whether it is live.
+# Nothing downstream re-decides any of that.
+#
+# The diagram is a PLAN OVER AN ELEVATION sharing the world X axis, because a robot cell is laid
+# out on the floor but its reach and its danger are in height. One handle edits both strips: the
+# plan strip owns (x, depth), the elevation strip owns pedestal height.
+#
+# It also draws the failure the renderer cannot show you: work envelopes that intersect, i.e.
+# arms that can strike each other, marked in alarm red on the plan.
+
+buffers:
+  - { name: cell, structured: true, element_size: 48, element_count: 50, persistent: true }
+
+state_buffers:
+  - name: cell
+    max_elements: 50
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: yaw, type: float }
+      - { name: grp, type: float }
+      - { name: kind, type: float }
+      - { name: bias, type: float }
+      - { name: seed, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+      - { name: spare, type: float }
+
+viewport:
+  hint: "Click select | drag move (plan = floor, elevation = pedestal) | A/D turn | G channel | K frame size | Q/E smaller/larger | X on/off | N re-roll | R reseed cell | C clear"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [a, d, g, k, q, e, x, n, r, c]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select arm" }
+    - { gesture: left_drag, action: move, label: "Move (axis follows the strip)" }
+    - { key: a, action: turn_ccw, label: "Turn base heading CCW" }
+    - { key: d, action: turn_cw, label: "Turn base heading CW" }
+    - { key: g, action: cycle_group, label: "Cycle control channel" }
+    - { key: k, action: cycle_frame, label: "Cycle frame size" }
+    - { key: q, action: smaller, label: "Smaller frame" }
+    - { key: e, action: larger, label: "Larger frame" }
+    - { key: x, action: toggle_active, label: "Arm on / off" }
+    - { key: n, action: reroll, label: "Re-roll this arm" }
+    - { key: r, action: reseed, label: "Reseed the cell" }
+    - { key: c, action: clear_selection, label: "Clear selection" }
+
+parameters:
+  # ARRANGEMENT. An array's identity is its lattice, so these are the exploration handles and
+  # `variation` perturbs THEM rather than drawing free coordinates per arm.
+  - name: arrangement
+    display: "Arrangement"
+    type: enum
+    options: [Line, Grid, Ring, Arc, Twin Rows, Spur]
+    default: 1
+    flags: button_grid
+    group: "Cell"
+  - { name: arm_count, display: "Arms",        type: int,   min: 1,    max: 48,   default: 24,   group: "Cell" }
+  # Pitch default is deliberately ABOVE twice the standard frame's reach (2 x 2.93 m), so the
+  # cell the project opens with is not already in collision. A shipped default that trips its
+  # own alarm teaches the user to ignore the alarm.
+  - { name: pitch,     display: "Pitch",       type: float, min: 1.2,  max: 14.0, default: 6.4, group: "Cell" }
+  - { name: rows,      display: "Rows",        type: int,   min: 1,    max: 8,    default: 4,    group: "Cell" }
+  - { name: radius,    display: "Radius",      type: float, min: 1.5,  max: 26.0, default: 8.6, group: "Cell" }
+  - { name: span,      display: "Arc Span",    type: float, min: 20.0, max: 340.0, default: 150.000000, group: "Cell" }
+  - { name: skew,      display: "Run Skew",    type: float, min: -90.0, max: 90.0, default: 0.000000,  group: "Cell" }
+  - { name: stagger,   display: "Row Stagger", type: float, min: -1.0, max: 1.0,  default: 0.5, group: "Cell" }
+  - { name: converge,  display: "Face Centre", type: float, min: 0.0,  max: 1.0,  default: 0.000000, group: "Cell" }
+
+  # RANDOMIZER. 0 is exactly the arrangement above and can never be lost.
+  - { name: variation, display: "Variation",   type: float, min: 0.0,  max: 1.0,  default: 0.000000, group: "Variation" }
+  - { name: seed,      display: "Seed",        type: float, min: 0.0,  max: 512.0, default: 11.000000, group: "Variation" }
+
+  # FRAMES. Which size of machine stands at each station.
+  - name: frame_base
+    display: "Frame"
+    type: enum
+    options: [Compact, Standard, Heavy]
+    default: 1
+    flags: button_grid
+    group: "Frames"
+  - name: frame_mix
+    display: "Frame Mix"
+    type: enum
+    options: [Uniform, Alternate, Graded, Scattered]
+    default: 0
+    flags: button_grid
+    group: "Frames"
+  - { name: frame_scale, display: "Frame Scale", type: float, min: 0.35, max: 2.20, default: 1.000000, group: "Frames" }
+  - { name: scale_spread, display: "Scale Spread", type: float, min: 0.0, max: 0.60, default: 0.000000, group: "Frames" }
+
+  # CHANNELS. How arms are assigned to the four pattern channels in KA_Pose. This is the
+  # control the whole show hangs off, so it is a first-class structural parameter.
+  - name: group_mode
+    display: "Channel Split"
+    type: enum
+    options: [All One, By Row, By Ring, Checker, Quadrant, Alternate, Scattered]
+    default: 3
+    flags: button_grid
+    group: "Channels"
+  - { name: group_count, display: "Channels", type: int, min: 1, max: 4, default: 4, group: "Channels" }
+  - { name: bias_spread, display: "Phase Spread", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Channels" }
+
+  # Appearance / bounds only. Deliberately OUT of the signature: nudging the cell outline or the
+  # pedestal must never wipe an arrangement the user has dragged into place.
+  - { name: cell_w,    display: "Cell Width",  type: float, min: 4.0, max: 80.0, default: 42.000000, group: "Floor" }
+  - { name: cell_d,    display: "Cell Depth",  type: float, min: 4.0, max: 80.0, default: 28.000000, group: "Floor" }
+  - { name: pedestal,  display: "Pedestal",    type: float, min: 0.0, max: 2.50, default: 0.000000, group: "Floor" }
+
+  # THE TARGET. A place in the cell that the Point At pattern aims every arm at. It is a plan
+  # object, so it is a record in this buffer and you drag it on the floor plan. These params seed
+  # it and keep working until it is dragged, at which point the record wins.
+  - { name: target_x,    display: "Target X",     type: float, min: -40.0, max: 40.0, default: 0.000000, group: "Target" }
+  - { name: target_z,    display: "Target Z",     type: float, min: -40.0, max: 40.0, default: 0.000000, group: "Target" }
+  - { name: target_h,    display: "Target Height", type: float, min: 0.0, max: 12.0, default: 4.5, group: "Target" }
+  - { name: target_orbit, display: "Orbit Radius", type: float, min: 0.0, max: 25.0, default: 5.5, group: "Target" }
+  - { name: target_rate, display: "Orbit Rate",   type: float, min: -2.0, max: 2.0,  default: 0.14, group: "Target" }
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:cell"
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:cell" }
+
+data_outputs:
+  - name: "Cell"
+    buffer: "cell"
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: yaw, type: float }
+      - { name: grp, type: float }
+      - { name: kind, type: float }
+      - { name: bias, type: float }
+      - { name: seed, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+      - { name: spare, type: float }
+
+outputs:
+  - { name: "Cell Plan", pass: canvas }

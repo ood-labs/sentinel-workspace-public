@@ -1,0 +1,225 @@
+name: "FM Render"
+version: "0.1"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+output_format: RGBA16F
+
+# Optics. It owns Sentinel's internal camera and decides NOTHING about the composition: every
+# position, heading, foot and colour on screen was decided by FM_Plan or FM_Colony.
+#
+# HDR out on purpose. The chitin specular runs well past 1.0 and FM_Post's bloom and depth of
+# field need that headroom; clamping here would flatten every highlight before the lens ever
+# saw it. Depth goes out as a second pin, linearized in millimetres, so FM_Scope can composite
+# 3D marks against real geometry.
+
+features: [camera, noise]
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed. Tab toggles Fly/Orbit."
+  interactions: [camera]
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: p2,     type: float }
+      - { name: p3,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: pad0,   type: float }
+      - { name: pad1,   type: float }
+  - name: "Ants"
+    slot: 1
+    schema:
+      - { name: pos,     type: float3 }
+      - { name: dir,     type: float3 }
+      - { name: speed,   type: float }
+      - { name: gait,    type: float }
+      - { name: tint,    type: float3 }
+      - { name: size,    type: float }
+      - { name: task,    type: float }
+      - { name: load,    type: float }
+      - { name: seed,    type: float }
+      - { name: turn,    type: float }
+      - { name: edge,    type: float }
+      - { name: active,  type: float }
+      - { name: antenna, type: float }
+      - { name: contact, type: float }
+      # The record grew to 96 bytes for the station system. A schema that stops at `contact`
+      # reads the buffer at the wrong stride, which does not error anywhere — it draws the
+      # colony smeared across the arena in a regular diagonal.
+      - { name: home,    type: float }
+      - { name: age,     type: float }
+      - { name: fade,    type: float }
+      - { name: pad2,    type: float }
+  - name: "Feet"
+    slot: 2
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: stance, type: float }
+      - { name: home,   type: float3 }
+      - { name: slip,   type: float }
+      - { name: lift,   type: float3 }
+      - { name: phase,  type: float }
+
+inputs:
+  - { name: "Field", slot: 0, required: false }
+  # The contact shadow field, computed by FM_Colony over the arena. See scene.hlsl.
+  - { name: "Shadow", slot: 1, required: false }
+
+parameters:
+  # ---- Look
+  #
+  # EXPOSURE IS NOT OPTIONAL HERE, and getting it wrong hid a whole feature. The plan's light is
+  # sized for the ants, whose chitin has an albedo near 0.15. The sweep's albedo is 0.95, so the
+  # same light puts the ground at roughly 2.8 — nearly three times over white. Every contact
+  # shadow was being computed correctly, darkening 2.8 to 1.5, and every one of them was still
+  # above clipping and therefore invisible: the ants floated on a flat white field and the
+  # shadow code looked like it had never run. Exposing so the sweep lands just under 1.0 puts
+  # the shadows back AND drops the chitin from a clipped orange to the reference's mahogany,
+  # because both faults were the same fault.
+  - { name: exposure,     display: "Exposure",      type: float, min: 0.02, max: 2.0, default: 0.3, group: "Look" }
+  - { name: spec_gain,    display: "Chitin Gloss",  type: float, min: 0.0, max: 4.0, default: 2.2, group: "Look" }
+  - { name: rim_gain,     display: "Rim",           type: float, min: 0.0, max: 1.0, default: 0.055, group: "Look" }
+  - { name: ground_bounce, display: "Ground Bounce", type: float, min: 0.0, max: 2.0, default: 0.62, group: "Look" }
+  - { name: shadow_gain,  display: "Shadow",        type: float, min: 0.0, max: 1.0, default: 0.72, group: "Look" }
+  - { name: stain_gain,   display: "Trail Stain",   type: float, min: 0.0, max: 3.0, default: 0.55, group: "Look" }
+  # How much the body heaves and rolls on each tripod. At 0 it glides like a puck and the legs
+  # read as decoration attached to something that is not walking.
+  - { name: body_bob,     display: "Body Bob",      type: float, min: 0.0, max: 3.0, default: 1.000000,  group: "Look" }
+  - { name: antenna_swing, display: "Antenna Swing", type: float, min: 0.0, max: 1.5, default: 0.55, group: "Look" }
+
+  # LEG THICKNESS, the other half of "is this an ant or a spider".
+  #
+  # Its partner is FM_Colony / Leg Length, and they live in different nodes because they are
+  # genuinely different decisions: length is a SIMULATION fact — it moves where the feet are
+  # planted, so the gait, the stride and the measured slip all follow it — while thickness is
+  # pure appearance and changes nothing the colony knows about.
+  #
+  # The radii it scales are fractions of BODY length, not of leg length, so shortening the legs
+  # already makes them relatively stubbier. Long AND thin is the spider silhouette; short and
+  # substantial is the ant. This only touches the legs — the antennae keep their own taper,
+  # including the club that thickens toward the tip, which is what makes them read as antennae.
+  - { name: leg_thick, display: "Leg Thickness", type: float, min: 0.4, max: 2.5, default: 1.0, group: "Look" }
+
+  # ANTENNAE. With the legs pulled in these became the longest appendages on the animal by a
+  # clear margin, and a long thin whip is the last of the spider cues. Both segments scale
+  # together, so the elbow stays at the same fraction along and the geniculate silhouette — the
+  # thing that says antenna rather than leg — survives any length.
+  - { name: antenna_len,   display: "Antenna Length",    type: float, min: 0.3, max: 2.0, default: 1.0, group: "Look" }
+  - { name: antenna_thick, display: "Antenna Thickness", type: float, min: 0.4, max: 3.0, default: 1.0, group: "Look" }
+
+  # ---- Quality.
+  #
+  # `foot_shadows` MOVED to FM_Colony. The contact shadows are no longer computed here: at 1024
+  # ants a per-pixel loop over the population is 943 M iterations a frame, and the answer never
+  # depended on the camera. FM_Colony computes the field once, where the bucket grid makes the
+  # query local, and this node samples it. `shadow_gain` above still scales what lands.
+
+  # THE DETAIL LADDER. At 1024 ants the vertex bill is 3.6 M and it is the largest single cost
+  # in the show. The vertex COUNT cannot change — it is fixed at compile time — so a lower rung
+  # collapses the fine rings to degenerate triangles instead, which removes the rasterisation
+  # and the overdraw while leaving the vertex shader invocations in place. That is most of the
+  # cost, not all of it, and the numbers in the README say by how much.
+  #
+  # Hero     the ceiling: 24x14 gaster, 16x10 body, TWELVE-sided limbs. Six-sided tubes read as
+  #          hexagonal prisms in any close shot, and that is what looked cheap.
+  # Full     the ORIGINAL mesh, bit for bit: 16x10 gaster, 12x8 body, 12x4 nodes, 6-sided tubes.
+  # Reduced  indistinguishable below about 40 px an ant. The working default.
+  # Distant  legs to three sides and the mandibles go. For a full plate.
+  - name: ant_detail
+    display: "Ant Detail"
+    type: enum
+    options: [Hero, Full, Reduced, Distant]
+    default: 2
+    flags: button_grid
+    group: "Quality"
+
+  # Below this projected size in pixels an ant drops a rung on its own, regardless of the
+  # setting above. A colony spread in depth is mostly far away, and paying full detail for the
+  # ants at the back of the plate buys nothing at all.
+  - { name: detail_px, display: "Detail Cutoff", type: float, min: 0.0, max: 200.0, default: 26.0, group: "Quality" }
+
+  # Diagnostic views ship because in a chain that is mostly invisible bookkeeping they are the
+  # only way to tell a dark lane from a dead one.
+  - name: view_mode
+    display: "View"
+    type: enum
+    options: [Beauty, Normals, Depth, Shadow, Field]
+    default: 0
+    flags: button_grid
+    group: "Quality"
+
+passes:
+  # ONE draw pass. Ground quad at vertices 0..5, then 128 ants x 6672.
+  # 6 + 128 * 6672 = 854022.
+  #
+  # Sized for the HERO rung, because the ladder can only ever spend LESS than what is declared —
+  # it degenerates the surplus, it cannot invent vertices. Raising quality is therefore a change
+  # to VERTS_PER_ANT in antgeo.hlsli AND to this number, and if they disagree the last ant is
+  # drawn truncated. The honest cost is that every rung now pays 6.8 M vertex-shader
+  # invocations rather than 3.6 M even when most of them degenerate immediately; the ladder
+  # trades rasterisation and overdraw, never invocations.
+  #
+  # This number is the population ceiling made concrete, and it is fixed at compile time: an
+  # ant beyond it cannot be drawn no matter what the colony says. It must stay in step with
+  # FM_MAX_ANTS in formic.hlsli and with the ants buffer's element_count, and the shader asserts
+  # the relationship rather than trusting three files to be edited together.
+  - name: scene
+    shader: scene.hlsl
+    target: draw
+    vertex_count: 854022
+    topology: trianglelist
+    depth: true
+    depth_write: true
+    # No culling: the sweep is viewed from one side but the tube segments are built from an
+    # arbitrary reference frame, so their winding flips with limb direction. Culling them would
+    # punch holes in half the legs, and the cost of drawing both faces on 4 mm tubes is nil.
+    cull: none
+    vs_entry: VSMain
+    ps_entry: PSMain
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "input:0" }
+      - { slot: 4, source: "input:1" }
+
+  - name: depth_out
+    shader: depth_out.hlsl
+    target: cs_5_0
+    inputs:
+      # The SCENE TARGET, not the depth buffer. Its alpha carries eye depth in millimetres,
+      # written by the pass that already knew the world position. Reading `pass:scene` is a real
+      # buffer dependency, so this cannot be scheduled ahead of the geometry — which is exactly
+      # what went wrong with `source: "depth"`.
+      - { slot: 0, source: "pass:scene" }
+
+  # WHERE EVERY PIXEL LANDS ON THE GROUND. Half scale, which is ample: it is sampled at a
+  # pointer position, not shaded through, and RG16F would not carry a 130 mm coordinate to
+  # better than a tenth of a millimetre. RGBA32F does, and this is one small texture.
+  #
+  # It depends on the camera and on nothing else, so it does NOT read pass:scene and is free to
+  # be scheduled anywhere.
+  - name: ground_out
+    shader: ground_out.hlsl
+    target: cs_5_0
+    scale: 0.5
+    format: RGBA32F
+    inputs:
+      - { slot: 0, source: "data:0" }
+
+outputs:
+  - { name: "Beauty", pass: scene }
+  - { name: "Depth", pass: depth_out }
+  # Consumed by FM_Stage so a click on the program image becomes a world coordinate.
+  - { name: "Ground", pass: ground_out }

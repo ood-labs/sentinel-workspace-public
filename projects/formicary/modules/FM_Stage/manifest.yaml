@@ -1,0 +1,151 @@
+name: "FM Stage"
+version: "0.1"
+mode: generator
+resolution: [1280, 720]
+
+# FM_Stage — the program image, made editable.
+#
+# WHAT IT IS FOR. FM_Plan's canvas is a draughtsman's drawing: exact, on a millimetre ruler,
+# with route cost and a blocked-route alarm. It is the right surface for laying an arrangement
+# out and the wrong one for reacting to what the colony is doing right now, because the thing
+# you are reacting to is happening in a different picture. This node is the other half: the
+# finished frame, with the stations drawn ON the ground where the ants feel them, and a click
+# that puts a new one exactly where you are looking.
+#
+# HOW IT KNOWS WHERE YOU CLICKED, WITHOUT OWNING A CAMERA. FM_Render publishes a Ground lane —
+# the world point every pixel lands on. So this node needs no camera, no matrix, no synchronised
+# viewpoint and no second camera-capable renderer, which is exactly the thing the camera rules
+# say not to create. It samples a texture. Fly the camera and the clicks follow, because that
+# lane was built from the same inverse view-projection the frame was drawn with.
+#
+# It also removes the other half of the problem. Drawing a station marker would normally mean
+# projecting world to screen; instead every pixel asks "which ground point am I, and is it
+# inside a station's reach". The reach therefore draws as a true perspective ellipse lying on
+# the sweep, rather than as a flat circle pasted over a receding plane.
+#
+# HOW ITS EDITS GET BACK TO THE PLAN. FM_Plan is upstream of everything, so a link from here to
+# there would be a cycle. The edits travel the same way the colony's measured traffic already
+# does: control outputs and expressions, which carry a handful of floats and cost one cook of
+# latency. A command is a MONOTONIC COUNTER plus its arguments, never a held flag, so a drop or
+# a slow frame can neither lose an edit nor apply it twice.
+
+# NOT a Canvas panel. It was `mode: canvas` with `follow_panel`, which takes over its dock and
+# makes the node awkward to use as a normal viewport target — and the whole point of this node is
+# that you want it ON the viewport, full screen, while you work. As an ordinary 1280x720 node it
+# behaves like every other output: right-click it in the graph and set it as the viewport target.
+#
+# The stage-rectangle fit in stage.hlsli stays, because the node still has to map pointer
+# positions into the program image. At a matching aspect it is simply the whole frame.
+
+buffers:
+  # The editor's own state. One element.
+  - { name: sctl, structured: true, element_size: 64, element_count: 1, persistent: true }
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: p2,     type: float }
+      - { name: p3,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: pad0,   type: float }
+      - { name: pad1,   type: float }
+
+inputs:
+  - { name: "Program", slot: 0, required: false }
+  - { name: "Ground",  slot: 1, required: false }
+  # The pheromone field, for the Plan view's scent underlay. Off by default.
+  - { name: "Field",   slot: 2, required: false }
+
+viewport:
+  hint: "Click select - drag move - A place - D delete - T fire - X mute - C clear"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [a, t, x, c, d]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select the station under the cursor" }
+    - { gesture: left_drag,  action: move,   label: "Move the selected station" }
+    - { key: a, action: place,  label: "Place a station where you are looking" }
+    - { key: d, action: delete, label: "Delete the selected station" }
+    - { key: t, action: fire,   label: "Fire the selected station" }
+    - { key: x, action: mute,   label: "Mute the selected station (keeps its settings)" }
+    - { key: c, action: clear,  label: "Clear selection" }
+
+parameters:
+  # WHICH VIEW YOU ARE EDITING IN. The stations, the selection and every verb are identical in
+  # both — this switches what you are looking at, not what you are working on.
+  #
+  #   Program  the finished camera image, with the stations drawn on the ground where the ants
+  #            feel them. What the audience sees, with handles on it.
+  #   Plan     straight down on the whole arena: the diagram AND the live colony in one
+  #            registered picture. This is the view for laying an arrangement out, because it
+  #            is the only one where you can see the whole plate and the traffic on it at once.
+  - name: view
+    display: "View"
+    type: enum
+    options: [Program, Plan]
+    default: 0
+    flags: button_grid
+    group: "Editor"
+
+  # Plan view only.
+  - { name: plan_ants,  display: "Show Ants",   type: bool,  default: true,                    group: "Plan View" }
+  - { name: plan_field, display: "Show Scent",  type: float, min: 0.0, max: 4.0, default: 0.0,  group: "Plan View" }
+  - { name: plan_ground, display: "Ground Tone", type: float, min: 0.0, max: 1.0, default: 1.0, group: "Plan View" }
+
+  # How loudly the editor draws over the program image. At 0 this node is a pass-through and the
+  # frame is exactly what FM_Post produced, which is what a capture wants.
+  - { name: overlay_mix, display: "Overlay",     type: float, min: 0.0, max: 1.0, default: 0.85, group: "Editor" }
+  - { name: show_reach,  display: "Show Reach",  type: bool,  default: true,                    group: "Editor" }
+  # A station's reach ring drawn on the ground is a real ellipse in perspective, so its apparent
+  # thickness would fall off with distance. This is a SCREEN-space width, converted back into
+  # world millimetres per pixel from the Ground lane itself.
+  - { name: line_px,     display: "Line Width",  type: float, min: 0.5, max: 5.0, default: 1.4,  group: "Editor" }
+  - { name: pick_px,     display: "Grab Radius", type: float, min: 6.0, max: 60.0, default: 18.0, group: "Editor" }
+
+passes:
+  # The editor's brain. Single threaded: it processes a whole batch of viewport events in order
+  # and emits at most one command per cook, so a drag cannot race itself.
+  - name: sctl
+    shader: sctl.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "data:0" }
+    output: "buffer:sctl"
+
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:sctl" }
+      - { slot: 5, source: "input:2" }
+
+# The edits, on their way back upstream to FM_Plan by expression. See sctl.hlsl for the field
+# map and the README for the four expressions that carry them.
+control_outputs:
+  - { name: cmd,  buffer: sctl, element: 0, field_offset: 0,  description: "Monotonic command counter" }
+  - { name: act,  buffer: sctl, element: 0, field_offset: 4,  description: "1 place, 2 move, 3 fire, 4 toggle" }
+  - { name: wx,   buffer: sctl, element: 0, field_offset: 8,  description: "Command world x, mm" }
+  - { name: wz,   buffer: sctl, element: 0, field_offset: 12, description: "Command world z, mm" }
+  - { name: sel,  buffer: sctl, element: 0, field_offset: 16, description: "Selected station slot + 1, 0 none" }
+
+outputs:
+  - { name: "Stage", pass: canvas }

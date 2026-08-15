@@ -1,0 +1,109 @@
+name: "LT Field"
+version: "0.1"
+mode: generator
+execution: on_dirty
+resolution: [1920, 1080]
+
+# The program image. Consumes LT_Bench's records and LT_Trace's paths and re-decides neither.
+#
+# working_format governs INTERMEDIATE pass buffers; output_format governs the texture handed to
+# the next node and DEFAULTS TO RGBA8. Without it explicit, every beam core clips to flat white
+# before LT_Lens ever sees a highlight, and the bloom has nothing above 1.0 to bloom from.
+working_format: RGBA16F
+output_format: RGBA16F
+
+buffers:
+  # 2040 tiles (60 x 34 at 32 px) x 4096 slots. [0] count, [1] overflow, [2..4095] indices.
+  - { name: bins, structured: true, element_size: 4, element_count: 8355840, persistent: false }
+
+data_inputs:
+  - name: "Bench"
+    slot: 0
+    schema:
+      - { name: p0,     type: float2 }
+      - { name: p1,     type: float2 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tone,   type: float }
+      - { name: seed,   type: float }
+      - { name: hdg,    type: float }
+      - { name: r0,     type: float }
+      - { name: r1,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: par,    type: float }
+      - { name: att,    type: float }
+      - { name: dev,    type: float }
+      - { name: z,      type: float }
+      - { name: gen,    type: float }
+      - { name: wl0,    type: float }
+      - { name: wl1,    type: float }
+  - name: "Paths"
+    slot: 1
+    schema:
+      - { name: a,      type: float2 }
+      - { name: b,      type: float2 }
+      - { name: wl,     type: float }
+      - { name: power,  type: float }
+      - { name: evt,    type: float }
+      - { name: evtEnd, type: float }
+      - { name: lane,   type: float }
+      - { name: depth,  type: float }
+      - { name: elem,   type: float }
+      - { name: dev,    type: float }
+      - { name: ior,    type: float }
+
+parameters:
+  # ---- THE FRAME CONTRACT. These two alone are what the camera preset saves. ------------------
+  - { name: view_center, display: "Frame Centre", type: point2D, min: [-0.5, -0.5], max: [1.5, 1.5], default: [0.42, 0.275], group: "Frame" }
+  - { name: view_zoom,   display: "Frame Zoom",   type: float, min: 0.30, max: 4.0, default: 1.28, group: "Frame" }
+
+  # ---- the light ------------------------------------------------------------------------------
+  - { name: exposure,   display: "Exposure",    type: float, min: 0.0,  max: 40.0, default: 4.000000,  group: "Light" }
+  # A FLOOR on how wide one traced ray is drawn, in real millimetres on the bench, so it stays
+  # correct when the frame zooms. The renderer already widens each ray enough to fuse with its
+  # neighbours across the source aperture; this only matters when you want a fat filament out of
+  # a single ray, which is what a laser look wants.
+  - { name: beam_width, display: "Min Ray Width", type: float, min: 0.2, max: 12.0, default: 0.9, group: "Light" }
+  # The reason a beam is visible from the side at all. At 0 you see only what the beam lands on.
+  - { name: haze,       display: "Haze",        type: float, min: 0.0,  max: 2.0,  default: 0.55, group: "Light" }
+  - { name: spark,      display: "Interactions",type: float, min: 0.0,  max: 3.0,  default: 0.85, group: "Light" }
+
+  # ---- the room --------------------------------------------------------------------------------
+  - { name: backdrop,   display: "Backdrop",    type: float, min: 0.0,  max: 4.0,  default: 1.000000,  group: "Room" }
+  - { name: glass_edge, display: "Glass Edges", type: float, min: 0.0,  max: 3.0,  default: 1.000000,  group: "Room" }
+  - { name: glass_body, display: "Glass Body",  type: float, min: 0.0,  max: 4.0,  default: 1.000000,  group: "Room" }
+  - { name: screen_tone,display: "Screen Tone", type: float, min: 0.0,  max: 4.0,  default: 1.000000,  group: "Room" }
+
+  # Diagnostic views. Occupancy draws the tile lists and marks any tile that overflowed, so a
+  # bench dense enough to drop beams says so instead of quietly looking dimmer.
+  - name: view_mode
+    display: "View"
+    type: enum
+    options: [Program, Beams Only, Occupancy]
+    default: 0
+    flags: button_grid
+    group: "Room"
+
+passes:
+  - name: bins
+    shader: bins.hlsl
+    target: cs_5_0
+    time_dependent: false
+    dispatch: [32, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:bins"
+    inputs:
+      - { slot: 0, source: "data:1" }
+  - name: scene
+    shader: scene.hlsl
+    target: cs_5_0
+    time_dependent: false
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "buffer:bins" }
+
+outputs:
+  - { name: "Field", pass: scene }

@@ -1,0 +1,169 @@
+name: "FM Scope"
+version: "0.1"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+output_format: RGBA16F
+
+# The exploded instrument view. Draws NOTHING of its own — every mark stands for a number
+# another node published. See scope.hlsli.
+#
+# CAMERA: this node has its own, and its parameters are DRIVEN BY EXPRESSION from FM_Render's.
+# It must match that viewpoint exactly or every mark lands in the wrong place.
+#
+# The obvious alternative — one shared Camera node with both nodes' camera_ref pointing at it —
+# is wrong for the same reason it was wrong in koi_tank: with camera_ref set, the host takes
+# over the viewport's pointer events, and FM_Render would stop being flyable in its own preview.
+# Mirroring the parameters leaves the renderer's camera untouched and interactive. The cost is
+# one cook of latency while the camera is MOVING, and none at all once it stops.
+features: [camera]
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move. Mirrors FM_Render by expression."
+  interactions: [camera]
+
+buffers:
+  - { name: sctl,  structured: true, element_size: 32, element_count: 1,    persistent: true }
+  # 64 ants x 24 samples. At the default interval that is about two seconds of history.
+  - { name: trail, structured: true, element_size: 16, element_count: 1536, persistent: true }
+
+inputs:
+  - { name: "Beauty", slot: 0, required: true }
+  - { name: "Depth",  slot: 1, required: true }
+  - { name: "Field",  slot: 2, required: false }
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: p2,     type: float }
+      - { name: p3,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: pad0,   type: float }
+      - { name: pad1,   type: float }
+  - name: "Ants"
+    slot: 1
+    schema:
+      - { name: pos,     type: float3 }
+      - { name: dir,     type: float3 }
+      - { name: speed,   type: float }
+      - { name: gait,    type: float }
+      - { name: tint,    type: float3 }
+      - { name: size,    type: float }
+      - { name: task,    type: float }
+      - { name: load,    type: float }
+      - { name: seed,    type: float }
+      - { name: turn,    type: float }
+      - { name: edge,    type: float }
+      - { name: active,  type: float }
+      - { name: antenna, type: float }
+      - { name: contact, type: float }
+      # The record grew to 96 bytes for the station system. A short schema reads the buffer at
+      # the wrong stride and the overlay's marks land on ants that are not there.
+      - { name: home,    type: float }
+      - { name: age,     type: float }
+      - { name: fade,    type: float }
+      - { name: pad2,    type: float }
+  - name: "Feet"
+    slot: 2
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: stance, type: float }
+      - { name: home,   type: float3 }
+      - { name: slip,   type: float }
+      - { name: lift,   type: float3 }
+      - { name: phase,  type: float }
+
+parameters:
+  # THE ONE CONTROL THE NODE IS ABOUT. At 0 every lane sits exactly where it truly is and the
+  # overlay registers on the render; being able to CLOSE it is what makes the open state
+  # trustworthy, because it proves the same scene is being described.
+  - { name: explode,    display: "Explode",     type: float, min: 0.0, max: 1.0, default: 0.000000, group: "Scope" }
+  - { name: scope_mix,  display: "Overlay Mix", type: float, min: 0.0, max: 1.0, default: 0.000000, group: "Scope" }
+  - { name: beauty_dim, display: "Beauty Dim",  type: float, min: 0.0, max: 1.0, default: 0.78, group: "Scope" }
+
+  - { name: show_gizmo, display: "Gizmos",        type: bool, default: true, group: "Layers" }
+  - { name: show_trail, display: "Measured Trail", type: bool, default: true, group: "Layers" }
+  - { name: show_pred,  display: "Predicted Path", type: bool, default: true, group: "Layers" }
+  - { name: show_feet,  display: "Foot Contacts",  type: bool, default: true, group: "Layers" }
+  - { name: show_link,  display: "Antennation",    type: bool, default: true, group: "Layers" }
+  - { name: show_grad,  display: "Scent Gradient", type: bool, default: true, group: "Layers" }
+
+  - { name: gizmo_size, display: "Gizmo Size", type: float, min: 0.0, max: 4.0,  default: 0.7, group: "Line" }
+  - { name: line_width, display: "Line Width", type: float, min: 0.5, max: 6.0,  default: 1.3,  group: "Line" }
+  - { name: line_gain,  display: "Line Gain",  type: float, min: 0.0, max: 4.0,  default: 1.000000, group: "Line" }
+  # How much of an occluded mark survives. Zero hides everything behind an ant, which reads as
+  # broken; a low value reads as an instrument seen through the subject.
+  - { name: occlude,    display: "See-Through", type: float, min: 0.0, max: 1.0, default: 0.26, group: "Line" }
+  # A MEASUREMENT interval, not a look control: it decides how much history the ring holds and
+  # therefore how far back the trail actually reaches.
+  - { name: trail_rate, display: "Trail Interval", type: float, min: 0.004, max: 0.5, default: 0.085, group: "Line" }
+  - { name: trail_fade, display: "Trail Fade",     type: float, min: 0.0, max: 1.0,   default: 0.78,  group: "Line" }
+  - { name: trail_reset, display: "Clear Trails (hold)", type: bool, default: false,                  group: "Line" }
+  # How far ahead the forecast runs. It is an extrapolation of the measured speed and yaw rate,
+  # NOT a re-simulation, so it is honest for about a second and diverges after.
+  - { name: pred_time,  display: "Forecast Time", type: float, min: 0.0, max: 4.0, default: 0.85, group: "Line" }
+  - { name: grad_scale, display: "Gradient Scale", type: float, min: 0.0, max: 200.0, default: 42.000000, group: "Line" }
+  # Keep in step with FM_Colony's slip_alarm — absolute millimetres, re-tuned for a 1.5 mm ant.
+  - { name: slip_alarm, display: "Slip Alarm",    type: float, min: 0.005, max: 2.0, default: 0.12, group: "Line" }
+
+passes:
+  - name: sctl
+    shader: sctl.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:sctl"
+
+  - name: trail
+    shader: trail.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "buffer:sctl" }
+      - { slot: 2, source: "data:1" }
+    output: "buffer:trail"
+
+  # Every mark in the instrument, as one draw call. 2954 segments x 6 verts = 17724.
+  - name: marks
+    shader: marks.hlsl
+    target: draw
+    vertex_count: 17724
+    topology: trianglelist
+    # No depth buffer: occlusion is done manually against FM_Render's published depth lane, so
+    # the marks hide behind the SAME geometry the beauty image shows.
+    depth: false
+    depth_write: false
+    cull: none
+    vs_entry: VSMain
+    ps_entry: PSMain
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "buffer:trail" }
+      - { slot: 4, source: "buffer:sctl" }
+      - { slot: 5, source: "input:1" }
+      - { slot: 6, source: "input:2" }
+
+  - name: comp
+    shader: comp.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "pass:marks" }
+
+outputs:
+  - { name: "Scope", pass: comp }

@@ -1,0 +1,29 @@
+{
+  "project": "projects/kuka_cell/kuka_cell.sentinel",
+  "source_commit": "pending phase-8 content commit",
+  "assembly": "Added to the curated public seed as the articulated-instance and lattice-authority example.",
+  "promoted_paths": [
+    "projects/kuka_cell/README.md",
+    "projects/kuka_cell/kuka_cell.sentinel",
+    "projects/kuka_cell/modules/"
+  ],
+  "approved_structure": {
+    "pipelines": [
+      "KA_Cell",
+      "KA_Rally",
+      "KA_Pose",
+      "KA_Robot"
+    ],
+    "scene_groups": 1,
+    "group_outputs": 0,
+    "notes": "All four nodes remain EveryFrame because placement, rally physics, choreography, and the rendered cell are time-dependent."
+  },
+  "compile": {
+    "method": "Live DIST compile and offline compile checks through Sentinel MCP",
+    "status": "pending live proof"
+  },
+  "runtime": {
+    "status": "pending live proof"
+  },
+  "validation": "Pending phase-8 official-example validation and public-release audit."
+}

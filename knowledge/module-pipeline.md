@@ -44,6 +44,19 @@ contract: near-zero idle `cook_hz` in `sentinel_graph profile`, then one prompt
 cook and a changed retained output after a real parameter, data, viewport, or
 camera change.
 
+## Cold Compile Optimization
+
+Modules use O3 shader compilation by default. A Module with a measured
+optimizer bottleneck can select the faster cold-open path:
+
+```yaml
+compile_optimization: fast_compile
+```
+
+This setting skips D3DCompiler's legacy optimizer and produces larger
+bytecode. Compare both cold compile time and live GPU frame time on the target
+hardware before release. The compiler flags are part of the shader-cache key.
+
 ## Fast Scaffold From Tracking Data
 
 Use `sentinel_module action=scaffold_from_ports` when a Module should consume tracking, detection, blob, corner, line, landmark, PCM, Spectrum, or Mel Bands data. Pass the upstream pipeline id and optional data port name. The tool writes starter files in the launched workspace using the live schema from `get_data_schemas`; save and bundle the owning show so the final files live under `projects/<project>/modules/<module_name>/`, then remove any temporary root copy.

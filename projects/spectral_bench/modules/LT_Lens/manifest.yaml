@@ -1,0 +1,94 @@
+name: "LT Lens"
+version: "0.1"
+mode: filter
+
+# The camera. LT_Field publishes real HDR — beam cores sit well above 1.0 — and this is the node
+# that decides how that lands on a print. Nothing here re-decides anything about the bench, and
+# nothing here is allowed to invent colour: the fan's chroma is a measurement, not a look.
+
+working_format: RGBA16F
+# The print is tonemapped into 0..1, so 8-bit would nearly do — except that most of this frame is
+# a near-black graded backdrop, which is exactly where 8 bits bands visibly.
+output_format: RGBA16F
+
+buffers:
+  - { name: bloom_a, format: RGBA16F, scale: 0.25 }
+  - { name: bloom_b, format: RGBA16F, scale: 0.25 }
+  # 1/8, not 1/16. At 1/16 this buffer is 80x45, and bilinear-upsampling that back to 1280x720
+  # steps in visible 16-pixel blocks wherever the source had an edge — which, in an image made of
+  # hard-edged beams, is everywhere.
+  - { name: wide_a,  format: RGBA16F, scale: 0.125 }
+  - { name: wide_b,  format: RGBA16F, scale: 0.125 }
+  - { name: flare,   format: RGBA16F, scale: 0.25 }
+  - { name: flare_b, format: RGBA16F, scale: 0.25 }
+
+parameters:
+  - { name: bloom_threshold, display: "Bloom Threshold", type: float, min: 0.0, max: 4.0,  default: 0.72, group: "Halation" }
+  - { name: bloom_knee,      display: "Knee",            type: float, min: 0.01, max: 1.5, default: 0.35, group: "Halation" }
+  - { name: bloom_radius,    display: "Bloom Radius",    type: float, min: 0.5, max: 6.0,  default: 1.7,  group: "Halation" }
+  - { name: bloom_gain,      display: "Bloom",           type: float, min: 0.0, max: 3.0,  default: 0.62, group: "Halation" }
+  # The wide octave is what makes a blown beam feel like it is lighting the room it crosses.
+  - { name: halation_radius, display: "Halation Radius", type: float, min: 0.5, max: 6.0,  default: 2.4,  group: "Halation" }
+  - { name: halation_gain,   display: "Halation",        type: float, min: 0.0, max: 3.0,  default: 0.45, group: "Halation" }
+  - { name: streak_length,   display: "Streak Length",   type: float, min: 0.5, max: 24.0, default: 1.8,  group: "Halation" }
+  - { name: streak_gain,     display: "Streak",          type: float, min: 0.0, max: 3.0,  default: 0.30, group: "Halation" }
+
+  - { name: exposure_stop, display: "Exposure",    type: float, min: 0.05, max: 6.0, default: 1.0,  group: "Print" }
+  - { name: aberration,    display: "Aberration",  type: float, min: 0.0,  max: 4.0, default: 0.55, group: "Print" }
+  - { name: vignette,      display: "Vignette",    type: float, min: 0.0,  max: 1.0, default: 0.42, group: "Print" }
+  - { name: grain,         display: "Grain",       type: float, min: 0.0,  max: 2.0, default: 0.55, group: "Print" }
+
+passes:
+  - name: bright
+    shader: bright.hlsl
+    target: cs_5_0
+    output: "buffer:bloom_a"
+    inputs:
+      - { slot: 0, source: "input:0" }
+  - name: blur_h
+    shader: blur_h.hlsl
+    target: cs_5_0
+    output: "buffer:bloom_b"
+    inputs:
+      - { slot: 0, source: "buffer:bloom_a" }
+  - name: blur_v
+    shader: blur_v.hlsl
+    target: cs_5_0
+    output: "buffer:bloom_a"
+    inputs:
+      - { slot: 0, source: "buffer:bloom_b" }
+  - name: wide_h
+    shader: wide_h.hlsl
+    target: cs_5_0
+    output: "buffer:wide_a"
+    inputs:
+      - { slot: 0, source: "buffer:bloom_a" }
+  - name: wide_v
+    shader: wide_v.hlsl
+    target: cs_5_0
+    output: "buffer:wide_b"
+    inputs:
+      - { slot: 0, source: "buffer:wide_a" }
+  - name: streak
+    shader: streak.hlsl
+    target: cs_5_0
+    output: "buffer:flare"
+    inputs:
+      - { slot: 0, source: "buffer:bloom_a" }
+  - name: streak2
+    shader: streak2.hlsl
+    target: cs_5_0
+    output: "buffer:flare_b"
+    inputs:
+      - { slot: 0, source: "buffer:flare" }
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:bloom_a" }
+      - { slot: 2, source: "buffer:wide_b" }
+      - { slot: 3, source: "buffer:flare_b" }
+
+outputs:
+  - { name: "Program", pass: grade }

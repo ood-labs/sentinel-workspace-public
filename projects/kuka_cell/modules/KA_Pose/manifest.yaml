@@ -1,0 +1,170 @@
+name: "KA Pose"
+version: "0.1"
+mode: generator
+resolution: [1024, 640]
+
+# The choreographer. Reads KA_Cell's arm records and produces six joint angles per machine,
+# plus the forward kinematics the plan and the renderer both need.
+#
+# FOUR PATTERN CHANNELS. Every arm carries a channel index decided by KA_Cell, so a cell can run
+# four different movements at once and the split is a property of the floor layout rather than a
+# routing table that has to be kept in agreement with it by hand.
+#
+# Per-arm phase is DERIVED from placement — index along the run, radius from the cell centre,
+# bearing, position along X, depth — so a wave really does travel across the floor, and a ripple
+# really does start at the middle. Nothing here has its own parallel copy of where anything is.
+#
+# NO VIEWPORT INTERACTION, deliberately. Every control here is an exact numeric or enum choice,
+# which Properties already does better than a shader-drawn slider, and the one genuinely spatial
+# control — the Point At target — is a place in the cell, so it is a record in KA_Cell and you
+# drag it there. This node's canvas is a pure instrument.
+
+buffers:
+  - { name: pose, structured: true, element_size: 64, element_count: 50, persistent: true }
+
+state_buffers:
+  - name: pose
+    max_elements: 50
+    schema:
+      - { name: tool, type: float3 }
+      - { name: alarm, type: float }
+      - { name: elbow, type: float3 }
+      - { name: live, type: float }
+      - { name: a1, type: float }
+      - { name: a2, type: float }
+      - { name: a3, type: float }
+      - { name: a4, type: float }
+      - { name: a5, type: float }
+      - { name: a6, type: float }
+      - { name: chan, type: float }
+      - { name: ph, type: float }
+
+data_inputs:
+  - name: "Cell"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: yaw, type: float }
+      - { name: grp, type: float }
+      - { name: kind, type: float }
+      - { name: bias, type: float }
+      - { name: seed, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+      - { name: spare, type: float }
+  # The rally assignment. An arm holding one takes its pose from the rally instead of from its
+  # channel pattern — participation is decided once, in KA_Rally, and this node just executes.
+  - name: "Rally"
+    slot: 1
+    schema:
+      - { name: pos, type: float3 }
+      - { name: radius, type: float }
+      - { name: vel, type: float3 }
+      - { name: role, type: float }
+      - { name: spin, type: float3 }
+      - { name: power, type: float }
+      - { name: a1, type: float }
+      - { name: a2, type: float }
+      - { name: a3, type: float }
+      - { name: a4, type: float }
+      - { name: a5, type: float }
+      - { name: a6, type: float }
+      - { name: strikerIdx, type: float }
+      - { name: lastIdx, type: float }
+      - { name: rallyCount, type: float }
+      - { name: serveTimer, type: float }
+      - { name: aimIdx, type: float }
+      - { name: dropFlag, type: float }
+
+parameters:
+  # MASTER. `clock` integrates against _DeltaTime inside solve.hlsl and is measured in CYCLES,
+  # so a channel at rate 1.0 completes exactly one loop per second at master rate 1.0, and
+  # `phase` 0 -> 1 is exactly one loop. That is what makes a sweep_record motion proof honest.
+  - { name: master_rate, display: "Master Rate", type: float, min: 0.0, max: 4.0, default: 0.35, group: "Master" }
+  - { name: master_amp,  display: "Master Amount", type: float, min: 0.0, max: 1.5, default: 1.000000, group: "Master" }
+  - { name: phase,       display: "Phase",       type: float, min: 0.0, max: 1.0, default: 0.000000, group: "Master" }
+  - { name: settle,      display: "Settle",      type: float, min: 0.0, max: 0.99, default: 0.55, group: "Master" }
+
+  - name: pat_a
+    display: "Channel A"
+    type: enum
+    options: [Hold, Wave, Ripple, Spiral, Canon, Breathe, Point At, Scan, Sway, Drift, Salute, Fold]
+    default: 1
+    flags: button_grid
+    group: "Channel A"
+  - { name: rate_a,   display: "A Rate",   type: float, min: 0.0, max: 4.0, default: 1.000000, group: "Channel A" }
+  - { name: amp_a,    display: "A Amount", type: float, min: 0.0, max: 1.5, default: 0.85, group: "Channel A" }
+  - { name: spread_a, display: "A Spread", type: float, min: 0.0, max: 4.0, default: 1.000000, group: "Channel A" }
+
+  - name: pat_b
+    display: "Channel B"
+    type: enum
+    options: [Hold, Wave, Ripple, Spiral, Canon, Breathe, Point At, Scan, Sway, Drift, Salute, Fold]
+    default: 2
+    flags: button_grid
+    group: "Channel B"
+  - { name: rate_b,   display: "B Rate",   type: float, min: 0.0, max: 4.0, default: 0.7, group: "Channel B" }
+  - { name: amp_b,    display: "B Amount", type: float, min: 0.0, max: 1.5, default: 0.9, group: "Channel B" }
+  - { name: spread_b, display: "B Spread", type: float, min: 0.0, max: 4.0, default: 1.4, group: "Channel B" }
+
+  - name: pat_c
+    display: "Channel C"
+    type: enum
+    options: [Hold, Wave, Ripple, Spiral, Canon, Breathe, Point At, Scan, Sway, Drift, Salute, Fold]
+    default: 6
+    flags: button_grid
+    group: "Channel C"
+  - { name: rate_c,   display: "C Rate",   type: float, min: 0.0, max: 4.0, default: 1.000000, group: "Channel C" }
+  - { name: amp_c,    display: "C Amount", type: float, min: 0.0, max: 1.5, default: 1.000000, group: "Channel C" }
+  - { name: spread_c, display: "C Spread", type: float, min: 0.0, max: 4.0, default: 0.6, group: "Channel C" }
+
+  - name: pat_d
+    display: "Channel D"
+    type: enum
+    options: [Hold, Wave, Ripple, Spiral, Canon, Breathe, Point At, Scan, Sway, Drift, Salute, Fold]
+    default: 7
+    flags: button_grid
+    group: "Channel D"
+  - { name: rate_d,   display: "D Rate",   type: float, min: 0.0, max: 4.0, default: 0.55, group: "Channel D" }
+  - { name: amp_d,    display: "D Amount", type: float, min: 0.0, max: 1.5, default: 0.8, group: "Channel D" }
+  - { name: spread_d, display: "D Spread", type: float, min: 0.0, max: 4.0, default: 1.8, group: "Channel D" }
+
+passes:
+  - name: solve
+    shader: solve.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:pose"
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+  - name: scope
+    shader: scope.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:pose" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+
+data_outputs:
+  - name: "Pose"
+    buffer: "pose"
+    schema:
+      - { name: tool, type: float3 }
+      - { name: alarm, type: float }
+      - { name: elbow, type: float3 }
+      - { name: live, type: float }
+      - { name: a1, type: float }
+      - { name: a2, type: float }
+      - { name: a3, type: float }
+      - { name: a4, type: float }
+      - { name: a5, type: float }
+      - { name: a6, type: float }
+      - { name: chan, type: float }
+      - { name: ph, type: float }
+
+outputs:
+  - { name: "Pose Scope", pass: scope }

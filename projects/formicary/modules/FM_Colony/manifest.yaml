@@ -1,0 +1,423 @@
+name: "FM Colony"
+version: "0.1"
+mode: generator
+resolution: [1200, 820]
+working_format: RGBA16F
+output_format: RGBA16F
+
+# The colony. It owns where the ants are, what they are carrying, where their feet are, and the
+# pheromone field they left behind. FM_Render draws these records and re-decides none of them.
+#
+# WHY THE FIELD LIVES HERE AND NOT IN ITS OWN NODE. Deposit and sense are one closed loop: the
+# field is written by ants and read by ants. Splitting that across a graph edge is a cycle, and
+# a graph is a DAG. koi_tank's trick of closing a loop through control outputs and expressions
+# carries one float, not a texture. So the chemical memory belongs to the colony that owns it,
+# which is also the honest reading — the field is the colony's state, not the arena's.
+
+buffers:
+  # 128 ants at 96 bytes. The record grew by four floats for the station system; see the
+  # comment on FmAnt in formic.hlsli for why every schema below has to carry them.
+  - { name: ants,  structured: true, element_size: 96, element_count: 128, persistent: true }
+  - { name: feet,  structured: true, element_size: 48, element_count: 768, persistent: true }
+  - { name: cctl,  structured: true, element_size: 32, element_count: 1,   persistent: true }
+  - { name: meas,  structured: true, element_size: 64, element_count: 1,   persistent: true }
+  # 257: element 0 is the ring header, 1..256 the samples.
+  - { name: ghist, structured: true, element_size: 32, element_count: 257, persistent: true }
+
+  # The bucket grid: 28 x 20 = 560 cells, each holding up to 48 ants as (pos, idx, task, load,
+  # size, fade). 4 + 48 * 7 = 340 floats. NOT persistent — it is rebuilt in full every cook and
+  # a stale copy is worse than an empty one.
+  - { name: agrid, structured: true, element_size: 1360, element_count: 560 }
+
+  # What each station has done. 16 stations plus a summary element.
+  - { name: stations, structured: true, element_size: 64, element_count: 17, persistent: true }
+
+  # The pheromone field. Half scale => 600 x 410 over a 260 x 180 mm arena, about 0.44 mm per
+  # texel. It was quarter scale for a 160 mm arena and 4.2 mm ants; at 1.5 mm ants over a 260 mm
+  # arena the same setting put a whole deposit inside a single texel, which does not diffuse,
+  # does not make a gradient, and switches the entire stigmergic mechanism off without any
+  # symptom other than ants that ignore their own trail.
+  - { name: pher,  format: RGBA16F, scale: 0.5, persistent: true }
+
+  # The contact shadow field. Half scale, 0.44 mm a texel, and NOT persistent: it is a function
+  # of where the ants are this cook and a stale copy would be a shadow of a colony that moved.
+  - { name: shadf, format: R16F, scale: 0.5 }
+
+state_buffers:
+  - name: ants
+    max_elements: 128
+    schema: &antschema
+      - { name: pos,     type: float3 }
+      - { name: dir,     type: float3 }
+      - { name: speed,   type: float }
+      - { name: gait,    type: float }
+      - { name: tint,    type: float3 }
+      - { name: size,    type: float }
+      - { name: task,    type: float }
+      - { name: load,    type: float }
+      - { name: seed,    type: float }
+      - { name: turn,    type: float }
+      - { name: edge,    type: float }
+      - { name: active,  type: float }
+      - { name: antenna, type: float }
+      - { name: contact, type: float }
+      - { name: home,    type: float }
+      - { name: age,     type: float }
+      - { name: fade,    type: float }
+      - { name: pad2,    type: float }
+  - name: feet
+    max_elements: 768
+    schema: &footschema
+      - { name: pos,    type: float3 }
+      - { name: stance, type: float }
+      - { name: home,   type: float3 }
+      - { name: slip,   type: float }
+      - { name: lift,   type: float3 }
+      - { name: phase,  type: float }
+
+data_inputs:
+  - name: "Plan"
+    slot: 0
+    schema:
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: p2,     type: float }
+      - { name: p3,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: pad0,   type: float }
+      - { name: pad1,   type: float }
+
+parameters:
+  - { name: ant_count,     display: "Ants",        type: int,   min: 1,   max: 128,   default: 128,  group: "Colony" }
+  - { name: colony_seed,   display: "Seed",        type: float, min: 0.0, max: 512.0, default: 31.000000, group: "Colony" }
+  - { name: colony_reset,  display: "Reset (hold)", type: bool, default: false,                      group: "Colony" }
+  # Body length in millimetres. A fire ant worker is about 4 mm; at 1.5 the arena reads as a
+  # colony seen from further back rather than as a macro crop of six of them, which is what the
+  # population increase is for. Keeping it in real units is still what lets the stride, the
+  # antennal reach and the camera's depth of field be checked rather than tuned blind.
+  - { name: body_len,      display: "Body Length", type: float, min: 0.4, max: 12.0,  default: 1.5,  group: "Colony" }
+  - { name: focus_ant,     display: "Focus Ant",   type: int,   min: 0,   max: 127,   default: 0,    group: "Colony" }
+
+  # WHERE THE POPULATION COMES FROM.
+  #
+  #   Steady Trail  every ant is placed along the plan's routes in mid-round-trip, which is the
+  #                 reference photograph's state and the behaviour this project shipped with.
+  #   Dormant Pool  every ant starts as a free slot and NOTHING is on the plate until an
+  #                 emitter releases it. This is the mode the station system is for: the
+  #                 arrangement you draw is the arrangement that fills.
+  - name: seed_mode
+    display: "Population"
+    type: enum
+    options: [Steady Trail, Dormant Pool]
+    default: 0
+    flags: button_grid
+    group: "Colony"
+
+  # ---- Walking
+  #
+  # `walk_speed` is the value the colony actually uses, and it is meant to be DRIVEN. With the
+  # audio chain wired it carries an expression and this row goes read-only in Properties; the
+  # two knobs below are what you tune instead. Without the expression it is an ordinary slider
+  # and the colony behaves exactly as it always did.
+  - { name: walk_speed,        display: "Speed",         type: float, min: 0.0, max: 80.0,  default: 22.000000, group: "Walk" }
+
+  # ---- AUDIO. Two numbers, so the expression on walk_speed never has to be edited to tune it.
+  #
+  #   walk_speed = speed_base * (1 + speed_audio * kick)
+  #
+  # speed_base is the pace with no music at all, so silence is a working colony rather than a
+  # stopped one — an audio drive that multiplies down to zero looks like the simulation died.
+  # speed_audio is how much a full-strength hit adds, as a MULTIPLE of the base: at 1.0 the
+  # colony doubles its pace on every kick.
+  #
+  # The shape of the surge is FM_Bands' `Output Decay`, not something duplicated here. One
+  # envelope, tuned in the node that owns the detection and drawn on its trace strip.
+  - { name: speed_base,  display: "Base Speed",  type: float, min: 0.0, max: 80.0, default: 16.0, group: "Audio" }
+  - { name: speed_audio, display: "Beat Speed",  type: float, min: 0.0, max: 3.0,  default: 1.10, group: "Audio" }
+  - { name: laden_speed,       display: "Laden Speed",   type: float, min: 0.2, max: 1.0,   default: 0.62, group: "Walk" }
+  - { name: turn_rate,         display: "Turn Rate",     type: float, min: 20.0, max: 900.0, default: 320.000000, group: "Walk" }
+  - { name: wander,            display: "Wander",        type: float, min: 0.0, max: 2.0,   default: 0.55, group: "Walk" }
+  - { name: goal_gain,         display: "Goal",          type: float, min: 0.0, max: 3.0,   default: 1.2, group: "Walk" }
+  - { name: separation,        display: "Separation",    type: float, min: 0.0, max: 4.0,   default: 2.1, group: "Walk" }
+  - { name: separation_radius, display: "Separation Radius", type: float, min: 0.5, max: 6.0, default: 1.9, group: "Walk" }
+  - { name: avoid_gain,        display: "Avoidance",     type: float, min: 0.0, max: 6.0,   default: 2.6, group: "Walk" }
+  # An outbound ant only adopts a cache as a goal once it is inside this range. Larger, and the
+  # ants home on food from anywhere and the pheromone field becomes decorative.
+  - { name: detect_range,      display: "Detect Range",  type: float, min: 1.0, max: 60.0,  default: 14.000000, group: "Walk" }
+  - { name: arrive_range,      display: "Arrive Range",  type: float, min: 0.5, max: 20.0,  default: 4.000000,  group: "Walk" }
+  - { name: load_time,         display: "Load Time",     type: float, min: 0.05, max: 6.0,  default: 1.2, group: "Walk" }
+
+  # ---- Stigmergy. This group is what makes them ants rather than boids.
+  - { name: phero_gain,     display: "Trail Following", type: float, min: 0.0, max: 6.0,  default: 2.2, group: "Scent" }
+  # At 0 the colony is purely emergent and has to discover its own routes; at 1 it hugs the
+  # plan's network. The default is a weak attractor, so a trail exists from the first frame but
+  # the ants are still visibly steering on chemistry rather than following a rail.
+  - { name: trail_fidelity, display: "Route Affinity",  type: float, min: 0.0, max: 1.0,  default: 0.26, group: "Scent" }
+  - { name: antenna_spread, display: "Antenna Spread",  type: float, min: 0.1, max: 2.0,  default: 0.42, group: "Scent" }
+  - { name: antenna_reach,  display: "Antenna Reach",   type: float, min: 0.1, max: 2.5,  default: 0.78, group: "Scent" }
+  - { name: antenna_sweep,  display: "Antenna Sweep",   type: float, min: 0.0, max: 1.5,  default: 0.55, group: "Scent" }
+  - { name: antenna_rate,   display: "Antenna Rate",    type: float, min: 0.0, max: 12.0, default: 3.6, group: "Scent" }
+  - { name: deposit_food,   display: "Food Deposit",    type: float, min: 0.0, max: 8.0,  default: 2.4, group: "Scent" }
+  - { name: deposit_home,   display: "Home Deposit",    type: float, min: 0.0, max: 8.0,  default: 0.9, group: "Scent" }
+  - { name: deposit_radius, display: "Deposit Radius",  type: float, min: 0.2, max: 8.0,  default: 1.6, group: "Scent" }
+  # The single most important number in the system. Too long and every route the colony ever
+  # tried stays lit forever so it can never change its mind; too short and no trail survives
+  # long enough for a second ant to find it. Seconds to half strength.
+  - { name: evaporate,      display: "Scent Half-Life", type: float, min: 0.5, max: 120.0, default: 12.000000, group: "Scent" }
+  - { name: diffuse,        display: "Diffusion",       type: float, min: 0.0, max: 0.5,  default: 0.025, group: "Scent" }
+  - { name: saturation,     display: "Receptor Saturation", type: float, min: 0.0, max: 1.0, default: 0.45, group: "Scent" }
+  - { name: field_reset,    display: "Clear Field (hold)", type: bool, default: false,                    group: "Scent" }
+
+  # ---- STATIONS. The placed points from FM_Plan: emitters, attractors, repellers and sinks.
+  # FM_Plan decides where they are and what each one is; these are the colony-wide gains that
+  # say how hard the whole population listens to them.
+  - { name: station_gain,  display: "Station Pull",  type: float, min: 0.0, max: 4.0,  default: 1.0,  group: "Stations" }
+  # An ant does not pop into existence. Seconds to emerge at an emitter or dissolve into a sink;
+  # the renderer scales the body by it, so a release reads as ants coming up out of the ground.
+  - { name: emerge_time,   display: "Emerge Time",   type: float, min: 0.02, max: 3.0, default: 0.45, group: "Stations" }
+  # How strongly a freshly released ant is thrown along its emitter's aim before ordinary
+  # steering takes over. At 0 a release is a puff in all directions; high, it is a jet.
+  - { name: emit_impulse,  display: "Release Aim",   type: float, min: 0.0, max: 1.0,  default: 0.55, group: "Stations" }
+
+  # ---- The gait. Stride is authored and the step frequency is DERIVED from it; that is what
+  # makes a planted foot never need to slide.
+  - { name: stride_frac,  display: "Stride",        type: float, min: 0.10, max: 1.50, default: 0.52, group: "Gait" }
+  - { name: duty,         display: "Duty Factor",   type: float, min: 0.50, max: 0.85, default: 0.6, group: "Gait" }
+  - { name: step_height,  display: "Step Height",   type: float, min: 0.00, max: 0.60, default: 0.16, group: "Gait" }
+  - { name: body_ride,    display: "Body Ride",     type: float, min: 0.05, max: 1.00, default: 0.3, group: "Gait" }
+
+  # HOW LONG THE LEGS LOOK, as one number. It scales the whole stance — where every foot is
+  # planted and how far it may trail before it is picked up — and the renderer's bones follow it
+  # automatically, because they are derived from the hip-to-foot distance rather than authored
+  # separately. That coupling is the point: pull the feet in with fixed-length bones and the
+  # knees jut FURTHER, because there is more surplus to absorb, and the animal gets MORE
+  # spidery, not less.
+  #
+  # 1.0 is a fire ant's tight stance, about 1.25 body lengths across the widest pair. Above about
+  # 1.3 it stops being an ant.
+  - { name: leg_spread,   display: "Leg Length",    type: float, min: 0.55, max: 1.60, default: 1.0, group: "Gait" }
+  - { name: gait_rate,    display: "Chart Interval", type: float, min: 0.004, max: 0.10, default: 0.016, group: "Gait" }
+  # Past this, a planted tarsus is scuffing rather than standing, and both the chart and the
+  # readout turn alarm red.
+  # ABSOLUTE MILLIMETRES, deliberately — it is a measured distance and expressing it as a
+  # fraction would hide what it is. That does mean it has to be re-tuned when the animal
+  # changes size: 0.35 was 8% of a 4.2 mm worker and is a quarter of a 1.5 mm one, so at the
+  # new body length the old default lit every bar on the gait chart red and the alarm stopped
+  # carrying any information at all. 0.12 is the same 8%.
+  - { name: slip_alarm,   display: "Slip Alarm",    type: float, min: 0.005, max: 2.0, default: 0.12, group: "Gait" }
+
+  # ---- Contact shadows. They live here now rather than in FM_Render, because this is the node
+  # that owns the bucket grid that makes them affordable. Six extra projections per ant per
+  # texel, and they are what makes the ants stand on the ground rather than hover.
+  - { name: foot_shadows, display: "Foot Shadows", type: bool, default: true, group: "Shadow" }
+
+  # ---- Preview
+  - { name: field_gain, display: "Field Gain", type: float, min: 0.0, max: 8.0, default: 0.55, group: "Preview" }
+  - { name: show_feet,  display: "Feet",       type: bool,  default: true,                     group: "Preview" }
+  - { name: foot_all,   display: "All Feet",   type: bool,  default: true,                     group: "Preview" }
+
+passes:
+  # The clock. Reads NOTHING any downstream pass writes, or the dependency scheduler has a cycle
+  # to resolve: walk depends on the clock and writes `ants`, so a clock that read `ants` could
+  # not be ordered at all.
+  - name: ctl
+    shader: ctl.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "data:0" }
+    output: "buffer:cctl"
+
+  # THE BUCKET GRID. One thread per cell, each looping the population and keeping the ants that
+  # fall in it. 560 cells over 9 groups of 64.
+  #
+  # It reads `ants`, so the scheduler places it AFTER walk and walk therefore reads the grid as
+  # it was left last cook. That is deliberate and it is the same one-cook feedback the field has
+  # always run on: pher likewise reads `ants` and is read by walk. A neighbourhood 16 ms out of
+  # date, for animals moving at 22 mm/s, is wrong by a third of a tenth of a body width.
+  - name: grid
+    shader: grid.hlsl
+    target: cs_5_0
+    dispatch: [9, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "buffer:ants" }
+      - { slot: 2, source: "data:0" }
+    output: "buffer:agrid"
+
+  # THE STATIONS. Single threaded on purpose: it is the one pass that can see the whole
+  # population at once, which is what lets it hand out dormant slots to competing emitters
+  # without atomics and without two of them claiming the same ant.
+  - name: sta
+    shader: sta.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "buffer:cctl" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:ants" }
+    # `stations` is NOT bound as an input. It is read and written through the UAV, the way ctl
+    # reads its own clock. Binding the same structured buffer as an SRV and a UAV in one pass
+    # nulls the SRV and the shader reads zeros with no error anywhere — every accumulator would
+    # silently restart at zero each cook and the emitters would simply never fire.
+    output: "buffer:stations"
+
+  # The chemical memory. Deposit is still a gather and still needs no atomics — but it now asks
+  # the GRID rather than the population, because every texel asking every one of 1024 ants is
+  # 63 M tests and the same answer.
+  - name: pher
+    shader: pher.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:pher" }
+      - { slot: 1, source: "buffer:agrid" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:cctl" }
+    output: "buffer:pher"
+
+  # One thread per ant, 16 groups of 64. The exact groupshared neighbourhood could not survive
+  # the group split — groupshared does not span groups — so separation asks the grid instead.
+  - name: walk
+    shader: walk.hlsl
+    target: cs_5_0
+    dispatch: [2, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "buffer:cctl" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:pher" }
+      - { slot: 4, source: "buffer:agrid" }
+      - { slot: 5, source: "buffer:stations" }
+    output: "buffer:ants"
+
+  # Ordered after walk by BUFFER DEPENDENCY (it reads `ants`), not by manifest order.
+  - name: gait
+    shader: gait.hlsl
+    target: cs_5_0
+    dispatch: [2, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "buffer:cctl" }
+      - { slot: 2, source: "buffer:ants" }
+    output: "buffer:feet"
+
+  - name: meas
+    shader: meas.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "buffer:cctl" }
+      - { slot: 2, source: "buffer:ants" }
+      - { slot: 3, source: "buffer:feet" }
+      - { slot: 4, source: "data:0" }
+    output: "buffer:meas"
+
+  - name: hist
+    shader: hist.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "buffer:cctl" }
+      - { slot: 2, source: "buffer:ants" }
+      - { slot: 3, source: "buffer:feet" }
+    output: "buffer:ghist"
+
+  # THE CONTACT SHADOWS. Ordered after gait by buffer dependency (it reads `feet`).
+  #
+  # This used to be a per-pixel loop in FM_Render. At 1024 ants that is 943 M iterations a
+  # frame, and the answer never depended on the camera in the first place — a contact shadow on
+  # a flat plane is a property of the arena. Computed once here, where the bucket grid makes the
+  # query local, and sampled by whoever needs it.
+  - name: shad
+    shader: shad.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 1, source: "buffer:agrid" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:ants" }
+      - { slot: 4, source: "buffer:feet" }
+    output: "buffer:shadf"
+
+  # The shadow field's PUBLISHER. `shad` above writes a buffer and therefore has no SRV of its
+  # own; naming it in `outputs:` gives a pin that is permanently hollow and consumers silently
+  # sample whatever was bound last. See shad_out.hlsl for what that looked like.
+  - name: shad_out
+    shader: shad_out.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:shadf" }
+
+  # Publishes the scent in rgb AND the live colony as oriented ticks in alpha. The tick layer is
+  # baked here, where the bucket grid makes the query local, rather than by FM_Stage's plan view
+  # — which would otherwise loop 1024 ants for every pixel of a 1280x720 frame.
+  - name: field_out
+    shader: field_out.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:pher" }
+      - { slot: 1, source: "buffer:agrid" }
+      - { slot: 2, source: "data:0" }
+      - { slot: 3, source: "buffer:ants" }
+
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:ants" }
+      - { slot: 1, source: "buffer:feet" }
+      - { slot: 2, source: "buffer:meas" }
+      - { slot: 3, source: "data:0" }
+      - { slot: 4, source: "buffer:pher" }
+      - { slot: 5, source: "buffer:ghist" }
+
+data_outputs:
+  - name: "Ants"
+    buffer: "ants"
+    schema: *antschema
+  - name: "Feet"
+    buffer: "feet"
+    schema: *footschema
+
+# Measured, never restated. These are what FM_Plan's flow strip draws in its reserved live
+# colour, and the only reason it is allowed to.
+control_outputs:
+  - { name: traffic, buffer: meas, element: 0, field_offset: 0,  description: "Ants currently walking" }
+  - { name: laden,   buffer: meas, element: 0, field_offset: 4,  description: "Fraction of the colony carrying" }
+  - { name: speed,   buffer: meas, element: 0, field_offset: 8,  description: "Mean body speed, mm/s" }
+  - { name: slip,    buffer: meas, element: 0, field_offset: 12, description: "Mean per-step foot slip, mm" }
+  - { name: lane0,   buffer: meas, element: 0, field_offset: 16, description: "Share of walking ants on lane 0" }
+  - { name: lane1,   buffer: meas, element: 0, field_offset: 20, description: "Share of walking ants on lane 1" }
+  - { name: lane2,   buffer: meas, element: 0, field_offset: 24, description: "Share of walking ants on lane 2" }
+  - { name: lane3,   buffer: meas, element: 0, field_offset: 28, description: "Share of walking ants on lane 3" }
+  # The pool. Element FM_STA_SUM (16) of the stations buffer is a summary, not a station; see
+  # sta.hlsl for the field map. These are what FM_Plan's station readout draws, and they are
+  # measurements of the running colony rather than restatements of ant_count.
+  - { name: pool_dormant, buffer: stations, element: 16, field_offset: 0,  description: "Free ant slots no emitter has released" }
+  - { name: pool_active,  buffer: stations, element: 16, field_offset: 4,  description: "Ants currently on the plate" }
+  - { name: sta_active,   buffer: stations, element: 16, field_offset: 8,  description: "Stations switched on" }
+  - { name: sta_released, buffer: stations, element: 16, field_offset: 12, description: "Ants released this cook" }
+
+outputs:
+  - { name: "Colony View", pass: canvas }
+  - { name: "Field", pass: field_out }
+  # Sampled by FM_Render's sweep. Arena-space. Published by the BLIT, never by `shad` itself —
+  # a buffer-writing pass has no SRV and the pin would be hollow.
+  - { name: "Shadow", pass: shad_out }

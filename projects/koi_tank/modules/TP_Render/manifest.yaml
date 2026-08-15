@@ -1,6 +1,7 @@
 name: "TP Render"
-version: "0.3"
+version: "0.4"
 mode: generator
+compile_optimization: fast_compile
 resolution: [1280, 720]
 
 # TWO DIFFERENT FORMATS, AND THE DISTINCTION IS LOAD-BEARING.
@@ -28,6 +29,16 @@ buffers:
   # Element 0 publishes the water pick. Element 1 owns pointer-button routing so ABI-v1 generic
   # drag gestures cannot confuse camera RMB movement with a water LMB stroke.
   - { name: pick, structured: true, element_size: 16, element_count: 2, persistent: true }
+
+  # The expensive march runs once into a shared image. Program and Scope read
+  # the same pixels, depth, and injected camera, so their registration cannot drift.
+  - { name: beauty, format: RGBA16F, scale: 1.0 }
+
+  # Scope accumulation uses two parity halves with six channels, plus one
+  # element for the producer/consumer parity handshake.
+  - { name: acc,   structured: true, element_size: 4,  element_count: 11059201 }
+  - { name: trail, structured: true, element_size: 16, element_count: 1024, persistent: true }
+  - { name: sctl,  structured: true, element_size: 32, element_count: 1, persistent: true }
 
 inputs:
   - { name: "Surface",  slot: 0, required: true }
@@ -293,6 +304,32 @@ parameters:
   - { name: depth_near,  display: "Depth Near (view)",  type: float, min: 0.0, max: 40.0,  default: 2.0,  group: "Quality" }
   - { name: depth_far,   display: "Depth Far (view)",   type: float, min: 0.1, max: 60.0,  default: 9.0,  group: "Quality" }
 
+  # ---- Scope. Both outputs share this Module's internal camera exactly.
+  - { name: explode,     display: "Explode",       type: float, min: 0.0, max: 1.0, default: 0.0,  group: "Scope" }
+  - { name: scope_mix,   display: "Overlay Mix",   type: float, min: 0.0, max: 1.0, default: 1.0,  group: "Scope" }
+  - { name: beauty_dim,  display: "Beauty Dim",    type: float, min: 0.0, max: 1.0, default: 1.0,  group: "Scope" }
+
+  - { name: show_cage,   display: "Tank Cage",     type: bool,  default: true, group: "Scope Layers" }
+  - { name: show_caus,   display: "Caustic Plate", type: bool,  default: true, group: "Scope Layers" }
+  - { name: show_surf,   display: "Surface Plate", type: bool,  default: true, group: "Scope Layers" }
+  - { name: show_vec,    display: "Fish Vectors",  type: bool,  default: true, group: "Scope Layers" }
+  - { name: show_trail,  display: "Trails",        type: bool,  default: true, group: "Scope Layers" }
+  - { name: show_fcast,  display: "Forecast",      type: bool,  default: true, group: "Scope Layers" }
+  - { name: show_gizmo,  display: "Fish Gizmos",   type: bool,  default: true, group: "Scope Layers" }
+  - { name: gizmo_size,  display: "Gizmo Size",    type: float, min: 0.0, max: 6.0, default: 1.6, group: "Scope Layers" }
+
+  - { name: line_width,  display: "Line Width",     type: float, min: 0.5, max: 6.0, default: 1.4, group: "Scope Line" }
+  - { name: line_gain,   display: "Line Gain",      type: float, min: 0.0, max: 8.0, default: 2.2, group: "Scope Line" }
+  - { name: occlude,     display: "See-Through",    type: float, min: 0.0, max: 1.0, default: 0.28, group: "Scope Line" }
+  - { name: trail_rate,  display: "Trail Interval", type: float, min: 0.01, max: 0.5, default: 0.06, group: "Scope Line" }
+  - { name: trail_fade,  display: "Trail Fade",     type: float, min: 0.0, max: 1.0, default: 0.75, group: "Scope Line" }
+  - { name: fcast_time,  display: "Forecast Time",  type: float, min: 0.0, max: 4.0, default: 1.4, group: "Scope Line" }
+
+  - { name: ink_struct,  display: "Structure Ink", type: color, default: [0.30, 0.72, 0.95], group: "Scope Palette" }
+  - { name: ink_measure, display: "Measured Ink",  type: color, default: [1.00, 0.62, 0.18], group: "Scope Palette" }
+  - { name: ink_predict, display: "Predicted Ink", type: color, default: [0.62, 0.34, 0.98], group: "Scope Palette" }
+  - { name: plate_gain,  display: "Plate Gain", type: float, min: 0.0, max: 4.0, default: 1.15, group: "Scope Palette" }
+
 passes:
   # Must run before the march so the contact ring is drawn at this cook's pick, not the last.
   - name: pick
@@ -327,6 +364,57 @@ passes:
       - { slot: 2, source: "input:0" }
       - { slot: 3, source: "input:1" }
       - { slot: 4, source: "data:0" }        # School -> t4
+    output: "buffer:beauty"
+
+  - name: tick
+    shader: tick.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:sctl"
+
+  - name: trail
+    shader: trail.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 16
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "buffer:sctl" }
+      - { slot: 2, source: "data:0" }        # School -> t2
+    output: "buffer:trail"
+
+  - name: splat
+    shader: splat.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    thread_group_x: 256
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:beauty" }
+      - { slot: 1, source: "buffer:sctl" }
+      - { slot: 2, source: "data:0" }        # School -> t2
+      - { slot: 3, source: "data:1" }        # Plan   -> t3
+      - { slot: 4, source: "buffer:trail" }
+    output: "buffer:acc"
+
+  - name: program
+    shader: program.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:beauty" }
+
+  - name: scope
+    shader: draw.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:beauty" }
+      - { slot: 1, source: "buffer:sctl" }
+      - { slot: 2, source: "buffer:acc" }
+      - { slot: 3, source: "data:1" }        # Plan     -> t3
+      - { slot: 4, source: "input:0" }       # Surface  -> t4
+      - { slot: 5, source: "input:1" }       # Caustics -> t5
 
 control_outputs:
   # These drive TP_Sim's ext_u / ext_v / ext_down through expressions. That is what turns a drag
@@ -336,4 +424,5 @@ control_outputs:
   - { name: pick_down, buffer: pick, element: 0, field_offset: 8,  description: "1 while the pointer is pushing the water" }
 
 outputs:
-  - { name: "Beauty", pass: march }
+  - { name: "Program", pass: program }
+  - { name: "Scope",   pass: scope }

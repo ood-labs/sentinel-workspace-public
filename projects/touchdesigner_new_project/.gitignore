@@ -1,9 +1,0 @@
-# Local captures and generated proof bundles.
-/*.png
-/assets/
-/proof/
-
-# Repeated bundle saves can create collision-suffixed copies. The project is
-# normalized to the canonical module and image paths before publication.
-/modules/*_1/
-/images/*_1.jpg

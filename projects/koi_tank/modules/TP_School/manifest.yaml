@@ -21,7 +21,7 @@ buffers:
   - { name: school, structured: true, element_size: 64, element_count: 16, persistent: true }
   - { name: sctl,   structured: true, element_size: 32, element_count: 1,  persistent: true }
   # This node's own trail history, for its own preview. See the header of trail.hlsl for why it
-  # is private rather than shared with TP_Scope's.
+  # is private rather than shared with the renderer's Scope pass.
   - { name: trail,  structured: true, element_size: 16, element_count: 1024, persistent: true }
 
 state_buffers:

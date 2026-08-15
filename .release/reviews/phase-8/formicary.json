@@ -1,0 +1,34 @@
+{
+  "project": "projects/formicary/formicary.sentinel",
+  "source_commit": "pending phase-8 content commit",
+  "assembly": "Added to the curated public seed with a hard 128-ant capacity.",
+  "promoted_paths": [
+    "projects/formicary/README.md",
+    "projects/formicary/formicary.sentinel",
+    "projects/formicary/modules/"
+  ],
+  "approved_structure": {
+    "pipelines": [
+      "FM_Audio",
+      "FM_Bands",
+      "FM_Plan",
+      "FM_Colony",
+      "FM_Render",
+      "FM_Scope",
+      "FM_Post",
+      "FM_Stage"
+    ],
+    "scene_groups": 0,
+    "group_outputs": 0,
+    "hard_ant_ceiling": 128,
+    "notes": "The public profile preserves the full colony, station, gait, camera, scope, and macro-lens systems while reducing fixed simulation and draw capacity."
+  },
+  "compile": {
+    "method": "Live DIST compile and offline compile checks through Sentinel MCP",
+    "status": "pending live proof"
+  },
+  "runtime": {
+    "status": "pending live proof"
+  },
+  "validation": "Pending phase-8 official-example validation and public-release audit."
+}

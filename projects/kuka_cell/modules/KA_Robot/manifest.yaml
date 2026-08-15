@@ -1,0 +1,229 @@
+name: "KA Robot"
+version: "0.1"
+mode: generator
+resolution: [1280, 720]
+
+# The renderer. Consumes KA_Cell's placement records and KA_Pose's joint angles and draws the
+# machines. It decides NOTHING about where anything is or what it is doing.
+#
+# Sentinel's native internal camera, per knowledge/internal-camera-template.md. The 3D solve
+# runs ONCE into buffer:beauty; the program pass blits it and the scope pass annotates it, so
+# both receive identical injected camera state and the overlay cannot drift out of registration
+# at any distance. The scope output is kept off the image path on purpose.
+
+features: [camera]
+
+viewport:
+  hint: "RMB look, WASD move, wheel speed — R toggles the Scope"
+  interactions: [camera, events]
+  input:
+    keyboard: [r]
+  bindings:
+    - { key: r, action: toggle_scope, label: "Program / Scope" }
+
+buffers:
+  # scale is not optional: without it the buffer is not at the module's resolution and the two
+  # reading passes compute different grids
+  - { name: beauty, format: RGBA16F, scale: 1.0 }
+  - { name: ui, structured: true, element_size: 32, element_count: 1, persistent: true }
+
+state_buffers:
+  - name: ui
+    max_elements: 1
+    schema:
+      - { name: shown, type: float }
+      - { name: prevParam, type: float }
+      - { name: init, type: float }
+      - { name: timer, type: float }
+      - { name: prevTouch, type: float }
+      - { name: s1, type: float }
+      - { name: s2, type: float }
+      - { name: s3, type: float }
+
+data_inputs:
+  - name: "Cell"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: yaw, type: float }
+      - { name: grp, type: float }
+      - { name: kind, type: float }
+      - { name: bias, type: float }
+      - { name: seed, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+      - { name: spare, type: float }
+  - name: "Pose"
+    slot: 1
+    schema:
+      - { name: tool, type: float3 }
+      - { name: alarm, type: float }
+      - { name: elbow, type: float3 }
+      - { name: live, type: float }
+      - { name: a1, type: float }
+      - { name: a2, type: float }
+      - { name: a3, type: float }
+      - { name: a4, type: float }
+      - { name: a5, type: float }
+      - { name: a6, type: float }
+      - { name: chan, type: float }
+      - { name: ph, type: float }
+  - name: "Rally"
+    slot: 2
+    schema:
+      - { name: pos, type: float3 }
+      - { name: radius, type: float }
+      - { name: vel, type: float3 }
+      - { name: role, type: float }
+      - { name: spin, type: float3 }
+      - { name: power, type: float }
+      - { name: a1, type: float }
+      - { name: a2, type: float }
+      - { name: a3, type: float }
+      - { name: a4, type: float }
+      - { name: a5, type: float }
+      - { name: a6, type: float }
+      - { name: strikerIdx, type: float }
+      - { name: lastIdx, type: float }
+      - { name: rallyCount, type: float }
+      - { name: serveTimer, type: float }
+      - { name: aimIdx, type: float }
+      - { name: dropFlag, type: float }
+
+parameters:
+  # ---- QUALITY LADDER. These four are the entire cost story and nothing else belongs in the
+  # ladder preset. The manifest defaults are the LIVE rung: a project that opens too heavy to
+  # touch is a broken deliverable. Hero is capture-only.
+  - { name: march_steps,  display: "March Steps",  type: int,   min: 24, max: 260, default: 88,  group: "Quality" }
+  - { name: shadow_steps, display: "Shadow Steps", type: int,   min: 0,  max: 64,  default: 16,  group: "Quality" }
+  - { name: ao_samples,   display: "AO Samples",   type: int,   min: 0,  max: 8,   default: 4,   group: "Quality" }
+  - { name: max_dist,     display: "Max Distance", type: float, min: 15.0, max: 220.0, default: 75.000000, group: "Quality" }
+
+  # ---- structural exploration axes
+  - name: light_rig
+    display: "Light Rig"
+    type: enum
+    options: [Studio, Hard Key, Rim Cage, Overcast]
+    default: 0
+    flags: button_grid
+    group: "Look"
+  - name: ground_kind
+    display: "Ground"
+    type: enum
+    options: [Studio Sweep, Dark Deck, Grid Hall, Void]
+    default: 0
+    flags: button_grid
+    group: "Look"
+  - name: livery
+    display: "Livery"
+    type: enum
+    options: [KUKA Orange, Graphite, Signal Yellow, Bone, Anodised Blue]
+    default: 0
+    flags: button_grid
+    group: "Look"
+  - { name: cable_dress, display: "Cable Dressing", type: float, min: 0.0, max: 1.0, default: 1.000000, group: "Look" }
+  - { name: wear,        display: "Cast Texture",   type: float, min: 0.0, max: 1.0, default: 0.45, group: "Look" }
+
+  - { name: exposure, display: "Exposure", type: float, min: -3.0, max: 3.0, default: 0.000000, group: "Grade" }
+  - { name: contrast, display: "Contrast", type: float, min: 0.5,  max: 2.0, default: 1.05, group: "Grade" }
+
+  - { name: scope_on, display: "Scope Marks", type: float, min: 0.0, max: 1.0, default: 1.000000, group: "Scope" }
+
+  # AUTO CYCLE — leave it running on a screen and it alternates the render and the instrument by
+  # itself. R still works while it is on: a press flips the view immediately and restarts the
+  # dwell rather than truncating it, so a hand on the key never produces a half-length look.
+  #
+  # Scope Share splits the period asymmetrically on purpose. The two views are not worth equal
+  # time — the render is the thing itself and the instrument answers a question about it — so a
+  # long look at the machines with a short diagnostic interruption reads far better than a
+  # metronome. 0.35 gives roughly a third of the cycle to the marks.
+  - name: scope_auto
+    display: "Auto Cycle"
+    type: enum
+    options: [Off, Timed, On Volley]
+    default: 2
+    flags: button_grid
+    group: "Scope"
+  - { name: scope_cycle, display: "Cycle Seconds", type: float, min: 2.0, max: 14.0, default: 7.0, group: "Scope" }
+  - { name: scope_duty,  display: "Scope Share",   type: float, min: 0.05, max: 0.95, default: 0.35, group: "Scope" }
+  # On Volley only: how many contacts between cuts. 1 cuts on every touch, which is right for a
+  # slow rally and far too busy once the ball is moving between neighbours; 2 or 3 lets a phrase
+  # play out. Whole numbers — this counts hits, it does not interpolate between them.
+  - { name: scope_hits,  display: "Hits Per Cut",  type: float, min: 1.0, max: 8.0, default: 2.0, group: "Scope" }
+
+  # THE UNDERLAY, which at these defaults is simply THE PROGRAM IMAGE.
+  #
+  # The scope used to build its own ground with its own tone curve — Reinhard, where the Program
+  # pass runs ACES plus contrast — so no combination of these two sliders could produce "the
+  # render with marks on it". It was always a different picture, not the same picture annotated.
+  # The underlay is now graded by the identical path program.hlsl uses, and these pull AWAY from
+  # it: at 1.0 they do nothing and you get the Program output with marks laid over it.
+  #
+  # Pull them down when the marks have to survive a bright or busy render; leave them up when you
+  # want the image itself.
+  - { name: scope_dim, display: "Underlay Level", type: float, min: 0.05, max: 1.0, default: 1.000000, group: "Scope" }
+  - { name: scope_sat, display: "Underlay Colour", type: float, min: 0.0, max: 1.0, default: 1.000000, group: "Scope" }
+  # Line thickness for every stroke, ring and arrowhead in the overlay, applied at the single
+  # point they all pass through so the diagram stays internally consistent at any weight.
+  - { name: scope_weight, display: "Mark Weight", type: float, min: 0.4, max: 4.0, default: 1.40, group: "Scope" }
+
+  # THE MARKS. Instrument doctrine says mostly monochrome with hue reserved for information, and
+  # at Mark Colour 0 that is exactly what you get — the grey-and-amber the rest of this project
+  # is drawn in. Above 0 each mark type takes a hue of its OWN, which is still information rather
+  # than decoration: the trajectory, the velocity and the contact become separable at a glance
+  # instead of by tracing lines. Dial it to taste; the whole range is legible.
+  #
+  # Hue is assigned by WHAT THE MARK MEANS, so the assignment survives a palette change: the
+  # predicted arc is always the "future" hue, the velocity always the "now" hue, and the contact
+  # keeps the accent because it is the one thing being decided.
+  # 0.70 ships because it is where the hues are unmistakable while the diagram still reads as an
+  # instrument rather than as a chart. Below about 0.4 the marks blend toward the grey theme and
+  # the distinctions go pastel; at 1.0 they are full ink, which is the right setting for a
+  # projector or a photograph and slightly loud on a monitor.
+  - { name: scope_hue, display: "Mark Colour", type: float, min: 0.0, max: 1.0, default: 1.000000, group: "Scope" }
+  - name: scope_palette
+    display: "Mark Palette"
+    type: enum
+    options: [Pure, Signal, Chalk, Blueprint]
+    default: 0
+    flags: button_grid
+    group: "Scope"
+
+passes:
+  # One thread, before anything is drawn: turn this cook's viewport events into durable state.
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ui"
+    inputs:
+      - { slot: 0, source: "data:2" }      # the rally, for the per-volley cut
+  - name: march
+    shader: render.hlsl
+    target: cs_5_0
+    output: "buffer:beauty"
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+  - name: program
+    shader: program.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:beauty" }
+  - name: scope
+    shader: scope.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:beauty" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+      - { slot: 3, source: "data:2" }
+      - { slot: 4, source: "buffer:ui" }
+
+outputs:
+  - { name: "Program", pass: program }
+  - { name: "Scope",   pass: scope }

@@ -1,0 +1,85 @@
+name: "LT Trace"
+version: "0.1"
+mode: generator
+execution: on_dirty
+resolution: [768, 432]
+
+# The physics node. Consumes LT_Bench's records, publishes the traced spectral paths, and decides
+# nothing about the bench. Every parameter here buys QUALITY, never look — which is what makes the
+# quality ladder preset a clean trade rather than a style change.
+
+buffers:
+  - { name: paths, structured: true, element_size: 52, element_count: 53761, persistent: false }
+
+data_inputs:
+  - name: "Bench"
+    slot: 0
+    schema:
+      - { name: p0,     type: float2 }
+      - { name: p1,     type: float2 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tone,   type: float }
+      - { name: seed,   type: float }
+      - { name: hdg,    type: float }
+      - { name: r0,     type: float }
+      - { name: r1,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: par,    type: float }
+      - { name: att,    type: float }
+      - { name: dev,    type: float }
+      - { name: z,      type: float }
+      - { name: gen,    type: float }
+      - { name: wl0,    type: float }
+      - { name: wl1,    type: float }
+
+parameters:
+  # THE QUALITY LADDER. Quality is bought along the WAVELENGTH axis first, because that is the
+  # axis the image is about: two more wavelengths beat four times the rays at a fraction of the
+  # cost. Defaults are a rung you can comfortably work in, never the top one.
+  - { name: wave_count,   display: "Wavelengths",  type: int, min: 2, max: 32, default: 20, group: "Quality" }
+  - { name: ray_count,    display: "Rays / Source", type: int, min: 1, max: 40, default: 12,  group: "Quality" }
+  - { name: max_events,   display: "Bounces",      type: int, min: 2, max: 14, default: 7,  group: "Quality" }
+  # 1 = the fan only. 2 adds the bright undispersed specular off the first glass face — the beam
+  # heading upper-right in the reference. 3 adds the weak secondary fan from the internal
+  # reflection at the exit face. All three are visible in the photograph.
+  - { name: branch_count, display: "Light Paths",  type: int, min: 1, max: 3,  default: 3,  group: "Quality" }
+
+passes:
+  - name: trace
+    shader: trace.hlsl
+    target: cs_5_0
+    time_dependent: false
+    dispatch: [60, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:paths"
+    inputs:
+      - { slot: 0, source: "data:0" }
+  - name: scope
+    shader: scope.hlsl
+    target: cs_5_0
+    time_dependent: false
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:paths" }
+
+data_outputs:
+  - name: "Paths"
+    buffer: "paths"
+    schema:
+      - { name: a,      type: float2 }
+      - { name: b,      type: float2 }
+      - { name: wl,     type: float }
+      - { name: power,  type: float }
+      - { name: evt,    type: float }
+      - { name: evtEnd, type: float }
+      - { name: lane,   type: float }
+      - { name: depth,  type: float }
+      - { name: elem,   type: float }
+      - { name: dev,    type: float }
+      - { name: ior,    type: float }
+
+outputs:
+  - { name: "Scope", pass: scope }

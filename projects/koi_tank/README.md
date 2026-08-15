@@ -27,8 +27,7 @@ Open `koi_tank.sentinel`. The Program output is `TP_Post`.
 | `TP_Sim` | The water simulation with live pointer injection. |
 | `TP_Caustics` | Photon caustics splatted onto the unfolded tank interior. |
 | `TP_School` | School authority: where the koi are, where they point, how hard they swim. |
-| `TP_Render` | Optics and the internal camera. |
-| `TP_Scope` | Exploded instrument overlay; depth-composited 3D, draws nothing of its own. |
+| `TP_Render` | Optics, the internal camera, and the depth-aligned Scope output. |
 | `TP_Post` | FXAA, chromatic aberration, bloom, grade. |
 | `TP_Flicker` | Delivered-pixel temporal probe; diagnostic only. |
 
@@ -49,14 +48,17 @@ TP_Plan ──(Plan records)──┬──────────────�
 | `TP_Sim` | the water surface: a damped wave equation over the tank footprint, plus live pointer injection. |
 | `TP_Caustics` | where the sun goes after it enters the water, splatted onto an unfolded tank interior. |
 | `TP_School` | the koi: flocking, envelope, per-fish drifting depth, tail beat. Publishes records; decides nothing about how they look. |
-| `TP_Render` | optics. Owns Sentinel's internal camera. Decides nothing about the composition. |
-| `TP_Scope` | the exploded instrument view. Draws nothing of its own; every mark stands for a number another node published. |
+| `TP_Render` | optics and Sentinel's internal camera. Its Program and Scope passes share one marched image and one exact viewpoint. |
 | `TP_Post` | FXAA, lateral chromatic aberration, bloom, grade. |
 | `TP_Flicker` | an independent delivered-pixel temporal probe; diagnostic only, never part of the image path. |
 
 The loop from `TP_Render` back to `TP_Sim` runs through **control outputs and expressions**, not
 a data link, so there is no cycle in the graph — only a one-frame delay, which for water is
 nothing. `TP_Sim`'s measured `wave_peak` returns to `TP_Plan` the same way.
+
+`TP_Post` consumes the clean `TP_Render / Program` output. `TP_Render / Scope` is the secondary
+instrument pass. It annotates the same HDR image and linear depth produced by the renderer, so
+camera motion, viewport interaction, depth tests, and overlays stay registered in the same cook.
 
 ---
 
@@ -136,6 +138,11 @@ which is why it is roughly an order of magnitude cheaper than an SDF scene of th
 would be. Hero is still labelled capture-only because it buys nothing in motion; Q1 Live is the
 manifest default and the near-left grazing region is visibly cleaner at Q2 and above.
 
+`TP_Render` opts into `compile_optimization: fast_compile` because its large analytic march is an
+optimizer bottleneck. The measured cold compile fell from about 94 seconds to about 9 seconds on
+the release workstation. Shader-cache reloads measured about 13 milliseconds. Profile live GPU
+frame time on the target machine before changing this policy or raising the quality preset.
+
 ---
 
 ## Traps found here, worth not rediscovering
@@ -156,15 +163,11 @@ number, just one scaled by a fish position, so it tracked at frame centre and dr
 else, which reads as a broken projection rather than a wiring error. Check EVERY pass after adding
 a data input, not only the one being edited.
 
-**`camera_ref` disables authored viewport interaction.** With an external camera the host takes
-over the viewport pointer events, and a Module reducer correctly skips anything flagged
-`HOST_CONSUMED`, so click-to-ripple stopped working with nothing in health or logs to say why. Two
-renderers needing one viewpoint is a real requirement, but the fix is to let the interactive node
-keep its internal camera and drive the follower's camera PARAMETERS by expression. Mirror the
-inputs (target, distance, yaw, pitch, fov, near, far) and set `camera_mode` as a plain value:
-mirroring the derived `camera_pos_*` fights the follower's own orbit solver, and leaving the
-follower in Fly mode while the leader is in Orbit gives a mismatch subtle enough to look like a
-projection bug.
+**Camera-dependent views belong in one Module.** The former `TP_Scope` node mirrored
+`TP_Render` camera parameters with expressions. That introduced one cook of lag while moving the
+camera and created two camera solvers that could disagree. Program and Scope now run as passes in
+`TP_Render`, read one shared beauty buffer, and use the same injected camera matrices. This also
+keeps click-to-ripple active because the renderer retains ownership of its viewport events.
 
 **Never draw a ring buffer's wrap seam.** Walking back N slots gives N-1 consecutive pairs; the
 Nth joins oldest directly to newest and draws a chord across the whole trail. Culling it by length

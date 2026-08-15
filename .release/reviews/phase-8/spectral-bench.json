@@ -1,0 +1,29 @@
+{
+  "project": "projects/spectral_bench/spectral_bench.sentinel",
+  "source_commit": "pending phase-8 content commit",
+  "assembly": "Added to the curated public seed as the interactive spectral-optics example.",
+  "promoted_paths": [
+    "projects/spectral_bench/README.md",
+    "projects/spectral_bench/spectral_bench.sentinel",
+    "projects/spectral_bench/modules/"
+  ],
+  "approved_structure": {
+    "pipelines": [
+      "LT_Bench",
+      "LT_Trace",
+      "LT_Field",
+      "LT_Lens"
+    ],
+    "scene_groups": 1,
+    "group_outputs": 0,
+    "notes": "Bench editing remains responsive while the expensive trace and field nodes retain output and idle between real changes. The lens remains continuous for film grain."
+  },
+  "compile": {
+    "method": "Offline compile checks through Sentinel MCP",
+    "status": "All four modules passed offline compile checks; LT_Trace and LT_Field reported on_dirty execution."
+  },
+  "runtime": {
+    "status": "pending live proof"
+  },
+  "validation": "The targeted official-example validator passed with portable=true and no dependency, orphan, unused-file, license, or path findings."
+}

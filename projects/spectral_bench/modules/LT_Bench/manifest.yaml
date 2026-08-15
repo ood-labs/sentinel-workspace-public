@@ -1,0 +1,218 @@
+name: "LT Bench"
+version: "0.1"
+mode: generator
+resolution: [900, 1000]
+
+# The plan authority for spectral_bench. Owns BENCH SPACE and is the only node that decides where
+# anything sits or what it is. Publishes one record buffer consumed by LT_Trace and LT_Field.
+#
+# Presented as a Canvas so the editor gets every pixel of its dock. `follow_panel` keeps the
+# module's real extent equal to the panel's, which is what makes normalized pointer coordinates,
+# this canvas's pixels and the pick maths the same numbers.
+panel:
+  mode: canvas
+  output: "Plan View"
+  resolution: follow_panel
+
+buffers:
+  - { name: plan,  structured: true, element_size: 80, element_count: 77,  persistent: true }
+  # 12 emitters x 32 wavelengths x 14 segments. One chief block PER SOURCE, so the plan can draw
+  # every beam on the bench; the rail picks one block out of it with `Rail Source`.
+  - { name: chief, structured: true, element_size: 52, element_count: 5376, persistent: false }
+
+state_buffers:
+  - name: plan
+    max_elements: 77
+    schema:
+      - { name: p0,     type: float2 }
+      - { name: p1,     type: float2 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tone,   type: float }
+      - { name: seed,   type: float }
+      - { name: hdg,    type: float }
+      - { name: r0,     type: float }
+      - { name: r1,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: par,    type: float }
+      - { name: att,    type: float }
+      - { name: dev,    type: float }
+      - { name: z,      type: float }
+      - { name: gen,    type: float }
+      - { name: wl0,    type: float }
+      - { name: wl1,    type: float }
+
+viewport:
+  hint: "A add element · S add source · D delete · 0 clear the whole bench · click select · drag move · right-drag (or shift-drag) rotate · wheel size · K kind · M glass · P prism back to auto · X on/off · N re-roll · R reseed · C deselect"
+  interactions: [events]
+  input:
+    pointer: [left, right, wheel]
+    keyboard: [k, m, p, x, n, r, c, g, h, a, s, d, "0"]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click,  action: select,   label: "Select element or source" }
+    - { gesture: left_drag,   action: move,     label: "Move along the bench" }
+    - { gesture: right_drag,  action: rotate,   label: "Rotate — or shift+left-drag. Takes a prism off auto; P restores it" }
+    - { gesture: wheel,       action: resize,   label: "Resize selection" }
+    - { key: a, action: add_element,    label: "Add an optical element at the cursor" }
+    - { key: s, action: add_source,     label: "Add a light source at the cursor" }
+    - { key: d, action: delete,         label: "Delete the selection" }
+    - { key: "0", action: clear_all,    label: "Clear the WHOLE bench — R re-rolls a generated one back" }
+    - { key: k, action: cycle_kind,     label: "Cycle element kind / source spectrum" }
+    - { key: m, action: cycle_material, label: "Cycle glass / beam profile" }
+    - { key: p, action: auto_prism,     label: "Back to minimum deviation, other side" }
+    - { key: x, action: toggle_active,  label: "Toggle on/off" }
+    - { key: n, action: reroll,         label: "Re-roll this record" }
+    - { key: r, action: reseed,         label: "Reseed the whole bench" }
+    - { key: c, action: clear,          label: "Clear selection" }
+    - { key: g, action: grow,           label: "Grow" }
+    - { key: h, action: shrink,         label: "Shrink" }
+
+parameters:
+  # ---- exploration axis: how the bench is arranged --------------------------------------------
+  - name: layout_preset
+    display: "Arrangement"
+    type: enum
+    options: [Reference, Cascade, Cavity, Battery]
+    default: 0
+    flags: button_grid
+    group: "Bench"
+  # An optical layout's identity is the CHAIN, not the coordinates: each element is placed on the
+  # beam leaving the last one, so it is lit by construction. variation re-draws the chain — the
+  # kinds, the stand-offs and the deflections — never free positions. 0 is exactly the reference.
+  - { name: variation,   display: "Variation",   type: float, min: 0.0, max: 1.0,   default: 0.000000,  group: "Bench" }
+  - { name: seed,        display: "Seed",        type: float, min: 0.0, max: 512.0, default: 7.000000,  group: "Bench" }
+  # 0 builds nothing: an empty bench you fill by hand with A and S. Anything you spawn or touch
+  # is yours and the generator allocates around it, so the two ways of working compose.
+  - { name: chain_len,   display: "Chain",       type: int,   min: 0,   max: 12,    default: 2,    group: "Bench" }
+  - { name: throw_scale, display: "Throw",       type: float, min: 0.5, max: 1.6,   default: 1.000000,  group: "Bench" }
+  - name: angle_family
+    display: "Angle Family"
+    type: enum
+    options: [Free, Quarter, Sixth, Eighth, Twelfth]
+    default: 2
+    flags: button_grid
+    group: "Bench"
+  - { name: fit_frame,   display: "Fit To Bench", type: float, min: 0.0, max: 1.0,  default: 1.000000,  group: "Bench" }
+
+  # ---- the cast, as continuous weights rather than nine separate presets ----------------------
+  - { name: w_prism,   display: "Prisms",      type: float, min: 0.0, max: 1.0, default: 1.000000, group: "Cast" }
+  - { name: w_mirror,  display: "Mirrors",     type: float, min: 0.0, max: 1.0, default: 0.8, group: "Cast" }
+  - { name: w_optic,   display: "Slabs/Lenses",type: float, min: 0.0, max: 1.0, default: 0.55, group: "Cast" }
+  - { name: w_control, display: "Splitters",   type: float, min: 0.0, max: 1.0, default: 0.35, group: "Cast" }
+
+  # ---- the source ------------------------------------------------------------------------------
+  - name: beam_spectrum
+    display: "Spectrum"
+    type: enum
+    options: [White, Tungsten, Laser Triad, Narrow Band]
+    default: 0
+    flags: button_grid
+    group: "Source"
+  - name: beam_profile
+    display: "Beam"
+    type: enum
+    options: [Collimated, Fan, Converging]
+    default: 0
+    flags: button_grid
+    group: "Source"
+  # A real beam is not uniform across its aperture. Gaussian is what a laser actually does, and it
+  # is most of the difference between light and a drawn rectangle.
+  - name: beam_shape
+    display: "Profile"
+    type: enum
+    options: [Flat Top, Gaussian]
+    default: 1
+    flags: button_grid
+    group: "Source"
+  - { name: emitter_count,   display: "Sources",    type: int,   min: 1,    max: 12,   default: 1,    group: "Source" }
+  - { name: beam_aperture,   display: "Aperture",   type: float, min: 0.004, max: 0.090, default: 0.013, group: "Source" }
+  - { name: beam_divergence, display: "Divergence", type: float, min: 0.0,  max: 0.50, default: 0.09, group: "Source" }
+  - { name: band_center,     display: "Band Centre",type: float, min: 400.0, max: 700.0, default: 532.000000, group: "Source" }
+  - { name: band_width,      display: "Band Width", type: float, min: 4.0,  max: 300.0, default: 40.000000, group: "Source" }
+
+  # ---- the glass -------------------------------------------------------------------------------
+  - name: glass_material
+    display: "Glass"
+    type: enum
+    options: [Crown BK7, Flint SF10, Fused Silica, Sapphire, Diamond, Water]
+    default: 1
+    flags: button_grid
+    group: "Glass"
+  - { name: prism_apex, display: "Apex Angle", type: float, min: 18.0, max: 86.0,  default: 60.000000, group: "Glass" }
+  - { name: prism_size, display: "Prism Size", type: float, min: 0.04, max: 0.30,  default: 0.15, group: "Glass" }
+  # 1.0 is REAL GLASS, and real glass fans about 1.5 degrees for crown and 6 for heavy flint —
+  # nothing like the reference photograph, which is a long-throw studio shot. The exaggeration
+  # lives here as one labelled number that preserves every material's relation to every other,
+  # rather than being faked in the colours downstream. Deliberately OUT of the layout signature.
+  - { name: dispersion, display: "Dispersion",  type: float, min: 0.25, max: 8.0,  default: 2.000000, group: "Glass" }
+
+  # ---- appearance / readout only ----------------------------------------------------------------
+  # WHICH SOURCE the spectral rail reads. The ladder and the deviation profile are readouts of ONE
+  # beam — they cannot be shared — so this picks it. The plan strip is not restricted by it.
+  - { name: rail_target, display: "Rail Source", type: int, min: 0, max: 11, default: 0, group: "Readout" }
+  # How many chief fans the PLAN draws. All Sources is the honest default: a bench with three
+  # lights that draws one beam is a diagram lying about its own subject. Rail Source is there for
+  # when a crowded bench needs reading, and it is also the cheaper rung — the plan's per-pixel
+  # cost scales with the number of fans drawn, not with the number of sources on the bench.
+  - name: plan_fans
+    display: "Plan Fans"
+    type: enum
+    options: [Rail Source, All Sources]
+    default: 1
+    flags: button_grid
+    group: "Readout"
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    time_dependent: false
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:plan"
+  - name: chief
+    shader: chief.hlsl
+    target: cs_5_0
+    time_dependent: false
+    dispatch: [12, 1, 1]
+    thread_group_x: 32
+    thread_group_y: 1
+    output: "buffer:chief"
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    time_dependent: false
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+      - { slot: 1, source: "buffer:chief" }
+
+data_outputs:
+  - name: "Bench"
+    buffer: "plan"
+    schema:
+      - { name: p0,     type: float2 }
+      - { name: p1,     type: float2 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tone,   type: float }
+      - { name: seed,   type: float }
+      - { name: hdg,    type: float }
+      - { name: r0,     type: float }
+      - { name: r1,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: par,    type: float }
+      - { name: att,    type: float }
+      - { name: dev,    type: float }
+      - { name: z,      type: float }
+      - { name: gen,    type: float }
+      - { name: wl0,    type: float }
+      - { name: wl1,    type: float }
+
+outputs:
+  - { name: "Plan View", pass: canvas }

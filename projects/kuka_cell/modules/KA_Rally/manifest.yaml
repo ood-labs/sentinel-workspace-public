@@ -1,0 +1,224 @@
+name: "KA Rally"
+version: "0.1"
+mode: generator
+resolution: [1024, 640]
+
+# The rally authority. Owns THE BALL and the question "who hits it next".
+#
+# This is deliberately not a thirteenth entry in KA_Pose's pattern enum. A pattern is a per-arm
+# function of phase; a ball is one shared object with its own state, and the election is a global
+# decision over the whole floor. Those are different responsibilities, so they are different
+# nodes. KA_Pose executes whatever assignment it is handed and still owns joint limits and FK.
+#
+# PARTICIPATION IS A CHANNEL MODE, and it is decided HERE so it is decided once: the four Play
+# toggles put whole control channels on the court. Arms with an assignment take their pose from
+# the rally; arms on a channel that is not playing keep running their pattern, so half a cell can
+# play while the other half keeps doing the wave.
+
+buffers:
+  - { name: rally, structured: true, element_size: 96, element_count: 90, persistent: true }
+
+state_buffers:
+  - name: rally
+    max_elements: 90
+    schema:
+      - { name: pos, type: float3 }
+      - { name: radius, type: float }
+      - { name: vel, type: float3 }
+      - { name: role, type: float }
+      - { name: spin, type: float3 }
+      - { name: power, type: float }
+      - { name: a1, type: float }
+      - { name: a2, type: float }
+      - { name: a3, type: float }
+      - { name: a4, type: float }
+      - { name: a5, type: float }
+      - { name: a6, type: float }
+      - { name: strikerIdx, type: float }
+      - { name: lastIdx, type: float }
+      - { name: rallyCount, type: float }
+      - { name: serveTimer, type: float }
+      - { name: aimIdx, type: float }
+      - { name: dropFlag, type: float }
+
+data_inputs:
+  - name: "Cell"
+    slot: 0
+    schema:
+      - { name: pos, type: float2 }
+      - { name: size, type: float2 }
+      - { name: yaw, type: float }
+      - { name: grp, type: float }
+      - { name: kind, type: float }
+      - { name: bias, type: float }
+      - { name: seed, type: float }
+      - { name: flags, type: float }
+      - { name: active, type: float }
+      - { name: spare, type: float }
+
+parameters:
+  # MOTORS. A multiplier on the real per-axis speed limits (105/101/107/136/129/206 deg/s for
+  # A1..A6). At 1.0 the arms move exactly as fast as the machine they are drawn from, which is
+  # what stops the poses reading as cuts between positions. Below 1 they get visibly heavy;
+  # above 1 they stop being a KUKA.
+  - { name: motor_speed, display: "Motor Speed", type: float, min: 0.15, max: 4.0, default: 1.00, group: "Motors" }
+  - { name: rally_on, display: "Rally", type: bool, default: true, group: "Play" }
+  - { name: play_a, display: "Channel A Plays", type: bool, default: true, group: "Play" }
+  - { name: play_b, display: "Channel B Plays", type: bool, default: true, group: "Play" }
+  - { name: play_c, display: "Channel C Plays", type: bool, default: false, group: "Play" }
+  - { name: play_d, display: "Channel D Plays", type: bool, default: false, group: "Play" }
+  - { name: serve_now, display: "Serve", type: button, group: "Play" }
+
+  # BALL. Quadratic drag is what makes it a beach ball rather than a cannonball: it accelerates
+  # to a low terminal speed and then floats, and that hang time is the entire character of the
+  # object and the reason an arm has time to get under it.
+  - { name: ball_radius, display: "Ball Radius", type: float, min: 0.12, max: 0.90, default: 0.55, group: "Ball" }
+  - { name: gravity,     display: "Gravity",     type: float, min: 1.0,  max: 20.0, default: 9.000000, group: "Ball" }
+  - { name: drag,        display: "Drag",        type: float, min: 0.0,  max: 0.45, default: 0.13, group: "Ball" }
+  - { name: restitution, display: "Bounce",      type: float, min: 0.0,  max: 0.90, default: 0.52, group: "Ball" }
+  - { name: spin_gain,   display: "Spin",        type: float, min: 0.0,  max: 3.0,  default: 1.000000, group: "Ball" }
+
+  # THE TOOL. The flange is a real sphere the ball really bounces off; these are its physical
+  # properties, not tuning for an effect. `assist` is the honesty dial: at 0 the ball leaves on
+  # exactly whatever the impulse gave it, mistimed swings shank and unreachable balls drop. Turn
+  # it up only to trade realism for a rally that never dies, and know that is what you are doing.
+  # Physical: the ball bounces off whatever tool it actually meets, and an arm that cannot get
+  # there misses. Scheduled: the elected arm connects when the ball reaches the strike plane
+  # inside its reach, whether or not the tool arrived, and the ball leaves on exactly the
+  # velocity the swing was solved for. Scheduled is the reliable show mode and the one that
+  # sustains long rallies; Physical is the true one. Both are shipped because they are different
+  # answers to different questions, not a good version and a bad version.
+  - name: contact_mode
+    display: "Contact"
+    type: enum
+    options: [Physical, Scheduled]
+    default: 0
+    flags: button_grid
+    group: "Contact"
+  - { name: tool_radius,   display: "Tool Radius",   type: float, min: 0.08, max: 0.60, default: 0.22, group: "Contact" }
+  - { name: tool_bounce,   display: "Tool Bounce",   type: float, min: 0.0,  max: 1.4,  default: 0.95, group: "Contact" }
+  - { name: tool_friction, display: "Tool Friction", type: float, min: 0.0,  max: 1.0,  default: 0.20, group: "Contact" }
+  # How live the arm's BODY is, as a fraction of the flange's bounce. At 0 the wrist and elbow
+  # spheres are skipped entirely and the ball passes through the machine as it used to — which
+  # measured three times the rally length, because a ball off a forearm bounces dead and drops.
+  # This is the dial for that trade rather than a choice baked into the code.
+  - { name: body_bounce,   display: "Body Bounce",   type: float, min: 0.0,  max: 1.0,  default: 0.55, group: "Contact" }
+  - { name: swing_max,     display: "Max Swing Speed", type: float, min: 1.0, max: 16.0, default: 8.5, group: "Contact" }
+  # ASSIST is the dial that decides what kind of thing you are watching, so it is worth knowing
+  # exactly what it does. Contact is ALWAYS physical: the arm must genuinely get its tool to the
+  # ball and the swept sphere test must genuinely fire, at every setting including 1.0. What
+  # assist changes is only what happens AFTERWARDS — how much of the outgoing velocity comes from
+  # the shot the arm solved for, versus from the impulse the collision actually produced.
+  #
+  # Measured, 24 arms at 6.4 m pitch, real motor speeds, long windows:
+  #
+  #   assist  touches/rally  whiffed crossings  longest rally  sample
+  #   0.00    1.95           24%                5              22 rallies
+  #   0.55    2.32           22%                10             59 rallies
+  #   0.85    4.05           15%                22             39 rallies
+  #
+  # 0.85 is the shipped default because it is the first setting where the thing actually rallies.
+  # Note the whiff rate FALLING as assist rises: that is not the dial hiding misses, it is
+  # receivers finally getting balls that arrive at them instead of dying short.
+  #
+  # Set it to 0 for the pure version. The arms then play honestly and badly — about two touches
+  # before somebody is beaten — which is worth seeing once, because it is what a real cell of
+  # speed-limited machines actually manages against a beach ball.
+  - { name: assist,        display: "Assist",        type: float, min: 0.0,  max: 1.0,  default: 0.85, group: "Contact" }
+
+  # THE HIT.
+  - { name: hit_power,   display: "Hit Power",   type: float, min: 3.0,  max: 16.0, default: 7.6, group: "Hit" }
+  - { name: power_var,   display: "Power Variance", type: float, min: 0.0, max: 0.50, default: 0.16, group: "Hit" }
+  # Strike height trades drama against coverage. High looks better and shrinks every arm's
+  # horizontal reach at the plane, which opens gaps between the reach circles that the ball falls
+  # through. 2.0 m is the measured knee: still well overhead, still ~44% floor coverage at the
+  # default 6.4 m pitch.
+  - { name: strike_h,    display: "Strike Height", type: float, min: 0.8, max: 5.0, default: 2.000000, group: "Hit" }
+  # Pass distance is the single biggest lever on rally length. Long passes need a lot of
+  # horizontal speed to beat the drag, arrive flat and fast, and land in the gaps; keeping the
+  # ball moving between NEIGHBOURS is both what a real crowd does and what keeps it up.
+  - { name: pass_min,    display: "Pass Min",    type: float, min: 1.0,  max: 20.0, default: 4.5, group: "Hit" }
+  - { name: pass_max,    display: "Pass Max",    type: float, min: 3.0,  max: 50.0, default: 9.5, group: "Hit" }
+  - { name: aim_error,   display: "Aim Error",   type: float, min: 0.0,  max: 4.0,  default: 0.55, group: "Hit" }
+
+  # TIMING. lead_time is how long before contact the striker starts its approach; too short and
+  # the arm teleports, too long and it stands with its tool in the air waiting.
+  - { name: lead_time,   display: "Lead Time",   type: float, min: 0.25, max: 2.5, default: 0.95, group: "Timing" }
+  - { name: follow_time, display: "Follow Through", type: float, min: 0.05, max: 1.5, default: 0.42, group: "Timing" }
+  - { name: serve_delay, display: "Serve Delay", type: float, min: 0.2,  max: 6.0, default: 1.4, group: "Timing" }
+  # How far ABOVE the strike height the serve is dropped in. Distinct from Hit Power, which sets
+  # how hard it is thrown up: velocity buys hang time while the ball is still climbing, height
+  # buys time before it ever reaches the strike plane coming down — and that second window is the
+  # one the FIRST receiver has to travel in. The original serve started 0.35 m over the plane and
+  # the opening touch was the one that got missed nearly every rally, so most rallies never
+  # really began.
+  - { name: serve_height, display: "Serve Height", type: float, min: 0.1, max: 6.0, default: 2.20, group: "Timing" }
+
+  - { name: seed, display: "Seed", type: float, min: 0.0, max: 512.0, default: 3.000000, group: "Timing" }
+
+passes:
+  - name: rally
+    shader: rally.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:rally"
+    inputs:
+      - { slot: 0, source: "data:0" }
+  - name: court
+    shader: court.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:rally" }
+      - { slot: 1, source: "data:0" }
+
+data_outputs:
+  - name: "Rally"
+    buffer: "rally"
+    schema:
+      - { name: pos, type: float3 }
+      - { name: radius, type: float }
+      - { name: vel, type: float3 }
+      - { name: role, type: float }
+      - { name: spin, type: float3 }
+      - { name: power, type: float }
+      - { name: a1, type: float }
+      - { name: a2, type: float }
+      - { name: a3, type: float }
+      - { name: a4, type: float }
+      - { name: a5, type: float }
+      - { name: a6, type: float }
+      - { name: strikerIdx, type: float }
+      - { name: lastIdx, type: float }
+      - { name: rallyCount, type: float }
+      - { name: serveTimer, type: float }
+      - { name: aimIdx, type: float }
+      - { name: dropFlag, type: float }
+
+# LIVE PERFORMANCE READOUT.
+#
+# The rally's own scoreboard, published where it can be read in one call, watched in Properties
+# while the cell plays, and driven from. Tuning this thing by eye does not work — a rally is a few
+# seconds long and the interesting failures are a frame wide — and the session that produced these
+# counters wasted several rounds on a statistic that turned out to mean something other than what
+# it was being read as. Every number below is written deliberately and says what it counts.
+#
+# All are monotonic totals, so any two reads give the average over that interval with no reset:
+# (touches[t2]-touches[t1]) / (rallies[t2]-rallies[t1]) is the rally length right now, and
+# whiffs/crossings is the fraction of playable balls nobody laid a tool on.
+#
+# Element 0 is the header, element 89 the instrumentation record; offsets are into KaBall.
+control_outputs:
+  - { name: rallies,    buffer: rally, element: 0,  field_offset: 60, description: "Rallies completed" }
+  - { name: touches,    buffer: rally, element: 0,  field_offset: 64, description: "Total contacts across all rallies" }
+  - { name: best_rally, buffer: rally, element: 0,  field_offset: 68, description: "Longest rally, in touches" }
+  - { name: crossings,  buffer: rally, element: 89, field_offset: 48, description: "Balls that fell past the strike height" }
+  - { name: whiffs,     buffer: rally, element: 89, field_offset: 52, description: "...of those, the ones nothing touched" }
+  - { name: end_out,    buffer: rally, element: 89, field_offset: 56, description: "Rallies ended by the ball leaving the floor" }
+  - { name: end_ground, buffer: rally, element: 89, field_offset: 60, description: "Rallies ended by the ball dying on the deck" }
+  - { name: miss_sum,   buffer: rally, element: 89, field_offset: 64, description: "Summed tool-to-ball distance over whiffs (m)" }
+  - { name: miss_max,   buffer: rally, element: 89, field_offset: 68, description: "Worst single miss (m)" }
+
+outputs:
+  - { name: "Court", pass: court }

@@ -115,6 +115,20 @@ renderers on `every_frame`. Verify adoption with `sentinel_pipeline info` and
 `sentinel_graph profile`: the node should reach a near-zero idle `cook_hz`, cook
 once when an effective input changes, and retain the last valid output.
 
+## Cold compile optimization
+
+Modules use O3 shader compilation by default. A measured optimizer bottleneck
+can opt into the faster cold-open path:
+
+```yaml
+compile_optimization: fast_compile
+```
+
+This setting skips D3DCompiler's legacy optimizer and produces larger
+bytecode. Keep the default for ordinary Modules. For a `fast_compile` Module,
+compare cold compile time and live GPU frame time on the target hardware before
+release. The compiler flags are part of the shader-cache key.
+
 ## Manifest data_inputs/data_outputs Syntax
 
 ```yaml

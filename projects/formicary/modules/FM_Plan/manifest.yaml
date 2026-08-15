@@ -1,0 +1,211 @@
+name: "FM Plan"
+version: "0.1"
+mode: generator
+resolution: [1200, 820]
+
+# The plan authority for formicary. It owns the arena, the nest, the food, the obstacles and
+# the trail network, and it is the ONLY node that decides any of them. FM_Field bakes its
+# obstacle mask from these records, FM_Colony steers on these routes, FM_Render draws these
+# solids. None of them re-decides anything.
+#
+# 1200 x 820 on purpose: the plan strip, the flow strip and normalized viewport pointer
+# coordinates all pass through the one conversion in layout.hlsli, so what you click is what
+# you see.
+
+buffers:
+  # 52, up from 36: sixteen station slots appended after the palette. Appended rather than
+  # inserted, so every index below FM_STA_0 keeps the value it has always had.
+  - { name: plan, structured: true, element_size: 80, element_count: 52, persistent: true }
+
+state_buffers:
+  - name: plan
+    max_elements: 52
+    schema: &planschema
+      - { name: pos,    type: float3 }
+      - { name: dims,   type: float3 }
+      - { name: role,   type: float }
+      - { name: kind,   type: float }
+      - { name: tint,   type: float3 }
+      - { name: seed,   type: float }
+      - { name: p0,     type: float }
+      - { name: p1,     type: float }
+      - { name: p2,     type: float }
+      - { name: p3,     type: float }
+      - { name: flags,  type: float }
+      - { name: active, type: float }
+      - { name: pad0,   type: float }
+      - { name: pad1,   type: float }
+
+viewport:
+  hint: "Click select - drag move - A add - D delete - M kind - E mode - T fire - F/V strength - G/H radius - B auto-route - X mute - N re-roll - R reseed - P palette - C clear"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [m, f, v, g, h, b, x, n, r, p, c, t, e, a, d]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select record" }
+    - { gesture: left_drag, action: move, label: "Move / bend route" }
+    - { key: a, action: add_station, label: "Add station at pointer" }
+    - { key: d, action: delete_station, label: "Delete the selected station" }
+    - { key: m, action: cycle_kind, label: "Cycle obstacle / station kind" }
+    - { key: e, action: cycle_mode, label: "Cycle station mode" }
+    - { key: t, action: fire, label: "Fire the selected station" }
+    - { key: f, action: more, label: "More payload / bigger / stronger" }
+    - { key: v, action: less, label: "Less payload / smaller / weaker" }
+    - { key: g, action: recruit_up, label: "Recruit harder / wider reach" }
+    - { key: h, action: recruit_down, label: "Recruit less / tighter reach" }
+    - { key: b, action: auto_route, label: "Auto-route around obstacles" }
+    - { key: x, action: toggle_active, label: "Toggle on/off" }
+    - { key: n, action: reroll, label: "Re-roll this record" }
+    - { key: r, action: reseed, label: "Reseed arrangement" }
+    - { key: p, action: reroll_palette, label: "Re-roll palette" }
+    - { key: c, action: clear_selection, label: "Clear selection" }
+
+parameters:
+  # EXPLORATION AXIS 1 — what the colony is doing with the plane. Structural: it changes the
+  # topology of the network, not how any of it looks.
+  - name: arrangement
+    display: "Arrangement"
+    type: enum
+    options: [Trail Crop, Foraging Fan, Trunk Trail, Raid Front]
+    default: 0
+    flags: button_grid
+    group: "Layout"
+
+  # variation = 0 is EXACTLY the transcribed reference and can never be lost. Above 0 each
+  # cache lerps toward a free stratified BEARING draw AROUND THE NEST — a relationship, not a
+  # coordinate — under guarantees that keep every seed presentable. The topology is never
+  # re-rolled, because who connects to whom IS the arrangement's identity.
+  # Which way round the page goes. The plan used to be a REFLECTION of the arena rather than a
+  # rotation of it, so the drawing and the program image disagreed left-for-right and every
+  # curve in the drawing had the wrong handedness. Both options here are rigid half-turns of
+  # the measured overhead view; see the derivation in layout.hlsli. Default matches the shipped
+  # camera, which stands on the +z side.
+  - name: plan_facing
+    display: "Plan Faces"
+    type: enum
+    options: [Camera Side, Far Side]
+    default: 0
+    flags: button_grid
+    group: "Layout"
+
+  - { name: variation,      display: "Variation",  type: float, min: 0.0, max: 1.0,   default: 0.000000,  group: "Layout" }
+  - { name: seed,           display: "Seed",       type: float, min: 0.0, max: 512.0, default: 7.000000,  group: "Layout" }
+  - { name: cache_count,    display: "Food Sources", type: int, min: 1,   max: 6,     default: 1,    group: "Layout" }
+  - { name: obstacle_count, display: "Obstacles",  type: int,   min: 0,   max: 12,    default: 0,    group: "Layout" }
+  - { name: spread,         display: "Spread",     type: float, min: 0.4, max: 1.4,   default: 1.000000,  group: "Layout" }
+
+  # ---- STATIONS. The placed points that do something to the colony: emitters that release
+  # ants, attractors that pull them, repellers that split a column, and sinks that swallow it.
+  #
+  # DEFAULT ZERO, and that is a guarantee rather than an oversight. `variation = 0` with no
+  # stations is EXACTLY the transcribed reference, verifiable by reading the data port, and a
+  # station generated by default would quietly move the colony off the photograph it came from.
+  # Press A on the canvas to place one, or raise this to have the generator lay out a set in
+  # relation to the arrangement that already exists.
+  - { name: station_count, display: "Stations",  type: int,   min: 0,   max: 16,   default: 0,    group: "Stations" }
+  - { name: station_radius, display: "Reach",    type: float, min: 2.0, max: 90.0, default: 26.0, group: "Stations" }
+  - { name: station_force, display: "Strength",  type: float, min: 0.0, max: 4.0,  default: 1.4,  group: "Stations" }
+  # Ants per second for a new emitter, and the size of one burst.
+  - { name: emit_rate,     display: "Emit Rate", type: float, min: 0.0, max: 200.0, default: 24.0, group: "Stations" }
+  - { name: emit_burst,    display: "Burst",     type: float, min: 1.0, max: 200.0, default: 40.0, group: "Stations" }
+
+  # ---- The substrate. Extents are the arena in millimetres, because the subject has a real
+  # size: a fire ant worker is about 4 mm and every distance in the show is checkable against
+  # that. Placements are stored NORMALIZED, so resizing the arena can never throw a hand-placed
+  # cache outside it.
+  - { name: arena_w,      display: "Arena Width",  type: float, min: 60.0, max: 300.0, default: 160.000000, group: "Arena" }
+  - { name: arena_d,      display: "Arena Depth",  type: float, min: 40.0, max: 220.0, default: 110.000000, group: "Arena" }
+  - { name: nest_radius,  display: "Nest Radius",  type: float, min: 1.0,  max: 14.0,  default: 5.000000,   group: "Arena" }
+  - { name: cache_radius, display: "Cache Radius", type: float, min: 0.5,  max: 10.0,  default: 3.000000,   group: "Arena" }
+  - { name: ground_color, display: "Ground",       type: color, default: [0.955, 0.945, 0.928],        group: "Arena" }
+  - { name: ground_grain, display: "Ground Grain", type: float, min: 0.0,  max: 1.0,   default: 0.22,  group: "Arena" }
+  - { name: ground_tone,  display: "Ground Falloff", type: float, min: 0.0, max: 1.0,  default: 0.34,  group: "Arena" }
+
+  # ---- The trail network.
+  # meander is what stops a route being a ruled line. A real trail is a track worn by ants each
+  # of whom was only approximately following the last one.
+  - { name: meander,   display: "Meander",       type: float, min: 0.0, max: 1.0, default: 0.35, group: "Trail" }
+  # How far a route must clear an obstacle before the auto-route solve stops pushing. Measured
+  # in millimetres because that is what an ant experiences: two body widths is comfortable.
+  - { name: clearance, display: "Route Clearance", type: float, min: 0.0, max: 12.0, default: 2.5, group: "Trail" }
+  - { name: obst_scale, display: "Obstacle Scale", type: float, min: 0.3, max: 3.0,  default: 1.000000, group: "Trail" }
+
+  # ---- One owner for the light. FM_Render shades with it and nothing else has a second copy
+  # to drift out of sync. Defaults transcribe the reference's macro lighting: a big soft source
+  # high and slightly behind, which is what gives glossy chitin one broad highlight rather than
+  # a hard specular dot.
+  - { name: sun_azimuth,   display: "Key Azimuth",   type: float, min: 0.0, max: 360.0, default: 152.000000, group: "Light" }
+  - { name: sun_elev,      display: "Key Elevation", type: float, min: 5.0, max: 89.0,  default: 62.000000,  group: "Light" }
+  - { name: sun_color,     display: "Key Colour",    type: color, default: [1.000000, 0.985, 0.96],         group: "Light" }
+  - { name: key_intensity, display: "Key",           type: float, min: 0.0, max: 6.0,   default: 2.15,  group: "Light" }
+  - { name: sky_level,     display: "Fill",          type: float, min: 0.0, max: 3.0,   default: 0.92,  group: "Light" }
+  - { name: shadow_soften, display: "Shadow Soften", type: float, min: 0.0, max: 8.0,   default: 1.35,  group: "Light" }
+  - { name: spec_power,    display: "Gloss Tightness", type: float, min: 8.0, max: 900.0, default: 210.000000, group: "Light" }
+
+  # ---- Chitin. Read off the photograph: the gaster is markedly darker and glossier than the
+  # mesosoma, and the legs and antennae are paler and half translucent at this scale.
+  - { name: pal_gaster, display: "Gaster",  type: color, default: [0.145, 0.052, 0.028], group: "Palette" }
+  - { name: pal_thorax, display: "Thorax",  type: color, default: [0.235, 0.082, 0.04], group: "Palette" }
+  - { name: pal_limb,   display: "Limbs",   type: color, default: [0.275, 0.112, 0.056], group: "Palette" }
+
+  # ---- LIVE STATE, not controls. Driven by expression from FM_Colony's control outputs so the
+  # flow strip draws the traffic that is actually on the trails. Left at their defaults they say
+  # they have no measurement rather than inventing one: the per-edge shares default to -1, which
+  # the canvas draws as a dashed "no reading" rule, and a lane past the fourth has no feedback
+  # channel at all and says so the same way.
+  #
+  # DO NOT BAKE THESE. `bake_defaults` writes live values back into the manifest, and run over
+  # this group it captured a snapshot of the running colony — 22 ants walking, lane 0 at 1.00 —
+  # as the defaults. A freshly opened project would then display a confident measurement, in the
+  # reserved live colour, of a colony that had not taken a step yet. Restored by hand, and
+  # excluded from any future bake.
+  - { name: live_traffic, display: "Traffic",   type: float, min: 0.0,  max: 128.0, default: 0.0,  group: "Live" }
+  - { name: live_laden,   display: "Laden",     type: float, min: 0.0,  max: 1.0,   default: 0.0,  group: "Live" }
+  - { name: live_speed,   display: "Speed",     type: float, min: 0.0,  max: 120.0, default: 0.0,  group: "Live" }
+  - { name: live_slip,    display: "Foot Slip", type: float, min: 0.0,  max: 8.0,   default: 0.0,  group: "Live" }
+  - { name: live_e0,      display: "Lane 0",    type: float, min: -1.0, max: 1.0,   default: -1.0, group: "Live" }
+  - { name: live_e1,      display: "Lane 1",    type: float, min: -1.0, max: 1.0,   default: -1.0, group: "Live" }
+  - { name: live_e2,      display: "Lane 2",    type: float, min: -1.0, max: 1.0,   default: -1.0, group: "Live" }
+  - { name: live_e3,      display: "Lane 3",    type: float, min: -1.0, max: 1.0,   default: -1.0, group: "Live" }
+
+  # ---- EDITS ARRIVING FROM FM_STAGE, by expression.
+  #
+  # FM_Stage shows the finished program image and lets a station be placed on the ants you are
+  # looking at. It sits at the END of the chain, so a link from it back to here would be a cycle
+  # in a graph that is a DAG. These four carry the edit instead — the same trick the colony's
+  # measured traffic already uses to reach the flow strip, and for the same reason.
+  #
+  # `stage_cmd` is MONOTONIC and this node acts on the DIFFERENCE against the value it last saw.
+  # A held flag would be missed by a dropped cook and applied twice by a slow one; a counter is
+  # neither. Left unbound they are all zero and nothing ever fires, so the plan canvas works
+  # perfectly well on its own. DO NOT BAKE THIS GROUP.
+  - { name: stage_cmd, display: "Stage Cmd",  type: float, min: 0.0, max: 1000000.0, default: 0.0, group: "Stage" }
+  - { name: stage_act, display: "Stage Act",  type: float, min: 0.0, max: 8.0,       default: 0.0, group: "Stage" }
+  - { name: stage_x,   display: "Stage X",    type: float, min: -400.0, max: 400.0,  default: 0.0, group: "Stage" }
+  - { name: stage_z,   display: "Stage Z",    type: float, min: -400.0, max: 400.0,  default: 0.0, group: "Stage" }
+  - { name: stage_sel, display: "Stage Sel",  type: float, min: 0.0, max: 32.0,      default: 0.0, group: "Stage" }
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:plan"
+  - name: canvas
+    shader: canvas.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+
+data_outputs:
+  - name: "Plan"
+    buffer: "plan"
+    schema: *planschema
+
+outputs:
+  # named distinctly from the "Plan" DATA output so a link never has to disambiguate by slot
+  - { name: "Plan View", pass: canvas }

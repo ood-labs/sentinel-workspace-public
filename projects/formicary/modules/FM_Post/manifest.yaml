@@ -1,0 +1,93 @@
+name: "FM Post"
+version: "0.1"
+mode: generator
+resolution: [1280, 720]
+working_format: RGBA16F
+# The end of the chain: 8-bit out, gamma encoded, ready to look at.
+output_format: RGBA8
+
+# The lens and the print. Everything upstream is float precisely so the specular highlights on
+# the chitin survive to be tone mapped HERE rather than being clipped at the first node that
+# could not hold them.
+#
+# The depth lane comes straight from FM_Render rather than through FM_Scope, because the scope
+# composites linework over the beauty and has no depth of its own to hand on. That also means
+# the instrument's marks defocus with the surface they are drawn on, which is what makes an
+# overlay feel attached to the image instead of printed on the glass in front of it.
+
+buffers:
+  - { name: bloomA, format: RGBA16F, scale: 0.25, persistent: false }
+
+inputs:
+  - { name: "Scene", slot: 0, required: true }
+  - { name: "Depth", slot: 1, required: true }
+
+parameters:
+  # ---- The lens. At the reference's magnification the depth of field is a few millimetres:
+  # one worker sharp, the next already soft. This is the group that decides whether the image
+  # reads as a photograph or as a render.
+  - { name: dof_on,     display: "Depth of Field", type: bool,  default: true,                       group: "Lens" }
+  # The focal distance in MILLIMETRES from the camera, because the whole world is in real
+  # millimetres and a normalized focus control would be unreadable.
+  - { name: focus_mm,   display: "Focus Distance", type: float, min: 5.0,  max: 400.0, default: 68.000000, group: "Lens" }
+  - { name: aperture,   display: "Aperture",       type: float, min: 0.0,  max: 8.0,   default: 1.15, group: "Lens" }
+  - { name: max_coc,    display: "Max Blur",       type: float, min: 1.0,  max: 64.0,  default: 26.000000, group: "Lens" }
+
+  # ---- Quality. The only genuinely expensive axis in this node: tap count is linear in cost
+  # and the bokeh SHAPE does not change with it, because the spiral fills a disc evenly at any
+  # count. That is what makes a quality ladder possible here at all.
+  - { name: dof_taps,   display: "Bokeh Taps",     type: int,   min: 4,    max: 64,    default: 20,   group: "Quality" }
+
+  - name: view_mode
+    display: "View"
+    type: enum
+    options: [Program, Depth, Circle of Confusion]
+    default: 0
+    flags: button_grid
+    group: "Quality"
+
+  # ---- Bloom. Thresholded ABOVE white: the sweep sits just under 1.0, so this catches only
+  # the specular highlights and nothing of the paper.
+  - { name: bloom_threshold, display: "Bloom Threshold", type: float, min: 0.2, max: 3.0, default: 1.02, group: "Bloom" }
+  - { name: bloom_radius,    display: "Bloom Radius",    type: float, min: 0.5, max: 12.0, default: 3.6, group: "Bloom" }
+  - { name: bloom_gain,      display: "Bloom",           type: float, min: 0.0, max: 3.0,  default: 0.45, group: "Bloom" }
+
+  # ---- The print
+  - { name: post_exposure, display: "Exposure",   type: float, min: 0.1, max: 4.0, default: 0.98, group: "Print" }
+  - { name: contrast,      display: "Contrast",   type: float, min: 0.4, max: 2.5, default: 1.22, group: "Print" }
+  - { name: saturation,    display: "Saturation", type: float, min: 0.0, max: 2.0, default: 1.06, group: "Print" }
+  - { name: film_gain,     display: "Film Gain",  type: float, min: 0.3, max: 3.0, default: 1.000000, group: "Print" }
+  # A `color` clamps to 0..1 per channel, so the original [0.92, 0.96, 1.04] could never apply
+  # its blue lift — it was silently 1.0 all along, which the bake then made visible. Expressed
+  # as a RELATIVE cool instead: warm channels pulled down rather than blue pushed up.
+  - { name: shadow_tint,   display: "Shadow Tint", type: color, default: [0.88, 0.94, 1.0],       group: "Print" }
+  - { name: vignette,      display: "Vignette",   type: float, min: 0.0, max: 1.0, default: 0.16, group: "Print" }
+  - { name: grain,         display: "Grain",      type: float, min: 0.0, max: 1.0, default: 0.22, group: "Print" }
+
+passes:
+  - name: dof
+    shader: dof.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "input:1" }
+
+  - name: bloom
+    shader: bloom.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:dof" }
+    output: "buffer:bloomA"
+
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    # Explicitly 8-bit. Without it the final pass inherits the float working_format while the
+    # pipeline publishes RGBA8, and the runtime force-matches them with a warning.
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "pass:dof" }
+      - { slot: 1, source: "buffer:bloomA" }
+
+outputs:
+  - { name: "Program", pass: grade }
