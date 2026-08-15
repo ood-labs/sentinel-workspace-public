@@ -266,7 +266,9 @@
             Evidence = '.release/reviews/phase-6/touchdesigner-new-project.json'
         }
     )
-    GeneratedMediaPatterns = @()
+    GeneratedMediaPatterns = @(
+        'projects/axon_press/hero.png'
+    )
 
     SupportedTopLevelTools = @(
         'audit-public-release.ps1',
