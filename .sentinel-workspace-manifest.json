@@ -98,7 +98,7 @@
                   },
                   {
                       "path":  ".agents/skills/module-authoring/SKILL.md",
-                      "sha256":  "60e36512eaca66348531e983efceed475db56a6de9b36830d2669bf22034f0ae"
+                      "sha256":  "a4f69818df1296ae31db2d93a0abc314c5c66f27aaea616fd0c530a1e9ce5510"
                   },
                   {
                       "path":  ".agents/skills/module-ui-authoring/agents/openai.yaml",
@@ -234,7 +234,7 @@
                   },
                   {
                       "path":  ".claude/skills/module-authoring/SKILL.md",
-                      "sha256":  "60e36512eaca66348531e983efceed475db56a6de9b36830d2669bf22034f0ae"
+                      "sha256":  "a4f69818df1296ae31db2d93a0abc314c5c66f27aaea616fd0c530a1e9ce5510"
                   },
                   {
                       "path":  ".claude/skills/module-ui-authoring/agents/openai.yaml",
@@ -374,7 +374,7 @@
                   },
                   {
                       "path":  "knowledge/module-pipeline.md",
-                      "sha256":  "7093adfe91921d436365adbad9d831b391b8424b9a3d5e29745c4cae074555d0"
+                      "sha256":  "cf1517611a7f4c31e1a329c6a40989fdeaea3c3e76f8465af35ada553df1fa57"
                   },
                   {
                       "path":  "knowledge/motion-choreography.md",
@@ -426,7 +426,7 @@
                   },
                   {
                       "path":  "projects/autopsia/autopsia.sentinel",
-                      "sha256":  "e5fb383a742029b3c71f2c3c320f82f95270d7bdb51c3030a34256850c22449e"
+                      "sha256":  "459bd623a2c32d4d6fb9fdf77f1b75df015724a17ca556f0d3bea6e42bcdf762"
                   },
                   {
                       "path":  "projects/autopsia/modules/_shared/au_hud/au_text.hlsli",
@@ -594,11 +594,7 @@
                   },
                   {
                       "path":  "projects/axon_press/axon_press.sentinel",
-                      "sha256":  "fff1368ceee6945bae60fd73e4b1fea1d70fc7dbb1469ac12220af6ffe2f9eca"
-                  },
-                  {
-                      "path":  "projects/axon_press/hero.png",
-                      "sha256":  "0487f5fc1989a88737fc95a3f101c62b2134df942e437f8e50c134900dc575a3"
+                      "sha256":  "83e620e7f249663a0b13877d28289cca7ac747cc9609271c0c23accc990f0e46"
                   },
                   {
                       "path":  "projects/axon_press/modules/_shared/axon.hlsli",
@@ -873,6 +869,218 @@
                       "sha256":  "be034b7c0aa734248c71efe76981b60e44be56b8df0de8c717eb1216472595c1"
                   },
                   {
+                      "path":  "projects/formicary/formicary.sentinel",
+                      "sha256":  "3972f374673703fc02035653db02c16425a1f215bd682f7d7325e1763841e3a7"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/_shared/au_hud/au_text.hlsli",
+                      "sha256":  "56a58faa0a3aa23ce7fd893906a2c82f74e91380a86832a6dcdc0a27ae8620af"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/_shared/fonts/scientifica_ascii.hlsli",
+                      "sha256":  "705519a790a8a1341a1b7cf508bd33035fd67b133b5651dd680072261c66df78"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "5fe3133335d5a3a32865f2b5cc133ed092c12aa65fcde525b68045e14312cd61"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/_shared/formic.hlsli",
+                      "sha256":  "94785c9c7875ea66acf6563edebae81e1865186e21f1efe706ee2a22cb80ad85"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/_shared/microfont.hlsli",
+                      "sha256":  "e6f901f434ed5d78b608dee2f7c8c7dec836ed6e791e785068381a32ed0c0aea"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/_shared/readout.hlsli",
+                      "sha256":  "377979769d23da25fe9f0b49676064211534b71531370ec960fad1988973d4ef"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Bands/bands.hlsli",
+                      "sha256":  "7a7d401c01d5e41fad4ba1b7d672f1cdda736e53f4eba86d559785c7f1b79c36"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Bands/columns.hlsl",
+                      "sha256":  "8911641efc37f94bdfb8230daf6411a7396b8ae933d1f94e26b0a7d430b87370"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Bands/detect.hlsl",
+                      "sha256":  "df043343f7df38bd8717ddb2d0d67f0ba82fba0b30e9a112718ca803157acd3f"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Bands/events.hlsl",
+                      "sha256":  "a21c03fd971178a18b0c6d5d4305d9190d38dc2ea4b4ebc7912eafec06ccf625"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Bands/manifest.yaml",
+                      "sha256":  "ee4b2393bfb4d5170153ecedb4c6da602afe7a78152c2b240836bb9896cbc208"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Bands/README.md",
+                      "sha256":  "dd065fddd02d559fd7fed04131f0518c143b7c1f9dd1201b097dea1156e685a5"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Bands/render.hlsl",
+                      "sha256":  "ec6567317704fc6a22865c1e5007ae01bad4691240f7a8491baef82ed77dbe9d"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/canvas.hlsl",
+                      "sha256":  "8e65ce998367108352e6e1aadc1ebf599969c6494eb280c9a61d651f66a99639"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/colony.hlsli",
+                      "sha256":  "8045bfe719b0d78561b711f1ba112b032dbfac128b81e7c81b74af2efe861b16"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/ctl.hlsl",
+                      "sha256":  "73000fb7defb15c3aeb7ef1648db8e1c3086793d068acbb975249ef81b71928e"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/field_out.hlsl",
+                      "sha256":  "4f31a46120d4d6ecaab77a6f45c494435f5958e6eb1a2fb87972dd910f41e609"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/gait.hlsl",
+                      "sha256":  "3fc92d992febe25a4443bb8794abad247396d99f2bafc428d4e34876d5033c0c"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/grid.hlsl",
+                      "sha256":  "c739f79bebf6a670e5470cc2e978fda0d2dba325c56dcd36627e19b72e84a255"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/hist.hlsl",
+                      "sha256":  "c457580e9b269bbc1f15cbf1d73cd0eda6f2ad37bc139a8c040071758c1debb6"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/manifest.yaml",
+                      "sha256":  "9cfb11b2d3597ab6fda4fb8fb77d245a3b31807e2e9c287e491a54f6f8332618"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/meas.hlsl",
+                      "sha256":  "644e1edfc4b243ad4c6d580d0524437c1dbc704490586102562d35ae70457d48"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/pher.hlsl",
+                      "sha256":  "07fa95a664f0e5642f9811bf7022763751d85ce2a157a6befdef41e5fdf079be"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/shad.hlsl",
+                      "sha256":  "c4b8c546c98083b8b32cd67d34c348791e1442f2ba3252fc955ffb46db2084e8"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/shad_out.hlsl",
+                      "sha256":  "dd2eb62dc0ac4d3dd04c62a9dbbd6c4384f6138f3c965fb9a47aebbb0cf00653"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/sta.hlsl",
+                      "sha256":  "be41668bee8ee843e30a0ba6fad52a9caa31a74bf158891c91855a30867d62a6"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Colony/walk.hlsl",
+                      "sha256":  "3c531377262be33c109446b83fa87b9e9fabe5072450a28fb13aa093f52f0568"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Plan/canvas.hlsl",
+                      "sha256":  "32ec578a1fa37cb985ef45740f390f1faf8c6ae46852f6d189d65e9b662e25a5"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Plan/layout.hlsli",
+                      "sha256":  "87ff8ca8fe0f6d3041288a6b36098280d05a71d89a00fe518741e28e47f0ca43"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Plan/manifest.yaml",
+                      "sha256":  "296835ce855cff4f70ce676d2515a6052f2ec395efcdef18d490d06cc68b7e43"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Plan/plan.hlsl",
+                      "sha256":  "4742864c2c7bfaa865f88a41893a666434d7aaa6395be2a4e2478ec2542d79f1"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Post/bloom.hlsl",
+                      "sha256":  "382f2f2888e5f7ad13313c0eedaed6190b9c79bad5ddb6d4497547c6107079e4"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Post/dof.hlsl",
+                      "sha256":  "5f963596f1ada5f6bb98384c36b2a3b4208f00314bb2c733fda894b6f81f501b"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Post/grade.hlsl",
+                      "sha256":  "4395d22b6c9f05e300c50f13f440224a705f1dfd48fe9272a5ec1d7d3b6f7b6d"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Post/manifest.yaml",
+                      "sha256":  "149cd2577e6cd28ad0aa67e10f35cb6815c6896a265e6bfcbc1cc42e3c11eea5"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Render/antgeo.hlsli",
+                      "sha256":  "117d2c929805a905921ef8457d429ff1c770956fc9d18631ac80f7359d67ed8d"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Render/depth_out.hlsl",
+                      "sha256":  "48aaa92137478a944f9fb17b5f5a2272b840b5a17828d0c700f42392179cacac"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Render/ground_out.hlsl",
+                      "sha256":  "0a359f6c1676326955bd6aae52b718bd9140ec6b0394793e058d6b05efd92ed2"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Render/manifest.yaml",
+                      "sha256":  "27c7c970924eaaafa92141d982385b52f75c7f2ceb5369a3adeac9ee31a0c303"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Render/scene.hlsl",
+                      "sha256":  "5d5c1ee125118ae01a83a139ce85c3c54de48f09d7676ebab758a3a5fcccec5f"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Scope/comp.hlsl",
+                      "sha256":  "a6869d6a342f14a6841a4d1038f8277a148e8c9fc2b012dddc3e922ffd8c9c09"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Scope/manifest.yaml",
+                      "sha256":  "34defc6158741c0cf05133b3c3c2293f58bc643f0e04d757464887c2a9e0a735"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Scope/marks.hlsl",
+                      "sha256":  "4a4d1b8aac8c2280b436200de6d812cc82a29ab030242d41510430576f61680b"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Scope/scope.hlsli",
+                      "sha256":  "76432b587dec494a992f99d4c8b30d25335fa1ad2b6a9b7a70ccd0122262b320"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Scope/sctl.hlsl",
+                      "sha256":  "15401c7d9619f27b8a56baaa8498d781929dd674806b89318370e1a75d64977f"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Scope/trail.hlsl",
+                      "sha256":  "8f9fff792eee74b7e2c66fa5e641cd88d6ce28ae4432bd7818ef945050a6e6a8"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Stage/canvas.hlsl",
+                      "sha256":  "4363350bb2cb0a6e5640dd36b8863c45ef6127015d00593757353b7dd697308a"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Stage/manifest.yaml",
+                      "sha256":  "5ccbf77d8484ca18c06a28262bea596ae0f3f6a468ecaf9efe2edc13c89d5793"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Stage/sctl.hlsl",
+                      "sha256":  "67d524cd92afd1e1ebe5d297799457a4a12d6d92f540d31346fc8a32fc475f8e"
+                  },
+                  {
+                      "path":  "projects/formicary/modules/FM_Stage/stage.hlsli",
+                      "sha256":  "96f561dd2a597101410643aba6d65e4a3fef9e9719b77aa479037d1f450a4b70"
+                  },
+                  {
+                      "path":  "projects/formicary/README.md",
+                      "sha256":  "888bae664c31f2e87940d0f6054c645d37f3d70ab1f60e653c9881a04ebd477c"
+                  },
+                  {
                       "path":  "projects/industrial_lattice/industrial_lattice.sentinel",
                       "sha256":  "eff287fcf3cf8426e623f78450ba8df526f756f7af09bd488ffa1c0897edcc6b"
                   },
@@ -913,12 +1121,8 @@
                       "sha256":  "291d7d7480f18ed911e93368e66c9d479dc7677bf221303a9e51fd5c83a8c933"
                   },
                   {
-                      "path":  "projects/interaction_lab/.gitignore",
-                      "sha256":  "a8b80f967532ac4df1594f9df429dbf45402193910e1dc5dc7f2a5ab73340b77"
-                  },
-                  {
                       "path":  "projects/interaction_lab/interaction_lab.sentinel",
-                      "sha256":  "2f25f6edea198c0931c7dec1358ae25bf16756de96aaedb66f1a54ab60c1704d"
+                      "sha256":  "ec5ccb828ee1c74a21a30cfa7fa9ca1882fc6bc1128ccb8cda35f8bd6f2572a3"
                   },
                   {
                       "path":  "projects/interaction_lab/modules/_shared/fonts/scientifica_ascii.hlsli",
@@ -1226,7 +1430,7 @@
                   },
                   {
                       "path":  "projects/koi_tank/koi_tank.sentinel",
-                      "sha256":  "f3538bf158af65446cabd10f50aa601c7f3344e16ce3f905b6bca321e926f7d7"
+                      "sha256":  "a7181fee6a2b13bb3baa5e644faedbedcab1e9443a806c4630d9060d99d89712"
                   },
                   {
                       "path":  "projects/koi_tank/modules/_shared/fish.hlsli",
@@ -1321,16 +1525,40 @@
                       "sha256":  "65f13d597bb01e2dc6288ad5fcfe674013b0fa72a2b312a1560dc26fae5d9846"
                   },
                   {
+                      "path":  "projects/koi_tank/modules/TP_Render/draw.hlsl",
+                      "sha256":  "ab01f05d70b4cd241044fd5368ff98307d9d5d8f7cfa4fcce39a97dfdc984b45"
+                  },
+                  {
                       "path":  "projects/koi_tank/modules/TP_Render/manifest.yaml",
-                      "sha256":  "03dec2c0df4c493d7f7140d0eb33d663bf8dc7777381dd327f1f09451c0ec128"
+                      "sha256":  "3ecb162e8d581f10ccefd829f13a00d82210f0ece53dc8c3fe86c45fc1de7359"
                   },
                   {
                       "path":  "projects/koi_tank/modules/TP_Render/pick.hlsl",
                       "sha256":  "cf24448e4195197c5a74b206cc2f4eb153499255a1ed55a773ab2bc1aec708ef"
                   },
                   {
+                      "path":  "projects/koi_tank/modules/TP_Render/program.hlsl",
+                      "sha256":  "0ae91913c6a9a25eaca4039cde42a947ce89a1f0eed8fe28fe3e30593dd4f4b0"
+                  },
+                  {
                       "path":  "projects/koi_tank/modules/TP_Render/render.hlsl",
                       "sha256":  "5198ff467ff05395188952a697d9eef219b8b09e47d8b88bf15a18d281563add"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Render/scope.hlsli",
+                      "sha256":  "6579195f10fdc7017c0cdb08112844c62d963bbb49d7d72bffa326e37bb604d2"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Render/splat.hlsl",
+                      "sha256":  "2fd3eb77d2b3a4d9bcac8f29fcaaee988dea02fbd29748606208f9b3dd5eaf3c"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Render/tick.hlsl",
+                      "sha256":  "d81999c741c0590c584ea94d659adf377f1b91f0c3814dae4b3af9ac7a83a6ed"
+                  },
+                  {
+                      "path":  "projects/koi_tank/modules/TP_Render/trail.hlsl",
+                      "sha256":  "040c5b39526d2e74448a68d1f86a33b7dd695a299029b2b8eb0b5d4f76059988"
                   },
                   {
                       "path":  "projects/koi_tank/modules/TP_School/canvas.hlsl",
@@ -1342,7 +1570,7 @@
                   },
                   {
                       "path":  "projects/koi_tank/modules/TP_School/manifest.yaml",
-                      "sha256":  "eabf5ffbcf98482b7cd0717a3f2357126b7063d1a4e8b715bc03fa1bd0c89046"
+                      "sha256":  "6c4fb1c4126ef408617e81a526fb9d407dc87ec3047c50ad52f43de9a90edaf4"
                   },
                   {
                       "path":  "projects/koi_tank/modules/TP_School/school.hlsli",
@@ -1355,30 +1583,6 @@
                   {
                       "path":  "projects/koi_tank/modules/TP_School/trail.hlsl",
                       "sha256":  "784f47498a79f4e2fd4f43a9ea09e1d35f2c1797d0588b8be0af70e2c84a7073"
-                  },
-                  {
-                      "path":  "projects/koi_tank/modules/TP_Scope/draw.hlsl",
-                      "sha256":  "d4fec2a4934ec1275b49ebd7a22147c5b44e899370137146a3bcd2d3e2f69655"
-                  },
-                  {
-                      "path":  "projects/koi_tank/modules/TP_Scope/manifest.yaml",
-                      "sha256":  "4e77de85e774fb2e1e73b63ec2b176254ca8181bab05a972ba2bb93e732cef8b"
-                  },
-                  {
-                      "path":  "projects/koi_tank/modules/TP_Scope/scope.hlsli",
-                      "sha256":  "d5b81b0402a65c1a1bde032180eda8736654bfc13832ed00b744904e926a599d"
-                  },
-                  {
-                      "path":  "projects/koi_tank/modules/TP_Scope/splat.hlsl",
-                      "sha256":  "11d814da5d4203bbbc1babdc7ae2309ae8015f4df7fefa000731bb89e8ab3137"
-                  },
-                  {
-                      "path":  "projects/koi_tank/modules/TP_Scope/tick.hlsl",
-                      "sha256":  "d5eee3dd3cd1d7556b4db89de1c53a607d5c342ceb196b0faa1cf434a5dddfeb"
-                  },
-                  {
-                      "path":  "projects/koi_tank/modules/TP_Scope/trail.hlsl",
-                      "sha256":  "f61d2422363efb518b73d9226da8b639e51b4869521a6239ec263d894542072d"
                   },
                   {
                       "path":  "projects/koi_tank/modules/TP_Sim/ctl.hlsl",
@@ -1426,7 +1630,95 @@
                   },
                   {
                       "path":  "projects/koi_tank/README.md",
-                      "sha256":  "bdc91077263e6dd1adc06b62c97a34a4da77cef45591d49b2e2ef0b9a8cfbd5c"
+                      "sha256":  "91fadbdd6e80df5e817d1beecd130d9e953f7b6195a2c2dfc4fd79a62672d92f"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/kuka_cell.sentinel",
+                      "sha256":  "db83d3089c94147ee8ac04acb54e32885451f33b1cde3930e3ebd9634ad319c0"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/_shared/cell.hlsli",
+                      "sha256":  "66154ff163fb3e8a469aae9d64330facdf272f24a4dc0939180a0e436ccea4f8"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/_shared/glyphs.hlsli",
+                      "sha256":  "0d7d619322452eb92727d5cfcd096ad4b1d0023fa68da5b2b0ba2d94d82baee5"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/_shared/microfont.hlsli",
+                      "sha256":  "353885d2815fa1a93760a89c068755a7c69d1c4378cbc3b2a1fc952415fd20e4"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Cell/canvas.hlsl",
+                      "sha256":  "9353c9b072253efc6674f899d6afcd2d069c0532e3861e92bd51c33686bbc041"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Cell/layout.hlsli",
+                      "sha256":  "51d041ebcea8b03b02c4871256a81f1c566c63b0ea054608de2b7e533005af2c"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Cell/manifest.yaml",
+                      "sha256":  "e6cde81ad883b0cdb15597be27d0ae5691f0ae0b550a835f00805deec88df3a8"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Cell/plan.hlsl",
+                      "sha256":  "a545cd34a2d8b7559326eb0dd8838251780f39f9904df4744ad2ae3f1aac24a6"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Pose/manifest.yaml",
+                      "sha256":  "699b7a67fbd6711ded7bed231e8a3f8517d1289f5f302d0a4c90ecf66fc88d2d"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Pose/scope.hlsl",
+                      "sha256":  "9cb3ab9eaf4e5442075d08aeb2bd49874589e2171ef75ffc3c355b64743c7758"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Pose/solve.hlsl",
+                      "sha256":  "12f3a06e83844880ebebac84821e300571b9338ce74024930e7af519d8345d90"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Rally/court.hlsl",
+                      "sha256":  "de071ddff0e60250c732866608b73a02a4ca042daebe373b3f38b2c00f4318e7"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Rally/manifest.yaml",
+                      "sha256":  "aee0d148071d4af3fbede6b94bed2b3735c758f21cba856904868a4461c9f499"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Rally/rally.hlsl",
+                      "sha256":  "4374285cc6c1ab1edea5208b28201d1eb130ec22620bc06c14814df7a567b9d8"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Robot/arm.hlsli",
+                      "sha256":  "af3ea76b9c7248bd9436a63371bd75186c3c758d76d1a0e63148f7c3eac67d05"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Robot/manifest.yaml",
+                      "sha256":  "45de43e911e814c508b252165a9669a1a30e5492ce1a728cda71efdc93b86787"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Robot/program.hlsl",
+                      "sha256":  "ec72cb5ff496d3f7a3392cddf0455646e91419d29d98b8bcdf0a8b87761e1db6"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Robot/render.hlsl",
+                      "sha256":  "155771e204d910f975c14b28f0ec05b8a5ec0f7e65cbe5d29ab7779df7611c99"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Robot/scope.hlsl",
+                      "sha256":  "ff27265c360f677a7d1ec21dcbd4939c60019f603602cadc47aef070ed736b04"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/modules/KA_Robot/ui.hlsl",
+                      "sha256":  "b573b8c62d2c7d015c874ee98db29c4ec5e1658c7970915c562c1c26540b6557"
+                  },
+                  {
+                      "path":  "projects/kuka_cell/README.md",
+                      "sha256":  "7722881f97a7a9acfe07ac12d720a00f9e71d934d89325a11b29d352a4f10397"
                   },
                   {
                       "path":  "projects/living_room_sdf/living_room_sdf.sentinel",
@@ -1610,7 +1902,7 @@
                   },
                   {
                       "path":  "projects/matik_plate/matik_plate.sentinel",
-                      "sha256":  "947e28ddb0716ceb75516c58ec180423e4a49f75db77ddb8dee07c07b5e467dd"
+                      "sha256":  "482091579d55a1c2b60d572e4ce54474200df8b13ccfb916120a4679f559a8b5"
                   },
                   {
                       "path":  "projects/matik_plate/modules/_shared/microfont.hlsli",
@@ -1705,102 +1997,6 @@
                       "sha256":  "d83287bf9bd7a15ae39c2b9f7901fe8a75c751f06f63c6c3edddfa9c9b2b8c86"
                   },
                   {
-                      "path":  "projects/prism_reliquary/modules/_shared/plan_theme.hlsli",
-                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/_shared/prmath.hlsli",
-                      "sha256":  "e7998ce1c763b235c15119f8104f74eb689c6c8e52529fce20174beef20668ca"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/_shared/relic.hlsli",
-                      "sha256":  "4bd8eef06cc4fa3adce326d67d4c3e7459fe36bdb8564a728466aba744f9a4a9"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Env/env.hlsl",
-                      "sha256":  "70fab76490f844a8c5d9c7b99315b97853b0e12b7f9baf5ec19ed20fab6bebda"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Env/manifest.yaml",
-                      "sha256":  "f10151c2755984168c478ccec60e83ab0c5cbf0ce81c4bc3351f1af51bf175cd"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Plan/canvas.hlsl",
-                      "sha256":  "902d601586879718a8b4412fc2759aff8f9d087cf63d7b08f99029140bab9acb"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Plan/manifest.yaml",
-                      "sha256":  "5789449048058a3b67baa39e117150df0319e241086018bb9a490ef20de8b22f"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Plan/plan.hlsl",
-                      "sha256":  "6b9c56953d027a359b2e5c1e4fbae50a3393296cee39fbfc41b5a1a741d74ffa"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/_aa_common.hlsli",
-                      "sha256":  "f2123b0429d54f262427d01a04cb2414bb83af873acac0eabde6fa49844d0ae9"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/aa.hlsl",
-                      "sha256":  "f20891d01071c970c6f02f3f01f6efce93fdbffb0fd7b08f8034402abe06376d"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/aa2.hlsl",
-                      "sha256":  "27774c2b5d95f7b1b17e12248c88ceda98b43e071eb4fd2ab384590d7e425366"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/blur_h.hlsl",
-                      "sha256":  "ba1f0a06709f2c2e1eeb1f509ee402bfc1733bca3c22949c81fea95fb6d7cc15"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/blur_v.hlsl",
-                      "sha256":  "968c532419b24fe541bcb499ef8ccc0a24e3ca39a8802235094d696abbea4d05"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/bright.hlsl",
-                      "sha256":  "bf3a16d76488779faf89ab81b2e21a8177a3bdb203fc5ca8f3c69d935ca354e1"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/dof.hlsl",
-                      "sha256":  "13d95991549d3123138898bda7cd2b9b4d409121927ad5a7a9bdac1a9b7955b9"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/grade.hlsl",
-                      "sha256":  "f18c89fcd543cadd665e0d293d8cdefb408b6dbccc995fc5602773c9e56b1465"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/manifest.yaml",
-                      "sha256":  "8410e96a236c6951d8df059d3b51c454445f91456cd5567022222015de2f404d"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Post/star.hlsl",
-                      "sha256":  "3cb15622ba8b424b40324c5237ef0b930678bdad41cab6a80477164f7f92ab24"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Render/film.hlsl",
-                      "sha256":  "66012c58307f56976fc49b540b2b252267dbfeca37a900e3283c04be20ce5f0c"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Render/manifest.yaml",
-                      "sha256":  "708b9d82671c2b6e132dc138551604d95df706ed9c4b0280abce61a70d619960"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Render/scene.hlsli",
-                      "sha256":  "63a2c93b234065c81f3fff0d5a2b0a3cc4ddfd0ce3c58f4a3cf91ccde3366949"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/modules/PR_Render/solids.hlsl",
-                      "sha256":  "6a7c822801d2dece2ade939e2201a98481913b01362011447d529e68c905b4a3"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/prism_reliquary.sentinel",
-                      "sha256":  "7114868fc767072a051ad566bc38dade23fa128ed3a60786433c0156d96857ef"
-                  },
-                  {
-                      "path":  "projects/prism_reliquary/README.md",
-                      "sha256":  "bc74b2cb080784c523fe1a160cfe1f6ed16f253d62d31242c7fc7afa0f38d017"
-                  },
-                  {
                       "path":  "projects/reactor_shaft/modules/_shared/shaft.hlsli",
                       "sha256":  "fcce7cc29f84ae9339f84ab8f7d13f61f4e98b3fc7ded3e689dfb6c4e766fd9f"
                   },
@@ -1862,7 +2058,7 @@
                   },
                   {
                       "path":  "projects/reactor_shaft/reactor_shaft.sentinel",
-                      "sha256":  "20c45db24542308acf5ba7cd20601db4c6475dafc265f27eb2ac197f4c8b02bc"
+                      "sha256":  "3c326ae0747f9fce082ea52f951c2e50ff79c97de1d3905d8a0616c41ca53211"
                   },
                   {
                       "path":  "projects/reactor_shaft/README.md",
@@ -2110,7 +2306,7 @@
                   },
                   {
                       "path":  "projects/scientific_organism/scientific_organism.sentinel",
-                      "sha256":  "0b124821e1721d841cb89f47ba3e125937e02331fad48111d94c52d37705445b"
+                      "sha256":  "3ad1fe4f96573d01d75e7baadb861e6e8d0a7c740050d1cd98dc8f49968b3df0"
                   },
                   {
                       "path":  "projects/soft_vitrine/modules/_shared/microfont.hlsli",
@@ -2254,7 +2450,139 @@
                   },
                   {
                       "path":  "projects/soft_vitrine/soft_vitrine.sentinel",
-                      "sha256":  "0b620a1c7a3f65ee2f3e0a34a46ed5142965c61140e371c3c1763d0aa7c6c851"
+                      "sha256":  "6fd927599415d4d5cedf77697dc69d2ad53211b62db402c2f030e002a70ffbf3"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/_shared/bench.hlsli",
+                      "sha256":  "e7d4b2500c98f70464e9a7cc51e934e4d7196b1db4e740469d6fa6a14ccd90fc"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/_shared/fonts/scientifica_ascii.hlsli",
+                      "sha256":  "705519a790a8a1341a1b7cf508bd33035fd67b133b5651dd680072261c66df78"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "5fe3133335d5a3a32865f2b5cc133ed092c12aa65fcde525b68045e14312cd61"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/_shared/optics.hlsli",
+                      "sha256":  "68cffc1aa5c956df357717bb1100bad414d729d30af008dc9bd812a798c6b108"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/_shared/paths.hlsli",
+                      "sha256":  "29d83ea8eb5341705c3c87aa6573fe08a1571c28bb2fb45b58303304f0324dc0"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/_shared/shapes.hlsli",
+                      "sha256":  "3c7c550f676d5a7edb938ae9c1ddf26d5f0f551c75d92fcb9bf67cc69e8c3902"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/_shared/ui/sui3_core.hlsli",
+                      "sha256":  "001de490dab0ca3e75f65ad9983356828c2b404ee5220d93ca32ab936e1a0e0a"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/_shared/ui/sui3_text.hlsli",
+                      "sha256":  "abee4e829b94aaf0e90b561b9dfdbf013397e66fafd85084dc7e7b8349956604"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Bench/canvas.hlsl",
+                      "sha256":  "461b1772aae60889367300c52c4764340baf962580a8e216b44f05dc979838b8"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Bench/chief.hlsl",
+                      "sha256":  "47ca855c625669dbb3dc6399b218cd9abce7a4428bc7b56ed259aac8e1aa436c"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Bench/layout.hlsli",
+                      "sha256":  "57186921654ddc6fccbd0bcb698ab32ae76ec4994c6fe7d06365e33a6f178147"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Bench/manifest.yaml",
+                      "sha256":  "b6c5054f3405219bf6dcc451385b5addeca2a3558364b0908146545c44524418"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Bench/plan.hlsl",
+                      "sha256":  "b0c7dfb006cd14275b35e79f4a90b3d5af9761b028b80d707d1ad678fe592714"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Field/bins.hlsl",
+                      "sha256":  "1af0cacc490599aad0772cee4308e2ce312bc08b33ed7130d55eac5510bf7e1d"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Field/manifest.yaml",
+                      "sha256":  "98697202f315f35c585a532c8fbdc6525a5063c8978a024af1bd6b44ddd160a5"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Field/scene.hlsl",
+                      "sha256":  "d5b1b7edc2acc213f4e52a4dfccc9033e29aea34f1dfe996c65576507f226297"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Field/segwidth.hlsli",
+                      "sha256":  "1d7e0a2c36fb034dcdaf176dc0550f29298a6286875bd6c041496a21f0398000"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Field/view.hlsli",
+                      "sha256":  "dcb574a516504e0b246932e3b8f49701b583e44683d91ecd2ea9a41f8e6ebc2a"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Lens/blur_h.hlsl",
+                      "sha256":  "20ab060e237f41b881de750a52539ddc7479c4b88d72376f4b4b963677a18f24"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Lens/blur_v.hlsl",
+                      "sha256":  "63a6602b42035276aaa8e3582aa776f04803ce50f2cf2eae61811631a7525743"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Lens/bright.hlsl",
+                      "sha256":  "423a7ecf35e8a2b86a9cd4cf650ca9f619ad296d384b84f7612cbd1d29016012"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Lens/grade.hlsl",
+                      "sha256":  "8d4440a8e8d813a05b37e0ba0c8d722ec531f3264614230a471147393d9115df"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Lens/manifest.yaml",
+                      "sha256":  "f6c5a4a0f245908d3f3d15adf731d70e666cbf9395cd38cb3602893242513fa0"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Lens/streak.hlsl",
+                      "sha256":  "d53f01d747d20802d4ec12fa2180935ad5685fafb8ca48c3e4eab26b44f29e59"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Lens/streak2.hlsl",
+                      "sha256":  "7700b0f3b424868fb2dd10980bae5e61c91b67230a4bd2e226efb3a9adc5dae8"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Lens/wide_h.hlsl",
+                      "sha256":  "9627faba77dd0e43c59db1e47a3b75b31ab8318c8a9433ae7af316f1d16dd980"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Lens/wide_v.hlsl",
+                      "sha256":  "e7192d56595e3dc0f8b7936c36075cb83cbdff8ae094ef80552c671af8ab53a8"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Trace/manifest.yaml",
+                      "sha256":  "b6f69ee26c7daadaa5fb589c4ce161da8f3aba78fea3b394c3b4bc330b6c289d"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Trace/scope.hlsl",
+                      "sha256":  "76a8343b25c89afaaf2f0f86639ab2d1e4e9faedbd6ad811efa5c8cc7beda5b9"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/modules/LT_Trace/trace.hlsl",
+                      "sha256":  "b51d501bea75890e9a0b689f4935321c78ad2b5b1e6ff48bbb609604fe1bac9b"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/README.md",
+                      "sha256":  "3cffa96a310106075b406d3cc709cfb1a14711a27d81894c2d62113c8ef00ff2"
+                  },
+                  {
+                      "path":  "projects/spectral_bench/spectral_bench.sentinel",
+                      "sha256":  "01a05b996030d991cdc61862b0fd2880303cadc83d8402f02aa61d3d6c660eb1"
                   },
                   {
                       "path":  "projects/strata/modules/_shared/palette.hlsli",
@@ -2354,7 +2682,7 @@
                   },
                   {
                       "path":  "projects/strata/strata.sentinel",
-                      "sha256":  "519d50b7486b7792f3893d29fafe60abb0f99395a194ae369e08de8467f061e8"
+                      "sha256":  "faf540e217cc13ce7b7b3845d6bb100d006666245a2700b8c34e33f2d8d16ab6"
                   },
                   {
                       "path":  "projects/streamdiff_canvas/modules/_shared/fonts/scientifica_ascii.hlsli",
@@ -2694,11 +3022,7 @@
                   },
                   {
                       "path":  "projects/sunward_corridor/sunward_corridor.sentinel",
-                      "sha256":  "2626fb6ec0d20bb0b712ee2b7e66f7c82613570fb7a62a6c39e4bc09a8652764"
-                  },
-                  {
-                      "path":  "projects/touchdesigner_new_project/.gitignore",
-                      "sha256":  "61dabcd0f00c5570de946ec70b8ff6eb387e161254abe6bc2f8fafeef521d3b9"
+                      "sha256":  "67e87704359798958aa52c7adc23fb35c78d1c0999ece51681c0fc6da5df1dcd"
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/images/jellybeans.png",
@@ -2806,7 +3130,7 @@
                   },
                   {
                       "path":  "projects/touchdesigner_new_project/touchdesigner_new_project.sentinel",
-                      "sha256":  "f67243313314fe5f9613ba227ce1eff83f29171603b3a38663628365f6c49af9"
+                      "sha256":  "c9826a8fdcfb75d9550a5dd830af5385ed1d7b8d8e0c181f309da3c11972f8d5"
                   },
                   {
                       "path":  "projects/vitreous_cross/modules/_shared/plan_theme.hlsli",
@@ -2894,7 +3218,7 @@
                   },
                   {
                       "path":  "projects/vitreous_cross/vitreous_cross.sentinel",
-                      "sha256":  "e68e90b38e681289a630796cb093c619d6fcee38dd9f91f5f65ae6f7035946ca"
+                      "sha256":  "4c6f8897950ed12aa9aefb24f855ea3c078e4b5232e797862fbc3b25ad18fd8e"
                   },
                   {
                       "path":  "README.md",
@@ -4623,6 +4947,10 @@
                                   "sha256":  "82360ba24b06d681c77074a35990aa5dbdbd7aa31eb40eeff11d55260ddd3fa5"
                               },
                               {
+                                  "path":  "projects/axon_press/hero.png",
+                                  "sha256":  "0487f5fc1989a88737fc95a3f101c62b2134df942e437f8e50c134900dc575a3"
+                              },
+                              {
                                   "path":  "projects/desert_totem/desert_totem.sentinel",
                                   "sha256":  "690fe91c9e6c9a496be4ef98c1f5fdf76cce20a4c76d8119d226854ea1660955"
                               },
@@ -5915,6 +6243,10 @@
                                   "sha256":  "d56370f463d5b1e650a65519caf9c633760b2823298b88605e5f3894bfe61bed"
                               },
                               {
+                                  "path":  "projects/interaction_lab/.gitignore",
+                                  "sha256":  "a8b80f967532ac4df1594f9df429dbf45402193910e1dc5dc7f2a5ab73340b77"
+                              },
+                              {
                                   "path":  "projects/interaction_lab/modules/_shared/anim/anim.hlsli",
                                   "sha256":  "66996ffa8ede4dccbd114609d90ddf4d4d4a2e0c1adef858878e16ed160e2fb4"
                               },
@@ -6357,6 +6689,30 @@
                               {
                                   "path":  "projects/kidpix_canvas/modules/kp_spawn/spawn.hlsl",
                                   "sha256":  "ff8d7c999b14e4dc404a98dbd144adacdeb4b8762e8c5ba93668e2c8d22dadbb"
+                              },
+                              {
+                                  "path":  "projects/koi_tank/modules/TP_Scope/draw.hlsl",
+                                  "sha256":  "d4fec2a4934ec1275b49ebd7a22147c5b44e899370137146a3bcd2d3e2f69655"
+                              },
+                              {
+                                  "path":  "projects/koi_tank/modules/TP_Scope/manifest.yaml",
+                                  "sha256":  "4e77de85e774fb2e1e73b63ec2b176254ca8181bab05a972ba2bb93e732cef8b"
+                              },
+                              {
+                                  "path":  "projects/koi_tank/modules/TP_Scope/scope.hlsli",
+                                  "sha256":  "d5b81b0402a65c1a1bde032180eda8736654bfc13832ed00b744904e926a599d"
+                              },
+                              {
+                                  "path":  "projects/koi_tank/modules/TP_Scope/splat.hlsl",
+                                  "sha256":  "11d814da5d4203bbbc1babdc7ae2309ae8015f4df7fefa000731bb89e8ab3137"
+                              },
+                              {
+                                  "path":  "projects/koi_tank/modules/TP_Scope/tick.hlsl",
+                                  "sha256":  "d5eee3dd3cd1d7556b4db89de1c53a607d5c342ceb196b0faa1cf434a5dddfeb"
+                              },
+                              {
+                                  "path":  "projects/koi_tank/modules/TP_Scope/trail.hlsl",
+                                  "sha256":  "f61d2422363efb518b73d9226da8b639e51b4869521a6239ec263d894542072d"
                               },
                               {
                                   "path":  "projects/living_room_sdf/modules/_shared/os_terminal.hlsli",
@@ -6909,6 +7265,102 @@
                               {
                                   "path":  "projects/living_room_sdf/proof/scene_warm_evening.png",
                                   "sha256":  "b118bd004e4808de1e1f4ca7b0b52672aec60914b36190adb16b0d984a4bf2ce"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/_shared/plan_theme.hlsli",
+                                  "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/_shared/prmath.hlsli",
+                                  "sha256":  "e7998ce1c763b235c15119f8104f74eb689c6c8e52529fce20174beef20668ca"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/_shared/relic.hlsli",
+                                  "sha256":  "4bd8eef06cc4fa3adce326d67d4c3e7459fe36bdb8564a728466aba744f9a4a9"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Env/env.hlsl",
+                                  "sha256":  "70fab76490f844a8c5d9c7b99315b97853b0e12b7f9baf5ec19ed20fab6bebda"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Env/manifest.yaml",
+                                  "sha256":  "f10151c2755984168c478ccec60e83ab0c5cbf0ce81c4bc3351f1af51bf175cd"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Plan/canvas.hlsl",
+                                  "sha256":  "902d601586879718a8b4412fc2759aff8f9d087cf63d7b08f99029140bab9acb"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Plan/manifest.yaml",
+                                  "sha256":  "5789449048058a3b67baa39e117150df0319e241086018bb9a490ef20de8b22f"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Plan/plan.hlsl",
+                                  "sha256":  "6b9c56953d027a359b2e5c1e4fbae50a3393296cee39fbfc41b5a1a741d74ffa"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/_aa_common.hlsli",
+                                  "sha256":  "f2123b0429d54f262427d01a04cb2414bb83af873acac0eabde6fa49844d0ae9"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/aa.hlsl",
+                                  "sha256":  "f20891d01071c970c6f02f3f01f6efce93fdbffb0fd7b08f8034402abe06376d"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/aa2.hlsl",
+                                  "sha256":  "27774c2b5d95f7b1b17e12248c88ceda98b43e071eb4fd2ab384590d7e425366"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/blur_h.hlsl",
+                                  "sha256":  "ba1f0a06709f2c2e1eeb1f509ee402bfc1733bca3c22949c81fea95fb6d7cc15"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/blur_v.hlsl",
+                                  "sha256":  "968c532419b24fe541bcb499ef8ccc0a24e3ca39a8802235094d696abbea4d05"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/bright.hlsl",
+                                  "sha256":  "bf3a16d76488779faf89ab81b2e21a8177a3bdb203fc5ca8f3c69d935ca354e1"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/dof.hlsl",
+                                  "sha256":  "13d95991549d3123138898bda7cd2b9b4d409121927ad5a7a9bdac1a9b7955b9"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/grade.hlsl",
+                                  "sha256":  "f18c89fcd543cadd665e0d293d8cdefb408b6dbccc995fc5602773c9e56b1465"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/manifest.yaml",
+                                  "sha256":  "8410e96a236c6951d8df059d3b51c454445f91456cd5567022222015de2f404d"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Post/star.hlsl",
+                                  "sha256":  "3cb15622ba8b424b40324c5237ef0b930678bdad41cab6a80477164f7f92ab24"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Render/film.hlsl",
+                                  "sha256":  "66012c58307f56976fc49b540b2b252267dbfeca37a900e3283c04be20ce5f0c"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Render/manifest.yaml",
+                                  "sha256":  "708b9d82671c2b6e132dc138551604d95df706ed9c4b0280abce61a70d619960"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Render/scene.hlsli",
+                                  "sha256":  "63a2c93b234065c81f3fff0d5a2b0a3cc4ddfd0ce3c58f4a3cf91ccde3366949"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/modules/PR_Render/solids.hlsl",
+                                  "sha256":  "6a7c822801d2dece2ade939e2201a98481913b01362011447d529e68c905b4a3"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/prism_reliquary.sentinel",
+                                  "sha256":  "7114868fc767072a051ad566bc38dade23fa128ed3a60786433c0156d96857ef"
+                              },
+                              {
+                                  "path":  "projects/prism_reliquary/README.md",
+                                  "sha256":  "bc74b2cb080784c523fe1a160cfe1f6ed16f253d62d31242c7fc7afa0f38d017"
                               },
                               {
                                   "path":  "projects/scientific_organism/modules/_shared/au_hud/au_text.hlsli",
@@ -8603,6 +9055,10 @@
                                   "sha256":  "32012d3e210ce5449a28005b38589304e97f4207c720ac1570cb6ee112a4e925"
                               },
                               {
+                                  "path":  "projects/touchdesigner_new_project/.gitignore",
+                                  "sha256":  "61dabcd0f00c5570de946ec70b8ff6eb387e161254abe6bc2f8fafeef521d3b9"
+                              },
+                              {
                                   "path":  "tools/generate_laservibe_hud.py",
                                   "sha256":  "3ac0d42a86d084de596fabcfc528c7826c68fc7f066326c8c62aea5b9ca51f98"
                               },
@@ -8636,5 +9092,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "b91297151c733fbf336ea539d3fd0967ba1e5193"
+    "source_commit":  "c6d1f1d0d92e7024bf3efa292f80fc682d44a717"
 }
