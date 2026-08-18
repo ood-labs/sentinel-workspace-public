@@ -98,7 +98,7 @@
                   },
                   {
                       "path":  ".agents/skills/module-authoring/SKILL.md",
-                      "sha256":  "a4f69818df1296ae31db2d93a0abc314c5c66f27aaea616fd0c530a1e9ce5510"
+                      "sha256":  "f51de00ef305b131d655ad23124a7fe1feb02c3a5bf4a84b536439c1ea29a351"
                   },
                   {
                       "path":  ".agents/skills/module-ui-authoring/agents/openai.yaml",
@@ -234,7 +234,7 @@
                   },
                   {
                       "path":  ".claude/skills/module-authoring/SKILL.md",
-                      "sha256":  "a4f69818df1296ae31db2d93a0abc314c5c66f27aaea616fd0c530a1e9ce5510"
+                      "sha256":  "f51de00ef305b131d655ad23124a7fe1feb02c3a5bf4a84b536439c1ea29a351"
                   },
                   {
                       "path":  ".claude/skills/module-ui-authoring/agents/openai.yaml",
@@ -286,11 +286,11 @@
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "1ecb188752dd4d51dc9cf10b0349d384e28ccf53076df852bbb775016fb57b98"
+                      "sha256":  "282bf4e9f8c86aa4a5c70d6efa17fe69972c7eff51b018271fc452c9a631d469"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "1ecb188752dd4d51dc9cf10b0349d384e28ccf53076df852bbb775016fb57b98"
+                      "sha256":  "282bf4e9f8c86aa4a5c70d6efa17fe69972c7eff51b018271fc452c9a631d469"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -314,7 +314,7 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "1ecb188752dd4d51dc9cf10b0349d384e28ccf53076df852bbb775016fb57b98"
+                      "sha256":  "282bf4e9f8c86aa4a5c70d6efa17fe69972c7eff51b018271fc452c9a631d469"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -326,7 +326,7 @@
                   },
                   {
                       "path":  "knowledge/example-authoring.md",
-                      "sha256":  "3f7e24e792445d3ce07d41da875ef64a5b41cc0f0199dc78094c9089eb107e94"
+                      "sha256":  "9c7ec9b1501df616a24addcf5d171faae19e153303ff2c3894b9fbbf28c97114"
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
@@ -3222,7 +3222,7 @@
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "1c27aa9765c733640996027cc32c05898dc605007d322161d5cda48b35f22ef8"
+                      "sha256":  "b00cfb918150b518a53898f4926b3fae06fefbcc5d5e64e6e4d0160c538c9ddd"
                   },
                   {
                       "path":  "tools/module-ui.ps1",
@@ -9092,5 +9092,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "3615720f045caf662b701c7548598f4ff211011c"
+    "source_commit":  "cfc213e2c04b4698602f76b782bead8800a8d2d9"
 }
