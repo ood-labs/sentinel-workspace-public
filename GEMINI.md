@@ -66,9 +66,19 @@ Extend the same idea wherever a build has separable concerns worth recalling ind
 
 ## Examples Are References, Not A Stock Module Library
 
-Start with `knowledge/EXAMPLE-MAP.md` when an existing project may illuminate a
-technique. Inspect its graph, README, data contracts, and proof strategy, then
-invent the implementation that best fits the current user's problem. Do not copy
+Choose references in proportion to the problem. Start with the smallest useful
+evidence set, then widen it when each additional reference answers a specific
+unresolved question about architecture, data contracts, visual language, or
+proof. A familiar single-node operation may need only its matched skill fixture.
+A novel or ambitious system may justify several examples. Do not enumerate or
+recursively read the project collection by default. Stop browsing when the
+design and proof plan are clear enough to begin authoring, then return to
+references if implementation reveals a real gap.
+
+When project-level reference is useful, use `knowledge/EXAMPLE-MAP.md` to select
+the strongest match before opening project files. Inspect only the relevant
+graph, README sections, data contracts, and proof strategy, then invent the
+implementation that best fits the current user's problem. Do not copy
 project-bundled generators, renderers, layouts, palettes, controls, or
 compositors into a new project unless the user explicitly asks to fork, remix,
 or extend that exact example.

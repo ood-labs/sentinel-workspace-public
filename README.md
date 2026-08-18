@@ -26,7 +26,8 @@ not the application, model engines, or proprietary source.
    ```
 
 4. Read `AGENTS.md` and `knowledge/FEATURE-MAP.md`.
-5. Use `knowledge/EXAMPLE-MAP.md` to find a relevant teaching project.
+5. When project-level research would resolve an open design question, use
+   `knowledge/EXAMPLE-MAP.md` to select the strongest teaching reference.
 
 The live MCP catalog is authoritative for the installed build.
 

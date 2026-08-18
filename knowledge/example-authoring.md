@@ -23,8 +23,16 @@ look and behave differently because they solve different problems.
 
 ## How to use examples
 
-Use `knowledge/EXAMPLE-MAP.md` to find a relevant project, then inspect its
-README and saved graph. Learn from:
+Choose references in proportion to the problem. Begin with the strongest skill
+fixture or project match, and open more only when each one answers a specific
+unresolved question. Familiar single-node work may need one fixture. Complex or
+novel systems may benefit from several project references. Avoid enumerating or
+recursively reading the full collection. Begin authoring once the architecture,
+data contracts, and proof approach are clear, then return to references when a
+real implementation gap appears.
+
+For project-level research, use `knowledge/EXAMPLE-MAP.md` to select the best
+match before inspecting its relevant README sections and saved graph. Learn from:
 
 - graph architecture and responsibility boundaries;
 - typed video and data connections;

@@ -7,6 +7,26 @@ description: Author Module pipeline projects (multi-pass YAML manifests, typed d
 
 The "Module" pipeline type (registered as `"module"`) supports multi-pass YAML-driven shader projects with typed structured buffer I/O. Previously called "ShaderProject" — that name is a backward-compat alias only.
 
+## Choose references proportionally
+
+Start with the smallest useful evidence set. Open another fixture or project
+only when it answers a specific unresolved question. Familiar single-node work
+may need one fixture or template. Complex and novel systems may justify several
+references. Avoid enumerating or recursively reading the project collection by
+default. Once the manifest structure, data contract, and proof route are clear,
+write the first version and compile-check it. Return to references when the
+implementation exposes a real gap.
+
+| Need | Start here |
+| --- | --- |
+| basic generator or one-pass texture operation | `Quick-Start Manifest Template` in this skill |
+| crop or select part of an image | `examples/crop_select/` |
+| pass float image data into a display node | `examples/crop_select/` and `examples/crop_present/` |
+| high-precision UV data | `examples/uv_remap_bitdepth/` |
+| structured control buffers | `examples/lfo_panel/` |
+| integrated rate or scrub-safe phase | `examples/phase_loop/` |
+| internal camera or multiple texture outputs | `examples/wave_field/` |
+
 ## Where to put new modules
 
 Keep releasable modules under **`./projects/<project>/modules/<name>/`** so each
@@ -409,7 +429,9 @@ Author Modules so the manifest resolution is a default target, not a hidden layo
 
 ### Bundled Examples (in this skill folder)
 
-Full working projects are in `examples/` alongside this SKILL.md. Read these files for concrete syntax:
+Full working projects are in `examples/` alongside this SKILL.md. Use the
+matched fixture for concrete syntax, and widen the search only when the first
+reference leaves a specific question unresolved:
 
 **`examples/lfo_panel/`** — Control outputs + structured buffers + oscilloscope UI
 - `manifest.yaml` — `buffers:`, `control_outputs:`, compute→display pipeline, `type: float` for shape selectors
@@ -420,16 +442,6 @@ Full working projects are in `examples/` alongside this SKILL.md. Read these fil
 - `manifest.yaml` — `features: [camera]`, `outputs:` section with 2 pins, 3-pass pipeline (compute march → ps extract color → ps extract depth)
 - `wave_field.hlsl` — Camera ray generation with Y-flip, `_ViewProjMatrix` projection, finite-range glows, post-gamma background, depth in alpha
 - `color_out.hlsl` / `depth_out.hlsl` — Trivial ps_5_0 extract passes (`VS_OUTPUT`, `SV_TARGET0`, `_Tex0.SampleLevel`)
-
-### Available Skill Fixtures
-
-| Fixture | Key pattern |
-| --- | --- |
-| `examples/lfo_panel/` | structured-buffer waveform generation and display |
-| `examples/phase_loop/` | integrated rate and scrub-safe phase |
-| `examples/wave_field/` | internal camera plus color/depth outputs |
-| `examples/uv_remap_bitdepth/` | high-precision intermediate UV data |
-| `examples/crop_select/` and `examples/crop_present/` | float output passed between two Modules |
 
 ## Quick-Start Manifest Template
 
