@@ -309,7 +309,6 @@
         '.agents',
         '.claude',
         '.release',
-        'examples',
         'knowledge',
         'projects',
         'tools'
@@ -352,7 +351,6 @@
         Prefixes = @(
             '.agents/skills',
             '.claude/skills',
-            'examples',
             'knowledge',
             'projects',
             'tools/templates/module-ui'
