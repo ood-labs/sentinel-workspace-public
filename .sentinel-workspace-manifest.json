@@ -1702,7 +1702,7 @@
                   },
                   {
                       "path":  "projects/living_room_sdf/blueprints/living_room_architecture.solved.json",
-                      "sha256":  "683fa9dfbc73797154ec0e2639d2427264bf982f4955c18b5b55b5dd54ddb305"
+                      "sha256":  "a218d658759562ed96417294c2f800987a129dfeca0e29b1b8b7dad0c6243747"
                   },
                   {
                       "path":  "projects/living_room_sdf/blueprints/living_room_architecture.yaml",
@@ -3222,7 +3222,7 @@
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "b00cfb918150b518a53898f4926b3fae06fefbcc5d5e64e6e4d0160c538c9ddd"
+                      "sha256":  "debf679b8f578867389fab04649f1c4f2806f62e125f899f1545d8072c169264"
                   },
                   {
                       "path":  "tools/module-ui.ps1",
@@ -9112,5 +9112,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "33515e9824af715b9aa887bbadfc5c360222db44"
+    "source_commit":  "72102586788b5f1b9faa059b25b0a91b9af8f5c5"
 }
