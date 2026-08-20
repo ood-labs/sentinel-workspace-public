@@ -30,7 +30,7 @@
                   },
                   {
                       "path":  ".agents/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "3726fdd1673e05a60930ab00c41499d33f26adfb5fc37cd021366ed07820d215"
+                      "sha256":  "a535707b3515e0107c1be0049f77ac2e7ff64d09b7d5b2f3df59af2fcafb4bb1"
                   },
                   {
                       "path":  ".agents/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -114,7 +114,7 @@
                   },
                   {
                       "path":  ".agents/skills/procedural-geometry-authoring/SKILL.md",
-                      "sha256":  "47fd8fc2ed5eceabd2f2bdcefd9cd5f766ee896d105feda02e901a50c43de73c"
+                      "sha256":  "236ada8ca6599872e4c83bcb368465c72f31051d8abad3324f339d1ad6b68555"
                   },
                   {
                       "path":  ".agents/skills/sentinel-bug-report/GUIDE.md",
@@ -166,7 +166,7 @@
                   },
                   {
                       "path":  ".claude/skills/modular-scene-authoring/SKILL.md",
-                      "sha256":  "3726fdd1673e05a60930ab00c41499d33f26adfb5fc37cd021366ed07820d215"
+                      "sha256":  "a535707b3515e0107c1be0049f77ac2e7ff64d09b7d5b2f3df59af2fcafb4bb1"
                   },
                   {
                       "path":  ".claude/skills/module-authoring/examples/crop_present/manifest.yaml",
@@ -250,7 +250,7 @@
                   },
                   {
                       "path":  ".claude/skills/procedural-geometry-authoring/SKILL.md",
-                      "sha256":  "47fd8fc2ed5eceabd2f2bdcefd9cd5f766ee896d105feda02e901a50c43de73c"
+                      "sha256":  "236ada8ca6599872e4c83bcb368465c72f31051d8abad3324f339d1ad6b68555"
                   },
                   {
                       "path":  ".claude/skills/sentinel-bug-report/GUIDE.md",
@@ -286,35 +286,15 @@
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "282bf4e9f8c86aa4a5c70d6efa17fe69972c7eff51b018271fc452c9a631d469"
+                      "sha256":  "36a2e7e093628fdfb11d293c0bba1e84bceb6fd66db1ec66ef65cb89a0e274c7"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "282bf4e9f8c86aa4a5c70d6efa17fe69972c7eff51b018271fc452c9a631d469"
-                  },
-                  {
-                      "path":  "examples/blueprints/living_room_architecture.solved.json",
-                      "sha256":  "4c2eff2a7ec2f5b9b81b76fdbacc2cc182af005e7a62ecaa8eb0014736936c29"
-                  },
-                  {
-                      "path":  "examples/blueprints/living_room_architecture.yaml",
-                      "sha256":  "cbe7ab95c84690f62b5fe6c874cb40d8c096b4378f437a42cee1fa0dbbbd7412"
-                  },
-                  {
-                      "path":  "examples/blueprints/living_room_furnishings.solved.json",
-                      "sha256":  "2be37f2ec890825f9e23bc9394cc88b25e1cbac89442d7a2e0f55947d2175850"
-                  },
-                  {
-                      "path":  "examples/blueprints/living_room_furnishings.yaml",
-                      "sha256":  "6a88f3ef1904897cc649963a6638ad608666c60f6a7f442f77fb9d0f629c6892"
-                  },
-                  {
-                      "path":  "examples/blueprints/living_room_sdf_kinds.yaml",
-                      "sha256":  "989db9c8d00a7f75395cd8ef5ed3adf874c42ae32e6b5c69fa6b442c8258b1aa"
+                      "sha256":  "36a2e7e093628fdfb11d293c0bba1e84bceb6fd66db1ec66ef65cb89a0e274c7"
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "282bf4e9f8c86aa4a5c70d6efa17fe69972c7eff51b018271fc452c9a631d469"
+                      "sha256":  "36a2e7e093628fdfb11d293c0bba1e84bceb6fd66db1ec66ef65cb89a0e274c7"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -386,7 +366,7 @@
                   },
                   {
                       "path":  "knowledge/precise-construction.md",
-                      "sha256":  "8302a00c648a7f00765cdfe3f3c01af2de231c3a8057823646cba4f8b073e265"
+                      "sha256":  "9fd64d96b173341478ee0262d10f4b01bcd654d2218024e37f1528aa50f0b9d8"
                   },
                   {
                       "path":  "knowledge/reference-build-method.md",
@@ -1719,6 +1699,26 @@
                   {
                       "path":  "projects/kuka_cell/README.md",
                       "sha256":  "7722881f97a7a9acfe07ac12d720a00f9e71d934d89325a11b29d352a4f10397"
+                  },
+                  {
+                      "path":  "projects/living_room_sdf/blueprints/living_room_architecture.solved.json",
+                      "sha256":  "683fa9dfbc73797154ec0e2639d2427264bf982f4955c18b5b55b5dd54ddb305"
+                  },
+                  {
+                      "path":  "projects/living_room_sdf/blueprints/living_room_architecture.yaml",
+                      "sha256":  "cbe7ab95c84690f62b5fe6c874cb40d8c096b4378f437a42cee1fa0dbbbd7412"
+                  },
+                  {
+                      "path":  "projects/living_room_sdf/blueprints/living_room_furnishings.solved.json",
+                      "sha256":  "ace45891c564de79c3294045bca414506063172f4750e144a01adda35d385fac"
+                  },
+                  {
+                      "path":  "projects/living_room_sdf/blueprints/living_room_furnishings.yaml",
+                      "sha256":  "6a88f3ef1904897cc649963a6638ad608666c60f6a7f442f77fb9d0f629c6892"
+                  },
+                  {
+                      "path":  "projects/living_room_sdf/blueprints/living_room_sdf_kinds.yaml",
+                      "sha256":  "989db9c8d00a7f75395cd8ef5ed3adf874c42ae32e6b5c69fa6b442c8258b1aa"
                   },
                   {
                       "path":  "projects/living_room_sdf/living_room_sdf.sentinel",
@@ -3461,6 +3461,26 @@
                               {
                                   "path":  "docs/SYNC-ANCHOR.md",
                                   "sha256":  "29785160a6d49c4e9da1238eecb966ca1873ce329b8772c0f9a165e04798f851"
+                              },
+                              {
+                                  "path":  "examples/blueprints/living_room_architecture.solved.json",
+                                  "sha256":  "4c2eff2a7ec2f5b9b81b76fdbacc2cc182af005e7a62ecaa8eb0014736936c29"
+                              },
+                              {
+                                  "path":  "examples/blueprints/living_room_architecture.yaml",
+                                  "sha256":  "cbe7ab95c84690f62b5fe6c874cb40d8c096b4378f437a42cee1fa0dbbbd7412"
+                              },
+                              {
+                                  "path":  "examples/blueprints/living_room_furnishings.solved.json",
+                                  "sha256":  "2be37f2ec890825f9e23bc9394cc88b25e1cbac89442d7a2e0f55947d2175850"
+                              },
+                              {
+                                  "path":  "examples/blueprints/living_room_furnishings.yaml",
+                                  "sha256":  "6a88f3ef1904897cc649963a6638ad608666c60f6a7f442f77fb9d0f629c6892"
+                              },
+                              {
+                                  "path":  "examples/blueprints/living_room_sdf_kinds.yaml",
+                                  "sha256":  "989db9c8d00a7f75395cd8ef5ed3adf874c42ae32e6b5c69fa6b442c8258b1aa"
                               },
                               {
                                   "path":  "modules/_shared/anim/anim.hlsli",
@@ -9092,5 +9112,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "cfc213e2c04b4698602f76b782bead8800a8d2d9"
+    "source_commit":  "8d2e0d49e3f02690921c4e74d7ef35d93e3c3847"
 }
