@@ -39,7 +39,6 @@ The live MCP catalog is authoritative for the installed build.
 | `.agents/skills/`, `.claude/skills/` | Identical Sentinel authoring skills |
 | `knowledge/` | Product and workflow reference |
 | `projects/` | Fifteen curated, self-contained example projects |
-| `examples/` | Small generic blueprint and skill fixtures |
 | `tools/` | Supported authoring and release-validation helpers |
 | `.release/` | Maintainer approval records; not installed into user workspaces |
 
