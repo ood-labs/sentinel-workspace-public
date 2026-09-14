@@ -353,6 +353,7 @@
             '.claude/skills',
             'knowledge',
             'projects',
+            'tools/templates/module-includes',
             'tools/templates/module-ui'
         )
         Files = @(

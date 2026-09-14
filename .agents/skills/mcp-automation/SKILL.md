@@ -135,6 +135,10 @@ Use these exact strings with `sentinel_pipeline action="create"`. Run `sentinel_
 - `"module"` — Module pipeline (multi-pass YAML projects, compute-first 3D)
 - `"hlslshader"` — HLSL Shader (Notch HLSL post-processing)
 - `"vsr"` — RTX Video Super Resolution
+- `"dmxin"` — DMX In (Art-Net or sACN receive into a typed `DMX` data port; control node)
+- `"dmxout"` — DMX Out (Art-Net or sACN send from a `DMX` data input; control sink)
+- `"oscout"` — OSC Out (dynamic expression-driven message list; control node)
+- `"artnetin"` / `"artnetout"` — hidden compatibility ids for the DMX nodes with `protocol=artnet`
 
 NOT display names like "Background Removal" — those won't work.
 
@@ -178,7 +182,7 @@ NOT display names like "Background Removal" — those won't work.
 | `set_many` | Write many values in one call with per-path results (`values`: object `{path: value}` or ordered array `[{path, value}]`) |
 | `list_values` | List value paths |
 | `list_actions` | List action paths |
-| `invoke` | Call an action |
+| `invoke` | Call an action; extra top-level fields are passed as the action's args (for example OSC Out's `add_message` with `address`, `type`, `expr`) |
 | `snapshot` | Capture a pipeline's writable params as a typed bundle (`pipeline_id`, optional `bundle_path`); use before throwaway experiments |
 | `restore` | Replay a snapshot bundle via set_many (`values` inline or `bundle_path`); per-path results, partial restore is safe |
 
@@ -189,6 +193,7 @@ NOT display names like "Background Removal" — those won't work.
 | `list_types` | Build-derived pipeline type catalog (aliases, engine-pack requirements, categories) |
 | `info` | Pipeline params/stats + data/control output summaries |
 | `get_param` | Read-only computed value (`pipeline_id`, `param_name`) |
+| `set_mode` | Operator mode: `mode` is `normal`, `freeze`, or `bypass`; `info` reports it as `operator_mode` |
 | `create` | Create pipeline (sanitized `name` becomes the instance id; for modules pass `project_dir` for an atomic create whose response carries `compile_ok`/`compile_error` + registered params; optional `enabled`, `x`/`y`) |
 | `destroy` | Destroy pipeline |
 | `rename` | TRUE rename: re-keys the instance id, rewrites references (graph, expressions, windows); returns `old_id` + final id |
@@ -204,7 +209,7 @@ NOT display names like "Background Removal" — those won't work.
 | `delete_output` | Delete output |
 | `rename_output` | TRUE rename of an output instance id |
 | `get_data_schemas` | Typed data port schemas (fields, element counts) |
-| `capture_data_port` | Read back structured buffer data as JSON (GPU readback) |
+| `capture_data_port` | Read back structured buffer data as JSON (GPU readback); set `max_elements` explicitly to reach later records such as DMX universes |
 | `open_window` | Open pipeline preview/properties window |
 | `close_window` | Close pipeline preview/properties window |
 
@@ -227,7 +232,8 @@ NOT display names like "Background Removal" — those won't work.
 | `place_relative` | Place a node next to an anchor with spacing + collision avoidance (`relative_to`, `direction`, `gap`, `within`) |
 | `move_nodes` | Move a node set as one rigid unit (`entity_ids[]` + `dx`/`dy` or `x`/`y` or `relative_to`) |
 | `add_annotation` / `update_annotation` / `delete_annotation` | Annotation boxes (`title`, `body`, `color`, geometry) |
-| Scene Groups | `list_scene_groups`, `scene_group_info`, `convert_to_scene_group`, `set_scene_group_enabled`, `expose_scene_group_parameter`, `remove_scene_group_parameter`, `save_scene_group_preset`, `recall_scene_group_preset` (control-only groups; `entity_id` of the group annotation) |
+| Scene Groups | `list_scene_groups`, `scene_group_info`, `convert_to_scene_group`, `revert_to_annotation`, `switch_to_scene_group`, `set_scene_group_enabled`, `expose_scene_group_parameter`, `remove_scene_group_parameter`, `save_scene_group_preset`, `recall_scene_group_preset` (control-only groups; `entity_id` of the group annotation) |
+| `export_scene_group` | Write a Scene Group as a portable `.sentinel` project (`entity_id`, `path`); the response reports every boundary crossing. Import it elsewhere with `sentinel_app import_project` |
 
 ### `sentinel_capture` — GPU texture readback & recording
 | Action | Description |

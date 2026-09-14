@@ -175,6 +175,14 @@ After adding or removing a video input on a Module that also has data inputs, ru
 with the pin name reported by `get_data_schemas`. Do not treat a successful compile as proof
 that the graph survived the manifest change.
 
+## Describe Data Outputs
+
+Each `data_outputs` entry may carry a concise `description`. Sentinel surfaces it in the graph cable inspector, `sentinel_pipeline info`, and `get_data_schemas`, ahead of occupancy and schema mechanics. Say what one record or the whole collection represents so another author can pick the port without reading the shader.
+
+## DMX Buffers
+
+To read a DMX In port or produce a buffer for DMX Out, copy `tools/templates/module-includes/dmx_schema_v2.hlsli` into the project's `modules/_shared/` folder, include it, and address records through `universeRecord(u)`, `metadataRecord(u)`, and `metadataSlot(u)`. Record 0 is the header with the schema version (2) at slot 0 and the live universe count at slot 1. The layout and a worked example are in `lighting-and-show-control.md`.
+
 ## Meaningful Intermediate Previews
 
 Every Module that generates or transforms structured data must also render a cheap, legible preview of its own current output. The preview is part of the node's authoring contract, not decorative polish.

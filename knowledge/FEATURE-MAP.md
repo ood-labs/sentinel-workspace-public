@@ -93,6 +93,13 @@ Presets: the `sentinel_preset` tool (0.5.29+) saves, recalls, and manages identi
 - Preset identity derives from the node type and project-local Module (`module:<module-name>`), so presets follow the Module, not the instance. `list` filters by `pipeline` or `identity`.
 - `recall` takes the preset name or id plus the target `pipeline` and returns `applied[]` and `skipped[]`. `loose: true` recalls onto a different node by matching parameter names, and errors loudly (`no preset parameters applied`) when nothing matches.
 
+Lighting and show control (Control nodes, no pixel output):
+
+- `dmxin`: receives DMX universes over Art-Net or sACN (E1.31) into a typed `DMX` data port, up to 1,024 universes, with a universe grid drawn in the node body. See `lighting-and-show-control.md`.
+- `dmxout`: sends a `DMX` data port to fixtures over Art-Net or sACN on its own clock, with keepalive, universe masks, and priority.
+- `oscout`: sends expression-driven values to any OSC receiver. Starts empty; one `add_message` action creates a message and binds its `ref()` source.
+- `artnetin` and `artnetout`: hidden compatibility ids that create the DMX nodes with `protocol=artnet`.
+
 Utility and output:
 
 - Video File sources: `.mp4` and `.mov` clips decoded to BGRA8 when the codec is supported. Current supported lanes are NVDEC H.264/H.265 plus native HAP/HAP Alpha. AV1, audio, HDR/float output, trim/cue, and reverse playback are not supported in this release.
@@ -130,6 +137,11 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 | `atlas` | yes | Multi-pass still bank (color/segmentation/depth/data columns per captured still) with a self-timing capture cycle. |
 | `camera` | yes | Wireless fly/orbit camera rig (control node, no pixel output). Camera-capable modules bind via `camera_ref` or through their Scene Group. |
 | `camswitch` | yes | Camera Switcher: cut or quaternion-blend between camera nodes, with per-camera OSC triggers (control node). |
+| `dmxin` | yes | DMX In over Art-Net or sACN into a typed `DMX` data port; universe preview in the node body (control node). |
+| `dmxout` | yes | DMX Out from a `DMX` data port to fixtures over Art-Net or sACN (control sink). |
+| `oscout` | yes | OSC Out with a dynamic, expression-driven message list (control node). |
+| `artnetin` | hidden | Compatibility id for `dmxin` with `protocol=artnet`. |
+| `artnetout` | hidden | Compatibility id for `dmxout` with `protocol=artnet`. |
 
 ## What Nodes Emit
 
@@ -172,6 +184,24 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 - Data port: one semantic `Mesh` group carrying canonical vertices, indices, and submeshes.
 - Supported files: OBJ, FBX, GLB, and glTF.
 - Import controls include uniform scale, Y-up or Z-up conversion, winding inversion, normal recomputation, and manual refresh.
+
+`dmxin`:
+
+- Data port: `DMX`, one 2,048-byte record per universe after a header and eight metadata records; read it in Modules through the `tools/templates/module-includes/dmx_schema_v2.hlsli` helper include.
+- Control outputs: `packets_per_second`, `active_universes`, `last_packet_age_ms`, `dropped_packets`, and under sACN `sources_active` and `sequence_errors`.
+
+`dmxout`:
+
+- Data input: `DMX` only. Control outputs: `packets_per_second`, `universes_sent`, `readbacks_dropped`, `send_errors`.
+
+`oscout`:
+
+- Control outputs: `active_slots` (enabled message count), `send_errors`, `over_budget`.
+- Actions: `add_message`, `remove_message`, `list_messages` under `/sentinel/pipelines/<id>/actions/`, called through `sentinel_state action=invoke`.
+
+## Node Modes
+
+Every node has an operator mode: Normal, Freeze (hold the last output), or Bypass (type-aware passthrough). Set it with `sentinel_pipeline action=set_mode pipeline_id=<id> mode=freeze|bypass|normal` and read it back as `operator_mode` in `info`. Frozen outputs save with the project and restore byte-identical. See `node-modes.md`.
 
 ## Driving A Parameter From A Hand Pinch
 
@@ -216,6 +246,9 @@ drive an authored Module parameter from a path such as
 - [Video Source](video-source.md)
 - [StreamDiff](streamdiff.md)
 - [Scene System: Hold, Atlas, Mux, Group Presets](scene-system.md)
+- [Portable Scene Groups](portable-scene-groups.md)
+- [Node Modes: Normal, Freeze, Bypass](node-modes.md)
+- [Lighting And Show Control: DMX In, DMX Out, OSC Out](lighting-and-show-control.md)
 - [Motion Choreography And Sequencing](motion-choreography.md)
 - [Precise Construction: Blueprints And SDF Audit](precise-construction.md)
 - [First-Run Engines](first-run-engines.md)
