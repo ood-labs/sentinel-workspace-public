@@ -22,7 +22,7 @@
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/SKILL.md",
-                      "sha256":  "70af701e0dbe4c29c6290f777fd56e6f25b1cd1faf9db109bbb75e0f3ece910a"
+                      "sha256":  "87fe0bea03bd291f08db5a5aebbdff695c8d3b8b32cd6df5ae468df04ebdbef1"
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/state-tree.md",
@@ -158,7 +158,7 @@
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/SKILL.md",
-                      "sha256":  "70af701e0dbe4c29c6290f777fd56e6f25b1cd1faf9db109bbb75e0f3ece910a"
+                      "sha256":  "87fe0bea03bd291f08db5a5aebbdff695c8d3b8b32cd6df5ae468df04ebdbef1"
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/state-tree.md",
@@ -282,19 +282,19 @@
                   },
                   {
                       "path":  ".sentinel-workspace-version",
-                      "sha256":  "90f34e18b4c85dfb4dc3dedf9b68e4047720ebe25fe2eb9d72c2df348c66c209"
+                      "sha256":  "a122f9518e3b2eb1198a58bacfa812346b5240b96a9bf7e6ad6ed57fa3e8997c"
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "36a2e7e093628fdfb11d293c0bba1e84bceb6fd66db1ec66ef65cb89a0e274c7"
+                      "sha256":  "92a7bce1ca5d9e49a0962b03e5d3204d1c8450280c4b74bda36840576b570ff7"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "36a2e7e093628fdfb11d293c0bba1e84bceb6fd66db1ec66ef65cb89a0e274c7"
+                      "sha256":  "92a7bce1ca5d9e49a0962b03e5d3204d1c8450280c4b74bda36840576b570ff7"
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "36a2e7e093628fdfb11d293c0bba1e84bceb6fd66db1ec66ef65cb89a0e274c7"
+                      "sha256":  "92a7bce1ca5d9e49a0962b03e5d3204d1c8450280c4b74bda36840576b570ff7"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -318,7 +318,7 @@
                   },
                   {
                       "path":  "knowledge/FEATURE-MAP.md",
-                      "sha256":  "8aa0d75601275432a44e52756695d900aee601eb44b182525e3d5debbb0b523f"
+                      "sha256":  "b5bfb1d5641e6f1a4090345e453bd2946effb98a4d51b095b378a2e27572670f"
                   },
                   {
                       "path":  "knowledge/feedback-simulation-troubleshooting.md",
@@ -338,11 +338,15 @@
                   },
                   {
                       "path":  "knowledge/graph-wiring.md",
-                      "sha256":  "1cb47d9ee302e4f1394032631587748134944af032b93d2980f9eabf655c4c33"
+                      "sha256":  "1850c891eeb1030ac3ef308754485513b2e2fb798125000e842151114036ecf3"
                   },
                   {
                       "path":  "knowledge/internal-camera-template.md",
                       "sha256":  "6f1cd37a72e9d4bb36be36eabbac4bef42fc4869badfa57b43d257f5faebbcc6"
+                  },
+                  {
+                      "path":  "knowledge/lighting-and-show-control.md",
+                      "sha256":  "a2861c589869d7b86f419e5f0bc8c71a75382935028279bb66b64d3cd8ec2917"
                   },
                   {
                       "path":  "knowledge/mesh-import.md",
@@ -354,15 +358,23 @@
                   },
                   {
                       "path":  "knowledge/module-pipeline.md",
-                      "sha256":  "cf1517611a7f4c31e1a329c6a40989fdeaea3c3e76f8465af35ada553df1fa57"
+                      "sha256":  "4961b29f0b7a8a85af41f6f0e1416ae7c2314fbe134edad7d13f909e29c20f22"
                   },
                   {
                       "path":  "knowledge/motion-choreography.md",
                       "sha256":  "2aa6b4f714814c74fd47f95cc1023dc815fe9abc759b3cde4214c911a1d53cbe"
                   },
                   {
+                      "path":  "knowledge/node-modes.md",
+                      "sha256":  "67b2bfd341495e9e194621715793f63212d3e3196c46a04e626866cc83f79cab"
+                  },
+                  {
                       "path":  "knowledge/performance-proof.md",
                       "sha256":  "7a60fda0c8ecb61b5f2648b4d9f7266886b570f350fce0a2ae3eef37f58e2f27"
+                  },
+                  {
+                      "path":  "knowledge/portable-scene-groups.md",
+                      "sha256":  "718b9434faf70ba6b48c191ab11b07c45b1d4cfad2e9d1689229c5ff8e5b8c5f"
                   },
                   {
                       "path":  "knowledge/precise-construction.md",
@@ -374,7 +386,7 @@
                   },
                   {
                       "path":  "knowledge/scene-system.md",
-                      "sha256":  "e6c650e36bbcfd9f2cece854471b136fda9677af715e0d70ab15483f234c274b"
+                      "sha256":  "84d41001df7e1186a03cb2b97400ff5c8f57342f8a507c6c987ad977be098bd7"
                   },
                   {
                       "path":  "knowledge/streamdiff.md",
@@ -390,7 +402,7 @@
                   },
                   {
                       "path":  "knowledge/ui-interactions.md",
-                      "sha256":  "a1e332d3973030db9434a9e688b1b930a94fc6af2b45b56238caea420b1db8f7"
+                      "sha256":  "e1b3820fe2760213b7462df291ca701212c09f6308e422c7d0cd71470a939e83"
                   },
                   {
                       "path":  "knowledge/video-source.md",
@@ -3227,6 +3239,10 @@
                   {
                       "path":  "tools/module-ui.ps1",
                       "sha256":  "b803f9a2ac51f4edb6a3dfe395d3a36613156b1c8942251a89cf82ade6653d20"
+                  },
+                  {
+                      "path":  "tools/templates/module-includes/dmx_schema_v2.hlsli",
+                      "sha256":  "bfa5d74afa2815fb42f56c7573951f01f3a26f4a071a362788dcb9ecb1b05d1a"
                   },
                   {
                       "path":  "tools/templates/module-ui/module/manifest.yaml",
@@ -9112,5 +9128,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "72102586788b5f1b9faa059b25b0a91b9af8f5c5"
+    "source_commit":  "83f4ec9b930726e2458362341ad26d8a8ecc37f1"
 }
