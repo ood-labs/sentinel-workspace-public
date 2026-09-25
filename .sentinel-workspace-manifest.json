@@ -330,7 +330,7 @@
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
-                      "sha256":  "d84b34352f5ddc99366f3083d4336070bed1af3ecc90b02393cc3f26374b91cf"
+                      "sha256":  "05d771cf71619e5385f04457c61dcb307ca672cb6065281a8e14b035db2ebd80"
                   },
                   {
                       "path":  "knowledge/expressions-and-drivers.md",
@@ -3222,11 +3222,11 @@
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "b00cfb918150b518a53898f4926b3fae06fefbcc5d5e64e6e4d0160c538c9ddd"
+                      "sha256":  "ff5f6efebffcc6c994a33fc123778a1905bf4a6e72d685cd10fa0294540c15f0"
                   },
                   {
                       "path":  "tools/module-ui.ps1",
-                      "sha256":  "b803f9a2ac51f4edb6a3dfe395d3a36613156b1c8942251a89cf82ade6653d20"
+                      "sha256":  "3eb4af740fd6e858dfa811152521202efe67b386a71adb1e440473081257e1c4"
                   },
                   {
                       "path":  "tools/templates/module-ui/module/manifest.yaml",
@@ -9092,5 +9092,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "cfc213e2c04b4698602f76b782bead8800a8d2d9"
+    "source_commit":  "5110e1b8543df2e007391c0840d2947cbc239218"
 }
