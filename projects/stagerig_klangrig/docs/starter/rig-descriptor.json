@@ -1,0 +1,38 @@
+{
+  "show_id": "stagerig_klangrig",
+  "adapter": "klang-four-edge-wings-v1",
+  "components": [
+    "core"
+  ],
+  "entities": {
+    "Klang_Renderer": "stagerig_klangrig_Renderer",
+    "Klang_LED": "stagerig_klangrig_LED",
+    "Klang_Plan": "stagerig_klangrig_Plan",
+    "Klang_Clock": "stagerig_klangrig_Clock",
+    "Klang_Assembly": "stagerig_klangrig_Assembly",
+    "Klang_Lighting": "stagerig_klangrig_Lighting",
+    "Klang_Desk": "stagerig_klangrig_Desk",
+    "Klang_Show": "stagerig_klangrig_Show",
+    "Klang_Program": "stagerig_klangrig_Program",
+    "Klang_Surface": "stagerig_klangrig_Surface",
+    "Klang_Push2_Display": "stagerig_klangrig_Push2_Display",
+    "Klang_Warehouse": "stagerig_klangrig_Warehouse",
+    "Klang_Camera": "stagerig_klangrig_Camera",
+    "klangrig": "stagerig_klangrig",
+    "klang_": "stagerig_klangrig_",
+    "klang_push2": "stagerig_klangrig_push2",
+    "klang_color": "stagerig_klangrig_color",
+    "klang_complete": "stagerig_klangrig_complete",
+    "klang_effects": "stagerig_klangrig_effects",
+    "klang_static": "stagerig_klangrig_static",
+    "klang_rhythm": "stagerig_klangrig_rhythm"
+  },
+  "capacity": {
+    "mover_slots": 288,
+    "led_records": 1
+  },
+  "preset_policy": "reference",
+  "geometry_owner": "modules/Klang_Plan",
+  "fixture_catalog": "scripts/show/fixture_catalog.luau",
+  "status": "Klang geometry adapter retained; replacement requires new geometry/patch proof"
+}

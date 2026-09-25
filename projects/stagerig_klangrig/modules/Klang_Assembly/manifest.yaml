@@ -1,0 +1,86 @@
+name: Klangrig / Truss Assembly
+version: '1.0'
+mode: generator
+resolution:
+- 960
+- 540
+parameters:
+- name: suspension_height
+  type: float
+  default: 13.5
+  min: 10
+  max: 20
+data_inputs:
+- name: Rig Segments
+  slot: 0
+  schema:
+  - name: a
+    type: float4
+  - name: b
+    type: float4
+  - name: shape
+    type: float4
+  - name: meta
+    type: float4
+- name: Fixture Mounts
+  slot: 1
+  schema:
+  - name: position
+    type: float3
+  - name: fixture_id
+    type: float
+  - name: mount_pitch
+    type: float
+  - name: mount_roll
+    type: float
+  - name: base_visible
+    type: float
+  - name: active
+    type: float
+  - name: content_origin
+    type: float2
+  - name: content_extent
+    type: float2
+  - name: reserved
+    type: float4
+buffers:
+- name: tubes
+  structured: true
+  element_size: 64
+  element_count: 12832
+passes:
+- name: expand
+  shader: expand.hlsl
+  target: cs_5_0
+  dispatch:
+  - 201
+  - 1
+  - 1
+  inputs:
+  - slot: 0
+    source: data:0
+  - slot: 1
+    source: data:1
+  output: buffer:tubes
+- name: preview
+  shader: preview.hlsl
+  target: cs_5_0
+  inputs:
+  - slot: 0
+    source: data:0
+  output: output
+data_outputs:
+- name: Tubes
+  buffer: tubes
+  schema:
+  - name: a
+    type: float4
+  - name: b
+    type: float4
+  - name: cutA
+    type: float4
+  - name: cutB
+    type: float4
+outputs:
+- name: Structure
+  pass: preview

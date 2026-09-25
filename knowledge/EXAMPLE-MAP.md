@@ -37,6 +37,7 @@ for an explicit fork or remix. See `example-authoring.md`.
 | `koi_tank` | 1 | none | plan authority → water sim → photon caustics → koi school → optics → exploded instrument → post | `TP_Post` | wave simulation, photon caustics, procedural koi SDF, boids, depth-composited 3D overlay of live data |
 | `touchdesigner_new_project` | 1 | image asset only | Hermite signal → texture → image displacement → geometry → output | `Out` | typed signal-to-texture modulation |
 | `vitreous_cross` | 1 | none | plan authority/editor → studio env → SDF renderer → filmic post | `VC_Post` | ray-marched glass with real air-cavity lenses, HDR studio lighting, interior plates |
+| `stagerig_klangrig` | 1 | none (Push 2 optional) | plan authority → assembly/lighting/LED → HDR stage renderer, driven by a Script-node Push 2 surface, a show-control desk panel and packed fixture programmer | `stagerig_klangrig_Renderer` | a native Script show: controller surface, Module panel to Script event cables with lit feedback, preset banks, per-fixture programming, transport and camera control |
 
 ## Dependency and portability notes
 

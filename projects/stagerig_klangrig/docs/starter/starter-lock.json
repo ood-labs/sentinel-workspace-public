@@ -1,0 +1,665 @@
+{
+  "show": "stagerig_klangrig",
+  "version": "1.3.0",
+  "source_revision": "4e47a7fe520b4eee44458dea493d82b5be314a9d",
+  "components": [
+    "core"
+  ],
+  "profile": "public",
+  "files": 162,
+  "source_bytes": 2361828,
+  "preset_policy": "reference",
+  "validation": {
+    "pipeline_count": 13,
+    "vendor_files_verified": 35,
+    "live_verified": false,
+    "crowd_references": 0
+  },
+  "format_version": 2,
+  "installed_sha256": {
+    "docs/LOOKS.md": "a3fca73906245169def06973023e71e0f8b7c53c01b48dee14a50fa60962234d",
+    "docs/PROGRAMMING.md": "cc1a5e11841486a6167652c875cfde7e4e97a16524b28baa2a53e3625c53834e",
+    "docs/starter/diagnostics.json": "02c0e505b68f1652ebe10112aae3cbe51c2f3b1e8bca241db03649a2d4ca6ea5",
+    "docs/starter/rig-descriptor.json": "1002ab91b511397a5e27cc69988ed04d0ae18342a29ef0f75359b962c862556a",
+    "docs/starter/START-HERE.md": "44056aacfa833cc336dfb58210649280cc693e365c282ebfa70a970df88b4528",
+    "docs/starter/starter-tuning.json": "e18af1831edf6ed02ea939fa09bf384b9be45ea0094819b0e0f91caa2c8ccbc5",
+    "docs/starter/starter-validation.json": "80a390f0432d2ba5b06cd085d53c48fa50833e854165de8eae5f96389a64f7a4",
+    "modules/_shared/fonts/scientifica_ascii.hlsli": "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56",
+    "modules/_shared/fonts/SCIENTIFICA_LICENSE.txt": "5fe3133335d5a3a32865f2b5cc133ed092c12aa65fcde525b68045e14312cd61",
+    "modules/_shared/program.hlsli": "62b6194b0ea4dddcbf3f08afe44b4140808e4415e29d8d9466958e64a9b655a2",
+    "modules/_shared/rig.hlsli": "e6eca2d37de9eceaa442907fbc17a5b477497a48cb5916c38f931f38c2575677",
+    "modules/_shared/rm_types.hlsli": "d887c902851738b43275734fcdc9e476118a02e59180fe2097cc00086dee9b16",
+    "modules/_shared/room_materials.hlsli": "12efdaaffd9d1130f79e035dafc11d369c8e5fd11a7253f62a2688d9001941d0",
+    "modules/_shared/show.hlsli": "ca0db5abe9c32a93d63f016ffaad077d914d5fa400fdde8087a6f6a8d7943188",
+    "modules/_shared/ui/show_controls.hlsli": "bd42ce0429b009f03f8238916c8a83cc87367262e7f2d131a7566d32b21265a3",
+    "modules/_shared/ui/sui3_core.hlsli": "001de490dab0ca3e75f65ad9983356828c2b404ee5220d93ca32ab936e1a0e0a",
+    "modules/_shared/ui/sui3_text.hlsli": "abee4e829b94aaf0e90b561b9dfdbf013397e66fafd85084dc7e7b8349956604",
+    "modules/Klang_Assembly/expand.hlsl": "4eadb6e36938764ba3e190edf9164e0c079adae9d7fdbdd29f3e1f9031f1fbfb",
+    "modules/Klang_Assembly/manifest.yaml": "2b6f45d3178ac5ae4eb89f429dafe0715104365acd5be685b2fc6271b2c2a244",
+    "modules/Klang_Assembly/preview.hlsl": "bffe27d7077610385afd872552710bf3bdda20a9750dbdcf2acab3c02bf34034",
+    "modules/Klang_Desk/_ui.generated.hlsli": "95d0fe0d3a36554afd4bfce81761a8a17699f6dcb9e7c41de0a86550df4e2560",
+    "modules/Klang_Desk/desk_layout.hlsli": "e69ea88aa430153a40ff334382bbe5c3e5b3d34325fb6fd0aa0a65015b2063f1",
+    "modules/Klang_Desk/manifest.yaml": "224fb0bf95b89755a7ad1406fa3895b85a18601f6578ffd6c858105884b1f815",
+    "modules/Klang_Desk/render.hlsl": "ee160ca438c5db459e4a6bbb338155675dea58d24e8fd2d940432d95e2486b74",
+    "modules/Klang_LED/clock.hlsl": "78c78205af8b400a732fde07976835b0a3d59b1ff931c72c86d2ee3a9deb1f32",
+    "modules/Klang_LED/content.hlsl": "0553ced61ccf76c76151c34d2806168e1d00fda4d2eb458a7ceea1787a7f7a7d",
+    "modules/Klang_LED/led_patterns.hlsli": "95603f364a8de28c449e5527a6a8a58c6a6581d32d9a7a6a9b2041e2c2509857",
+    "modules/Klang_LED/manifest.yaml": "4ce8eee47b2138a1655bd1d7ab840efe92436059fa14e7a2b9731145d7fd9242",
+    "modules/Klang_LED/monitor.hlsl": "1f65b81fe09ebadcb47062264b859778d69fa1e19f37a08084db4ca333a5dc74",
+    "modules/Klang_LED/scatter.hlsli": "0bda7ea2eab03090852b272c743377af2a47d2772ebf1efb5e0d3e431b71ee14",
+    "modules/Klang_Lighting/_ui.generated.hlsli": "7c79b45a5a3b91ca4f4d064585e8b7b1f15e9ed66f42fabde5fa9078f0e79b96",
+    "modules/Klang_Lighting/group_layout.hlsli": "a13a6975ab468f5862150f3aca266ca137267dd0603e50b12e0d51d384c62824",
+    "modules/Klang_Lighting/groups.hlsli": "0f761b2ded442aca911ea41147cd2733e134fd2845d28b44270833a901b8a390",
+    "modules/Klang_Lighting/manifest.yaml": "a5f2b416c78eb87851bd76f8320fd2a1071bd502b0cf19dadef99e7c48735757",
+    "modules/Klang_Lighting/map.hlsli": "a69c48043303b251c96e5550abe6edb38ba6aee7deabb26467210ab8fb2164a9",
+    "modules/Klang_Lighting/motors.hlsl": "a901ccbbdcdca0c8732b17cdd9ad0eaa3e1d8d7201194de6b26b1185316d1a4f",
+    "modules/Klang_Lighting/optics.hlsl": "65a94c2fb456fc2524cc356710ce88c2867f832b3372066496ab8cbb5af63f54",
+    "modules/Klang_Lighting/preview.hlsl": "5cfc45d6977fdffe2e912835a7fe91704ad9717e34b739f6ae888495d2dc3210",
+    "modules/Klang_Lighting/select.hlsl": "23b292a7e569a5d2b5833d1ddae8d1255d3d88b80c102882080828f0603d0ba8",
+    "modules/Klang_Plan/layout.hlsli": "904e444d8bfb9ae11153f8ec8bb28f50f21a4c9b3b706567368981291627d1af",
+    "modules/Klang_Plan/manifest.yaml": "30acb7cd72d152f7b24a8c865a914a0d07a22e8c0c8cb97c91869f6537d493ec",
+    "modules/Klang_Plan/mounts.hlsl": "148eafdf5bd9998e18261953350cd694a1b59debba7d9f112c0715733d91ab10",
+    "modules/Klang_Plan/preview.hlsl": "3393aa6112a5902b981ad01a68af4d513dbdaafc994d7563441dbc092520f27b",
+    "modules/Klang_Plan/resolve.hlsl": "8b3b8018c3ca0e4efc545ddaf43b9ec27ed08f336194e64ab0d44d696b405eb2",
+    "modules/Klang_Plan/state.hlsl": "8767519ef4da7b39a25b2675b47f9f8f357cc82c2006ea8587ec74b5f5dc58c1",
+    "modules/Klang_Program/manifest.yaml": "8bc2e3e7ebac27fcd9563669e3dad2e5d6b494f031f3104e18737e17679e21be",
+    "modules/Klang_Program/program.hlsl": "0cf9dadff828f707640a1bb527d0686d9a84da28d2432ac363efbf44d8d80a81",
+    "modules/Klang_Renderer/bloom_down.hlsl": "199cc9d2d9a1722a6c0f0307096796900c752f76e4036fe429d501f418f4884a",
+    "modules/Klang_Renderer/bloom_up.hlsl": "b405bb7a5ef18920ae183d2d1a5ee3338a10b995f5b5d4c76c0e646ccb78a54d",
+    "modules/Klang_Renderer/bloom_x.hlsl": "c335f22dc232098c91c8f1af956d0d970beb21cbc92733831cfc5c6572a30373",
+    "modules/Klang_Renderer/bloom_y.hlsl": "903bdba1280024660599d751eb5ac3184b20b0cf1490d1e7b60b1b7dc3377301",
+    "modules/Klang_Renderer/floor_reflections.hlsl": "7c861c8614912b4eb0c636e389f21b5ad5e4102e4eaa5cef528f6b30d7c7b0c6",
+    "modules/Klang_Renderer/geometry.hlsl": "6fd82e55cc9e13764ccf92b685390d46c9577e4a4c95cfc7aabe08f30947a999",
+    "modules/Klang_Renderer/hdr_scene.hlsl": "486d5681573f6d5f5b56da22f8f25366d8661f00b345e8bc0ea1f3ce5e4c9101",
+    "modules/Klang_Renderer/manifest.yaml": "de7917e3dc4eb9bf809db94a61ee31a11c9739ec2e285ce39ae25a1eb93c3e61",
+    "modules/Klang_Renderer/nearest.hlsl": "b0921349d541bfb18fc7fc942ec7e87f2a2e9c0be33eca6be091343fb2990e13",
+    "modules/Klang_Renderer/panels.hlsl": "4300d244946244f3bd07eca976a55772ae475af12a7601b12f2430b4321ba67c",
+    "modules/Klang_Renderer/present.hlsl": "5f4ab722d091d40827b99ab30a4051461983166cf645826c4d03bd2a7d10269d",
+    "modules/Klang_Renderer/sources.hlsl": "bf683ab4456f242c43e91b2466e972a418eee828caedfd6c56ea1db5bae8469b",
+    "modules/Klang_Renderer/streak_seed.hlsl": "f1e418732ed6861b2ac55df5f7da8197cfd41024e884eb36a65ac37fb20f6eb9",
+    "modules/Klang_Renderer/streaks.hlsl": "6136988ff33abbec6c3efbdcfc8d19f3860262faf32d93070ea8190c86aa9e67",
+    "modules/Klang_Renderer/structure.hlsl": "5b6616deb0dedbb61e1359bd812d812239dde80dd8351673e662eab63689deb1",
+    "modules/Klang_Renderer/surface_lights.hlsli": "8c7e24f0c63321ee15549fa55810e069efe4d30f2578fa97b80c8ae8620d5250",
+    "modules/Klang_Renderer/volume.hlsl": "fa384b4bab638892f69178b3fd70b84471a0cba49b438bb670752098bc99051b",
+    "modules/Klang_Renderer/warehouse.hlsl": "a189a52ccd8471f8bf4384ad64832b5d59cc080f98fdfdf0cb142284bb91edad",
+    "modules/Klang_Renderer/yoke.hlsli": "e29d3752b3729a396a686566c1275474bb859063ce3538d7df85c9860fe40b4a",
+    "modules/Klang_Show/clock.hlsl": "29cef518bc33514c313be43a1c50818487820ab958ee0c6fef7d61b4c89c567d",
+    "modules/Klang_Show/manifest.yaml": "452810ef1fcd9ff710bf3d9836efaf994afe40974c3f3805c08f9ab33c477981",
+    "modules/Klang_Show/preview.hlsl": "92dbd199d1c9d7999062e1bd7770ea753db48c736bf557d2ab247ad204ead3d5",
+    "modules/Klang_Warehouse/build.hlsl": "0488676bbc3ac98a38c37d66bb5250119595a693283f8c935fe2d542f6dcd3c0",
+    "modules/Klang_Warehouse/emitters.hlsl": "dc5f842714a371bc0b4657a13c7deb047515991807f835fcc3430b4d63607fb7",
+    "modules/Klang_Warehouse/manifest.yaml": "ca7dbfe6e81f7c47e9475d1ab0cefc9ca03645861167768e2903feabf7a09485",
+    "modules/Klang_Warehouse/preview.hlsl": "3701d0586a64ce23853db4449de6b7651050552d419b17867dd5bdfc8537bddd",
+    "modules/Klang_Warehouse/settings.hlsl": "e178fe2cad9738bd098ef73016e5aa37fe80306e0ea566c5c4bb98ce279134d2",
+    "presets/stagerig_klangrig_color.json": "2ce4eddb1d75f79540361f8cb934ee8142cbd1d3576ea9fd956cea2b237a4e67",
+    "presets/stagerig_klangrig_complete.json": "461398327a867a135a9bb0d2f1ea8f64144706e03d4a3550a2d5ec9e74425b8d",
+    "presets/stagerig_klangrig_effects.json": "ae4eb23ffd4738f10430584739e87fea498c6be5ab8745479d1d616609796ab3",
+    "presets/stagerig_klangrig_push2.json": "3be360eafe2d6ead7787e63ff9218350606c18ed93fa5388562a72868b0f7ebb",
+    "presets/stagerig_klangrig_rhythm.json": "2c99c0c64a1c69c3708b9c8b75775f347e6258ae0feaf67651500855a05c063c",
+    "presets/stagerig_klangrig_static.json": "2ba9d43d49ffea7f524605d74a481ccd1f3a9233b1824a4a24771726fdd604a5",
+    "README.md": "9d70842fd593fe20c5ceb65ef335e41b72d616e7603761a8e7fcee46bce6829a",
+    "scripts/.luaurc": "53154d49e1a4dedda1ebbd4c28818a91ba5544b8f8fc3a281a5a943957ab9539",
+    "scripts/Klang_Surface.luau": "37b424934bc0da738430171d10d68c69ca2199810b402af3a87cbba83969a7af",
+    "scripts/pages/color.luau": "791aa6bd132a99a90792e351981722f074a1d86677691e474a2161d6aeaa8efc",
+    "scripts/pages/global.luau": "146fa5d57b0ea9d5ce775de729667b2a01f7767f538878def91315f36be74015",
+    "scripts/pages/rig_static.luau": "f91da21ca3b0eee1666c307e948436d67bca0b103110ad35ad6a0ba16998079d",
+    "scripts/pages/sequence.luau": "cb5719095be367ff7bc8b9befba89fe1d7d933508db5525d46a755af0b71acc1",
+    "scripts/push2os-provenance.json": "3906fb63a18d51caed5b98c34bb449f93ad0a042e27a6fa8a74551c74caced74",
+    "scripts/sentinel.d.luau": "86612a73fd3f13810d24a988e0b6173f4117966232f10fab6e57afe81b385d96",
+    "scripts/show/attribute_catalog.luau": "bb09d9b1f3be4d5e34b1921ad5058d0e295f559330bb910c81008aae9d2d5f08",
+    "scripts/show/attribute_editor.luau": "00b6bb865f28c06c7379dd31bf778688bf93400902a9adec5e2c4a29574ddbff",
+    "scripts/show/camera_orbit.luau": "befd3dae0755b86ec42d24a642edf622bf41b966382ee26d645c7e7dd578afb2",
+    "scripts/show/desk.luau": "5685fe61a6634b679ac70ad5344f255b8e006c6b0279feb0df84117d2a9bb247",
+    "scripts/show/desk_layout.luau": "2be7aa2c0f524c2a7b8d1475887e971c2067f8aaeaf7ac38be4740c501198660",
+    "scripts/show/desk_panel.luau": "7a36a64100b2750f0ee18c32a4e3e2f785fcb7a2f232fefeefe2e56278eff80a",
+    "scripts/show/fixture_catalog.luau": "59242f9740f2a13d2b4cfd6e929d88b97107ebfc961dda26a6a5dc74880a1b60",
+    "scripts/show/look_store.luau": "d0cc43e54d432447c2001461f77dbc3b8f715ff950396f2eae5e77c4ea03639a",
+    "scripts/show/native_rig_ui.luau": "9b1c2dfc82c321f15fc7d20fc0349b55e10d316ec33fb62657cface27dd5e81d",
+    "scripts/show/native_state.luau": "0588e3bacba8c20ec9458e59b701dbe79cc091893e36bf81f3b0cecb38100ebc",
+    "scripts/show/native_tempo.luau": "83cbf56facb6e630dedaa9283e4bb7d1864c8ccf66867f267bff4df76f7ad983",
+    "scripts/show/preset_titles.luau": "1bd0d0d1e9db0d54e90699e49dca4af2e747ec9065e6092c3d5f874fb8f7d690",
+    "scripts/show/programmer_surface.luau": "4527e17e448ba9d1a7a57d0448109a86b2c25eed5d2fc74c84fa92739b527fd1",
+    "scripts/show/registry.luau": "10260620de5222d208ccd8a72596bd8df19885cd146472a03371febc6f8cc810",
+    "scripts/show/rhythm.luau": "fcdfae37b21327056b55985a8d2bbb34f90d7eb2810587f5018f79f893c33faa",
+    "scripts/show/rig_bridge.luau": "41319df9e8df5d20a55646a848e433ea5eecb5af30779b2650a32f54e9f417d6",
+    "scripts/show/rig_codec.luau": "92ebf8b03e025611d7c08c9d3dfa5f629900c476487b4f6dd76503278979d557",
+    "scripts/show/rig_commands.luau": "0cec34176474711ab6d107483e6e6d05f43004b12c4ccb7cad996714e8c2ab4b",
+    "scripts/show/rig_menus.luau": "ff4801fc28cd984d29be3b8fdefc007a031be887cf8ff6a00d9f8558dd63861d",
+    "scripts/show/rig_windows.luau": "3b3e0c9134e087379c999b94f669e2e5343797ddf7b6cbb316a493248daf3638",
+    "scripts/show/selection_view.luau": "7c5914c703f6a6d62c9779228be7b4fdcb6807b1fd262a441117330d3711a011",
+    "scripts/show/sequence_grid.luau": "6f890a857dab1b731920c6596c94efdd28bf8e68b8f9316da8965312ac02ee73",
+    "scripts/show/sequence_layout.luau": "77b7680d041b4ec91125f19018371769b29ba779a501ce78218b334420fa2d8f",
+    "scripts/show/sequence_model.luau": "fd6ffeba9a2b4964414e089a38c269c6f839e9a8c313aa526b8f51e374199f7e",
+    "scripts/show/sequence_store.luau": "741b4af94500a085c627e72cf4ba830bc801288b1639b785e6ff4fed59b0e9f5",
+    "scripts/show/sequence_view.luau": "6ef04ae89a1a6d0cc56249bbd950b1d497842fa3f3bf96e4c29a7079b9e0bd24",
+    "scripts/show/side_fx.luau": "cf0d451dde7df6c1ba43e7a665381e9105c7703ad2c3591028e50104e3f037a0",
+    "scripts/show/static_rig.luau": "44a8a200496600923691b8006c2196a74c159ce26f3ccfa09ca7b23eac5c35ce",
+    "scripts/show/surface.luau": "c902b818d811058c18ac3a2100b015801c77d0f4d844251aaedf071a91e0bb46",
+    "scripts/show/transport_keys.luau": "c2e4c8add41140b492635d5741676379df132f476d1a3e018a7da1e7dd0b2456",
+    "scripts/vendor/push2os/CHANGELOG.md": "5a67bd5a17f22e6f94a008eebb923f3576148ee16049ce2c4924a023eb0109bc",
+    "scripts/vendor/push2os/docs/editors.md": "7737eec9c8ed1759bbf004312ea4c1464e17ca2420797f561299f66370bebeb9",
+    "scripts/vendor/push2os/docs/installation.md": "2607ef972718ca865a09844521516b07c1614612ccfc3d7d27ff4991e81e5fe2",
+    "scripts/vendor/push2os/docs/migration.md": "5b09f688ecf0eff2cfbbe678dc0338d901ecc8a7a1e47ace03bb79a481a6453e",
+    "scripts/vendor/push2os/docs/runtime.md": "122d9289eab0d3a68fdc4374d66e932766e94546cedc6eda55fc3026a567ff20",
+    "scripts/vendor/push2os/examples/composition.luau": "718d11cca6231b416b55084894146086da4a2f6c139de561281bac8cc601ca91",
+    "scripts/vendor/push2os/examples/editors.luau": "88c961e697c934df151281b29f6dd3468821b3f03850b38a6397b42d1c69687c",
+    "scripts/vendor/push2os/examples/native_competitor.luau": "3998fb1f60fa7195b979c3410abb4cd850f90222e9fdfeeec53fd2e92c148bae",
+    "scripts/vendor/push2os/examples/native_frames.luau": "b62ec84f6af74ac58f066b27bfec34caed42b611b759f122a15740e3449490be",
+    "scripts/vendor/push2os/examples/native_lifecycle.luau": "818ee8e737fbb14625a4ce8f1ee7bca65085a62fc24b61249e4a6c74059c310e",
+    "scripts/vendor/push2os/examples/runtime.luau": "bf227f278d52ccfa18a4cbb4ce233f486146abe25f4faeb427407cc1be8715f7",
+    "scripts/vendor/push2os/LICENSE": "6e1b36a26496463a485106b7d3558f2f6b93ff1158a28221846543a7beeb7816",
+    "scripts/vendor/push2os/package.json": "589602093a38b683766815f903cdeda0b3d3bd2d8f41437b68e9ff54c27ef946",
+    "scripts/vendor/push2os/README.md": "7292339eff16c1cb5b69002a60f89b794bb47ed6ec1af55cfeb925d2926acee5",
+    "scripts/vendor/push2os/src/internal/bands.luau": "63a9d08bda87c346a6c74efeaa510f53e7b084fda433e314d0122f4246ce7744",
+    "scripts/vendor/push2os/src/internal/button_menu.luau": "69a85de740a9729c3c2c1b9db8279a21d0d126b5abf389640b79b64116a62003",
+    "scripts/vendor/push2os/src/internal/column_grid.luau": "082479c97de0b440e7794756cd3cc867eb534684ed96b20b34d136cd78b4acad",
+    "scripts/vendor/push2os/src/internal/conventions.luau": "e1d9293b39e8c180e12fd7c5839832ca68d86187b13bf614192e9b200bc97e4c",
+    "scripts/vendor/push2os/src/internal/core.luau": "c723415470439775362243bfd2da5a64f4160f6ccc3698fc0e31ee4f642417c7",
+    "scripts/vendor/push2os/src/internal/editor.luau": "3d9ba198ba3cdd9e8113e7286a3902f525beb117d759f411a60c20b859263e28",
+    "scripts/vendor/push2os/src/internal/pad_desktop.luau": "35d2c3efff6b073bfdc29d63480f2451471092f2034b65144ec2a1e68d1ae6f7",
+    "scripts/vendor/push2os/src/internal/pad_legacy_window.luau": "589a42bbd62347d07efbfb025a251ff66040dcbed35c140b786bbf71eb739e90",
+    "scripts/vendor/push2os/src/internal/pad_window.luau": "db286d1b0b0f674a5a588e50e759e9c2144436a651ea6ff354d62769e8593441",
+    "scripts/vendor/push2os/src/internal/pad_window_gesture.luau": "5e44f4df05deca319de9307ef2c477e50c6a58ec52445d934155b0e881cc3e06",
+    "scripts/vendor/push2os/src/internal/pads.luau": "aa0b43492930a56c95ca6b5afd5b322df3cc17611f28eaaf9b1a14bf4ab2d1cc",
+    "scripts/vendor/push2os/src/internal/params.luau": "b5c45e18c8b14192d9bfba22e537dfbaac1ceb87f32d0c4b8276fa35f67b52d3",
+    "scripts/vendor/push2os/src/internal/persist.luau": "55c709e01c12226322a7588b06dc48c5d8cf95d9c111a153b0652962dd467974",
+    "scripts/vendor/push2os/src/internal/theme.luau": "55af777be2009a96491eef323d8d5805943e713e2eed6780d0dfc7cd0a1ba9d0",
+    "scripts/vendor/push2os/src/internal/widgets.luau": "cccc7d6cf7c55c5fafd81441d9e6aa8503fc4244fd6d913824a940a791b9e7d9",
+    "scripts/vendor/push2os/src/migration.luau": "aa13ba027ae563d561f90738791657c72db0a0a785921b8917cb736eef6d4583",
+    "scripts/vendor/push2os/src/restore.luau": "a7a7fc01ecf91231049946b9ecfbcc1f9198912b608222768a3e5abddf46ffbf",
+    "scripts/vendor/push2os/src/runtime.luau": "1ca96216feb2132bf0cf3b9475902bf06a845490cccceed45fc6b7e3a00f3ca0",
+    "scripts/vendor/push2os/src/session.luau": "6d8bfc8659280b6b060d94dcfc9f9261abfc52f1d136a427efa04e8a9c44c478",
+    "scripts/vendor/push2os/src/types.luau": "5f872537989491ad45d8627378db19cee7a7820090207bdef0e7f45d3a710388",
+    "scripts/vendor/push2os/tools/activation.py": "bcac913d78796620c5972852e77856b5b1f44b4ed6348df43b0b881344232d7b",
+    "scripts/vendor/push2os/tools/package.py": "b47ed7be5af8ee801979e4f7da0d9d16413fa518c09f4e0925daa6dc4fe4b52f",
+    "stagerig_klangrig.sentinel": "0bc8aa95e8d940408744ebdb0866dd089cd6b167b16a4124282d160edadd5376"
+  },
+  "release_sources": {
+    "LOOKS.md": {
+      "sha256": "3980928f3316a915a0d6409d7e8013754ea363f9a2bec6f55b9b05184155ef4a"
+    },
+    "PROGRAMMING.md": {
+      "sha256": "27310841f0d44f866800848b8846a068c639289f5e19e7d637be8715a8b253b1"
+    },
+    "README.md": {
+      "sha256": "53d91335944e355841cdd00e57718240cbe25c0000e9bd060eb317256fe12b35"
+    },
+    "klangrig.sentinel": {
+      "sha256": "63ad70978517fdee4e737b97e38ecc06e2f55b3cd1747b5873fd2f3f8feea171"
+    },
+    "modules/Klang_Assembly/expand.hlsl": {
+      "sha256": "4eadb6e36938764ba3e190edf9164e0c079adae9d7fdbdd29f3e1f9031f1fbfb"
+    },
+    "modules/Klang_Assembly/manifest.yaml": {
+      "sha256": "2b6f45d3178ac5ae4eb89f429dafe0715104365acd5be685b2fc6271b2c2a244"
+    },
+    "modules/Klang_Assembly/preview.hlsl": {
+      "sha256": "bffe27d7077610385afd872552710bf3bdda20a9750dbdcf2acab3c02bf34034"
+    },
+    "modules/Klang_Desk/_ui.generated.hlsli": {
+      "sha256": "95d0fe0d3a36554afd4bfce81761a8a17699f6dcb9e7c41de0a86550df4e2560"
+    },
+    "modules/Klang_Desk/desk_layout.hlsli": {
+      "sha256": "e69ea88aa430153a40ff334382bbe5c3e5b3d34325fb6fd0aa0a65015b2063f1"
+    },
+    "modules/Klang_Desk/manifest.yaml": {
+      "sha256": "224fb0bf95b89755a7ad1406fa3895b85a18601f6578ffd6c858105884b1f815"
+    },
+    "modules/Klang_Desk/render.hlsl": {
+      "sha256": "ee160ca438c5db459e4a6bbb338155675dea58d24e8fd2d940432d95e2486b74"
+    },
+    "modules/Klang_LED/clock.hlsl": {
+      "sha256": "78c78205af8b400a732fde07976835b0a3d59b1ff931c72c86d2ee3a9deb1f32"
+    },
+    "modules/Klang_LED/content.hlsl": {
+      "sha256": "0553ced61ccf76c76151c34d2806168e1d00fda4d2eb458a7ceea1787a7f7a7d"
+    },
+    "modules/Klang_LED/led_patterns.hlsli": {
+      "sha256": "95603f364a8de28c449e5527a6a8a58c6a6581d32d9a7a6a9b2041e2c2509857"
+    },
+    "modules/Klang_LED/manifest.yaml": {
+      "sha256": "4ce8eee47b2138a1655bd1d7ab840efe92436059fa14e7a2b9731145d7fd9242"
+    },
+    "modules/Klang_LED/monitor.hlsl": {
+      "sha256": "1f65b81fe09ebadcb47062264b859778d69fa1e19f37a08084db4ca333a5dc74"
+    },
+    "modules/Klang_LED/scatter.hlsli": {
+      "sha256": "0bda7ea2eab03090852b272c743377af2a47d2772ebf1efb5e0d3e431b71ee14"
+    },
+    "modules/Klang_Lighting/_ui.generated.hlsli": {
+      "sha256": "7c79b45a5a3b91ca4f4d064585e8b7b1f15e9ed66f42fabde5fa9078f0e79b96"
+    },
+    "modules/Klang_Lighting/group_layout.hlsli": {
+      "sha256": "a13a6975ab468f5862150f3aca266ca137267dd0603e50b12e0d51d384c62824"
+    },
+    "modules/Klang_Lighting/groups.hlsli": {
+      "sha256": "0f761b2ded442aca911ea41147cd2733e134fd2845d28b44270833a901b8a390"
+    },
+    "modules/Klang_Lighting/manifest.yaml": {
+      "sha256": "a5f2b416c78eb87851bd76f8320fd2a1071bd502b0cf19dadef99e7c48735757"
+    },
+    "modules/Klang_Lighting/map.hlsli": {
+      "sha256": "a69c48043303b251c96e5550abe6edb38ba6aee7deabb26467210ab8fb2164a9"
+    },
+    "modules/Klang_Lighting/motors.hlsl": {
+      "sha256": "a901ccbbdcdca0c8732b17cdd9ad0eaa3e1d8d7201194de6b26b1185316d1a4f"
+    },
+    "modules/Klang_Lighting/optics.hlsl": {
+      "sha256": "65a94c2fb456fc2524cc356710ce88c2867f832b3372066496ab8cbb5af63f54"
+    },
+    "modules/Klang_Lighting/preview.hlsl": {
+      "sha256": "5cfc45d6977fdffe2e912835a7fe91704ad9717e34b739f6ae888495d2dc3210"
+    },
+    "modules/Klang_Lighting/select.hlsl": {
+      "sha256": "23b292a7e569a5d2b5833d1ddae8d1255d3d88b80c102882080828f0603d0ba8"
+    },
+    "modules/Klang_Plan/layout.hlsli": {
+      "sha256": "904e444d8bfb9ae11153f8ec8bb28f50f21a4c9b3b706567368981291627d1af"
+    },
+    "modules/Klang_Plan/manifest.yaml": {
+      "sha256": "30acb7cd72d152f7b24a8c865a914a0d07a22e8c0c8cb97c91869f6537d493ec"
+    },
+    "modules/Klang_Plan/mounts.hlsl": {
+      "sha256": "148eafdf5bd9998e18261953350cd694a1b59debba7d9f112c0715733d91ab10"
+    },
+    "modules/Klang_Plan/preview.hlsl": {
+      "sha256": "3393aa6112a5902b981ad01a68af4d513dbdaafc994d7563441dbc092520f27b"
+    },
+    "modules/Klang_Plan/resolve.hlsl": {
+      "sha256": "8b3b8018c3ca0e4efc545ddaf43b9ec27ed08f336194e64ab0d44d696b405eb2"
+    },
+    "modules/Klang_Plan/state.hlsl": {
+      "sha256": "8767519ef4da7b39a25b2675b47f9f8f357cc82c2006ea8587ec74b5f5dc58c1"
+    },
+    "modules/Klang_Program/manifest.yaml": {
+      "sha256": "8bc2e3e7ebac27fcd9563669e3dad2e5d6b494f031f3104e18737e17679e21be"
+    },
+    "modules/Klang_Program/program.hlsl": {
+      "sha256": "0cf9dadff828f707640a1bb527d0686d9a84da28d2432ac363efbf44d8d80a81"
+    },
+    "modules/Klang_Renderer/bloom_down.hlsl": {
+      "sha256": "199cc9d2d9a1722a6c0f0307096796900c752f76e4036fe429d501f418f4884a"
+    },
+    "modules/Klang_Renderer/bloom_up.hlsl": {
+      "sha256": "b405bb7a5ef18920ae183d2d1a5ee3338a10b995f5b5d4c76c0e646ccb78a54d"
+    },
+    "modules/Klang_Renderer/bloom_x.hlsl": {
+      "sha256": "c335f22dc232098c91c8f1af956d0d970beb21cbc92733831cfc5c6572a30373"
+    },
+    "modules/Klang_Renderer/bloom_y.hlsl": {
+      "sha256": "903bdba1280024660599d751eb5ac3184b20b0cf1490d1e7b60b1b7dc3377301"
+    },
+    "modules/Klang_Renderer/floor_reflections.hlsl": {
+      "sha256": "7c861c8614912b4eb0c636e389f21b5ad5e4102e4eaa5cef528f6b30d7c7b0c6"
+    },
+    "modules/Klang_Renderer/geometry.hlsl": {
+      "sha256": "6fd82e55cc9e13764ccf92b685390d46c9577e4a4c95cfc7aabe08f30947a999"
+    },
+    "modules/Klang_Renderer/hdr_scene.hlsl": {
+      "sha256": "486d5681573f6d5f5b56da22f8f25366d8661f00b345e8bc0ea1f3ce5e4c9101"
+    },
+    "modules/Klang_Renderer/manifest.yaml": {
+      "sha256": "a2522d7a88b00b4394c8bcf5d09eb8075a9dba9886be26ecc839735758c05135"
+    },
+    "modules/Klang_Renderer/nearest.hlsl": {
+      "sha256": "b0921349d541bfb18fc7fc942ec7e87f2a2e9c0be33eca6be091343fb2990e13"
+    },
+    "modules/Klang_Renderer/panels.hlsl": {
+      "sha256": "4300d244946244f3bd07eca976a55772ae475af12a7601b12f2430b4321ba67c"
+    },
+    "modules/Klang_Renderer/present.hlsl": {
+      "sha256": "5f4ab722d091d40827b99ab30a4051461983166cf645826c4d03bd2a7d10269d"
+    },
+    "modules/Klang_Renderer/sources.hlsl": {
+      "sha256": "bf683ab4456f242c43e91b2466e972a418eee828caedfd6c56ea1db5bae8469b"
+    },
+    "modules/Klang_Renderer/streak_seed.hlsl": {
+      "sha256": "f1e418732ed6861b2ac55df5f7da8197cfd41024e884eb36a65ac37fb20f6eb9"
+    },
+    "modules/Klang_Renderer/streaks.hlsl": {
+      "sha256": "6136988ff33abbec6c3efbdcfc8d19f3860262faf32d93070ea8190c86aa9e67"
+    },
+    "modules/Klang_Renderer/structure.hlsl": {
+      "sha256": "5b6616deb0dedbb61e1359bd812d812239dde80dd8351673e662eab63689deb1"
+    },
+    "modules/Klang_Renderer/surface_lights.hlsli": {
+      "sha256": "8c7e24f0c63321ee15549fa55810e069efe4d30f2578fa97b80c8ae8620d5250"
+    },
+    "modules/Klang_Renderer/volume.hlsl": {
+      "sha256": "fa384b4bab638892f69178b3fd70b84471a0cba49b438bb670752098bc99051b"
+    },
+    "modules/Klang_Renderer/warehouse.hlsl": {
+      "sha256": "a189a52ccd8471f8bf4384ad64832b5d59cc080f98fdfdf0cb142284bb91edad"
+    },
+    "modules/Klang_Renderer/yoke.hlsli": {
+      "sha256": "e29d3752b3729a396a686566c1275474bb859063ce3538d7df85c9860fe40b4a"
+    },
+    "modules/Klang_Show/clock.hlsl": {
+      "sha256": "29cef518bc33514c313be43a1c50818487820ab958ee0c6fef7d61b4c89c567d"
+    },
+    "modules/Klang_Show/manifest.yaml": {
+      "sha256": "452810ef1fcd9ff710bf3d9836efaf994afe40974c3f3805c08f9ab33c477981"
+    },
+    "modules/Klang_Show/preview.hlsl": {
+      "sha256": "92dbd199d1c9d7999062e1bd7770ea753db48c736bf557d2ab247ad204ead3d5"
+    },
+    "modules/Klang_Warehouse/build.hlsl": {
+      "sha256": "0488676bbc3ac98a38c37d66bb5250119595a693283f8c935fe2d542f6dcd3c0"
+    },
+    "modules/Klang_Warehouse/emitters.hlsl": {
+      "sha256": "dc5f842714a371bc0b4657a13c7deb047515991807f835fcc3430b4d63607fb7"
+    },
+    "modules/Klang_Warehouse/manifest.yaml": {
+      "sha256": "537d420bc16c3849f888be3af45c76b2c63c2594fbb4a339cf3a2369c63142db"
+    },
+    "modules/Klang_Warehouse/preview.hlsl": {
+      "sha256": "3701d0586a64ce23853db4449de6b7651050552d419b17867dd5bdfc8537bddd"
+    },
+    "modules/Klang_Warehouse/settings.hlsl": {
+      "sha256": "e178fe2cad9738bd098ef73016e5aa37fe80306e0ea566c5c4bb98ce279134d2"
+    },
+    "modules/_shared/fonts/SCIENTIFICA_LICENSE.txt": {
+      "sha256": "5fe3133335d5a3a32865f2b5cc133ed092c12aa65fcde525b68045e14312cd61"
+    },
+    "modules/_shared/fonts/scientifica_ascii.hlsli": {
+      "sha256": "fda36f3bad9f8d0090f824b53bc7818249845b00ad3f347337d5e4b6f8616f56"
+    },
+    "modules/_shared/program.hlsli": {
+      "sha256": "62b6194b0ea4dddcbf3f08afe44b4140808e4415e29d8d9466958e64a9b655a2"
+    },
+    "modules/_shared/rig.hlsli": {
+      "sha256": "e6eca2d37de9eceaa442907fbc17a5b477497a48cb5916c38f931f38c2575677"
+    },
+    "modules/_shared/rm_types.hlsli": {
+      "sha256": "d887c902851738b43275734fcdc9e476118a02e59180fe2097cc00086dee9b16"
+    },
+    "modules/_shared/room_materials.hlsli": {
+      "sha256": "12efdaaffd9d1130f79e035dafc11d369c8e5fd11a7253f62a2688d9001941d0"
+    },
+    "modules/_shared/show.hlsli": {
+      "sha256": "ca0db5abe9c32a93d63f016ffaad077d914d5fa400fdde8087a6f6a8d7943188"
+    },
+    "modules/_shared/ui/show_controls.hlsli": {
+      "sha256": "bd42ce0429b009f03f8238916c8a83cc87367262e7f2d131a7566d32b21265a3"
+    },
+    "modules/_shared/ui/sui3_core.hlsli": {
+      "sha256": "001de490dab0ca3e75f65ad9983356828c2b404ee5220d93ca32ab936e1a0e0a"
+    },
+    "modules/_shared/ui/sui3_text.hlsli": {
+      "sha256": "abee4e829b94aaf0e90b561b9dfdbf013397e66fafd85084dc7e7b8349956604"
+    },
+    "presets/klang_color.json": {
+      "sha256": "e405cabb8cb2712c92b39f15d910bbb8b9445128cd5c66e50bfe120ef231c190"
+    },
+    "presets/klang_complete.json": {
+      "sha256": "df86b91c0b449ef35e0f09bd884b26f5f78c14888feb09ec1acea353f27666ec"
+    },
+    "presets/klang_effects.json": {
+      "sha256": "265dd64fe391b17fcf4eaac6054f3ebe9adbdcfe520f7e8482715b11876ce57d"
+    },
+    "presets/klang_push2.json": {
+      "sha256": "127f6e1abe5d9a7307480b00f2e152bd69dddeeae055153a457c88a827d81bce"
+    },
+    "presets/klang_rhythm.json": {
+      "sha256": "843314a5e83c13e248e55c449286210d835f701c25d19139cef8d98616f10546"
+    },
+    "presets/klang_static.json": {
+      "sha256": "3ec5d70a66d6f43749a6528485fae151a55dca9761a0b5fff7452834090d0c07"
+    },
+    "scripts/.luaurc": {
+      "sha256": "53154d49e1a4dedda1ebbd4c28818a91ba5544b8f8fc3a281a5a943957ab9539"
+    },
+    "scripts/Klang_Surface.luau": {
+      "sha256": "14bd385588407a3da11d3576c1b81b10a6cd1bcfd08c899bb5c04cfec1b7f8c4"
+    },
+    "scripts/pages/color.luau": {
+      "sha256": "9071422fd63d704155e2a7743100986e05bc14b8257eedab7e8aabeecb8d71af"
+    },
+    "scripts/pages/global.luau": {
+      "sha256": "86a3881f5f79c1454b996ef1ae046fd0d880c32d553617ff06c6108757f0e8aa"
+    },
+    "scripts/pages/rig_static.luau": {
+      "sha256": "371ffdeb50a4a82c4f5b26c5185c9ff2f0c334f336839fa951601fc0d63d3af1"
+    },
+    "scripts/pages/sequence.luau": {
+      "sha256": "bb6d9bcbf83b15545f4117e046e1081cba168f53050727b88b5c1eaa406c72e2"
+    },
+    "scripts/push2os-provenance.json": {
+      "sha256": "a9717da4ca66e66ddbd5ef512ef42c568d17b4fb5128764994c25c641d1714f2"
+    },
+    "scripts/sentinel.d.luau": {
+      "sha256": "896971fc1b8533cdd221accf69004307e0af2c78016e528c11441dd2c193952a"
+    },
+    "scripts/show/attribute_catalog.luau": {
+      "sha256": "33255e129aab9da53691be452d79537e3fd821bd7a2c960ca76c828989bdb050"
+    },
+    "scripts/show/attribute_editor.luau": {
+      "sha256": "768099d66f02829658772a538efe4314e592ba0442e40c529c89f8d42a7af6aa"
+    },
+    "scripts/show/camera_orbit.luau": {
+      "sha256": "56b915bb1ca8d9f63ac6dd6c0b594e1fb712d01a17eecb8f5e55fcd763b2cdd5"
+    },
+    "scripts/show/desk.luau": {
+      "sha256": "1fbe22ae386870a245c732181ee0dfd82f815ccb14bf5625b8ea6d7789e13f3c"
+    },
+    "scripts/show/desk_layout.luau": {
+      "sha256": "ca908e70171ad6084561905e44678902cfc81dd3b0ed5d9d9ed80d6da7164e9b"
+    },
+    "scripts/show/desk_panel.luau": {
+      "sha256": "4730e5129824661ce274187da355f4609b3f33c219ddc61ff2bd0867a9da48fd"
+    },
+    "scripts/show/fixture_catalog.luau": {
+      "sha256": "251f92db7ae112a9e13f184de971f4d31e0be2740de3f4e0ff2d039189dd846c"
+    },
+    "scripts/show/look_store.luau": {
+      "sha256": "d5b2cb86cde5878bbfe73f9d107ab0c1e79b438d3db0a30349ba55b4375636fe"
+    },
+    "scripts/show/native_rig_ui.luau": {
+      "sha256": "d01a6e9cdaa631e95b360bf60b83d31b1bc0b7c1cb4fcc5c6489729b3113b790"
+    },
+    "scripts/show/native_state.luau": {
+      "sha256": "006ae51bdf48c2bd5137a6811fdf1cd6033fb2a47aeab389bb42306fd21d3dea"
+    },
+    "scripts/show/native_tempo.luau": {
+      "sha256": "45e798ea86e3b5cce0079c998c9020810dc5f1dbf5edbb97b54e4028e0149e6c"
+    },
+    "scripts/show/preset_titles.luau": {
+      "sha256": "c1840acf0ab3914cdfb1be6b37ada5dbb16916e92bc90edf2db41bbe63b39b1d"
+    },
+    "scripts/show/programmer_surface.luau": {
+      "sha256": "3ab6cef4517e46e1516e836b166a36f243f164c837b1ad42e3d5341bd87730dc"
+    },
+    "scripts/show/registry.luau": {
+      "sha256": "fd38efb5a9290cdbe62a9c8020562c63f87455a92a930ebeb47a6d09add9ebdb"
+    },
+    "scripts/show/rhythm.luau": {
+      "sha256": "914762ce1a4201390539043df0111837bad346cd67ce534d3c653bf57ca46946"
+    },
+    "scripts/show/rig_bridge.luau": {
+      "sha256": "76f05849139dd0f24a34676eec0464ff0afb8025967a22441991c04ade1fb265"
+    },
+    "scripts/show/rig_codec.luau": {
+      "sha256": "49dacce5de92ca7b7582ce9e8a894c51c8773120dd570b43fe51c8840986ddce"
+    },
+    "scripts/show/rig_commands.luau": {
+      "sha256": "39d68b022b261c806b4ba16d9044705e27f8cc2a61f6a5f4339658d6347607fe"
+    },
+    "scripts/show/rig_menus.luau": {
+      "sha256": "2c3936952ac00d22583b03f17961ed0b1f478fef28a772e79729c628f1843fdc"
+    },
+    "scripts/show/rig_windows.luau": {
+      "sha256": "1c9e3d005aade4438a7c06e22d2e721fc12ffdfc87f2a4ea06a0876b9f9e7ddf"
+    },
+    "scripts/show/selection_view.luau": {
+      "sha256": "52320f69cfe28e7306936a93abf269948f405f12805efa324d9b9b3de619b848"
+    },
+    "scripts/show/sequence_grid.luau": {
+      "sha256": "ff31b04e2cdf2949d06793048da98d4624b83a40b3a0d25078af200769ec997d"
+    },
+    "scripts/show/sequence_layout.luau": {
+      "sha256": "29718537f7687486b9a4fe1c78a5d9592e817bf17a855557af37e989ee87752c"
+    },
+    "scripts/show/sequence_model.luau": {
+      "sha256": "64ed75ec85a98abfedaf32ee21a8d689bbd0bca14d6fe44a9151212a8e7b5b39"
+    },
+    "scripts/show/sequence_store.luau": {
+      "sha256": "e875ab83d7ef74f4f3671f3da6de1b99f549f8ca292c4c4adf8021a5bfcd0bc6"
+    },
+    "scripts/show/sequence_view.luau": {
+      "sha256": "423c2a64db2e7acb6dc12bd3b78fe970609136e31c408b078382219ac6c9e256"
+    },
+    "scripts/show/side_fx.luau": {
+      "sha256": "deb30b61534edf210211354070366692a988fff7c9482fd63243b73ffc461c4b"
+    },
+    "scripts/show/static_rig.luau": {
+      "sha256": "a859e71ff891d49b5b0821df243372a444947e52b50adb682b2d8dfc6f021be8"
+    },
+    "scripts/show/surface.luau": {
+      "sha256": "8c8fef109c979bdaa9328c5c276177ba46762c1f2ee270de3bad2e837bee980f"
+    },
+    "scripts/show/transport_keys.luau": {
+      "sha256": "42483cdda56bde56ac4aaa80867de8efaaa9dfa6992625d78f56944cba4be549"
+    },
+    "scripts/vendor/push2os/CHANGELOG.md": {
+      "sha256": "5a67bd5a17f22e6f94a008eebb923f3576148ee16049ce2c4924a023eb0109bc"
+    },
+    "scripts/vendor/push2os/LICENSE": {
+      "sha256": "6e1b36a26496463a485106b7d3558f2f6b93ff1158a28221846543a7beeb7816"
+    },
+    "scripts/vendor/push2os/README.md": {
+      "sha256": "7292339eff16c1cb5b69002a60f89b794bb47ed6ec1af55cfeb925d2926acee5"
+    },
+    "scripts/vendor/push2os/docs/editors.md": {
+      "sha256": "7737eec9c8ed1759bbf004312ea4c1464e17ca2420797f561299f66370bebeb9"
+    },
+    "scripts/vendor/push2os/docs/installation.md": {
+      "sha256": "2607ef972718ca865a09844521516b07c1614612ccfc3d7d27ff4991e81e5fe2"
+    },
+    "scripts/vendor/push2os/docs/migration.md": {
+      "sha256": "5b09f688ecf0eff2cfbbe678dc0338d901ecc8a7a1e47ace03bb79a481a6453e"
+    },
+    "scripts/vendor/push2os/docs/runtime.md": {
+      "sha256": "122d9289eab0d3a68fdc4374d66e932766e94546cedc6eda55fc3026a567ff20"
+    },
+    "scripts/vendor/push2os/examples/composition.luau": {
+      "sha256": "718d11cca6231b416b55084894146086da4a2f6c139de561281bac8cc601ca91"
+    },
+    "scripts/vendor/push2os/examples/editors.luau": {
+      "sha256": "88c961e697c934df151281b29f6dd3468821b3f03850b38a6397b42d1c69687c"
+    },
+    "scripts/vendor/push2os/examples/native_competitor.luau": {
+      "sha256": "3998fb1f60fa7195b979c3410abb4cd850f90222e9fdfeeec53fd2e92c148bae"
+    },
+    "scripts/vendor/push2os/examples/native_frames.luau": {
+      "sha256": "b62ec84f6af74ac58f066b27bfec34caed42b611b759f122a15740e3449490be"
+    },
+    "scripts/vendor/push2os/examples/native_lifecycle.luau": {
+      "sha256": "818ee8e737fbb14625a4ce8f1ee7bca65085a62fc24b61249e4a6c74059c310e"
+    },
+    "scripts/vendor/push2os/examples/runtime.luau": {
+      "sha256": "bf227f278d52ccfa18a4cbb4ce233f486146abe25f4faeb427407cc1be8715f7"
+    },
+    "scripts/vendor/push2os/package.json": {
+      "sha256": "589602093a38b683766815f903cdeda0b3d3bd2d8f41437b68e9ff54c27ef946"
+    },
+    "scripts/vendor/push2os/src/internal/bands.luau": {
+      "sha256": "63a9d08bda87c346a6c74efeaa510f53e7b084fda433e314d0122f4246ce7744"
+    },
+    "scripts/vendor/push2os/src/internal/button_menu.luau": {
+      "sha256": "69a85de740a9729c3c2c1b9db8279a21d0d126b5abf389640b79b64116a62003"
+    },
+    "scripts/vendor/push2os/src/internal/column_grid.luau": {
+      "sha256": "082479c97de0b440e7794756cd3cc867eb534684ed96b20b34d136cd78b4acad"
+    },
+    "scripts/vendor/push2os/src/internal/conventions.luau": {
+      "sha256": "e1d9293b39e8c180e12fd7c5839832ca68d86187b13bf614192e9b200bc97e4c"
+    },
+    "scripts/vendor/push2os/src/internal/core.luau": {
+      "sha256": "c723415470439775362243bfd2da5a64f4160f6ccc3698fc0e31ee4f642417c7"
+    },
+    "scripts/vendor/push2os/src/internal/editor.luau": {
+      "sha256": "3d9ba198ba3cdd9e8113e7286a3902f525beb117d759f411a60c20b859263e28"
+    },
+    "scripts/vendor/push2os/src/internal/pad_desktop.luau": {
+      "sha256": "35d2c3efff6b073bfdc29d63480f2451471092f2034b65144ec2a1e68d1ae6f7"
+    },
+    "scripts/vendor/push2os/src/internal/pad_legacy_window.luau": {
+      "sha256": "589a42bbd62347d07efbfb025a251ff66040dcbed35c140b786bbf71eb739e90"
+    },
+    "scripts/vendor/push2os/src/internal/pad_window.luau": {
+      "sha256": "db286d1b0b0f674a5a588e50e759e9c2144436a651ea6ff354d62769e8593441"
+    },
+    "scripts/vendor/push2os/src/internal/pad_window_gesture.luau": {
+      "sha256": "5e44f4df05deca319de9307ef2c477e50c6a58ec52445d934155b0e881cc3e06"
+    },
+    "scripts/vendor/push2os/src/internal/pads.luau": {
+      "sha256": "aa0b43492930a56c95ca6b5afd5b322df3cc17611f28eaaf9b1a14bf4ab2d1cc"
+    },
+    "scripts/vendor/push2os/src/internal/params.luau": {
+      "sha256": "b5c45e18c8b14192d9bfba22e537dfbaac1ceb87f32d0c4b8276fa35f67b52d3"
+    },
+    "scripts/vendor/push2os/src/internal/persist.luau": {
+      "sha256": "55c709e01c12226322a7588b06dc48c5d8cf95d9c111a153b0652962dd467974"
+    },
+    "scripts/vendor/push2os/src/internal/theme.luau": {
+      "sha256": "55af777be2009a96491eef323d8d5805943e713e2eed6780d0dfc7cd0a1ba9d0"
+    },
+    "scripts/vendor/push2os/src/internal/widgets.luau": {
+      "sha256": "cccc7d6cf7c55c5fafd81441d9e6aa8503fc4244fd6d913824a940a791b9e7d9"
+    },
+    "scripts/vendor/push2os/src/migration.luau": {
+      "sha256": "aa13ba027ae563d561f90738791657c72db0a0a785921b8917cb736eef6d4583"
+    },
+    "scripts/vendor/push2os/src/restore.luau": {
+      "sha256": "a7a7fc01ecf91231049946b9ecfbcc1f9198912b608222768a3e5abddf46ffbf"
+    },
+    "scripts/vendor/push2os/src/runtime.luau": {
+      "sha256": "1ca96216feb2132bf0cf3b9475902bf06a845490cccceed45fc6b7e3a00f3ca0"
+    },
+    "scripts/vendor/push2os/src/session.luau": {
+      "sha256": "6d8bfc8659280b6b060d94dcfc9f9261abfc52f1d136a427efa04e8a9c44c478"
+    },
+    "scripts/vendor/push2os/src/types.luau": {
+      "sha256": "5f872537989491ad45d8627378db19cee7a7820090207bdef0e7f45d3a710388"
+    },
+    "scripts/vendor/push2os/tests/composition.luau": {
+      "sha256": "97c05f734a598a6246d6f681c351cda1464fb5fb658c863282369c9458099065"
+    },
+    "scripts/vendor/push2os/tests/editor.luau": {
+      "sha256": "cedd955c89a8b9bc9b7e61ac2109c1252d2012f94b4497742ae37465ba7e5561"
+    },
+    "scripts/vendor/push2os/tests/migration.luau": {
+      "sha256": "1bf5a8843c0ed2bfd794302ef7668ce19e8fb4983411b1a4cb00f87e4e0423ea"
+    },
+    "scripts/vendor/push2os/tests/persist.luau": {
+      "sha256": "4d84c3f91fe270220ad45e55227f88faddd1d95f08c4b19595c325854ca2ada7"
+    },
+    "scripts/vendor/push2os/tests/restore.luau": {
+      "sha256": "ea3ae4c2f3fb5887e2335806494515f6e6ef2b2cf61f0da740ce414322f08082"
+    },
+    "scripts/vendor/push2os/tests/run.py": {
+      "sha256": "0130c171ef765b89d2b1529233be229152cc1e995f9ae24951512aeba0411567"
+    },
+    "scripts/vendor/push2os/tests/runtime.luau": {
+      "sha256": "ba1d93780d228538e06c49f7b10dccb469fffc82579d9d1fddbaa2d43b9f2034"
+    },
+    "scripts/vendor/push2os/tests/state_readback.luau": {
+      "sha256": "ba915dfa90606111e36e080d38107a6dd2b577fa9f8cbcb9d32711588560295f"
+    },
+    "scripts/vendor/push2os/tests/test_activation.py": {
+      "sha256": "363b09abfc8748ff2b07ff3a34f174de9a2ca9f0144ebf532d343f3c1f75ce1d"
+    },
+    "scripts/vendor/push2os/tests/test_package.py": {
+      "sha256": "72a377ffc62eb0e2db5c0459128301ed539c71432b98dc986a8b93d6c54b12a4"
+    },
+    "scripts/vendor/push2os/tests/window_read_batch.luau": {
+      "sha256": "c15161110d55cca2ec59db5876e9028e027dda0ed3b1c45d593aec4c2820f06d"
+    },
+    "scripts/vendor/push2os/tools/activation.py": {
+      "sha256": "bcac913d78796620c5972852e77856b5b1f44b4ed6348df43b0b881344232d7b"
+    },
+    "scripts/vendor/push2os/tools/package.py": {
+      "sha256": "b47ed7be5af8ee801979e4f7da0d9d16413fa518c09f4e0925daa6dc4fe4b52f"
+    }
+  }
+}

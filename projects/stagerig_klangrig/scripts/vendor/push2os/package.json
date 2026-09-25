@@ -1,0 +1,13 @@
+{
+  "package": "push2os",
+  "api_version": 1,
+  "data_schema_version": 1,
+  "host_requirements": [
+    "push2.session.v1",
+    "push2.complete_frame.v1",
+    "project.maintenance.v1",
+    "preset.restore_barrier.v1",
+    "preset.merge_save.v1"
+  ],
+  "tested_host_revision": null
+}

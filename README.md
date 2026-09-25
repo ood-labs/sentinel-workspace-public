@@ -75,6 +75,7 @@ See `knowledge/example-authoring.md`.
 | `streamdiff_canvas` | Persistent painting and patterned depth control for photographic StreamDiff collage |
 | `streamdiff_workflows` | Six focused StreamDiff routing and conditioning studies |
 | `touchdesigner_new_project` | Typed signal-to-texture modulation and geometry displacement |
+| `stagerig_klangrig` | Concert lighting rig with full looks, a clickable show-control desk panel, native Script-node Push 2 surface and fixture programmer |
 
 The detailed source, pipeline, connection, output, engine, and remix map is in
 `knowledge/EXAMPLE-MAP.md`. Each project README contains its own exact component

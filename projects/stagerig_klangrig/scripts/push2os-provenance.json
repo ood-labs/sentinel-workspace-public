@@ -1,0 +1,48 @@
+{
+  "source": "sentinel/projects/dj_truck_29/scripts/vendor/push2os",
+  "baseline_commit": "263e2d1",
+  "files": {
+    "CHANGELOG.md": "5a67bd5a17f22e6f94a008eebb923f3576148ee16049ce2c4924a023eb0109bc",
+    "package.json": "589602093a38b683766815f903cdeda0b3d3bd2d8f41437b68e9ff54c27ef946",
+    "README.md": "7292339eff16c1cb5b69002a60f89b794bb47ed6ec1af55cfeb925d2926acee5",
+    "docs/editors.md": "7737eec9c8ed1759bbf004312ea4c1464e17ca2420797f561299f66370bebeb9",
+    "docs/installation.md": "2607ef972718ca865a09844521516b07c1614612ccfc3d7d27ff4991e81e5fe2",
+    "docs/migration.md": "5b09f688ecf0eff2cfbbe678dc0338d901ecc8a7a1e47ace03bb79a481a6453e",
+    "docs/runtime.md": "122d9289eab0d3a68fdc4374d66e932766e94546cedc6eda55fc3026a567ff20",
+    "examples/composition.luau": "718d11cca6231b416b55084894146086da4a2f6c139de561281bac8cc601ca91",
+    "examples/editors.luau": "88c961e697c934df151281b29f6dd3468821b3f03850b38a6397b42d1c69687c",
+    "examples/native_competitor.luau": "3998fb1f60fa7195b979c3410abb4cd850f90222e9fdfeeec53fd2e92c148bae",
+    "examples/native_frames.luau": "b62ec84f6af74ac58f066b27bfec34caed42b611b759f122a15740e3449490be",
+    "examples/native_lifecycle.luau": "818ee8e737fbb14625a4ce8f1ee7bca65085a62fc24b61249e4a6c74059c310e",
+    "examples/runtime.luau": "bf227f278d52ccfa18a4cbb4ce233f486146abe25f4faeb427407cc1be8715f7",
+    "src/migration.luau": "aa13ba027ae563d561f90738791657c72db0a0a785921b8917cb736eef6d4583",
+    "src/restore.luau": "a7a7fc01ecf91231049946b9ecfbcc1f9198912b608222768a3e5abddf46ffbf",
+    "src/runtime.luau": "1ca96216feb2132bf0cf3b9475902bf06a845490cccceed45fc6b7e3a00f3ca0",
+    "src/session.luau": "6d8bfc8659280b6b060d94dcfc9f9261abfc52f1d136a427efa04e8a9c44c478",
+    "src/types.luau": "5f872537989491ad45d8627378db19cee7a7820090207bdef0e7f45d3a710388",
+    "tools/activation.py": "bcac913d78796620c5972852e77856b5b1f44b4ed6348df43b0b881344232d7b",
+    "tools/package.py": "b47ed7be5af8ee801979e4f7da0d9d16413fa518c09f4e0925daa6dc4fe4b52f",
+    "src/internal/bands.luau": "63a9d08bda87c346a6c74efeaa510f53e7b084fda433e314d0122f4246ce7744",
+    "src/internal/button_menu.luau": "69a85de740a9729c3c2c1b9db8279a21d0d126b5abf389640b79b64116a62003",
+    "src/internal/column_grid.luau": "082479c97de0b440e7794756cd3cc867eb534684ed96b20b34d136cd78b4acad",
+    "src/internal/conventions.luau": "e1d9293b39e8c180e12fd7c5839832ca68d86187b13bf614192e9b200bc97e4c",
+    "src/internal/core.luau": "c723415470439775362243bfd2da5a64f4160f6ccc3698fc0e31ee4f642417c7",
+    "src/internal/editor.luau": "3d9ba198ba3cdd9e8113e7286a3902f525beb117d759f411a60c20b859263e28",
+    "src/internal/pads.luau": "aa0b43492930a56c95ca6b5afd5b322df3cc17611f28eaaf9b1a14bf4ab2d1cc",
+    "src/internal/pad_desktop.luau": "35d2c3efff6b073bfdc29d63480f2451471092f2034b65144ec2a1e68d1ae6f7",
+    "src/internal/pad_legacy_window.luau": "589a42bbd62347d07efbfb025a251ff66040dcbed35c140b786bbf71eb739e90",
+    "src/internal/pad_window.luau": "db286d1b0b0f674a5a588e50e759e9c2144436a651ea6ff354d62769e8593441",
+    "src/internal/pad_window_gesture.luau": "5e44f4df05deca319de9307ef2c477e50c6a58ec52445d934155b0e881cc3e06",
+    "src/internal/params.luau": "b5c45e18c8b14192d9bfba22e537dfbaac1ceb87f32d0c4b8276fa35f67b52d3",
+    "src/internal/persist.luau": "55c709e01c12226322a7588b06dc48c5d8cf95d9c111a153b0652962dd467974",
+    "src/internal/theme.luau": "55af777be2009a96491eef323d8d5805943e713e2eed6780d0dfc7cd0a1ba9d0",
+    "src/internal/widgets.luau": "cccc7d6cf7c55c5fafd81441d9e6aa8503fc4244fd6d913824a940a791b9e7d9"
+  },
+  "public_filtered": {
+    "dropped_directories": [
+      "tests/"
+    ],
+    "dropped_files": 11,
+    "reason": "package tests stay with the canonical package"
+  }
+}

@@ -1,0 +1,454 @@
+name: Klangrig / Program
+version: 1.0.0
+mode: generator
+resolution:
+- 1920
+- 1080
+features:
+- camera
+viewport:
+  hint: RMB look, WASD move, wheel speed
+  interactions:
+  - camera
+data_inputs:
+- name: Pose
+  slot: 0
+  schema:
+  - name: position
+    type: float3
+  - name: fixture_id
+    type: float
+  - name: pan
+    type: float
+  - name: tilt
+    type: float
+  - name: target_pan
+    type: float
+  - name: target_tilt
+    type: float
+  - name: mount_pitch
+    type: float
+  - name: mount_roll
+    type: float
+  - name: active
+    type: float
+  - name: motion_mode
+    type: float
+  - name: content_origin
+    type: float2
+  - name: content_extent
+    type: float2
+  - name: reserved
+    type: float4
+- name: Optics
+  slot: 1
+  schema:
+  - name: position
+    type: float3
+  - name: fixture_id
+    type: float
+  - name: normal
+    type: float3
+  - name: local_id
+    type: float
+  - name: colour
+    type: float3
+  - name: intensity
+    type: float
+  - name: beam_tangent
+    type: float
+  - name: field_tangent
+    type: float
+  - name: reach
+    type: float
+  - name: active
+    type: float
+  - name: frost
+    type: float
+  - name: padding
+    type: float3
+- name: Rig Segments
+  slot: 2
+  schema:
+  - name: a
+    type: float4
+  - name: b
+    type: float4
+  - name: shape
+    type: float4
+  - name: meta
+    type: float4
+- name: Tubes
+  slot: 3
+  schema:
+  - name: a
+    type: float4
+  - name: b
+    type: float4
+  - name: cutA
+    type: float4
+  - name: cutB
+    type: float4
+- name: Architecture
+  slot: 4
+  schema:
+  - name: center
+    type: float4
+  - name: extent
+    type: float4
+  - name: surface
+    type: float4
+  - name: rotation
+    type: float4
+- name: Room Settings
+  slot: 5
+  schema:
+  - name: fill
+    type: float4
+  - name: material
+    type: float4
+  - name: tint
+    type: float4
+  - name: bounds
+    type: float4
+  - name: finish
+    type: float4
+- name: LED Emitters
+  slot: 6
+  schema:
+  - name: a
+    type: float4
+  - name: b
+    type: float4
+  - name: radiance
+    type: float4
+parameters:
+- name: worklight
+  type: float
+  min: 0
+  max: 4
+  default: 0.123841
+- name: exposure
+  type: float
+  min: 0.1
+  max: 4
+  default: 1.0
+- name: haze
+  type: float
+  min: 0
+  max: 1
+  default: 0.03
+- name: beam_gain
+  type: float
+  min: 0
+  max: 20
+  default: 6.031
+- name: volume_samples
+  type: int
+  min: 4
+  max: 32
+  default: 8
+- name: led_gain
+  type: float
+  default: 3.0
+  min: 0
+  max: 20
+- name: bloom
+  type: float
+  default: 0.12
+  min: 0
+  max: 1
+  description: Fraction of HDR light scattered through the bloom pyramid.
+- name: sensor_white_start
+  type: float
+  default: 2.0
+  min: 0
+  max: 10
+- name: sensor_response
+  type: float
+  default: 0.16
+  min: 0
+  max: 1
+- name: streak_strength
+  type: float
+  default: 0.005
+  min: 0
+  max: 1
+- name: streak_length
+  type: float
+  default: 0.08
+  min: 0.01
+  max: 0.3
+passes:
+- name: sources
+  shader: sources.hlsl
+  target: cs_5_0
+  dispatch:
+  - 576
+  - 1
+  - 1
+  thread_group_x: 1
+  thread_group_y: 1
+  output: buffer:sources
+  inputs:
+  - slot: 0
+    source: data:1
+- name: geometry
+  shader: geometry.hlsl
+  target: draw
+  vertex_count: 3169152
+  topology: trianglelist
+  depth: true
+  depth_write: true
+  cull: none
+  format: RGBA16F
+  inputs:
+  - slot: 0
+    source: data:0
+  - slot: 1
+    source: data:1
+- name: structure
+  shader: structure.hlsl
+  vertex_count: 923904
+  inputs:
+  - slot: 0
+    source: data:3
+  - slot: 1
+    source: buffer:sources
+  - slot: 2
+    source: data:5
+  - slot: 3
+    source: data:6
+  target: draw
+  topology: trianglelist
+  depth: true
+  depth_write: true
+  cull: none
+  format: RGBA16F
+- name: panels
+  shader: panels.hlsl
+  vertex_count: 1728
+  inputs:
+  - slot: 0
+    source: data:2
+  - slot: 1
+    source: input:0
+  target: draw
+  topology: trianglelist
+  depth: true
+  depth_write: true
+  cull: none
+  format: RGBA16F
+- name: warehouse
+  shader: warehouse.hlsl
+  target: draw
+  vertex_count: 9216
+  topology: trianglelist
+  depth: true
+  depth_write: true
+  cull: none
+  format: RGBA16F
+  inputs:
+  - slot: 0
+    source: data:4
+  - slot: 1
+    source: buffer:sources
+  - slot: 2
+    source: data:5
+  - slot: 3
+    source: data:6
+- name: nearest
+  shader: nearest.hlsl
+  target: cs_5_0
+  inputs:
+  - slot: 0
+    source: pass:geometry
+  - slot: 1
+    source: pass:structure
+  - slot: 2
+    source: pass:panels
+  - slot: 3
+    source: pass:warehouse
+  - slot: 4
+    source: input:1
+  format: RGBA16F
+- name: volume
+  shader: volume.hlsl
+  target: cs_5_0
+  inputs:
+  - slot: 0
+    source: data:0
+  - slot: 1
+    source: buffer:sources
+  - slot: 2
+    source: pass:nearest
+  - slot: 3
+    source: pass:sources
+  format: RGBA16F
+- name: floor_reflections
+  shader: floor_reflections.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  inputs:
+  - slot: 0
+    source: pass:nearest
+  - slot: 1
+    source: data:5
+- name: hdr_scene
+  shader: hdr_scene.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 1
+  inputs:
+  - slot: 0
+    source: pass:nearest
+  - slot: 1
+    source: pass:volume
+  - slot: 2
+    source: pass:floor_reflections
+- name: bloom_d0
+  shader: bloom_down.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.5
+  inputs:
+  - slot: 0
+    source: pass:hdr_scene
+- name: bloom_d1
+  shader: bloom_down.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.25
+  inputs:
+  - slot: 0
+    source: pass:bloom_d0
+- name: bloom_d2
+  shader: bloom_down.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.125
+  inputs:
+  - slot: 0
+    source: pass:bloom_d1
+- name: bloom_d3
+  shader: bloom_down.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.0625
+  inputs:
+  - slot: 0
+    source: pass:bloom_d2
+- name: bloom_d4
+  shader: bloom_down.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.03125
+  inputs:
+  - slot: 0
+    source: pass:bloom_d3
+- name: bloom_u3
+  shader: bloom_up.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.0625
+  inputs:
+  - slot: 0
+    source: pass:bloom_d4
+  - slot: 1
+    source: pass:bloom_d3
+- name: bloom_u2
+  shader: bloom_up.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.125
+  inputs:
+  - slot: 0
+    source: pass:bloom_u3
+  - slot: 1
+    source: pass:bloom_d2
+- name: bloom_u1
+  shader: bloom_up.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.25
+  inputs:
+  - slot: 0
+    source: pass:bloom_u2
+  - slot: 1
+    source: pass:bloom_d1
+- name: bloom_u0
+  shader: bloom_up.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.5
+  inputs:
+  - slot: 0
+    source: pass:bloom_u1
+  - slot: 1
+    source: pass:bloom_d0
+- name: streak_seed
+  shader: streak_seed.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.25
+  inputs:
+  - slot: 0
+    source: pass:bloom_d1
+- name: streaks
+  shader: streaks.hlsl
+  target: cs_5_0
+  format: RGBA16F
+  resolution_scale: 0.25
+  inputs:
+  - slot: 0
+    source: pass:streak_seed
+- name: present
+  shader: present.hlsl
+  inputs:
+  - slot: 0
+    source: pass:hdr_scene
+  - slot: 1
+    source: pass:bloom_u0
+  - slot: 2
+    source: pass:streaks
+outputs:
+- name: Program
+  pass: present
+buffers:
+- name: sources
+  structured: true
+  element_size: 80
+  element_count: 576
+data_outputs:
+- name: Atmosphere Sources
+  buffer: sources
+  schema:
+  - name: position
+    type: float3
+  - name: fixture_id
+    type: float
+  - name: normal
+    type: float3
+  - name: local_id
+    type: float
+  - name: colour
+    type: float3
+  - name: intensity
+    type: float
+  - name: beam_tangent
+    type: float
+  - name: field_tangent
+    type: float
+  - name: reach
+    type: float
+  - name: active
+    type: float
+  - name: frost
+    type: float
+  - name: padding
+    type: float3
+inputs:
+- name: LED RGB
+  slot: 0
+- name: Crowd HDR Depth
+  slot: 1
