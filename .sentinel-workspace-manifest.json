@@ -113,6 +113,10 @@
                       "sha256":  "4fe27b23704e2ee7f6f0f2addf3cdbcf6df9d271625fce8de7b42dc1ab465abe"
                   },
                   {
+                      "path":  ".agents/skills/motion-graphics-sequences/SKILL.md",
+                      "sha256":  "19cebc9223f5de13bd792059a12a9c057034336f6ebb8b43f73e7266b17703b9"
+                  },
+                  {
                       "path":  ".agents/skills/procedural-geometry-authoring/SKILL.md",
                       "sha256":  "47fd8fc2ed5eceabd2f2bdcefd9cd5f766ee896d105feda02e901a50c43de73c"
                   },
@@ -249,6 +253,10 @@
                       "sha256":  "4fe27b23704e2ee7f6f0f2addf3cdbcf6df9d271625fce8de7b42dc1ab465abe"
                   },
                   {
+                      "path":  ".claude/skills/motion-graphics-sequences/SKILL.md",
+                      "sha256":  "19cebc9223f5de13bd792059a12a9c057034336f6ebb8b43f73e7266b17703b9"
+                  },
+                  {
                       "path":  ".claude/skills/procedural-geometry-authoring/SKILL.md",
                       "sha256":  "47fd8fc2ed5eceabd2f2bdcefd9cd5f766ee896d105feda02e901a50c43de73c"
                   },
@@ -286,11 +294,11 @@
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "282bf4e9f8c86aa4a5c70d6efa17fe69972c7eff51b018271fc452c9a631d469"
+                      "sha256":  "d5f5945e23c63bede8d531fd719f7a7947a0e27e62efe16e9ddeaf56feead332"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "282bf4e9f8c86aa4a5c70d6efa17fe69972c7eff51b018271fc452c9a631d469"
+                      "sha256":  "d5f5945e23c63bede8d531fd719f7a7947a0e27e62efe16e9ddeaf56feead332"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -314,7 +322,7 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "282bf4e9f8c86aa4a5c70d6efa17fe69972c7eff51b018271fc452c9a631d469"
+                      "sha256":  "d5f5945e23c63bede8d531fd719f7a7947a0e27e62efe16e9ddeaf56feead332"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -374,7 +382,7 @@
                   },
                   {
                       "path":  "knowledge/module-pipeline.md",
-                      "sha256":  "cf1517611a7f4c31e1a329c6a40989fdeaea3c3e76f8465af35ada553df1fa57"
+                      "sha256":  "e816a7d23c67972306386115bbfb6fe219407fa48e5d61f92a9e0ee69449e9fb"
                   },
                   {
                       "path":  "knowledge/motion-choreography.md",
@@ -406,7 +414,7 @@
                   },
                   {
                       "path":  "knowledge/ui-authoring.md",
-                      "sha256":  "6e2ce8c676bf296ba1274785400009779c9455dbcb09ddd4e1d59d60d7959d6a"
+                      "sha256":  "8de14659a6ba74dcf2efb5619262a3fc25ad0635af42d19f4a50567e2fc4182a"
                   },
                   {
                       "path":  "knowledge/ui-interactions.md",
@@ -9092,5 +9100,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "07b4c4271d38046d26d9596381022fb792912bd7"
+    "source_commit":  "7fd39d09cf5af3e1f9452f749f7eb78a031e5c31"
 }
