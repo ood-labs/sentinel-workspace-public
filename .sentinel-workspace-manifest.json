@@ -310,11 +310,11 @@
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "ca8d28e4d9e3205c4a39a269721b2a1d980d03df9c073ac334c54f224732af38"
+                      "sha256":  "31309cab22f9c7a77a0ea55fe976e79fde8ff152ac8c8f8dde84373bf0fa0f55"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "ca8d28e4d9e3205c4a39a269721b2a1d980d03df9c073ac334c54f224732af38"
+                      "sha256":  "31309cab22f9c7a77a0ea55fe976e79fde8ff152ac8c8f8dde84373bf0fa0f55"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -338,7 +338,7 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "ca8d28e4d9e3205c4a39a269721b2a1d980d03df9c073ac334c54f224732af38"
+                      "sha256":  "31309cab22f9c7a77a0ea55fe976e79fde8ff152ac8c8f8dde84373bf0fa0f55"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -354,7 +354,7 @@
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
-                      "sha256":  "3beabc9f3c12cbc9ef3e27c20fe7ef4f5d87e0818cdfe098ffec8617584a4f8b"
+                      "sha256":  "a0f6d3c169d7dc282b3cdc3e9db440334e39f7f9ee6267f19e344da4e3e82bdf"
                   },
                   {
                       "path":  "knowledge/expressions-and-drivers.md",
@@ -387,6 +387,10 @@
                   {
                       "path":  "knowledge/internal-camera-template.md",
                       "sha256":  "6f1cd37a72e9d4bb36be36eabbac4bef42fc4869badfa57b43d257f5faebbcc6"
+                  },
+                  {
+                      "path":  "knowledge/laser-mapping.md",
+                      "sha256":  "548c26eed95d68fa522d24b93627261e6607c43cf8a9a268e9ae0b173005b857"
                   },
                   {
                       "path":  "knowledge/mesh-import.md",
@@ -1745,6 +1749,330 @@
                       "sha256":  "7722881f97a7a9acfe07ac12d720a00f9e71d934d89325a11b29d352a4f10397"
                   },
                   {
+                      "path":  "projects/laser_mapping_lab/docs/alignment_grid_source.sha256",
+                      "sha256":  "0288695662fcd69fedc1839577fc57b0df4285627f972dd42a96e88bc813a0c1"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/docs/blink_laser_source.sha256",
+                      "sha256":  "ecc360a47c37cbf4a0b02d399349576596b29cafc29b94b591a6ef55984a2b6c"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/docs/laser_stage_mapping_source.sha256",
+                      "sha256":  "a78fed5e9d5714a5b6b53aae647a0fc4fb922ca805b24d05b849b408ddaba1f6"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/laser_mapping_lab.sentinel",
+                      "sha256":  "eae108af0373ad2b60c4e32293e179655fa51d1bcc726cbac3ea6b74eb8abb1b"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/_shared/fonts/scientifica_ascii.hlsli",
+                      "sha256":  "705519a790a8a1341a1b7cf508bd33035fd67b133b5651dd680072261c66df78"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "5fe3133335d5a3a32865f2b5cc133ed092c12aa65fcde525b68045e14312cd61"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/_shared/laser_text.hlsli",
+                      "sha256":  "1752e1c562dcebb80bc83472f739c8389197f0de9d03ab45eb65c2f596fce0c2"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/_shared/scan.hlsli",
+                      "sha256":  "6d6f90bf79d55ec9937a2164d27f86c38d3bfac1616d8c296e0ec0092251ea40"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/analyze.hlsli",
+                      "sha256":  "9bd4eed7e9dcc82c5b165183422f8cd8f960d8f516825110412f69662c7734b7"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/analyze0.hlsl",
+                      "sha256":  "aadc77cffc66905de21acda70d787745d810dc49c574c8493cf5aaebee74e4fb"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/budget.hlsl",
+                      "sha256":  "d5eeb63d098dc3b3afce022ea4eaed4a8d945f7befdd53c2e201d90ea3fe3cd8"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/budget0.hlsl",
+                      "sha256":  "4cddadc5e690c1c5d3fba2a585bc4b653a4de15f7d0e11bbd022c09cf515e9fb"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/count.hlsli",
+                      "sha256":  "bea5f7f3208399268d2a8ea1905281d67338ac9164c0f157c99526bd628bd1f5"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/count0.hlsl",
+                      "sha256":  "652e2c034105a761fbd2bc951d5a4ec7d3fb4c16bdc7c214c4577754be8f38ea"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/draw.hlsl",
+                      "sha256":  "58a1c4d6cdd1a20d6a4b3c231c0c27d3a793a06bd25028fa6dffa2a94c991249"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/emit.hlsli",
+                      "sha256":  "a6165048d06fb09a0412aa853b2710cb950c4402ce3f94a61ff3dfac242807be"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/emit0.hlsl",
+                      "sha256":  "3672565444398c33408f8ae60315727f21b57c1db3f14dab71919b8096ad45a7"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/finalize.hlsl",
+                      "sha256":  "db3b91938e71ec1f70d6ec01c8f567d849085e6fada1d20d577a94a6f25d9774"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/geometry.hlsli",
+                      "sha256":  "ea519a67ed2c1645799cf9c049dcd14c27164bdb1a79e1e74c7613a5f0c23a15"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/manifest.yaml",
+                      "sha256":  "c27c3f908229b49c0d15c4452260dfccc2070f209a59da140744a2012fb51e74"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/preview.hlsl",
+                      "sha256":  "93391893880b64312df4b299ce1e94216cca3e99f36f6cad3f834b2e2f9a0537"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/quad.hlsli",
+                      "sha256":  "0b0a4dce649176cf912a2baa4ba63496da0833c9204c440539c84636ecbd56d3"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Adaptive_Mapping/stats.hlsl",
+                      "sha256":  "2ec54a22849296df03113da5789b25ffd2325715f9b3e54118876c70b6ab419e"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Alignment_Grid/f_marker.hlsli",
+                      "sha256":  "077560aaafde6fe5742b3efa507e57327d444b1aebef6152b9bb3cf8b3864896"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Alignment_Grid/grid.hlsl",
+                      "sha256":  "1982c39730ed0f7becf44721ed2b185c62ff282e4b907167e5cb59f579393434"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Alignment_Grid/manifest.yaml",
+                      "sha256":  "ff4fbf8d47918a8c3d09230724687a528a12704acc7ed0b1eecdba09026a9676"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Alignment_Grid/pixels.hlsl",
+                      "sha256":  "59ba1545dd5bef068d1e4228cf724df2867389bec124cf0c41391aac2b446cd0"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Alignment_Grid/sweep.hlsli",
+                      "sha256":  "82a94183d2334f3a7b20b4b10db61fab212f3c88c861b752ac9d4b59478219f0"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Fixture/curve.hlsli",
+                      "sha256":  "f38473edf7103c1ffbbb5f0bbd07b66e5326122f00dc73ab08fa7800dc7d3032"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Fixture/curve_map.hlsl",
+                      "sha256":  "75abee8ea3e7bc52644988a224ffdd7ad51e5ab9e32ca5c72617c87432ff349c"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Fixture/fixtures.hlsl",
+                      "sha256":  "01b70bdf7c0cacf4202f6e06565cc76ab9bfea855d226b8288b469c8d17f9681"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Fixture/manifest.yaml",
+                      "sha256":  "1e60b6ca2cb320ad1f7d2b90576c5dc66bd722009c10379e21ef3940ed5218df"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Fixture/pose.hlsli",
+                      "sha256":  "8549df6f32921de95e6ac678f2659af6de1f6ad1f98ea66f973c847928be9a81"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Fixture/preview.hlsl",
+                      "sha256":  "d67b6f36abed65005033813458b9975d0d1676e388674b463cbc7a25be49f31a"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Fixture/project.hlsl",
+                      "sha256":  "4c0b524b580e2bd21436fac62cab515ca8a9f9295393e9eaebe79485ec43ee86"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Fixture/snapshot.hlsl",
+                      "sha256":  "908ac9386265a3dd9c5868527b512f5b0023bb8cd8ff3c94f6fa08d4f5b3b735"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Fixture/stream.hlsli",
+                      "sha256":  "467c79a7b09e94d50824b781cdddbcb52937e2ba6e754e139a15b82b12ed97b1"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/bloom_down.hlsl",
+                      "sha256":  "74e709779b6e6523b86adb6ff69bd0e1e5c2cdfd880a869f90958f15dbd0f97b"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/bloom_up.hlsl",
+                      "sha256":  "2d7b1556a35d289cd460465bd8847a434d8cc451491d393e6a9b1708096df361"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/bounds.hlsli",
+                      "sha256":  "f763b8de653f14f1b5c127b1a542f6e1c2f4f39104921149dcdbecb81683b452"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/bounds_a.hlsl",
+                      "sha256":  "2b9fe53034511993e7a4926ab21f5783fb65a7bf37880aa8ae5d597121329c47"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/finish.hlsl",
+                      "sha256":  "5cca3b5f51907330b33efddc2ee6292b4aeb73a7fc293faf81e385e029d0212d"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/fixture.hlsl",
+                      "sha256":  "f34b7bbc19005f6c50908a5bb24542bb1dd1508cb9876c3bb835c99ea0c45b85"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/fixture_loop.hlsli",
+                      "sha256":  "cd8799b83231e5e6ad536f0a007bedd16f618d5008495de44445a36c54613aad"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/fog_clock.hlsl",
+                      "sha256":  "47f8d38c08f5f27b8bac9f4a636024b36aff309830956807066ff0a2b879192d"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/laser_air.hlsli",
+                      "sha256":  "86e5d034d26c262787b4358245aeaa9ffca744c56d700fc8b13790ce95bb2f1a"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/laser_scan.hlsli",
+                      "sha256":  "6d46c64489c2297b1e68d1334bae9972b581d53f1911b0da116dd4414b64e6f4"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/manifest.yaml",
+                      "sha256":  "de6b55a97ce3a348ae22d08efd76c01b6cd1d44d78cafe7aca69731232627d1c"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/previs.hlsl",
+                      "sha256":  "1298025b70ad23183aad69141eeed9af43be6d99f1660913dae018929e7cc244"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/raw10.hlsli",
+                      "sha256":  "418244d68afb49729d99e7146c29b7ba4ced54efcb11845c9b84a28aec84571f"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/raw10_parts.hlsli",
+                      "sha256":  "3e18bf777f952d224fa6aa1c61398450db4b3d616d97cc6ec3bb74c837ffd434"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/site.hlsli",
+                      "sha256":  "86b18d36d50b31d8d86aa7d2c16003a4e39661de777a66fb946dd1932edb343d"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/streak_seed.hlsl",
+                      "sha256":  "c8a43d7823c7f32f47fbc876fae9f35a87dcbe62f37369859116e4c244468b9f"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/streaks.hlsl",
+                      "sha256":  "2d4863df503f49d647a780df9a1534df60d9a559ece82af3782d0d4adcc899a1"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Previs/tiles.hlsl",
+                      "sha256":  "4c11ab6bf794e283347677beba1b3f529d12c3e20213f52a73121616cff13cb3"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Test_Shapes/manifest.yaml",
+                      "sha256":  "aed303fd641520edcc554c7fc48b7cf4d3229c0927d787cd773f741a508fd345"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Test_Shapes/preview.hlsl",
+                      "sha256":  "742c403a8abd18d54ff7fc703a322bd104147b40857d671fe12eb470b615f9f0"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Test_Shapes/shapes.hlsl",
+                      "sha256":  "7a7edc100bfe1654c08719b2e343d430651fcf21849ee90e570970acbb368487"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Laser_Test_Shapes/word_font.hlsli",
+                      "sha256":  "175edbaf94bb665cf4e2dc8745d4041358f4343b570a30a61bb746c6f6ff01bc"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/canvas.hlsl",
+                      "sha256":  "c34851127298d303b157c614f2ecb6bb056c5e7bd3dfc568a8595937a4551aa0"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/canvas_view.hlsli",
+                      "sha256":  "1cc824d96e7fc6391672e7735c6aea05edb236b097ceb6d166f63a19c4f590c6"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/compile_map.hlsl",
+                      "sha256":  "3d756c493ea6426d32c4655a0f8e08c7755082150021b31c1c8009929788d5ea"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/editor.hlsl",
+                      "sha256":  "af1e8550750576ea5084d421e6bf63df33d77f718ff47d68c068b29a92414ac2"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/gridpts.hlsl",
+                      "sha256":  "a85baf1be6efb4d8c89d3f9998780eefa21f269bc9011cdc34dae79a079c29a7"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/manifest.yaml",
+                      "sha256":  "8842b05749bedabc4cbb056b6799126dfff6567c66e0aa5fcc62605d9df7e18e"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/mapping.hlsli",
+                      "sha256":  "3b41c5cf933e228b4e428815b9099a535f39f832c556907c17366cfadeace7c6"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/mask_labels.hlsli",
+                      "sha256":  "5d55b44c7ea163c06a112f216fed4ad065ce886df4e79d0676f257a001b60399"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/mask_update.hlsl",
+                      "sha256":  "a7da0e3d2d4cb42b1cceadb26efea38bbb83eb2f98223efdcdd0dd26b375b952"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/masks.hlsli",
+                      "sha256":  "51eda6d98b5d5ad3d6ba067f5ae04ec4ac9401085db2eb944874d52f0b089806"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/quad.hlsli",
+                      "sha256":  "0b0a4dce649176cf912a2baa4ba63496da0833c9204c440539c84636ecbd56d3"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Mapping_Editor/update.hlsl",
+                      "sha256":  "f6e5de1f4b2466211472fc27ea598738378a73047b9dd6eb69f455268d3e511e"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Trace_Canvas/canvas.hlsli",
+                      "sha256":  "ef96e6d2644f82b923a79e72f41c6a66d149fd66f43ebffe347ce19fe2655e00"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Trace_Canvas/manifest.yaml",
+                      "sha256":  "04d23edea19511a2a3a73bc89fad7a52ace0c72b0dc707de5335e03cf1901802"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/modules/Trace_Canvas/projection.hlsl",
+                      "sha256":  "c1c2ec86f5d24392f759b9c17384462538f6cfcea8bec3a90264197d44872ee9"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/README.md",
+                      "sha256":  "6b72bf5902fc89949ba6160a61c7311153ac8dd932aece814b8caef25cff5184"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/scripts/clock_check.py",
+                      "sha256":  "6ad99432d6b75d235acffc067eae957223b419ad6fe65171bd2ff26d3f6d5e2b"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/scripts/galvo_model.py",
+                      "sha256":  "918166b76515a22004537f4df115a165fd4d9e5ac11a8cc03552b0cbf383e465"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/scripts/laser_frames.py",
+                      "sha256":  "85bd86728d89fe298e8f73d8e5ecef28d01d712f6ba15a0fbb8ec92a22449745"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/scripts/lm_mcp.py",
+                      "sha256":  "fa8cc357660a96c73bf21018fc5d9881d9b37e0b58e06325c23292097b5d1f19"
+                  },
+                  {
+                      "path":  "projects/laser_mapping_lab/scripts/mask_check.py",
+                      "sha256":  "2e6f1828590d6dc24bc7511d29dbc9e961cf0bf5f6f8f6f5976268db0236c8c4"
+                  },
+                  {
                       "path":  "projects/living_room_sdf/living_room_sdf.sentinel",
                       "sha256":  "4d7a250741339cf6b84fba4aeee1c526f18e0fd17907041e8611b1d091648df9"
                   },
@@ -3082,7 +3410,7 @@
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/pages/global.luau",
-                      "sha256":  "9c3c9253dbc152da403ce12de5f2893dc091c77f3eae15c4709347646603647b"
+                      "sha256":  "3984cf5e6b036e95004aa78541e38ebe80e0aa2592be47b2db6d67c4348d6e47"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/pages/rig_static.luau",
@@ -3094,7 +3422,7 @@
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/Phage_Surface.luau",
-                      "sha256":  "69d06ae94a4fdb98674783f53dc5dc6eaf48bfeb19e80fcdb2ff7ee9ef96337c"
+                      "sha256":  "cea9005177f3ede8a61dc8f3af791ee05dc15b8e346596e3e421cd5fbf48a897"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/push2os-provenance.json",
@@ -3106,39 +3434,39 @@
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/attribute_catalog.luau",
-                      "sha256":  "6e0bc4504ffb45b51b8bcc8b62e5971d07043ceeac5df1fa1e86d4f9c505384f"
+                      "sha256":  "d13d26a91b0e920726371123300f13bd507022d7cd4f3f9bb68ed85fcebe4df8"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/attribute_editor.luau",
-                      "sha256":  "9c3bb3e9ffb386bb994cc8ca63441e9339a27b0888fc866ef86b84e9c2410b9e"
+                      "sha256":  "995f16dbef220c77d3930eeda47d5ecbc47b5aed6fa283b557ac51099fbeff9d"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/camera_orbit.luau",
-                      "sha256":  "5888982880d58390cc5641d24f34f6986f1f3ab1432e8f90d4e267522e550c84"
+                      "sha256":  "f2c1058215890cc287591b622c238ddf4c3056109a905ed782d86bfd4ca08d1a"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/desk.luau",
-                      "sha256":  "bbe970a6add81356c77833df3112078eacede04b9b363e472ce4b990c52db6b6"
+                      "sha256":  "4a2cac1d50c75a6dfeff35a9c214476d6138b001e296b35653a2e3ab0f01c80c"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/desk_layout.luau",
-                      "sha256":  "9040ed7852dbc32f785b6b857779ccff7ee2a96c7e889a989fe4620749d235f5"
+                      "sha256":  "9e94a7215acbf9b5456ebfe95cc26bf1fa97c94fe57c2a95e2a580baf42722e0"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/desk_panel.luau",
-                      "sha256":  "1f4caf4dcbf96e7948d310ffe17a72587bbbd04ffbdc6b65d691906bad3dcc39"
+                      "sha256":  "aad2fe6a923a79d0cf48447993a045f91001681fd45b33869275f87763c585a9"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/fixture_catalog.luau",
-                      "sha256":  "d0dfe948d97a080f13ccf58a54ba35e2f9ccc8996791228cbcc78823cd47128e"
+                      "sha256":  "a1f5969bd6292af288f9344cba2fa95eb800747cc62ab6e3b35f6d010543afd8"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/look_store.luau",
-                      "sha256":  "4f0b57bada20f9cc3b88027e31cd0c6f02eda78c0e2919fb327200f3139248f4"
+                      "sha256":  "01d1f20da726b6f84bb2e0715f58ff95dfa95ed3d2470dd819d2aee32333ab92"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/native_rig_ui.luau",
-                      "sha256":  "9e6b47ba1e4496ae138007bb8fab22b6cd36771f57e7a9ad1651486cfb387678"
+                      "sha256":  "c067023c2505a94daa586a3170a4843a9fb930a58b1eb455da75db9a503419b1"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/native_state.luau",
@@ -3150,23 +3478,23 @@
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/preset_titles.luau",
-                      "sha256":  "81019ba85e27817d0c0160aa3af837ce3d2cae39e3e60a0a6d15cba1949a8ec0"
+                      "sha256":  "0d3b48c4557b94877072902722ca16aec01988b0ff9c4e9a46f5595b26b4de2f"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/programmer_surface.luau",
-                      "sha256":  "392b822b7f44575e22d4a615c724ffdb1ab6d9e6fa2b710859b7f86665903f66"
+                      "sha256":  "901ae12e27f847a54b2090cbecfc327812327523b7ffeba880b1050a3d682788"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/registry.luau",
-                      "sha256":  "4b14f5d9308477788e8521e5b9f12b47f1e38fda18d0b81319116c48b7309175"
+                      "sha256":  "46970e743911b870d96e47204df3a059340a030052dfeebfce0168b94780b445"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/rhythm.luau",
-                      "sha256":  "694dc619e5b8403b3915cd2c59094446e8c6f8fe9c3d0171ca210f4728dfb565"
+                      "sha256":  "a643ece00e6987e04444c5152bb69bc231ef653c905da08f60187b32db71a66e"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/rig_bridge.luau",
-                      "sha256":  "2867ff00fc77a5f30511ac8535cacc14244f6fc42e6bac477007d5677ced4785"
+                      "sha256":  "35451f929c0d5e554e816c56368886132c68c3fa690b3dbedef697181acd338a"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/rig_codec.luau",
@@ -3174,11 +3502,11 @@
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/rig_commands.luau",
-                      "sha256":  "abcd650b0340c513a8be42fe340291a52063cf359813d1c13de35f14a8b7b502"
+                      "sha256":  "5026618fc3935b10f80e8ad5cb06de0434903bf89247825023500f9064573f52"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/rig_menus.luau",
-                      "sha256":  "903a494e511f6c4dea06af769c60655a595f2193db4e59e1b79b27717a81af25"
+                      "sha256":  "e1424ba2653b098817608e63579c9b0d03755ceefc7a355fc41c4f0c2b5125bb"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/rig_windows.luau",
@@ -3186,7 +3514,7 @@
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/selection_view.luau",
-                      "sha256":  "4092783c0b99d9a5afe8e336a0230b976a766bba651f26966af416daaa1d71e1"
+                      "sha256":  "da7ae27f390eb4d1f27290c10cd84757ca6497cacfdd8a684032d15f56eaf230"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/sequence_grid.luau",
@@ -3210,15 +3538,15 @@
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/side_fx.luau",
-                      "sha256":  "d903936466b73b2e1c6d0c3b7db73480fb78696e6cce1021c1e79e8028598cb5"
+                      "sha256":  "703602b825f1eda59c5abcfcfc310e34d678899464e9759ad6043c297b8d9767"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/static_rig.luau",
-                      "sha256":  "0c53a10892d7b6444c8caacdf57567dc63aabbfe2b483dad3e8ec9e5c648c18a"
+                      "sha256":  "c034559b8aeba8784dcf2f64d000435106f1d8f7381f5a98148a8907975af162"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/surface.luau",
-                      "sha256":  "c757fd8be2f5e9867283c14387c0ed3d093cb195c5c0198400c80ef98b0f3f04"
+                      "sha256":  "7e6d482797e5a8944b3316a32fc92ef72b5eb4645a4a748c5472360fe2455c7f"
                   },
                   {
                       "path":  "projects/stagerig_phage/scripts/show/transport_keys.luau",
@@ -4038,7 +4366,7 @@
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "16851c6f948ef657b77c606ab9dcde1592c3ec509164ce3af34526f47439af27"
+                      "sha256":  "c1d5413509a26ca0218b457670c26ad610e250eabbe06c517f41d2d524d61f5c"
                   },
                   {
                       "path":  "tools/module-ui.ps1",
@@ -9908,5 +10236,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "cc80d6ff5b41b7d52384d6a65c704795098db06b"
+    "source_commit":  "0adc70b893fd83f7df05c2211c68938872e9bc6e"
 }
