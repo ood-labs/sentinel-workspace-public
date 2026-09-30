@@ -137,6 +137,14 @@
                       "sha256":  "86ff3d15161cf0d6ad55f4bbf3c7509206297fe2fccfaf36264eafa38982facb"
                   },
                   {
+                      "path":  ".agents/skills/stage-rig-authoring/agents/openai.yaml",
+                      "sha256":  "9db19787c6e0cd588e41ca5f755312209f05caec97f95536dc657365f38d54f8"
+                  },
+                  {
+                      "path":  ".agents/skills/stage-rig-authoring/SKILL.md",
+                      "sha256":  "bf9c6a99a20f6df8dcd1eac87c53fbdadaa62759ba77bf364f4f92bdee0bc77f"
+                  },
+                  {
                       "path":  ".agents/skills/update-workspace/SKILL.md",
                       "sha256":  "dbb0c24e3f79d26dcd16fe25a80d86351130c4c800719df5340974a4bb253440"
                   },
@@ -277,12 +285,20 @@
                       "sha256":  "86ff3d15161cf0d6ad55f4bbf3c7509206297fe2fccfaf36264eafa38982facb"
                   },
                   {
+                      "path":  ".claude/skills/stage-rig-authoring/agents/openai.yaml",
+                      "sha256":  "9db19787c6e0cd588e41ca5f755312209f05caec97f95536dc657365f38d54f8"
+                  },
+                  {
+                      "path":  ".claude/skills/stage-rig-authoring/SKILL.md",
+                      "sha256":  "bf9c6a99a20f6df8dcd1eac87c53fbdadaa62759ba77bf364f4f92bdee0bc77f"
+                  },
+                  {
                       "path":  ".claude/skills/update-workspace/SKILL.md",
                       "sha256":  "dbb0c24e3f79d26dcd16fe25a80d86351130c4c800719df5340974a4bb253440"
                   },
                   {
                       "path":  ".gitignore",
-                      "sha256":  "a41ff08bb3bf2164a20cc2ff9ce21e9a4a79404f3d6448e4f3155d2b19da65e5"
+                      "sha256":  "f593997939bf92260dea458b10d28a15da269eeacea0a5a6704645e78bb65498"
                   },
                   {
                       "path":  ".mcp.json",
@@ -294,11 +310,11 @@
                   },
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "d5f5945e23c63bede8d531fd719f7a7947a0e27e62efe16e9ddeaf56feead332"
+                      "sha256":  "ca8d28e4d9e3205c4a39a269721b2a1d980d03df9c073ac334c54f224732af38"
                   },
                   {
                       "path":  "CLAUDE.md",
-                      "sha256":  "d5f5945e23c63bede8d531fd719f7a7947a0e27e62efe16e9ddeaf56feead332"
+                      "sha256":  "ca8d28e4d9e3205c4a39a269721b2a1d980d03df9c073ac334c54f224732af38"
                   },
                   {
                       "path":  "examples/blueprints/living_room_architecture.solved.json",
@@ -322,7 +338,7 @@
                   },
                   {
                       "path":  "GEMINI.md",
-                      "sha256":  "d5f5945e23c63bede8d531fd719f7a7947a0e27e62efe16e9ddeaf56feead332"
+                      "sha256":  "ca8d28e4d9e3205c4a39a269721b2a1d980d03df9c073ac334c54f224732af38"
                   },
                   {
                       "path":  "knowledge/audio-reactivity.md",
@@ -338,7 +354,7 @@
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
-                      "sha256":  "05d771cf71619e5385f04457c61dcb307ca672cb6065281a8e14b035db2ebd80"
+                      "sha256":  "3beabc9f3c12cbc9ef3e27c20fe7ef4f5d87e0818cdfe098ffec8617584a4f8b"
                   },
                   {
                       "path":  "knowledge/expressions-and-drivers.md",
@@ -2593,6 +2609,798 @@
                       "sha256":  "01a05b996030d991cdc61862b0fd2880303cadc83d8402f02aa61d3d6c660eb1"
                   },
                   {
+                      "path":  "projects/stagerig_phage/docs/LOOKS.md",
+                      "sha256":  "2bc73b1c21240df3bfd674e6a0a48878f5f63a214a1b74ffa8ceb7c7815fa6e4"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/docs/PROCESS.md",
+                      "sha256":  "a5076679bd978cf897d3b62586c757fee484d8abc5606873c01c62ff7f2d0ac1"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/docs/PROGRAMMING.md",
+                      "sha256":  "211229f6502a97f9556441ed17059b1af67995f23a9eb6b34f17b3a08b7bb259"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/fonts/scientifica_ascii.hlsli",
+                      "sha256":  "705519a790a8a1341a1b7cf508bd33035fd67b133b5651dd680072261c66df78"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/fonts/SCIENTIFICA_LICENSE.txt",
+                      "sha256":  "5fe3133335d5a3a32865f2b5cc133ed092c12aa65fcde525b68045e14312cd61"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/ph_marks.hlsli",
+                      "sha256":  "52a378a652acb261aa67e90b9a395741e5d538cc6e426798a606caab4ec72e12"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/ph_textq.hlsli",
+                      "sha256":  "7244e1a33f2660f8a599d24cf9e66d2a069a4e9c797c0295da0e282e20fcfbce"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/phage_anatomy.hlsli",
+                      "sha256":  "3e2d9db19f6cdbd14e34850adcebc6d3efac8e218f8e5d4df8c870240312b553"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/phage_fixture.hlsli",
+                      "sha256":  "e63e13a68046369338e51af6170ebaeecca9888b0d0eb542f69dc6993f83f0bf"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/phage_show.hlsli",
+                      "sha256":  "10e569128bf3cf1d7311532cc128204c4118032b3c0c0d05a889be48ef198a49"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/phage_slots.hlsli",
+                      "sha256":  "757f7109c171138754e47ab6753ce4132f6c48f406cbfc7b2d94838dc0eaeb5b"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/phage_venue.hlsli",
+                      "sha256":  "4c556822f814b47e9a19dacd04cd719f83e7c81c7b582b2840f35d13ef6bfc10"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/plan_theme.hlsli",
+                      "sha256":  "9385708892f8d58e7e8bd3aaa9ffcaca7c74687e3ab636a7c824140b85d3cff6"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/room_materials.hlsli",
+                      "sha256":  "5d38f268150e6a15c551dfb09772f8ddab8547fd04e88e997ca269eed552b591"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/ui/show_controls.hlsli",
+                      "sha256":  "bd42ce0429b009f03f8238916c8a83cc87367262e7f2d131a7566d32b21265a3"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/ui/sui3_core.hlsli",
+                      "sha256":  "001de490dab0ca3e75f65ad9983356828c2b404ee5220d93ca32ab936e1a0e0a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/_shared/ui/sui3_text.hlsli",
+                      "sha256":  "abee4e829b94aaf0e90b561b9dfdbf013397e66fafd85084dc7e7b8349956604"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Assembly/assembly.hlsli",
+                      "sha256":  "f832438ef81e515b0bcf5b0ef2bce79db574044b408961ab37b616c1d77d2786"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Assembly/assembly_types.hlsli",
+                      "sha256":  "8b8131f82f8068878316acbd4a0fbc8b874da641f34db2511bb67c45d63a9352"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Assembly/axo.hlsli",
+                      "sha256":  "c88955577df74069cde5bb466af87e6876e527eaf14dd8dbbf3a0a4cc9a0a817"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Assembly/bins.hlsl",
+                      "sha256":  "dd4f7ca0e1607a38c6b40422417cf1b5c0e8307ac2d026a5afd536a6ed883ed2"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Assembly/labels.hlsli",
+                      "sha256":  "396520142eff158491e39bd8dd8d5baafe1c0abfb908fbd7658529b19c6a9f3f"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Assembly/manifest.yaml",
+                      "sha256":  "13a4ac1ca4be7cfe57565d707fd96f1ad18edf2e11f56fbd64e6b3478e449549"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Assembly/marks.hlsl",
+                      "sha256":  "89db23382532e79c38cab8f1fd57bc9feaaa42fd0602a07d50c595baed7c4224"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Assembly/preview.hlsl",
+                      "sha256":  "7e2da2ab089bf96fc3a7fca85d93ad0ced55cac0d89587550cebd4c17f575bcc"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Assembly/structure.hlsl",
+                      "sha256":  "c52bbfa95d65704437871e015d834db22083aacd20ccd382a0553f402ede3a60"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Desk/_ui.generated.hlsli",
+                      "sha256":  "1b02154a08573968886b966f914e85d8c6555174146d9b75df9273385d591ffb"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Desk/desk_layout.hlsli",
+                      "sha256":  "4404cad96b31d419020636953d7a8df307de632d6610e9853672e305e5becc36"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Desk/manifest.yaml",
+                      "sha256":  "cc8638069522862377a59c5655b4e80732dc2f0883637854b89e50d3a4693b97"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Desk/render.hlsl",
+                      "sha256":  "1178e2a9c4f5e249001ac5fd7f7a5cc35427147edc8e1c4333365bf862a7a05a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/axes.hlsl",
+                      "sha256":  "be4a694d57f062916fb5d48825506b1ad79ecba0b2c0a23ab8f5988499bc647c"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/bins.hlsl",
+                      "sha256":  "f2970caf53b62b0b93b4339fb2130e9500a417ad24ec8a522c12827cace0f285"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/kin_common.hlsli",
+                      "sha256":  "04d157a9c528616e876af69fe2b20c9e7973055bcbe6b7ef5ff8f5544f79a502"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/kin_view.hlsli",
+                      "sha256":  "c41e4071e510a478f8b5a7abf66eae45d48c00e7dbf0ff6ec87d2ee921bcdecc"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/labels.hlsli",
+                      "sha256":  "6e6f41b8c4748365daef38c610d0071777ca13ed38c9310565323397a6556b4f"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/manifest.yaml",
+                      "sha256":  "bebd020be02dd53c240a11965c288632039db2e0c18bd9882f1260ad7a066bf0"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/marks.hlsl",
+                      "sha256":  "9dc0c842489a7dd662ca864e5553b09d5c70420bd21c87c7a596485f11a4842e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/members.hlsl",
+                      "sha256":  "917833a91fd71c6b375c59c94490862608e762e66202b920eee9f34eb799382e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/mounts.hlsl",
+                      "sha256":  "cc07a866e16b47b4439ead026a9ffa7f7071f6a1f64e3fea07c5953eb774050f"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/pieces.hlsl",
+                      "sha256":  "9c091dd9e8108c89e2055c658de8eeeab75c275d23b4fdfd1c2b639a39e6ab09"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Kinetics/preview.hlsl",
+                      "sha256":  "7774bc0879d5ab721f6ab3a6eb23375bc66b7a27ea6da267a1f7a1160917e55b"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_LED/labels.hlsli",
+                      "sha256":  "f47332f4c43e761afaee1307945b14901e4d94d9599d145113dd6fefe44cef4a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_LED/led_patterns.hlsli",
+                      "sha256":  "0632b8e148dc0da9e03700181f78a88e6033aa974a7cf250557a1e1dc4ec7897"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_LED/manifest.yaml",
+                      "sha256":  "49a0f624f15a79b736796409edf4ac71ceea477b32e631c807ea049464d91797"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_LED/monitor.hlsl",
+                      "sha256":  "baf75e903c053c8561efb368ceb0e47d724d122a7cd8f8ca99257b003fb6e1d6"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_LED/pixels.hlsl",
+                      "sha256":  "79615556728b8d5f79ebecc6dccf23d210afce803009efd0863d00d9034c048c"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/bins.hlsl",
+                      "sha256":  "cb5a07c3d1b96ec6d8fbe96d18170184dd88c750413d51ae5a2dc420e47d5f63"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/groups.hlsl",
+                      "sha256":  "da9088a738cd5792439d7a829010007b8ddd4182452355484de0ea845889c6f2"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/labels.hlsli",
+                      "sha256":  "7e5642c9d8d64455a27a37c5b5a56df72858c58c7697de5bf2f2dd788ed3b8d5"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/lighting.hlsli",
+                      "sha256":  "689a12bc2d5d771aa7d77432954d9d949e2ef630af20715b35b67ffccd17b165"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/manifest.yaml",
+                      "sha256":  "bc6de39a1704690227ea1b9a35055b434a5b508876872bf50a1a7ba566867ab6"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/marks.hlsl",
+                      "sha256":  "00131a6ecab1a425de211f8840293401815dd828375a78693feb1983602f8c3d"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/motors.hlsl",
+                      "sha256":  "06cd3d8467059c72636a2b06478194fed5758c7aecbc01351ce08458a85aefb8"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/optics.hlsl",
+                      "sha256":  "20930392c125021d40be0c5fe93bced40658d03d51623c6e59da1035559b777a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/preview.hlsl",
+                      "sha256":  "2979c870978c60f07137e584f721c4132fe8389f3ae34a60d9d61b7ef7911ee4"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Lighting/select.hlsl",
+                      "sha256":  "d03be961bd88e04127a019daee8c5fc488ee5e4974d05b0dedc614e2ff803b22"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/bins.hlsl",
+                      "sha256":  "6af7abe762ec1916d3284409a9724c9ab4072c3f98c87ef1501041b20e986692"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/design.hlsl",
+                      "sha256":  "6481eb5f0f98c013d9875dbbe56e6a18fe65d89f5534d35aae247f8bf44f74a7"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/labels.hlsli",
+                      "sha256":  "1642a844289a9eab09b4e0bcf05fff118662619b7af92170945f0a512ac01df0"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/layout.hlsli",
+                      "sha256":  "a1c74a1212a3f5386dec492a16628da81469ff109e35d4ef28f0faaba4d32bc8"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/manifest.yaml",
+                      "sha256":  "16318b280446c3c983c3ec380f996cee14acffc874139e9d05b06666e87e7472"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/marks.hlsl",
+                      "sha256":  "1835eee51bd0c903e16780f83d80cf71e1f4c128c8b27b1a7a0cc90d4719420a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/plan_design.hlsli",
+                      "sha256":  "36e3c1c87d2cead22774a9dcd344b8a0ade7e5dbe8e900b294e1273cac2fd156"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/plan_marks.hlsli",
+                      "sha256":  "a90005887790842b67602d79a6e7dc0839ffd57ada0a2a76b80913ad6e1b0911"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/preview.hlsl",
+                      "sha256":  "5c31717e0414e6da3a17a62537ac1273672f2a9f410f93adc8907795fb49909a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/rest_mounts.hlsl",
+                      "sha256":  "9c153c5d46eefcc6944150818c479dc6505188c8e6f23aa6ae62f0044913866e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/rest_pieces.hlsl",
+                      "sha256":  "fc09c9d8bd385f19dd01121d69408e68e041b3c3a388c5235d9ea9d67761f734"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Plan/state.hlsl",
+                      "sha256":  "a7930c8b83ed65afc509a343cdec7ec71e7edca66e339c373e79e4800f9c7313"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Program/labels.hlsli",
+                      "sha256":  "97f166049919aa76d33d375f0f532804ecc2ed637351754cab9df5db30f8e441"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Program/manifest.yaml",
+                      "sha256":  "c355489e28583b4447196328501e7f9a6b37ec1f88fb51821f677d7c0f91dd67"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Program/preview.hlsl",
+                      "sha256":  "32330aef637165d406cd3f03c9230ca1ad4e54962f550286fbf13d4ccf162b59"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Program/program.hlsl",
+                      "sha256":  "be5b9d21e77038bf0fe87b15b5e2ccf20f891e0069431d53015740eddc6fb0c2"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/bloom_down.hlsl",
+                      "sha256":  "199cc9d2d9a1722a6c0f0307096796900c752f76e4036fe429d501f418f4884a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/bloom_up.hlsl",
+                      "sha256":  "b405bb7a5ef18920ae183d2d1a5ee3338a10b995f5b5d4c76c0e646ccb78a54d"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/crowd.hlsl",
+                      "sha256":  "75072887968c977dab95b55ab748afbbb1fc2d1182007af09234c299fc3dde00"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/emitters.hlsl",
+                      "sha256":  "18abe9700f80356852dedad5df321b0d15cbee0361fef11234910ac0616b1be5"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/floor_reflections.hlsl",
+                      "sha256":  "d55e095915d8fba8c3e4ef7deeda67ccea70b7248f3e398466e1f8a96cb2ed9e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/hdr_scene.hlsl",
+                      "sha256":  "ff5087508d29d6d75040ef11f0f5ea52a911242db5e0ac9f0c2e2fa8eb3143c4"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/lightgrid.hlsl",
+                      "sha256":  "51c78ae5d25782f09311d7514a71fcdad65a56b44d5036c88a10ea6d3d366026"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/lightgrid.hlsli",
+                      "sha256":  "1842afbd8636b626872bb555d556cf0d2de4f238895587f126753eb6af2f41b5"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/manifest.yaml",
+                      "sha256":  "b2326e0b3ec03c415d13ea377236a9a130629e299fc1e67763e17323bcba34a8"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/movers.hlsl",
+                      "sha256":  "3fba4bdae9902765f0ba5611cc85a29da90bd6a5c70cfcf570b1aa5a2deb0431"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/nearest.hlsl",
+                      "sha256":  "5a1f54eb283a86bf4c9f1611722db904d141c2385063e5f315093bafabcf9615"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/present.hlsl",
+                      "sha256":  "5f4ab722d091d40827b99ab30a4051461983166cf645826c4d03bd2a7d10269d"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/solids.hlsl",
+                      "sha256":  "2327efc79088b3d03be8eaaccb1772a7f94e09881d4113932895e9b428a952dc"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/sources.hlsl",
+                      "sha256":  "04bd132f96647ea793bfd40b59278cd77ced8c978ab164f793c58a47e0596abb"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/streak_seed.hlsl",
+                      "sha256":  "f1e418732ed6861b2ac55df5f7da8197cfd41024e884eb36a65ac37fb20f6eb9"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/streaks.hlsl",
+                      "sha256":  "6136988ff33abbec6c3efbdcfc8d19f3860262faf32d93070ea8190c86aa9e67"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/structure.hlsl",
+                      "sha256":  "af0db0ad363a43568b94ba8b63f9f33380ff4f16cd2dfe436ba55a247e536ec0"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/surface_lights.hlsli",
+                      "sha256":  "35e794d6f7fc1c555ab5450c530b6ad2d0c0637c216c05a9d9ec0bc98c9d57db"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/venue.hlsl",
+                      "sha256":  "f4a2dd1f466565e1cd3c8cbb04deb596ce9baf508f6ea72b6c7bbce62c15cfd8"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/volume.hlsl",
+                      "sha256":  "b37e9672a72c703b75f7b07f6e5b2c43b69a881c521c7d682d7e4d6d78cf89f8"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Renderer/yoke.hlsli",
+                      "sha256":  "e29d3752b3729a396a686566c1275474bb859063ce3538d7df85c9860fe40b4a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Show/labels.hlsli",
+                      "sha256":  "e29d0d73d6e83c8223faa6b50234f4518a418ea1201667db2f0b7ddc6569ede4"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Show/manifest.yaml",
+                      "sha256":  "90ceee132936fea7c81b069a4de5ccfbf673dd5b643f1bc21fe669a1e9b9399c"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Show/preview.hlsl",
+                      "sha256":  "bc84eb880fc76924659b1d23e500d35b49e85f41e197a70b7a66df99f11773a6"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Show/state.hlsl",
+                      "sha256":  "0ad0fb10f0bb04bf9484b1aba40ac0ea4f1192354c2487812ab85eb955679f34"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/bins.hlsl",
+                      "sha256":  "cb4cb1c9012f08ef973094489ede7a134cc76744e72d8d90fb883c376d8b3431"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/build.hlsl",
+                      "sha256":  "71d168a17b555eca87bc9df7dbae3ec0f88b38fed1b2cd8ae7d45b57138ba3ae"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/crowd.hlsl",
+                      "sha256":  "ba8cd7d43d67a1da6dd5045f171f8a860bae075d349e3220e6d26c7bc11c7d33"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/emitters.hlsl",
+                      "sha256":  "e4c8280568bab916f7ea7b983680ca8dbf07977bb3385c68e93956daace3d3ae"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/labels.hlsli",
+                      "sha256":  "1d383bac1bafc946097aededd9a9b5285f80e1686e480c508f719542f86ed705"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/manifest.yaml",
+                      "sha256":  "c826f261f47f4374871c361e9188954b14ca34c9cfc45966e315af362fed0ae3"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/marks.hlsl",
+                      "sha256":  "440c1fd76508e05e31460224691951a8f960bde5063388816eb81dcf33880fbb"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/pack.hlsl",
+                      "sha256":  "d5ef67397df28dd888a6e2f65f612c0a2871112b96cb5ac670efcd8d3fbca36d"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/preview.hlsl",
+                      "sha256":  "bc72325bbb20e937d014392b2de4d3404b5faab25cb7c9d8b682d656be3da529"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/settings.hlsl",
+                      "sha256":  "353f2ba6d611effc8a046fb528181982a7fa7e6a96f9525ffcf3d7d6aa61f311"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/silhouette.hlsl",
+                      "sha256":  "de8b7fff0dc3aae97b58219e65a8b7e48b8830bbb688a5a8ff82e66ccb2f0e66"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/modules/Phage_Venue/venue_view.hlsli",
+                      "sha256":  "7eff74797024e644c5535a011d7f1ad5ecc7ec52f6519eea1293c2d3d6f23ed4"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/presets/stagerig_phage_color.json",
+                      "sha256":  "6909588f0a78cafae08ecc589314d2ff6c33ac95d2702807ea4e287ff5d06f22"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/presets/stagerig_phage_complete.json",
+                      "sha256":  "dcd4bb25b5690f6fe8fab07fba01b20014da7d7f29b873f10db0b9a059446178"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/presets/stagerig_phage_effects.json",
+                      "sha256":  "7aaa04f6858a8012d59ce4d219ae229a1781cab3f2f5e318277a35c6091123fd"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/presets/stagerig_phage_push2.json",
+                      "sha256":  "5c5fc55ecce27f6fbd05a3976c4569b571057ef0e06e279741fbf2c4a0a0fb3c"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/presets/stagerig_phage_rhythm.json",
+                      "sha256":  "ffa09972c5a378d7d75afb90a9c98a75f61b03330330dafc40deb498f622affb"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/presets/stagerig_phage_static.json",
+                      "sha256":  "5c72ce4aa59b0cf68ca86ac3f1659eba47121261755ae37d2e9135e3b9af66e4"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/README.md",
+                      "sha256":  "f16c4919e77edd2a636f66f6f896f1971b94839a8a53956187c55540b6459cf7"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/.luaurc",
+                      "sha256":  "6dd2ce91d12b18ce3ea3304f72d0d7238233528f0de749cc905d897dec6e88d6"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/pages/color.luau",
+                      "sha256":  "791aa6bd132a99a90792e351981722f074a1d86677691e474a2161d6aeaa8efc"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/pages/global.luau",
+                      "sha256":  "9c3c9253dbc152da403ce12de5f2893dc091c77f3eae15c4709347646603647b"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/pages/rig_static.luau",
+                      "sha256":  "f91da21ca3b0eee1666c307e948436d67bca0b103110ad35ad6a0ba16998079d"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/pages/sequence.luau",
+                      "sha256":  "cb5719095be367ff7bc8b9befba89fe1d7d933508db5525d46a755af0b71acc1"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/Phage_Surface.luau",
+                      "sha256":  "69d06ae94a4fdb98674783f53dc5dc6eaf48bfeb19e80fcdb2ff7ee9ef96337c"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/push2os-provenance.json",
+                      "sha256":  "dec7bcf21cbe5e9cefa0c556c18a88bd209b36a68fe5e2ab68c4d9ef4b8f2bfe"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/sentinel.d.luau",
+                      "sha256":  "86612a73fd3f13810d24a988e0b6173f4117966232f10fab6e57afe81b385d96"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/attribute_catalog.luau",
+                      "sha256":  "6e0bc4504ffb45b51b8bcc8b62e5971d07043ceeac5df1fa1e86d4f9c505384f"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/attribute_editor.luau",
+                      "sha256":  "9c3bb3e9ffb386bb994cc8ca63441e9339a27b0888fc866ef86b84e9c2410b9e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/camera_orbit.luau",
+                      "sha256":  "5888982880d58390cc5641d24f34f6986f1f3ab1432e8f90d4e267522e550c84"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/desk.luau",
+                      "sha256":  "bbe970a6add81356c77833df3112078eacede04b9b363e472ce4b990c52db6b6"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/desk_layout.luau",
+                      "sha256":  "9040ed7852dbc32f785b6b857779ccff7ee2a96c7e889a989fe4620749d235f5"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/desk_panel.luau",
+                      "sha256":  "1f4caf4dcbf96e7948d310ffe17a72587bbbd04ffbdc6b65d691906bad3dcc39"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/fixture_catalog.luau",
+                      "sha256":  "d0dfe948d97a080f13ccf58a54ba35e2f9ccc8996791228cbcc78823cd47128e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/look_store.luau",
+                      "sha256":  "4f0b57bada20f9cc3b88027e31cd0c6f02eda78c0e2919fb327200f3139248f4"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/native_rig_ui.luau",
+                      "sha256":  "9e6b47ba1e4496ae138007bb8fab22b6cd36771f57e7a9ad1651486cfb387678"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/native_state.luau",
+                      "sha256":  "0588e3bacba8c20ec9458e59b701dbe79cc091893e36bf81f3b0cecb38100ebc"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/native_tempo.luau",
+                      "sha256":  "83cbf56facb6e630dedaa9283e4bb7d1864c8ccf66867f267bff4df76f7ad983"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/preset_titles.luau",
+                      "sha256":  "81019ba85e27817d0c0160aa3af837ce3d2cae39e3e60a0a6d15cba1949a8ec0"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/programmer_surface.luau",
+                      "sha256":  "392b822b7f44575e22d4a615c724ffdb1ab6d9e6fa2b710859b7f86665903f66"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/registry.luau",
+                      "sha256":  "4b14f5d9308477788e8521e5b9f12b47f1e38fda18d0b81319116c48b7309175"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/rhythm.luau",
+                      "sha256":  "694dc619e5b8403b3915cd2c59094446e8c6f8fe9c3d0171ca210f4728dfb565"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/rig_bridge.luau",
+                      "sha256":  "2867ff00fc77a5f30511ac8535cacc14244f6fc42e6bac477007d5677ced4785"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/rig_codec.luau",
+                      "sha256":  "92ebf8b03e025611d7c08c9d3dfa5f629900c476487b4f6dd76503278979d557"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/rig_commands.luau",
+                      "sha256":  "abcd650b0340c513a8be42fe340291a52063cf359813d1c13de35f14a8b7b502"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/rig_menus.luau",
+                      "sha256":  "903a494e511f6c4dea06af769c60655a595f2193db4e59e1b79b27717a81af25"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/rig_windows.luau",
+                      "sha256":  "3b3e0c9134e087379c999b94f669e2e5343797ddf7b6cbb316a493248daf3638"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/selection_view.luau",
+                      "sha256":  "4092783c0b99d9a5afe8e336a0230b976a766bba651f26966af416daaa1d71e1"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/sequence_grid.luau",
+                      "sha256":  "6f890a857dab1b731920c6596c94efdd28bf8e68b8f9316da8965312ac02ee73"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/sequence_layout.luau",
+                      "sha256":  "77b7680d041b4ec91125f19018371769b29ba779a501ce78218b334420fa2d8f"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/sequence_model.luau",
+                      "sha256":  "fd6ffeba9a2b4964414e089a38c269c6f839e9a8c313aa526b8f51e374199f7e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/sequence_store.luau",
+                      "sha256":  "741b4af94500a085c627e72cf4ba830bc801288b1639b785e6ff4fed59b0e9f5"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/sequence_view.luau",
+                      "sha256":  "6ef04ae89a1a6d0cc56249bbd950b1d497842fa3f3bf96e4c29a7079b9e0bd24"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/side_fx.luau",
+                      "sha256":  "d903936466b73b2e1c6d0c3b7db73480fb78696e6cce1021c1e79e8028598cb5"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/static_rig.luau",
+                      "sha256":  "0c53a10892d7b6444c8caacdf57567dc63aabbfe2b483dad3e8ec9e5c648c18a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/surface.luau",
+                      "sha256":  "c757fd8be2f5e9867283c14387c0ed3d093cb195c5c0198400c80ef98b0f3f04"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/show/transport_keys.luau",
+                      "sha256":  "c2e4c8add41140b492635d5741676379df132f476d1a3e018a7da1e7dd0b2456"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/CHANGELOG.md",
+                      "sha256":  "5a67bd5a17f22e6f94a008eebb923f3576148ee16049ce2c4924a023eb0109bc"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/docs/editors.md",
+                      "sha256":  "7737eec9c8ed1759bbf004312ea4c1464e17ca2420797f561299f66370bebeb9"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/docs/installation.md",
+                      "sha256":  "2607ef972718ca865a09844521516b07c1614612ccfc3d7d27ff4991e81e5fe2"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/docs/migration.md",
+                      "sha256":  "5b09f688ecf0eff2cfbbe678dc0338d901ecc8a7a1e47ace03bb79a481a6453e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/docs/runtime.md",
+                      "sha256":  "122d9289eab0d3a68fdc4374d66e932766e94546cedc6eda55fc3026a567ff20"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/examples/composition.luau",
+                      "sha256":  "718d11cca6231b416b55084894146086da4a2f6c139de561281bac8cc601ca91"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/examples/editors.luau",
+                      "sha256":  "88c961e697c934df151281b29f6dd3468821b3f03850b38a6397b42d1c69687c"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/examples/native_competitor.luau",
+                      "sha256":  "3998fb1f60fa7195b979c3410abb4cd850f90222e9fdfeeec53fd2e92c148bae"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/examples/native_frames.luau",
+                      "sha256":  "b62ec84f6af74ac58f066b27bfec34caed42b611b759f122a15740e3449490be"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/examples/native_lifecycle.luau",
+                      "sha256":  "818ee8e737fbb14625a4ce8f1ee7bca65085a62fc24b61249e4a6c74059c310e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/examples/runtime.luau",
+                      "sha256":  "bf227f278d52ccfa18a4cbb4ce233f486146abe25f4faeb427407cc1be8715f7"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/LICENSE",
+                      "sha256":  "6e1b36a26496463a485106b7d3558f2f6b93ff1158a28221846543a7beeb7816"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/package.json",
+                      "sha256":  "589602093a38b683766815f903cdeda0b3d3bd2d8f41437b68e9ff54c27ef946"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/README.md",
+                      "sha256":  "7292339eff16c1cb5b69002a60f89b794bb47ed6ec1af55cfeb925d2926acee5"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/bands.luau",
+                      "sha256":  "63a9d08bda87c346a6c74efeaa510f53e7b084fda433e314d0122f4246ce7744"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/button_menu.luau",
+                      "sha256":  "69a85de740a9729c3c2c1b9db8279a21d0d126b5abf389640b79b64116a62003"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/column_grid.luau",
+                      "sha256":  "082479c97de0b440e7794756cd3cc867eb534684ed96b20b34d136cd78b4acad"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/conventions.luau",
+                      "sha256":  "e1d9293b39e8c180e12fd7c5839832ca68d86187b13bf614192e9b200bc97e4c"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/core.luau",
+                      "sha256":  "c723415470439775362243bfd2da5a64f4160f6ccc3698fc0e31ee4f642417c7"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/editor.luau",
+                      "sha256":  "3d9ba198ba3cdd9e8113e7286a3902f525beb117d759f411a60c20b859263e28"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/pad_desktop.luau",
+                      "sha256":  "35d2c3efff6b073bfdc29d63480f2451471092f2034b65144ec2a1e68d1ae6f7"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/pad_legacy_window.luau",
+                      "sha256":  "589a42bbd62347d07efbfb025a251ff66040dcbed35c140b786bbf71eb739e90"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/pad_window.luau",
+                      "sha256":  "db286d1b0b0f674a5a588e50e759e9c2144436a651ea6ff354d62769e8593441"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/pad_window_gesture.luau",
+                      "sha256":  "5e44f4df05deca319de9307ef2c477e50c6a58ec52445d934155b0e881cc3e06"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/pads.luau",
+                      "sha256":  "aa0b43492930a56c95ca6b5afd5b322df3cc17611f28eaaf9b1a14bf4ab2d1cc"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/params.luau",
+                      "sha256":  "b5c45e18c8b14192d9bfba22e537dfbaac1ceb87f32d0c4b8276fa35f67b52d3"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/persist.luau",
+                      "sha256":  "55c709e01c12226322a7588b06dc48c5d8cf95d9c111a153b0652962dd467974"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/theme.luau",
+                      "sha256":  "55af777be2009a96491eef323d8d5805943e713e2eed6780d0dfc7cd0a1ba9d0"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/internal/widgets.luau",
+                      "sha256":  "cccc7d6cf7c55c5fafd81441d9e6aa8503fc4244fd6d913824a940a791b9e7d9"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/migration.luau",
+                      "sha256":  "aa13ba027ae563d561f90738791657c72db0a0a785921b8917cb736eef6d4583"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/restore.luau",
+                      "sha256":  "a7a7fc01ecf91231049946b9ecfbcc1f9198912b608222768a3e5abddf46ffbf"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/runtime.luau",
+                      "sha256":  "1ca96216feb2132bf0cf3b9475902bf06a845490cccceed45fc6b7e3a00f3ca0"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/session.luau",
+                      "sha256":  "6d8bfc8659280b6b060d94dcfc9f9261abfc52f1d136a427efa04e8a9c44c478"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/src/types.luau",
+                      "sha256":  "5f872537989491ad45d8627378db19cee7a7820090207bdef0e7f45d3a710388"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/tools/activation.py",
+                      "sha256":  "bcac913d78796620c5972852e77856b5b1f44b4ed6348df43b0b881344232d7b"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/scripts/vendor/push2os/tools/package.py",
+                      "sha256":  "b47ed7be5af8ee801979e4f7da0d9d16413fa518c09f4e0925daa6dc4fe4b52f"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/stagerig_phage.sentinel",
+                      "sha256":  "b32a0b55ad8a051b53baa55332d9027f36efcabd28e611c4a43404d0a3d5905a"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/tools/mounts_rest.json",
+                      "sha256":  "ed6afe97efccb1f1c733f411f256e495de1d8a01972739a64a07a39e0d01bb2e"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/tools/phage_desk.py",
+                      "sha256":  "87ff17096366f791c0640579b61c4c5df3b0507b8456f131bc6b0e253481a4a5"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/tools/phage_labels.py",
+                      "sha256":  "c0965942c7a8e0554c657284b7fb8fe901af085fd69fa071a4876c4a580c370b"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/tools/phage_looks.py",
+                      "sha256":  "9373d79d249d00eb11a5e116bac20d6adbbb9d56e954bb856eefb84e5ddee390"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/tools/phage_program.py",
+                      "sha256":  "3f2e7f9700db5f1ed01b7b5c7b062ddce4a90a6c252f272adeec3345b8a42e7f"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/tools/phage_review.py",
+                      "sha256":  "ddeb18ec2ae3976a1032fefefee9dfcf87993e312160241ed22edfdae7083232"
+                  },
+                  {
+                      "path":  "projects/stagerig_phage/tools/phage_rig.py",
+                      "sha256":  "61edafe2518b6ad005ecb73b5b13a83337beda695b7ae8e14bd74fb5d53b97af"
+                  },
+                  {
                       "path":  "projects/strata/modules/_shared/palette.hlsli",
                       "sha256":  "705d19b25dfbbf19bfb556eaef3c99f5ad0865a2622db387488da493e60a1483"
                   },
@@ -3230,7 +4038,7 @@
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "ff5f6efebffcc6c994a33fc123778a1905bf4a6e72d685cd10fa0294540c15f0"
+                      "sha256":  "16851c6f948ef657b77c606ab9dcde1592c3ec509164ce3af34526f47439af27"
                   },
                   {
                       "path":  "tools/module-ui.ps1",
@@ -9100,5 +9908,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "7fd39d09cf5af3e1f9452f749f7eb78a031e5c31"
+    "source_commit":  "56844e8250df7d85d889b7dc939dc62483274144"
 }
