@@ -1,4 +1,4 @@
-// BLINK_Previs / bloom_up.hlsl: Klangrig 2 Klang_Renderer bloom_up.hlsl (StageRig), unchanged. Tent upsample
+// BLINK_Previs / bloom_up.hlsl: the StageRig renderer's bloom_up.hlsl (StageRig), unchanged. Tent upsample
 // of the coarser level blended over the finer one.
 RWTexture2D<float4>OutputUAV:register(u0);
 [numthreads(8,8,1)]void main(uint3 id:SV_DispatchThreadID){uint w,h,sw,sh;OutputUAV.GetDimensions(w,h);if(id.x>=w||id.y>=h)return;_Tex0.GetDimensions(sw,sh);float2 uv=(id.xy+.5)/float2(w,h),px=1./float2(sw,sh);float3 c=0;

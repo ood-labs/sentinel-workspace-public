@@ -74,7 +74,7 @@ parameters:
   - {name: fog_contrast, display: Density Contrast, type: float, min: 0, max: 5, default: 3.239, group: Fog Texture}
   - {name: fog_floor, display: Minimum Density, type: float, min: 0, max: 1, default: 0.165, group: Fog Texture}
   - {name: fog_speed, display: Drift Speed, type: float, min: -1, max: 1, default: 0.12, group: Fog Motion}
-  # Klangrig 2 Klang_Renderer present: bloom pyramid, streaks, sensor highlight shoulder.
+  # the StageRig renderer's present: bloom pyramid, streaks, sensor highlight shoulder.
   - {name: exposure, type: float, min: 0.1, max: 4, default: 1, group: Look}
   - {name: bloom, type: float, min: 0, max: 1, default: 0.12, group: Look, description: "Fraction of HDR light scattered through the bloom pyramid."}
   - {name: streak_strength, display: Streak Strength, type: float, min: 0, max: 1, default: 0.005, group: Look}
@@ -115,7 +115,7 @@ passes:
       # Explicit order: the tile lists must be this cook's, or a changed scan draws a frame of gaps.
       - { slot: 9,  source: "pass:tiles_a" }
       - { slot: 8,  source: "input:0" }
-  # Klangrig 2 glow: five-level bloom pyramid (13-tap down, tent up) and horizontal streaks.
+  # StageRig renderer glow: five-level bloom pyramid (13-tap down, tent up) and horizontal streaks.
   - {name: bloom_d0, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.5, inputs: [{slot: 0, source: 'pass:render'}]}
   - {name: bloom_d1, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.25, inputs: [{slot: 0, source: 'pass:bloom_d0'}]}
   - {name: bloom_d2, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.125, inputs: [{slot: 0, source: 'pass:bloom_d1'}]}

@@ -1,4 +1,4 @@
-// BLINK_Previs / finish.hlsl: Klangrig 2 Klang_Renderer present.hlsl (StageRig) as a compute pass.
+// BLINK_Previs / finish.hlsl: the StageRig renderer's present.hlsl (StageRig) as a compute pass.
 // HDR scene + multiscale bloom + horizontal streaks, then a camera-style highlight shoulder: low
 // exposure keeps chroma, hot saturated cores roll toward neutral white, then 1-exp(-c) and gamma.
 RWTexture2D<float4> OutputUAV : register(u0);

@@ -1,4 +1,4 @@
-// BLINK_Previs / bloom_down.hlsl: Klangrig 2 Klang_Renderer bloom_down.hlsl (StageRig), unchanged.
+// BLINK_Previs / bloom_down.hlsl: the StageRig renderer's bloom_down.hlsl (StageRig), unchanged.
 // Multiscale HDR bloom: 13-tap weighted downsample, no hard threshold.
 // Technique reference: https://learnopengl.com/Guest-Articles/2022/Phys.-Based-Bloom
 RWTexture2D<float4>OutputUAV:register(u0);
