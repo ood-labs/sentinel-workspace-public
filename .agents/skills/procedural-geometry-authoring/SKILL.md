@@ -9,9 +9,9 @@ Use the precise-construction blueprint path when a scene needs real dimensions, 
 
 ## Blueprint-first workflow
 
-1. Write a YAML blueprint under `examples/blueprints/` or the current show folder.
+1. Write a YAML blueprint under the current show's `projects/<show>/blueprints/` folder.
 2. Use an explicit project-specific kind registry. The curated example is
-   `examples/blueprints/living_room_sdf_kinds.yaml`.
+   `projects/living_room_sdf/blueprints/living_room_sdf_kinds.yaml`.
 3. Author in two passes: first use registry-default dimensions and relations only, then validate and add dimension overrides only where the scene needs them.
 4. Prefer relations over raw coordinates:
    - `supported_by` for objects on surfaces.
@@ -24,7 +24,7 @@ Use the precise-construction blueprint path when a scene needs real dimensions, 
 Validation command:
 
 ```json
-{"action":"validate","path":"examples/blueprints/living_room_architecture.yaml"}
+{"action":"validate","path":"projects/living_room_sdf/blueprints/living_room_architecture.yaml"}
 ```
 
 The expected cafe summary is `ok: true`, `node_count: 14`, `group_instance_count: 6`, `resolved_instance_count: 20`, and `instance_budget: 96`.
@@ -34,7 +34,7 @@ The expected cafe summary is `ok: true`, `node_count: 14`, `group_instance_count
 Compile with `sentinel_blueprint compile`. With `create: true`, the tool creates a Module producer that publishes `PNodes`.
 
 ```json
-{"action":"compile","path":"examples/blueprints/living_room_architecture.yaml","create":true,"pipeline_name":"Blueprint_Living_Room"}
+{"action":"compile","path":"projects/living_room_sdf/blueprints/living_room_architecture.yaml","create":true,"pipeline_name":"Blueprint_Living_Room"}
 ```
 
 During visible authoring, place/focus/open and prove the generated producer before creating the renderer. Then create and place the renderer relative to it, wire `PNodes`, focus/open the renderer, and inspect the result. Reserve whole-graph `auto_layout` for explicit batch work.

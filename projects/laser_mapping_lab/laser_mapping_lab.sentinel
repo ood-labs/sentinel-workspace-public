@@ -75,11 +75,6 @@
     "endPinId": 312,
     "id": 47,
     "startPinId": 309
-   },
-   {
-    "endPinId": 566,
-    "id": 58,
-    "startPinId": 229
    }
   ],
   "nextLinkId": 59,
@@ -459,26 +454,6 @@
     "sceneGroupPresets": [],
     "type": 4,
     "width": 964.6424560546875
-   },
-   {
-    "displayName": "Projector Output",
-    "entityId": "Projector_Output",
-    "id": 40,
-    "logicalPreview": [
-     8.0,
-     39.099998474121094,
-     140.0,
-     78.80000305175781
-    ],
-    "logicalSize": [
-     156.0,
-     125.9000015258789
-    ],
-    "posX": 562.6994018554688,
-    "posY": 85.00645446777344,
-    "positionSet": true,
-    "previewVisible": true,
-    "type": 2
    }
   ],
   "pins": [
@@ -1489,14 +1464,6 @@
     "nodeId": 28,
     "slotIndex": 0,
     "type": 12
-   },
-   {
-    "id": 566,
-    "kind": 0,
-    "name": "In",
-    "nodeId": 40,
-    "slotIndex": 0,
-    "type": 0
    }
   ]
  },
@@ -1689,20 +1656,7 @@
   "sendPort": 9021,
   "stateTreeBridge": true
  },
- "outputObjects": [
-  {
-   "height": 1080,
-   "id": "Projector_Output",
-   "matchInputResolution": false,
-   "monitorDeviceName": "\\\\.\\DISPLAY1",
-   "monitorIndex": 3,
-   "name": "Projector Output",
-   "senderName": "Sentinel-Projector-Output",
-   "type": "screen",
-   "wasActive": false,
-   "width": 1920
-  }
- ],
+ "outputObjects": [],
  "outputs": [],
  "pipelines": [
   {
@@ -2081,7 +2035,7 @@
    ],
    "operator_mode": "normal",
    "outputFitMode": 1,
-   "outputSinkId": "Projector_Output",
+   "outputSinkId": "",
    "panelAnchorId": "Look_Select",
    "panelOpen": true,
    "parameters": {

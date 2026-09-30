@@ -42,6 +42,8 @@ Verified MCP authoring sequence for a two-look switcher:
 4. Collection is immediate: one `select/<slug>` Button parameter appears per group, slugged from the annotation title ("Look A" becomes `select/look_a`), and `selected_group` holds the selected group's entity id (an `annotation_N` value). Write `1` to a trigger or write the entity id to `selected_group`; both work from OSC, expressions, and MCP.
 5. Prove the cut by capturing the mux output per look. The mux output resolution comes from its own `width`/`height` parameters (default 1920x1080), with each look fitted per its Group Output settings.
 
+Each collected Scene Group also shows a switch control on its annotation header, so a human can select a look from the graph without opening the Mux. Unselected groups are held by the switcher; per-node Freeze and Bypass on their members wait until the group is selected again. A whole look can travel between projects as a portable Scene Group export; see `portable-scene-groups.md`.
+
 ## Cameras And Camera Switching
 
 The `camera` node is a control node owning a shared fly/orbit rig (`camera_mode`, position/target, yaw/pitch, fov, near/far; the `Tab` hotkey toggles fly/orbit in an active preview with a gizmo flash, and an axis gizmo shows the mode). Camera-capable modules bind to it through a `camera_ref` parameter, or automatically through their Scene Group when the group contains exactly one camera node; explicit `camera_ref` wins, then the group camera, then the module's internal camera. Renaming a camera updates every consumer's `camera_ref`.

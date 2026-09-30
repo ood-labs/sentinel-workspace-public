@@ -59,12 +59,13 @@ Right-click a link or a connected input pin and choose **Disconnect** when a men
 
 ### Node controls and context menus
 
-- Click a pipeline node's `A` button to toggle active processing. An inactive processing node is bypassed. A shut-down node must be launched from its context menu before `A` becomes available.
-- Click `P` to show or hide the node-local preview.
-- Right-click `A` to copy the node's active OSC address.
+- Every pipeline node header carries three buttons: `F` freezes the node on its last completed output, `B` bypasses it with type-aware passthrough of video, data, and Mesh ports, and `P` shows or hides the node-local preview. Neither `F` nor `B` engaged is Normal. See `node-modes.md`.
+- `F`, `B`, and `P` keys apply the same toggles to the selected nodes. A shut-down node must be launched from its context menu before it can run.
 - Right-click a node for launch or shutdown, capture, duplication, deletion, viewport-target, Scene Group, and panel-presentation actions that apply to that node.
-- Right-click empty canvas to create a source, node, output, feedback object, annotation, or annotation around the current selection.
+- Right-click empty canvas to create a source, node, output, feedback object, or annotation. Node-only actions stay on the node menu.
 - Right-click a link or input pin to disconnect it.
+- Hover a cable to see the schema it carries and, for Module data outputs with an authored `description`, what one record means. Data links can animate their flow, and reference lines anchor at node body centers with direction arrows.
+- DMX In and DMX Out headers hold a `<` `>` universe stepper and a jump field for the universe grid drawn in the node body; OSC Out's header `+` adds a message. See `lighting-and-show-control.md`.
 
 ### Annotations and Scene Groups
 
@@ -73,16 +74,17 @@ Right-click a link or a connected input pin and choose **Disconnect** when a men
 - Drag the lower-right corner handle to resize an annotation.
 - Click the color swatch to edit its color.
 - Click the annotation `A` button to toggle all contained pipelines. On a Scene Group, it toggles the group.
+- A Scene Group collected by a Groups-mode Mux shows a switch control on its header; click it to select that group on the switcher. The header also reads back which group the switcher holds.
+- Right-click a Scene Group annotation for `Export Scene Group`, which writes a portable `.sentinel` file. Converting an annotation to a Scene Group and reverting it both undo. See `portable-scene-groups.md`.
 
 ## Pipeline Panels and Previews
 
 Clicking a pipeline panel outside its preview selects that pipeline in Properties. Preview interaction keeps the existing Properties selection, which supports editing one node while navigating another node's viewport.
 
-For nodes that expose `pan_x`, `pan_y`, and `zoom`:
+The preview panel has a real view transform. A `Fit`, `Fill`, `1:1` combo in the panel header picks the framing, and free zoom with pan sits on top of it: zoom anchors at the cursor, pan clamps to the content, and each node's framing persists with the project. Once the view is zoomed or panned, a zoom percentage button appears beside the combo; click it to reset the view. Two-output nodes can show a split preview. Per-node panel presentation (Standard or Canvas) and resolution mode (Pipeline, Follow Panel, or the 1/4x, 1/2x, and 2x Follow Panel scales) live in Properties and read back through `sentinel_pipeline info`.
 
-- Left-drag the preview to pan.
-- Use the wheel to zoom.
-- Double-click to reset pan and zoom.
+- The wheel zooms the preview view around the pointer, and holding `Space` while left-dragging pans it (the `preview.zoom` and `preview.pan` bindings).
+- Over a node that exposes `pan_x`, `pan_y`, and `zoom`, or a camera-driven viewport, the bare wheel and left-drag belong to the node: wheel drives the node's `zoom` or camera dolly, left-drag drives its pan, and double-click resets them. Hold `Ctrl` with the wheel there to zoom the preview view instead.
 - Hold `Alt` for 10x finer movement. Hold `Alt+Shift` for 100x finer movement.
 
 Right-click a connected input tile to route preview mouse input to that upstream pipeline. Right-click the selected tile again to clear passthrough.
@@ -155,6 +157,12 @@ Use **View > Turbo Mode** to toggle reduced UI work for performance-sensitive op
 Authored Module panels and previews can declare their own buttons, sliders, XY pads, keyboard interests, selection tools, and transform gizmos. Sentinel routes focus, pointer capture, undo, and committed parameter edits according to the Module manifest. See [Authored Module UI](ui-authoring.md) for authoring and interaction contracts, including hit regions, pointer capture, selection, and authored gizmos.
 
 Press `Escape` to cancel active authored pointer capture. Windows and application-reserved chords such as the Windows key, `Alt+Tab`, `Alt+Space`, and `Ctrl+Escape` stay with the host. Other letters, digits, arrows, navigation keys, and declared modifiers reach an authored viewport only when its manifest requests them and the viewport owns focus.
+
+## Input Bindings
+
+Keyboard and mouse actions are named and editable in `Settings > Bindings`. Click a row, press one key, mouse button, wheel direction, or key-plus-mouse chord; `Escape` cancels capture. Same-scope conflicts ask for an explicit Replace or Cancel. `Reset` restores one row and `Reset All` restores the Sentinel Default layout. Bindings persist per user, never in project files.
+
+Two complete layouts ship. Sentinel Default pans with middle-drag or `Alt`+left-drag, selects with left-click, box-selects with left-drag on empty canvas, and detaches a link with `Ctrl`+left-click. The TouchDesigner layout pans with left-drag on empty canvas, moves nodes with left-drag on the node, selects with right-click, and box-selects with right-drag; the context menu stays on right-click and opens on release. Both keep `F`, `B`, `P`, and `G` (focus the selection, or fit the whole graph when nothing is selected). Pointer bindings are target-aware, so a binding on a node, pin, or canvas only fires where it belongs.
 
 ## Scope and Exclusions
 

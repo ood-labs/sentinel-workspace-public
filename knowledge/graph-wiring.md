@@ -29,7 +29,10 @@ Examples of data ports:
 - Pose `Keypoints`
 - Detection `Detections`
 - Features `Blobs`, `Corners`, and `Lines`
+- DMX In `DMX` (a 2,048-byte-record universe buffer; DMX Out accepts only that schema)
 - Module-authored data ports
+
+Hover a cable in the graph to read the schema it carries. A Module author can add a one-line `description` to each `data_outputs` entry, and the cable inspector, `sentinel_pipeline info`, and `get_data_schemas` all surface it, so name the port by what one record means. Data links can animate their flow direction when that option is on.
 
 ## Data Input Pin Order Is Creation Order, Not Manifest Order
 
@@ -59,6 +62,10 @@ Examples:
 - `mediapipe_0/control_outputs/pinch_primary`
 - `features_0/control_outputs/largest_x`
 - `module_lfo/control_outputs/rate`
+- `dmx_in/control_outputs/packets_per_second`
+- `audio_in/control_outputs/level`
+
+Sending values out of Sentinel is the reverse of this: an `oscout` node's `add_message` action takes an address and a `ref()` expression and sends the value over OSC. See `lighting-and-show-control.md`.
 
 Do not wire control outputs with `set_input`. Use `sentinel_expression action=set` on the target parameter.
 

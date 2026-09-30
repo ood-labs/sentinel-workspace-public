@@ -65,7 +65,7 @@ Start-Process '<repo_root>\build\bin\Release\sentinel.exe'
 
 Wait 3-5 seconds for the app to initialize before sending IPC commands.
 
-## MCP Tools (13 multi-action tools)
+## MCP Tools (14 multi-action tools)
 
 All tools use an `action` parameter. Examples:
 
@@ -135,6 +135,10 @@ Use these exact strings with `sentinel_pipeline action="create"`. Run `sentinel_
 - `"module"` — Module pipeline (multi-pass YAML projects, compute-first 3D)
 - `"hlslshader"` — HLSL Shader (Notch HLSL post-processing)
 - `"vsr"` — RTX Video Super Resolution
+- `"dmxin"` — DMX In (Art-Net or sACN receive into a typed `DMX` data port; control node)
+- `"dmxout"` — DMX Out (Art-Net or sACN send from a `DMX` data input; control sink)
+- `"oscout"` — OSC Out (dynamic expression-driven message list; control node)
+- `"artnetin"` / `"artnetout"` — hidden compatibility ids for the DMX nodes with `protocol=artnet`
 
 NOT display names like "Background Removal" — those won't work.
 
@@ -178,7 +182,7 @@ NOT display names like "Background Removal" — those won't work.
 | `set_many` | Write many values in one call with per-path results (`values`: object `{path: value}` or ordered array `[{path, value}]`) |
 | `list_values` | List value paths |
 | `list_actions` | List action paths |
-| `invoke` | Call an action |
+| `invoke` | Call an action; extra top-level fields are passed as the action's args (for example OSC Out's `add_message` with `address`, `type`, `expr`) |
 | `snapshot` | Capture a pipeline's writable params as a typed bundle (`pipeline_id`, optional `bundle_path`); use before throwaway experiments |
 | `restore` | Replay a snapshot bundle via set_many (`values` inline or `bundle_path`); per-path results, partial restore is safe |
 
@@ -189,6 +193,7 @@ NOT display names like "Background Removal" — those won't work.
 | `list_types` | Build-derived pipeline type catalog (aliases, engine-pack requirements, categories) |
 | `info` | Pipeline params/stats + data/control output summaries |
 | `get_param` | Read-only computed value (`pipeline_id`, `param_name`) |
+| `set_mode` | Operator mode: `mode` is `normal`, `freeze`, or `bypass`; `info` reports it as `operator_mode` |
 | `create` | Create pipeline (sanitized `name` becomes the instance id; for modules pass `project_dir` for an atomic create whose response carries `compile_ok`/`compile_error` + registered params; optional `enabled`, `x`/`y`) |
 | `destroy` | Destroy pipeline |
 | `rename` | TRUE rename: re-keys the instance id, rewrites references (graph, expressions, windows); returns `old_id` + final id |
@@ -204,7 +209,7 @@ NOT display names like "Background Removal" — those won't work.
 | `delete_output` | Delete output |
 | `rename_output` | TRUE rename of an output instance id |
 | `get_data_schemas` | Typed data port schemas (fields, element counts) |
-| `capture_data_port` | Read back structured buffer data as JSON (GPU readback) |
+| `capture_data_port` | Read back structured buffer data as JSON (GPU readback); set `max_elements` explicitly to reach later records such as DMX universes |
 | `open_window` | Open pipeline preview/properties window |
 | `close_window` | Close pipeline preview/properties window |
 
@@ -222,12 +227,14 @@ NOT display names like "Background Removal" — those won't work.
 | `auto_layout` | Arrange the whole graph left-to-right. Reserve for explicit batch work or smoke tests; visible authoring uses `place_relative`/`layout_neighborhood`. Needs `confirm: true` past 10 positioned nodes |
 | `layout_neighborhood` | Arrange only the neighborhood around one node (`entity_id`, `direction`, `depth`, `anchor`, `dry_run`). Leaves the rest untouched |
 | `focus` | Center/zoom the graph view on one node |
-| `get_node_geometry` | One node's position, bounds, containment |
-| `set_node_geometry` | Move a node; resize annotations (`x`/`y`, `width`/`height`) |
+| `set_view` | Put the graph view at an exact `zoom` and `pan_x`/`pan_y` for reproducible captures (`get` reports the current view) |
+| `get_node_geometry` | One node's position, bounds, containment. Nodes with a body add `body_width`/`body_height` (grid units, 0 = automatic), `body_size_set` and `body_image_rect` (screen-space preview image) |
+| `set_node_geometry` | Move a node, resize an annotation frame, or size a node body box (`x`/`y`, `width`/`height` 80-4096 by 45-4096, `reset_size: true`). Validated before any write; body resizes are undoable. Previews letterbox inside the box |
 | `place_relative` | Place a node next to an anchor with spacing + collision avoidance (`relative_to`, `direction`, `gap`, `within`) |
 | `move_nodes` | Move a node set as one rigid unit (`entity_ids[]` + `dx`/`dy` or `x`/`y` or `relative_to`) |
 | `add_annotation` / `update_annotation` / `delete_annotation` | Annotation boxes (`title`, `body`, `color`, geometry) |
-| Scene Groups | `list_scene_groups`, `scene_group_info`, `convert_to_scene_group`, `set_scene_group_enabled`, `expose_scene_group_parameter`, `remove_scene_group_parameter`, `save_scene_group_preset`, `recall_scene_group_preset` (control-only groups; `entity_id` of the group annotation) |
+| Scene Groups | `list_scene_groups`, `scene_group_info`, `convert_to_scene_group`, `revert_to_annotation`, `switch_to_scene_group`, `set_scene_group_enabled`, `expose_scene_group_parameter`, `remove_scene_group_parameter`, `save_scene_group_preset`, `recall_scene_group_preset` (control-only groups; `entity_id` of the group annotation) |
+| `export_scene_group` | Write a Scene Group as a portable `.sentinel` project (`entity_id`, `path`); the response reports every boundary crossing. Import it elsewhere with `sentinel_app import_project` |
 
 ### `sentinel_capture` — GPU texture readback & recording
 | Action | Description |
@@ -267,6 +274,10 @@ NOT display names like "Background Removal" — those won't work.
 | `get_panels` | List all panels and visibility |
 | `set_panel` | Show/hide a panel |
 | `terminal_read` | Read embedded-terminal grid lines, cursor, and child status without injecting input |
+| `drag_at` | Press, move, release at client coordinates (`start_x`/`start_y`/`end_x`/`end_y`, or `phase` begin/update/end with modifiers held by `send_key shift_down`) |
+| `hover_at` | Park the pointer at client coordinates so tooltips show |
+| `click_at` | Click at client coordinates (`start_x`, `start_y`, `button`) |
+| `double_click` | Double-click a tracked path (rect center) or `start_x`/`start_y`. Resolve rects with `get_info` first when a header carries buttons |
 
 Installs at 0.5.48 or newer deliver `click` (method `mouse`), drags, and `send_key` as synthetic events injected directly into the ImGui event queue: the user's hardware cursor, keyboard state, and window focus stay untouched while automation drives the UI, and mouse-path responses report `client_pos` in main-viewport client space. Older installs drive the real OS mouse for these paths and can move the user's cursor (including across monitors), so on those builds prefer `method: button` or `select` and the `set` action, which have always been injection-free.
 
@@ -284,6 +295,9 @@ Installs at 0.5.48 or newer deliver `click` (method `mouse`), drags, and `send_k
 
 ### `sentinel_module` — Module authoring helpers
 `scaffold_from_ports` / `bundle` / `extract` / `import` / `bake_defaults`. Scaffold a module from an upstream data-port schema, bundle or move modules between shows, and write live values back into manifest defaults.
+
+### `sentinel_viewport`: Authored viewport inspection and transactions
+`info` / `objects` / `selection` (with `selection_action` get/set/clear; `set` needs `ids`) / `pick` (`x`/`y` normalized; the async result is polled for you) / `edit` (`object_id` plus a target `x`/`y` runs a begin/preview/commit move transaction with auto-cancel; pass `phase` for manual control) / `state` (durable state-buffer inventory). Every action takes `pipeline`. `pick` returns the hit `object_id` one frame later, and an `edit` commit lands in the Module's bound parameters, including `hidden: true` gesture parameters. Requires Sentinel 0.5.31 or newer.
 
 ### `sentinel_vision` — AI visual review
 `status` / `configure` / `models` / `eval` / `compare` / `eval_pipeline`. Evaluates captures through OpenAI-compatible vision providers; `eval_pipeline` captures and evaluates one pipeline output in a single call. First-time key setup edits the workspace `vision.json` (never pass API keys in chat or tool args).

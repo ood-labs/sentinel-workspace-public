@@ -32,7 +32,7 @@ Blueprint producers compile to generated Module projects that publish fixed 48-b
 - `sentinel_blueprint solve_report` and `sentinel_blueprint audit` for independent record-level checks.
 - A renderer capture plus `sentinel_vision action="eval"` for visible scene claims. If it reports a missing or rejected key, run `sentinel_vision action="status"` and have the user paste their provider key (OpenRouter or another OpenAI-compatible provider) into the returned workspace `vision.json` `api_key` field, then rerun `status` until `key_present` and `key_ok` are true. Never take keys through chat or tool arguments.
 
-The public smoke blueprint is `examples/blueprints/living_room_architecture.yaml`; validate it before compiling or creating a live pipeline.
+The public smoke blueprint is `projects/living_room_sdf/blueprints/living_room_architecture.yaml`; validate it before compiling or creating a live pipeline.
 
 ---
 

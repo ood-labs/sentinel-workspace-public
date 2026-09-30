@@ -1,8 +1,8 @@
 @{
-    MinimumSentinelVersion = '0.5.52'
-    LiveProofHostVersion = '0.5.52'
-    CapabilityCommandCount = 152
-    CapabilitySchemaHash = 'f87e5c1d5f3ae458'
+    MinimumSentinelVersion = '0.5.61'
+    LiveProofHostVersion = '0.5.61'
+    CapabilityCommandCount = 158
+    CapabilitySchemaHash = '8f361a936de555d1'
 
     Projects = @{
         interaction_lab = @{
@@ -338,7 +338,6 @@
         '.agents',
         '.claude',
         '.release',
-        'examples',
         'knowledge',
         'projects',
         'tools'
@@ -383,9 +382,10 @@
         Prefixes = @(
             '.agents/skills',
             '.claude/skills',
-            'examples',
             'knowledge',
             'projects',
+            'tools/templates/module-includes',
+            'tools/templates/dmx',
             'tools/templates/module-ui'
         )
         Files = @(
@@ -401,7 +401,7 @@
         )
     }
 
-    AllowedProjectDirectories = @('assets', 'cues', 'images', 'modules', 'tools')
+    AllowedProjectDirectories = @('assets', 'cues', 'docs', 'images', 'modules', 'presets', 'scripts', 'tools')
     AllowedTopLevelFiles = @('README*', 'LICENSE*')
     RequiredProjectReadmeHeading = '## Component map'
     GlobalSharedPaths = @()
@@ -414,7 +414,7 @@
         '*.cso', '*.log', '*.pdb', '*.tmp'
     )
     TextExtensions = @(
-        '.fx', '.hlsl', '.hlsli', '.json', '.md', '.ps1', '.py', '.sentinel',
+        '.fx', '.hlsl', '.hlsli', '.json', '.luau', '.md', '.ps1', '.py', '.sentinel',
         '.txt', '.yaml', '.yml'
     )
 }

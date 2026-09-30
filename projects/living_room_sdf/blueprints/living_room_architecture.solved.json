@@ -1,8 +1,8 @@
 {
   "version": 1,
   "scene": "living_room_architecture",
-  "record_hash": "f3f6b193fee1c905",
-  "topology_hash": "bd280e1298e16c45",
+  "record_hash": "cbad3fa3ccdb80c0",
+  "topology_hash": "1817ee7a250f83a2",
   "records": [
     {
       "id": "oak_floor",
@@ -59,8 +59,8 @@
       "kind": "window",
       "seed": 1322666062,
       "position": [
-        -1.25,
-        0.78,
+        -2.45,
+        0.72,
         -3.39
       ]
     },
@@ -69,9 +69,9 @@
       "kind": "doorway",
       "seed": 3566631340,
       "position": [
-        3.35,
+        4.21,
         0.0,
-        -3.62
+        1.85
       ]
     },
     {
@@ -79,9 +79,9 @@
       "kind": "rug",
       "seed": 355363093,
       "position": [
-        -0.2,
+        -0.3,
         0.125,
-        0.2
+        0.45
       ]
     },
     {
@@ -89,9 +89,9 @@
       "kind": "ceiling_light",
       "seed": 3150410901,
       "position": [
-        -1.25,
-        2.95,
-        0.15
+        -1.2,
+        2.82,
+        0.35
       ]
     },
     {
@@ -99,9 +99,9 @@
       "kind": "ceiling_light",
       "seed": 3100078044,
       "position": [
-        1.15,
-        2.95,
-        0.15
+        1.2,
+        2.82,
+        0.35
       ]
     },
     {
@@ -109,9 +109,9 @@
       "kind": "art_frame",
       "seed": 1436880710,
       "position": [
-        -2.75,
-        1.45,
-        -3.38
+        -1.6,
+        1.32,
+        3.38
       ]
     },
     {
@@ -119,9 +119,19 @@
       "kind": "art_frame",
       "seed": 3568190715,
       "position": [
-        2.0,
-        1.45,
-        -3.38
+        1.1,
+        1.32,
+        3.38
+      ]
+    },
+    {
+      "id": "accent_front",
+      "kind": "wall_back",
+      "seed": 1105301135,
+      "position": [
+        0.0,
+        0.0,
+        3.52
       ]
     }
   ]

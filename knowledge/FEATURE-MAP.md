@@ -75,7 +75,7 @@ Shading and generative tools:
 - Data port: `Slot Occupancy` records for scene-spawner modules; readbacks report `occupied_count`, per-slot sequences, and cycle state.
 
 `module`: authored multi-pass shader projects with parameters, typed data ports, control outputs, and optional 3D/raster passes.
-- `hlslshader`: single HLSL post-process shader.
+- `hlslshader`: single HLSL post-process shader, development builds only. Build new work as a Module.
 - `shaderproject`: hidden compatibility alias for module-style shader projects.
 
 Scene system and sequencing:
@@ -92,6 +92,29 @@ Presets: the `sentinel_preset` tool (0.5.29+) saves, recalls, and manages identi
 - `save` REQUIRES an explicit selection: `{"action":"save","pipeline":"<id>","name":"<name>","scope":"library","params":["decay","splat_gain"]}` (params and/or groups; there is no save-everything default).
 - Preset identity derives from the node type and project-local Module (`module:<module-name>`), so presets follow the Module, not the instance. `list` filters by `pipeline` or `identity`.
 - `recall` takes the preset name or id plus the target `pipeline` and returns `applied[]` and `skipped[]`. `loose: true` recalls onto a different node by matching parameter names, and errors loudly (`no preset parameters applied`) when nothing matches.
+
+Bundles:
+
+- `bundlepack`: packs a video plus up to eight keyed data or texture rows into one Bundle cable, for producers that are not Modules.
+- `bundlesplit`: splits a Bundle into its video and one data output per key, for consumers that are not Modules. Modules publish and take bundles directly with `bundle_outputs` and `bundle_inputs`. See `bundle-links.md`.
+
+Lasers:
+
+- `laserout`: sends a Scan Signal to one laser projector over Simulate (the default, no hardware), Record, Ether Dream, LaserCube or ShowNET, through scanner protection, Frame Lock and Output Delay. Publishes `Sent Stream`. Real output needs the node's arm and the operator's ARM LASERS master. See `laser-output.md`.
+- `lasertrace`: traces pixels into ordered, frame-stable Scan Signal paths for Laser Out. See the `laser-trace-tuning` skill.
+
+Scripted control and controllers (Control nodes):
+
+- `script`: sandboxed Luau on the 240 Hz control clock with manifest Signal and Event pins, parameters, reload that keeps state, and a tracked control window that can draw an operator desk. See the `script-node-authoring` skill and `show-control-desk.md`.
+- `midiin`, `midiout`: MIDI input with learn, pickup and relative encoders into Signal and timestamped Event outputs; timestamped MIDI output from Event and Signal inputs.
+- `push2display`: drives the Ableton Push 2 or Push 3 display from Script draw lists or a video input. See the `controller-surface-authoring` skill.
+
+Lighting and show control (Control nodes, no pixel output):
+
+- `dmxin`: receives DMX universes over Art-Net or sACN (E1.31) into a typed `DMX` data port, up to 1,024 universes, with a universe grid drawn in the node body. See `lighting-and-show-control.md`.
+- `dmxout`: sends a `DMX` data port to fixtures over Art-Net or sACN on its own clock, with keepalive, universe masks, and priority.
+- `oscout`: sends expression-driven values to any OSC receiver. Starts empty; one `add_message` action creates a message and binds its `ref()` source.
+- `artnetin` and `artnetout`: hidden compatibility ids that create the DMX nodes with `protocol=artnet`.
 
 Utility and output:
 
@@ -120,7 +143,6 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 | `meshsource` | yes | Static OBJ, FBX, GLB, or glTF import with one canonical semantic Mesh output. |
 | `meshunpack` | yes | Specialized zero-copy breakout from semantic Mesh to three raw data pins. |
 | `module` | yes | Authored multi-pass HLSL projects with parameters, data ports, and control outputs. |
-| `hlslshader` | yes | Single HLSL post-process shader. |
 | `shaderproject` | hidden | Compatibility alias for shader project/module workflows. |
 | `opticalflow` | yes | NVIDIA hardware optical flow. |
 | `vsr` | yes | RTX Video Super Resolution. |
@@ -130,6 +152,19 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 | `atlas` | yes | Multi-pass still bank (color/segmentation/depth/data columns per captured still) with a self-timing capture cycle. |
 | `camera` | yes | Wireless fly/orbit camera rig (control node, no pixel output). Camera-capable modules bind via `camera_ref` or through their Scene Group. |
 | `camswitch` | yes | Camera Switcher: cut or quaternion-blend between camera nodes, with per-camera OSC triggers (control node). |
+| `dmxin` | yes | DMX In over Art-Net or sACN into a typed `DMX` data port; universe preview in the node body (control node). |
+| `dmxout` | yes | DMX Out from a `DMX` data port to fixtures over Art-Net or sACN (control sink). |
+| `oscout` | yes | OSC Out with a dynamic, expression-driven message list (control node). |
+| `artnetin` | hidden | Compatibility id for `dmxin` with `protocol=artnet`. |
+| `artnetout` | hidden | Compatibility id for `dmxout` with `protocol=artnet`. |
+| `bundlepack` | yes | Packs a video plus keyed data or texture rows into one Bundle output. |
+| `bundlesplit` | yes | Splits a Bundle into its video and one data output per key. |
+| `laserout` | yes | Laser Out: Scan Signal to a laser projector over Simulate, Record, Ether Dream, LaserCube or ShowNET, with a `Sent Stream` output (control sink). |
+| `lasertrace` | yes | Laser Trace: pixels into ordered Scan Signal paths with a preview. |
+| `script` | yes | Sandboxed Luau Script node with Signal and Event pins and a control window (control node). |
+| `midiin` | yes | MIDI In: Signal and timestamped Event outputs from a MIDI device (control node). |
+| `midiout` | yes | MIDI Out: timestamped MIDI from Event and Signal inputs (control sink). |
+| `push2display` | yes | Push Display for Ableton Push 2 and Push 3 (control sink). |
 
 ## What Nodes Emit
 
@@ -172,6 +207,24 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 - Data port: one semantic `Mesh` group carrying canonical vertices, indices, and submeshes.
 - Supported files: OBJ, FBX, GLB, and glTF.
 - Import controls include uniform scale, Y-up or Z-up conversion, winding inversion, normal recomputation, and manual refresh.
+
+`dmxin`:
+
+- Data port: `DMX`, one 2,048-byte record per universe after a header and eight metadata records; read it in Modules through the `tools/templates/module-includes/dmx_schema_v2.hlsli` helper include.
+- Control outputs: `packets_per_second`, `active_universes`, `last_packet_age_ms`, `dropped_packets`, and under sACN `sources_active` and `sequence_errors`.
+
+`dmxout`:
+
+- Data input: `DMX` only. Control outputs: `packets_per_second`, `universes_sent`, `readbacks_dropped`, `send_errors`.
+
+`oscout`:
+
+- Control outputs: `active_slots` (enabled message count), `send_errors`, `over_budget`.
+- Actions: `add_message`, `remove_message`, `list_messages` under `/sentinel/pipelines/<id>/actions/`, called through `sentinel_state action=invoke`.
+
+## Node Modes
+
+Every node has an operator mode: Normal, Freeze (hold the last output), or Bypass (type-aware passthrough). Set it with `sentinel_pipeline action=set_mode pipeline_id=<id> mode=freeze|bypass|normal` and read it back as `operator_mode` in `info`. Frozen outputs save with the project and restore byte-identical. See `node-modes.md`.
 
 ## Driving A Parameter From A Hand Pinch
 
@@ -216,6 +269,13 @@ drive an authored Module parameter from a path such as
 - [Video Source](video-source.md)
 - [StreamDiff](streamdiff.md)
 - [Scene System: Hold, Atlas, Mux, Group Presets](scene-system.md)
+- [Portable Scene Groups](portable-scene-groups.md)
+- [Node Modes: Normal, Freeze, Bypass](node-modes.md)
+- [Lighting And Show Control: DMX In, DMX Out, OSC Out](lighting-and-show-control.md)
+- [Laser Output: Laser Out, Arming, Sync And First Light](laser-output.md)
+- [Laser Mapping](laser-mapping.md)
+- [Bundle Links: One Cable For Video Plus Data](bundle-links.md)
+- [Show Control Desks](show-control-desk.md)
 - [Motion Choreography And Sequencing](motion-choreography.md)
 - [Precise Construction: Blueprints And SDF Audit](precise-construction.md)
 - [First-Run Engines](first-run-engines.md)

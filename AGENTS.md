@@ -107,7 +107,7 @@ License activation is deliberately manual in the app UI.
 
 Call `list_types` for the exact current catalog; DIST builds intentionally omit dev-only and experimental types. The full DIST type table — roles, visibility, engine-pack requirements, and the compatibility aliases (`facemesh`, `shaderproject`) — lives in `knowledge/FEATURE-MAP.md`.
 
-Orientation: `module` (authored multi-pass HLSL projects) and `hlslshader` for authored visuals; `streamdiff` for real-time generation; `mediapipe`, `features`, `detection`, `pose`, `depthestimation`, `personseg`, `matting`, and `opticalflow` for tracking and analysis; `meshsource` for static 3D import; `audio` for WASAPI/WAV audio data; `vsr` for upscaling; `conductor`, `mux`, `groupoutput`, `atlas`, `camera`, and `camswitch` for choreography and the scene system.
+Orientation: `module` (authored multi-pass HLSL projects) for authored visuals (`hlslshader` exists only in development builds); `streamdiff` for real-time generation; `mediapipe`, `features`, `detection`, `pose`, `depthestimation`, `personseg`, `matting`, and `opticalflow` for tracking and analysis; `meshsource` for static 3D import; `audio` for WASAPI/WAV audio data; `vsr` for upscaling; `conductor`, `mux`, `groupoutput`, `atlas`, `camera`, and `camswitch` for choreography and the scene system; `bundlepack` and `bundlesplit` for Bundle cables that carry video plus data; `laserout` and `lasertrace` for lasers; `dmxin`, `dmxout`, and `oscout` for lighting and show control over Art-Net, sACN, and OSC; `script`, `midiin`, `midiout`, and `push2display` for scripted control, MIDI controllers and the Ableton Push 2 and Push 3 displays.
 
 ## Graph Basics
 
@@ -121,6 +121,10 @@ Use video links for textures and data links for structured buffers.
 - `sentinel_graph action=layout_neighborhood`: arrange a local area without disturbing a hand-arranged graph.
 
 After creating and wiring nodes, always inspect real runtime state. A successful create call is not proof that the node is processing.
+
+## Node Modes
+
+Every node runs in Normal, Freeze, or Bypass. Freeze holds the last completed output and persists it with the project; Bypass passes inputs through with type-aware routing. Set a mode with `sentinel_pipeline action=set_mode pipeline_id=<id> mode=<normal|freeze|bypass>` and read `operator_mode` back through `info`. The node header buttons `F`, `B`, and `P` and the same keys do this for humans. Use Freeze to hold an expensive node while building around it; use the Scene Switcher, not per-node modes, to hold whole looks. Details: `knowledge/node-modes.md`.
 
 ## Visible, One-Node-at-a-Time Construction
 
@@ -270,7 +274,7 @@ For a concert lighting rig or any show a lighting programmer plays (beam movers,
 
 ## Precise 3D Construction
 
-When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against an explicit project-specific kind registry, relax under-constrained layouts with warm-start stability, and compile to a generated project-local Module publishing `PNodes` records. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints and registry: `examples/blueprints/`; complete renderer reference: `projects/living_room_sdf/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
+When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against an explicit project-specific kind registry, relax under-constrained layouts with warm-start stability, and compile to a generated project-local Module publishing `PNodes` records. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints, registry, and renderer: `projects/living_room_sdf/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
 
 ## Imported 3D Meshes
 
@@ -293,6 +297,8 @@ Over MCP, use `sentinel_graph expose_scene_group_parameter`; compound parameters
 
 Scene Groups are for control and organization. They do not replace video/data wiring, and they should not be used to hide whether a graph is healthy.
 
+A Scene Group exports as a portable `.sentinel` project with `sentinel_graph action=export_scene_group` and imports elsewhere with `sentinel_app action=import_project`. Read the boundary report on both sides: crossing links and expressions come through unresolved for deliberate repair, and every carried source arrives as a fresh copy. Details: `knowledge/portable-scene-groups.md`.
+
 ## Node Presets
 
 The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`) provides identity-aware per-node presets in library, project, or bundled scope. Installs at 0.5.29 or newer carry it; otherwise presets remain available through the Properties preset strip. `save` requires an explicit `params` and/or `groups` selection; identity follows the node type and Module project; `recall` returns `applied[]` and `skipped[]` and fails loudly when nothing applies. Verified call shapes: `knowledge/FEATURE-MAP.md`.
@@ -302,6 +308,18 @@ The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `renam
 Never create a Spout output, NDI output, output node, or external sender as a default finishing step. A request to make a complete graph, composition, scene, project, capture, or proof does not authorize an output node. Create one only when the user explicitly asks for Spout, NDI, an external sender, or an output node. When explicitly requested, use `sentinel_pipeline action=create_output`, wire or route it, and verify that frames are actually moving. Otherwise finish at the final processing or renderer pipeline and use its preview/capture for proof.
 
 OSC receive configuration is available through StateTree. Read or set `/sentinel/osc/receive_port`, then verify the OSC section in `sentinel_app action=diagnostic` or by sending a real OSC message.
+
+## Lighting And Show Control
+
+`dmxin` receives DMX over Art-Net or sACN into a typed `DMX` data port and draws the selected universe in its node body; `dmxout` sends a `DMX` port to fixtures; `oscout` sends values to any OSC receiver. Wire DMX ports with `sentinel_graph action=add_link`. Create OSC messages one call at a time with the node's `add_message` action, passing the address, the type, and a `ref()` expression as the value source. Read `packets_per_second` on the DMX nodes and look at the universe grid before trusting a fixture. Ready Modules for reading a console channel and driving a fixture ship in `tools/templates/dmx/`. Follow the `dmx-show-control` skill; details, including universe numbering and the DMX buffer layout for Modules: `knowledge/lighting-and-show-control.md`.
+
+## Lasers
+
+`laserout` sends a Scan Signal to one laser projector over Simulate, Record, Ether Dream, LaserCube or ShowNET, through scanner protection that content cannot remove. Build and prove on `protocol=simulate`, which needs no hardware and emits no light. Real output needs the node's own arm and the laser master; only a person clicking **ARM LASERS** can arm the master, so never try. `lasertrace` turns pixels into laser paths. Follow the `laser-show-setup` skill; details: `knowledge/laser-output.md`, and `projects/laser_mapping_lab` for mapping, looks and projector sync.
+
+## Show Control Desks And Controllers
+
+Operator desks live in Script windows or Module panels, and MIDI controllers and the Push 2 and Push 3 connect through Script nodes. Use the `script-node-authoring` and `controller-surface-authoring` skills, and `knowledge/show-control-desk.md` for desk controls.
 
 ## Reference Docs
 
@@ -322,10 +340,16 @@ Start with:
 - `knowledge/video-source.md`
 - `knowledge/streamdiff.md`
 - `knowledge/scene-system.md`
+- `knowledge/portable-scene-groups.md`
+- `knowledge/node-modes.md`
+- `knowledge/lighting-and-show-control.md`
+- `knowledge/laser-output.md`
+- `knowledge/laser-mapping.md`
+- `knowledge/bundle-links.md`
+- `knowledge/show-control-desk.md`
 - `knowledge/motion-choreography.md`
 - `knowledge/precise-construction.md`
 - `knowledge/gpu-cloth-and-xpbd.md`
-- `knowledge/laser-mapping.md`
 
 Use skills for authoring details:
 
@@ -333,13 +357,18 @@ Use skills for authoring details:
 - `module-ui-authoring`
 - `modular-scene-authoring`
 - `procedural-geometry-authoring`
-- `shader-authoring`
+- `shader-authoring` (legacy `.fx`, development builds only)
 - `mcp-automation`
 - `deterministic-rendering`
 - `motion-eval`
 - `motion-graphics-sequences`
 - `stage-rig-authoring`
+- `laser-show-setup`
 - `laser-content-authoring`
+- `laser-trace-tuning`
+- `script-node-authoring`
+- `controller-surface-authoring`
+- `dmx-show-control`
 - `sentinel-bug-report`
 - `setup-mcp`
 

@@ -1,0 +1,35 @@
+name: "DMX RGB Fixture"
+version: "1.0"
+mode: generator
+resolution: [256, 64]
+input_tiles: disabled
+parameters:
+  - { name: universe, type: int, min: 0, max: 63999, default: 0 }
+  - { name: address, type: int, min: 1, max: 509, default: 1 }
+  - { name: dimmer, type: float, min: 0.0, max: 1.0, default: 1.0 }
+  - { name: red, type: float, min: 0.0, max: 1.0, default: 1.0 }
+  - { name: green, type: float, min: 0.0, max: 1.0, default: 0.0 }
+  - { name: blue, type: float, min: 0.0, max: 1.0, default: 0.0 }
+buffers:
+  - { name: records, structured: true, element_size: 2048, element_count: 10, persistent: true }
+passes:
+  - name: emit
+    shader: emit.hlsl
+    target: cs_5_0
+    dispatch: [10, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    time_dependent: true
+    output: "buffer:records"
+  - name: swatch
+    shader: swatch.hlsl
+    target: ps_5_0
+    time_dependent: false
+outputs:
+  - { name: Swatch, pass: swatch }
+data_outputs:
+  - name: DMX
+    description: One DMX universe carrying a 4-channel fixture (dimmer, red, green, blue) at the chosen address.
+    buffer: records
+    schema:
+      - { name: channels, type: uint, count: 512 }

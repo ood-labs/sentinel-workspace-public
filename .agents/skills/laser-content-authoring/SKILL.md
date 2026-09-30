@@ -5,6 +5,49 @@ description: Author Module pipeline projects that drive physical lasers — vect
 
 # Laser Content Authoring (Module Patterns)
 
+## Point-stream output with Laser Out
+
+Discover `laserout` with `sentinel_pipeline list_types` before authoring.
+A Module publishes the fixed `Scan Signal` schema: five `float4` fields
+`endpoints`, `color0`, `color1`, `timing`, `meta`, with an 80-byte stride.
+Record zero has `endpoints=(count, cycle_seconds, pps, phase)`; records
+1 through count contain segments, up to 1,023 active records. Segment
+timing is start, duration, shape, blank; metadata is u0, u1, cycle, valid.
+Publish finite values, valid timing, colors in 0 to 1, and normalized XY.
+
+1. Author and compile the Module, then create a Laser Out node.
+2. Keep `protocol=record`, wire Scan Signal, and run graph auto-layout.
+3. Explicitly arm the dry run through StateTree or the header ARM toggle.
+   Inspect `captures/laser/` in the active workspace, the protected preview,
+   clamp counters, and `Sent Stream` through `capture_data_port`.
+4. Feed Sent Stream into LS_Projector and LS_Air for simulation of a
+   completed sent cycle. `meta.w=2` marks decimation; use the recorded
+   samples for exact comparison when that marker is present.
+5. Use LS_Split for independent mirrored/rotated lanes, one Laser Out
+   per lane. Each node has its own scanner limits, arming and stop state.
+
+Arming never persists or restores. Every new arm needs an explicit write.
+Protocol/device changes disarm. The global `Shift+Escape` action stops
+all Laser Out nodes; the node's `estop` parameter also accepts MCP, OSC,
+and registered control expressions. Freeze and Bypass stop sending.
+Bypass aliases the authored data input; inspect actual sent cycles in
+Normal or a deliberately held Freeze state.
+
+The title shows name, mode, ARM and LIVE/BLANKED/CLAMP/STOP. Detailed
+device, rate, blanking reason and stop source remain in Properties and
+`info`. The node and its pipeline window show the same control preview.
+
+Node-enforced scanner limits protect step size, step changes, slow motion,
+sustained duty and blank travel. Content must keep these protections.
+A preview or simulator cannot establish physical beam safety. Phase 126.F
+remains pending operator hardware verification: operator present, rated
+eye protection, safety lens, beam dump, physical kill tested, and no light
+while disarmed before any low-power arm. Until that gate, use record or
+explicit numeric loopback test tools and leave physical DACs alone.
+
+The raster Spout/NDI to MadMapper path below remains available for users
+who want the external vectorizer workflow.
+
 Patterns for Module projects that produce content for physical laser projection. The output goes Spout/NDI → MadMapper → laser DAC. The laser controller traces white pixels as beam paths, so laser channels must be **vectorizable**: pure white-on-black, crisp edges, no gradients or anti-aliasing. The color channel beside it can be lush HDR for monitor preview / video projection.
 
 The patterns below are self-contained and are intended to be authored as bundled
@@ -592,16 +635,18 @@ If a piece genuinely wants these, put them in a `"Post FX"` group with ranges
 
 ## Reference implementations
 
-Real, inspectable modules in `projects/pulse_vitrine/modules/`. Read them rather than
-copying them — they solve their own project's problem.
+Real, inspectable Modules in `projects/laser_mapping_lab/modules/`. Read them
+rather than copying them: they solve their own project's problem.
 
-- **`VT_LaserTest`** — the calibration source. Reference line, rotating polygon, and
-  moving dots, each independently switchable, all sized in exact pixels with the parity
-  snap above. This is where line and dot sizes get dialed in before a show. Ships
-  narrow-scoped presets: sizes and view isolation saved separately.
-- **`VT_LaserGrid`** — alignment grid with the `render` → `video` + `laser` three-pass
-  split, where `render` writes channel-separated masks (R = lines, G = dots) and the
-  laser pass picks channels via a `laser_output_mode` enum and hard-thresholds at 0.5.
-- **`VT_Laser`** — the show-side lane: a beat-triggered zip point travelling a path,
-  path hold, and a snare outline flash, with every control named for what it does
-  (`zip_time`, `tail_frac`, `outline_ms`) and an explicit on/off per lane.
+- **`Alignment_Grid`**: the alignment grid and the Sync Sweep that measures
+  laser against projector latency. Publishes its projector video and its
+  laser scan together as a Laser Look bundle.
+- **`Laser_Test_Shapes`**: the Shapes look. Vector shapes written straight
+  into a Scan Signal, with the matching projector image, in one bundle. Copy
+  this look to start a new one.
+- **`Trace_Canvas`**: a paint canvas whose pixels Laser Trace turns into
+  paths, for content that starts as pixels.
+- **`Adaptive_Mapping`**: warps any Scan Signal through the surface mapping,
+  cuts it at masks and the field edge, and blanks the hidden pieces.
+- **`Laser_Previs`**: renders the Sent Stream as beams in a hazy room, so a
+  look can be judged with no laser.

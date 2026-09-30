@@ -137,7 +137,7 @@ Look_Select ─Bundle─▶ Laser_Split ─laser.a.scan─▶ Adaptive_Mapping �
 - **The video projector** (BLINK_Previs's projector term) lights every surface with the image pixel where its ray meets the wall. The image is mapped onto the 3 × 1.8 m frame. Anything in front of the wall catches the image and casts a shadow, as on site.
   - Its image is Look_Select's video: the selected look's projection, drawn in the same coordinates as its laser scan. That's why a mapped laser lands exactly on it.
   - Controls are in the **Video Projector** group on Laser_Previs: **Projector Brightness**, the position (**Projector X/Y/Z**), **Projector Beam in Haze** and **Projector Frustum Lines**.
-  - Look_Select also feeds **Projector Output**, a screen output that ships switched off. Turn it on and pick your projector's display to put the look on a real projector.
+  - The example has no screen output, so opening it never covers a display. To put the look on a real projector, drag from **Look_Select**'s Out pin to empty canvas, add a **Display** output, and pick the projector's monitor in Properties. Every saved output starts when the project opens, so save it only on the machine the projector belongs to.
 
 ## Match your own room
 
@@ -188,7 +188,6 @@ These talk to Sentinel over `sentinel-mcp` and are proof tools, not part of the 
 | `Trace_Canvas`, `Trace`, `Trace_Look` | The Trace look: line art, Laser Trace, and the Bundle Pack that pairs the traced scan with the canvas. |
 | `Mapper_Out`, `Shapes_Out`, `Trace_Out` | Each look's Group Output. |
 | `Look_Select` | The look switcher: a Mux in Groups mode. |
-| `Projector_Output` | A screen output fed by Look_Select, for a real projector. Ships switched off; turn it on and pick your projector's display. |
 | `Laser_Split` | Bundle Split: `laser.a.scan` for the mapper. |
 | `Mapping_Editor` | The mapping you edit: one 5 × 5 handle lattice plus Scanner Correction (Bow, Spacing and Centre, corner-anchored), and the zoning masks, with a pan/zoom canvas, box select and arrow-key nudge. Publishes the Calibration (mapping, masks and polygon points). |
 | `Adaptive_Mapping` | Compiles the Scan Signal through the Calibration with adaptive subdivision, tolerance and record budget, cuts it at the zoning masks, turns hidden geometry into single jumps, and keeps the joint flags. Publishes the Mapped Scan and Compiler Stats. Scans are ILDA space (+y up); the editor is screen space, converted at the warp. |

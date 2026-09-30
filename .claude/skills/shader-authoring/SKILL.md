@@ -1,11 +1,11 @@
 ---
 name: shader-authoring
-description: Write HLSL .fx shaders for Sentinel (Notch-compatible). Use when creating or editing .fx shaders, debugging shader compile errors, working with the HLSL parameter convention, or ensuring Notch compatibility.
+description: "Maintain existing HLSL .fx shaders for the legacy hlslshader node (Notch-compatible), which only development builds include. New shader work belongs in the module-authoring skill. Use only when an existing .fx shader must be kept running in a development build."
 ---
 
-# HLSL Shader Authoring
+# HLSL Shader Authoring (legacy)
 
-This skill covers single `.fx` post-process shaders. For shader-rendered Module panels, controls, editors, or gizmos, use `module-ui-authoring` plus `module-authoring`; those projects use `manifest.yaml`, compute/draw passes, viewport interaction contracts, and the shared scientific UI HLSL rather than Notch `.fx` boilerplate.
+Release builds of Sentinel do not include the `hlslshader` node, so a `.fx` shader cannot run in an installed app. Write new shader work as a Module with the `module-authoring` skill, and rebuild a legacy `.fx` effect as a Module when it needs to ship. This skill covers maintaining single `.fx` post-process shaders in a development build. For shader-rendered Module panels, controls, editors, or gizmos, use `module-ui-authoring` plus `module-authoring`; those projects use `manifest.yaml`, compute/draw passes, viewport interaction contracts, and the shared scientific UI HLSL rather than Notch `.fx` boilerplate.
 
 Write `.fx` shaders in Notch HLSL format, hot-reload via MCP:
 ```

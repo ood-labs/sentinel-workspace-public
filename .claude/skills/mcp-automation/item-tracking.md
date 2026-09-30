@@ -176,3 +176,24 @@ These scripts live in the dev repo and are not shipped in the distribution. Dist
 | Script | Purpose |
 |--------|---------|
 | `setup_facetrack_test.py` | Spout + Face Tracking + route |
+
+## Tracked Graph Paths
+
+Graph items are tracked under the `Graph` window and resolve with
+`sentinel_ui get_info path=Graph/<item>`. Rects are client-space pixels.
+
+| Path | Item |
+|---|---|
+| `Graph/Nodes/<entityId>` | Node title strip; the full node rect runs from its top left to the `NodeResize` grip's bottom right |
+| `Graph/Pins/<entityId>/<in or out>/<pin name>` | Pin circle |
+| `Graph/Links/<id>` | Link hit area |
+| `Graph/BundleStrip/<entityId>` | Bundle channel strip |
+| `Graph/LicenseBadges/<entityId>` | Trial gate badge |
+| `Graph/NodeResize/<entityId>` | Body resize grip at the node's outer bottom-right corner (absent for nodes without a body and for off-screen shells) |
+| `Graph/NodeBodyImage/<entityId>` | Preview image drawn in the node body (letterboxed rect when sized) |
+| `Graph/Node Context/Reset Size` | Node context menu item; open the menu with `click_at button=1` on the node body |
+| `Graph/Node Context/Bundle Channels` | Show or Hide Bundle Channels in the node context menu |
+
+`drag_at` takes coordinates only: read the rect with `get_info`, then drag from
+its center. Click menu items with `click_at` on their rect center; a plain
+`click` on a context-menu path can leave an empty popup open.

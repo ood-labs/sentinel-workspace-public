@@ -149,6 +149,20 @@ bytecode. Keep the default for ordinary Modules. For a `fast_compile` Module,
 compare cold compile time and live GPU frame time on the target hardware before
 release. The compiler flags are part of the shader-cache key.
 
+## Input Tile Strip Visibility
+
+Use the optional top-level `input_tiles:` key to declare how the pipeline window presents the Module's input tiles:
+
+```yaml
+input_tiles: visible  # visible | hidden | disabled
+```
+
+- `visible` opens with the strip expanded.
+- `hidden` opens with a slim expander and is the default when the key is absent.
+- `disabled` removes both the strip and expander. Use it when input routing should only happen through the graph.
+
+Users can expand or collapse visible and hidden strips per node, and the choice persists in the saved project. Zero-input Modules render no strip or expander regardless of this key. Invalid values fail manifest compilation and name all accepted values.
+
 ## Manifest data_inputs/data_outputs Syntax
 
 ```yaml
@@ -199,6 +213,50 @@ Use this direct semantic cable for normal imported-mesh rendering. The built-in
 Mesh Unpack node is reserved for specialized graphs that genuinely require
 three separate raw buffer pins. See `knowledge/mesh-import.md` for import,
 bundling, inspection, and proof.
+
+### Bundle groups (video plus keyed channels)
+
+Declare a `bundle_outputs` group when a Module's image and its data belong
+together, for example a laser look's picture, Scan Signal and Routing Tags.
+Channels reference existing `outputs` and `data_outputs`; HLSL does not change.
+
+```yaml
+bundle_outputs:
+  - name: Look
+    video: Pixels
+    channels:
+      - {key: laser.scan, data: Scan Signal, header_records: 1, transition: {mode: handoff, at: mid}, neutral: empty}
+      - {key: laser.tags, data: Routing Tags, transition: {mode: snap, follow: laser.scan}}
+
+bundle_inputs:
+  - name: Look
+    video: Input
+    channels:
+      - {key: laser.scan, data: World Scan}
+```
+
+- Keys are dotted names (`laser.scan`, `light.fixtures`, `dmx.u1`); `meta` is
+  reserved for the runtime identity and fade record, and a consumer may bind it.
+- `transition` is the producer's default for Mux fades: `crossfade`, `snap` with
+  `at`, `follow`, `handoff` with `at` and a `neutral`, or `lerp` with optional
+  `fields` (`lerp`, `snap`, `angle`, `htp`) and `match: <id field>`.
+- Give a laser scan `handoff` with `neutral: empty` and `header_records: 1`, so
+  the outgoing path blanks while the image crossfades.
+- Bump a data port's `schema_version` when its record layout changes; the Mux
+  then snaps that key instead of blending mismatched records.
+
+Connect by pin name and inspect by key:
+
+```
+sentinel_graph action="add_link" from_entity="Look_Mux" from_slot="Bundle" to_entity="Adaptive_Mapping" to_slot="Look"
+sentinel_pipeline action="capture_data_port" pipeline_id="Look_Mux" port_name="Bundle/laser.scan"
+sentinel_pipeline action="info" pipeline_id="Look_Mux"   # mux.policies, warnings, progress
+```
+
+For looks in Scene Groups, link each look's `Look` output to its Group Output's
+`Bundle` input and set the Mux to Groups mode. Place nodes explicitly:
+`auto_layout` can move a look out of its group annotation. Use `bundlepack` and
+`bundlesplit` for producers and consumers that are not Modules.
 
 ### Audio hop-ring inputs
 
@@ -558,8 +616,6 @@ passes:
 - `pass:name` inputs dirty if that pass was dirty
 - Forced dirty on: first frame, recompile, RT resize, parameter change
 
-## Camera Feature Integration
-
 ## Authored UI And Canvas Panels
 
 When a Module is an interface, editor, dashboard, spline tool, or gizmo rather than only an effect, use the `module-ui-authoring` skill and read `knowledge/ui-authoring.md`. Start from the neutral `tools/module-ui.ps1` scaffold, then replace its visual language with one appropriate to the current problem. Keep manifest-aligned normalized hit rectangles converted with the live render extent.
@@ -576,6 +632,8 @@ panel:
 Canvas removes all host chrome below the dock tab. `follow_panel` changes the Module's real output size to the current panel content extent. A multi-output Canvas must name `output`, and that output pass must inherit root resolution. Inspect `sentinel_pipeline info` and require `panel.content_size` and `panel.render_size` to converge before calling the result responsive.
 
 Keep authored UI Module-only unless a new host capability is explicitly requested. Do not add native widgets just to reproduce a shader-authored visual treatment.
+
+## Camera Feature Integration
 
 Add `camera` to features for fly camera (WASD + right-click drag in viewport):
 
