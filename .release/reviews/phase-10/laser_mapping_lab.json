@@ -1,6 +1,6 @@
 {
  "project": "projects/laser_mapping_lab/laser_mapping_lab.sentinel",
- "source": "exported from the development workspace (sentinel-workspace eaa8a029) onto branch 0.6 over f543cec: git-tracked files only, with the operator's own ShowNET output and its second mapping chain removed from the saved graph, the monitor output removed, retired-project panels dropped from the saved window layout, Laser_Sim disarmed on simulate, and Look_Select opening on the Mapper look",
+ "source": "exported from the development workspace (sentinel-workspace 0daa1015) onto branch 0.6 over f543cec: git-tracked files only, with the operator's own ShowNET output and its second mapping chain removed from the saved graph, the projector screen output saved switched off, retired-project panels dropped from the saved window layout, Laser_Sim disarmed on simulate, and Look_Select opening on the Mapper look",
  "host": "Sentinel 0.5.99 (dist), Windows 11 Pro 10.0.26200; real-laser checks on a Laserworld DS-3000 RGB over ShowNET at 20 kpps",
  "approved_structure": {
   "pipelines": [
@@ -29,7 +29,7 @@
    "Live 1280x720",
    "Beauty 1920x1080 (captures)"
   ],
-  "notes": "Laser_Sim is a Laser Out on the simulate protocol, saved disarmed; there is no device address and no output node. Each look's Group Output is collected by the Groups-mode Mux Look_Select."
+  "notes": "Laser_Sim is a Laser Out on the simulate protocol, saved disarmed, with no device address. Look_Select feeds a Projector Output screen output saved inactive. Each look's Group Output is collected by the Groups-mode Mux Look_Select."
  },
  "compile": {
   "modules": ["Alignment_Grid", "Mapping_Editor", "Adaptive_Mapping", "Laser_Fixture", "Laser_Previs", "Laser_Test_Shapes", "Trace_Canvas"],

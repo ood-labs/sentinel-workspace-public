@@ -137,7 +137,7 @@ Look_Select ─Bundle─▶ Laser_Split ─laser.a.scan─▶ Adaptive_Mapping �
 - **The video projector** (BLINK_Previs's projector term) lights every surface with the image pixel where its ray meets the wall. The image is mapped onto the 3 × 1.8 m frame. Anything in front of the wall catches the image and casts a shadow, as on site.
   - Its image is Look_Select's video: the selected look's projection, drawn in the same coordinates as its laser scan. That's why a mapped laser lands exactly on it.
   - Controls are in the **Video Projector** group on Laser_Previs: **Projector Brightness**, the position (**Projector X/Y/Z**), **Projector Beam in Haze** and **Projector Frustum Lines**.
-  - To send the look to a real projector, add a screen or Spout/NDI output to Look_Select. The example ships with none.
+  - Look_Select also feeds **Projector Output**, a screen output that ships switched off. Turn it on and pick your projector's display to put the look on a real projector.
 
 ## Match your own room
 
