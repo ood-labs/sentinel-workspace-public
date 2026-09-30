@@ -58,8 +58,9 @@ Light needs two arms:
    can never arm it.
 
 An armed output with the master off shows amber ARM and the INHIBIT state. A
-Simulate output ignores the master (it emits no light), shows a blue ARM
-button and never reads INHIBIT.
+Simulate output is always armed: it emits no light, so neither its node arm
+nor the master gates it. Its ARM button stays blue and it never reads
+INHIBIT. Only the e-stop stops it, and clicking its ARM resumes it.
 
 E-stop latches a stop and disarms: press `Shift+Escape` anywhere (it stops
 every Laser Out), click **E-stop** in the node's Properties, set `/sentinel/pipelines/<id>/parameters/estop` to 1 over MCP
@@ -74,7 +75,8 @@ click ARM LASERS.
 ## First light on a real projector
 
 1. Create the node: `sentinel_pipeline action=create type=laserout name=Laser_A`.
-   It starts on `simulate`, disarmed, with the show scanner profile.
+   It starts on `simulate`, which is always armed, with the show scanner
+   profile.
 2. Wire content into its `Scan Signal` input with `sentinel_graph
    action=add_link`, and check the node preview draws the shape you expect.
 3. Point the projector at a wall with nobody in the beam. Keep

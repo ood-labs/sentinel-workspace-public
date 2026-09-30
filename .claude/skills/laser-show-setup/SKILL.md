@@ -36,7 +36,7 @@ looks that carry video and laser paths together, read
    the producer's preview (Laser Trace's `display` shows the paths it found).
 3. **Laser Out on Simulate.** `sentinel_pipeline action=create type=laserout
    name=Laser_A`, link the Scan Signal into it with `sentinel_graph
-   action=add_link`, arm the node (Simulate needs only its own arm), and read
+   action=add_link` (Simulate is always armed, so there is nothing to arm), and read
    `sentinel_pipeline action=info`: the badge reads LIVE, `scan_fps` is near
    `desired_fps`, and `clamp_trips` stays still. CLAMP or a low `scan_fps`
    means the content asks for more than the profile allows; simplify it now,
