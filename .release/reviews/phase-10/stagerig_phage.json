@@ -115,7 +115,11 @@
  ],
  "operator_checks_pending": [
   "hand test of the gestures listed under not_executed",
-  "Push 2 hardware check",
-  "commit approval"
- ]
+  "Push 2 hardware check"
+ ],
+ "resaved_by_user": {
+  "change": "after review the user re-saved the project with their own opening state: camera in the crowd at (0.77, 4.47, 31.97), 199.9 BPM, haze 0.045, STATIC ORIGIN + REST + EFFECTS DRIFT + COLOR WHITE with no FULL look lit",
+  "unchanged": "node presets, node preview visibility, record_png_every 0, module files",
+  "checks": "the app reported no unsaved changes; the README first-run step describes the new opening; validate-official-examples re-run on the saved file"
+ }
 }
