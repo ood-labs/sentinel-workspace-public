@@ -369,6 +369,7 @@
             'knowledge',
             'projects',
             'tools/templates/module-includes',
+            'tools/templates/dmx',
             'tools/templates/module-ui'
         )
         Files = @(
