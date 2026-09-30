@@ -22,7 +22,7 @@
                   },
                   {
                       "path":  ".agents/skills/laser-show-setup/SKILL.md",
-                      "sha256":  "7c4b36e60b470b2e76117506d7ea772f7b1c71ca3b0f73cf54e59646fb114dc6"
+                      "sha256":  "1ccf9bf635ad6d0c93606b6d1c81b7f296777bfbf88fd3286e6a10d4f8fb26eb"
                   },
                   {
                       "path":  ".agents/skills/laser-trace-tuning/SKILL.md",
@@ -190,7 +190,7 @@
                   },
                   {
                       "path":  ".claude/skills/laser-show-setup/SKILL.md",
-                      "sha256":  "7c4b36e60b470b2e76117506d7ea772f7b1c71ca3b0f73cf54e59646fb114dc6"
+                      "sha256":  "1ccf9bf635ad6d0c93606b6d1c81b7f296777bfbf88fd3286e6a10d4f8fb26eb"
                   },
                   {
                       "path":  ".claude/skills/laser-trace-tuning/SKILL.md",
@@ -418,7 +418,7 @@
                   },
                   {
                       "path":  "knowledge/laser-output.md",
-                      "sha256":  "bcdac7e812464b219a79ff3c300047b4970e02af9cd39e857058a9f90abba8fa"
+                      "sha256":  "e72c5ea670d40a17381ca53acec29686c336bce6366f1b1a8c413df4a77cdec2"
                   },
                   {
                       "path":  "knowledge/lighting-and-show-control.md",
@@ -2094,7 +2094,7 @@
                   },
                   {
                       "path":  "projects/laser_mapping_lab/README.md",
-                      "sha256":  "28e6c559c8ed471825ac76730ec34805b87f5c1e28789b6c3bf1c6f5961daead"
+                      "sha256":  "bfc50a48e1687e6c450045fd420a3793b54a3a472209651da86677db280ef0dc"
                   },
                   {
                       "path":  "projects/laser_mapping_lab/scripts/clock_check.py",
@@ -11148,5 +11148,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "219e14d111e77b31260c421d7925203393d1c726"
+    "source_commit":  "b012ed8dc6fa809c6a27565982c3381ff0c26c6f"
 }
