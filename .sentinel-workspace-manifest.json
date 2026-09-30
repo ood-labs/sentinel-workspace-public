@@ -2050,7 +2050,7 @@
                   },
                   {
                       "path":  "projects/laser_mapping_lab/README.md",
-                      "sha256":  "4ac69dd65f25c373bbce481b41f8abef9312e6eafaaf74f1957f62ccb94b46d9"
+                      "sha256":  "d1dc22b5bcde6589c91bb8a2537242dfeac3fa4e5a448a85337326dcfd20ba6a"
                   },
                   {
                       "path":  "projects/laser_mapping_lab/scripts/clock_check.py",
@@ -10236,5 +10236,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "b9b74aacf7f71b90625702f7f4feefab1af24a2c"
+    "source_commit":  "2f377c27dc39a40c7ddf299d2e5bc2d3e6465186"
 }
