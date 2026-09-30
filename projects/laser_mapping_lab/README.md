@@ -188,6 +188,7 @@ These talk to Sentinel over `sentinel-mcp` and are proof tools, not part of the 
 | `Trace_Canvas`, `Trace`, `Trace_Look` | The Trace look: line art, Laser Trace, and the Bundle Pack that pairs the traced scan with the canvas. |
 | `Mapper_Out`, `Shapes_Out`, `Trace_Out` | Each look's Group Output. |
 | `Look_Select` | The look switcher: a Mux in Groups mode. |
+| `Projector_Output` | A screen output fed by Look_Select, for a real projector. Ships switched off; turn it on and pick your projector's display. |
 | `Laser_Split` | Bundle Split: `laser.a.scan` for the mapper. |
 | `Mapping_Editor` | The mapping you edit: one 5 × 5 handle lattice plus Scanner Correction (Bow, Spacing and Centre, corner-anchored), and the zoning masks, with a pan/zoom canvas, box select and arrow-key nudge. Publishes the Calibration (mapping, masks and polygon points). |
 | `Adaptive_Mapping` | Compiles the Scan Signal through the Calibration with adaptive subdivision, tolerance and record budget, cuts it at the zoning masks, turns hidden geometry into single jumps, and keeps the joint flags. Publishes the Mapped Scan and Compiler Stats. Scans are ILDA space (+y up); the editor is screen space, converted at the warp. |
