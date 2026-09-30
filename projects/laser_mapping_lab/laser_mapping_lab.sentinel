@@ -47,11 +47,6 @@
         "startPinId": 230
       },
       {
-        "endPinId": 173,
-        "id": 32,
-        "startPinId": 229
-      },
-      {
         "endPinId": 236,
         "id": 39,
         "startPinId": 69
@@ -188,26 +183,6 @@
         "positionSet": true,
         "previewVisible": true,
         "type": 1
-      },
-      {
-        "displayName": "Output 1",
-        "entityId": "output_0",
-        "id": 16,
-        "logicalPreview": [
-          8.0,
-          38.900001525878906,
-          140.0,
-          78.80000305175781
-        ],
-        "logicalSize": [
-          156.0,
-          125.5999984741211
-        ],
-        "posX": 539.3694458007813,
-        "posY": 71.56517791748047,
-        "positionSet": true,
-        "previewVisible": true,
-        "type": 2
       },
       {
         "bodyHeight": 118.0379409790039,
@@ -784,14 +759,6 @@
         "nodeId": 15,
         "slotIndex": 1,
         "type": 6
-      },
-      {
-        "id": 173,
-        "kind": 0,
-        "name": "In",
-        "nodeId": 16,
-        "slotIndex": 0,
-        "type": 0
       },
       {
         "id": 213,
@@ -2176,20 +2143,7 @@
     "sendPort": 9021,
     "stateTreeBridge": true
   },
-  "outputObjects": [
-    {
-      "height": 1080,
-      "id": "output_0",
-      "matchInputResolution": false,
-      "monitorDeviceName": "\\\\.\\DISPLAY1",
-      "monitorIndex": 3,
-      "name": "Output 1",
-      "senderName": "Sentinel-Output-1",
-      "type": "screen",
-      "wasActive": false,
-      "width": 1920
-    }
-  ],
+  "outputObjects": [],
   "outputs": [],
   "pipelines": [
     {
@@ -2620,7 +2574,7 @@
       ],
       "operator_mode": "normal",
       "outputFitMode": 1,
-      "outputSinkId": "output_0",
+      "outputSinkId": "",
       "panelAnchorId": "Look_Select",
       "panelOpen": true,
       "parameters": {

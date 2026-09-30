@@ -12,7 +12,7 @@ Requires Sentinel 0.5.99 or newer (Laser Out Simulate, joint flags, Laser Trace 
 
 ## First run
 
-1. Open `laser_mapping_lab.sentinel`. Both Laser Outs open on `simulate`: **Laser_Sim** runs armed against a virtual DAC so the previs is live, and **Laser Out #0** (`laserout_0`, the real output) is disarmed with no device. The screen output for a real projector (`output_0`) ships inactive. Nothing is sent to hardware.
+1. Open `laser_mapping_lab.sentinel`. Both Laser Outs open on `simulate`: **Laser_Sim** runs armed against a virtual DAC so the previs is live, and **Laser Out #0** (`laserout_0`, the real output) is disarmed with no device. The example has no screen output, so opening it never covers a display. Nothing is sent to hardware.
 2. Open **Laser_Previs**. Recall a frame preset on it:
    - **Frame - Operator**: from behind the laser.
    - **Frame - Audience**: from the room.
@@ -77,7 +77,7 @@ Masks are the editor's `zones` state. Save a venue's zones as a node preset with
  Scene Group "Trace":   Trace_Canvas ─▶ Trace ─▶ Trace_Look ─Bundle─▶ Trace_Out ┤  collected wirelessly by
                                                                   Look_Select (Mux, Groups mode)
                           ─Bundle─▶ Laser_Split ─laser.a.scan─▶ Adaptive_Mapping
-                          ─Out────▶ Laser_Previs Projection, Output 1
+                          ─Out────▶ Laser_Previs Projection
 ```
 
 - A look is one Module that publishes a **Laser Look** bundle: its projector video plus one channel per laser, keyed `laser.a.scan`. Declare it in the manifest:
@@ -108,7 +108,6 @@ Look_Select ─Bundle─▶ Laser_Split ─laser.a.scan─┬─▶ Adaptive_Map
      │                                          │                                        (simulate)                                    ▲
      │                                          └─▶ Adaptive_Mapping_1 ─Mapped Scan─▶ laserout_0 (real laser)                           │
      │                                   Mapping_Editor_1 ─Calibration─┘                                                               │
-     ├─ Out ─▶ output_0 (screen output to the real projector)                                                                         │
      └─ Out ───────────────────────────────────────────────────────────────────────────────────────────────── Projection ──────────────┘
 ```
 
@@ -149,7 +148,7 @@ To preview your own space, set **Laser_Fixture** Pose to where your laser really
 5. **Shift+Esc** stops all Laser Out nodes. Laser Out's scanner protections stay active at all times.
 6. Do not relink laser inputs while a real device is armed.
 7. Map against your real wall with **Mapping_Editor 2**, exactly as above. Keep Laser_Fixture's pose roughly matched to your room so the preview stays useful.
-8. To show the looks on your projector, start **Output 1** (`output_0`) and pick the projector's display.
+8. To show the looks on your projector, drag from **Look_Select**'s Out pin to empty canvas, add a **Display** output, and pick the projector's monitor in Properties. Every saved output starts when the project opens, so save this only on the machine the projector belongs to.
 
 The Laser Out profile was dialled in on a Laserworld DS-3000 RGB (ShowNET, 20 kpps) against the grid and the Shapes look:
 - Desired FPS 60 (0 skips the speed limits, ood-labs/sentinel-bugs#148)
@@ -195,7 +194,6 @@ The previs ships at 1920 × 1080. Cost grows with the number of scan records. Bu
 | `Mapping_Editor_1`, `Adaptive_Mapping_1` | The same pair for the real laser on the real wall, shown as Mapping_Editor 2 and Adaptive_Mapping 2. |
 | `laserout_0` | Laser Out #0, the real laser output: `simulate`, disarmed and with no device as shipped, with node-enforced scanner protection and Sent Stream. |
 | `Laser_Sim` | A Laser Out on `simulate` that drives the simulated laser through its Sent Stream. |
-| `output_0` | Output 1, a Screen output of the selected look's video for the real projector. Ships inactive. |
 | `Laser_Fixture` | The simulated physical laser: pose, scan field and optics. Turns the mapped path into world-space scan records and publishes the housing. Follows Laser Out's flips. |
 | `Laser_Previs` | The warehouse, drywall, video projector and simulated laser in haze, with frame presets Operator, Audience and Wall. This is the program view. |
 
