@@ -274,10 +274,11 @@
         }
         # Committed directly (scripts/, presets/ and docs/ are outside AllowedProjectDirectories),
         # so promotion skips it; the validator, audit and workspace manifest still cover it.
-        stagerig_phage = @{
-            ProjectFile = 'stagerig_phage.sentinel'
+        phage_stage = @{
+            ProjectFile = 'phage_stage.sentinel'
             Promote = $false
             SharedModules = @()
+            # Reviewed in phase 10 as stagerig_phage; renamed phage_stage for 0.6.1.
             ProofRecords = @('.release/reviews/phase-10/stagerig_phage.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
@@ -369,7 +370,8 @@
         'tracking_ripple.sentinel',
         'timeline_hud',
         'choreo_cascade',
-        'klangrig'
+        'klangrig',
+        'stagerig_phage'
     )
 
     Scientifica = @{

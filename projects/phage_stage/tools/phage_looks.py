@@ -4,7 +4,7 @@ Looks are authored here as geometry and intent (where beams go, which lane drive
 against the real mount frames captured from Phage_Kinetics (tools/mounts_rest.json), with the same
 aim inverse the GPU uses (phAimAngles). Output, in the packed bank format the Surface recalls:
 
-    presets/stagerig_phage_{static,effects,color,complete,rhythm}.json
+    presets/phage_stage_{static,effects,color,complete,rhythm}.json
     scripts/show/preset_titles.luau            (pad names for the Push, Desk and Surface window)
 
     python tools/phage_looks.py
@@ -504,8 +504,8 @@ def full_rows(static_name, pose_name, color_name, effect_name):
 
 def group(kind, presets):
     paths = sorted({p for _, snap in presets for p in snap})
-    return {"id": f"stagerig_phage_{kind}", "paths": paths,
-            "presets": [{"id": f"stagerig_phage_{kind}:{kind} {i}", "name": f"{kind} {i}", "revision": 1,
+    return {"id": f"phage_stage_{kind}", "paths": paths,
+            "presets": [{"id": f"phage_stage_{kind}:{kind} {i}", "name": f"{kind} {i}", "revision": 1,
                          "snapshot": snap} for i, (_, snap) in enumerate(presets, 1)]}
 
 
@@ -561,7 +561,7 @@ def main():
     built = build()
     (ROOT / "presets").mkdir(exist_ok=True)
     for kind, presets in built.items():
-        path = ROOT / "presets" / f"stagerig_phage_{kind}.json"
+        path = ROOT / "presets" / f"phage_stage_{kind}.json"
         path.write_text(json.dumps(group(kind, presets), indent=1), newline="\n")
         print(f"{path.relative_to(ROOT)}: {len(presets)} looks, {path.stat().st_size // 1024} KB")
     print(write_titles(built).relative_to(ROOT))

@@ -1,5 +1,5 @@
 {
- "id": "stagerig_phage_rhythm",
+ "id": "phage_stage_rhythm",
  "paths": [
   "/sentinel/pipelines/Phage_Surface/state/rhythm_1_cycle",
   "/sentinel/pipelines/Phage_Surface/state/rhythm_1_mode",
@@ -16,7 +16,7 @@
  ],
  "presets": [
   {
-   "id": "stagerig_phage_rhythm:rhythm 1",
+   "id": "phage_stage_rhythm:rhythm 1",
    "name": "rhythm 1",
    "revision": 1,
    "snapshot": {

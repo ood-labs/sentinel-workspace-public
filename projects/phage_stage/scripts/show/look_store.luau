@@ -75,7 +75,7 @@ function M.service(rig)
         rig.recall_serial=(rig.recall_serial or 0)+1;rig.recall_kind=job.kind
         rig.message="Recalled "..rig.status.active_id..title(job.kind,job.slot);rig.job=nil;return
     end
-    local name=job.kind.." "..job.slot;local group="stagerig_phage_"..job.kind
+    local name=job.kind.." "..job.slot;local group="phage_stage_"..job.kind
     if job.stage==1 then
         local catalog=host.preset.list(group)
         if catalog.outcome=="pending" then return end

@@ -270,7 +270,7 @@ For a choreographed motion-graphics sequence (2D, 3D, generated or hybrid acts c
 
 ## Stage Rigs And Light Shows
 
-For a concert lighting rig or any show a lighting programmer plays (beam movers, strobes, pixel bars, a moving truss, static/effects/colour/full look banks, a desk panel or a Push 2), use the `stage-rig-authoring` skill. `projects/stagerig_phage/` is the reference build: read its README and `docs/PROCESS.md` before designing. Fork its show system when the user wants a rig on that system, but design the anatomy, fixtures, renderer look and looks fresh for the user's reference.
+For a concert lighting rig or any show a lighting programmer plays (beam movers, strobes, pixel bars, a moving truss, static/effects/colour/full look banks, a desk panel or a Push 2), use the `stage-rig-authoring` skill. `projects/phage_stage/` is the reference build: read its README and `docs/PROCESS.md` before designing. Fork its show system when the user wants a rig on that system, but design the anatomy, fixtures, renderer look and looks fresh for the user's reference.
 
 ## Precise 3D Construction
 

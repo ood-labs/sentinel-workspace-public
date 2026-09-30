@@ -25,7 +25,7 @@ How the rig was designed, programmed, tuned and optimised is written up in
 
 ## First run
 
-1. Open `stagerig_phage.sentinel`. The program image is `Phage_Renderer`. The
+1. Open `phage_stage.sentinel`. The program image is `Phage_Renderer`. The
    project opens with the clock running at about 200 BPM, seen from the middle
    of the crowd, on the four parts of FULL LOOK 01 GENESIS: STATIC ORIGIN, pose
    REST, EFFECTS DRIFT and COLOR PHAGE (teal, magenta and violet). HOME, or the
@@ -139,11 +139,11 @@ Everything the desk and the Push do can also be done through state:
   its LICENSE). Its hashes are in `scripts/push2os-provenance.json`, and
   `.gitattributes` keeps those bytes exact.
 - **Preset banks** in `presets/`:
-  - `stagerig_phage_static`, `stagerig_phage_effects`, `stagerig_phage_color`:
+  - `phage_stage_static`, `phage_stage_effects`, `phage_stage_color`:
     layered partial presets.
-  - `stagerig_phage_complete`: FULL LOOKS.
-  - `stagerig_phage_rhythm`.
-  - `stagerig_phage_push2`: surface state, palettes, sequences and custom
+  - `phage_stage_complete`: FULL LOOKS.
+  - `phage_stage_rhythm`.
+  - `phage_stage_push2`: surface state, palettes, sequences and custom
     groups.
 
 ## Geometry and fixtures

@@ -1,5 +1,5 @@
 {
- "id": "stagerig_phage_static",
+ "id": "phage_stage_static",
  "paths": [
   "/sentinel/pipelines/Phage_Surface/state/saved_static_bank_0",
   "/sentinel/pipelines/Phage_Surface/state/saved_static_bank_1",
@@ -12,7 +12,7 @@
  ],
  "presets": [
   {
-   "id": "stagerig_phage_static:static 1",
+   "id": "phage_stage_static:static 1",
    "name": "static 1",
    "revision": 1,
    "snapshot": {
@@ -27,7 +27,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 2",
+   "id": "phage_stage_static:static 2",
    "name": "static 2",
    "revision": 1,
    "snapshot": {
@@ -42,7 +42,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 3",
+   "id": "phage_stage_static:static 3",
    "name": "static 3",
    "revision": 1,
    "snapshot": {
@@ -57,7 +57,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 4",
+   "id": "phage_stage_static:static 4",
    "name": "static 4",
    "revision": 1,
    "snapshot": {
@@ -72,7 +72,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 5",
+   "id": "phage_stage_static:static 5",
    "name": "static 5",
    "revision": 1,
    "snapshot": {
@@ -87,7 +87,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 6",
+   "id": "phage_stage_static:static 6",
    "name": "static 6",
    "revision": 1,
    "snapshot": {
@@ -102,7 +102,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 7",
+   "id": "phage_stage_static:static 7",
    "name": "static 7",
    "revision": 1,
    "snapshot": {
@@ -117,7 +117,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 8",
+   "id": "phage_stage_static:static 8",
    "name": "static 8",
    "revision": 1,
    "snapshot": {
@@ -132,7 +132,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 9",
+   "id": "phage_stage_static:static 9",
    "name": "static 9",
    "revision": 1,
    "snapshot": {
@@ -147,7 +147,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 10",
+   "id": "phage_stage_static:static 10",
    "name": "static 10",
    "revision": 1,
    "snapshot": {
@@ -162,7 +162,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 11",
+   "id": "phage_stage_static:static 11",
    "name": "static 11",
    "revision": 1,
    "snapshot": {
@@ -177,7 +177,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 12",
+   "id": "phage_stage_static:static 12",
    "name": "static 12",
    "revision": 1,
    "snapshot": {
@@ -192,7 +192,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 13",
+   "id": "phage_stage_static:static 13",
    "name": "static 13",
    "revision": 1,
    "snapshot": {
@@ -207,7 +207,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 14",
+   "id": "phage_stage_static:static 14",
    "name": "static 14",
    "revision": 1,
    "snapshot": {
@@ -222,7 +222,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 15",
+   "id": "phage_stage_static:static 15",
    "name": "static 15",
    "revision": 1,
    "snapshot": {
@@ -237,7 +237,7 @@
    }
   },
   {
-   "id": "stagerig_phage_static:static 16",
+   "id": "phage_stage_static:static 16",
    "name": "static 16",
    "revision": 1,
    "snapshot": {

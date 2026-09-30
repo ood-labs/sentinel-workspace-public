@@ -21,9 +21,9 @@ return function(native: any, options: any?)
             return page
         end)
     end
-    local runtime=Runtime.create({id="stagerig_phage",root=options.root or "/sentinel/pipelines/Phage_Surface/state",
+    local runtime=Runtime.create({id="phage_stage",root=options.root or "/sentinel/pipelines/Phage_Surface/state",
         midi_output_port=options.midi_output_port or "Ableton Push 2",guest_port=options.guest_port or "",
-        persistence={group="stagerig_phage_push2",preset=options.preset or "current",schema_version=1,new_empty=true,
+        persistence={group="phage_stage_push2",preset=options.preset or "current",schema_version=1,new_empty=true,
             legacy_page_ids={"sequence","global","rig_static","color"}},pages=factories},native)
     -- Show-owned diagnostics; the pinned framework remains unchanged.
     runtime.rig=function() return if get then get("static_rig") else nil end

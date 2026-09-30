@@ -9,7 +9,7 @@ A stage rig is an instrument before it is an image. Someone has to play it, live
 Push 2. So its looks have to layer, its pads have to tell the truth, and the whole graph has to hold
 frame rate with hundreds of fixtures in haze.
 
-`projects/stagerig_phage/` (PHAGE) is the reference build. Read these before designing:
+`projects/phage_stage/` (PHAGE) is the reference build. Read these before designing:
 
 - its `README.md`: playing the show, the automation seam, the component map;
 - `docs/PROCESS.md`: the making-of, with every decision, trap and optimisation;

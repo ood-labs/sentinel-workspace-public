@@ -1,5 +1,5 @@
 {
- "id": "stagerig_phage_color",
+ "id": "phage_stage_color",
  "paths": [
   "/sentinel/pipelines/Phage_Surface/state/hue",
   "/sentinel/pipelines/Phage_Surface/state/pal0a",
@@ -40,7 +40,7 @@
  ],
  "presets": [
   {
-   "id": "stagerig_phage_color:color 1",
+   "id": "phage_stage_color:color 1",
    "name": "color 1",
    "revision": 1,
    "snapshot": {
@@ -83,7 +83,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 2",
+   "id": "phage_stage_color:color 2",
    "name": "color 2",
    "revision": 1,
    "snapshot": {
@@ -126,7 +126,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 3",
+   "id": "phage_stage_color:color 3",
    "name": "color 3",
    "revision": 1,
    "snapshot": {
@@ -169,7 +169,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 4",
+   "id": "phage_stage_color:color 4",
    "name": "color 4",
    "revision": 1,
    "snapshot": {
@@ -212,7 +212,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 5",
+   "id": "phage_stage_color:color 5",
    "name": "color 5",
    "revision": 1,
    "snapshot": {
@@ -255,7 +255,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 6",
+   "id": "phage_stage_color:color 6",
    "name": "color 6",
    "revision": 1,
    "snapshot": {
@@ -298,7 +298,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 7",
+   "id": "phage_stage_color:color 7",
    "name": "color 7",
    "revision": 1,
    "snapshot": {
@@ -341,7 +341,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 8",
+   "id": "phage_stage_color:color 8",
    "name": "color 8",
    "revision": 1,
    "snapshot": {
@@ -384,7 +384,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 9",
+   "id": "phage_stage_color:color 9",
    "name": "color 9",
    "revision": 1,
    "snapshot": {
@@ -427,7 +427,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 10",
+   "id": "phage_stage_color:color 10",
    "name": "color 10",
    "revision": 1,
    "snapshot": {
@@ -470,7 +470,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 11",
+   "id": "phage_stage_color:color 11",
    "name": "color 11",
    "revision": 1,
    "snapshot": {
@@ -513,7 +513,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 12",
+   "id": "phage_stage_color:color 12",
    "name": "color 12",
    "revision": 1,
    "snapshot": {
@@ -556,7 +556,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 13",
+   "id": "phage_stage_color:color 13",
    "name": "color 13",
    "revision": 1,
    "snapshot": {
@@ -599,7 +599,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 14",
+   "id": "phage_stage_color:color 14",
    "name": "color 14",
    "revision": 1,
    "snapshot": {
@@ -642,7 +642,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 15",
+   "id": "phage_stage_color:color 15",
    "name": "color 15",
    "revision": 1,
    "snapshot": {
@@ -685,7 +685,7 @@
    }
   },
   {
-   "id": "stagerig_phage_color:color 16",
+   "id": "phage_stage_color:color 16",
    "name": "color 16",
    "revision": 1,
    "snapshot": {

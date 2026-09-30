@@ -1,5 +1,5 @@
 {
- "id": "stagerig_phage_complete",
+ "id": "phage_stage_complete",
  "paths": [
   "/sentinel/pipelines/Phage_Surface/state/global_bloom",
   "/sentinel/pipelines/Phage_Surface/state/global_exposure",
@@ -73,7 +73,7 @@
  ],
  "presets": [
   {
-   "id": "stagerig_phage_complete:complete 1",
+   "id": "phage_stage_complete:complete 1",
    "name": "complete 1",
    "revision": 1,
    "snapshot": {
@@ -149,7 +149,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 2",
+   "id": "phage_stage_complete:complete 2",
    "name": "complete 2",
    "revision": 1,
    "snapshot": {
@@ -225,7 +225,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 3",
+   "id": "phage_stage_complete:complete 3",
    "name": "complete 3",
    "revision": 1,
    "snapshot": {
@@ -301,7 +301,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 4",
+   "id": "phage_stage_complete:complete 4",
    "name": "complete 4",
    "revision": 1,
    "snapshot": {
@@ -377,7 +377,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 5",
+   "id": "phage_stage_complete:complete 5",
    "name": "complete 5",
    "revision": 1,
    "snapshot": {
@@ -453,7 +453,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 6",
+   "id": "phage_stage_complete:complete 6",
    "name": "complete 6",
    "revision": 1,
    "snapshot": {
@@ -529,7 +529,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 7",
+   "id": "phage_stage_complete:complete 7",
    "name": "complete 7",
    "revision": 1,
    "snapshot": {
@@ -605,7 +605,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 8",
+   "id": "phage_stage_complete:complete 8",
    "name": "complete 8",
    "revision": 1,
    "snapshot": {
@@ -681,7 +681,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 9",
+   "id": "phage_stage_complete:complete 9",
    "name": "complete 9",
    "revision": 1,
    "snapshot": {
@@ -757,7 +757,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 10",
+   "id": "phage_stage_complete:complete 10",
    "name": "complete 10",
    "revision": 1,
    "snapshot": {
@@ -833,7 +833,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 11",
+   "id": "phage_stage_complete:complete 11",
    "name": "complete 11",
    "revision": 1,
    "snapshot": {
@@ -909,7 +909,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 12",
+   "id": "phage_stage_complete:complete 12",
    "name": "complete 12",
    "revision": 1,
    "snapshot": {
@@ -985,7 +985,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 13",
+   "id": "phage_stage_complete:complete 13",
    "name": "complete 13",
    "revision": 1,
    "snapshot": {
@@ -1061,7 +1061,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 14",
+   "id": "phage_stage_complete:complete 14",
    "name": "complete 14",
    "revision": 1,
    "snapshot": {
@@ -1137,7 +1137,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 15",
+   "id": "phage_stage_complete:complete 15",
    "name": "complete 15",
    "revision": 1,
    "snapshot": {
@@ -1213,7 +1213,7 @@
    }
   },
   {
-   "id": "stagerig_phage_complete:complete 16",
+   "id": "phage_stage_complete:complete 16",
    "name": "complete 16",
    "revision": 1,
    "snapshot": {

@@ -235,7 +235,7 @@ preset recalls the frame without the Surface.
 ## Persistence
 
 - **Programmer, palettes, sequences, custom groups and page state:**
-  `presets/stagerig_phage_push2.json` ("current") plus the Surface's saved
+  `presets/phage_stage_push2.json` ("current") plus the Surface's saved
   snapshot.
 - **Look banks:** static, effects, colour, complete and rhythm have separate
   native bank files. Recalls read them from disk each time, so a regenerated

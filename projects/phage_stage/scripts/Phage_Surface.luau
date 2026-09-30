@@ -42,7 +42,7 @@ function script.init(node: any)
         midi=midi,preset=preset,windows_audio=windows_audio,log=log,sentinel=sentinel,time=time,tempo=clock,
         panel=panel},
         {root=root,midi_output_port="Ableton Push 2",guest_port="",
-         preset=preset.active("stagerig_phage_push2") or "current"})
+         preset=preset.active("phage_stage_push2") or "current"})
     assert(runtime.ok,tostring(runtime.code)..": "..tostring(runtime.message))
     if incoming then runtime.callbacks.on_deserialize(incoming) end
     state.register("runtime_status","NOT_STARTED")

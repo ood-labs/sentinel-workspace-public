@@ -1,5 +1,5 @@
 {
-  "id": "stagerig_phage_push2",
+  "id": "phage_stage_push2",
   "paths": [
     "/sentinel/pipelines/Phage_Surface/state/color_height",
     "/sentinel/pipelines/Phage_Surface/state/color_origin_col",
@@ -188,7 +188,7 @@
   ],
   "presets": [
     {
-      "id": "stagerig_phage_push2:current",
+      "id": "phage_stage_push2:current",
       "name": "current",
       "revision": 389,
       "snapshot": {

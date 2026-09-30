@@ -355,7 +355,7 @@ canvas, and the two definitions mirror each other.
 - **Preset groups need a saved project.** Until the project had a path, every
   recall failed with `preset GROUP_ABSENT`.
 - **The Push 2 OS persistence group needs a seed.** `preset.save` updates an
-  existing preset, so `stagerig_phage_push2` ships with its "current" preset.
+  existing preset, so `phage_stage_push2` ships with its "current" preset.
 - **New durable records break old snapshots.** Adding a push2os `persist`
   record makes every older reload snapshot refuse to restore
   (`SNAPSHOT_RECORD_MISSING`). Plain `host.state.register` values reset on

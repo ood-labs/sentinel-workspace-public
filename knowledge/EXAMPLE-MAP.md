@@ -38,7 +38,7 @@ for an explicit fork or remix. See `example-authoring.md`.
 | `koi_tank` | 1 | none | plan authority → water sim → photon caustics → koi school → optics → exploded instrument → post | `TP_Post` | wave simulation, photon caustics, procedural koi SDF, boids, depth-composited 3D overlay of live data |
 | `touchdesigner_new_project` | 1 | image asset only | Hermite signal → texture → image displacement → geometry → output | `Out` | typed signal-to-texture modulation |
 | `vitreous_cross` | 1 | none | plan authority/editor → studio env → SDF renderer → filmic post | `VC_Post` | ray-marched glass with real air-cavity lenses, HDR studio lighting, interior plates |
-| `stagerig_phage` | 1 | none (Push 2 optional) | plan authority → kinetic truss → assembly/venue/lighting/LED → light-grid HDR renderer, played by a Script-node surface (desk panel, Push 2, packed per-fixture programmer, layered look banks) | `Phage_Renderer` | a complete playable show: a moving truss programmed as fixtures, looks compiled from geometry, an energy-tier effects ladder, and a measured 41 → 5.8 ms GPU optimisation |
+| `phage_stage` | 1 | none (Push 2 optional) | plan authority → kinetic truss → assembly/venue/lighting/LED → light-grid HDR renderer, played by a Script-node surface (desk panel, Push 2, packed per-fixture programmer, layered look banks) | `Phage_Renderer` | a complete playable show: a moving truss programmed as fixtures, looks compiled from geometry, an energy-tier effects ladder, and a measured 41 → 5.8 ms GPU optimisation |
 
 ## Dependency and portability notes
 
