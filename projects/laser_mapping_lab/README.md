@@ -201,9 +201,9 @@ The previs ships at 1920 × 1080. Cost grows with the number of scan records. Bu
 
 ## Provenance
 
-- `Mapping_Editor` and `Adaptive_Mapping` come from `projects/laser_stage/modules`, adapted to one laser with one working mapping (named mappings are node presets). The venue calibration was replaced by an identity grid, and the second and third lanes were removed. Source hashes: `docs/laser_stage_mapping_source.sha256`.
-- `Alignment_Grid` comes from `projects/laser_room_calibration/modules/Alignment_Grid` (hashes: `docs/alignment_grid_source.sha256`). Since then its scan is written in ILDA space (+y up), and it publishes a Laser Look bundle.
-- `Laser_Fixture` and `Laser_Previs` come from the BLINK show (`BLINK_LaserFixture` and `BLINK_Previs`, commit `3013ad2`), which were in turn built from Laser Lab (`projects/laser_lab`, `feature/anatomy-laser-etch`, `1563058e`).
+- `Mapping_Editor` and `Adaptive_Mapping` come from the Laser Stage show's mapping Modules, adapted to one laser with one working mapping (named mappings are node presets). The venue calibration was replaced by an identity grid, and the second and third lanes were removed. Source hashes: `docs/laser_stage_mapping_source.sha256`.
+- `Alignment_Grid` comes from the laser room calibration project's Alignment Grid (hashes: `docs/alignment_grid_source.sha256`). Since then its scan is written in ILDA space (+y up), and it publishes a Laser Look bundle.
+- `Laser_Fixture` and `Laser_Previs` come from the BLINK show (`BLINK_LaserFixture` and `BLINK_Previs`, commit `3013ad2`), which were in turn built from Laser Lab (branch feature/anatomy-laser-etch, commit 1563058e).
   - Changes to the fixture: room-scale defaults, raw optics (Calibrated to Wall off), Laser Out flip following, and Device Mirrors X.
   - Changes to the renderer: one laser, the projector mapped to the 3 × 1.8 m frame and fed by Look_Select's video, and the site model replaced by the warehouse.
   - Hashes: `docs/blink_laser_source.sha256`.
