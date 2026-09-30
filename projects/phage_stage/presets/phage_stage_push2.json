@@ -190,7 +190,7 @@
     {
       "id": "phage_stage_push2:current",
       "name": "current",
-      "revision": 389,
+      "revision": 390,
       "snapshot": {
         "/sentinel/pipelines/Phage_Surface/state/color_height": 0.0,
         "/sentinel/pipelines/Phage_Surface/state/color_origin_col": 0.0,
@@ -242,7 +242,7 @@
         "/sentinel/pipelines/Phage_Surface/state/group_name_6": "Group 6",
         "/sentinel/pipelines/Phage_Surface/state/group_name_7": "Group 7",
         "/sentinel/pipelines/Phage_Surface/state/group_name_8": "Group 8",
-        "/sentinel/pipelines/Phage_Surface/state/hue": 0.4542,
+        "/sentinel/pipelines/Phage_Surface/state/hue": 0.4542483660130719,
         "/sentinel/pipelines/Phage_Surface/state/lighting_master": 1.0,
         "/sentinel/pipelines/Phage_Surface/state/pads_global_height": 0.0,
         "/sentinel/pipelines/Phage_Surface/state/pads_global_origin_col": 0.0,
@@ -355,7 +355,7 @@
         "/sentinel/pipelines/Phage_Surface/state/seq_tom_step": 1.0,
         "/sentinel/pipelines/Phage_Surface/state/seq_tracks": 3.0,
         "/sentinel/pipelines/Phage_Surface/state/seq_window_width": 0.0,
-        "/sentinel/pipelines/Phage_Surface/state/seq_z": 14.0,
+        "/sentinel/pipelines/Phage_Surface/state/seq_z": 15.0,
         "/sentinel/pipelines/Phage_Surface/state/show_strobe_duty": 0.5,
         "/sentinel/pipelines/Phage_Surface/state/show_strobe_rate": 2.0,
         "/sentinel/pipelines/Phage_Surface/state/static_bank_0": "1;23.413,61.189,1,0.6,0,1;8.213,61.189,1,0.6,0,1;-8.213,61.189,1,0.6,0,1;-23.413,61.189,1,0.6,0,1;23.413,61.189,1,0.6,0,1;8.213,61.189,1,0.6,0,1;-8.213,61.189,1,0.6,0,1;-23.413,61.189,1,0.6,0,1;23.413,61.189,1,0.6,0,1;8.213,61.189,1,0.6,0,1;-8.213,61.189,1,0.6,0,1;-23.413,61.189,1,0.6,0,1;23.413,61.189,1,0.6,0,1;8.213,61.189,1,0.6,0,1;-8.213,61.189,1,0.6,0,1;-23.413,61.189,1,0.6,0,1;23.413,61.189,1,0.6,0,1;8.213,61.189,1,0.6,0,1;-8.213,61.189,1,0.6,0,1;-23.413,61.189,1,0.6,0,1;23.413,61.189,1,0.6,0,1;8.213,61.189,1,0.6,0,1;-8.213,61.189,1,0.6,0,1;-23.413,61.189,1,0.6,0,1;16.102,61.189,1,0.6,0,1;-16.102,61.189,1,0.6,0,1;16.102,61.189,1,0.6,0,1;-16.102,61.189,1,0.6,0,1;16.102,61.189,1,0.6,0,1;-16.102,61.189,1,0.6,0,1;16.102,61.189,1,0.6,0,1;-16.102,61.189,1,0.6,0,1",
@@ -374,7 +374,7 @@
         "/sentinel/pipelines/Phage_Surface/state/static_bank_window_width": 0.0,
         "/sentinel/pipelines/Phage_Surface/state/static_bank_z": 0.0,
         "/sentinel/pipelines/Phage_Surface/state/static_pitch": 0.0,
-        "/sentinel/pipelines/Phage_Surface/state/static_slot": 1.0,
+        "/sentinel/pipelines/Phage_Surface/state/static_slot": 3.0,
         "/sentinel/pipelines/Phage_Surface/state/val": 1.0
       }
     }
