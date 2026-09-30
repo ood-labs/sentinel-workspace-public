@@ -75,6 +75,7 @@ See `knowledge/example-authoring.md`.
 | `streamdiff_canvas` | Persistent painting and patterned depth control for photographic StreamDiff collage |
 | `streamdiff_workflows` | Six focused StreamDiff routing and conditioning studies |
 | `touchdesigner_new_project` | Typed signal-to-texture modulation and geometry displacement |
+| `laser_mapping_lab` | Laser-to-surface mapping against a projected grid (corners, scanner correction, handles, zoning masks), laser/projector sync, and laser looks (shapes and traced line art) previewed on a simulated galvo laser in haze |
 | `stagerig_phage` | Kinetic concert rig with 64 programmed looks in four energy tiers, a desk panel, a Script-node Push 2 surface, a per-fixture programmer, and a documented optimisation that cut GPU time from 41 ms to 5.8 ms per frame |
 
 The detailed source, pipeline, connection, output, engine, and remix map is in

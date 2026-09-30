@@ -325,6 +325,7 @@ Start with:
 - `knowledge/motion-choreography.md`
 - `knowledge/precise-construction.md`
 - `knowledge/gpu-cloth-and-xpbd.md`
+- `knowledge/laser-mapping.md`
 
 Use skills for authoring details:
 

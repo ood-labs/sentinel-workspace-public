@@ -1,0 +1,58 @@
+{
+ "project": "projects/laser_mapping_lab/laser_mapping_lab.sentinel",
+ "source": "exported from the development workspace (sentinel-workspace 0a6f4b40) onto branch 0.6 over f543cec: git-tracked files only, with the operator's own ShowNET output and its second mapping chain removed from the saved graph, the monitor output removed, Laser_Sim disarmed on simulate, and Look_Select opening on the Mapper look",
+ "host": "Sentinel 0.5.99 (dist), Windows 11 Pro 10.0.26200; real-laser checks on a Laserworld DS-3000 RGB over ShowNET at 20 kpps",
+ "approved_structure": {
+  "pipelines": [
+   "Alignment_Grid",
+   "Mapping_Editor",
+   "Laser_Split",
+   "Mapper_Out",
+   "Adaptive_Mapping",
+   "Laser_Fixture",
+   "Laser_Previs",
+   "Laser_Test_Shapes",
+   "Shapes_Out",
+   "Look_Select",
+   "Laser_Sim",
+   "Trace_Canvas",
+   "Trace",
+   "Trace_Look",
+   "Trace_Out"
+  ],
+  "scene_groups": ["Mapper", "Shapes", "Trace"],
+  "node_presets": [
+   "Frame - Operator",
+   "Frame - Audience",
+   "Frame - Wall",
+   "Draft 960x540",
+   "Live 1280x720",
+   "Beauty 1920x1080 (captures)"
+  ],
+  "notes": "Laser_Sim is a Laser Out on the simulate protocol, saved disarmed; there is no device address and no output node. Each look's Group Output is collected by the Groups-mode Mux Look_Select."
+ },
+ "compile": {
+  "modules": ["Alignment_Grid", "Mapping_Editor", "Adaptive_Mapping", "Laser_Fixture", "Laser_Previs", "Laser_Test_Shapes", "Trace_Canvas"],
+  "status": "pass; every module compile-checked from the exported copy on 0.5.99"
+ },
+ "live_proof_on_the_development_rig": {
+  "moving_content": "Laser Out preview grabbed about 55 times a second: with the Trace look frozen every grab was pixel-identical (spread 0%); live, the spread was 4% (the motion alone), with no missing strokes or stray lines",
+  "joint_flags": "on the DS-3000 with End Dwell 8 / Corner Dwell 8 / Blank Delay 25: Lissajous (spin -2) and rose 0 holds and 0 blanks per cycle at 60 fps; spiral 1 hold at its end; the word SENTINEL kept its 30 corner holds and Starburst its 8",
+  "curve_joints": "worst curve joint reaching Laser Out 17-26 degrees at every Detail and Record Budget, all under the 30 degree corner rule",
+  "trace": "Laser Trace at the default Simplify 1 px: 80 segments, no slow-beam blanking, about 25 fps",
+  "zoning": "scripts/mask_check.py PASS/MARGIN on the Sent Stream (Laser Out moves lit points about 0.002-0.003 inside the 0.01 margin)",
+  "mapping": "the grid mapped onto the projected grid on the real wall and in the previs with the documented order (corners, Bow, Spacing, Centre, handles)",
+  "look_select_by_name": "writing 'Shapes' or 'trace' to selected_group switches and stores the id; an unknown name holds with the group list in the status"
+ },
+ "not_executed": [
+  "a load of the exported copy itself in a clean Sentinel (only the working project it was exported from was run live)",
+  "Mapping_Editor gestures on the exported copy"
+ ],
+ "operator_checks_pending": [
+  "open the exported project on the latest Sentinel: all 15 pipelines healthy, Laser_Sim disarmed on simulate, Look_Select on Mapper with the grid",
+  "arm Laser_Sim and confirm the previs shows the laser on the wall"
+ ],
+ "known_limits": [
+  "a DAC whose clock runs a few percent off the requested point rate skips or repeats content frames, so the laser creeps against the projector and jumps about once a second; scripts/clock_check.py measures it (a Laser Out fix is filed)"
+ ]
+}

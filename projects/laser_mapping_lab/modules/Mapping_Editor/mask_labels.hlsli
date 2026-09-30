@@ -1,0 +1,21 @@
+// Generated: 8-character panel labels for the mask panel (scientifica, SIL OFL 1.1).
+#ifndef MASK_LABELS_HLSLI
+#define MASK_LABELS_HLSLI
+#define ML_MAPPING 0
+#define ML_MASKS 1
+#define ML_RECT 2
+#define ML_ELLIPSE 3
+#define ML_POLYGON 4
+#define ML_BLOCK 5
+#define ML_ALLOW 6
+#define ML_ON 7
+#define ML_OFF 8
+#define ML_X 9
+#define ML_MASK 10
+#define ML_NOMASKS 11
+static const uint ML[96]={77,65,80,80,73,78,71,32,77,65,83,75,83,32,32,32,82,69,67,84,32,32,32,32,69,76,76,73,80,83,69,32,80,79,76,89,71,79,78,32,66,76,79,67,75,32,32,32,79,78,76,89,32,73,78,32,79,78,32,32,32,32,32,32,79,70,70,32,32,32,32,32,88,32,32,32,32,32,32,32,77,65,83,75,32,32,32,32,78,79,32,77,65,83,75,83};
+#define MH_TITLE 0
+#define MH_KEYS 1
+#define MH_FIRST 2
+static const uint MH[84]={68,82,65,87,73,78,71,32,80,79,76,89,71,79,78,32,32,32,32,32,32,32,32,32,32,32,32,32,68,79,85,66,76,69,45,67,76,73,67,75,32,47,32,69,78,84,69,82,32,47,32,69,83,67,32,32,79,82,32,67,76,73,67,75,32,70,73,82,83,84,32,80,79,73,78,84,58,32,67,76,79,83,69,32};
+#endif

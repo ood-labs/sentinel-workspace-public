@@ -21,6 +21,7 @@ for an explicit fork or remix. See `example-authoring.md`.
 | `industrial_lattice` | 1 | none | infinite SDF lattice → monochrome post | `Post` | a compact two-node 3D graph |
 | `interaction_lab` | 1 | Audio In | independent UI/editor stations plus two data routes | station previews | Canvas panels, splines, selection, gizmos, traces |
 | `kuka_cell` | 1 | none | cell plan authority/editor → ball/rally authority → four-channel choreographer + FK → SDF arm renderer | `KA_Robot` Program | a lattice randomizer that keeps an array an array, choreography whose phase is derived from floor position, a shared-object authority a crowd of agents responds to, per-tile instance culling |
+| `laser_mapping_lab` | 1 | none (a laser optional) | looks (Laser Look bundles) → Mux → Bundle Split → Mapping_Editor calibration → Adaptive_Mapping → Laser Out (simulate) → Sent Stream → simulated galvo laser → previs | `Laser_Previs` | mapping a laser to a surface, zoning masks, laser/projector sync, Scan Signal content and joint flags, previewing what a laser really draws |
 | `living_room_sdf` | 1 | none | architecture/furnishings/material/light records → SDF renderer → grade | `LR_Cinematic_Grade` | modular 3D construction and spatial editing |
 | `matik_plate` | 1 | none | interactive plan authority → organisms + instruments + circuitry → composite → post | `MX_Post` | plan authority, generate-then-override editing, hybrid record contract |
 | `ossuary_bloom` | 1 | none | plan authority/editor → growth expansion → studio env → SDF renderer → macro-lens post | `OB_Post` | anchors expanded into drawables with their own acceleration bounds in one buffer, and a catalogue of SDF faults that all present as bad lighting |
@@ -215,6 +216,30 @@ nothing.
 Remix seam: the relational-randomizer question ("what relationships make this the
 thing it is?"), the derive-phase-from-placement contract, and the shared-object
 authority — not the arm geometry.
+
+### Laser Mapping Lab
+
+Three looks (`Alignment_Grid`, `Laser_Test_Shapes`, and the traced `Trace_Canvas` → `Trace` →
+`Trace_Look`) each publish a **Laser Look** bundle (projector video plus `laser.a.scan`) from their
+own Scene Group. `Look_Select`, a Groups-mode Mux, picks one; `Laser_Split` hands its scan to the
+mapper and its video to the projector. `Mapping_Editor` is the editable calibration: a 5 × 5
+handle lattice, corner-anchored Scanner Correction (Bow, Spacing, Centre) and zoning masks, all
+compiled into one Calibration buffer. `Adaptive_Mapping` warps the scan through it, subdividing
+only where lines bend and cutting at masks and the field edge. `Laser_Sim` is a real Laser Out on
+the simulate protocol; its **Sent Stream** feeds `Laser_Fixture`, a raw scanner with galvo
+distortion and lag, and `Laser_Previs` renders the room, the beams in haze and the mapped video
+projector.
+
+Study it for the **on-site mapping workflow** (corners, Bow, Spacing until the offsets match,
+Centre, then handles), a **calibration that is editable, not solved**, **zoning that fails
+closed**, the **Sync Sweep** that reads laser-to-projector latency in milliseconds, **Scan Signal
+joint flags** that let one scanner profile draw both crisp corners and seamless loops, and a
+preview that simulates **what the DAC was told**, not the idealised path. `knowledge/laser-mapping.md`
+is the companion reference.
+
+Remix seam: author new looks against the Laser Look contract (a Module with `bundle_outputs`, or
+Laser Trace plus Bundle Pack), and reuse the mapping chain as infrastructure. Replace the room in
+`site.hlsli` and the fixture pose with your own venue rather than copying the warehouse.
 
 ### Living Room SDF
 

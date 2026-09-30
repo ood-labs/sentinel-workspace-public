@@ -1,0 +1,2261 @@
+{
+ "display": {
+  "fpsLimit": 60.0,
+  "vsyncEnabled": false
+ },
+ "graph": {
+  "canvasZoom": 1.5,
+  "links": [
+   {
+    "endPinId": 68,
+    "id": 6,
+    "startPinId": 62
+   },
+   {
+    "endPinId": 131,
+    "id": 14,
+    "startPinId": 127
+   },
+   {
+    "endPinId": 66,
+    "id": 30,
+    "startPinId": 234
+   },
+   {
+    "endPinId": 132,
+    "id": 15,
+    "startPinId": 128
+   },
+   {
+    "endPinId": 129,
+    "id": 31,
+    "startPinId": 229
+   },
+   {
+    "endPinId": 215,
+    "id": 27,
+    "startPinId": 212
+   },
+   {
+    "endPinId": 219,
+    "id": 28,
+    "startPinId": 211
+   },
+   {
+    "endPinId": 233,
+    "id": 29,
+    "startPinId": 230
+   },
+   {
+    "endPinId": 236,
+    "id": 39,
+    "startPinId": 69
+   },
+   {
+    "endPinId": 125,
+    "id": 42,
+    "startPinId": 237
+   },
+   {
+    "endPinId": 276,
+    "id": 44,
+    "startPinId": 274
+   },
+   {
+    "endPinId": 306,
+    "id": 45,
+    "startPinId": 274
+   },
+   {
+    "endPinId": 307,
+    "id": 46,
+    "startPinId": 278
+   },
+   {
+    "endPinId": 312,
+    "id": 47,
+    "startPinId": 309
+   }
+  ],
+  "nextLinkId": 52,
+  "nextNodeId": 33,
+  "nextPinId": 366,
+  "nodes": [
+   {
+    "bodyHeight": 85.71815490722656,
+    "bodyWidth": 147.86155700683594,
+    "displayName": "Alignment_Grid",
+    "entityId": "Alignment_Grid",
+    "id": 6,
+    "logicalPreview": [
+     8.0,
+     38.5,
+     147.89999389648438,
+     85.69999694824219
+    ],
+    "logicalSize": [
+     182.10000610351562,
+     147.10000610351562
+    ],
+    "posX": -791.7720336914062,
+    "posY": 102.85401916503906,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "bodyHeight": 131.8495330810547,
+    "bodyWidth": 143.41729736328125,
+    "displayName": "Mapping_Editor",
+    "entityId": "Mapping_Editor",
+    "id": 7,
+    "logicalPreview": [
+     8.0,
+     38.900001525878906,
+     143.39999389648438,
+     131.8000030517578
+    ],
+    "logicalSize": [
+     159.39999389648438,
+     178.6999969482422
+    ],
+    "panelPresentationOverride": 1,
+    "panelResolutionModeOverride": 1,
+    "posX": 556.0416259765625,
+    "posY": 501.21820068359375,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "displayName": "Laser_Test_Shapes",
+    "entityId": "Laser_Test_Shapes",
+    "id": 15,
+    "logicalPreview": [
+     8.0,
+     38.900001525878906,
+     162.10000610351562,
+     162.10000610351562
+    ],
+    "logicalSize": [
+     161.89999389648438,
+     208.6999969482422
+    ],
+    "posX": -800.8211669921875,
+    "posY": 468.5422668457031,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "bodyHeight": 115.02281188964844,
+    "bodyWidth": 144.41168212890625,
+    "displayName": "Adaptive_Mapping",
+    "entityId": "Adaptive_Mapping",
+    "id": 8,
+    "logicalPreview": [
+     8.0,
+     38.900001525878906,
+     156.5,
+     115.0
+    ],
+    "logicalSize": [
+     172.5,
+     161.89999389648438
+    ],
+    "posX": 848.5112915039062,
+    "posY": 364.8986511230469,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "bodyHeight": 118.0379409790039,
+    "bodyWidth": 178.36959838867188,
+    "displayName": "Laser_Fixture",
+    "entityId": "Laser_Fixture",
+    "id": 12,
+    "logicalPreview": [
+     8.0,
+     38.900001525878906,
+     178.39999389648438,
+     118.0
+    ],
+    "logicalSize": [
+     194.39999389648438,
+     164.89999389648438
+    ],
+    "posX": 1375.4990234375,
+    "posY": 357.587158203125,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "displayName": "Laser_Previs",
+    "entityId": "Laser_Previs",
+    "id": 13,
+    "logicalPreview": [
+     8.0,
+     38.900001525878906,
+     140.0,
+     78.69999694824219
+    ],
+    "logicalSize": [
+     156.0,
+     125.5999984741211
+    ],
+    "posX": 1718.9940185546875,
+    "posY": 355.4739990234375,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "displayName": "Mapper_Out",
+    "entityId": "Mapper_Out",
+    "id": 18,
+    "logicalPreview": [
+     8.0,
+     38.5,
+     140.0,
+     78.80000305175781
+    ],
+    "logicalSize": [
+     173.3000030517578,
+     139.3000030517578
+    ],
+    "posX": -535.7322998046875,
+    "posY": 104.01713562011719,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "annotationBody": "",
+    "annotationColor": "#3A556640",
+    "annotationTitle": "Mapper",
+    "displayName": "Mapper",
+    "entityId": "annotation_19",
+    "height": 306.1145324707031,
+    "id": 19,
+    "posX": -825.7320556640625,
+    "posY": 54.017059326171875,
+    "positionSet": true,
+    "previewVisible": false,
+    "sceneGroup": true,
+    "sceneGroupActivePreset": "",
+    "sceneGroupEnabled": true,
+    "sceneGroupParameters": [],
+    "sceneGroupPresets": [],
+    "type": 4,
+    "width": 486.988037109375
+   },
+   {
+    "displayName": "Shapes_Out",
+    "entityId": "Shapes_Out",
+    "id": 20,
+    "logicalPreview": [
+     8.0,
+     39.0,
+     140.0,
+     140.0
+    ],
+    "logicalSize": [
+     141.8000030517578,
+     188.0
+    ],
+    "posX": -536.7688598632812,
+    "posY": 488.2080993652344,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "annotationBody": "",
+    "annotationColor": "#3A556640",
+    "annotationTitle": "Shapes",
+    "displayName": "Shapes",
+    "entityId": "annotation_21",
+    "height": 310.0,
+    "id": 21,
+    "posX": -832.8696899414062,
+    "posY": 421.1253356933594,
+    "positionSet": true,
+    "previewVisible": false,
+    "sceneGroup": true,
+    "sceneGroupActivePreset": "",
+    "sceneGroupEnabled": true,
+    "sceneGroupParameters": [],
+    "sceneGroupPresets": [],
+    "type": 4,
+    "width": 480.0
+   },
+   {
+    "displayName": "Look_Select",
+    "entityId": "Look_Select",
+    "id": 22,
+    "logicalPreview": [
+     8.0,
+     38.900001525878906,
+     140.0,
+     78.69999694824219
+    ],
+    "logicalSize": [
+     156.0,
+     125.5999984741211
+    ],
+    "posX": 243.37527465820312,
+    "posY": 188.62257385253906,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "bodyHeight": 77.82743072509766,
+    "bodyWidth": 139.99998474121094,
+    "displayName": "Laser_Split",
+    "entityId": "Laser_Split",
+    "id": 23,
+    "logicalPreview": [
+     8.0,
+     38.900001525878906,
+     140.0,
+     77.80000305175781
+    ],
+    "logicalSize": [
+     156.0,
+     124.69999694824219
+    ],
+    "posX": 554.7111206054688,
+    "posY": 315.47314453125,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "displayName": "Laser_Sim",
+    "entityId": "Laser_Sim",
+    "id": 24,
+    "logicalPreview": [
+     8.0,
+     38.79999923706055,
+     205.60000610351562,
+     205.60000610351562
+    ],
+    "logicalSize": [
+     221.60000610351562,
+     252.39999389648438
+    ],
+    "posX": 1093.67578125,
+    "posY": 406.1590881347656,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "displayName": "Trace_Canvas",
+    "entityId": "Trace_Canvas",
+    "id": 25,
+    "logicalPreview": [
+     8.0,
+     39.29999923706055,
+     140.0,
+     78.80000305175781
+    ],
+    "logicalSize": [
+     156.0,
+     126.0999984741211
+    ],
+    "posX": -1258.6038818359375,
+    "posY": 880.4268798828125,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "bodyHeight": 110.61528015136719,
+    "bodyWidth": 136.10256958007812,
+    "displayName": "Trace",
+    "entityId": "Trace",
+    "id": 26,
+    "logicalPreview": [
+     8.0,
+     39.29999923706055,
+     136.10000610351562,
+     110.5999984741211
+    ],
+    "logicalSize": [
+     152.10000610351562,
+     157.89999389648438
+    ],
+    "posX": -1063.1810302734375,
+    "posY": 880.4265747070312,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "displayName": "Trace_Look",
+    "entityId": "Trace_Look",
+    "id": 27,
+    "logicalPreview": [
+     8.0,
+     39.29999923706055,
+     140.0,
+     78.80000305175781
+    ],
+    "logicalSize": [
+     156.0,
+     126.0999984741211
+    ],
+    "posX": -765.9613037109375,
+    "posY": 879.849365234375,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "displayName": "Trace_Out",
+    "entityId": "Trace_Out",
+    "id": 28,
+    "logicalPreview": [
+     8.0,
+     39.29999923706055,
+     140.0,
+     78.80000305175781
+    ],
+    "logicalSize": [
+     156.0,
+     126.0999984741211
+    ],
+    "posX": -569.96142578125,
+    "posY": 879.849365234375,
+    "positionSet": true,
+    "previewVisible": true,
+    "type": 1
+   },
+   {
+    "annotationBody": "Line art traced by Laser Trace (Dots on): stars, a circle, a wave and single-pixel dots.",
+    "annotationColor": "#54545443",
+    "annotationTitle": "Trace",
+    "displayName": "Trace",
+    "entityId": "annotation_29",
+    "height": 322.708251953125,
+    "id": 29,
+    "posX": -1318.6036376953125,
+    "posY": 819.849365234375,
+    "positionSet": true,
+    "previewVisible": false,
+    "sceneGroup": true,
+    "sceneGroupActivePreset": "",
+    "sceneGroupEnabled": true,
+    "sceneGroupParameters": [],
+    "sceneGroupPresets": [],
+    "type": 4,
+    "width": 964.6424560546875
+   }
+  ],
+  "pins": [
+   {
+    "id": 58,
+    "kind": 1,
+    "name": "Projection Grid",
+    "nodeId": 6,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 212,
+    "kind": 1,
+    "name": "Laser Look",
+    "nodeId": 6,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 59,
+    "kind": 1,
+    "name": "Scan Signal",
+    "nodeId": 6,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 61,
+    "kind": 1,
+    "name": "Mapping Editor",
+    "nodeId": 7,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 62,
+    "kind": 1,
+    "name": "Calibration",
+    "nodeId": 7,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 63,
+    "kind": 1,
+    "name": "Mapping Points",
+    "nodeId": 7,
+    "slotIndex": 2,
+    "type": 6
+   },
+   {
+    "id": 64,
+    "kind": 1,
+    "name": "Canvas State",
+    "nodeId": 7,
+    "slotIndex": 3,
+    "type": 6
+   },
+   {
+    "id": 65,
+    "kind": 1,
+    "name": "mapping_valid",
+    "nodeId": 7,
+    "slotIndex": 4,
+    "type": 7
+   },
+   {
+    "id": 66,
+    "kind": 0,
+    "name": "Scan Signal",
+    "nodeId": 8,
+    "slotIndex": 0,
+    "type": 6
+   },
+   {
+    "id": 68,
+    "kind": 0,
+    "name": "Calibration",
+    "nodeId": 8,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 67,
+    "kind": 1,
+    "name": "Mapped Path",
+    "nodeId": 8,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 69,
+    "kind": 1,
+    "name": "Mapped Scan",
+    "nodeId": 8,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 70,
+    "kind": 1,
+    "name": "Compiler Stats",
+    "nodeId": 8,
+    "slotIndex": 2,
+    "type": 6
+   },
+   {
+    "id": 71,
+    "kind": 1,
+    "name": "valid",
+    "nodeId": 8,
+    "slotIndex": 3,
+    "type": 7
+   },
+   {
+    "id": 72,
+    "kind": 1,
+    "name": "segments",
+    "nodeId": 8,
+    "slotIndex": 4,
+    "type": 7
+   },
+   {
+    "id": 73,
+    "kind": 1,
+    "name": "warning",
+    "nodeId": 8,
+    "slotIndex": 5,
+    "type": 7
+   },
+   {
+    "id": 74,
+    "kind": 1,
+    "name": "effective_tolerance",
+    "nodeId": 8,
+    "slotIndex": 6,
+    "type": 7
+   },
+   {
+    "id": 125,
+    "kind": 0,
+    "name": "Scan Signal",
+    "nodeId": 12,
+    "slotIndex": 0,
+    "type": 6
+   },
+   {
+    "id": 126,
+    "kind": 1,
+    "name": "Plan and Elevation",
+    "nodeId": 12,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 127,
+    "kind": 1,
+    "name": "World Scan",
+    "nodeId": 12,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 128,
+    "kind": 1,
+    "name": "Fixtures",
+    "nodeId": 12,
+    "slotIndex": 2,
+    "type": 6
+   },
+   {
+    "id": 129,
+    "kind": 0,
+    "name": "Projection",
+    "nodeId": 13,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 131,
+    "kind": 0,
+    "name": "World Scan",
+    "nodeId": 13,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 132,
+    "kind": 0,
+    "name": "Fixtures",
+    "nodeId": 13,
+    "slotIndex": 2,
+    "type": 6
+   },
+   {
+    "id": 130,
+    "kind": 1,
+    "name": "Previs",
+    "nodeId": 13,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 171,
+    "kind": 1,
+    "name": "Projection",
+    "nodeId": 15,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 211,
+    "kind": 1,
+    "name": "Laser Look",
+    "nodeId": 15,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 172,
+    "kind": 1,
+    "name": "Scan Signal",
+    "nodeId": 15,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 213,
+    "kind": 0,
+    "name": "Video",
+    "nodeId": 18,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 215,
+    "kind": 0,
+    "name": "Bundle",
+    "nodeId": 18,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 214,
+    "kind": 1,
+    "name": "Out",
+    "nodeId": 18,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 216,
+    "kind": 1,
+    "name": "Bundle",
+    "nodeId": 18,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 217,
+    "kind": 0,
+    "name": "Video",
+    "nodeId": 20,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 219,
+    "kind": 0,
+    "name": "Bundle",
+    "nodeId": 20,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 218,
+    "kind": 1,
+    "name": "Out",
+    "nodeId": 20,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 220,
+    "kind": 1,
+    "name": "Bundle",
+    "nodeId": 20,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 221,
+    "kind": 0,
+    "name": "Input 0",
+    "nodeId": 22,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 222,
+    "kind": 0,
+    "name": "Input 1",
+    "nodeId": 22,
+    "slotIndex": 1,
+    "type": 0
+   },
+   {
+    "id": 223,
+    "kind": 0,
+    "name": "Input 2",
+    "nodeId": 22,
+    "slotIndex": 2,
+    "type": 0
+   },
+   {
+    "id": 224,
+    "kind": 0,
+    "name": "Input 3",
+    "nodeId": 22,
+    "slotIndex": 3,
+    "type": 0
+   },
+   {
+    "id": 225,
+    "kind": 0,
+    "name": "Input 4",
+    "nodeId": 22,
+    "slotIndex": 4,
+    "type": 0
+   },
+   {
+    "id": 226,
+    "kind": 0,
+    "name": "Input 5",
+    "nodeId": 22,
+    "slotIndex": 5,
+    "type": 0
+   },
+   {
+    "id": 227,
+    "kind": 0,
+    "name": "Input 6",
+    "nodeId": 22,
+    "slotIndex": 6,
+    "type": 0
+   },
+   {
+    "id": 228,
+    "kind": 0,
+    "name": "Input 7",
+    "nodeId": 22,
+    "slotIndex": 7,
+    "type": 0
+   },
+   {
+    "id": 229,
+    "kind": 1,
+    "name": "Out",
+    "nodeId": 22,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 230,
+    "kind": 1,
+    "name": "Bundle",
+    "nodeId": 22,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 231,
+    "kind": 0,
+    "name": "Input",
+    "nodeId": 23,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 233,
+    "kind": 0,
+    "name": "Bundle",
+    "nodeId": 23,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 232,
+    "kind": 1,
+    "name": "Out",
+    "nodeId": 23,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 234,
+    "kind": 1,
+    "name": "laser.a.scan",
+    "nodeId": 23,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 236,
+    "kind": 0,
+    "name": "Scan Signal",
+    "nodeId": 24,
+    "slotIndex": 0,
+    "type": 6
+   },
+   {
+    "id": 237,
+    "kind": 1,
+    "name": "Sent Stream",
+    "nodeId": 24,
+    "slotIndex": 0,
+    "type": 6
+   },
+   {
+    "id": 238,
+    "kind": 1,
+    "name": "armed",
+    "nodeId": 24,
+    "slotIndex": 1,
+    "type": 7
+   },
+   {
+    "id": 239,
+    "kind": 1,
+    "name": "output_enabled",
+    "nodeId": 24,
+    "slotIndex": 2,
+    "type": 7
+   },
+   {
+    "id": 240,
+    "kind": 1,
+    "name": "points_per_second",
+    "nodeId": 24,
+    "slotIndex": 3,
+    "type": 7
+   },
+   {
+    "id": 241,
+    "kind": 1,
+    "name": "buffer_fullness",
+    "nodeId": 24,
+    "slotIndex": 4,
+    "type": 7
+   },
+   {
+    "id": 242,
+    "kind": 1,
+    "name": "underflows",
+    "nodeId": 24,
+    "slotIndex": 5,
+    "type": 7
+   },
+   {
+    "id": 243,
+    "kind": 1,
+    "name": "applied_point_rate",
+    "nodeId": 24,
+    "slotIndex": 6,
+    "type": 7
+   },
+   {
+    "id": 244,
+    "kind": 1,
+    "name": "effective_point_rate",
+    "nodeId": 24,
+    "slotIndex": 7,
+    "type": 7
+   },
+   {
+    "id": 245,
+    "kind": 1,
+    "name": "dac_point_rate",
+    "nodeId": 24,
+    "slotIndex": 8,
+    "type": 7
+   },
+   {
+    "id": 246,
+    "kind": 1,
+    "name": "optimized_records",
+    "nodeId": 24,
+    "slotIndex": 9,
+    "type": 7
+   },
+   {
+    "id": 247,
+    "kind": 1,
+    "name": "scan_fps",
+    "nodeId": 24,
+    "slotIndex": 10,
+    "type": 7
+   },
+   {
+    "id": 248,
+    "kind": 1,
+    "name": "snapshots_dropped",
+    "nodeId": 24,
+    "slotIndex": 11,
+    "type": 7
+   },
+   {
+    "id": 249,
+    "kind": 1,
+    "name": "send_errors",
+    "nodeId": 24,
+    "slotIndex": 12,
+    "type": 7
+   },
+   {
+    "id": 250,
+    "kind": 1,
+    "name": "link_lost",
+    "nodeId": 24,
+    "slotIndex": 13,
+    "type": 7
+   },
+   {
+    "id": 251,
+    "kind": 1,
+    "name": "rate_clamped",
+    "nodeId": 24,
+    "slotIndex": 14,
+    "type": 7
+   },
+   {
+    "id": 252,
+    "kind": 1,
+    "name": "step_trips",
+    "nodeId": 24,
+    "slotIndex": 15,
+    "type": 7
+   },
+   {
+    "id": 253,
+    "kind": 1,
+    "name": "step_change_trips",
+    "nodeId": 24,
+    "slotIndex": 16,
+    "type": 7
+   },
+   {
+    "id": 254,
+    "kind": 1,
+    "name": "speed_trips",
+    "nodeId": 24,
+    "slotIndex": 17,
+    "type": 7
+   },
+   {
+    "id": 255,
+    "kind": 1,
+    "name": "duty_trips",
+    "nodeId": 24,
+    "slotIndex": 18,
+    "type": 7
+   },
+   {
+    "id": 256,
+    "kind": 1,
+    "name": "insert_trips",
+    "nodeId": 24,
+    "slotIndex": 19,
+    "type": 7
+   },
+   {
+    "id": 257,
+    "kind": 1,
+    "name": "cycle_stretch",
+    "nodeId": 24,
+    "slotIndex": 20,
+    "type": 7
+   },
+   {
+    "id": 258,
+    "kind": 1,
+    "name": "send_tick_ms",
+    "nodeId": 24,
+    "slotIndex": 21,
+    "type": 7
+   },
+   {
+    "id": 259,
+    "kind": 1,
+    "name": "send_tick_max_ms",
+    "nodeId": 24,
+    "slotIndex": 22,
+    "type": 7
+   },
+   {
+    "id": 260,
+    "kind": 1,
+    "name": "light_engine_state",
+    "nodeId": 24,
+    "slotIndex": 23,
+    "type": 7
+   },
+   {
+    "id": 261,
+    "kind": 1,
+    "name": "light_engine_flags",
+    "nodeId": 24,
+    "slotIndex": 24,
+    "type": 7
+   },
+   {
+    "id": 262,
+    "kind": 1,
+    "name": "playback_state",
+    "nodeId": 24,
+    "slotIndex": 25,
+    "type": 7
+   },
+   {
+    "id": 263,
+    "kind": 1,
+    "name": "buffer_free",
+    "nodeId": 24,
+    "slotIndex": 26,
+    "type": 7
+   },
+   {
+    "id": 264,
+    "kind": 1,
+    "name": "packet_errors",
+    "nodeId": 24,
+    "slotIndex": 27,
+    "type": 7
+   },
+   {
+    "id": 265,
+    "kind": 1,
+    "name": "interlock",
+    "nodeId": 24,
+    "slotIndex": 28,
+    "type": 7
+   },
+   {
+    "id": 266,
+    "kind": 1,
+    "name": "temperature",
+    "nodeId": 24,
+    "slotIndex": 29,
+    "type": 7
+   },
+   {
+    "id": 267,
+    "kind": 1,
+    "name": "over_temperature",
+    "nodeId": 24,
+    "slotIndex": 30,
+    "type": 7
+   },
+   {
+    "id": 268,
+    "kind": 1,
+    "name": "residual_scan_ms",
+    "nodeId": 24,
+    "slotIndex": 31,
+    "type": 7
+   },
+   {
+    "id": 269,
+    "kind": 1,
+    "name": "speed_lit_trips",
+    "nodeId": 24,
+    "slotIndex": 32,
+    "type": 7
+   },
+   {
+    "id": 270,
+    "kind": 1,
+    "name": "speed_blank_transition_trips",
+    "nodeId": 24,
+    "slotIndex": 33,
+    "type": 7
+   },
+   {
+    "id": 271,
+    "kind": 1,
+    "name": "deadman_trips",
+    "nodeId": 24,
+    "slotIndex": 34,
+    "type": 7
+   },
+   {
+    "id": 272,
+    "kind": 1,
+    "name": "trial_record_only",
+    "nodeId": 24,
+    "slotIndex": 35,
+    "type": 7
+   },
+   {
+    "id": 274,
+    "kind": 1,
+    "name": "Projection",
+    "nodeId": 25,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 276,
+    "kind": 0,
+    "name": "Video Input",
+    "nodeId": 26,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 277,
+    "kind": 1,
+    "name": "Out",
+    "nodeId": 26,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 278,
+    "kind": 1,
+    "name": "Scan Signal",
+    "nodeId": 26,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 279,
+    "kind": 1,
+    "name": "strokes",
+    "nodeId": 26,
+    "slotIndex": 2,
+    "type": 7
+   },
+   {
+    "id": 280,
+    "kind": 1,
+    "name": "segments",
+    "nodeId": 26,
+    "slotIndex": 3,
+    "type": 7
+   },
+   {
+    "id": 281,
+    "kind": 1,
+    "name": "lit_length",
+    "nodeId": 26,
+    "slotIndex": 4,
+    "type": 7
+   },
+   {
+    "id": 282,
+    "kind": 1,
+    "name": "blank_length",
+    "nodeId": 26,
+    "slotIndex": 5,
+    "type": 7
+   },
+   {
+    "id": 283,
+    "kind": 1,
+    "name": "blank_ratio",
+    "nodeId": 26,
+    "slotIndex": 6,
+    "type": 7
+   },
+   {
+    "id": 284,
+    "kind": 1,
+    "name": "components_dropped",
+    "nodeId": 26,
+    "slotIndex": 7,
+    "type": 7
+   },
+   {
+    "id": 285,
+    "kind": 1,
+    "name": "gpu_ms",
+    "nodeId": 26,
+    "slotIndex": 8,
+    "type": 7
+   },
+   {
+    "id": 286,
+    "kind": 1,
+    "name": "cpu_ms",
+    "nodeId": 26,
+    "slotIndex": 9,
+    "type": 7
+   },
+   {
+    "id": 287,
+    "kind": 1,
+    "name": "order_ms",
+    "nodeId": 26,
+    "slotIndex": 10,
+    "type": 7
+   },
+   {
+    "id": 288,
+    "kind": 1,
+    "name": "match_rate",
+    "nodeId": 26,
+    "slotIndex": 11,
+    "type": 7
+   },
+   {
+    "id": 289,
+    "kind": 1,
+    "name": "over_budget",
+    "nodeId": 26,
+    "slotIndex": 12,
+    "type": 7
+   },
+   {
+    "id": 290,
+    "kind": 1,
+    "name": "effective_cycle_rate",
+    "nodeId": 26,
+    "slotIndex": 13,
+    "type": 7
+   },
+   {
+    "id": 291,
+    "kind": 1,
+    "name": "estimated_samples_per_cycle",
+    "nodeId": 26,
+    "slotIndex": 14,
+    "type": 7
+   },
+   {
+    "id": 292,
+    "kind": 1,
+    "name": "wide_region_count",
+    "nodeId": 26,
+    "slotIndex": 15,
+    "type": 7
+   },
+   {
+    "id": 293,
+    "kind": 1,
+    "name": "submitted_trace_jobs",
+    "nodeId": 26,
+    "slotIndex": 16,
+    "type": 7
+   },
+   {
+    "id": 294,
+    "kind": 1,
+    "name": "completed_trace_jobs",
+    "nodeId": 26,
+    "slotIndex": 17,
+    "type": 7
+   },
+   {
+    "id": 295,
+    "kind": 1,
+    "name": "publication_count",
+    "nodeId": 26,
+    "slotIndex": 18,
+    "type": 7
+   },
+   {
+    "id": 296,
+    "kind": 1,
+    "name": "input_generation",
+    "nodeId": 26,
+    "slotIndex": 19,
+    "type": 7
+   },
+   {
+    "id": 297,
+    "kind": 1,
+    "name": "input_age_ms",
+    "nodeId": 26,
+    "slotIndex": 20,
+    "type": 7
+   },
+   {
+    "id": 298,
+    "kind": 1,
+    "name": "skipped_generations",
+    "nodeId": 26,
+    "slotIndex": 21,
+    "type": 7
+   },
+   {
+    "id": 299,
+    "kind": 1,
+    "name": "queue_depth",
+    "nodeId": 26,
+    "slotIndex": 22,
+    "type": 7
+   },
+   {
+    "id": 300,
+    "kind": 1,
+    "name": "overflow_count",
+    "nodeId": 26,
+    "slotIndex": 23,
+    "type": 7
+   },
+   {
+    "id": 301,
+    "kind": 1,
+    "name": "nonconvergence_count",
+    "nodeId": 26,
+    "slotIndex": 24,
+    "type": 7
+   },
+   {
+    "id": 302,
+    "kind": 1,
+    "name": "render_ms",
+    "nodeId": 26,
+    "slotIndex": 25,
+    "type": 7
+   },
+   {
+    "id": 303,
+    "kind": 1,
+    "name": "dots_traced",
+    "nodeId": 26,
+    "slotIndex": 26,
+    "type": 7
+   },
+   {
+    "id": 304,
+    "kind": 1,
+    "name": "components_shed",
+    "nodeId": 26,
+    "slotIndex": 27,
+    "type": 7
+   },
+   {
+    "id": 305,
+    "kind": 1,
+    "name": "budget_hit",
+    "nodeId": 26,
+    "slotIndex": 28,
+    "type": 7
+   },
+   {
+    "id": 306,
+    "kind": 0,
+    "name": "Video",
+    "nodeId": 27,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 307,
+    "kind": 0,
+    "name": "laser.a.scan",
+    "nodeId": 27,
+    "slotIndex": 1,
+    "type": 6
+   },
+   {
+    "id": 308,
+    "kind": 1,
+    "name": "Out",
+    "nodeId": 27,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 309,
+    "kind": 1,
+    "name": "Bundle",
+    "nodeId": 27,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 310,
+    "kind": 0,
+    "name": "Video",
+    "nodeId": 28,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 312,
+    "kind": 0,
+    "name": "Bundle",
+    "nodeId": 28,
+    "slotIndex": 0,
+    "type": 12
+   },
+   {
+    "id": 311,
+    "kind": 1,
+    "name": "Out",
+    "nodeId": 28,
+    "slotIndex": 0,
+    "type": 0
+   },
+   {
+    "id": 313,
+    "kind": 1,
+    "name": "Bundle",
+    "nodeId": 28,
+    "slotIndex": 0,
+    "type": 12
+   }
+  ]
+ },
+ "input": {
+  "activeSource": ""
+ },
+ "layout": "[Window][Sources]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000004,1\n\n[Window][Outputs]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000004,2\n\n[Window][Stats]\nPos=0,794\nSize=800,783\nCollapsed=0\nDockId=0x00000006,1\n\n[Window][Log]\nPos=0,794\nSize=800,783\nCollapsed=0\nDockId=0x00000006,2\n\n[Window][Properties]\nPos=2188,25\nSize=372,833\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=802,860\nSize=1758,717\nCollapsed=0\nDockId=0x00000004,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1552\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=590,200\nSize=566,678\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][##LoadingOverlay]\nPos=600,420\nSize=400,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=699,249\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][About Sentinel]\nPos=1104,689\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002E,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Terminal]\nPos=0,794\nSize=800,783\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,598\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Klang_Renderer]\nPos=0,25\nSize=2304,958\nCollapsed=0\n\n[Window][Klang_Plan]\nPos=0,985\nSize=2304,592\nCollapsed=0\n\n[Window][Klang_Lighting]\nPos=0,985\nSize=2304,592\nCollapsed=0\n\n[Window][Klang_Desk]\nPos=0,985\nSize=2304,592\nCollapsed=0\n\n[Window][Klang_Surface]\nPos=0,985\nSize=892,592\nCollapsed=0\n\n[Window][stagerig_klangrig_Renderer]\nPos=509,25\nSize=1788,956\nCollapsed=0\n\n[Window][stagerig_klangrig_Plan]\nPos=0,983\nSize=2304,594\nCollapsed=0\n\n[Window][stagerig_klangrig_Lighting]\nPos=509,25\nSize=1788,1262\nCollapsed=0\n\n[Window][stagerig_klangrig_Desk]\nPos=0,1393\nSize=2304,696\nCollapsed=0\n\n[Window][LM_Mapping]\nPos=808,25\nSize=1177,576\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LM_CalGrid]\nPos=808,25\nSize=1177,576\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][LM_Laser]\nPos=808,25\nSize=1177,576\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Alignment_Grid]\nPos=802,25\nSize=1384,833\nCollapsed=0\nDockId=0x0000002E,0\n\n[Window][Mapping_Editor]\nPos=0,25\nSize=800,767\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Adaptive_Mapping]\nPos=802,25\nSize=1384,833\nCollapsed=0\nDockId=0x0000002E,1\n\n[Window][Laser_Out]\nPos=802,25\nSize=1167,833\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Laser_Sim]\nPos=808,25\nSize=1177,576\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Laser_Fixture]\nPos=802,25\nSize=1384,833\nCollapsed=0\nDockId=0x0000002E,2\n\n[Window][Laser_Previs]\nPos=802,25\nSize=1384,833\nCollapsed=0\nDockId=0x0000002E,3\n\n[Window][Laser_Test_Shapes]\nPos=0,25\nSize=800,767\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Edit Preset Stack]\nPos=1070,557\nSize=420,463\nCollapsed=0\n\n[Window][Delete Node Preset]\nPos=1134,730\nSize=157,116\nCollapsed=0\n\n[Window][Look_Select]\nPos=802,25\nSize=1384,833\nCollapsed=0\nDockId=0x0000002E,4\n\n[Window][Trace_Canvas]\nPos=802,25\nSize=1384,833\nCollapsed=0\nDockId=0x0000002E,5\n\n[Window][Trace]\nPos=802,25\nSize=1384,833\nCollapsed=0\nDockId=0x0000002E,6\n\n[Window][Trace_Look]\nPos=802,25\nSize=1384,833\nCollapsed=0\nDockId=0x0000002E,7\n\n[Window][Trace_Out]\nPos=802,25\nSize=1384,833\nCollapsed=0\nDockId=0x0000002E,8\n\n[Window][Laser_Split]\nPos=0,25\nSize=800,767\nCollapsed=0\nDockId=0x00000005,2\n\n[Docking][Data]\nDockSpace                                     ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1552 Split=X\n  DockNode                                    ID=0x0000002F Parent=0xCCBD8CF7 SizeRef=800,1552 Split=Y Selected=0xD33228A6\n    DockNode                                  ID=0x00000005 Parent=0x0000002F SizeRef=806,767 Selected=0x0CAC1FFE\n    DockNode                                  ID=0x00000006 Parent=0x0000002F SizeRef=806,783 Selected=0xD33228A6\n  DockNode                                    ID=0x00000030 Parent=0xCCBD8CF7 SizeRef=1758,1552 Split=Y\n    DockNode                                  ID=0x00000003 Parent=0x00000030 SizeRef=1222,833 Split=X Selected=0x376FDC27\n      DockNode                                ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n        DockNode                              ID=0x00000001 Parent=0x00000007 SizeRef=1384,1284 Split=X Selected=0x5AAC8CBA\n          DockNode                            ID=0x00000009 Parent=0x00000001 SizeRef=742,790 Selected=0x9E38CE87\n          DockNode                            ID=0x0000000A Parent=0x00000001 SizeRef=749,790 Split=X Selected=0x376FDC27\n            DockNode                          ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n              DockNode                        ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n              DockNode                        ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n                DockNode                      ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n                DockNode                      ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                  DockNode                    ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                  DockNode                    ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                    DockNode                  ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                      DockNode                ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                        DockNode              ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                          DockNode            ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                            DockNode          ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                            DockNode          ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                          DockNode            ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                        DockNode              ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                          DockNode            ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                            DockNode          ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                            DockNode          ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                              DockNode        ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                              DockNode        ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                          DockNode            ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                            DockNode          ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                            DockNode          ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                              DockNode        ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                              DockNode        ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                                DockNode      ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                  DockNode    ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                  DockNode    ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                                DockNode      ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                  DockNode    ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                  DockNode    ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                    DockNode  ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                    DockNode  ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 CentralNode=1 Selected=0x6AB57277\n                      DockNode                ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                    DockNode                  ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n            DockNode                          ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n        DockNode                              ID=0x00000002 Parent=0x00000007 SizeRef=372,1284 Selected=0x8C72BEA8\n      DockNode                                ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n    DockNode                                  ID=0x00000004 Parent=0x00000030 SizeRef=1222,717 Selected=0xF12F3499\n\n",
+ "name": "laser_mapping_lab",
+ "nodePresets": [
+  {
+   "created": "2026-09-25T18:47:46",
+   "id": "f725cb32-574d-21e8-ca96a27fdb7e",
+   "modified": "2026-09-25T18:47:46",
+   "name": "Frame - Audience",
+   "operatorMode": "normal",
+   "parameters": [
+    {
+     "name": "camera_mode",
+     "value": "0"
+    },
+    {
+     "name": "camera_pos_x",
+     "value": "0.6"
+    },
+    {
+     "name": "camera_pos_y",
+     "value": "1.7"
+    },
+    {
+     "name": "camera_pos_z",
+     "value": "-8.2"
+    },
+    {
+     "name": "camera_yaw",
+     "value": "0.000000"
+    },
+    {
+     "name": "camera_pitch",
+     "value": "-0.03"
+    },
+    {
+     "name": "camera_fov",
+     "value": "48.000000"
+    }
+   ],
+   "pipelineType": "module:Laser_Previs",
+   "scope": "project"
+  },
+  {
+   "created": "2026-09-25T18:47:52",
+   "id": "4e73beaa-4411-f612-3d60a1a30a8d",
+   "modified": "2026-09-25T18:47:52",
+   "name": "Frame - Wall",
+   "operatorMode": "normal",
+   "parameters": [
+    {
+     "name": "camera_mode",
+     "value": "0"
+    },
+    {
+     "name": "camera_pos_x",
+     "value": "0.000000"
+    },
+    {
+     "name": "camera_pos_y",
+     "value": "1.5"
+    },
+    {
+     "name": "camera_pos_z",
+     "value": "-6.000000"
+    },
+    {
+     "name": "camera_yaw",
+     "value": "0.000000"
+    },
+    {
+     "name": "camera_pitch",
+     "value": "0.000000"
+    },
+    {
+     "name": "camera_fov",
+     "value": "38.000000"
+    }
+   ],
+   "pipelineType": "module:Laser_Previs",
+   "scope": "project"
+  },
+  {
+   "created": "2026-09-25T18:48:11",
+   "id": "89aa07c9-98ef-9416-b3ee70c31ef4",
+   "modified": "2026-09-25T18:48:11",
+   "name": "Frame - Operator",
+   "operatorMode": "normal",
+   "parameters": [
+    {
+     "name": "camera_mode",
+     "value": "0"
+    },
+    {
+     "name": "camera_pos_x",
+     "value": "-2.4"
+    },
+    {
+     "name": "camera_pos_y",
+     "value": "1.9"
+    },
+    {
+     "name": "camera_pos_z",
+     "value": "-7.4"
+    },
+    {
+     "name": "camera_yaw",
+     "value": "0.32"
+    },
+    {
+     "name": "camera_pitch",
+     "value": "-0.05"
+    },
+    {
+     "name": "camera_fov",
+     "value": "50.000000"
+    }
+   ],
+   "pipelineType": "module:Laser_Previs",
+   "scope": "project"
+  },
+  {
+   "created": "2026-09-29T05:24:58",
+   "id": "7270522c-1e67-f2db-2de98d1c4ebd",
+   "modified": "2026-09-29T05:24:58",
+   "name": "Draft 960x540",
+   "operatorMode": "normal",
+   "parameters": [
+    {
+     "name": "resolution_width",
+     "value": "960"
+    },
+    {
+     "name": "resolution_height",
+     "value": "540"
+    }
+   ],
+   "pipelineType": "module:Laser_Previs",
+   "scope": "project"
+  },
+  {
+   "created": "2026-09-29T05:24:59",
+   "id": "762e1dc7-96b6-29af-c01429ad28a0",
+   "modified": "2026-09-29T05:24:59",
+   "name": "Beauty 1920x1080 (captures)",
+   "operatorMode": "normal",
+   "parameters": [
+    {
+     "name": "resolution_width",
+     "value": "1920"
+    },
+    {
+     "name": "resolution_height",
+     "value": "1080"
+    }
+   ],
+   "pipelineType": "module:Laser_Previs",
+   "scope": "project"
+  },
+  {
+   "created": "2026-09-29T05:24:59",
+   "id": "1f660c81-1cbf-bef8-c23bd4d3a970",
+   "modified": "2026-09-29T05:24:59",
+   "name": "Live 1280x720",
+   "operatorMode": "normal",
+   "parameters": [
+    {
+     "name": "resolution_width",
+     "value": "1280"
+    },
+    {
+     "name": "resolution_height",
+     "value": "720"
+    }
+   ],
+   "pipelineType": "module:Laser_Previs",
+   "scope": "project"
+  }
+ ],
+ "osc": {
+  "enabled": true,
+  "receivePort": 9002,
+  "sendFeedback": true,
+  "sendHost": "127.0.0.1",
+  "sendPort": 9021,
+  "stateTreeBridge": true
+ },
+ "outputObjects": [],
+ "outputs": [],
+ "pipelines": [
+  {
+   "displayName": "Alignment_Grid",
+   "enabled": false,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Alignment_Grid",
+   "inputSlotSourceIds": [],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Alignment_Grid",
+   "panelOpen": true,
+   "parameters": {
+    "cycle_fps": "40.000000",
+    "extent": "0.990000",
+    "line_color_b": "1.000000",
+    "line_color_g": "1.000000",
+    "line_color_r": "1.000000",
+    "line_width": "1.713000",
+    "pattern": "0.000000",
+    "project_dir": "modules/Alignment_Grid",
+    "resolution_height": "720",
+    "resolution_width": "1280",
+    "sweep_hz": "0.500000"
+   },
+   "previewView": {
+    "mode": 0,
+    "panX": 0.0,
+    "panY": 0.0,
+    "zoom": 0.905468761920929
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "module"
+  },
+  {
+   "displayName": "Mapping_Editor",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Mapping_Editor",
+   "inputSlotSourceIds": [],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Mapping_Editor",
+   "panelOpen": true,
+   "parameters": {
+    "centre_x": "0.090521",
+    "centre_y": "0.078000",
+    "extent_a": "0.990000",
+    "extent_b": "0.990000",
+    "extent_c": "0.990000",
+    "mask_margin": "0.010000",
+    "pincushion_x": "0.116476",
+    "pincushion_y": "0.023046",
+    "project_dir": "modules/Mapping_Editor",
+    "resolution_height": "700",
+    "resolution_width": "1000",
+    "slot": "1.000000",
+    "spacing_x": "0.774514",
+    "spacing_y": "0.655000"
+   },
+   "previewView": {
+    "mode": 1,
+    "panX": 0.0,
+    "panY": 0.0,
+    "zoom": 0.0
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "module"
+  },
+  {
+   "displayName": "Laser_Split",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Laser_Split",
+   "inputSlotSourceIds": [
+    ""
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Laser_Split",
+   "panelOpen": true,
+   "parameters": {
+    "keys": "laser.a.scan"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "bundlesplit"
+  },
+  {
+   "displayName": "Mapper_Out",
+   "enabled": false,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Mapper_Out",
+   "inputSlotSourceIds": [
+    ""
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Mapper_Out",
+   "panelOpen": false,
+   "parameters": {
+    "background_b": "0.000000",
+    "background_g": "0.000000",
+    "background_r": "0.000000",
+    "fit": "0",
+    "height": "1080",
+    "resolution_mode": "0",
+    "width": "1920"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "groupoutput"
+  },
+  {
+   "displayName": "Adaptive_Mapping",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Adaptive_Mapping",
+   "inputSlotSourceIds": [
+    "Laser_Split",
+    "Mapping_Editor"
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Adaptive_Mapping",
+   "panelOpen": true,
+   "parameters": {
+    "jump_speed": "1.200000",
+    "mapping_mode": "0.000000",
+    "min_cycle_ms": "8.000000",
+    "project_dir": "modules/Adaptive_Mapping",
+    "record_budget": "512.000000",
+    "resolution_height": "440",
+    "resolution_width": "640",
+    "tolerance": "0.001000"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "module"
+  },
+  {
+   "displayName": "Laser_Fixture",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Laser_Fixture",
+   "inputSlotSourceIds": [
+    "Laser_Sim"
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Laser_Fixture",
+   "panelOpen": true,
+   "parameters": {
+    "adaptive_curves": "0.000000",
+    "aim_pitch": "-0.440000",
+    "aim_yaw": "-167.910004",
+    "beam_merge_tolerance": "0.002000",
+    "calibrated": "0.000000",
+    "curve_smoothing": "0.000000",
+    "curve_steps": "4.000000",
+    "curve_tolerance": "0.000100",
+    "device_mirrors_x": "1.000000",
+    "diameter_mm": "3.000000",
+    "divergence_mrad": "0.150000",
+    "flip_x": "1.000000",
+    "flip_y": "0.000000",
+    "gain_y": "0.970000",
+    "galvo_lag_ms": "0.200000",
+    "input_is_sent_stream": "1.000000",
+    "keystone": "0.000000",
+    "mirror_alternate": "0.000000",
+    "nonlinearity": "0.100000",
+    "offset_x": "0.000000",
+    "offset_y": "0.000000",
+    "pincushion_x": "0.100000",
+    "pincushion_y": "0.020000",
+    "position_x": "1.350000",
+    "position_y": "1.550000",
+    "position_z": "6.300000",
+    "power": "1.000000",
+    "project_dir": "modules/Laser_Fixture",
+    "projector_count": "1.000000",
+    "projector_spacing": "2.500000",
+    "resolution_height": "400",
+    "resolution_width": "640",
+    "rotation": "0.000000",
+    "rotation_step": "0.000000",
+    "sample_max_step": "0.074000",
+    "scan_x": "30.000000",
+    "scan_y": "20.000000",
+    "scanner_model": "1.000000",
+    "show_beat": "0.000000",
+    "show_cue": "0.000000",
+    "show_enabled": "0.000000",
+    "skew_deg": "0.800000",
+    "throw_distance": "20.000000",
+    "toe_in": "0.000000",
+    "yoke_angle": "0.000000",
+    "zero_x": "0.070000",
+    "zero_y": "-0.040000"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "module"
+  },
+  {
+   "displayName": "Laser_Previs",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Laser_Previs",
+   "inputSlotSourceIds": [
+    "Look_Select",
+    "Laser_Fixture",
+    "Laser_Fixture"
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Laser_Previs",
+   "panelOpen": true,
+   "parameters": {
+    "ambient": "0.050000",
+    "anisotropy": "0.659000",
+    "aperture_glow": "4.000000",
+    "aperture_glow_mm": "23.170000",
+    "bloom": "0.120000",
+    "camera_distance": "5.000000",
+    "camera_far": "100.000000",
+    "camera_fov": "50.000000",
+    "camera_look_sensitivity": "6.000000",
+    "camera_mode": "0",
+    "camera_move_speed": "2.448184",
+    "camera_near": "0.100000",
+    "camera_pitch": "-0.265393",
+    "camera_pos_x": "1.191261",
+    "camera_pos_y": "2.253319",
+    "camera_pos_z": "-7.325346",
+    "camera_target_x": "0.000000",
+    "camera_target_y": "1.000000",
+    "camera_target_z": "0.000000",
+    "camera_yaw": "6.067368",
+    "environment_light": "0.024000",
+    "exposure": "1.000000",
+    "exposure_ms": "16.667000",
+    "extinction": "0.004000",
+    "fixture_light": "0.886000",
+    "fog_contrast": "3.239000",
+    "fog_detail": "1.500000",
+    "fog_floor": "0.165000",
+    "fog_roughness": "0.667000",
+    "fog_samples": "1.000000",
+    "fog_scale": "0.596000",
+    "fog_speed": "0.120000",
+    "fog_stretch": "1.567000",
+    "fog_warp": "0.068000",
+    "gain": "6.108904",
+    "haze": "0.080000",
+    "pixel_samples": "1.000000",
+    "proj_x": "0.600000",
+    "proj_y": "1.600000",
+    "proj_z": "6.480000",
+    "project_dir": "modules/Laser_Previs",
+    "projector_gain": "2.200000",
+    "projector_haze": "1.000000",
+    "resolution_height": "720",
+    "resolution_width": "1280",
+    "sensor_response": "0.160000",
+    "sensor_white_start": "2.000000",
+    "show_fixtures": "1.000000",
+    "show_frustum": "0.000000",
+    "shutter_mode": "0.000000",
+    "shutter_phase": "0.500000",
+    "streak_length": "0.080000",
+    "streak_strength": "0.005000",
+    "surface_gain": "0.134885",
+    "tile_culling": "1.000000",
+    "work_lamp": "1.000000"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "module"
+  },
+  {
+   "displayName": "Laser_Test_Shapes",
+   "enabled": false,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Laser_Test_Shapes",
+   "inputSlotSourceIds": [],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Laser_Test_Shapes",
+   "panelOpen": true,
+   "parameters": {
+    "colour_mode": "0.000000",
+    "curve_tolerance": "0.001500",
+    "cycle_seconds": "1.000000",
+    "detail": "1.000000",
+    "draw_speed": "0.180000",
+    "line_color_b": "1.000000",
+    "line_color_g": "1.000000",
+    "line_color_r": "1.000000",
+    "line_width": "5.738000",
+    "max_cycle_ms": "22.000000",
+    "min_cycle_ms": "8.000000",
+    "project_dir": "modules/Laser_Test_Shapes",
+    "record_budget": "250.000000",
+    "resolution_height": "720",
+    "resolution_width": "1280",
+    "shape": "2.000000",
+    "size": "0.652000",
+    "spin": "-2.000000"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "module"
+  },
+  {
+   "displayName": "Shapes_Out",
+   "enabled": false,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Shapes_Out",
+   "inputSlotSourceIds": [
+    ""
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Shapes_Out",
+   "panelOpen": false,
+   "parameters": {
+    "background_b": "0.000000",
+    "background_g": "0.000000",
+    "background_r": "0.000000",
+    "fit": "0",
+    "height": "1080",
+    "resolution_mode": "0",
+    "width": "1920"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "groupoutput"
+  },
+  {
+   "displayName": "Look_Select",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Look_Select",
+   "inputSlotSourceIds": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Look_Select",
+   "panelOpen": true,
+   "parameters": {
+    "bundle_inputs": "false",
+    "fade_time": "0.000000",
+    "fallback": "0",
+    "height": "1080",
+    "selected": "0",
+    "selected_group": "annotation_19",
+    "solo_upstream": "false",
+    "source_mode": "1",
+    "width": "1920"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "mux"
+  },
+  {
+   "displayName": "Laser_Sim",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Laser_Sim",
+   "inputSlotSourceIds": [
+    "Adaptive_Mapping"
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Laser_Sim",
+   "panelOpen": false,
+   "parameters": {
+    "amplitude_limit": "1.000000",
+    "armed": "false",
+    "blank_guard": "25",
+    "blue_level": "1.000000",
+    "color_delay": "0",
+    "corner_dwell": "8",
+    "deadman_ms": "500",
+    "desired_fps": "60.000000",
+    "duty_attenuation": "0.500000",
+    "duty_limit": "0.600000",
+    "end_dwell": "8",
+    "flip_x": "false",
+    "flip_y": "false",
+    "green_level": "1.000000",
+    "ilda_test_size": "0.150000",
+    "insert_cap": "64",
+    "intensity": "1.000000",
+    "limits_point_rate": "20000",
+    "max_step": "0.074000",
+    "max_step_change": "0.143000",
+    "min_visible_speed": "0.001000",
+    "min_voltage": "0.000000",
+    "output_delay_ms": "0",
+    "point_rate": "20000",
+    "protocol": "simulate",
+    "red_level": "1.000000",
+    "rotate_180": "false",
+    "scale_limits_with_rate": "true",
+    "sent_ahead_samples": "0",
+    "speed_window": "64",
+    "test_pattern": "0"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "laserout"
+  },
+  {
+   "displayName": "Trace_Canvas",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Trace_Canvas",
+   "inputSlotSourceIds": [],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Trace_Canvas",
+   "panelOpen": true,
+   "parameters": {
+    "dot_color_b": "1.000000",
+    "dot_color_g": "1.000000",
+    "dot_color_r": "1.000000",
+    "dot_radius": "0.000000",
+    "line_color_b": "1.000000",
+    "line_color_g": "1.000000",
+    "line_color_r": "1.000000",
+    "line_width": "0.005000",
+    "project_dir": "modules/Trace_Canvas",
+    "resolution_height": "720",
+    "resolution_width": "1280"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "module"
+  },
+  {
+   "displayName": "Trace",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Trace",
+   "inputSlotSourceIds": [
+    "Trace_Canvas"
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Trace",
+   "panelOpen": true,
+   "parameters": {
+    "brightness": "0",
+    "channel": "0",
+    "color_mode": "0",
+    "denoise": "0",
+    "desired_fps": "60",
+    "display": "0",
+    "dot_dwell_ms": "0.400000",
+    "dot_size_px": "20.000000",
+    "dots": "1",
+    "enabled": "1",
+    "fit": "0",
+    "join_gap_px": "4.000000",
+    "keep": "0",
+    "max_dots": "64",
+    "max_length": "100.000000",
+    "max_line_width": "10.000000",
+    "max_paths": "1024",
+    "min_length": "0.000000",
+    "mode": "2",
+    "order_budget_ms": "1",
+    "point_budget": "500",
+    "simplify_px": "1.000000",
+    "spur_px": "2.000000",
+    "stability": "0.700000",
+    "threshold": "0.300000",
+    "threshold_low": "0.150000",
+    "trace_budget_ms": "0.000000",
+    "use_color": "1",
+    "working_res": "0",
+    "y_axis": "1"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "lasertrace"
+  },
+  {
+   "displayName": "Trace_Look",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Trace_Look",
+   "inputSlotSourceIds": [
+    "Trace_Canvas",
+    "Trace"
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Trace_Look",
+   "panelOpen": true,
+   "parameters": {
+    "row_1_key": "laser.a.scan",
+    "row_1_kind": "0",
+    "row_1_neutral": "1",
+    "row_1_transition": "{\"mode\": \"handoff\", \"at\": \"mid\"}",
+    "rows": "1"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "bundlepack"
+  },
+  {
+   "displayName": "Trace_Out",
+   "enabled": true,
+   "expressions": null,
+   "fitMode": 1,
+   "id": "Trace_Out",
+   "inputSlotSourceIds": [
+    ""
+   ],
+   "operator_mode": "normal",
+   "outputFitMode": 1,
+   "outputSinkId": "",
+   "panelAnchorId": "Trace_Out",
+   "panelOpen": true,
+   "parameters": {
+    "background_b": "0.000000",
+    "background_g": "0.000000",
+    "background_r": "0.000000",
+    "fit": "0",
+    "height": "1080",
+    "resolution_mode": "0",
+    "width": "1920"
+   },
+   "running": true,
+   "secondaryInputFilePaths": null,
+   "type": "groupoutput"
+  }
+ ],
+ "saved_at_ms": 1790749805093,
+ "sources": [],
+ "statePayloads": {
+  "Mapping_Editor": {
+   "points": {
+    "data": "5409763e0102423e000000000000803ffa8bc33ee40e3c3e00000000000000407da5073ff3d7353e0000000000004040f33c2f3f24592f3e000000000000804005ab583ff38c283e000000000000a0401b48713eb9faab3e000000000000c040fb9fc23e92a1aa3e000000000000e040a32e073f4f39a93e000000000000004130c52e3f81c0a73e0000000000001041aa6a593f4536a63e0000000000002041e7736f3ebefaf63e00000000000030412fb4c13e7c42f73e0000000000004041aeb7063f548df73e0000000000005041614d2e3fbbdbf73e0000000000006041f7f1583fa52df83e000000000000704105a06d3e9300213f00000000000080410fc8c03e05f5213f0000000000008841b440063f38f4223f000000000000904173d52d3f0aff233f00000000000098413279583f4516253f000000000000a041d7b86e3e0587463f000000000000a84104dcbf3e164c483f000000000000b041c6c9053f3d254a3f000000000000b8418e5d2d3ff2134c3f000000000000c0412fc8563f99194e3f000000000000c8415409763e0102423e000000000000803ffa8bc33ee40e3c3e00000000000000407da5073ff3d7353e0000000000004040f33c2f3f24592f3e000000000000804005ab583ff38c283e000000000000a0401b48713eb9faab3e000000000000c040fb9fc23e92a1aa3e000000000000e040a32e073f4f39a93e000000000000004130c52e3f81c0a73e0000000000001041aa6a593f4536a63e0000000000002041e7736f3ebefaf63e00000000000030412fb4c13e7c42f73e0000000000004041aeb7063f548df73e0000000000005041614d2e3fbbdbf73e0000000000006041f7f1583fa52df83e000000000000704105a06d3e9300213f00000000000080410fc8c03e05f5213f0000000000008841b440063f38f4223f000000000000904173d52d3f0aff233f00000000000098413279583f4516253f000000000000a041d7b86e3e0587463f000000000000a84104dcbf3e164c483f000000000000b041c6c9053f3d254a3f000000000000b8418e5d2d3ff2134c3f000000000000c0412fc8563f99194e3f000000000000c84100000000000000000000000000000000000000000000803f0000000000f08045407a523e9764d33e000000000000803fcca8b63e70d2d23e0000000000000040efb0013fc53fd23e000000000000404094ef283f86acd13e00000000000080403e574f3fb718d13e000000000000a0406d68563ebc95003f000000000000c040c44db73e4158003f000000000000e040a5d7013f8c1a003f0000000000000041b8aa283f48b9ff3e000000000000104100a64e3fef3cff3e000000000000204178f35a3e0bfc163f0000000000003041986ab83eaec9163f000000000000404188fd013f2197163f00000000000050414728283f6d64163f00000000000060418bf84d3f8631163f00000000000070414ab75e3e2be92c3f00000000000080416b81b93e79c12c3f0000000000008841a822023fa6992c3f000000000000904150e6273fac712c3f0000000000009841cc4e4d3f90492c3f000000000000a041c2b4613ee860423f000000000000a8416392ba3e7943423f000000000000b041f946023fea25423f000000000000b841b866273f4708423f000000000000c04197a84c3f78ea413f000000000000c841407a523e9764d33e000000000000803fcca8b63e70d2d23e0000000000000040efb0013fc53fd23e000000000000404094ef283f86acd13e00000000000080403e574f3fb718d13e000000000000a0406d68563ebc95003f000000000000c040c44db73e4158003f000000000000e040a5d7013f8c1a003f0000000000000041b8aa283f48b9ff3e000000000000104100a64e3fef3cff3e000000000000204178f35a3e0bfc163f0000000000003041986ab83eaec9163f000000000000404188fd013f2197163f00000000000050414728283f6d64163f00000000000060418bf84d3f8631163f00000000000070414ab75e3e2be92c3f00000000000080416b81b93e79c12c3f0000000000008841a822023fa6992c3f000000000000904150e6273fac712c3f0000000000009841cc4e4d3f90492c3f000000000000a041c2b4613ee860423f000000000000a8416392ba3e7943423f000000000000b041f946023fea25423f000000000000b841b866273f4708423f000000000000c04197a84c3f78ea413f000000000000c8410000000000000000000000000000000000000000000000000000000000f08045cdcccc3dcdcccc3d000000000000803f9a99993ecdcccc3d00000000000000400000003fcdcccc3d00000000000040403333333fcdcccc3d00000000000080406666663fcdcccc3d000000000000a040cdcccc3d9a99993e000000000000c0409a99993e9a99993e000000000000e0400000003f9a99993e00000000000000413333333f9a99993e00000000000010416666663f9a99993e0000000000002041cdcccc3d0000003f00000000000030419a99993e0000003f00000000000040410000003f0000003f00000000000050413333333f0000003f00000000000060416666663f0000003f0000000000007041cdcccc3d3333333f00000000000080419a99993e3333333f00000000000088410000003f3333333f00000000000090413333333f3333333f00000000000098416666663f3333333f000000000000a041cdcccc3d6666663f000000000000a8419a99993e6666663f000000000000b0410000003f6666663f000000000000b8413333333f6666663f000000000000c0416666663f6666663f000000000000c841cdcccc3dcdcccc3d000000000000803f9a99993ecdcccc3d00000000000000400000003fcdcccc3d00000000000040403333333fcdcccc3d00000000000080406666663fcdcccc3d000000000000a040cdcccc3d9a99993e000000000000c0409a99993e9a99993e000000000000e0400000003f9a99993e00000000000000413333333f9a99993e00000000000010416666663f9a99993e0000000000002041cdcccc3d0000003f00000000000030419a99993e0000003f00000000000040410000003f0000003f00000000000050413333333f0000003f00000000000060416666663f0000003f0000000000007041cdcccc3d3333333f00000000000080419a99993e3333333f00000000000088410000003f3333333f00000000000090413333333f3333333f00000000000098416666663f3333333f000000000000a041cdcccc3d6666663f000000000000a8419a99993e6666663f000000000000b0410000003f6666663f000000000000b8413333333f6666663f000000000000c0416666663f6666663f000000000000c8410000000000000000000000000000000000000000000000000000000000f08045",
+    "element_count": 156,
+    "element_size": 16,
+    "encoding": "hex",
+    "schema_signature": "4516098049071266971"
+   },
+   "zones": {
+    "data": "0000000000e8c045000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "element_count": 545,
+    "element_size": 16,
+    "encoding": "hex",
+    "schema_signature": "6296754661095742587"
+   }
+  }
+ },
+ "version": 7
+}

@@ -1,0 +1,136 @@
+name: "Laser Previs"
+version: "1.0"
+mode: generator
+# Working default 1280 x 720 (0.75 ms on the rose, 3.1 ms on the densest shape); the Beauty
+# preset renders 1920 x 1080 for captures, Draft 960 x 540 for slower machines.
+resolution: [1280, 720]
+working_format: RGBA16F
+output_format: RGBA16F
+features: [camera, noise]
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed"
+  interactions: [camera]
+
+# A warehouse bay with a freestanding drywall mock-up, and the simulated laser hitting it.
+# From the BLINK show's BLINK_Previs, which holds Laser Lab's LS_Air renderer (sentinel-workspace
+# projects/laser_lab, 1563058e): analytic single scattering in drifting haze, the RAW 10 housing,
+# aperture glow, and the timed scan landing on the first surface it meets, with BLINK's exact
+# swept-plane surface kernel and separate air extinction. The room is site.hlsli.
+# A video projector on a stand maps its Projection input onto the taped frame (as MadMapper
+# would), so the projected grid and the laser grid can be lined up on the same wall.
+# World: metres, drywall face z = 0 facing +z, y up. Laser Fixture owns laser position and aim.
+
+inputs:
+  - { name: "Projection", slot: 0, required: false }
+
+data_inputs:
+  - name: "World Scan"
+    slot: 0
+    schema:
+      - {name: origin, type: float4}
+      - {name: direction0, type: float4}
+      - {name: direction1, type: float4}
+      - {name: color0, type: float4}
+      - {name: color1, type: float4}
+      - {name: timing, type: float4}
+      - {name: meta, type: float4}
+  - name: "Fixtures"
+    slot: 1
+    schema:
+      - {name: aperture, type: float4}
+      - {name: right, type: float4}
+      - {name: up, type: float4}
+      - {name: forward, type: float4}
+      - {name: emission, type: float4}
+
+parameters:
+  - { name: projector_gain, display: "Projector Brightness", type: float, min: 0, max: 8, default: 2.2, group: "Video Projector" }
+  - { name: proj_x, display: "Projector X", type: float, min: -10, max: 10, default: 0.6, group: "Video Projector" }
+  - { name: proj_y, display: "Projector Y", type: float, min: 0.2, max: 6, default: 1.6, group: "Video Projector" }
+  - { name: proj_z, display: "Projector Z", type: float, min: 1, max: 20, default: 6.48, group: "Video Projector" }
+  - { name: projector_haze, display: "Projector Beam in Haze", type: float, min: 0, max: 4, default: 1, group: "Video Projector", description: "How visible the projector's light is in the room's haze: a cone from the lens to the taped frame, carrying the projected image's colours. Approximate (no shadows), unlike the laser." }
+  - { name: show_frustum, display: "Projector Frustum Lines", type: float, min: 0, max: 1, default: 0, group: "Video Projector" }
+  - { name: environment_light, display: "Environment Light", type: float, min: 0, max: 2, default: 1.0, group: "Room" }
+  - { name: ambient,      display: "Skylight", type: float, min: 0, max: 0.3, default: 0.05, group: "Room" }
+  - { name: work_lamp,    display: "Work Lamp", type: float, min: 0, max: 4, default: 1.0, group: "Room" }
+
+  # Laser Lab (LS_Air) controls, defaults from its tuned live baseline.
+  - {name: gain, display: Laser Radiance Scale, type: float, min: 1, max: 2000, default: 40, group: Lasers, description: "Tuned for a ~5 m throw (BLINK used 181 for 40 m)."}
+  - {name: surface_gain, display: Laser Surface Gain, type: float, min: 0, max: 5, default: 0.3, group: Lasers}
+  - {name: aperture_glow, display: Aperture Glow, type: float, min: 0, max: 4, default: 4, group: Fixtures}
+  - {name: aperture_glow_mm, display: Aperture Halo Radius mm, type: float, min: 2, max: 25, default: 23.17, group: Fixtures}
+  - {name: show_fixtures, display: Show Laser Housings, type: bool, default: true, group: Fixtures}
+  - {name: fixture_light, display: Fixture Inspection Light, type: float, min: 0, max: 3, default: 0, group: Fixtures, description: "Optional soft fill on the laser housing, for inspecting it in a dark room. At 0 the housing is lit only by the room (skylight and work lamp), like everything else."}
+  - {name: haze, display: Haze Scattering, type: float, min: 0, max: 0.2, default: 0.08, group: Atmosphere}
+  # Air extinction is separate from haze scattering (BLINK): shared, it swallowed long throws.
+  - {name: extinction, display: Air Extinction per m, type: float, min: 0, max: 0.2, default: 0.004, group: Atmosphere}
+  - {name: anisotropy, type: float, min: 0, max: 0.8, default: 0.659, group: Atmosphere}
+  - {name: fog_scale, display: Structure Frequency, type: float, min: 0.15, max: 8, default: 0.596, group: Fog Texture}
+  - {name: fog_detail, display: Fine Detail, type: float, min: 0, max: 1.5, default: 1.5, group: Fog Texture}
+  - {name: fog_roughness, display: Detail Persistence, type: float, min: 0.1, max: 0.85, default: 0.667, group: Fog Texture}
+  - {name: fog_stretch, display: Wisp Stretch, type: float, min: 1, max: 12, default: 1.567, group: Fog Texture}
+  - {name: fog_warp, display: Turbulence, type: float, min: 0, max: 2, default: 0.068, group: Fog Texture}
+  - {name: fog_contrast, display: Density Contrast, type: float, min: 0, max: 5, default: 3.239, group: Fog Texture}
+  - {name: fog_floor, display: Minimum Density, type: float, min: 0, max: 1, default: 0.165, group: Fog Texture}
+  - {name: fog_speed, display: Drift Speed, type: float, min: -1, max: 1, default: 0.12, group: Fog Motion}
+  # Klangrig 2 Klang_Renderer present: bloom pyramid, streaks, sensor highlight shoulder.
+  - {name: exposure, type: float, min: 0.1, max: 4, default: 1, group: Look}
+  - {name: bloom, type: float, min: 0, max: 1, default: 0.12, group: Look, description: "Fraction of HDR light scattered through the bloom pyramid."}
+  - {name: streak_strength, display: Streak Strength, type: float, min: 0, max: 1, default: 0.005, group: Look}
+  - {name: streak_length, display: Streak Length, type: float, min: 0.01, max: 0.3, default: 0.08, group: Look}
+  - {name: sensor_white_start, display: Sensor White Start, type: float, min: 0, max: 10, default: 2.0, group: Camera Response}
+  - {name: sensor_response, display: Sensor Blowout, type: float, min: 0, max: 1, default: 0.16, group: Camera Response}
+  - {name: shutter_mode, type: enum, options: [Whole Scan, Finite Exposure], default: 0, group: Camera Response}
+  - {name: exposure_ms, type: float, min: 0.05, max: 100, default: 16.667, group: Camera Response}
+  - {name: shutter_phase, type: float, min: 0, max: 1, default: 0.5, group: Camera Response}
+  - {name: pixel_samples, display: Subpixel Samples, type: int, min: 1, max: 8, default: 1, group: Quality}
+  - {name: tile_culling, display: Screen Tile Culling, type: bool, default: true, group: Quality}
+  - {name: fog_samples, type: int, min: 1, max: 8, default: 1, group: Quality}
+
+buffers:
+  - {name: fog_clock, structured: true, element_size: 16, element_count: 1}
+  - {name: screen_a, structured: true, element_size: 64, element_count: 4096}
+  - {name: tiles_a, structured: true, element_size: 4, element_count: 8454144}
+
+passes:
+  - {name: clock, shader: fog_clock.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, output: 'buffer:fog_clock'}
+  - {name: bounds_a, shader: bounds_a.hlsl, target: cs_5_0, dispatch: [64,1,1], thread_group_x: 64, thread_group_y: 1, output: 'buffer:screen_a', inputs: [{slot: 0, source: 'data:0'}]}
+  - {name: tiles_a, shader: tiles.hlsl, target: cs_5_0, dispatch: [32,32,1], output: 'buffer:tiles_a', inputs: [{slot: 0, source: 'buffer:screen_a'}, {slot: 7, source: 'pass:bounds_a'}]}
+  - name: fixture
+    shader: fixture.hlsl
+    target: cs_5_0
+    format: RGBA32F
+    inputs: [{slot: 1, source: 'data:1'}]
+  - name: render
+    shader: previs.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0,  source: "data:0" }
+      - { slot: 1,  source: "data:1" }
+      - { slot: 4,  source: "buffer:tiles_a" }
+      - { slot: 6,  source: "pass:fixture" }
+      - { slot: 7,  source: "buffer:fog_clock" }
+      # Explicit order: the tile lists must be this cook's, or a changed scan draws a frame of gaps.
+      - { slot: 9,  source: "pass:tiles_a" }
+      - { slot: 8,  source: "input:0" }
+  # Klangrig 2 glow: five-level bloom pyramid (13-tap down, tent up) and horizontal streaks.
+  - {name: bloom_d0, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.5, inputs: [{slot: 0, source: 'pass:render'}]}
+  - {name: bloom_d1, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.25, inputs: [{slot: 0, source: 'pass:bloom_d0'}]}
+  - {name: bloom_d2, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.125, inputs: [{slot: 0, source: 'pass:bloom_d1'}]}
+  - {name: bloom_d3, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.0625, inputs: [{slot: 0, source: 'pass:bloom_d2'}]}
+  - {name: bloom_d4, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.03125, inputs: [{slot: 0, source: 'pass:bloom_d3'}]}
+  - {name: bloom_u3, shader: bloom_up.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.0625, inputs: [{slot: 0, source: 'pass:bloom_d4'}, {slot: 1, source: 'pass:bloom_d3'}]}
+  - {name: bloom_u2, shader: bloom_up.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.125, inputs: [{slot: 0, source: 'pass:bloom_u3'}, {slot: 1, source: 'pass:bloom_d2'}]}
+  - {name: bloom_u1, shader: bloom_up.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.25, inputs: [{slot: 0, source: 'pass:bloom_u2'}, {slot: 1, source: 'pass:bloom_d1'}]}
+  - {name: bloom_u0, shader: bloom_up.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.5, inputs: [{slot: 0, source: 'pass:bloom_u1'}, {slot: 1, source: 'pass:bloom_d0'}]}
+  - {name: streak_seed, shader: streak_seed.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.25, inputs: [{slot: 0, source: 'pass:bloom_d1'}]}
+  - {name: streaks, shader: streaks.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.25, inputs: [{slot: 0, source: 'pass:streak_seed'}]}
+  - name: finish
+    shader: finish.hlsl
+    target: cs_5_0
+    inputs: [{slot: 0, source: 'pass:render'}, {slot: 1, source: 'pass:bloom_u0'}, {slot: 2, source: 'pass:streaks'}]
+
+outputs:
+  - { name: "Previs", pass: finish }

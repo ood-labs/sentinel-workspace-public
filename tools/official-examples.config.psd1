@@ -287,6 +287,20 @@
             MinimumNodePresets = 5
             Exemptions = @('approved-ungrouped-instrument', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
+        # Committed directly (scripts/ and docs/ are outside AllowedProjectDirectories), like PHAGE.
+        laser_mapping_lab = @{
+            ProjectFile = 'laser_mapping_lab.sentinel'
+            Promote = $false
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-10/laser_mapping_lab.json')
+            MinimumSceneGroups = 3
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 3
+            RequireNodePreviews = $true
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 6
+            Exemptions = @('scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
+        }
     }
 
     AssetLedger = @(
