@@ -346,7 +346,7 @@
                   },
                   {
                       "path":  ".sentinel-workspace-version",
-                      "sha256":  "87b241b275c591694846560e9879f50c9da3150f854efdabd782c539772f3033"
+                      "sha256":  "a466ef209f5c3aee5ff0c702e2e9d5cced4783d2a655e8ab66330f21a5557b3f"
                   },
                   {
                       "path":  "AGENTS.md",
@@ -1806,7 +1806,7 @@
                   },
                   {
                       "path":  "projects/laser_mapping_lab/laser_mapping_lab.sentinel",
-                      "sha256":  "a4822169c34845042c2a16512dbef43ef7b9f783d399ba767922f51776947736"
+                      "sha256":  "fdba8ebf35b8e559ab52b739dcc62d5e3b8f596dc3b54dfff18f9b3554e08309"
                   },
                   {
                       "path":  "projects/laser_mapping_lab/modules/_shared/fonts/scientifica_ascii.hlsli",
@@ -2094,7 +2094,7 @@
                   },
                   {
                       "path":  "projects/laser_mapping_lab/README.md",
-                      "sha256":  "2b2b0d9a2af469a83d63f3eb63880b7e0c92a77cb75c9e56369716861b77915f"
+                      "sha256":  "28e6c559c8ed471825ac76730ec34805b87f5c1e28789b6c3bf1c6f5961daead"
                   },
                   {
                       "path":  "projects/laser_mapping_lab/scripts/clock_check.py",
@@ -11148,5 +11148,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "90e5af1a589282a126bea4cc6f9ca8bd0ac02ab7"
+    "source_commit":  "219e14d111e77b31260c421d7925203393d1c726"
 }
