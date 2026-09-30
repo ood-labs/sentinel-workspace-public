@@ -75,7 +75,7 @@ Shading and generative tools:
 - Data port: `Slot Occupancy` records for scene-spawner modules; readbacks report `occupied_count`, per-slot sequences, and cycle state.
 
 `module`: authored multi-pass shader projects with parameters, typed data ports, control outputs, and optional 3D/raster passes.
-- `hlslshader`: single HLSL post-process shader.
+- `hlslshader`: single HLSL post-process shader, development builds only. Build new work as a Module.
 - `shaderproject`: hidden compatibility alias for module-style shader projects.
 
 Scene system and sequencing:
@@ -92,6 +92,22 @@ Presets: the `sentinel_preset` tool (0.5.29+) saves, recalls, and manages identi
 - `save` REQUIRES an explicit selection: `{"action":"save","pipeline":"<id>","name":"<name>","scope":"library","params":["decay","splat_gain"]}` (params and/or groups; there is no save-everything default).
 - Preset identity derives from the node type and project-local Module (`module:<module-name>`), so presets follow the Module, not the instance. `list` filters by `pipeline` or `identity`.
 - `recall` takes the preset name or id plus the target `pipeline` and returns `applied[]` and `skipped[]`. `loose: true` recalls onto a different node by matching parameter names, and errors loudly (`no preset parameters applied`) when nothing matches.
+
+Bundles:
+
+- `bundlepack`: packs a video plus up to eight keyed data or texture rows into one Bundle cable, for producers that are not Modules.
+- `bundlesplit`: splits a Bundle into its video and one data output per key, for consumers that are not Modules. Modules publish and take bundles directly with `bundle_outputs` and `bundle_inputs`. See `bundle-links.md`.
+
+Lasers:
+
+- `laserout`: sends a Scan Signal to one laser projector over Simulate (the default, no hardware), Record, Ether Dream, LaserCube or ShowNET, through scanner protection, Frame Lock and Output Delay. Publishes `Sent Stream`. Real output needs the node's arm and the operator's ARM LASERS master. See `laser-output.md`.
+- `lasertrace`: traces pixels into ordered, frame-stable Scan Signal paths for Laser Out. See the `laser-trace-tuning` skill.
+
+Scripted control and controllers (Control nodes):
+
+- `script`: sandboxed Luau on the 240 Hz control clock with manifest Signal and Event pins, parameters, reload that keeps state, and a tracked control window that can draw an operator desk. See the `script-node-authoring` skill and `show-control-desk.md`.
+- `midiin`, `midiout`: MIDI input with learn, pickup and relative encoders into Signal and timestamped Event outputs; timestamped MIDI output from Event and Signal inputs.
+- `push2display`: drives the Ableton Push 2 or Push 3 display from Script draw lists or a video input. See the `controller-surface-authoring` skill.
 
 Lighting and show control (Control nodes, no pixel output):
 
@@ -127,7 +143,6 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 | `meshsource` | yes | Static OBJ, FBX, GLB, or glTF import with one canonical semantic Mesh output. |
 | `meshunpack` | yes | Specialized zero-copy breakout from semantic Mesh to three raw data pins. |
 | `module` | yes | Authored multi-pass HLSL projects with parameters, data ports, and control outputs. |
-| `hlslshader` | yes | Single HLSL post-process shader. |
 | `shaderproject` | hidden | Compatibility alias for shader project/module workflows. |
 | `opticalflow` | yes | NVIDIA hardware optical flow. |
 | `vsr` | yes | RTX Video Super Resolution. |
@@ -142,6 +157,14 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 | `oscout` | yes | OSC Out with a dynamic, expression-driven message list (control node). |
 | `artnetin` | hidden | Compatibility id for `dmxin` with `protocol=artnet`. |
 | `artnetout` | hidden | Compatibility id for `dmxout` with `protocol=artnet`. |
+| `bundlepack` | yes | Packs a video plus keyed data or texture rows into one Bundle output. |
+| `bundlesplit` | yes | Splits a Bundle into its video and one data output per key. |
+| `laserout` | yes | Laser Out: Scan Signal to a laser projector over Simulate, Record, Ether Dream, LaserCube or ShowNET, with a `Sent Stream` output (control sink). |
+| `lasertrace` | yes | Laser Trace: pixels into ordered Scan Signal paths with a preview. |
+| `script` | yes | Sandboxed Luau Script node with Signal and Event pins and a control window (control node). |
+| `midiin` | yes | MIDI In: Signal and timestamped Event outputs from a MIDI device (control node). |
+| `midiout` | yes | MIDI Out: timestamped MIDI from Event and Signal inputs (control sink). |
+| `push2display` | yes | Push Display for Ableton Push 2 and Push 3 (control sink). |
 
 ## What Nodes Emit
 
@@ -249,6 +272,10 @@ drive an authored Module parameter from a path such as
 - [Portable Scene Groups](portable-scene-groups.md)
 - [Node Modes: Normal, Freeze, Bypass](node-modes.md)
 - [Lighting And Show Control: DMX In, DMX Out, OSC Out](lighting-and-show-control.md)
+- [Laser Output: Laser Out, Arming, Sync And First Light](laser-output.md)
+- [Laser Mapping](laser-mapping.md)
+- [Bundle Links: One Cable For Video Plus Data](bundle-links.md)
+- [Show Control Desks](show-control-desk.md)
 - [Motion Choreography And Sequencing](motion-choreography.md)
 - [Precise Construction: Blueprints And SDF Audit](precise-construction.md)
 - [First-Run Engines](first-run-engines.md)

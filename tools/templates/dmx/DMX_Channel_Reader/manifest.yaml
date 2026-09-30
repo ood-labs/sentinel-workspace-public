@@ -1,0 +1,38 @@
+name: "DMX Channel Reader"
+version: "1.0"
+mode: generator
+resolution: [256, 64]
+input_tiles: disabled
+parameters:
+  - { name: record, type: int, min: 0, max: 1023, default: 0 }
+  - { name: channel, type: int, min: 1, max: 512, default: 1 }
+data_inputs:
+  - name: DMX
+    slot: 0
+    element_size: 2048
+    schema:
+      - { name: channels, type: uint, count: 512 }
+buffers:
+  - { name: level, structured: true, element_size: 16, element_count: 1 }
+passes:
+  - name: read
+    shader: read.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    time_dependent: false
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:level"
+  - name: meter
+    shader: meter.hlsl
+    target: ps_5_0
+    time_dependent: false
+    inputs:
+      - { slot: 0, source: "buffer:level" }
+outputs:
+  - { name: Meter, pass: meter }
+control_outputs:
+  - { name: value, buffer: level, element: 0, field_offset: 0, description: "Channel level, 0 to 1" }
+  - { name: raw, buffer: level, element: 0, field_offset: 4, description: "Channel value, 0 to 255" }

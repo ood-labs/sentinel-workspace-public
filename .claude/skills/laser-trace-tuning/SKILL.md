@@ -27,7 +27,7 @@ Safety rules that always apply:
 
 ```
 content ──► Square_Crop (square-crop Module, 1080 x 1080) ──► Trace ──(Scan Signal, slot 1)──► Laser Out (shownet)
-StreamDiffusion Depth (slot 1) ──► Depth_Slice ──────────────► Trace                        └─► Laser Out (record)
+StreamDiffusion Depth (slot 1) ──► Depth_Slice ──────────────► Trace                        └─► Laser Out (simulate)
 ```
 
 - Feed Trace square content. Scan Signal coordinates are normalised by the
@@ -35,8 +35,9 @@ StreamDiffusion Depth (slot 1) ──► Depth_Slice ─────────
   preview and the wall in the same frame. Crop a 1920 x 1080 source to a
   width of 0.5625 for an exact square.
 - Trace output slot 0 is the preview texture; slot 1 is the Scan Signal.
-- A `record` Laser Out on the same Scan Signal is a free timing oracle: it
-  writes exactly what would have been sent.
+- A `simulate` Laser Out on the same Scan Signal is a free timing oracle: its
+  preview, Sent Stream and control outputs show exactly what would have been
+  sent. Use `record` instead when you need the samples in a file.
 
 ## Arming and link stability
 
@@ -103,6 +104,12 @@ about 20 fps:
 With the tighter bench profile below at amplitude 1.0, the same grid crawls at
 about 6 fps.
 
+A new Laser Out starts from the show profile tuned on a DS-3000 over ShowNET
+and a LaserCube: `max_step` / `max_step_change` 0.074 / 0.143 at 20 kpps,
+`end_dwell` / `corner_dwell` / `blank_guard` 8 / 8 / 25, `insert_cap` 16,
+`speed_window` 64. Saved projects keep their own values. See
+`knowledge/laser-output.md` for every Laser Out setting.
+
 Tighter bench profile at amplitude 0.25, used for the first traced content:
 
 | Parameter | Value |
@@ -130,6 +137,10 @@ refreshes below 60 fps by design.
 | Node arm does nothing | Refused arm (e-stop, master arm, device lost) | Read the log; the rate mismatch no longer blocks arming |
 | Device lost loop | Stale box session | Power-cycle the box, relaunch Sentinel |
 | Refresh visibly flickers | Too much lit length for the rate | Reduce content (bands, `min_length`, `max_paths`), or raise `point_rate` within the DAC's rating |
+| Laser drifts behind a projector and jumps ahead about once a second | Cycles not locked to the content frame rate | Keep `frame_lock` on and `desired_fps > 0`; `frames_skipped` and `frames_repeated` should stay still and `frame_latency_ms` steady. Content too dense to fit the frame (`scan_fps` well below the content rate) cannot lock; reduce it. Then set `output_delay_ms` against the projector |
+| Spots or corner dots draw nothing | Spots thin away to nothing | Turn on `dots`; raise `dot_size_px` if larger spots still trace as loops |
+| Dense or speckled images cost several ms of `cpu_ms` | Extraction cost follows foreground pixels | Set `trace_budget_ms` (for example 3); speckle is shed first |
+| Small circles or tight curves bead at every chord; a lone loop blinks at its seam | Corner Dwell at curve joints, or a blank return at the seam | Laser Trace flags each joint as smooth or corner and repeats a lone loop lit; keep `simplify_px` above 0, which the flags need, and keep Corner Dwell at 8 |
 | Trace path wrong in the preview | Trace parameters or content | See the next section |
 
 ## Trace parameters
@@ -146,11 +157,13 @@ live control outputs.
 | threshold / threshold_low | 0.3 / 0.15 | Hysteresis; lower `threshold_low` to keep faint continuations attached |
 | working_res | Source | 720 or 540 cut trace time roughly by the pixel ratio; lines under 2 px may break |
 | mode, max_line_width | Auto, 10 | Auto traces a component as contours when its mean width exceeds `max_line_width`; thin lines stay single centerlines |
-| simplify_px | 1 | Douglas-Peucker tolerance. 3 or more visibly polygonises curves |
+| simplify_px | 1 | Douglas-Peucker tolerance, applied after the skeleton's pixel staircase is smoothed, so straight edges trace as one segment at 1. 3 or more visibly polygonises curves; 0 passes the raw pixel chain |
 | spur_px | 2 | Prunes short branches; large values (tens of px) eat real line ends |
 | join_gap_px | 4 | Bridges collinear gaps |
 | min_length, max_paths, keep | 0, 1024, Longest | Content reduction when the laser flickers |
 | stability | 0.7 | Temporal coherence: 0 always re-optimises; higher keeps order, direction and loop starts steady at some blank cost |
+| dots, dot_size_px, max_dots, dot_dwell_ms | Off, 20, 64, 0.4 | Spots no larger than `dot_size_px` become point beams (a lit dwell at the centre). Off drops spots, which thin to nothing |
+| trace_budget_ms | 0 (no limit) | Extraction budget per trace. Over it, the smallest components are shed first and the largest always stays; read `components_shed` and `budget_hit` |
 | desired_fps (Trace) | 60 | Authored timing only; Laser Out retimes |
 
 Content that traces best: white one-to-five pixel lines on black, square

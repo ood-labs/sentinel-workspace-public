@@ -1,6 +1,6 @@
 ---
 name: controller-surface-authoring
-description: Drive Sentinel from hardware MIDI controllers and the Ableton Push 2 panel. Covers controller profiles (bundled and workspace JSON), enabling a controller, Script surface ownership (`surface.claim`), semantic `midi.on`/`midi.send` routing and LED feedback, raw MIDI and batches, the virtual surface for device-free testing, writing a profile for a new device, and rendering the Push 2 display from a Script through the Push 2 Display node. Use when mapping a Midi Fighter Twister, Push 2, APC mini mk2, X-Touch Compact or another MIDI controller, adding a controller profile, lighting pads or rings, or drawing on the Push 2 screen. Read `script-node-authoring` first for general Script rules.
+description: Drive Sentinel from hardware MIDI controllers and the Ableton Push 2 and Push 3 panels. Covers controller profiles (bundled and workspace JSON), enabling a controller, Script surface ownership (`surface.claim`), semantic `midi.on`/`midi.send` routing and LED feedback, raw MIDI and batches, the virtual surface for device-free testing, writing a profile for a new device, and rendering the Push 2 or Push 3 display from a Script through the Push Display node. Use when mapping a Midi Fighter Twister, Push 2, Push 3, APC mini mk2, X-Touch Compact or another MIDI controller, adding a controller profile, lighting pads or rings, or drawing on the Push 2 or Push 3 screen. Read `script-node-authoring` first for general Script rules.
 ---
 
 # Controller Surface Authoring
@@ -31,6 +31,7 @@ ownership of a device.
 | --- | --- | --- | --- |
 | `midi-fighter-twister` | `mft` | `Midi Fighter Twister*` | `encoder.0..15` (absolute, ring auto-echo), `encoder.press.0..15`, `side.0..5` |
 | `push2-user-mode` | `push2` | `*Ableton Push 2*` | `pad.<row>.<col>` (8 by 8, rows from the bottom), `encoder.0..7` (relative), `encoder.touch.0..7`, `button.top.0..7`, `button.bottom.0..7`, `button.side.0..7`, `button.select`, `button.shift`, `button.layout`, `transport.play/record/stop` |
+| `push3-user-mode` | `push3` | `*Ableton Push 3*` | Every Push 2 control under the `push3` prefix, plus `encoder.master` (relative), `encoder.master.touch`, `jog` (relative) and `jog.press`, `jog.left`, `jog.right`. Not yet verified on a Push 3 |
 | `apc-mini-mk2` | `apc` | `APC mini mk2*` | `pad.<row>.<col>` (row 0 on top), `bottom.0..7`, `scene.0..7`, `shift`, `fader.0..7`, `fader.master` |
 | `x-touch-compact` | `xtc` | `X-TOUCH COMPACT*` | `fader.0..8`, `encoder.0..15`, `encoder.press.0..15`, `button.0..23`, `select.0..8`, `transport.0..5`, `foot_switch`, `expression_pedal` |
 | `sandbox` | `sandbox` | `sctrl-sandbox*` | Hardware-free test surface: `encoder.0..7`, `pad.<row>.<col>` (4 by 4), `btn.0..3` |
@@ -39,8 +40,8 @@ The full id is `<prefix>.<control>`. From a Script, `midi.semantic_ids()`
 lists every id and `midi.controllers()` lists profiles with their matched
 input and output ports.
 
-Push 2 must be in User mode (press the User button); Sentinel sends it no
-SysEx. Do not send Push 2 mode or init SysEx with `midi.send_sysex` either:
+Push 2 and Push 3 must be in User mode (press the User button); a standalone
+Push 3 must also be in Control mode. Sentinel sends them no SysEx. Do not send Push 2 mode or init SysEx with `midi.send_sysex` either:
 tested sequences put the device into a state where LED writes are ignored.
 Recovering from that took a USB power cycle. The Twister profile expects the factory default absolute mode.
 
@@ -325,9 +326,9 @@ for _, id in midi.semantic_ids() do
 end
 ```
 
-## Push 2 display
+## Push 2 and Push 3 display
 
-The Push 2 screen (960 by 160) is driven by a **Push 2 Display** node
+The Push 2 or Push 3 screen (960 by 160) is driven by a **Push Display** node
 (`push2display`) fed from a Script's Display output:
 
 ```lua
@@ -347,8 +348,8 @@ end
 return script
 ```
 
-Wire Script `display` to the Push 2 Display `display` input. One Display
-output feeds one Push 2 Display.
+Wire Script `display` to the Push Display `display` input. One Display
+output feeds one Push Display.
 
 Draw calls (colors are `0xRRGGBB`, coordinates in panel pixels):
 
@@ -381,8 +382,9 @@ fail midway, use `display.begin_frame(rgb)`, `display.complete_frame()` and
 `display.abort_frame()` inside the callback so a partial frame never reaches
 the panel.
 
-Push 2 Display parameters: `source` (`display`, `video`, `test_bars`,
-`black`), `transport` (`record` or `winusb`), `brightness`,
+Push Display parameters: `source` (`display`, `video`, `test_bars`,
+`black`), `transport` (`record` or `winusb`), `device` (`auto`, `push2` or
+`push3`: which model WinUSB opens), `brightness`,
 `hold_last_frame`, `fit` for video, `record_name`, `record_png_every`, and
 `refresh_devices`. The `video` source scales any video cable onto the panel
 instead of a Script. Health outputs include `frames_rendered`, `frames_sent`,
@@ -390,9 +392,15 @@ instead of a Script. Health outputs include `frames_rendered`, `frames_sent`,
 panel image to PNG, which is the proof of what the glass shows.
 
 Physical output uses WinUSB (`transport=winusb`). Only one application can
-own the display interface, so quit other software that drives the Push 2
-screen. If the interface has no WinUSB binding the status stays
-`device not found` while rendering and the record transport keep working.
+own the display interface, so quit Ableton Live and any other software that
+drives the screen. Push 2 needs no driver. Push 3 needs the Ableton Push 3
+Display driver, which Live installs the first time Push 3 is connected while
+it runs; Device Manager then lists **Ableton Push 3 Display**. Without it the
+status names the missing driver. If the interface has no WinUSB binding the
+status stays `device not found` while rendering and the record transport keep
+working. Push 3 support uses the Push 2 protocol and has not yet run on a
+real Push 3; start with `source=test_bars` (eight vertical colour bars) to
+check the panel.
 
 ## Proof checklist
 
@@ -404,7 +412,7 @@ screen. If the interface has no WinUSB binding the status stays
   parameter change, then screenshot the output it drives.
 - Feedback: check the record file or look at the device LEDs. Physical LED and
   screen behavior needs a person looking at the hardware.
-- Push 2 screen: `capture_display` PNG plus, on hardware, a look at the glass.
+- Push screen: `capture_display` PNG plus, on hardware, a look at the glass.
   Display health is separate from MIDI and Script health. Check `connected`,
   advancing `frames_sent`, and the change in display misses over a soak.
 - LED delivery: compare messages admitted with messages completed (a

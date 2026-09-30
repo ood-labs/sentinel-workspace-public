@@ -2,7 +2,23 @@
 
 Sentinel talks to lighting consoles, network fixtures, and show-control software through three Control nodes. `dmxin` receives DMX universes over Art-Net or sACN into a typed data port. `dmxout` sends a DMX data port to fixtures over Art-Net or sACN. `oscout` sends expression-driven values to any OSC receiver. None of them produce pixels; they carry data ports and control outputs and are wired like any other Control node.
 
-Call `sentinel_pipeline action=list_types` first. Installs before 0.5.73 ship `artnetin` and `artnetout` instead of the DMX pair, and those ids still work as hidden aliases on current builds. Software and loopback verification is complete on every path below. Physical console and fixture verification is still an operator hardware gate, so treat a real rig as something to prove on site, not something Sentinel has already proven for you.
+Call `sentinel_pipeline action=list_types` first. Installs before 0.5.73 ship `artnetin` and `artnetout` instead of the DMX pair, and those ids still work as hidden aliases on current builds. Every path below is verified in software, over loopback, and against sACNView and QLC+. Verify a real console or fixture on site before a show.
+
+## Network setup
+
+- Put the Sentinel machine on the lighting network, preferably wired, with an address in the same range as the console and nodes. Art-Net rigs often use `2.x.x.x` or `10.x.x.x`; sACN works on any range.
+- The first time DMX In listens, Windows may ask whether Sentinel can use the network. Allow it for the network type the lighting network uses. If that prompt was dismissed, packets never arrive: allow `sentinel.exe` inbound UDP 6454 (Art-Net) and 5568 (sACN) in Windows Defender Firewall.
+- With several adapters, set DMX In's `bind_address` to the adapter on the lighting network.
+- DMX In answers ArtPoll, so a console that discovers Art-Net nodes lists Sentinel under `short_name` (default `Sentinel`) and `long_name`.
+
+## Universe numbers
+
+Most "nothing arrives" problems are a universe number off by one.
+
+- **sACN** universes are the same number everywhere and start at 1. Console universe 1 is sACN universe 1.
+- **Art-Net** addresses start at 0. Many consoles label the first universe "Universe 1" and send port address 0; others show it as `0:0:0` (Net:SubNet:Universe). Sentinel always uses the port address, so console "Universe 1" is usually `universe_start 0`.
+
+If the console reports it is sending and DMX In's `packets_per_second` climbs but the grid stays dark, the universe range is off; try one lower or one higher.
 
 ## DMX In
 
@@ -39,7 +55,7 @@ Freeze and Bypass on DMX Out both stop the sender. It is a pure data sink, so By
 
 ## Universe preview
 
-Both DMX nodes draw the selected universe in the node body as a 32 by 16 grid, one square per channel in row-major order, channel 1 at the top left. Stale universes draw at half intensity; a universe that has never carried data draws in the disabled tint. The header holds `<` and `>` arrows that step through universes with data, a jump field for a record index, and a label with the protocol address beside it. The selection is the `preview_universe` parameter, saves with the project, and the normal `P` button hides or shows the grid.
+Both DMX nodes draw the selected universe in the node body as a 32 by 16 grid, one square per channel in row-major order, channel 1 at the top left. Stale universes draw at half intensity; a universe that has never carried data draws in the disabled tint. Pick the universe with **Preview Universe** in Properties (the `preview_universe` parameter, a record index that saves with the project); hovering the grid names the universe and its protocol address. The node's `P` button hides or shows the grid.
 
 Use the grid as the first sanity check: if the console says it is sending and the grid stays dark, the universe range, adapter, or protocol is wrong before anything downstream is.
 
@@ -59,6 +75,47 @@ Header slot 0 is the schema version and reads 2 on current builds. Slot 1 is the
 Declare the port in a Module manifest as a data input or output with one field, `channels`, type `uint`, count 512, and read the live count from the header rather than assuming the configured capacity. Capacity is `elementCount - 9` records.
 
 Readback for proof: `sentinel_pipeline action=capture_data_port pipeline_id=<id> port=DMX max_elements=<n>`. Set `max_elements` explicitly to reach the universe records you want; the default only covers the first few.
+
+## Recipes
+
+Two ready Modules ship in `tools/templates/dmx/`. Copy a folder into the project's `modules/` folder, then create it with `sentinel_pipeline action=create type=module project_dir=<project>/modules/<folder>`.
+
+### Drive a parameter from a console fader
+
+1. Create `dmxin`, set `protocol` and `universe_start` to the console's universe (see Universe numbers), and move a fader. The grid lights and `packets_per_second` climbs.
+2. Copy `DMX_Channel_Reader`, create it, and link DMX In's `DMX` output to its `DMX` input with `sentinel_graph action=add_link`.
+3. Set its `record` (0 is DMX In's first universe) and `channel` (from 1, as the console counts). Its `value` control output reads 0 to 1 and `raw` 0 to 255.
+4. Drive any parameter from it: `sentinel_expression action=set path=/sentinel/pipelines/<node>/parameters/<param> expression=ref("<reader>/control_outputs/value")`. Use one reader per channel you need.
+
+### Send a colour to a fixture
+
+1. Copy `DMX_RGB_Fixture` and create it. It writes one fixture with four channels (dimmer, red, green, blue) starting at `address`, in the universe `universe`. Set `address` to the fixture's DMX start address, and edit `emit.hlsl` to the channel order in the fixture's manual when it differs.
+2. Create `dmxout` and link the fixture Module's `DMX` output to its `DMX` input.
+3. For Art-Net, set `destination_host` to the Art-Net node's or fixture's IP; the default `127.0.0.1` only reaches this machine. Art-Net `universe` is the port address (from 0). For sACN, set `protocol=sacn` and the fixture Module's `universe` from 1 first (a universe 0 record counts a `send_error` and is not sent); the default multicast reaches every receiver on the network.
+4. Drive `dimmer`, `red`, `green` and `blue` with expressions, for example from Audio In's `level`. `packets_per_second` on DMX Out climbs while values change and falls to the keepalive rate when they hold.
+
+To address more fixtures, write more channels in `emit.hlsl`, or give each fixture its own universe and merge them in one Module. A Module that writes several universes sets header slot 1 to the live count and fills one metadata entry per universe.
+
+### Test without a console or fixture
+
+- **Loopback in Sentinel.** DMX Out and DMX In on the same machine: Art-Net to `127.0.0.1:6454` with DMX In on `0.0.0.0`, or sACN multicast. The two recipes above make a closed loop: the reader shows exactly the level the fixture Module writes. This is how this page's recipes were verified.
+- **sACNView** (free) lists every sACN universe on the network with its sources and priorities, which shows what DMX Out sends.
+- **QLC+** (free) can act as a console sending Art-Net or sACN to DMX In, and as a monitor for DMX Out.
+
+## Troubleshooting
+
+| Symptom | Check |
+|---|---|
+| DMX In `packets_per_second` stays 0 | Protocol matches the console; firewall allowed; `bind_address` on the lighting adapter; an Art-Net console sending unicast to this machine's IP |
+| Packets arrive, the grid stays dark | Universe number off by one (see Universe numbers); Preview Universe on the right record |
+| DMX Out sends but the fixture does nothing | Art-Net `destination_host` is the node or fixture IP; fixture DMX address and channel mode; universe number; under sACN, another source on the same universe with a higher priority |
+| DMX Out `send_errors` climbs | Destination unreachable or wrong adapter; an sACN record with universe 0 |
+| Values jump between two looks | Two sources on one universe. DMX In keeps the highest sACN priority and, at equal priority, the highest value per channel; a fixture may merge differently |
+| Only one universe goes out, or four come in | Trial allowance (below) |
+
+## Trial allowance
+
+In trial, DMX Out sends 1 universe and DMX In receives 4 across the whole running project, lowest addresses first; Art-Net and sACN share the pool. Held-back universes send and receive nothing, the node shows the license badge and a status such as `1 of 3 universes sent, trial`, and the `trial_gated_universes` control output counts them. A license lifts the limit on the next tick. `sentinel_app action=status` reports the pool usage under `license`.
 
 ## OSC Out
 

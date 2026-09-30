@@ -8,11 +8,11 @@ Because the laser stands off-axis, the standard Alignment Grid lands keystoned a
 
 It is also a **template for laser content**. Each piece of content is a look: one Module that publishes its projector video and its laser scan together as a **Laser Look** bundle, inside its own Scene Group. A switcher picks the look, so the projector and the laser always show the same thing. Copy the Shapes look to make your own.
 
-Requires Sentinel 0.5.87 or newer (Laser Out with Sent Stream, Module canvas panels). Background: `knowledge/laser-mapping.md`.
+Requires Sentinel 0.5.99 or newer (Laser Out Simulate, joint flags, Laser Trace dots, Module canvas panels). Background: `knowledge/laser-mapping.md`.
 
 ## First run
 
-1. Open `laser_mapping_lab.sentinel`. It opens with Laser Out in `record` mode, disarmed. Nothing is sent to hardware.
+1. Open `laser_mapping_lab.sentinel`. Both Laser Outs open on `simulate`: **Laser_Sim** runs armed against a virtual DAC so the previs is live, and **Laser Out #0** (`laserout_0`, the real output) is disarmed with no device. The screen output for a real projector (`output_0`) ships inactive. Nothing is sent to hardware.
 2. Open **Laser_Previs**. Recall a frame preset on it:
    - **Frame - Operator**: from behind the laser.
    - **Frame - Audience**: from the room.
@@ -103,21 +103,27 @@ Masks are the editor's `zones` state. Save a venue's zones as a node preset with
 ## How it works
 
 ```text
-Look_Select ─Bundle─▶ Laser_Split ─laser.a.scan─▶ Adaptive_Mapping ─Mapped Scan─▶ Laser_Out   (real laser)
-     │                                                ▲               │
-     │ Out                           Mapping_Editor ─Calibration      └─▶ Laser_Fixture ─World Scan + Fixtures─▶ Laser_Previs
-     └──────────────────────────────────────────────────────────────────────────────────────────── Projection ─────┘
+                                           Mapping_Editor ─Calibration─┐
+Look_Select ─Bundle─▶ Laser_Split ─laser.a.scan─┬─▶ Adaptive_Mapping ─Mapped Scan─▶ Laser_Sim ─Sent Stream─▶ Laser_Fixture ─World Scan + Fixtures─▶ Laser_Previs
+     │                                          │                                        (simulate)                                    ▲
+     │                                          └─▶ Adaptive_Mapping_1 ─Mapped Scan─▶ laserout_0 (real laser)                           │
+     │                                   Mapping_Editor_1 ─Calibration─┘                                                               │
+     ├─ Out ─▶ output_0 (screen output to the real projector)                                                                         │
+     └─ Out ───────────────────────────────────────────────────────────────────────────────────────────────── Projection ──────────────┘
 ```
+
+The simulated room and the real wall each have their own mapping chain, so mapping the real wall never disturbs the simulation's mapping, and the reverse.
 
 - **Mapping is two nodes, from Laser Stage.**
   - **Mapping_Editor** is where you edit. It compiles the working mapping plus the Scanner Correction into a 32-element Calibration buffer.
   - **Adaptive_Mapping** compiles your content through that calibration. It subdivides a stroke only where the warp actually bends it, within a 0.001 tolerance and a record budget.
   - Both run every frame. Adaptive_Mapping must, or Laser Out's deadman blanks a static scan. Mapping_Editor must, because an idle editor misses real mouse drags (ood-labs/sentinel-bugs#152). Together they cost about 0.3 ms GPU.
   - A corner drag is a pure perspective change, so straight lines stay straight: 26 records in, 26 out. Scanner Correction and edge handles add records only where lines bend: the grid runs about 26 in, 47 out.
-- **Laser_Out** is the real output. Its protections (step size, dwell, blanking, duty) apply to what is sent.
+- **Laser Out #0** (`laserout_0`) is the real output, fed by **Mapping_Editor 2** and **Adaptive_Mapping 2** (`Mapping_Editor_1`, `Adaptive_Mapping_1`). Its protections (step size, dwell, blanking, duty) apply to what is sent.
+- **Laser_Sim** is a Laser Out on `simulate`. It runs the same protections against a virtual DAC and feeds its Sent Stream to the simulated laser, so the previs shows what a real laser would draw.
 - **Laser_Fixture** is the simulated laser. It's the scanner optics from Laser Lab's LS_Projector: Hermite scan reconstruction, a 40° × 30° field, and pose and aim. It is **not** a mapping: it stands where your laser stands and does what a raw, uncalibrated scanner does.
-  - It follows Laser Out's **Flip X / Flip Y** through expressions, so it receives what the DAC would.
-  - **Device Mirrors X** (on) models the lasers tested here, which draw X mirrored with no flips (ood-labs/sentinel-bugs#147). So Laser Out ships with **Flip X on, Flip Y off**, which is correct on those lasers and in the simulation. Turn Device Mirrors X off once Laser Out is fixed.
+  - Its own **Flip X / Flip Y** mirror what it receives; keep them matched to your Laser Out.
+  - **Device Mirrors X** models a laser that draws X mirrored with no flips (ood-labs/sentinel-bugs#147). The project ships with Laser Out Flip X off (front projection) and Laser_Fixture's Device Mirrors X and Flip X on. Check the orientation on your own laser (see Real laser).
 - **Laser_Previs** is the room. It's Laser Lab's LS_Air renderer, from the BLINK show's previs:
   - analytic single scattering in drifting haze, with separate air extinction
   - the RAW-10 housing and aperture glow
@@ -137,24 +143,25 @@ To preview your own space, set **Laser_Fixture** Pose to where your laser really
 ## Real laser
 
 1. Check your local laser-safety rules first. Keep the scan above the audience.
-2. On **Laser_Out**, set **protocol** (`etherdream`, `lasercube` or `shownet`) and enter your own device address. The example ships with none. Changing the protocol disarms the output.
-3. Set **Flip X / Flip Y** so the F reads upright on your wall: Flip X on and Flip Y off on the lasers tested here. The simulation follows (see Device Mirrors X above).
-4. Arming is manual, on Laser Out: the node **Armed** switch plus the global laser master arm. Arming never persists. Scripts and agents must not arm.
+2. On **Laser Out #0**, set **protocol** (`etherdream`, `lasercube` or `shownet`) and enter your own device address. The example ships with none. Changing the protocol disarms the output.
+3. Set **Test Pattern** to Orientation F and set **Flip X / Flip Y** so the F reads upright and unmirrored from the audience side. Flip X off is front projection. Return Test Pattern to Input.
+4. Arming is manual: the node's **ARM** plus **ARM LASERS** in the menu bar. The node arm saves with the project; the master never does, so a saved show reopens held off. Scripts and agents must not arm the master.
 5. **Shift+Esc** stops all Laser Out nodes. Laser Out's scanner protections stay active at all times.
 6. Do not relink laser inputs while a real device is armed.
-7. Map against your real wall exactly as above. Keep Laser_Fixture's pose roughly matched to your room so the preview stays useful.
+7. Map against your real wall with **Mapping_Editor 2**, exactly as above. Keep Laser_Fixture's pose roughly matched to your room so the preview stays useful.
+8. To show the looks on your projector, start **Output 1** (`output_0`) and pick the projector's display.
 
 The Laser Out profile was dialled in on a Laserworld DS-3000 RGB (ShowNET, 20 kpps) against the grid and the Shapes look:
 - Desired FPS 60 (0 skips the speed limits, ood-labs/sentinel-bugs#148)
 - max step 0.074, max step change 0.143 (keep change at about 2 × step)
 - min visible speed 0.001, speed window 64
-- end dwell 6, corner dwell 5, blank delay 14, insert cap 16
+- end dwell 8, corner dwell 8, blank delay 25, insert cap 64
 - colour delay 0: any delay cuts the start off every line and erases short strokes
 - amplitude 1.0
 
-Scanner limits are per output sample, so they mean something different at another point rate. Tune your own scanner with the ILDA test pattern (ood-labs/sentinel-bugs#146 asks for it in Laser Out).
+Scanner limits are per output sample; with **Scale Limits With Rate** on, Laser Out rescales them when you apply a new point rate. Tune your own scanner with Laser Out's **ILDA Test (file)** pattern and the official ILDA test file.
 
-Trial licences run `record` only.
+In a trial, Ether Dream, LaserCube and ShowNET run as record and open no link; Simulate is unaffected.
 
 ## Performance
 
@@ -179,12 +186,16 @@ The previs ships at 1920 × 1080. Cost grows with the number of scan records. Bu
 | `Alignment_Grid` | The Mapper look: the standard alignment grid, 4 × 4 cells with an orientation F in the top-left cell. Publishes the **Laser Look** bundle: the **Projection Grid** image and the same grid as `laser.a.scan`. |
 | `Trace_Canvas` | The Trace look's line art, drawn in the 16:9 frame for Laser Trace and the projector. |
 | `Laser_Test_Shapes` | The Shapes look and the template for new content: eight laser-show shapes (spiral, rose, Lissajous, starburst, tunnel, wave, the word SENTINEL in a single-stroke font, morphing polygon) in the 16:9 frame, with detail, spin and colour, all within a Record Budget (250). Publishes a **Laser Look** bundle. |
-| `Mapper_Out`, `Shapes_Out` | Each look's Group Output. |
+| `Trace`, `Trace_Look` | The Trace look: Laser Trace turns the canvas into a Scan Signal, and Bundle Pack pairs it with the canvas as a Laser Look. |
+| `Mapper_Out`, `Shapes_Out`, `Trace_Out` | Each look's Group Output. |
 | `Look_Select` | The look switcher: a Mux in Groups mode. |
 | `Laser_Split` | Bundle Split: `laser.a.scan` for the mapper. |
 | `Mapping_Editor` | The mapping you edit: one 5 × 5 handle lattice plus Scanner Correction (Bow, Spacing and Centre, corner-anchored), and the zoning masks, with a pan/zoom canvas, box select and arrow-key nudge. Publishes the Calibration (mapping, masks and polygon points). |
 | `Adaptive_Mapping` | Compiles the Scan Signal through the Calibration with adaptive subdivision, tolerance and record budget, cuts it at the zoning masks, and turns hidden geometry into single jumps. Publishes the Mapped Scan and Compiler Stats. Scans are ILDA space (+y up); the editor is screen space, converted at the warp. |
-| `Laser_Out` | The real laser output: `record` by default, disarmed, with node-enforced scanner protection and Sent Stream. |
+| `Mapping_Editor_1`, `Adaptive_Mapping_1` | The same pair for the real laser on the real wall, shown as Mapping_Editor 2 and Adaptive_Mapping 2. |
+| `laserout_0` | Laser Out #0, the real laser output: `simulate`, disarmed and with no device as shipped, with node-enforced scanner protection and Sent Stream. |
+| `Laser_Sim` | A Laser Out on `simulate` that drives the simulated laser through its Sent Stream. |
+| `output_0` | Output 1, a Screen output of the selected look's video for the real projector. Ships inactive. |
 | `Laser_Fixture` | The simulated physical laser: pose, scan field and optics. Turns the mapped path into world-space scan records and publishes the housing. Follows Laser Out's flips. |
 | `Laser_Previs` | The warehouse, drywall, video projector and simulated laser in haze, with frame presets Operator, Audience and Wall. This is the program view. |
 

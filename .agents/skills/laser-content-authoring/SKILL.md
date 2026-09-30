@@ -635,16 +635,18 @@ If a piece genuinely wants these, put them in a `"Post FX"` group with ranges
 
 ## Reference implementations
 
-Real, inspectable modules in `projects/pulse_vitrine/modules/`. Read them rather than
-copying them — they solve their own project's problem.
+Real, inspectable Modules in `projects/laser_mapping_lab/modules/`. Read them
+rather than copying them: they solve their own project's problem.
 
-- **`VT_LaserTest`** — the calibration source. Reference line, rotating polygon, and
-  moving dots, each independently switchable, all sized in exact pixels with the parity
-  snap above. This is where line and dot sizes get dialed in before a show. Ships
-  narrow-scoped presets: sizes and view isolation saved separately.
-- **`VT_LaserGrid`** — alignment grid with the `render` → `video` + `laser` three-pass
-  split, where `render` writes channel-separated masks (R = lines, G = dots) and the
-  laser pass picks channels via a `laser_output_mode` enum and hard-thresholds at 0.5.
-- **`VT_Laser`** — the show-side lane: a beat-triggered zip point travelling a path,
-  path hold, and a snare outline flash, with every control named for what it does
-  (`zip_time`, `tail_frac`, `outline_ms`) and an explicit on/off per lane.
+- **`Alignment_Grid`**: the alignment grid and the Sync Sweep that measures
+  laser against projector latency. Publishes its projector video and its
+  laser scan together as a Laser Look bundle.
+- **`Laser_Test_Shapes`**: the Shapes look. Vector shapes written straight
+  into a Scan Signal, with the matching projector image, in one bundle. Copy
+  this look to start a new one.
+- **`Trace_Canvas`**: a paint canvas whose pixels Laser Trace turns into
+  paths, for content that starts as pixels.
+- **`Adaptive_Mapping`**: warps any Scan Signal through the surface mapping,
+  cuts it at masks and the field edge, and blanks the hidden pieces.
+- **`Laser_Previs`**: renders the Sent Stream as beams in a hazy room, so a
+  look can be judged with no laser.

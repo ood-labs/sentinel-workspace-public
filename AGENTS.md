@@ -107,7 +107,7 @@ License activation is deliberately manual in the app UI.
 
 Call `list_types` for the exact current catalog; DIST builds intentionally omit dev-only and experimental types. The full DIST type table — roles, visibility, engine-pack requirements, and the compatibility aliases (`facemesh`, `shaderproject`) — lives in `knowledge/FEATURE-MAP.md`.
 
-Orientation: `module` (authored multi-pass HLSL projects) and `hlslshader` for authored visuals; `streamdiff` for real-time generation; `mediapipe`, `features`, `detection`, `pose`, `depthestimation`, `personseg`, `matting`, and `opticalflow` for tracking and analysis; `meshsource` for static 3D import; `audio` for WASAPI/WAV audio data; `vsr` for upscaling; `conductor`, `mux`, `groupoutput`, `atlas`, `camera`, and `camswitch` for choreography and the scene system; `dmxin`, `dmxout`, and `oscout` for lighting and show control over Art-Net, sACN, and OSC.
+Orientation: `module` (authored multi-pass HLSL projects) for authored visuals (`hlslshader` exists only in development builds); `streamdiff` for real-time generation; `mediapipe`, `features`, `detection`, `pose`, `depthestimation`, `personseg`, `matting`, and `opticalflow` for tracking and analysis; `meshsource` for static 3D import; `audio` for WASAPI/WAV audio data; `vsr` for upscaling; `conductor`, `mux`, `groupoutput`, `atlas`, `camera`, and `camswitch` for choreography and the scene system; `bundlepack` and `bundlesplit` for Bundle cables that carry video plus data; `laserout` and `lasertrace` for lasers; `dmxin`, `dmxout`, and `oscout` for lighting and show control over Art-Net, sACN, and OSC; `script`, `midiin`, `midiout`, and `push2display` for scripted control, MIDI controllers and the Ableton Push 2 and Push 3 displays.
 
 ## Graph Basics
 
@@ -307,7 +307,15 @@ OSC receive configuration is available through StateTree. Read or set `/sentinel
 
 ## Lighting And Show Control
 
-`dmxin` receives DMX over Art-Net or sACN into a typed `DMX` data port and draws the selected universe in its node body; `dmxout` sends a `DMX` port to fixtures; `oscout` sends values to any OSC receiver. Wire DMX ports with `sentinel_graph action=add_link`. Create OSC messages one call at a time with the node's `add_message` action, passing the address, the type, and a `ref()` expression as the value source. Read `packets_per_second` on the DMX nodes and look at the universe grid before trusting a fixture. Software and loopback proof is complete; physical consoles and fixtures remain an operator hardware check. Details, including the DMX buffer layout for Modules: `knowledge/lighting-and-show-control.md`.
+`dmxin` receives DMX over Art-Net or sACN into a typed `DMX` data port and draws the selected universe in its node body; `dmxout` sends a `DMX` port to fixtures; `oscout` sends values to any OSC receiver. Wire DMX ports with `sentinel_graph action=add_link`. Create OSC messages one call at a time with the node's `add_message` action, passing the address, the type, and a `ref()` expression as the value source. Read `packets_per_second` on the DMX nodes and look at the universe grid before trusting a fixture. Ready Modules for reading a console channel and driving a fixture ship in `tools/templates/dmx/`. Follow the `dmx-show-control` skill; details, including universe numbering and the DMX buffer layout for Modules: `knowledge/lighting-and-show-control.md`.
+
+## Lasers
+
+`laserout` sends a Scan Signal to one laser projector over Simulate, Record, Ether Dream, LaserCube or ShowNET, through scanner protection that content cannot remove. Build and prove on `protocol=simulate`, which needs no hardware and emits no light. Real output needs the node's own arm and the laser master; only a person clicking **ARM LASERS** can arm the master, so never try. `lasertrace` turns pixels into laser paths. Follow the `laser-show-setup` skill; details: `knowledge/laser-output.md`, and `projects/laser_mapping_lab` for mapping, looks and projector sync.
+
+## Show Control Desks And Controllers
+
+Operator desks live in Script windows or Module panels, and MIDI controllers and the Push 2 and Push 3 connect through Script nodes. Use the `script-node-authoring` and `controller-surface-authoring` skills, and `knowledge/show-control-desk.md` for desk controls.
 
 ## Reference Docs
 
@@ -331,6 +339,10 @@ Start with:
 - `knowledge/portable-scene-groups.md`
 - `knowledge/node-modes.md`
 - `knowledge/lighting-and-show-control.md`
+- `knowledge/laser-output.md`
+- `knowledge/laser-mapping.md`
+- `knowledge/bundle-links.md`
+- `knowledge/show-control-desk.md`
 - `knowledge/motion-choreography.md`
 - `knowledge/precise-construction.md`
 - `knowledge/gpu-cloth-and-xpbd.md`
@@ -346,11 +358,12 @@ Use skills for authoring details:
 - `deterministic-rendering`
 - `motion-eval`
 - `motion-graphics-sequences`
+- `laser-show-setup`
 - `laser-content-authoring`
 - `laser-trace-tuning`
-- `laser-arcade-authoring`
 - `script-node-authoring`
 - `controller-surface-authoring`
+- `dmx-show-control`
 - `sentinel-bug-report`
 - `setup-mcp`
 

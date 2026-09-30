@@ -7,14 +7,15 @@
     Projects = @{
         laser_mapping_lab = @{
             # Real laser mapping rig (Laser Stage Mapping Editor + Adaptive Mapping) with the
-            # BLINK / Laser Lab laser simulation downstream. No Scene Groups: the instrument is the
-            # Mapping Editor canvas; the previs carries three camera-only frame presets.
+            # BLINK / Laser Lab laser simulation downstream. Three looks (Mapper, Shapes, Trace)
+            # are Scene Groups collected by a Groups Mux; the previs carries three camera-only
+            # frame presets.
             ProjectFile = 'laser_mapping_lab.sentinel'
             SharedModules = @()
             ProofRecords = @('.release/reviews/phase-11/laser_mapping_lab.json')
-            MinimumSceneGroups = 0
+            MinimumSceneGroups = 3
             RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
+            ExpectedGroupOutputs = 3
             MinimumGroupPresets = 0
             MinimumNodePresets = 3
             Exemptions = @('approved-ungrouped-instrument', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
