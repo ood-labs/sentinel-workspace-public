@@ -12,9 +12,9 @@ Requires Sentinel 0.5.99 or newer (Laser Out Simulate, cycle-boundary handover a
 
 ## First run
 
-1. Open `laser_mapping_lab.sentinel`. The laser output, **Laser_Sim**, is a Laser Out on the **simulate** protocol and opens disarmed. Simulate runs everything Laser Out does (scanner protection, retiming, the Sent Stream) against a virtual DAC. Nothing is sent to hardware and nothing is written to disk.
-2. Arm **Laser_Sim** with its node **Armed** switch. Simulate emits no light, so it needs only the node arm, not the laser master.
-3. Open **Laser_Previs** and recall a frame preset on it:
+1. Open `laser_mapping_lab.sentinel`. The laser output, **Laser_Sim**, is a Laser Out on the **simulate** protocol and opens armed. Simulate runs everything Laser Out does (scanner protection, retiming, the Sent Stream) against a virtual DAC. Nothing is sent to hardware and nothing is written to disk.
+2. **Laser_Sim** is saved armed. Simulate emits no light, so its node arm is all it needs and the laser master is not involved. Switching its protocol to a hardware transport disarms it.
+3. **Laser_Previs** opens with the project. Recall a frame preset on it:
    - **Frame - Operator**: from behind the laser.
    - **Frame - Audience**: from the room.
    - **Frame - Wall**: square to the drywall. Map from this one.
@@ -191,7 +191,7 @@ These talk to Sentinel over `sentinel-mcp` and are proof tools, not part of the 
 | `Laser_Split` | Bundle Split: `laser.a.scan` for the mapper. |
 | `Mapping_Editor` | The mapping you edit: one 5 × 5 handle lattice plus Scanner Correction (Bow, Spacing and Centre, corner-anchored), and the zoning masks, with a pan/zoom canvas, box select and arrow-key nudge. Publishes the Calibration (mapping, masks and polygon points). |
 | `Adaptive_Mapping` | Compiles the Scan Signal through the Calibration with adaptive subdivision, tolerance and record budget, cuts it at the zoning masks, turns hidden geometry into single jumps, and keeps the joint flags. Publishes the Mapped Scan and Compiler Stats. Scans are ILDA space (+y up); the editor is screen space, converted at the warp. |
-| `Laser_Sim` | The laser output: a Laser Out on `simulate`, disarmed, with node-enforced scanner protection and the Sent Stream. Switch its protocol to drive a real laser. |
+| `Laser_Sim` | The laser output: a Laser Out on `simulate`, saved armed, with node-enforced scanner protection and the Sent Stream. Switch its protocol to drive a real laser. |
 | `Laser_Fixture` | The simulated physical laser: pose, scan field, galvo distortion and lag. Turns the Sent Stream into world-space beams and publishes the housing. |
 | `Laser_Previs` | The warehouse, drywall, video projector and simulated laser in haze, with frame presets Operator, Audience and Wall and quality presets Draft, Live and Beauty. This is the program view. |
 
