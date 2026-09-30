@@ -1,0 +1,126 @@
+name: "Laser Fixture"
+version: "1.0"
+mode: generator
+resolution: [640, 400]
+
+# The simulated physical laser: turns the Scan Signal it is sent into world-space scan
+# records for Laser Previs. From the BLINK show's BLINK_LaserFixture, itself Laser Lab's
+# LS_Projector (sentinel-workspace projects/laser_lab, feature/anatomy-laser-etch 1563058e),
+# with room-scale defaults. This is NOT a mapping: the mapping is Mapping Editor + Adaptive
+# Mapping upstream. It is a raw scanner standing where your laser stands.
+#
+# Room frame (same as Laser Previs): metres, drywall face z = 0 facing +z, y up.
+# Default: on its stand beside the video projector, 1.35 m right of centre, 1.55 m up and 6.3 m
+# back, aimed at the centre of the taped frame, with a 30 x 20 degree scan field that the frame
+# nearly fills (every corner within 0.87 of it). At that throw the pure galvo geometry is small
+# (1.9 cm after corner-only mapping), so the head's own nonlinearity and pincushion make up a
+# studio laser's distortion: corner-only mapping misses by ~11 cm, and mapping the simulation
+# takes the same Spacing, Bow and Centre a real laser does (scripts/galvo_model.py).
+
+parameters:
+  - {name: adaptive_curves, display: Adaptive Curve Detail (Experimental), type: bool, default: false, group: Scanner Reconstruction, hidden: true}
+  - {name: curve_tolerance, display: Scan Curve Tolerance, type: float, min: 0.00001, max: 0.002, default: 0.0001, group: Scanner Reconstruction, hidden: true}
+  - {name: curve_smoothing, display: Scan Curve Smoothing, type: float, min: 0, max: 1, default: 1, group: Scanner Reconstruction}
+  - {name: curve_steps, display: Curve Subdivisions, type: int, min: 1, max: 8, default: 4, group: Scanner Reconstruction}
+  - {name: show_enabled, display: Sequence Fixture Chases, type: bool, default: false, group: Sequence, hidden: true}
+  - {name: show_beat, display: Show Beat, type: float, min: 0, max: 128, default: 0, group: Sequence, hidden: true}
+  - {name: show_cue, display: Sequence Section, type: int, min: 0, max: 7, default: 0, group: Sequence, hidden: true}
+  - {name: yoke_angle, display: Mounting Yoke Angle, type: float, min: -180, max: 180, default: 0, group: Mounting}
+  - {name: projector_count, display: Projector Count, type: int, min: 1, max: 4, default: 1, group: Bank, hidden: true}
+  - {name: projector_spacing, display: Projector Spacing m, type: float, min: 0, max: 6, default: 2.5, group: Bank, hidden: true}
+  - {name: toe_in, display: Inward Aim Degrees per Lane, type: float, min: -30, max: 30, default: 0, group: Bank, hidden: true}
+  - {name: mirror_alternate, display: Mirror Alternate Projectors, type: bool, default: false, group: Bank, hidden: true}
+  - {name: rotation_step, display: Rotation Step per Projector, type: float, min: -180, max: 180, default: 0, group: Bank, hidden: true}
+  - {name: calibrated, display: Calibrated to Wall, type: bool, default: false, group: Mapping, description: "On: scan x/y lands on the template frame exactly, as after on-site laser mapping. Off: raw optics from Pose and the scan angles (keystone, skew).", hidden: true}
+  - {name: flip_x, display: Laser Out Flip X, type: bool, default: false, group: Scanner, hidden: true, description: "Driven by Laser_Out flip_x: the fixture receives what Laser Out would send."}
+  - {name: flip_y, display: Laser Out Flip Y, type: bool, default: false, group: Scanner, hidden: true, description: "Driven by Laser_Out flip_y."}
+  - {name: input_is_sent_stream, display: Input Is Laser Out Sent Stream, type: bool, default: true, group: Scanner, description: "On: the Scan Signal input is Laser Out's Sent Stream, the stream actually sent to the device, with Laser Out's retiming, holds, blank guards and flips already applied, so the simulation shows what the real laser draws. Laser Out's flips are then not applied again. Off: the input is the mapped scan from before Laser Out (smoother than any real laser), and Laser Out's flips are applied here."}
+  - {name: beam_merge_tolerance, display: Beam Merge Tolerance, type: float, min: 0, max: 0.02, default: 0.002, group: Scanner Reconstruction, description: "A Sent Stream draws a smooth stroke as hundreds of tiny sample steps. Runs of steps within this distance (scan units) of one straight line are drawn as one beam, which keeps Laser Previs fast on dense shapes. 0 draws every sample step."}
+  - {name: sample_max_step, display: Scanner Max Step per Sample, type: float, min: 0.005, max: 0.5, default: 0.074, group: Scanner, description: "The simulated scanner's fastest move per sample (match Laser Out's Max Step). Consecutive Sent Stream samples farther apart than 1.5 x this per sample are a break (a frame handover), not a line, and are not drawn lit."}
+  - {name: galvo_lag_ms, display: Galvo Lag ms, type: float, min: 0, max: 1, default: 0.2, group: Scanner, description: "How far the mirrors trail the commanded position, in milliseconds (0.2 ms is 4 samples at 20k pps). Real galvos lag; Laser Out's blank guard, dwells and colour timing are tuned for that, so without lag the simulation spills where a real laser draws clean. Modelled as the colour leading the path by this much, which is the same thing and keeps corners exact. Applies to a Laser Out Sent Stream input; 0 draws the stream exactly as commanded."}
+  - {name: device_mirrors_x, display: Device Mirrors X, type: bool, default: true, group: Scanner, description: "Models a real laser that draws X mirrored with no flips (seen on a DS-3000 over ShowNET and a LaserCube; ood-labs/sentinel-bugs#147). With it on, Laser Out Flip X on draws correctly, as on the real laser. Turn off once Laser Out is fixed."}
+  - {name: scan_x, display: Horizontal Scan Degrees, type: float, min: 5, max: 90, default: 30, group: Scanner}
+  - {name: scan_y, display: Vertical Scan Degrees, type: float, min: 5, max: 90, default: 20, group: Scanner}
+  - {name: rotation, display: Pattern Rotation, type: float, min: -180, max: 180, default: 0, group: Mapping, hidden: true}
+  - {name: offset_x, type: float, min: -1, max: 1, default: 0, group: Mapping, hidden: true}
+  - {name: offset_y, type: float, min: -1, max: 1, default: 0, group: Mapping, hidden: true}
+  - {name: keystone, type: float, min: -0.7, max: 0.7, default: 0, group: Mapping, hidden: true}
+  - name: scanner_model
+    display: Scanner Model
+    type: enum
+    options: [Ideal (no distortion), Galvo (real scanner)]
+    default: 1
+    group: Scanner Imperfections
+    description: "Ideal is a perfect pinhole: straight lines stay straight, and only keystone from the pose needs mapping. Galvo is how a real XY galvo scanner draws. The mirrors turn in angle rather than tan, so line spacing drifts wider toward the edges (fixed by Spacing). The X mirror sits before the Y mirror, so vertical lines bow outward at top and bottom (fixed by Bow X). The imperfections below add an off-centre galvo zero (Centre), gain and squareness errors (the corner handles) and amplifier nonlinearity (the inner handles)."
+  - {name: zero_x, display: Galvo Zero X, type: float, min: -0.3, max: 0.3, default: 0.07, group: Scanner Imperfections, description: "Where the X galvo's zero sits relative to the scan centre, in scan units. Moves the distortion's centre off the image centre, so one side distorts more (fixed by Centre X)."}
+  - {name: zero_y, display: Galvo Zero Y, type: float, min: -0.3, max: 0.3, default: -0.04, group: Scanner Imperfections, description: "Same for the Y galvo (fixed by Centre Y)."}
+  - {name: gain_y, display: Y Gain Mismatch, type: float, min: 0.8, max: 1.2, default: 0.97, group: Scanner Imperfections, description: "The Y amplifier's gain relative to X. Squashes or stretches the picture vertically (fixed by the corner handles)."}
+  - {name: skew_deg, display: Mirror Squareness Error deg, type: float, min: -5, max: 5, default: 0.8, group: Scanner Imperfections, description: "How far the two mirror axes are from exactly perpendicular. Shears the picture (fixed by the corner handles)."}
+  - {name: nonlinearity, display: Amplifier Nonlinearity, type: float, min: -0.3, max: 0.3, default: 0.10, group: Scanner Imperfections, description: "Cubic compression (negative) or expansion (positive) of both axes toward their extremes, as galvo amplifiers and position sensors do. Line spacing drifts wider (positive) toward the edges of the field (fixed by Spacing X/Y)."}
+  - {name: pincushion_x, display: Head Pincushion X, type: float, min: -0.3, max: 0.3, default: 0.10, group: Scanner Imperfections, description: "The scanner head's own pincushion on top of the geometry (mirror offsets, drive electronics): vertical lines flare outward toward the top and bottom of the field (fixed by Bow X). Independent of distance, so a laser at a realistic throw still needs Bow."}
+  - {name: pincushion_y, display: Head Pincushion Y, type: float, min: -0.3, max: 0.3, default: 0.02, group: Scanner Imperfections, description: "Same for horizontal lines, flaring toward the left and right of the field (fixed by Bow Y)."}
+  - {name: position_x, display: Position X m, type: float, min: -10, max: 10, default: 1.35, group: Pose}
+  - {name: position_y, display: Position Y m, type: float, min: 0.1, max: 6, default: 1.55, group: Pose}
+  - {name: position_z, display: Position Z m, type: float, min: 0.5, max: 20, default: 6.3, group: Pose}
+  - {name: aim_yaw, display: Aim Yaw, type: float, min: -180, max: 180, default: -167.91, group: Pose}
+  - {name: aim_pitch, display: Aim Pitch, type: float, min: -60, max: 60, default: -0.44, group: Pose}
+  - {name: power, display: Relative Optical Power, type: float, min: 0, max: 10, default: 1, group: Optics}
+  - {name: diameter_mm, display: Aperture Diameter mm, type: float, min: 0.01, max: 40, default: 3, group: Optics}
+  - {name: divergence_mrad, display: Radius Divergence mrad, type: float, min: 0, max: 5, default: 0.15, group: Optics}
+  - {name: throw_distance, display: Simulation Range m, type: float, min: 5, max: 120, default: 20, group: Optics}
+
+data_inputs:
+  - name: Scan Signal
+    slot: 0
+    schema:
+      - {name: endpoints, type: float4}
+      - {name: color0, type: float4}
+      - {name: color1, type: float4}
+      - {name: timing, type: float4}
+      - {name: meta, type: float4}
+
+buffers:
+  - {name: stream, structured: true, element_size: 80, element_count: 1024}
+  - {name: curve_map, structured: true, element_size: 16, element_count: 4096}
+  - {name: fixtures, structured: true, element_size: 80, element_count: 5}
+  - {name: beams, structured: true, element_size: 112, element_count: 4096}
+
+passes:
+  # One copy of the input per cook; curve_map and project both read it (see stream.hlsli).
+  - {name: snapshot, shader: snapshot.hlsl, target: cs_5_0, dispatch: [16,1,1], thread_group_x: 64, thread_group_y: 1, output: 'buffer:stream', inputs: [{slot: 0, source: 'data:0'}]}
+  - {name: curve_map, shader: curve_map.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, output: 'buffer:curve_map', inputs: [{slot: 2, source: 'buffer:stream'}, {slot: 7, source: 'pass:snapshot'}]}
+  - {name: fixtures, shader: fixtures.hlsl, target: cs_5_0, dispatch: [1,1,1], thread_group_x: 1, thread_group_y: 1, output: 'buffer:fixtures', inputs: [{slot: 0, source: 'data:0'}]}
+  - name: project
+    shader: project.hlsl
+    target: cs_5_0
+    dispatch: [64, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: 'buffer:beams'
+    inputs: [{slot: 1, source: 'buffer:curve_map'}, {slot: 2, source: 'buffer:stream'}, {slot: 7, source: 'pass:curve_map'}]
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs: [{slot: 0, source: 'buffer:beams'}]
+
+outputs: [{name: Plan and Elevation, pass: preview}]
+
+data_outputs:
+  - name: World Scan
+    buffer: beams
+    schema:
+      - {name: origin, type: float4}
+      - {name: direction0, type: float4}
+      - {name: direction1, type: float4}
+      - {name: color0, type: float4}
+      - {name: color1, type: float4}
+      - {name: timing, type: float4}
+      - {name: meta, type: float4}
+  - name: Fixtures
+    buffer: fixtures
+    schema:
+      - {name: aperture, type: float4}
+      - {name: right, type: float4}
+      - {name: up, type: float4}
+      - {name: forward, type: float4}
+      - {name: emission, type: float4}

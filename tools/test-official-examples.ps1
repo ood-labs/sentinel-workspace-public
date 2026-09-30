@@ -111,7 +111,7 @@ try {
             Exemptions = @()
         }
     }
-    AllowedProjectDirectories = @('assets', 'cues', 'images', 'modules', 'tools')
+    AllowedProjectDirectories = @('assets', 'cues', 'docs', 'images', 'modules', 'presets', 'scripts', 'tools')
     AllowedTopLevelFiles = @('README*', 'LICENSE*')
     GlobalSharedPaths = @()
     RequiredProjectReadmeHeading = '## Component map'
@@ -122,7 +122,7 @@ try {
     }
     ForbiddenDirectoryNames = @('.cache', '.shadercache', 'captures', 'checkpoint', 'checkpoints', 'recovery', 'shader_cache', 'shadercache')
     ForbiddenFileNames = @('.env', '.env.*', 'DEBRIEF.md', 'provider*.json', 'vision.json', '*.cso', '*.log', '*.pdb', '*.tmp')
-    TextExtensions = @('.fx', '.hlsl', '.hlsli', '.json', '.md', '.ps1', '.sentinel', '.txt', '.yaml', '.yml')
+    TextExtensions = @('.fx', '.hlsl', '.hlsli', '.json', '.luau', '.md', '.ps1', '.sentinel', '.txt', '.yaml', '.yml')
 }
 '@
     $fixtureReadme = @'
@@ -395,6 +395,46 @@ float4 mainImage(float2 uv) { return float4(leaked_fixture(), uv, 1.0); }
     if (-not (@($tooFewControls.projects[0].errors) -match 'expose 6-10 controls')) { throw 'Out-of-range Scene Group control count was not rejected.' }
     New-FixtureProject 'modules/Active'
 
+    # Script nodes: scripts/ ships, literal requires resolve through .luaurc aliases
+    # and relative paths, and each broken variant is rejected with a specific error.
+    function Set-ScriptFixture([string]$ScriptPath) {
+        New-FixtureProject 'modules/Active'
+        $json = [IO.File]::ReadAllText($fixtureFile) | ConvertFrom-Json
+        $json.pipelines += [pscustomobject]@{ id = 'Surface'; displayName = 'Surface'; type = 'script'; parameters = [pscustomobject]@{ script_path = $ScriptPath } }
+        Write-Utf8 $fixtureFile (($json | ConvertTo-Json -Depth 12) + "`n")
+    }
+    $scriptsDir = Join-Path $projectRoot 'scripts'
+    Write-Utf8 (Join-Path $projectRoot 'README.md') ($fixtureReadme + "| Surface | Script node running scripts/surface.luau. |`n")
+    Write-Utf8 (Join-Path $scriptsDir '.luaurc') "{`"aliases`": {`"lib`": `"./lib`"}}`n"
+    Write-Utf8 (Join-Path $scriptsDir 'lib/helper.luau') "return {}`n"
+    Write-Utf8 (Join-Path $scriptsDir 'show/init.luau') "return {}`n"
+    $goodScript = "local script = {manifest = {name = `"Fixture`"}}`nfunction script.init() local h = require(`"@lib/helper`"); local s = require(`"./show`") end`nreturn script`n"
+    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') $goodScript
+    Set-ScriptFixture 'scripts/surface.luau'
+    $scriptClean = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 0
+    if (-not $scriptClean.portable) { throw "Valid Script project was rejected: $($scriptClean.projects[0].errors -join '; ')" }
+
+    Set-ScriptFixture 'scripts/missing.luau'
+    $missingScript = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($missingScript.projects[0].errors) -match 'script_path does not resolve')) { throw 'Missing script_path was not rejected.' }
+    Set-ScriptFixture 'scripts/surface.luau'
+
+    Write-Utf8 (Join-Path $scriptsDir '.luaurc') "{`"aliases`": {`"lib`": `"../../../outside`"}}`n"
+    $escapedAlias = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($escapedAlias.projects[0].errors) -match "alias 'lib' does not resolve inside")) { throw 'Escaping .luaurc alias was not rejected.' }
+    Write-Utf8 (Join-Path $scriptsDir '.luaurc') "{`"aliases`": {`"lib`": `"./lib`"}}`n"
+
+    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') ($goodScript + "-- data lives in C:/Shows/private`n")
+    $absoluteScript = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (@($absoluteScript.projects[0].absolute_paths).Count -eq 0) { throw 'Absolute path inside a .luau file was not reported.' }
+
+    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') ($goodScript.Replace('"./show"', '"./show/missing"'))
+    $missingRequire = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($missingRequire.projects[0].errors) -match "unresolved require './show/missing'")) { throw 'Unresolved require was not rejected.' }
+    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') $goodScript
+
+    Set-ScriptFixture 'scripts/surface.luau'
+
     # Dry-run must be non-mutating and list only the selected fixture project.
     $dryRun = Invoke-JsonScript $promoter @('-SourceRoot', $sourceRoot, '-DestinationRoot', $publicRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 0
     if ($dryRun.mode -ne 'dry-run') { throw 'Promotion did not default to dry-run.' }
@@ -406,6 +446,9 @@ float4 mainImage(float2 uv) { return float4(leaked_fixture(), uv, 1.0); }
     $applied = Invoke-JsonScript $promoter @('-SourceRoot', $sourceRoot, '-DestinationRoot', $publicRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Apply', '-Json') 0
     if ($applied.mode -ne 'apply' -or @($applied.validation).Count -ne 1 -or -not $applied.validation[0].portable) {
         throw 'Applied promotion was not validator-clean.'
+    }
+    foreach ($shipped in @('scripts/surface.luau', 'scripts/.luaurc', 'scripts/lib/helper.luau', 'scripts/show/init.luau')) {
+        if (-not (Test-Path -LiteralPath (Join-Path $publicRoot "projects/industrial_lattice/$shipped") -PathType Leaf)) { throw "Promotion dropped $shipped" }
     }
     foreach ($operation in @($applied.operations | Where-Object { $_.action -ne 'delete' })) {
         if ($operation.source_sha256 -ne $operation.destination_sha256) {
@@ -422,6 +465,7 @@ float4 mainImage(float2 uv) { return float4(leaked_fixture(), uv, 1.0); }
     Write-Host 'PASS manifest regeneration rejects unsafe tombstones and retains safe ones'
     Write-Host 'PASS validator rejects workspace escapes and duplicate root project files'
     Write-Host 'PASS validator rejects insufficient presets, missing Performance, and out-of-range group controls'
+    Write-Host 'PASS Script projects validate; missing script_path, escaping alias, absolute path in .luau and unresolved require are rejected'
     Write-Host 'PASS promotion dry-run is allowlisted and non-mutating'
     Write-Host 'PASS disposable public promotion validates and matches normalized source content'
 } finally {

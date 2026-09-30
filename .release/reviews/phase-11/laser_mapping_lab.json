@@ -1,0 +1,52 @@
+{
+ "project": "projects/laser_mapping_lab/laser_mapping_lab.sentinel",
+ "source_commit": "628c3e6e17a63e396065b0576b1b231b91cdc1db",
+ "host": "Sentinel 0.5.87 (installed, trial licence: Laser Out record-only), Windows 11",
+ "sources": {
+  "Mapping_Editor, Adaptive_Mapping": "projects/laser_stage/modules (working tree 2026-09-25), adapted to one laser with three saved slots; hashes in docs/laser_stage_mapping_source.sha256",
+  "Alignment_Grid": "projects/laser_room_calibration/modules/Alignment_Grid, unchanged",
+  "Laser_Fixture, Laser_Previs": "BLINK show 3013ad2 (BLINK_LaserFixture, BLINK_Previs) from Laser Lab 1563058e; room-scale defaults, raw optics, one laser, warehouse site model"
+ },
+ "compile": {
+  "modules": [
+   "Alignment_Grid",
+   "Mapping_Editor",
+   "Adaptive_Mapping",
+   "Laser_Fixture",
+   "Laser_Previs"
+  ],
+  "status": "pass; all six pipelines healthy live"
+ },
+ "behaviour": {
+  "identity": "Adaptive_Mapping 26 records in, 26 out, status ready",
+  "edge_bend": "one middle-left handle drag: 26 in, 71 out, ready, tolerance 0.001",
+  "corner_drag": "sentinel_ui drag_at on the open Mapping Editor moved the top-left corner; Mapped Scan, World Scan and the previs capture changed accordingly",
+  "map_to_tape": "scripts/map_to_tape.py dragged the four corner handles onto the projected grid's corners; the laser grid lies on the projected grid",
+  "slots": "Mapping A identity and Mapping B solved coexist; switching the slot switches the compiled output and the previs (slotA_identity.png vs slotB_mapped.png)",
+  "flips": "Laser_Fixture flip_x/flip_y follow Laser_Out via ref() expressions; Flip Y on makes the Alignment Grid F upright",
+  "frames": "Frame - Operator / Audience / Wall recall camera parameters only",
+  "projector": "video projector maps Alignment_Grid Projection Grid onto the taped frame; with Mapping A the laser and projected grids are visibly apart (proj_wall_A2.png); with Mapping B, solved by drag onto the projected-grid corners, they coincide line for line including the F (proj_wall_B_aligned.png)"
+ },
+ "performance": {
+  "method": "graph profile with detailed profiling, 1280x720, all previews open",
+  "whole_graph_gpu_ms": 0.7,
+  "laser_previs_gpu_ms": 0.3,
+  "idle_cook_hz": {
+   "Mapping_Editor": 0,
+   "Adaptive_Mapping": 0,
+   "Alignment_Grid": 0
+  }
+ },
+ "safety": {
+  "saved_protocol": "record",
+  "saved_armed": false,
+  "device": "empty",
+  "arming": "operator-only; not exercised by automation"
+ },
+ "not_verified": [
+  "as-sent preview from Laser Out Sent Stream (needs an operator-armed dry run)",
+  "a person mapping Mapping A by hand with a mouse",
+  "a physical laser",
+  "clean-worktree promotion dry run and fresh public clone"
+ ]
+}

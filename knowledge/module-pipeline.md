@@ -267,6 +267,11 @@ Verified conventions:
 - `event.position` and `_ViewportPointerPosition` are normalized preview coordinates in exactly the same space as a full-resolution pass's `uv`. A click in the preview center arrives as position (0.5, 0.5).
 - A completed click gesture arrives as ONE event: type 5, code 1, phase 7 (end). Drags stream type 5, code 3 with phase 5 begin, 6 update per movement, 7 end (8 on cancel), each carrying the current position. Raw pointer presses (type 2, phase 1) also arrive when `pointer` interests include the button.
 - Key presses are type 4, phase 1 edges; held keys are also visible any frame through `ViewportKeyDown()`.
+- **Consume each event once, by `sequence`.** An event can be handed back on later cooks until
+  newer input arrives (a wheel notch was replayed every frame until the mouse moved). Held keys
+  also auto-repeat: latch toggles on press/release, and scale wheel actions by `ev.value`. A Standard panel
+  scrolls on the plain wheel, so wheel-driven editors belong in a Canvas panel. See
+  `knowledge/ui-authoring.md` (Mouse Wheel And Held Keys).
 
 ### The `_DeltaTime` rule (critical)
 
@@ -326,6 +331,8 @@ viewport:
   controls:
     - { id: mix_slider, kind: slider, param: mix, rect: [0.10, 0.82, 0.48, 0.90], label: "Mix" }
 ```
+
+Show desks add `pad` (`mode: momentary | toggle | radio | go`), `fader` and display-only `readout` controls, up to 256 per Module. With `viewport.panel: true`, pads and faders may leave `param` empty: presses leave on the Module's `panel` Event pin for a Script, and the Script's feedback into `panel_feedback` lights and colors them. See `knowledge/show-control-desk.md`.
 
 Use `tools/module-ui.ps1` and `knowledge/ui-authoring.md` for the shared scientific UI foundation, generated labels and rectangles, responsive layout, and proof workflow.
 

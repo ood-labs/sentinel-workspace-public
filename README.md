@@ -65,6 +65,7 @@ See `knowledge/example-authoring.md`.
 | `face_collage` | MediaPipe-guided StreamDiff collage, accumulation, cutout, and editorial compositing |
 | `industrial_lattice` | Compact procedural SDF structure and post-processing |
 | `interaction_lab` | Responsive Canvas UI, splines, selection, gizmos, audio scope, and traces |
+| `laser_mapping_lab` | Map a laser onto a surface: saved mapping slots, adaptive path compiling, and a simulated laser in a hazy warehouse that the same graph drives for a real laser |
 | `living_room_sdf` | Modular architectural records, spatial editing, lighting, materials, and SDF rendering |
 | `matik_plate` | Interactive plan authority, hybrid record contracts, organisms, circuitry, and technical-plate rendering |
 | `prism_reliquary` | Interactive plan authority, authored HDR lighting, filmic SDF rendering, depth of field, and layered antialiasing |

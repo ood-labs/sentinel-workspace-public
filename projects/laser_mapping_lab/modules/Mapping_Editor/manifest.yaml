@@ -1,0 +1,322 @@
+name: Mapping Editor
+version: '1.0'
+mode: generator
+resolution:
+- 1000
+- 700
+panel:
+  mode: canvas
+  output: Mapping Editor
+  resolution: follow_panel
+parameters:
+- name: slot
+  display: Mapping Slot
+  description: Retired. The editor holds one working mapping; the slot selected when this build first cooks is migrated into it. Save mappings as node presets.
+  type: enum
+  options:
+  - Mapping A
+  - Mapping B
+  - Mapping C
+  default: 0
+  hidden: true
+- name: reset_grid
+  display: Reset Mapping
+  type: button
+  default: 0
+- name: fit_view
+  display: Fit View
+  type: button
+  default: 0
+- name: select_all
+  display: Select All Points
+  type: button
+  default: 0
+- name: extent_a
+  display: Extent
+  description: How much of the scanner's field the mapped corners may reach.
+  type: float
+  min: 0.1
+  max: 1
+  default: 0.99
+- name: extent_b
+  display: Extent B (retired)
+  type: float
+  min: 0.1
+  max: 1
+  default: 0.99
+  hidden: true
+- name: extent_c
+  display: Extent C (retired)
+  type: float
+  min: 0.1
+  max: 1
+  default: 0.99
+  hidden: true
+- name: pincushion_x
+  display: Bow X (vertical lines)
+  description: Bows the vertical lines between the corners, measured from the laser's own centre, so the side of the mapping further from the laser's axis bows more. Corners never move. Positive bows outward, straightening lines the scanner bows inward (pincushion).
+  type: float
+  min: -0.3
+  max: 0.3
+  default: 0
+  group: Scanner Correction
+- name: pincushion_y
+  display: Bow Y (horizontal lines)
+  description: Bows the horizontal lines between the corners, measured from the laser's own centre, so the side of the mapping further from the laser's axis bows more. Corners never move. Positive bows outward, straightening lines the scanner bows inward (pincushion).
+  type: float
+  min: -0.3
+  max: 0.3
+  default: 0
+  group: Scanner Correction
+- name: spacing_x
+  display: Spacing X (vertical lines)
+  description: Use when the corners match but the vertical lines between them drift further out of place across the grid. Shifts the inner lines progressively, measured from the laser's own centre. Corners never move.
+  type: float
+  min: -1.5
+  max: 1.5
+  default: 0
+  group: Scanner Correction
+- name: centre_x
+  display: Centre X (laser's straight-on point)
+  description: Where across the scan field the laser meets the wall square-on; the bow and spacing are measured from here. With an off-centre laser, moving it slides all the inner vertical lines together while the corners stay put.
+  type: float
+  min: -0.25
+  max: 0.25
+  default: 0
+  group: Scanner Correction
+- name: spacing_y
+  display: Spacing Y (horizontal lines)
+  description: Use when the corners match but the horizontal lines between them drift further out of place across the grid. Shifts the inner lines progressively, measured from the laser's own centre. Corners never move.
+  type: float
+  min: -1.5
+  max: 1.5
+  default: 0
+  group: Scanner Correction
+- name: centre_y
+  display: Centre Y (laser's straight-on point)
+  description: Where up the scan field the laser meets the wall square-on; the bow and spacing are measured from here. With an off-centre laser, moving it slides all the inner horizontal lines together while the corners stay put.
+  type: float
+  min: -0.25
+  max: 0.25
+  default: 0
+  group: Scanner Correction
+- name: mask_margin
+  display: Mask Margin
+  description: Safety margin around every zoning mask, in scanner units (the full field is 2 wide). Block zones grow by it and Only-In zones shrink by it, so light that leaks past a mask edge (blank and colour delay) still lands outside the zone. The dashed line on the canvas is where the beam is actually cut.
+  type: float
+  min: 0
+  max: 0.1
+  default: 0.01
+  group: Zoning
+viewport:
+  hint: 'Wheel: zoom at cursor | Middle/right drag: pan | Empty drag: box select |
+    Shift: add selection | Ctrl+A: select all | Arrows: nudge 1 px (Shift x10, Alt x0.1) | F: fit | Esc: cancel | Alt while dragging: 10x finer
+    | Masks: click a mask to select and drag it, corners resize, knob rotates (Shift snaps). Drag empty space
+    to draw the chosen shape (Shift: square/circle). Polygon: click points; double-click, Enter, Esc,
+    right-click or the first point closes it. Click an edge to add a point'
+  interactions:
+  - events
+  input:
+    pointer:
+    - left
+    - right
+    - middle
+    - wheel
+    keyboard:
+    - a
+    - f
+    - escape
+    - enter
+    - left
+    - right
+    - up
+    - down
+    gestures:
+    - drag
+  bindings:
+  - gesture: left_drag
+    action: map_point
+    label: Move mapping point
+  - gesture: wheel
+    action: zoom
+    label: Zoom at cursor
+  - gesture: middle_drag
+    action: pan
+    label: Pan canvas
+  - gesture: right_drag
+    action: pan
+    label: Pan canvas
+  - key: a
+    action: select_all
+    label: Ctrl+A selects all points
+  - key: f
+    action: fit
+    label: Fit mapping in view
+  - key: left
+    action: nudge
+    label: Arrows nudge the selection one screen pixel (Shift x10, Alt a tenth)
+buffers:
+- name: points
+  structured: true
+  element_size: 16
+  element_count: 156
+  persistent: true
+- name: canvas
+  structured: true
+  element_size: 16
+  element_count: 40
+  persistent: true
+- name: zones
+  structured: true
+  element_size: 16
+  element_count: 545
+  persistent: true
+- name: gridpts
+  structured: true
+  element_size: 16
+  element_count: 336
+- name: calibration
+  structured: true
+  element_size: 16
+  element_count: 577
+state_buffers:
+- name: points
+  max_elements: 156
+  schema:
+  - name: position
+    type: float4
+- name: zones
+  max_elements: 545
+  schema:
+  - name: record
+    type: float4
+passes:
+- name: canvas
+  shader: canvas.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 1
+  thread_group_y: 1
+  inputs:
+  - slot: 1
+    source: buffer:points
+  - slot: 2
+    source: buffer:zones
+  output: buffer:canvas
+  time_dependent: false
+- name: update
+  shader: update.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 1
+  thread_group_y: 1
+  inputs:
+  - slot: 0
+    source: buffer:canvas
+  - slot: 7
+    source: pass:canvas
+  output: buffer:points
+  time_dependent: false
+- name: mask_update
+  shader: mask_update.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 1
+  thread_group_y: 1
+  inputs:
+  - slot: 0
+    source: buffer:canvas
+  - slot: 7
+    source: pass:update
+  output: buffer:zones
+  time_dependent: false
+- name: compile_map
+  shader: compile_map.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 1
+  thread_group_y: 1
+  inputs:
+  - slot: 1
+    source: buffer:points
+  - slot: 2
+    source: buffer:zones
+  - slot: 7
+    source: pass:mask_update
+  output: buffer:calibration
+  time_dependent: false
+- name: gridpts
+  shader: gridpts.hlsl
+  target: cs_5_0
+  dispatch:
+  - 6
+  - 1
+  - 1
+  thread_group_x: 64
+  thread_group_y: 1
+  inputs:
+  - slot: 1
+    source: buffer:points
+  - slot: 7
+    source: pass:compile_map
+  output: buffer:gridpts
+  time_dependent: false
+- name: editor
+  shader: editor.hlsl
+  target: cs_5_0
+  inputs:
+  - slot: 0
+    source: buffer:calibration
+  - slot: 1
+    source: buffer:points
+  - slot: 2
+    source: buffer:canvas
+  - slot: 3
+    source: buffer:gridpts
+  - slot: 4
+    source: buffer:zones
+  - slot: 7
+    source: pass:gridpts
+  time_dependent: false
+outputs:
+- name: Mapping Editor
+  pass: editor
+data_outputs:
+- name: Calibration
+  description: The compiled mapping (0..31), zoning masks (32..64) and polygon points (65..576) for Adaptive Mapping.
+  buffer: calibration
+  schema:
+  - name: value
+    type: float4
+- name: Mapping Points
+  description: Mapping handle positions and saved drag state.
+  buffer: points
+  schema:
+  - name: position
+    type: float4
+- name: Canvas State
+  description: View transform, active gesture, and point selection for editor diagnostics.
+  buffer: canvas
+  schema:
+  - name: state
+    type: float4
+control_outputs:
+- name: mapping_valid
+  buffer: calibration
+  element: 0
+  field_offset: 0
+# Idle between edits. Real presses and drags reach an idle Module since 0.5.90
+# (ood-labs/sentinel-bugs#152, fixed); on 0.5.88/0.5.89 set every_frame here.
+execution: on_dirty

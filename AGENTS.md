@@ -266,6 +266,8 @@ For staggered entrances, beat-locked motion, cue-driven shows, and timecoded seq
 
 StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` switches variants live with `solo_upstream`; an `atlas` banks aligned stills for 3D scene spawning. To mix whole looks, author each look as a Scene Group containing exactly one `groupoutput` and set a Mux to `source_mode=Groups` (the Scene Switcher, with cuts, `fade_time` crossfades, and per-look OSC triggers). The focused examples under `projects/streamdiff_workflows/` cover one routing pattern each; open one at a time to avoid engine-memory spikes. See `knowledge/streamdiff.md` and `knowledge/scene-system.md`.
 
+For a choreographed motion-graphics sequence (2D, 3D, generated or hybrid acts chained by designed transitions under one editable, scrubbable score), use the `motion-graphics-sequences` skill. It fixes the timing and placement contract, and asks you to design the node graph for the piece rather than reuse a stock shape.
+
 ## Precise 3D Construction
 
 When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against an explicit project-specific kind registry, relax under-constrained layouts with warm-start stability, and compile to a generated project-local Module publishing `PNodes` records. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints, registry, and renderer: `projects/living_room_sdf/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
@@ -339,11 +341,16 @@ Use skills for authoring details:
 - `module-ui-authoring`
 - `modular-scene-authoring`
 - `procedural-geometry-authoring`
-- `shader-authoring`
+- `shader-authoring` (legacy `.fx`, development builds only)
 - `mcp-automation`
 - `deterministic-rendering`
 - `motion-eval`
+- `motion-graphics-sequences`
 - `laser-content-authoring`
+- `laser-trace-tuning`
+- `laser-arcade-authoring`
+- `script-node-authoring`
+- `controller-surface-authoring`
 - `sentinel-bug-report`
 - `setup-mcp`
 

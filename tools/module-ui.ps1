@@ -54,6 +54,7 @@ function Read-UiManifest([string]$ManifestPath) {
     $viewportSection = ''
     $pending = $null
     $pendingKind = ''
+    $panel = $false
 
     foreach ($line in $lines) {
         if ($line -match '^\s*#\s*ui-label:\s*([A-Za-z_][A-Za-z0-9_-]*)\s*=\s*(.+?)\s*$') {
@@ -69,6 +70,7 @@ function Read-UiManifest([string]$ManifestPath) {
             $viewportSection = ''
             $pending = $null
         }
+        if ($rootSection -eq 'viewport' -and $line -match '^\s{2}panel:\s*true\s*$') { $panel = $true }
         if ($rootSection -eq 'viewport' -and $line -match '^\s{2}([A-Za-z_][A-Za-z0-9_]*):\s*') {
             $viewportSection = $Matches[1]
             $pending = $null
@@ -135,6 +137,7 @@ function Read-UiManifest([string]$ManifestPath) {
         Parameters = $parameters
         Controls = @($controls)
         Labels = @($labels)
+        Panel = $panel
         Hash = $hash
     }
 }
@@ -143,14 +146,21 @@ function Get-UiErrors($Manifest) {
     $errors = [Collections.Generic.List[string]]::new()
     $warnings = [Collections.Generic.List[string]]::new()
     $ids = @{}
-    $expectedTypes = @{ slider = @('float', 'int'); button = @('button'); toggle = @('bool'); xypad = @('vec2', 'point2D') }
+    $expectedTypes = @{ slider = @('float', 'int'); button = @('button'); toggle = @('bool'); xypad = @('vec2', 'point2D')
+        pad = @('button', 'bool', 'int', 'enum', 'float'); fader = @('float', 'int'); readout = @() }
 
     for ($i = 0; $i -lt $Manifest.Controls.Count; ++$i) {
         $c = $Manifest.Controls[$i]
         if (-not $c.id) { $errors.Add("control $i has no id"); continue }
         if ($ids.ContainsKey($c.id)) { $errors.Add("duplicate control id '$($c.id)'") } else { $ids[$c.id] = $true }
         if (-not $expectedTypes.ContainsKey($c.kind)) { $errors.Add("control '$($c.id)' has unsupported kind '$($c.kind)'") }
-        if (-not $Manifest.Parameters.ContainsKey($c.param)) { $errors.Add("control '$($c.id)' references missing parameter '$($c.param)'") }
+        # Show-control panels (Sentinel 0.5.87+): readouts bind nothing; with viewport.panel, pads and faders
+        # may omit param and report through the panel Event output instead.
+        if ($c.kind -eq 'readout') {
+            if ($c.param) { $errors.Add("readout '$($c.id)' shows its label and binds no param") }
+        }
+        elseif (-not $c.param -and $c.kind -in @('pad', 'fader') -and $Manifest.Panel) { }
+        elseif (-not $c.param -or -not $Manifest.Parameters.ContainsKey($c.param)) { $errors.Add("control '$($c.id)' references missing parameter '$($c.param)'") }
         elseif ($expectedTypes.ContainsKey($c.kind) -and $Manifest.Parameters[$c.param] -notin $expectedTypes[$c.kind]) {
             $errors.Add("control '$($c.id)' kind '$($c.kind)' is incompatible with parameter type '$($Manifest.Parameters[$c.param])'")
         }
@@ -160,7 +170,7 @@ function Get-UiErrors($Manifest) {
             $errors.Add("control '$($c.id)' rect is outside normalized bounds or inverted")
         }
         $heightPx = ($r[3] - $r[1]) * $Manifest.Resolution[1]
-        if ($heightPx -lt 32.0) { $errors.Add("control '$($c.id)' hit height is $([math]::Round($heightPx,1)) px; minimum is 32 px") }
+        if ($c.kind -ne 'readout' -and $heightPx -lt 32.0) { $errors.Add("control '$($c.id)' hit height is $([math]::Round($heightPx,1)) px; minimum is 32 px") }
         for ($j = 0; $j -lt $i; ++$j) {
             $o = $Manifest.Controls[$j].rect
             if ($o -and [math]::Max($r[0],$o[0]) -lt [math]::Min($r[2],$o[2]) -and [math]::Max($r[1],$o[1]) -lt [math]::Min($r[3],$o[3])) {

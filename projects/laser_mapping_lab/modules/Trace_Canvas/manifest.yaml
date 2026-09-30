@@ -1,0 +1,16 @@
+name: Trace Canvas
+version: '1.0'
+mode: generator
+resolution: [1280, 720]
+# Line art for the Trace look: a star, a circle, an open wave and twinkling single-pixel dots,
+# white on black. The same 16:9 Projection feeds the video projector and Laser Trace (Fit Stretch,
+# so the trace spans the whole mapped frame, Y Axis Up to match the other looks' Scan Signal).
+parameters:
+  - {name: line_width, display: Line Width, type: float, min: 0.002, max: 0.02, default: 0.005, description: "Line width as a fraction of the frame height (0.005 is about 3.6 px at 720). Laser Trace traces lines under its Max Line Width as single centerlines."}
+  - {name: dot_radius, display: Dot Radius, type: float, min: 0, max: 0.02, default: 0, description: "Dot radius as a fraction of the frame height. 0 draws each dot as a single pixel (a single-pixel beam); a dot is never smaller than one pixel. Laser Trace with Dots on draws spots under its Dot Size as a dwell at the centre."}
+  - {name: line_color, display: Line Colour, type: color, default: [1, 1, 1]}
+  - {name: dot_color, display: Dot Colour, type: color, default: [1, 1, 1]}
+passes:
+  - {name: projection, shader: projection.hlsl, target: cs_5_0}
+outputs:
+  - {name: Projection, pass: projection}

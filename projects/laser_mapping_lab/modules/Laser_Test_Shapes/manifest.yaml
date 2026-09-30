@@ -1,0 +1,55 @@
+name: Laser Test Shapes
+version: '1.0'
+mode: generator
+resolution: [1280, 720]
+# Stress content for dialling in Laser Out: long curves, branching, dense blanking. Authored in the
+# 16:9 projection frame. Publishes one Laser Look bundle: the Projection video plus laser.a.scan,
+# the same contract every content look uses. Animated (spin, sway, flap), so it cooks every frame.
+parameters:
+  - name: shape
+    display: Shape
+    type: enum
+    options: [Spiral, Rose, Lissajous, Starburst, Tunnel, Wave, Word, Morph, Cycle All]
+    default: 0
+  - {name: detail, display: Detail, type: int, min: 1, max: 10, default: 4}
+  - {name: size, display: Size, type: float, min: 0.1, max: 1, default: 0.95}
+  - {name: spin, display: Spin (rad/s), type: float, min: -2, max: 2, default: 0}
+  - {name: cycle_seconds, display: Cycle Seconds, type: float, min: 0.5, max: 30, default: 4}
+  - {name: draw_speed, display: Draw Speed units per ms, type: float, min: 0.05, max: 0.5, default: 0.18, group: Beam, description: "Lit beam speed in scan units per millisecond. The cycle is lit length divided by this, plus jumps and corner stops."}
+  - {name: max_cycle_ms, display: Max Cycle ms, type: float, min: 8, max: 40, default: 22, group: Beam, description: "An over-long cycle is drawn faster to fit (22 ms is 45 Hz; below 38 Hz reads as flicker). A shape sitting on the cap has too much beam."}
+  - {name: min_cycle_ms, display: Min Cycle ms, type: float, min: 0, max: 20, default: 8, group: Beam, description: "A very short cycle is padded with blank time so a small shape doesn't repeat hundreds of times a second and run hot."}
+  - {name: record_budget, display: Record Budget, type: int, min: 32, max: 1000, default: 250, group: Beam, description: "Most records a shape may use. Over budget, the shape is redrawn with a looser curve tolerance and less detail (up to 4 times). Laser Out spends points per record, and the previs pays per beam, so a few hundred records is plenty."}
+  - {name: curve_tolerance, display: Curve Tolerance, type: float, min: 0.0002, max: 0.01, default: 0.0015, group: Beam, description: "How far a straight segment may stray from the true curve, in scan units. Larger means fewer, longer segments, which Laser Out draws faster and smoother."}
+  - name: colour_mode
+    display: Colour
+    type: enum
+    options: [Solid, Rainbow]
+    default: 0
+  - {name: line_color, display: Line Colour, type: color, default: [1, 1, 1]}
+  - {name: line_width, display: Projection Line Width px, type: float, min: 1, max: 12, default: 3}
+buffers:
+  - {name: scans, structured: true, element_size: 80, element_count: 1024}
+passes:
+  - {name: signal, shader: shapes.hlsl, target: cs_5_0, dispatch: [1, 1, 1], thread_group_x: 1, thread_group_y: 1, output: 'buffer:scans'}
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - {slot: 0, source: 'buffer:scans'}
+      - {slot: 7, source: 'pass:signal'}
+outputs: [{name: Projection, pass: preview}]
+data_outputs:
+  - name: Scan Signal
+    description: Test geometry in ILDA scanner space (+y up), lit time shared by length.
+    buffer: scans
+    schema:
+      - {name: endpoints, type: float4}
+      - {name: color0, type: float4}
+      - {name: color1, type: float4}
+      - {name: timing, type: float4}
+      - {name: meta, type: float4}
+bundle_outputs:
+  - name: Laser Look
+    video: Projection
+    channels:
+      - {key: laser.a.scan, data: Scan Signal, header_records: 1, transition: {mode: handoff, at: mid}, neutral: empty}

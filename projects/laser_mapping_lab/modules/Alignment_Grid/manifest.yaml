@@ -1,0 +1,41 @@
+name: Alignment Grid 4x4
+version: '1.0'
+mode: generator
+resolution: [1280, 720]
+parameters:
+  - name: pattern
+    display: Pattern
+    type: enum
+    options: [Grid, Sync Sweep]
+    default: 0
+    description: "Grid: the 4x4 mapping grid with the F orientation mark. Sync Sweep: a vertical line sweeping left and right on the laser and the projector together, with a latency ruler on the projector (ticks every 10 ms: top band = where the line was, so a laser on a top tick is that late; bottom band = where it will be, so the laser is early). Use it to set Laser Out's Output Delay."
+  - {name: sweep_hz, display: Sweep Rate Hz, type: float, min: 0.05, max: 2, default: 0.5, description: "Full left-right-left sweeps per second. Faster spreads the ruler ticks wider, so a small delay is easier to read; slower is easier to follow by eye."}
+  - {name: extent, display: Grid Extent, type: float, min: 0.1, max: 1, default: 0.999}
+  - {name: line_width, display: Pixel Line Width, type: float, min: 1, max: 12, default: 2}
+  - {name: cycle_fps, display: Requested Scan FPS, type: float, min: 10, max: 90, default: 40}
+  - {name: line_color, display: Grid Color, type: color, default: [1, 1, 1]}
+buffers:
+  - {name: scans, structured: true, element_size: 80, element_count: 1024}
+# Sync Sweep moves with _Time, so both passes cook every frame. The grid itself costs next to
+# nothing (one thread writes 27 records; the pixel pass is a few ALU ops per pixel).
+passes:
+  - {name: signal, shader: grid.hlsl, target: cs_5_0, dispatch: [1, 1, 1], thread_group_x: 1, thread_group_y: 1, output: 'buffer:scans', time_dependent: true}
+  - {name: pixels, shader: pixels.hlsl, target: cs_5_0, time_dependent: true}
+outputs: [{name: Projection Grid, pass: pixels}]
+data_outputs:
+  - name: Scan Signal
+    description: Ten grid lines with blanked travel, matching the pixel grid.
+    buffer: scans
+    schema:
+      - {name: endpoints, type: float4}
+      - {name: color0, type: float4}
+      - {name: color1, type: float4}
+      - {name: timing, type: float4}
+      - {name: meta, type: float4}
+# One Laser Look bundle: the projector grid and the laser grid travel together, the same contract
+# every content look publishes (see the Shapes look). The Scene Group's Group Output takes it.
+bundle_outputs:
+  - name: Laser Look
+    video: Projection Grid
+    channels:
+      - {key: laser.a.scan, data: Scan Signal, header_records: 1, transition: {mode: handoff, at: mid}, neutral: empty}

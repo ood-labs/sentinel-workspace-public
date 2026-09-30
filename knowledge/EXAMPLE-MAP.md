@@ -35,6 +35,7 @@ for an explicit fork or remix. See `example-authoring.md`.
 | `streamdiff_workflows` | 6 | StreamDiff; Depth and Background Removal in study 05 | one focused routing pattern per graph | named StreamDiff/Mux/composite preview | small, isolated StreamDiff techniques |
 | `sunward_corridor` | 1 | none | plan authority/editor → corridor renderer → grid finish | `SC_Grid` | endless periodic zoom, one record contract for architecture and organic masses |
 | `koi_tank` | 1 | none | plan authority → water sim → photon caustics → koi school → optics → exploded instrument → post | `TP_Post` | wave simulation, photon caustics, procedural koi SDF, boids, depth-composited 3D overlay of live data |
+| `laser_mapping_lab` | 1 | none (real laser optional) | Alignment Grid → Mapping Editor + Adaptive Mapping → Laser Out, and → simulated laser fixture → hazy-room laser previs | `Laser_Previs` | real laser mapping: a saved-slot warp editor, adaptive path compilation, a raw-optics laser simulation hitting 3D surfaces, and the real-laser safety path |
 | `touchdesigner_new_project` | 1 | image asset only | Hermite signal → texture → image displacement → geometry → output | `Out` | typed signal-to-texture modulation |
 | `vitreous_cross` | 1 | none | plan authority/editor → studio env → SDF renderer → filmic post | `VC_Post` | ray-marched glass with real air-cavity lenses, HDR studio lighting, interior plates |
 

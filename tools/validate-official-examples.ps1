@@ -628,6 +628,64 @@ foreach ($projectName in $Projects) {
         }
     }
 
+    # Script nodes: the entry file exists, aliases stay inside the project, and every
+    # literal require resolves to a local .luau file (Luau: name.luau or name/init.luau).
+    $scriptPipelines = @($projectJsons | ForEach-Object { @($_.pipelines) } | Where-Object { $_ -and $_.type -eq 'script' })
+    if ($scriptPipelines.Count -gt 0) {
+        $projectFull = Get-FullPath $projectRoot
+        foreach ($pipeline in $scriptPipelines) {
+            $declared = [string]$pipeline.parameters.script_path
+            if ([string]::IsNullOrWhiteSpace($declared)) { $errors.Add("script: pipeline '$($pipeline.id)' has no script_path"); continue }
+            if ([IO.Path]::IsPathRooted($declared)) { Add-Unique $absolutePaths ("{0}: {1}" -f $pipeline.id, $declared); continue }
+            $entryPath = Get-FullPath (Join-Path $projectRoot $declared)
+            if (-not (Test-IsUnder $projectFull $entryPath) -or -not (Test-Path -LiteralPath $entryPath -PathType Leaf)) {
+                $errors.Add("script: '$($pipeline.id)' script_path does not resolve inside the project: $declared")
+            }
+        }
+        $aliases = @{}
+        $scriptsRoot = Join-Path $projectRoot 'scripts'
+        $luaurc = Join-Path $scriptsRoot '.luaurc'
+        if (Test-Path -LiteralPath $luaurc -PathType Leaf) {
+            try {
+                $aliasTable = (Get-Content -Raw -LiteralPath $luaurc | ConvertFrom-Json).aliases
+                foreach ($alias in @($aliasTable.PSObject.Properties)) {
+                    $target = Get-FullPath (Join-Path $scriptsRoot ([string]$alias.Value))
+                    if (-not (Test-IsUnder $projectFull $target) -or -not (Test-Path -LiteralPath $target -PathType Container)) {
+                        $errors.Add("script: .luaurc alias '$($alias.Name)' does not resolve inside the project")
+                    } else { $aliases[$alias.Name] = $target }
+                }
+            } catch { $errors.Add("script: scripts/.luaurc is invalid: $($_.Exception.Message)") }
+        }
+        if (Test-Path -LiteralPath $scriptsRoot -PathType Container) {
+            foreach ($luau in Get-ChildItem -LiteralPath $scriptsRoot -File -Recurse -Filter '*.luau') {
+                if ($luau.Name -eq 'sentinel.d.luau') { continue }
+                $text = [IO.File]::ReadAllText($luau.FullName)
+                foreach ($match in [regex]::Matches($text, 'require\(\s*["'']([^"'']+)["'']\s*\)')) {
+                    $spec = $match.Groups[1].Value
+                    $base = if ($spec.StartsWith('@')) {
+                        $name, $rest = $spec.Substring(1) -split '/', 2
+                        if (-not $aliases.ContainsKey($name)) { $null } elseif ($rest) { Join-Path $aliases[$name] $rest } else { $aliases[$name] }
+                    } elseif ($spec.StartsWith('./') -or $spec.StartsWith('../')) {
+                        Join-Path $luau.DirectoryName $spec
+                    } else {
+                        Join-Path $scriptsRoot "packages/$spec"
+                    }
+                    $found = $false
+                    if ($base) {
+                        foreach ($candidate in @("$base.luau", (Join-Path $base 'init.luau'))) {
+                            $full = Get-FullPath $candidate
+                            if ((Test-IsUnder $projectFull $full) -and (Test-Path -LiteralPath $full -PathType Leaf)) { $found = $true; break }
+                        }
+                    }
+                    if (-not $found) {
+                        $relative = Normalize-Relative (Get-RelativePath $rootFull $luau.FullName)
+                        $errors.Add("script: unresolved require '$spec' in $relative")
+                    }
+                }
+            }
+        }
+    }
+
     foreach ($path in $absolutePaths) { $errors.Add("absolute path: $path") }
     foreach ($path in $forbiddenArtifacts) { $errors.Add("forbidden artifact: $path") }
     foreach ($path in $orphanModules) { $errors.Add("orphan module: $path") }

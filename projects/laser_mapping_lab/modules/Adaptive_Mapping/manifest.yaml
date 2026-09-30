@@ -1,0 +1,252 @@
+version: '1.0'
+mode: generator
+execution: every_frame
+resolution:
+- 640
+- 440
+data_inputs:
+- name: Scan Signal
+  slot: 0
+  schema: &id001
+  - name: endpoints
+    type: float4
+  - name: color0
+    type: float4
+  - name: color1
+    type: float4
+  - name: timing
+    type: float4
+  - name: meta
+    type: float4
+- name: Calibration
+  slot: 1
+  schema:
+  - name: value
+    type: float4
+name: Adaptive Mapping
+parameters:
+- name: mapping_mode
+  display: Mapping
+  type: enum
+  options:
+  - Adaptive
+  - Endpoints Only
+  default: 0
+- name: tolerance
+  display: Warp Error Tolerance
+  type: float
+  min: 0.0001
+  max: 0.02
+  default: 0.001
+- name: record_budget
+  display: Preferred Record Budget
+  type: int
+  min: 32
+  max: 1023
+  default: 512
+- name: jump_speed
+  display: Blank Jump Speed (units per ms)
+  description: How fast a blank jump may travel, in field units per millisecond (the field is 2 wide). Every jump gets at least a 0.15 ms settle plus its length at this speed; content jumps timed faster are lengthened, never shortened. Keep it just under the scanner's limit, Max Step x point rate (0.074 x 20000 = 1.48 here). Too fast and Laser Out stretches the whole cycle to catch up.
+  type: float
+  min: 0.1
+  max: 5
+  default: 1.2
+- name: min_cycle_ms
+  display: Min Cycle ms
+  description: Masked-out geometry is replaced by fast blank jumps, so hiding most of a shape shortens its cycle and concentrates the beam on what is left. A cycle shorter than this is padded with blanked time so a mostly-masked shape can't run hot. Matches the content pen's minimum (8 ms).
+  type: float
+  min: 0
+  max: 20
+  default: 8
+buffers:
+- name: tree0
+  structured: true
+  element_size: 16
+  element_count: 2095104
+  persistent: true
+- name: counts0
+  structured: true
+  element_size: 16
+  element_count: 4092
+- name: plan0
+  structured: true
+  element_size: 16
+  element_count: 1027
+- name: raw0
+  structured: true
+  element_size: 80
+  element_count: 1024
+- name: out0
+  structured: true
+  element_size: 80
+  element_count: 1024
+- name: stats
+  structured: true
+  element_size: 16
+  element_count: 4
+passes:
+- name: analyze0
+  shader: analyze0.hlsl
+  target: cs_5_0
+  dispatch:
+  - 32
+  - 1
+  - 1
+  thread_group_x: 32
+  thread_group_y: 1
+  time_dependent: true
+  inputs:
+  - slot: 0
+    source: data:0
+  - slot: 3
+    source: data:1
+  output: buffer:tree0
+- name: count0
+  shader: count0.hlsl
+  target: cs_5_0
+  dispatch:
+  - 32
+  - 1
+  - 1
+  thread_group_x: 32
+  thread_group_y: 1
+  time_dependent: true
+  inputs:
+  - slot: 0
+    source: data:0
+  - slot: 3
+    source: data:1
+  - slot: 4
+    source: buffer:tree0
+  - slot: 7
+    source: pass:analyze0
+  output: buffer:counts0
+- name: budget0
+  shader: budget0.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 1
+  thread_group_y: 1
+  time_dependent: true
+  inputs:
+  - slot: 0
+    source: buffer:counts0
+  - slot: 1
+    source: data:0
+  - slot: 2
+    source: data:1
+  - slot: 7
+    source: pass:count0
+  output: buffer:plan0
+- name: emit0
+  shader: emit0.hlsl
+  target: cs_5_0
+  dispatch:
+  - 32
+  - 1
+  - 1
+  thread_group_x: 32
+  thread_group_y: 1
+  time_dependent: true
+  inputs:
+  - slot: 0
+    source: data:0
+  - slot: 3
+    source: data:1
+  - slot: 4
+    source: buffer:tree0
+  - slot: 5
+    source: buffer:plan0
+  - slot: 7
+    source: pass:budget0
+  output: buffer:raw0
+- name: final0
+  shader: finalize.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 1
+  thread_group_y: 1
+  time_dependent: true
+  inputs:
+  - slot: 0
+    source: buffer:raw0
+  - slot: 7
+    source: pass:emit0
+  output: buffer:out0
+- name: stats
+  shader: stats.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 1
+  thread_group_y: 1
+  time_dependent: true
+  inputs:
+  - slot: 0
+    source: buffer:plan0
+  - slot: 3
+    source: buffer:out0
+  - slot: 8
+    source: pass:final0
+  output: buffer:stats
+- name: draw
+  shader: draw.hlsl
+  target: draw
+  vertex_count: 6138
+  depth: false
+  depth_write: false
+  cull: none
+  time_dependent: true
+  inputs:
+  - slot: 0
+    source: buffer:out0
+  - slot: 5
+    source: pass:final0
+- name: preview
+  shader: preview.hlsl
+  time_dependent: true
+  inputs:
+  - slot: 0
+    source: pass:draw
+  - slot: 7
+    source: pass:stats
+  - slot: 1
+    source: buffer:stats
+outputs:
+- name: Mapped Path
+  pass: preview
+data_outputs:
+- name: Mapped Scan
+  buffer: out0
+  schema: *id001
+  description: 'The input path compiled through the active mapping slot: adaptive subdivision only where the warp bends it.'
+- name: Compiler Stats
+  buffer: stats
+  schema:
+  - name: value
+    type: float4
+control_outputs:
+- name: valid
+  buffer: out0
+  element: 0
+  field_offset: 16
+- name: segments
+  buffer: out0
+  element: 0
+  field_offset: 0
+- name: warning
+  buffer: stats
+  element: 0
+  field_offset: 8
+- name: effective_tolerance
+  buffer: stats
+  element: 1
+  field_offset: 4

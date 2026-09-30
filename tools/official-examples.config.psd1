@@ -1,10 +1,24 @@
 @{
-    MinimumSentinelVersion = '0.5.52'
-    LiveProofHostVersion = '0.5.52'
-    CapabilityCommandCount = 152
-    CapabilitySchemaHash = 'f87e5c1d5f3ae458'
+    MinimumSentinelVersion = '0.5.61'
+    LiveProofHostVersion = '0.5.61'
+    CapabilityCommandCount = 158
+    CapabilitySchemaHash = '8f361a936de555d1'
 
     Projects = @{
+        laser_mapping_lab = @{
+            # Real laser mapping rig (Laser Stage Mapping Editor + Adaptive Mapping) with the
+            # BLINK / Laser Lab laser simulation downstream. No Scene Groups: the instrument is the
+            # Mapping Editor canvas; the previs carries three camera-only frame presets.
+            ProjectFile = 'laser_mapping_lab.sentinel'
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-11/laser_mapping_lab.json')
+            MinimumSceneGroups = 0
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 3
+            Exemptions = @('approved-ungrouped-instrument', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
+        }
         interaction_lab = @{
             ProjectFile = 'interaction_lab.sentinel'
             SharedModules = @()
@@ -369,7 +383,7 @@
         )
     }
 
-    AllowedProjectDirectories = @('assets', 'cues', 'images', 'modules', 'tools')
+    AllowedProjectDirectories = @('assets', 'cues', 'docs', 'images', 'modules', 'presets', 'scripts', 'tools')
     AllowedTopLevelFiles = @('README*', 'LICENSE*')
     RequiredProjectReadmeHeading = '## Component map'
     GlobalSharedPaths = @()
@@ -382,7 +396,7 @@
         '*.cso', '*.log', '*.pdb', '*.tmp'
     )
     TextExtensions = @(
-        '.fx', '.hlsl', '.hlsli', '.json', '.md', '.ps1', '.py', '.sentinel',
+        '.fx', '.hlsl', '.hlsli', '.json', '.luau', '.md', '.ps1', '.py', '.sentinel',
         '.txt', '.yaml', '.yml'
     )
 }

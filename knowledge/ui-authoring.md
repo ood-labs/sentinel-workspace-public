@@ -177,6 +177,95 @@ A Canvas may keep `resolution: pipeline` and stretch its texture. A Standard pan
 
 Users can recover through `Panel Presentation > Follow Module | Standard | Canvas` in the graph-node context menu or selected-node View menu. Project workspaces persist docking, sizes, visibility, window identity, and per-node presentation overrides.
 
+## Mouse Wheel And Held Keys (Windows)
+
+Two input bugs recur every time an authored editor reads the wheel or a toggle key. Both are
+invisible over MCP (injected input never reaches Module viewport events), so design them out
+up front.
+
+### Stale events are replayed until newer input arrives
+
+**This is the root cause of "one scroll keeps going until I move the mouse".** Measured in a
+sequence score editor: a single wheel notch showed up as one wheel event on *every cook* (1,538
+of them in one session) and the count only stopped growing when the mouse moved.
+Sentinel can hand the same event back on later cooks until newer input replaces it, so a shader
+that applies every event in `_ViewportEvents` re-applies a stale notch 60 times a second. The
+same replay makes a toggle key strobe.
+
+**Consume each event exactly once, by its `sequence` number.** Keep the last consumed sequence
+in the persistent state buffer (bit-exact via `asfloat` / `asuint`), and skip anything not newer.
+Treat a large backwards jump as a counter reset (for example after a project load):
+
+```hlsl
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
+
+uint lastSeq = asuint(state.lastSeq);
+uint newLast = lastSeq;
+for (uint i = 0u; i < n; i++)
+{
+    ViewportEvent ev = _ViewportEvents[i];
+    if (!isFresh(ev.sequence, lastSeq)) continue;          // already consumed on an earlier cook
+    newLast = (ev.sequence > lastSeq) ? max(newLast, ev.sequence) : ev.sequence;
+    // ... handle ev ...
+}
+state.lastSeq = asfloat(newLast);
+```
+
+Apply the same guard to *every* loop over `_ViewportEvents`: keys, pointer, gestures and wheel.
+
+### Scale by the notch amount, not once per event
+
+`ev.value` is the wheel delta in notches (`WHEEL_DELTA / 120`), and it is fractional on
+high-resolution wheels. Scale by it and clamp a single event, rather than stepping once per
+event:
+
+```hlsl
+if (ev.type == 3u)
+{
+    float notches = clamp((abs(ev.value) > 1e-4) ? ev.value : ev.delta.y, -3.0, 3.0);
+    value = clamp(value * pow(1.08, notches), lo, hi);
+}
+```
+
+Read the wheel from the ordered event queue, not from `_ViewportWheelDelta` (a frame snapshot
+that can be seen by more than one cook).
+
+### The wheel scrolls the panel instead of reaching the Module
+
+In a **Standard** panel the host window scrolls on the wheel. The Module then only sees the
+wheel when a modifier (Ctrl) stops the host from scrolling — the opposite of what users expect.
+Camera-capable previews also consume the plain wheel for dolly and fly speed.
+
+- For an editor whose wheel matters, present it as a full-bleed Canvas with
+  `panel: { mode: canvas, resolution: follow_panel }` and derive every rect from the live
+  render size (see Full-Bleed Canvas Panels). There is no host chrome left to scroll.
+- On a camera preview, require a modifier (`Alt+wheel`) and document it in the hint.
+- Even in Canvas presentation, the host's preview viewer (the free-zoom preview view) can take
+  the plain wheel for its own pan/zoom. `Ctrl+wheel` reliably reaches the Module. Say so in the
+  hint, and do not promise plain-wheel control from inside a Module.
+- To diagnose input trouble, add a small on-canvas readout: event count, cooks with events,
+  stale repeats skipped, sum of `ev.value`, and the last value. Have the user scroll one notch
+  and then hold still. If the count climbs while the mouse is still, events are being replayed.
+- Always give a key alternative for anything the wheel does (`Up`/`Down` to scale). It works
+  when the wheel is captured, and on trackpads.
+
+### A held toggle key flips every frame
+
+Deduplicating by sequence (above) removes the replay. Also, holding a key produces auto-repeat
+press events. A toggle written as
+`if (ev.type == 4u && ev.phase == 1u && ev.code == KEY) on = !on;` flips on every repeat, so
+holding Space strobes. Latch it: toggle only on a non-repeat press while unlatched, and re-arm on
+release. Keep the latch in the persistent state buffer.
+
+```hlsl
+if (ev.type == 4u && ev.code == 51u)                              // Space
+{
+    bool rep = (ev.flags & VIEWPORT_EVENT_FLAG_REPEAT) != 0u || ev.phase == 2u;
+    if (ev.phase == 1u && !rep && !held) { paused = !paused; held = true; }
+    else if (ev.phase == 3u) held = false;
+}
+```
+
 ## Canonical Program And Flexible Editor
 
 Do not use a `follow_panel` Canvas as the canonical Program renderer unless the artwork is deliberately authored for arbitrary aspect ratios. Dock dimensions are an editor concern and can change continuously; a 16:9 image sampled directly across an arbitrary panel will stretch.

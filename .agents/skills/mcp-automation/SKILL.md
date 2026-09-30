@@ -65,7 +65,7 @@ Start-Process '<repo_root>\build\bin\Release\sentinel.exe'
 
 Wait 3-5 seconds for the app to initialize before sending IPC commands.
 
-## MCP Tools (13 multi-action tools)
+## MCP Tools (14 multi-action tools)
 
 All tools use an `action` parameter. Examples:
 
@@ -227,8 +227,9 @@ NOT display names like "Background Removal" — those won't work.
 | `auto_layout` | Arrange the whole graph left-to-right. Reserve for explicit batch work or smoke tests; visible authoring uses `place_relative`/`layout_neighborhood`. Needs `confirm: true` past 10 positioned nodes |
 | `layout_neighborhood` | Arrange only the neighborhood around one node (`entity_id`, `direction`, `depth`, `anchor`, `dry_run`). Leaves the rest untouched |
 | `focus` | Center/zoom the graph view on one node |
-| `get_node_geometry` | One node's position, bounds, containment |
-| `set_node_geometry` | Move a node; resize annotations (`x`/`y`, `width`/`height`) |
+| `set_view` | Put the graph view at an exact `zoom` and `pan_x`/`pan_y` for reproducible captures (`get` reports the current view) |
+| `get_node_geometry` | One node's position, bounds, containment. Nodes with a body add `body_width`/`body_height` (grid units, 0 = automatic), `body_size_set` and `body_image_rect` (screen-space preview image) |
+| `set_node_geometry` | Move a node, resize an annotation frame, or size a node body box (`x`/`y`, `width`/`height` 80-4096 by 45-4096, `reset_size: true`). Validated before any write; body resizes are undoable. Previews letterbox inside the box |
 | `place_relative` | Place a node next to an anchor with spacing + collision avoidance (`relative_to`, `direction`, `gap`, `within`) |
 | `move_nodes` | Move a node set as one rigid unit (`entity_ids[]` + `dx`/`dy` or `x`/`y` or `relative_to`) |
 | `add_annotation` / `update_annotation` / `delete_annotation` | Annotation boxes (`title`, `body`, `color`, geometry) |
@@ -273,6 +274,10 @@ NOT display names like "Background Removal" — those won't work.
 | `get_panels` | List all panels and visibility |
 | `set_panel` | Show/hide a panel |
 | `terminal_read` | Read embedded-terminal grid lines, cursor, and child status without injecting input |
+| `drag_at` | Press, move, release at client coordinates (`start_x`/`start_y`/`end_x`/`end_y`, or `phase` begin/update/end with modifiers held by `send_key shift_down`) |
+| `hover_at` | Park the pointer at client coordinates so tooltips show |
+| `click_at` | Click at client coordinates (`start_x`, `start_y`, `button`) |
+| `double_click` | Double-click a tracked path (rect center) or `start_x`/`start_y`. Resolve rects with `get_info` first when a header carries buttons |
 
 Installs at 0.5.48 or newer deliver `click` (method `mouse`), drags, and `send_key` as synthetic events injected directly into the ImGui event queue: the user's hardware cursor, keyboard state, and window focus stay untouched while automation drives the UI, and mouse-path responses report `client_pos` in main-viewport client space. Older installs drive the real OS mouse for these paths and can move the user's cursor (including across monitors), so on those builds prefer `method: button` or `select` and the `set` action, which have always been injection-free.
 
@@ -290,6 +295,9 @@ Installs at 0.5.48 or newer deliver `click` (method `mouse`), drags, and `send_k
 
 ### `sentinel_module` — Module authoring helpers
 `scaffold_from_ports` / `bundle` / `extract` / `import` / `bake_defaults`. Scaffold a module from an upstream data-port schema, bundle or move modules between shows, and write live values back into manifest defaults.
+
+### `sentinel_viewport`: Authored viewport inspection and transactions
+`info` / `objects` / `selection` (with `selection_action` get/set/clear; `set` needs `ids`) / `pick` (`x`/`y` normalized; the async result is polled for you) / `edit` (`object_id` plus a target `x`/`y` runs a begin/preview/commit move transaction with auto-cancel; pass `phase` for manual control) / `state` (durable state-buffer inventory). Every action takes `pipeline`. `pick` returns the hit `object_id` one frame later, and an `edit` commit lands in the Module's bound parameters, including `hidden: true` gesture parameters. Requires Sentinel 0.5.31 or newer.
 
 ### `sentinel_vision` — AI visual review
 `status` / `configure` / `models` / `eval` / `compare` / `eval_pipeline`. Evaluates captures through OpenAI-compatible vision providers; `eval_pipeline` captures and evaluates one pipeline output in a single call. First-time key setup edits the workspace `vision.json` (never pass API keys in chat or tool args).
