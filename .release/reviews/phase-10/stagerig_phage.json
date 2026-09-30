@@ -1,7 +1,7 @@
 {
  "project": "projects/stagerig_phage/stagerig_phage.sentinel",
  "source": "working tree on branch 0.6 over 515f3a1, reviewed before commit",
- "replaces": "projects/stagerig_klangrig, removed in the same change; 'klangrig' added to RetiredReferences",
+ "replaces": "the previous stage-rig example, removed in the same change and listed in RetiredReferences so it cannot return",
  "host": "Sentinel 0.5.90 (dist), Windows 11 Pro 10.0.26200, NVIDIA GeForce RTX 5060 Laptop GPU (8 GB, driver 581.29); no Push 2 attached",
  "approved_structure": {
   "pipelines": [
@@ -118,8 +118,8 @@
   "Push 2 hardware check"
  ],
  "resaved_by_user": {
-  "change": "after review the user re-saved the project with their own opening state: camera in the crowd at (0.77, 4.47, 31.97), 199.9 BPM, haze 0.045, STATIC ORIGIN + REST + EFFECTS DRIFT + COLOR WHITE with no FULL look lit",
+  "change": "after review the user re-saved the project twice with their own opening state; the latest: camera in the crowd at (0.77, 4.47, 31.97), 199.9 BPM, the four parts of GENESIS (STATIC ORIGIN + REST + EFFECTS DRIFT + COLOR PHAGE, haze 0.03) with no FULL pad lit, a rearranged graph, and the Push 2 Display panel closed",
   "unchanged": "node presets, node preview visibility, record_png_every 0, module files",
-  "checks": "the app reported no unsaved changes; the README first-run step describes the new opening; validate-official-examples re-run on the saved file"
+  "checks": "the README first-run step describes the new opening; validate-official-examples re-run on the saved file"
  }
 }

@@ -26,9 +26,9 @@ How the rig was designed, programmed, tuned and optimised is written up in
 ## First run
 
 1. Open `stagerig_phage.sentinel`. The program image is `Phage_Renderer`. The
-   project opens with the clock running at about 200 BPM, on a white look seen
-   from the middle of the crowd: STATIC ORIGIN, pose REST, EFFECTS DRIFT and
-   COLOR WHITE. Recall any FULL look for a complete scene. HOME, or the
+   project opens with the clock running at about 200 BPM, seen from the middle
+   of the crowd, on the four parts of FULL LOOK 01 GENESIS: STATIC ORIGIN, pose
+   REST, EFFECTS DRIFT and COLOR PHAGE (teal, magenta and violet). HOME, or the
    `Frame - Program F-MID` preset, returns to the composed camera.
 2. Open the `Phage_Desk` panel (Window toggle in its node header). It is the
    show's desk:
