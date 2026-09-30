@@ -37,7 +37,7 @@ for an explicit fork or remix. See `example-authoring.md`.
 | `koi_tank` | 1 | none | plan authority → water sim → photon caustics → koi school → optics → exploded instrument → post | `TP_Post` | wave simulation, photon caustics, procedural koi SDF, boids, depth-composited 3D overlay of live data |
 | `touchdesigner_new_project` | 1 | image asset only | Hermite signal → texture → image displacement → geometry → output | `Out` | typed signal-to-texture modulation |
 | `vitreous_cross` | 1 | none | plan authority/editor → studio env → SDF renderer → filmic post | `VC_Post` | ray-marched glass with real air-cavity lenses, HDR studio lighting, interior plates |
-| `stagerig_klangrig` | 1 | none (Push 2 optional) | plan authority → assembly/lighting/LED → HDR stage renderer, driven by a Script-node Push 2 surface, a show-control desk panel and packed fixture programmer | `stagerig_klangrig_Renderer` | a native Script show: controller surface, Module panel to Script event cables with lit feedback, preset banks, per-fixture programming, transport and camera control |
+| `stagerig_phage` | 1 | none (Push 2 optional) | plan authority → kinetic truss → assembly/venue/lighting/LED → light-grid HDR renderer, played by a Script-node surface (desk panel, Push 2, packed per-fixture programmer, layered look banks) | `Phage_Renderer` | a complete playable show: a moving truss programmed as fixtures, looks compiled from geometry, an energy-tier effects ladder, and a measured 41 → 5.8 ms GPU optimisation |
 
 ## Dependency and portability notes
 
@@ -354,6 +354,31 @@ Remix seam: take the hybrid record contract — one buffer, `role` discriminated
 2D and 3D families living side by side — and the `Variation`/`Seed` randomizer whose
 stratified placement and preserved size hierarchy keep a random draw composed. Do not
 take the electric-blue toy-plastic palette.
+
+### Stage Rig: PHAGE
+
+`Phage_Plan` is the construction authority: stance presets, symmetric leg edits, and a plan
+over a radial leg section that turns a leg red when it cannot reach its foot. `Phage_Kinetics`
+moves the truss on eight speed- and acceleration-limited axes and publishes the live fixture
+mounts, so every fixture rides the truss. `Phage_Assembly` builds the truss tubes,
+`Phage_Venue` packs the arena and crowd into one buffer, `Phage_Lighting` runs 100 beam movers
+and 41 linear strobes, `Phage_LED` renders 47 pixel bars, and `Phage_Renderer` composes them in
+haze. The `Phage_Surface` Script node writes `Phage_Program` (248 rows x 17 attributes) and
+`Phage_Show` (lanes, palettes, strobe clock); `Phage_Desk` and a Push 2 play it.
+
+Study it for a **moving truss programmed as fixtures**: the eight axes are programmer rows, so
+lanes, movement FX and look banks drive steel exactly as they drive lights. Also for **looks
+authored as geometry** and compiled per fixture against mounts captured from the live data port,
+the **energy-tier effects ladder** with a BUILD lane that restarts on recall, and a **measured
+optimisation from 41 ms to 5.8 ms of GPU per frame**: a world-space light grid, tile-culled haze
+with closed-form glows, and marks-plus-tile-bins canvases that keep eight live previews near
+1.4 ms.
+`docs/PROCESS.md` records the whole build, including every trap it hit.
+
+Remix seam: take the show system (surface, packed programmer, layered banks, `rig_command`
+seam), the look-compiler method and the optimisation patterns, through the
+`stage-rig-authoring` skill. Design a new anatomy, fixture plan, renderer look and look
+vocabulary for your own reference; do not copy the phage, its palettes or its looks.
 
 ### Strata
 

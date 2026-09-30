@@ -272,6 +272,21 @@
             MinimumNodePresets = 4
             Exemptions = @('scene-group-presets', 'technical-workflow-output')
         }
+        # Committed directly (scripts/, presets/ and docs/ are outside AllowedProjectDirectories),
+        # so promotion skips it; the validator, audit and workspace manifest still cover it.
+        stagerig_phage = @{
+            ProjectFile = 'stagerig_phage.sentinel'
+            Promote = $false
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/phase-10/stagerig_phage.json')
+            MinimumSceneGroups = 0
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 5
+            Exemptions = @('approved-ungrouped-instrument', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
+        }
     }
 
     AssetLedger = @(
@@ -316,6 +331,7 @@
     )
 
     AllowedRepositoryFiles = @(
+        '.gitattributes',
         '.gitignore',
         '.mcp.json',
         '.sentinel-workspace-manifest.json',
@@ -339,7 +355,8 @@
         'verify_motion_energy.py',
         'tracking_ripple.sentinel',
         'timeline_hud',
-        'choreo_cascade'
+        'choreo_cascade',
+        'klangrig'
     )
 
     Scientifica = @{

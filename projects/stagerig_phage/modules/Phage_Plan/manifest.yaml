@@ -1,0 +1,133 @@
+name: PHAGE / Construction Plan
+version: '1.0'
+mode: generator
+resolution: [1400, 820]
+panel:
+  mode: canvas
+  output: Plan
+  resolution: follow_panel
+viewport:
+  hint: 'Plan: drag feet. Section: drag the knee. 1-6 leg, S symmetry, R reset leg, Esc clear.'
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [r, s, escape, '1', '2', '3', '4', '5', '6']
+    gestures: [click, drag]
+  bindings:
+    - {gesture: left_drag, action: move_foot_or_knee, label: 'Drag foot (plan) / knee (section)'}
+    - {key: s, action: symmetry, label: 'Mirror edits left/right'}
+    - {key: r, action: reset_leg, label: 'Reset selected leg'}
+parameters:
+  - {name: stance, type: enum, options: [Reference, Spider, Mantis, Crab], default: 0, group: Stance}
+  - {name: plate_height, type: float, default: 6.2, min: 4.5, max: 9, group: Body}
+  - {name: plate_radius, type: float, default: 5.4, min: 4, max: 7.5, group: Body}
+  - {name: plate_inner, type: float, default: 3.4, min: 2, max: 5, group: Body}
+  - {name: plate_depth, type: float, default: 0.7, min: 0.4, max: 1.2, group: Body}
+  - {name: sheath_radius, type: float, default: 1.5, min: 0.8, max: 2.4, group: Body}
+  - {name: collar_height, type: float, default: 11.0, min: 9, max: 14, group: Body}
+  - {name: collar_radius, type: float, default: 2.8, min: 2, max: 4, group: Body}
+  - {name: capsid_size, type: float, default: 1.95, min: 1.4, max: 2.6, group: Capsid}
+  - {name: capsid_stretch, type: float, default: 1.3, min: 1, max: 1.7, group: Capsid}
+  - {name: knee_radius, type: float, default: 11.0, min: 8, max: 14, group: Legs}
+  - {name: knee_height, type: float, default: 11.8, min: 8, max: 15, group: Legs}
+  - {name: foot_radius, type: float, default: 17.0, min: 13, max: 21, group: Legs}
+  - {name: ankle_height, type: float, default: 3.0, min: 1.5, max: 4.5, group: Legs}
+  - {name: spike_radius, type: float, default: 0.55, min: 0.3, max: 0.9, group: Legs}
+  - {name: booth_radius, type: float, default: 4.4, min: 3.5, max: 6, group: Booth}
+  - {name: booth_height, type: float, default: 3.4, min: 2.4, max: 5, group: Booth}
+  - {name: riser_width, type: float, default: 7.0, min: 4, max: 9, group: Booth}
+  - {name: riser_depth, type: float, default: 4.0, min: 2.5, max: 6, group: Booth}
+  - {name: riser_height, type: float, default: 1.2, min: 0.6, max: 2, group: Booth}
+  - {name: leg_truss, type: float, default: 0.6, min: 0.3, max: 0.9, group: Truss}
+  - {name: capsid_truss, type: float, default: 0.45, min: 0.25, max: 0.7, group: Truss}
+  - {name: ring_truss, type: float, default: 0.4, min: 0.25, max: 0.6, group: Truss}
+  - {name: mover_scale, type: float, default: 1.7, min: 1, max: 2.5, group: Fixtures}
+  - {name: strobe_length, type: float, default: 1.0, min: 0.5, max: 1.5, group: Fixtures}
+  - {name: plate_outer_movers, type: int, default: 4, min: 0, max: 4, group: Movers}
+  - {name: plate_inner_movers, type: int, default: 2, min: 0, max: 2, group: Movers}
+  - {name: capsid_movers, type: bool, default: true, group: Movers}
+  - {name: knee_movers, type: int, default: 2, min: 0, max: 2, group: Movers}
+  - {name: collar_movers, type: int, default: 6, min: 0, max: 12, group: Movers}
+  - {name: booth_movers, type: int, default: 16, min: 0, max: 16, group: Movers}
+  - {name: foot_movers, type: bool, default: true, group: Movers}
+  - {name: collar_strobes, type: int, default: 6, min: 0, max: 6, group: Strobes}
+  - {name: plate_strobes, type: int, default: 2, min: 0, max: 3, group: Strobes}
+  - {name: knee_strobes, type: bool, default: true, group: Strobes}
+  - {name: foot_strobes, type: bool, default: true, group: Strobes}
+  - {name: capsid_strobes, type: bool, default: true, group: Strobes}
+  - {name: booth_strobes, type: int, default: 6, min: 0, max: 6, group: Strobes}
+buffers:
+  - {name: edits, structured: true, element_size: 16, element_count: 16, persistent: true}
+  - {name: design, structured: true, element_size: 16, element_count: 20}
+  - {name: rest_mounts, structured: true, element_size: 80, element_count: 248}
+  - {name: rest_pieces, structured: true, element_size: 16, element_count: 1536}
+  - {name: marks, structured: true, element_size: 64, element_count: 1152}
+  - {name: bins, structured: true, element_size: 4, element_count: 786432}
+state_buffers:
+  - name: edits
+    max_elements: 16
+    schema:
+      - {name: value, type: float4}
+passes:
+  - name: state
+    shader: state.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    output: buffer:edits
+  - name: design
+    shader: design.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:edits}
+    output: buffer:design
+  - name: rest_mounts
+    shader: rest_mounts.hlsl
+    target: cs_5_0
+    dispatch: [4, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:edits}
+    output: buffer:rest_mounts
+  - name: rest_pieces
+    shader: rest_pieces.hlsl
+    target: cs_5_0
+    dispatch: [12, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:edits}
+    output: buffer:rest_pieces
+  - name: marks
+    shader: marks.hlsl
+    target: cs_5_0
+    dispatch: [18, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:edits}
+      - {slot: 1, source: buffer:rest_mounts}
+      - {slot: 2, source: buffer:rest_pieces}
+    output: buffer:marks
+  - name: bins
+    shader: bins.hlsl
+    target: cs_5_0
+    dispatch: [128, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:marks}
+    output: buffer:bins
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - {slot: 0, source: buffer:edits}
+      - {slot: 1, source: buffer:marks}
+      - {slot: 2, source: buffer:bins}
+    output: output
+data_outputs:
+  - name: Design
+    buffer: design
+    schema:
+      - {name: value, type: float4}
+  - name: Plan Edits
+    buffer: edits
+    schema:
+      - {name: value, type: float4}
+outputs:
+  - name: Plan
+    pass: preview

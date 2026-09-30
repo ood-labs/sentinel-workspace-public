@@ -1,0 +1,213 @@
+name: PHAGE / Fixtures
+version: '1.0'
+mode: generator
+resolution: [1600, 900]
+parameters:
+  - {name: dimmer, type: float, default: 1, min: 0, max: 1, group: OUTPUT}
+  - {name: boost, type: float, default: 3, min: 0, max: 8, group: OUTPUT}
+  - {name: main_master, label: Beam master, type: float, default: 1.000000, min: 0, max: 1, group: OUTPUT}
+  - {name: ring_master, label: Ring master, type: float, default: 1, min: 0, max: 1, group: OUTPUT}
+  - {name: strobe_master, label: Strobe master, type: float, default: 1, min: 0, max: 1, group: OUTPUT}
+  - {name: reach, label: Beam reach, type: float, default: 40, min: 5, max: 80, group: OPTICS}
+  - {name: beam_angle, label: Beam angle (deg), type: float, default: 3, min: 1, max: 20, group: OPTICS}
+  - {name: pan_speed, label: Pan speed (deg/s), type: float, default: 300, min: 10, max: 720, group: MOTORS}
+  - {name: tilt_speed, label: Tilt speed (deg/s), type: float, default: 220, min: 10, max: 720, group: MOTORS}
+  - {name: highlight, label: Highlight selected, type: bool, default: false, group: PROGRAMMING}
+  - {name: solo_selected, label: Solo selected, type: bool, default: false, group: PROGRAMMING}
+  - {name: selection_apply, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: remote_selection0, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection1, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection2, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection3, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection4, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection5, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection6, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection7, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection8, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection9, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection10, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection11, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection12, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection13, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection14, type: float, default: 0, min: 0, max: 65535, hidden: true}
+  - {name: remote_selection15, type: float, default: 0, min: 0, max: 65535, hidden: true}
+data_inputs:
+  - name: Mounts
+    slot: 0
+    schema:
+      - {name: position, type: float3}
+      - {name: fixture_id, type: float}
+      - {name: up, type: float3}
+      - {name: kind, type: float}
+      - {name: fwd, type: float3}
+      - {name: active, type: float}
+      - {name: extra, type: float4}
+      - {name: rest, type: float4}
+  - name: Show State
+    slot: 1
+    schema:
+      - {name: value, type: float4}
+  - name: Fixture Program
+    slot: 2
+    schema:
+      - {name: aim, type: float4}
+      - {name: routing, type: float4}
+      - {name: movement, type: float4}
+      - {name: timing, type: float4}
+      - {name: meta, type: float4}
+      - {name: extra, type: float4}
+  - name: Design
+    slot: 3
+    schema:
+      - {name: value, type: float4}
+  - name: Bar Pieces
+    slot: 4
+    schema:
+      - {name: a, type: float4}
+      - {name: b, type: float4}
+      - {name: n, type: float4}
+      - {name: w, type: float4}
+buffers:
+  - {name: poses, structured: true, element_size: 64, element_count: 128, persistent: true}
+  - {name: optics, structured: true, element_size: 80, element_count: 3248}
+  - {name: selection, structured: true, element_size: 16, element_count: 268, persistent: true}
+  - {name: marks, structured: true, element_size: 64, element_count: 2032}
+  - {name: groups, structured: true, element_size: 16, element_count: 16}
+  - {name: bins, structured: true, element_size: 4, element_count: 786432}
+passes:
+  - name: select
+    shader: select.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+    output: buffer:selection
+  - name: motors
+    shader: motors.hlsl
+    target: cs_5_0
+    dispatch: [2, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: 'data:1'}
+      - {slot: 2, source: 'data:2'}
+      - {slot: 3, source: 'data:3'}
+    output: buffer:poses
+  - name: optics
+    shader: optics.hlsl
+    target: cs_5_0
+    dispatch: [51, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:poses}
+      - {slot: 1, source: buffer:selection}
+      - {slot: 2, source: 'data:1'}
+      - {slot: 3, source: 'data:2'}
+      - {slot: 4, source: 'data:0'}
+      - {slot: 5, source: 'data:3'}
+    output: buffer:optics
+  - name: groups
+    shader: groups.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: buffer:selection}
+    output: buffer:groups
+  - name: marks
+    shader: marks.hlsl
+    target: cs_5_0
+    dispatch: [32, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:optics}
+      - {slot: 1, source: 'data:0'}
+      - {slot: 2, source: buffer:selection}
+      - {slot: 3, source: 'data:4'}
+    output: buffer:marks
+  - name: bins
+    shader: bins.hlsl
+    target: cs_5_0
+    dispatch: [128, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:marks}
+    output: buffer:bins
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - {slot: 0, source: buffer:marks}
+      - {slot: 1, source: buffer:bins}
+      - {slot: 2, source: buffer:selection}
+      - {slot: 3, source: buffer:groups}
+      - {slot: 4, source: 'data:1'}
+    output: output
+data_outputs:
+  - name: Pose
+    buffer: poses
+    schema:
+      - {name: position, type: float3}
+      - {name: fixture_id, type: float}
+      - {name: up, type: float3}
+      - {name: pan, type: float}
+      - {name: fwd, type: float3}
+      - {name: tilt, type: float}
+      - {name: target_pan, type: float}
+      - {name: target_tilt, type: float}
+      - {name: scale, type: float}
+      - {name: active, type: float}
+  - name: Optics
+    buffer: optics
+    schema:
+      - {name: position, type: float3}
+      - {name: fixture_id, type: float}
+      - {name: normal, type: float3}
+      - {name: local_id, type: float}
+      - {name: colour, type: float3}
+      - {name: intensity, type: float}
+      - {name: beam_tangent, type: float}
+      - {name: field_tangent, type: float}
+      - {name: reach, type: float}
+      - {name: active, type: float}
+      - {name: frost, type: float}
+      - {name: padding, type: float3}
+  - name: Selection
+    buffer: selection
+    schema:
+      - {name: value, type: float4}
+outputs:
+  - name: Fixture Canvas
+    pass: preview
+panel:
+  mode: canvas
+  output: Fixture Canvas
+  resolution: follow_panel
+viewport:
+  hint: 'Front elevation and plan: click or drag to select (Shift adds, Ctrl toggles), A all, Escape clears; the buttons select groups.'
+  interactions:
+    - events
+  input:
+    pointer: [left]
+    keyboard: [a, escape]
+    gestures: [click, drag]
+state_buffers:
+  - name: selection
+    max_elements: 268
+    schema:
+      - {name: value, type: float4}
+control_outputs:
+  - {name: selection_sequence, buffer: selection, element: 2, field_offset: 12}
+  - {name: selection_count, buffer: selection, element: 3, field_offset: 0}
+  - {name: selection_word0, buffer: selection, element: 252, field_offset: 0}
+  - {name: selection_word1, buffer: selection, element: 253, field_offset: 0}
+  - {name: selection_word2, buffer: selection, element: 254, field_offset: 0}
+  - {name: selection_word3, buffer: selection, element: 255, field_offset: 0}
+  - {name: selection_word4, buffer: selection, element: 256, field_offset: 0}
+  - {name: selection_word5, buffer: selection, element: 257, field_offset: 0}
+  - {name: selection_word6, buffer: selection, element: 258, field_offset: 0}
+  - {name: selection_word7, buffer: selection, element: 259, field_offset: 0}
+  - {name: selection_word8, buffer: selection, element: 260, field_offset: 0}
+  - {name: selection_word9, buffer: selection, element: 261, field_offset: 0}
+  - {name: selection_word10, buffer: selection, element: 262, field_offset: 0}
+  - {name: selection_word11, buffer: selection, element: 263, field_offset: 0}
+  - {name: selection_word12, buffer: selection, element: 264, field_offset: 0}
+  - {name: selection_word13, buffer: selection, element: 265, field_offset: 0}
+  - {name: selection_word14, buffer: selection, element: 266, field_offset: 0}
+  - {name: selection_word15, buffer: selection, element: 267, field_offset: 0}

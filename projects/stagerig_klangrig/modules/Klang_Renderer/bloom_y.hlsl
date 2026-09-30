@@ -1,2 +1,0 @@
-RWTexture2D<float4>OutputUAV:register(u0);
-[numthreads(8,8,1)]void main(uint3 id:SV_DispatchThreadID){uint w,h;OutputUAV.GetDimensions(w,h);if(id.x>=w||id.y>=h)return;float2 uv=(id.xy+.5)/float2(w,h);float3 sum=0;float weight=0;for(int i=-12;i<=12;i++){float k=exp(-i*i/40.);float3 v=_Tex0.SampleLevel(LinearSampler,uv+float2(0,i)*1.25/float2(w,h),0).rgb;sum+=v*k;weight+=k;}OutputUAV[id.xy]=float4(sum/weight,1);}

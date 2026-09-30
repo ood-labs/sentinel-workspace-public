@@ -1,0 +1,58 @@
+name: PHAGE / Truss Assembly
+version: '1.0'
+mode: generator
+resolution: [1280, 760]
+data_inputs:
+  - name: Members
+    slot: 0
+    schema:
+      - {name: a, type: float4}
+      - {name: b, type: float4}
+      - {name: up, type: float4}
+      - {name: meta, type: float4}
+buffers:
+  - {name: structure, structured: true, element_size: 64, element_count: 13312}
+  - {name: marks, structured: true, element_size: 64, element_count: 224}
+  - {name: bins, structured: true, element_size: 4, element_count: 786432}
+passes:
+  - name: structure
+    shader: structure.hlsl
+    target: cs_5_0
+    dispatch: [208, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+    output: buffer:structure
+  - name: marks
+    shader: marks.hlsl
+    target: cs_5_0
+    dispatch: [4, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: buffer:structure}
+    output: buffer:marks
+  - name: bins
+    shader: bins.hlsl
+    target: cs_5_0
+    dispatch: [128, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:marks}
+    output: buffer:bins
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - {slot: 1, source: buffer:structure}
+      - {slot: 2, source: buffer:marks}
+      - {slot: 3, source: buffer:bins}
+    output: output
+data_outputs:
+  - name: Structure
+    buffer: structure
+    schema:
+      - {name: a, type: float4}
+      - {name: b, type: float4}
+      - {name: c, type: float4}
+      - {name: d, type: float4}
+outputs:
+  - name: Truss Axonometric
+    pass: preview

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stage Rig Authoring"
+  short_description: "Build a playable concert lighting rig with look banks, a desk and Push 2"
+  default_prompt: "Use $stage-rig-authoring to build a playable Sentinel stage lighting rig from this reference."

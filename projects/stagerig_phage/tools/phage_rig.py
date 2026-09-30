@@ -1,0 +1,146 @@
+"""PHAGE rig model shared by the show tools.
+
+The fixture list comes from the Kinetics `Mounts` data port captured at the Rest pose
+(tools/mounts_rest.json), so the Surface catalog and the look compiler address exactly the
+slots, families and mount frames the GPU graph uses. Re-capture it after changing the anatomy.
+
+    python tools/phage_rig.py        # regenerates scripts/show/fixture_catalog.luau
+"""
+from __future__ import annotations
+
+import json
+import math
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SLOTS = 248
+MOVERS, STROBE0, BAR0, AXIS0 = 128, 128, 176, 240
+
+# Families (phage_slots.hlsli): movers 0-6, strobes 10-15, bars 20-27, axes 30-32.
+FAMILY = {
+    0: ("PLATE OUT", "plate"), 1: ("PLATE IN", "plate"), 2: ("CAPSID", "capsid"), 3: ("KNEE", "knee"),
+    4: ("COLLAR", "collar"), 5: ("BOOTH", "booth"), 6: ("FOOT", "foot"),
+    10: ("COLLAR STB", "collar"), 11: ("PLATE STB", "plate"), 12: ("KNEE STB", "knee"),
+    13: ("FOOT STB", "foot"), 14: ("CAPSID STB", "capsid"), 15: ("BOOTH STB", "booth"),
+    20: ("LEG UPPER", "leg"), 21: ("LEG LOWER", "leg"), 22: ("PLATE EDGE", "plate"), 23: ("SHEATH", "collar"),
+    24: ("COLLAR BAR", "collar"), 25: ("CAPSID SQ", "capsid"), 26: ("CAPSID LINK", "capsid"), 27: ("BOOTH BAR", "booth"),
+    30: ("BODY AXIS", "axis"), 31: ("CAPSID AXIS", "axis"), 32: ("LEG AXIS", "axis"),
+}
+KIND_NAME = {0: "mover", 1: "strobe", 2: "bar", 3: "axis"}
+
+
+def gate(slot: int) -> tuple[str, int] | None:
+    """Plan count parameter that switches a slot on: active iff value > threshold (anatomy rules)."""
+    s = slot
+    if s < 24: return ("plate_outer_movers", s % 4)
+    if s < 36: return ("plate_inner_movers", (s - 24) % 2)
+    if s < 60: return ("capsid_movers", 0)
+    if s < 72: return ("knee_movers", (s - 60) % 2)
+    if s < 84: return ("collar_movers", s - 72)
+    if s < 100: return ("booth_movers", s - 84)
+    if s < 106: return ("foot_movers", 0)
+    if s < STROBE0: return None
+    s -= STROBE0
+    if s < 6: return ("collar_strobes", s)
+    if s < 24: return ("plate_strobes", (s - 6) % 3)
+    if s < 30: return ("knee_strobes", 0)
+    if s < 36: return ("foot_strobes", 0)
+    if s < 41: return ("capsid_strobes", 0)
+    if s < 47: return ("booth_strobes", s - 41)
+    return None
+
+
+def load_mounts(path: Path | None = None) -> list[dict]:
+    data = json.loads((path or ROOT / "tools" / "mounts_rest.json").read_text())
+    mounts = data["mounts"]
+    assert len(mounts) == SLOTS, f"expected {SLOTS} mounts, got {len(mounts)}"
+    return mounts
+
+
+def fixtures(mounts: list[dict] | None = None) -> list[dict]:
+    """One record per slot. `unused` slots never carry a fixture in this anatomy."""
+    mounts = mounts or load_mounts()
+    out = []
+    counters: dict[int, int] = {}
+    for i, m in enumerate(mounts):
+        kind = int(round(m["kind"]))
+        fam = int(round(m["extra"][0]))
+        g = gate(i)
+        unused = fam < 0 or (kind in (0, 1) and g is None)
+        name, zone = FAMILY.get(fam, ("UNUSED", "none"))
+        n = counters[fam] = counters.get(fam, 0) + 1
+        out.append({
+            "slot": i, "kind": kind, "family": fam, "index": int(round(m["extra"][1])),
+            "leg": int(round(m["extra"][2])), "zone": zone, "unused": unused,
+            "gate": g, "name": f"{name} {n}" if not unused else f"SLOT {i}",
+            "pos": m["position"], "rest": m["rest"][:3], "shuffle": m["rest"][3],
+            "up": m["up"], "fwd": m["fwd"], "active": m["active"] > 0.5,
+        })
+    return out
+
+
+# --- mover aim math (phage_fixture.hlsli) -------------------------------------------------------
+def _cross(a, b): return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]
+def _dot(a, b): return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]
+def _norm(a):
+    n = math.sqrt(_dot(a, a)) or 1.0
+    return [a[0]/n, a[1]/n, a[2]/n]
+
+
+def aim_angles(up, fwd, direction) -> tuple[float, float]:
+    """World beam direction -> (pan, tilt) degrees for a mount frame. Inverse of phHeadNormal(0,0,-1)."""
+    d = _norm(direction)
+    x = _cross(up, fwd)
+    q = (_dot(d, x), _dot(d, up), _dot(d, fwd))
+    tilt = math.degrees(math.asin(max(-1.0, min(1.0, q[1]))))
+    # Along the tilt axis pan is undefined: hold it at 0 so looks never swing heads half a turn for nothing.
+    pan = 0.0 if math.hypot(q[0], q[2]) < 1e-4 else math.degrees(math.atan2(-q[0], -q[2]))
+    return pan, tilt
+
+
+def beam_direction(up, fwd, pan_deg, tilt_deg):
+    """Forward model: (pan, tilt) -> world beam direction (phHeadNormal of local -z)."""
+    p, t = math.radians(pan_deg), math.radians(tilt_deg)
+    v = [0.0, math.sin(t), -math.cos(t)]                      # phRx((0,0,-1), tilt)
+    v = [math.sin(p) * v[2], v[1], math.cos(p) * v[2]]        # phRy(v, pan) with v.x = 0
+    x = _cross(up, fwd)
+    return [x[i]*v[0] + up[i]*v[1] + fwd[i]*v[2] for i in range(3)]
+
+
+def write_fixture_catalog(fx: list[dict]) -> Path:
+    lines = ["--!strict",
+             "-- Generated by tools/phage_rig.py from tools/mounts_rest.json; edit the generator, not this file.",
+             "-- One entry per Program slot: kind 0 mover, 1 strobe, 2 pixel bar, 3 truss axis. family/index/leg",
+             "-- match PhMount.extra; x/y/z is the rest position (m); gate = Plan count parameter and the value",
+             "-- it must exceed for the slot to carry a fixture (nil = always, unused = never).",
+             "local F={"]
+    for f in fx:
+        g = f"{{\"{f['gate'][0]}\",{f['gate'][1]}}}" if f["gate"] and not f["unused"] else "nil"
+        x, y, z = (round(v, 2) for v in f["rest"])
+        lines.append(
+            f"    {{slot={f['slot']},kind={f['kind']},family={f['family']},index={f['index']},leg={f['leg']},"
+            f"zone=\"{f['zone']}\",x={x},y={y},z={z},unused={str(f['unused']).lower()},gate={g},name=\"{f['name']}\"}},")
+    lines += ["}",
+              "for _,f in ipairs(F) do f.id=tostring(f.slot);f.record=f.id;f.mover=f.kind==0 end",
+              "return F", ""]
+    path = ROOT / "scripts" / "show" / "fixture_catalog.luau"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines), newline="\n")
+    return path
+
+
+if __name__ == "__main__":
+    fx = fixtures()
+    p = write_fixture_catalog(fx)
+    used = [f for f in fx if not f["unused"]]
+    print(f"{p.relative_to(ROOT)}: {len(fx)} slots, {len(used)} potential fixtures, "
+          f"{sum(1 for f in fx if f['active'])} active at capture")
+    # Self-check: the forward model inverts aim_angles on every captured mover frame.
+    worst = 0.0
+    for f in used:
+        if f["kind"] != 0: continue
+        for d in ([0.3, -1, 0.2], [0, 1, 0.01], [-1, 0.2, 0.5], [0.1, -0.2, 1]):
+            pan, tilt = aim_angles(f["up"], f["fwd"], d)
+            back = beam_direction(f["up"], f["fwd"], pan, tilt)
+            worst = max(worst, max(abs(a - b) for a, b in zip(_norm(d), back)))
+    print(f"aim round-trip max error {worst:.2e}")

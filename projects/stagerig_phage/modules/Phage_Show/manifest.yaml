@@ -1,0 +1,71 @@
+name: PHAGE / Show State
+version: '1.0'
+mode: generator
+resolution: [1100, 560]
+parameters:
+  - {name: native_control, label: Programmer on, type: float, default: 0, min: 0, max: 1, group: PROGRAMMER}
+  - {name: enabled, label: Reference chase, type: bool, default: true, group: PROGRAMMER}
+  - {name: kinetics, label: Kinetics follow the programmer, type: bool, default: true, group: PROGRAMMER}
+  - {name: beat, label: Beat (from Clock), type: float, default: 0, min: 0, max: 100000000, group: TRANSPORT}
+  - {name: bpm, label: BPM (from Clock), type: float, default: 124, min: 20, max: 300, group: TRANSPORT}
+  - {name: running, label: Running (from Clock), type: bool, default: true, group: TRANSPORT}
+  - {name: cycle_beats, label: Reference cycle, type: float, default: 4, min: 0.25, max: 32, group: REFERENCE}
+  - {name: chase_spread, type: float, default: 0.45, min: 0, max: 0.95, group: REFERENCE}
+  - {name: pulse_width, type: float, default: 0.5, min: 0.05, max: 0.9, group: REFERENCE}
+  - {name: reverse, type: bool, default: false, group: REFERENCE}
+  - {name: led_peak, label: Pixel-bar peak, type: float, default: 6, min: 0, max: 20, group: REFERENCE}
+  - {name: lane_source, label: Lanes 1-3, type: enum, options: [Internal, Surface], default: 0, group: LANES}
+  - {name: lane1_cycle, label: KICK cycle, type: float, default: 1, min: 0.0625, max: 64, group: LANES}
+  - {name: lane1_rest, label: KICK rest, type: float, default: 0, min: 0, max: 64, group: LANES}
+  - {name: lane1_offset, label: KICK offset, type: float, default: 0, min: -64, max: 64, group: LANES}
+  - {name: lane2_cycle, label: SNARE cycle, type: float, default: 1, min: 0.0625, max: 64, group: LANES}
+  - {name: lane2_rest, label: SNARE rest, type: float, default: 1, min: 0, max: 64, group: LANES}
+  - {name: lane2_offset, label: SNARE offset, type: float, default: 1, min: -64, max: 64, group: LANES}
+  - {name: lane3_cycle, label: HI-HAT cycle, type: float, default: 0.5, min: 0.0625, max: 64, group: LANES}
+  - {name: lane3_rest, label: HI-HAT rest, type: float, default: 0, min: 0, max: 64, group: LANES}
+  - {name: lane3_offset, label: HI-HAT offset, type: float, default: 0.25, min: -64, max: 64, group: LANES}
+  - {name: build_origin, label: Build start beat, type: float, default: 0, min: 0, max: 100000000, group: BUILD / PHRASE}
+  - {name: build_beats, label: Build length, type: float, default: 16, min: 2, max: 64, group: BUILD / PHRASE}
+  - {name: phrase_origin, label: Phrase start beat, type: float, default: 0, min: 0, max: 100000000, group: BUILD / PHRASE}
+  - {name: phrase_beats, label: Phrase length, type: float, default: 16, min: 2, max: 64, group: BUILD / PHRASE}
+  - {name: palette_a, type: float, default: 16777215, min: 0, max: 16777215, group: PALETTES}
+  - {name: palette_b, type: float, default: 4251647, min: 0, max: 16777215, group: PALETTES}
+  - {name: palette_c, type: float, default: 16728096, min: 0, max: 16777215, group: PALETTES}
+  - {name: global_strobe, label: Held strobe, type: bool, default: false, group: STROBE}
+  - {name: blackout, type: bool, default: false, group: STROBE}
+  - {name: strobe_rate, label: Strobe flashes per beat, type: float, default: 4, min: 0.5, max: 24, group: STROBE}
+  - {name: strobe_duty, type: float, default: 0.3, min: 0.05, max: 0.95, group: STROBE}
+  - {name: lane1_phase, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane1_active, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane1_trigger, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane1_envelope, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane2_phase, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane2_active, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane2_trigger, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane2_envelope, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane3_phase, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane3_active, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane3_trigger, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+  - {name: lane3_envelope, type: float, default: 0, min: 0, max: 10000000, hidden: true}
+buffers:
+  - {name: state, structured: true, element_size: 16, element_count: 13, persistent: true}
+passes:
+  - name: state
+    shader: state.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    output: buffer:state
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - {slot: 0, source: buffer:state}
+    output: output
+data_outputs:
+  - name: Show State
+    buffer: state
+    schema:
+      - {name: value, type: float4}
+outputs:
+  - name: Show Monitor
+    pass: preview

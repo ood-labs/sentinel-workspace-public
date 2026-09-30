@@ -1,0 +1,130 @@
+name: PHAGE / Arena
+version: '1.0'
+mode: generator
+resolution: [1200, 1000]
+parameters:
+  - {name: ambient, label: Room fill, type: float, default: 0.0, min: 0, max: 0.5, group: ROOM LIGHTING}
+  - {name: crowd_fill, label: Crowd fill, type: float, default: 0.012, min: 0, max: 0.5, group: ROOM LIGHTING}
+  - {name: truss_fill, label: Metal fill, type: float, default: 0.0, min: 0, max: 0.5, group: ROOM LIGHTING}
+  - {name: surface_spill, label: Fixture spill, type: float, default: 1.0, min: 0, max: 3, group: ROOM LIGHTING}
+  - {name: led_spill, label: Pixel-bar bounce, type: float, default: 0.35, min: 0, max: 3, group: ROOM LIGHTING}
+  - {name: fill_color, label: Fill colour, type: color, default: [0.72, 0.79, 1.0], group: ROOM LIGHTING}
+  - {name: metal_roughness, label: Truss roughness, type: float, default: 0.42, min: 0.06, max: 0.85, group: MATERIALS}
+  - {name: metal_reflection, label: Truss reflectivity, type: float, default: 0.28, min: 0, max: 1, group: MATERIALS}
+  - {name: floor_roughness, label: Floor roughness, type: float, default: 0.55, min: 0.12, max: 1, group: MATERIALS}
+  - {name: floor_reflection, label: Floor reflections, type: float, default: 0.3, min: 0, max: 1, group: MATERIALS}
+  - {name: floor_wear, label: Floor wear, type: float, default: 0.5, min: 0, max: 1, group: MATERIALS}
+  - {name: wall_texture, label: Concrete texture, type: float, default: 0.5, min: 0, max: 1, group: MATERIALS}
+  - {name: hall_width, type: float, default: 72.0, min: 50, max: 110, group: HALL GEOMETRY}
+  - {name: hall_length, type: float, default: 100.0, min: 70, max: 150, group: HALL GEOMETRY}
+  - {name: hall_height, type: float, default: 30.0, min: 24, max: 40, group: HALL GEOMETRY}
+  - {name: floor_level, type: float, default: 0.0, min: -5, max: 3, group: HALL GEOMETRY}
+  - {name: enabled, type: bool, default: true, group: HALL GEOMETRY}
+  - {name: walls, type: bool, default: true, group: HALL GEOMETRY}
+  - {name: roof, type: bool, default: true, group: HALL GEOMETRY}
+  - {name: tiers, type: bool, default: true, group: HALL GEOMETRY}
+  - {name: crowd, type: bool, default: true, group: CROWD}
+  - {name: crowd_density, type: float, default: 0.95, min: 0, max: 1.3, group: CROWD}
+  - {name: crowd_seed, type: float, default: 7, min: 0, max: 100, group: CROWD}
+inputs:
+  - {name: LED RGB, slot: 0}
+data_inputs:
+  - name: Bar Pieces
+    slot: 0
+    schema:
+      - {name: a, type: float4}
+      - {name: b, type: float4}
+      - {name: n, type: float4}
+      - {name: w, type: float4}
+  - name: Design
+    slot: 1
+    schema:
+      - {name: value, type: float4}
+buffers:
+  - {name: architecture, structured: true, element_size: 64, element_count: 256}
+  - {name: room_settings, structured: true, element_size: 80, element_count: 1}
+  - {name: led_emitters, structured: true, element_size: 48, element_count: 96}
+  - {name: crowd, structured: true, element_size: 32, element_count: 3072}
+  - {name: venue, structured: true, element_size: 16, element_count: 7464}
+  - {name: silhouette, structured: true, element_size: 16, element_count: 258}
+  - {name: marks, structured: true, element_size: 64, element_count: 768}
+  - {name: bins, structured: true, element_size: 4, element_count: 786432}
+passes:
+  - name: build
+    shader: build.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    output: buffer:architecture
+  - name: settings
+    shader: settings.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    output: buffer:room_settings
+  - name: crowd
+    shader: crowd.hlsl
+    target: cs_5_0
+    dispatch: [48, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:1'}
+    output: buffer:crowd
+  - name: emitters
+    shader: emitters.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: 'input:0'}
+    output: buffer:led_emitters
+  - name: pack
+    shader: pack.hlsl
+    target: cs_5_0
+    dispatch: [117, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:room_settings}
+      - {slot: 1, source: buffer:led_emitters}
+      - {slot: 2, source: buffer:architecture}
+      - {slot: 3, source: buffer:crowd}
+    output: buffer:venue
+  - name: silhouette
+    shader: silhouette.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:1'}
+    output: buffer:silhouette
+  - name: marks
+    shader: marks.hlsl
+    target: cs_5_0
+    dispatch: [12, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:architecture}
+      - {slot: 1, source: buffer:crowd}
+      - {slot: 2, source: buffer:led_emitters}
+      - {slot: 3, source: buffer:silhouette}
+    output: buffer:marks
+  - name: bins
+    shader: bins.hlsl
+    target: cs_5_0
+    dispatch: [128, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:marks}
+    output: buffer:bins
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - {slot: 0, source: buffer:architecture}
+      - {slot: 1, source: buffer:crowd}
+      - {slot: 2, source: buffer:led_emitters}
+      - {slot: 3, source: buffer:silhouette}
+      - {slot: 4, source: buffer:marks}
+      - {slot: 5, source: buffer:bins}
+    output: output
+data_outputs:
+  - name: Venue
+    buffer: venue
+    schema:
+      - {name: value, type: float4}
+outputs:
+  - name: Arena Plan and Section
+    pass: preview

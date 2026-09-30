@@ -264,6 +264,10 @@ StreamDiff nodes support `hold` (freeze diffusion while staying live) and `rende
 
 For a choreographed motion-graphics sequence (2D, 3D, generated or hybrid acts chained by designed transitions under one editable, scrubbable score), use the `motion-graphics-sequences` skill. It fixes the timing and placement contract, and asks you to design the node graph for the piece rather than reuse a stock shape.
 
+## Stage Rigs And Light Shows
+
+For a concert lighting rig or any show a lighting programmer plays (beam movers, strobes, pixel bars, a moving truss, static/effects/colour/full look banks, a desk panel or a Push 2), use the `stage-rig-authoring` skill. `projects/stagerig_phage/` is the reference build: read its README and `docs/PROCESS.md` before designing. Fork its show system when the user wants a rig on that system, but design the anatomy, fixtures, renderer look and looks fresh for the user's reference.
+
 ## Precise 3D Construction
 
 When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against an explicit project-specific kind registry, relax under-constrained layouts with warm-start stability, and compile to a generated project-local Module publishing `PNodes` records. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints and registry: `examples/blueprints/`; complete renderer reference: `projects/living_room_sdf/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
@@ -333,6 +337,7 @@ Use skills for authoring details:
 - `deterministic-rendering`
 - `motion-eval`
 - `motion-graphics-sequences`
+- `stage-rig-authoring`
 - `laser-content-authoring`
 - `sentinel-bug-report`
 - `setup-mcp`

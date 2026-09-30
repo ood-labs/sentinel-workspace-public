@@ -1,0 +1,121 @@
+{
+ "project": "projects/stagerig_phage/stagerig_phage.sentinel",
+ "source": "working tree on branch 0.6 over 515f3a1, reviewed before commit",
+ "replaces": "projects/stagerig_klangrig, removed in the same change; 'klangrig' added to RetiredReferences",
+ "host": "Sentinel 0.5.90 (dist), Windows 11 Pro 10.0.26200, NVIDIA GeForce RTX 5060 Laptop GPU (8 GB, driver 581.29); no Push 2 attached",
+ "approved_structure": {
+  "pipelines": [
+   "Phage_Plan",
+   "Phage_Kinetics",
+   "Phage_Assembly",
+   "Phage_Venue",
+   "Phage_Camera",
+   "Phage_Renderer",
+   "Phage_Program",
+   "Phage_Show",
+   "Phage_Clock",
+   "Phage_Lighting",
+   "Phage_LED",
+   "Phage_Surface",
+   "Phage_Desk",
+   "Phage_Push2_Display"
+  ],
+  "node_presets": [
+   "Frame - Program F-MID",
+   "Quality - Draft",
+   "Quality - Live",
+   "Quality - Beauty",
+   "Quality - Hero (capture only)"
+  ],
+  "scene_groups": 0,
+  "notes": "An instrument played through the Surface, desk panel and Push 2 rather than a Scene Group surface; no output node"
+ },
+ "compile": {
+  "modules": [
+   "Phage_Plan",
+   "Phage_Kinetics",
+   "Phage_Assembly",
+   "Phage_Venue",
+   "Phage_Renderer",
+   "Phage_Program",
+   "Phage_Show",
+   "Phage_Lighting",
+   "Phage_LED",
+   "Phage_Desk"
+  ],
+  "status": "pass; every module compiled from a clean copy with no shader cache, and all 14 pipelines reported healthy"
+ },
+ "first_run": {
+  "loaded_from": "a scratch copy holding exactly the 198 files that would be committed (untracked and not ignored)",
+  "unresolved_project_dirs": [],
+  "surface": "ok Phage_Surface.luau, surface CLAIMED; programmer restored; active_looks static=static 1;pose=static 13;effects=effects 1;color=color 3;complete=complete 1",
+  "recall": "rig_command preset recall complete 13 answered 'Recalled complete 13 / RIOT'; the desk lit RIOT plus X-FIRE, BLOOM, RIOT and INFRARED",
+  "render": "a filmstrip of RIOT and GENESIS from the copy matched the working project: red beams with white strobe hits on the beat, then the teal and magenta ORIGIN shape"
+ },
+ "generators": {
+  "tools": [
+   "tools/phage_rig.py",
+   "tools/phage_looks.py",
+   "tools/phage_desk.py"
+  ],
+  "result": "rerunning all three reproduced the 12 generated files byte for byte (preset banks, titles, fixture catalog, desk manifest, layouts, _ui.generated.hlsli)",
+  "aim_round_trip_max_error": 2.96e-05
+ },
+ "validation": {
+  "module_ui": "tools/module-ui.ps1 validate Phage_Desk: OK, 93 controls, no overlap warnings after the header strips were shortened",
+  "official_examples": "see validate_official_examples"
+ },
+ "looks": {
+  "method": "every look in all four banks recalled through rig_command on the live rig and captured; effects judged over a fixed base (SUNBURST, REST, PHAGE); BUILD and CRAZY judged in filmstrips",
+  "banks": {
+   "static": 16,
+   "effects": 16,
+   "color": 16,
+   "complete": 16
+  },
+  "tuning": "documented in projects/stagerig_phage/docs/PROCESS.md (The tuning loop)"
+ },
+ "presets": {
+  "frame_contract": "Frame - Program F-MID holds camera parameters only: (14, 6, 38) aimed at (0, 10, 0), 55 deg",
+  "quality_ladder_renderer_gpu_vs_live": {
+   "Draft": "0.5x",
+   "Live": "1.0x (manifest default)",
+   "Beauty": "1.7x",
+   "Hero (capture only)": "4.2x; the whole app drops to about 30 fps"
+  },
+  "narrow_recall": "flying the camera and recalling the frame left the quality alone; stepping the rungs left the framing alone"
+ },
+ "persistence": {
+  "lit_pads": "FULL and partial recalls light the right pads; the lit set survived Surface reloads and a project reload",
+  "orbit_home": "HOME returned to (14, 6, 38) with a 55 deg lens after a Surface reload",
+  "push2_current": "the runtime autosave holds GENESIS rows, matching the saved project"
+ },
+ "performance": {
+  "optimisation": "graph GPU time 41 ms -> 5.8 ms per frame, before/after measured side by side (renderer 24.5 -> 4.45 ms, previews about 16 -> 1.4 ms)",
+  "cadence_hz": 64,
+  "cpu_frame_ms": "5.3-6.6",
+  "gpu_total_ms_first_measurement": "about 7 (renderer 4.3-5.3)",
+  "gpu_total_ms_review": "10.1-13.6 (renderer 7.0-10.3), GPU at 1.3-1.8 GHz of 3.1 GHz in P2 on AC power with no throttle reasons; every renderer pass about 2x its first measurement",
+  "clock_cpu_ms": "about 2, the host conductor's own control clock",
+  "surface": "tick 0.1-0.9 ms against a 2 ms budget; heap 5-6.6 MB against 64 MB"
+ },
+ "recording": "a 42.5 s energy-ladder recording, 2544 frames at 1920x1080 with none dropped (kept in captures/, not committed)",
+ "not_executed": [
+  "Phage_Plan foot and knee drags and its keys (injected input does not reach Module viewport events)",
+  "Phage_Lighting click and box selection, modifiers, keys and group buttons (programmer-to-canvas selection proven through remote_selection)",
+  "Phage_Desk click-to-Event hop (every pad's command proven through rig_command)",
+  "Push 2 hardware: pads, encoders, arrows, Clip, side buttons and the WinUSB display"
+ ],
+ "findings": [
+  "Push 2 Display writes a per-frame journal (about 9 KB/s) while the app runs; gitignored with the preset lock files",
+  "proof_bundle window screenshots came out white; output captures are the usable stills",
+  "the window title reads Untitled after an MCP save",
+  "node previews cook every frame even when their panel is hidden",
+  "'[push2os] bank save failed: false' in the log is an asynchronous save still pending; the saves land"
+ ],
+ "operator_checks_pending": [
+  "hand test of the gestures listed under not_executed",
+  "Push 2 hardware check",
+  "commit approval"
+ ]
+}

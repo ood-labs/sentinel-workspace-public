@@ -1,0 +1,136 @@
+name: PHAGE / Kinetic Truss
+version: '1.0'
+mode: generator
+resolution: [1400, 820]
+panel:
+  mode: canvas
+  output: Motion Control
+  resolution: follow_panel
+parameters:
+  - {name: drive, type: enum, options: [Programmer, Manual, Demo, Rest], default: 0, group: Motion}
+  - {name: speed, type: float, default: 1.0, min: 0.1, max: 3.0, group: Motion, description: Scales every axis speed and acceleration.}
+  - {name: manual_height, type: float, default: 0, min: -2.4, max: 2.0, group: Manual}
+  - {name: manual_yaw, type: float, default: 0, min: -30, max: 30, group: Manual}
+  - {name: manual_spin, type: float, default: 0, min: -360, max: 360, group: Manual}
+  - {name: manual_contract, type: float, default: 0, min: -1.2, max: 2.4, group: Manual}
+  - {name: manual_lift, type: float, default: 0, min: 0, max: 4.5, group: Manual}
+  - {name: manual_swing, type: float, default: 0, min: -2.5, max: 2.5, group: Manual}
+  - {name: manual_leg, type: int, default: -1, min: -1, max: 5, group: Manual, description: '-1 moves every leg; 0-5 one leg.'}
+data_inputs:
+  - name: Design
+    slot: 0
+    schema:
+      - {name: value, type: float4}
+  - name: Show State
+    slot: 1
+    schema:
+      - {name: value, type: float4}
+  - name: Fixture Program
+    slot: 2
+    schema:
+      - {name: aim, type: float4}
+      - {name: routing, type: float4}
+      - {name: movement, type: float4}
+      - {name: timing, type: float4}
+      - {name: meta, type: float4}
+      - {name: extra, type: float4}
+buffers:
+  - {name: axes, structured: true, element_size: 16, element_count: 26, persistent: true}
+  - {name: mounts, structured: true, element_size: 80, element_count: 248}
+  - {name: members, structured: true, element_size: 64, element_count: 256}
+  - {name: pieces, structured: true, element_size: 64, element_count: 768}
+  - {name: marks, structured: true, element_size: 64, element_count: 448}
+  - {name: bins, structured: true, element_size: 4, element_count: 786432}
+passes:
+  - name: axes
+    shader: axes.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: 'data:1'}
+      - {slot: 2, source: 'data:2'}
+    output: buffer:axes
+  - name: mounts
+    shader: mounts.hlsl
+    target: cs_5_0
+    dispatch: [4, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: buffer:axes}
+    output: buffer:mounts
+  - name: members
+    shader: members.hlsl
+    target: cs_5_0
+    dispatch: [4, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: buffer:axes}
+    output: buffer:members
+  - name: pieces
+    shader: pieces.hlsl
+    target: cs_5_0
+    dispatch: [12, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: buffer:axes}
+    output: buffer:pieces
+  - name: marks
+    shader: marks.hlsl
+    target: cs_5_0
+    dispatch: [7, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: buffer:axes}
+      - {slot: 2, source: buffer:members}
+    output: buffer:marks
+  - name: bins
+    shader: bins.hlsl
+    target: cs_5_0
+    dispatch: [128, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:marks}
+    output: buffer:bins
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: buffer:axes}
+      - {slot: 2, source: buffer:members}
+      - {slot: 3, source: buffer:marks}
+      - {slot: 4, source: buffer:bins}
+    output: output
+data_outputs:
+  - name: Mounts
+    buffer: mounts
+    schema:
+      - {name: position, type: float3}
+      - {name: fixture_id, type: float}
+      - {name: up, type: float3}
+      - {name: kind, type: float}
+      - {name: fwd, type: float3}
+      - {name: active, type: float}
+      - {name: extra, type: float4}
+      - {name: rest, type: float4}
+  - name: Members
+    buffer: members
+    schema:
+      - {name: a, type: float4}
+      - {name: b, type: float4}
+      - {name: up, type: float4}
+      - {name: meta, type: float4}
+  - name: Bar Pieces
+    buffer: pieces
+    schema:
+      - {name: a, type: float4}
+      - {name: b, type: float4}
+      - {name: n, type: float4}
+      - {name: w, type: float4}
+  - name: Axis State
+    buffer: axes
+    schema:
+      - {name: value, type: float4}
+outputs:
+  - name: Motion Control
+    pass: preview

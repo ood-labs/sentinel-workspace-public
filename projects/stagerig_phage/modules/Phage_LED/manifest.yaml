@@ -1,0 +1,64 @@
+name: PHAGE / Pixel Bars
+version: '1.0'
+mode: generator
+resolution: [1280, 720]
+output_format: rgba16f
+parameters:
+  - {name: level, label: Bar level, type: float, default: 1, min: 0, max: 4}
+data_inputs:
+  - name: Show State
+    slot: 0
+    schema:
+      - {name: value, type: float4}
+  - name: Fixture Program
+    slot: 1
+    schema:
+      - {name: aim, type: float4}
+      - {name: routing, type: float4}
+      - {name: movement, type: float4}
+      - {name: timing, type: float4}
+      - {name: meta, type: float4}
+      - {name: extra, type: float4}
+  - name: Mounts
+    slot: 2
+    schema:
+      - {name: position, type: float3}
+      - {name: fixture_id, type: float}
+      - {name: up, type: float3}
+      - {name: kind, type: float}
+      - {name: fwd, type: float3}
+      - {name: active, type: float}
+      - {name: extra, type: float4}
+      - {name: rest, type: float4}
+  - name: Bar Pieces
+    slot: 3
+    schema:
+      - {name: a, type: float4}
+      - {name: b, type: float4}
+      - {name: n, type: float4}
+      - {name: w, type: float4}
+passes:
+  - name: pixels
+    shader: pixels.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    resolution_scale: 0.4
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: 'data:1'}
+      - {slot: 2, source: 'data:2'}
+      - {slot: 3, source: 'data:3'}
+  - name: monitor
+    shader: monitor.hlsl
+    target: cs_5_0
+    inputs:
+      - {slot: 0, source: 'pass:pixels'}
+      - {slot: 1, source: 'data:0'}
+      - {slot: 2, source: 'data:1'}
+      - {slot: 3, source: 'data:2'}
+    output: output
+outputs:
+  - name: Bar Monitor
+    pass: monitor
+  - name: Bar Pixels
+    pass: pixels

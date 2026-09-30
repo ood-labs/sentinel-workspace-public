@@ -37,3 +37,7 @@ scratch/
 
 # Module shader caches are compiled artifacts, rebuilt on load
 **/.sentinel/shader_cache/
+# Push 2 Display frame journal and PNG records (per-frame, unbounded while the node runs)
+**/.sentinel/display-records/
+# Preset-group locks held while a project is open
+**/presets/.sentinel-*.lock
