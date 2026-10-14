@@ -1,3 +1,4 @@
+#include "taa.hlsli"
 #include "../_shared/phage_fixture.hlsli"
 #include "yoke.hlsli"
 StructuredBuffer<PhMoverPose> PoseBuf:register(t0);
@@ -8,7 +9,7 @@ float edge(uint k,float e,float b){return k==0?-e:k==1?-e+b:k==2?e-b:e;}
 static const float2 Profile[8]={float2(.080,.075),float2(.094,.060),float2(.098,-.062),float2(.098,-.076),float2(.096,-.077),float2(.076,-.077),float2(.071,-.073),float2(.067,-.070)};
 VOut VSMain(uint vid:SV_VertexID){
  VOut o=(VOut)0;uint fi=vid/PER_FIXTURE,v=vid%PER_FIXTURE;
- if(fi>=min(128u,_Data0_Count)||PoseBuf[fi].active<.5){o.Position=float4(0,0,-1,1);return o;}
+ if(fi>=128u||PoseBuf[fi].active<.5){o.Position=float4(0,0,-1,1);return o;}
  PhMoverPose r=PoseBuf[fi];float3 p=0,n=0;float2 detail=0;uint space=0,lamp=0;float mat=0;
  if(v<1944){
   uint b=v/324,local=v%324;float3 center=float3(0,.037,0),extent=float3(.125,.028,.094);
@@ -57,7 +58,7 @@ VOut VSMain(uint vid:SV_VertexID){
  else if(space==1){o.world=phYokePoint(r,p);o.normal=phYokeNormal(r,n);}
  else{o.world=phBasePoint(r,p);o.normal=phMountVec(r.up,r.fwd,n);}
  PhOptical light=OpticsBuf[fi*25+lamp];o.radiance=light.colour*light.intensity;o.material=mat;o.detail=detail;
- o.Position=mul(_ViewProjMatrix,float4(o.world,1));return o;
+ o.Position=taaClip(o.world);return o;
 }
 float4 PSMain(VOut i):SV_TARGET0{
  float3 n=normalize(i.normal),v=normalize(_CameraPos-i.world),key=normalize(float3(-.5,.8,-.6));

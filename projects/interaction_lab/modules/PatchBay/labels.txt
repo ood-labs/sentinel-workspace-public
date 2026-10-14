@@ -1,0 +1,66 @@
+# Patch Bay - the labels of the Patch Bay station. Regenerate: python tools/il_type.py labels PatchBay
+TITLE       @bold @track=0.08 = PATCH BAY
+SUBTITLE    @sans = control signals patched into parameters
+CABLES      @sans = cables
+MUTED       @bold @track=0.06 = MUTED
+SLASH       @mono = /
+
+SOURCES     @bold @track=0.06 = SOURCES
+OUTPUTS     @bold @track=0.06 = OUTPUTS
+TO          @sans = to the Bloom: control outputs out_1 .. out_6
+SRC_0       @bold @track=0.04 = LFO 1
+SRC_1       @bold @track=0.04 = LFO 2
+SRC_2       @bold @track=0.04 = RAMP
+SRC_3       @bold @track=0.04 = S&H
+SRC_4       @bold @track=0.04 = DRIFT
+SRC_5       @bold @track=0.04 = INPUT
+KIND_0      @sans = sine
+KIND_1      @sans = triangle
+KIND_2      @sans = ramp
+KIND_3      @sans = sample and hold
+KIND_4      @sans = drift
+KIND_5      @sans = ref() into input
+HZ          @mono = Hz
+OUT         @bold @track=0.04 = OUT
+DST_0       @sans = petals
+DST_1       @sans = depth
+DST_2       @sans = twist
+DST_3       @sans = spin
+DST_4       @sans = size
+DST_5       @sans = hue
+
+MATRIX      @bold @track=0.06 = MATRIX
+MATRIX_D    @sans = the same patch: a row per source, a column per output
+CABLE       @bold @track=0.06 = CABLE
+ARROW       @mono = ->
+DEPTH       @sans = depth
+SWING       @sans = swing
+NOW         @sans = pushing now
+PLUSMINUS   @mono = +-
+PICK        @sans = click a cable or a cell
+DEPTH_D     @sans = drag a knob or a cell up and down; Up / Down nudge
+INVERTED    @sans = inverted: drawn dashed
+PUSH_T      @sans = this cable's push, the last 2 s
+BASE        @sans = base
+THIS        @sans = this cable
+OTHERS      @sans = others
+PLUS        @mono = +
+EQ          @mono = =
+CLAMPED     @sans = clamped to 0..1
+UNPLUG      @sans = let go: unplugged
+
+# hint bar (pairs)
+K_A0        @sans = Drag jack to jack
+K_A1        @sans = Drag a plug away
+K_A2        @sans = Click a cable / cell
+K_A3        @sans = Drag knob / cell
+K_A4        @sans = Drag a meter
+K_A5        @sans = Backspace  M
+K_A6        @sans = R  Z
+D_A0        @sans = patch a cable
+D_A1        @sans = re-patch or unplug
+D_A2        @sans = select, patch
+D_A3        @sans = depth
+D_A4        @sans = base
+D_A5        @sans = unplug, mute
+D_A6        @sans = default patch, undo

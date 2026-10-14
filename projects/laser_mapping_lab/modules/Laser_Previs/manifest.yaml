@@ -17,8 +17,8 @@ viewport:
 # projects/laser_lab, 1563058e): analytic single scattering in drifting haze, the RAW 10 housing,
 # aperture glow, and the timed scan landing on the first surface it meets, with BLINK's exact
 # swept-plane surface kernel and separate air extinction. The room is site.hlsli.
-# A video projector on a stand maps its Projection input onto the taped frame (as MadMapper
-# would), so the projected grid and the laser grid can be lined up on the same wall.
+# A video projector on a stand maps its Projection input onto the taped frame (as projection-mapping
+# software would), so the projected grid and the laser grid can be lined up on the same wall.
 # World: metres, drywall face z = 0 facing +z, y up. Laser Fixture owns laser position and aim.
 
 inputs:

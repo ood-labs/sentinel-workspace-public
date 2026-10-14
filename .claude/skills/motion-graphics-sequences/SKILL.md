@@ -15,15 +15,15 @@ presets, "design the scaffold for the subject"), `knowledge/motion-choreography.
 `module-authoring` and `module-ui-authoring` skills. For 3D, also read
 `knowledge/internal-camera-template.md`.
 
-The worked examples are **each one answer to one brief**, not templates. Neither is bundled in
-this public workspace yet; the appendix below records the techniques worth reusing from them:
+The worked examples are **each one answer to one brief**, not templates:
 
 - **Threshold Rush** — a 2D cel piece.
 - **Dot Matter** — 16,384 conserved dots carried through flat, image-space and 3D acts.
   It has the most developed score instrument so far: typed records, an inspector, a view that
   changes with the act, and meters and alarms computed by the renderers' own functions.
 
-Do not reuse their layering, modules, palettes or looks unless the user asks for a remix.
+Read their READMEs to see the contract in practice. Do not reuse their layering, modules, palettes
+or looks unless the user asks for a remix.
 
 ## 1. The fixed contract
 
@@ -190,8 +190,10 @@ at any seed. Bump a version constant that forces a rebuild whenever the default 
 - Scale wheel actions by `ev.value` (fractional notches). Tell users to use `Ctrl+wheel` if
   the host preview viewer takes the plain wheel.
 - Latch toggle keys on press and release.
-- Injected input never reaches viewport events. Build every gesture, verify the state logic
-  through parameters, and tell the user which gestures need a hand test. When input
+- `sentinel_ui action=click_at` and `drag_at` deliver real clicks and drags to a Module viewport;
+  `/sentinel/pipelines/<id>/viewport/delivered_boundary_count` grows by 3 per delivered click.
+  Wheel and key paths have no verified injection: verify their state logic through parameters
+  and tell the user which gestures need a hand test. When input
   misbehaves, add an on-canvas readout before theorising.
 
 ## 6. Build and proof loop
@@ -231,9 +233,10 @@ Once the program output exists:
 - **Resizing a persistent buffer (`element_count`) reallocates it and wipes live state**, taking
   the user's hand edits with it. Save first and reload afterwards, or reserve spare records up
   front.
-- **A later pass reads an earlier pass's buffer one cook late**, for structured and texture
-  buffers alike. Either predict each stage ahead by exactly its lag, or design the consumer so a
-  one-cook-old read is harmless.
+- **Declare passes in the order the data flows.** A pass declared below its buffer's writer reads
+  that cook's write; a reader declared above every writer sees the previous cook, which is how a
+  feedback loop works. Sentinel 0.6.3 and earlier read one cook late on every pass-to-pass hop, so
+  examples built then may predict ahead by their old lag. See `knowledge/module-pipeline.md`.
 - **Two passes writing one buffer flip it between them.** Keep one writer per buffer, and
   restart counters with generation tags instead of a clear pass.
 - **Draw passes have no alpha blending.** Overlapping antialiased marks (dots, particles) need

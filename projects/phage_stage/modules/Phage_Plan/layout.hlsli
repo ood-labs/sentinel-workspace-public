@@ -1,9 +1,12 @@
 // One projection for drawing AND picking: plan (top view, audience down) on the left,
-// a radial section through the selected leg on the right.
-#define PL_HEAD 38.0
-#define PL_FOOT 30.0
-float4 planRect(){return float4(12,PL_HEAD,_Resolution.x*.52-6,_Resolution.y-PL_FOOT);}
-float4 sectRect(){return float4(_Resolution.x*.52+6,PL_HEAD,_Resolution.x-12,_Resolution.y-PL_FOOT);}
+// a radial section through the selected leg on the right, under a header and over a footer that
+// grow with the kit's ui scale.
+#include "../_shared/ui/il_core.hlsli"
+float plS(){return max(ilCtx(_Resolution.xy).s,.85);}
+float plHead(){return 38*plS();}
+float plFoot(){return 30*plS();}
+float4 planRect(){return float4(12,plHead(),_Resolution.x*.52-6,_Resolution.y-plFoot());}
+float4 sectRect(){return float4(_Resolution.x*.52+6,plHead(),_Resolution.x-12,_Resolution.y-plFoot());}
 float planScale(){float4 r=planRect();return min((r.z-r.x)/44.0,(r.w-r.y)/44.0);}
 float2 planCenter(){float4 r=planRect();return (r.xy+r.zw)*.5+float2(0,-.02*(r.w-r.y));}
 float2 planPx(float3 p){return planCenter()+float2(p.x,p.z)*planScale();}

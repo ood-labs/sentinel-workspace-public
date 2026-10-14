@@ -1,0 +1,79 @@
+name: "Handles"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+# param_gestures: a lamp and three blocks on a drafting table. Every object is an ordinary vec2
+# position + float rotation parameter that the host lets you grab in the viewport - left-drag
+# moves, right-drag turns, each drag commits as one undo entry. No event code in the module.
+
+# Standard, not canvas: the program is a fixed 1280x720 frame and the host hit-tests handles in
+# that frame's normalized coordinates, so the panel must letterbox it (a canvas panel stretches a
+# fixed-resolution output to the panel's shape). Nothing here uses the wheel the standard panel takes.
+panel:
+  mode: standard
+  output: "Editor"
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  # the handles (kept visible: they are ordinary parameters, and Properties shows them move)
+  - { name: lamp_pos,  display: "Lamp",       type: vec2,  min: [0.0, 0.0], max: [1.0, 1.0], default: [0.20, 0.27], group: "Handles" }
+  - { name: lamp_rot,  display: "Lamp Aim",   type: float, min: -720.0, max: 720.0, default: 32.0, group: "Handles" }
+  - { name: blade_pos, display: "Blade",      type: vec2,  min: [0.0, 0.0], max: [1.0, 1.0], default: [0.47, 0.42], group: "Handles" }
+  - { name: blade_rot, display: "Blade Turn", type: float, min: -720.0, max: 720.0, default: -58.0, group: "Handles" }
+  - { name: prism_pos, display: "Prism",      type: vec2,  min: [0.0, 0.0], max: [1.0, 1.0], default: [0.36, 0.64], group: "Handles" }
+  - { name: prism_rot, display: "Prism Turn", type: float, min: -720.0, max: 720.0, default: 12.0, group: "Handles" }
+  - { name: arc_pos,   display: "Arc",        type: vec2,  min: [0.0, 0.0], max: [1.0, 1.0], default: [0.61, 0.30], group: "Handles" }
+  - { name: arc_rot,   display: "Arc Turn",   type: float, min: -720.0, max: 720.0, default: 205.0, group: "Handles" }
+  # the lamp
+  - { name: cone,      display: "Cone",       type: float, min: 20.0, max: 200.0, default: 84.0, group: "Lamp" }
+  - { name: softness,  display: "Lamp Size",  type: float, min: 0.002, max: 0.08, default: 0.018, group: "Lamp" }
+  - { name: warmth,    display: "Warmth",     type: float, min: 0.0, max: 1.0, default: 0.62, group: "Lamp" }
+  - { name: intensity, display: "Intensity",  type: float, min: 0.0, max: 4.0, default: 1.7, group: "Lamp" }
+  - { name: ambient,   display: "Ambient",    type: float, min: 0.0, max: 0.3, default: 0.06, group: "Lamp" }
+  - { name: grid,      display: "Grid",       type: float, min: 0.0, max: 1.0, default: 0.55, group: "Table" }
+
+viewport:
+  hint: "Drag a ring to move it. Right-drag to turn it. Each drag is one undo entry."
+  interactions: [events]
+  input: { pointer: [left, right], gestures: [drag] }
+  param_gestures:
+    - { id: lamp,  position_param: lamp_pos,  rotation_param: lamp_rot,  radius: 0.05 }
+    - { id: blade, position_param: blade_pos, rotation_param: blade_rot, radius: 0.05 }
+    - { id: prism, position_param: prism_pos, rotation_param: prism_rot, radius: 0.05 }
+    - { id: arc,   position_param: arc_pos,   rotation_param: arc_rot,   radius: 0.05 }
+  bindings:
+    - { gesture: left_drag, action: move, label: "Move the handle under the pointer" }
+    - { gesture: right_drag, action: rotate, label: "Turn the handle under the pointer" }
+
+buffers:
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+passes:
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    thread_group_x: 8
+    thread_group_y: 8
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+  - name: editor
+    shader: editor.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:render" }
+
+outputs:
+  - { name: "Program", pass: render }
+  - { name: "Editor",  pass: editor }

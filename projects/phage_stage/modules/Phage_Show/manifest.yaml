@@ -2,7 +2,20 @@ name: PHAGE / Show State
 version: '1.0'
 mode: generator
 resolution: [1100, 560]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+panel:
+  mode: canvas
+  output: Show Monitor
+  resolution: follow_panel
+viewport:
+  hint: 'Point at a lane for its card: where its timing comes from, the timing, and its last hit.'
+  interactions: [events]
+  input:
+    pointer: [left]
 parameters:
+  - {name: tooltips, display: Tooltips, type: bool, default: true, description: 'The card beside the pointer that shows the lane under it: its timing source, cycle, rest, offset and last hit. Turn it off to keep the canvas clear while you work.'}
   - {name: native_control, label: Programmer on, type: float, default: 0, min: 0, max: 1, group: PROGRAMMER}
   - {name: enabled, label: Reference chase, type: bool, default: true, group: PROGRAMMER}
   - {name: kinetics, label: Kinetics follow the programmer, type: bool, default: true, group: PROGRAMMER}
@@ -49,17 +62,39 @@ parameters:
   - {name: lane3_envelope, type: float, default: 0, min: 0, max: 10000000, hidden: true}
 buffers:
   - {name: state, structured: true, element_size: 16, element_count: 13, persistent: true}
+  - {name: hist, structured: true, element_size: 16, element_count: 325, persistent: true}   # 5 lanes x (head + 64 hits)
+  - {name: dl, structured: true, element_size: 16, element_count: 24577}   # il_draw IL_DL_SIZE
 passes:
   - name: state
     shader: state.hlsl
     target: cs_5_0
     dispatch: [1, 1, 1]
     output: buffer:state
-  - name: preview
-    shader: preview.hlsl
+  - name: history
+    shader: history.hlsl
     target: cs_5_0
+    dispatch: [1, 1, 1]
     inputs:
-      - {slot: 0, source: buffer:state}
+      - {slot: 0, source: 'buffer:state'}
+    output: buffer:hist
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: 'buffer:state'}
+      - {slot: 1, source: 'buffer:hist'}
+    output: buffer:dl
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
     output: output
 data_outputs:
   - name: Show State
@@ -68,4 +103,4 @@ data_outputs:
       - {name: value, type: float4}
 outputs:
   - name: Show Monitor
-    pass: preview
+    pass: ui

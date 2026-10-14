@@ -1,0 +1,94 @@
+# KA_Cell - the cell plan's words. Regenerate: python -B tools/il_type.py labels KA_Cell
+TITLE        @bold @track=0.14 = ARMS
+SUBTITLE     @sans = cell plan
+ARRANGEMENT  @bold @track=0.08 = ARRANGEMENT
+# the arrangement enum, in the manifest's order (layout.hlsl counts from ARR_LINE)
+ARR_LINE     @bold @track=0.08 = LINE
+ARR_GRID     @bold @track=0.08 = GRID
+ARR_RING     @bold @track=0.08 = RING
+ARR_ARC      @bold @track=0.08 = ARC
+ARR_TWIN     @bold @track=0.08 = TWIN ROWS
+ARR_SPUR     @bold @track=0.08 = SPUR
+
+PLAN         @bold @track=0.08 = PLAN
+PLAN_NOTE    @sans = arrow is the heading, in its channel colour
+ELEVATION    @bold @track=0.08 = ELEVATION
+ELEV_NOTE    @sans = home pose; darker stands further back
+SHARED       @sans = shared reach: two arms can collide here
+GRID         @sans = grid 1 m, 5 m
+M            @sans = m
+DEG          @sans = deg
+TIMES        @sans = x
+REV_S        @sans = rev/s
+DASH         @mono = -
+
+SELECTION    @bold @track=0.08 = SELECTION
+ARM          @bold @track=0.08 = ARM
+TARGET       @bold @track=0.08 = TARGET
+NOTHING      @sans = nothing selected
+# the selected arm's rows, in layout.hlsl's order (counts from R_X)
+R_X          @bold @track=0.06 = X
+R_Z          @bold @track=0.06 = Z
+R_HEADING    @bold @track=0.06 = HEADING
+R_REACH      @bold @track=0.06 = REACH
+R_RISE       @bold @track=0.06 = RISE
+R_FRAME      @bold @track=0.06 = FRAME
+R_SCALE      @bold @track=0.06 = SCALE
+R_PEDESTAL   @bold @track=0.06 = PEDESTAL
+R_CHANNEL    @bold @track=0.06 = CHANNEL
+R_BIAS       @bold @track=0.06 = PHASE BIAS
+# the selected target's rows (X and Z reuse R_X and R_Z)
+T_HEIGHT     @bold @track=0.06 = HEIGHT
+T_ORBIT      @bold @track=0.06 = ORBIT
+T_RATE       @bold @track=0.06 = ORBIT RATE
+T_ANCHOR     @sans = orbit anchor
+T_LIVE       @sans = live, on its orbit
+EDITED       @bold @track=0.06 = EDITED
+CLASH        @bold @track=0.06 = CLASH
+OUTSIDE      @bold @track=0.06 = OUTSIDE CELL
+OFF          @bold @track=0.06 = OFF
+
+CELL         @bold @track=0.08 = CELL
+CHANNELS     @bold @track=0.06 = CHANNELS
+FRAMES       @bold @track=0.06 = FRAMES
+# channels A-D (layout.hlsl counts from CH_A), frame sizes in kind order (counts from F_COMPACT)
+CH_A         @bold = A
+CH_B         @bold = B
+CH_C         @bold = C
+CH_D         @bold = D
+F_COMPACT    @sans = Compact
+F_STANDARD   @sans = Standard
+F_HEAVY      @sans = Heavy
+ARMS         @bold @track=0.06 = ARMS
+CLASHES      @bold @track=0.06 = CLASHING PAIRS
+FLOOR        @bold @track=0.06 = FLOOR
+PITCH        @bold @track=0.06 = PITCH
+OF           @sans = of
+
+# the hover card
+FRAME_U      @sans = frame
+AT_RATE      @sans = at
+
+# footer: keys, then what each does, in the same order (layout.hlsl counts from K_HOVER and D_HOVER)
+K_HOVER      @sans = Hover
+K_CLICK      @sans = Click
+K_DRAG       @sans = Drag
+K_AD         @sans = A / D
+K_G          @sans = G
+K_K          @sans = K
+K_QE         @sans = Q / E
+K_X          @sans = X
+K_N          @sans = N
+K_R          @sans = R
+K_C          @sans = C
+D_HOVER      @sans = inspect
+D_CLICK      @sans = select
+D_DRAG       @sans = move: plan floor, elevation height
+D_AD         @sans = turn
+D_G          @sans = channel
+D_K          @sans = frame
+D_QE         @sans = size
+D_X          @sans = on / off
+D_N          @sans = re-roll
+D_R          @sans = reseed
+D_C          @sans = clear

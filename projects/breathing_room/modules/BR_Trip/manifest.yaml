@@ -1,0 +1,141 @@
+name: "BR Trip"
+version: "1.0"
+mode: generator
+resolution: [1280, 900]
+compile_optimization: fast_compile
+
+# The TRIP AUTHORITY for breathing_room: where in the room the hallucination concentrates and how
+# strongly each kind of replication runs through time. It places nothing physical -- anchors are
+# attached to features the shell and the furniture already decided (the rug's medallion, the
+# ceiling over the pendant, the longest plain wall, the chimney breast, the mantel, a picture, the
+# sofa, the coffee table), so they follow those features when the room changes.
+#
+# Kinds: BREATHE (swell and recede), MELT (sag and drip), SWIRL (twist and untwist), BLOOM (the
+# geometry blooms out of a surface in travelling rings), FLOW (textures stream and return).
+# Channels: breathe, drift (texture swim everywhere), melt, geometry (lattices on the walls and
+# ceiling) and colour (BR_Lens). One trip clock, integrated here; a dose envelope.
+#
+# The canvas is the room UNFOLDED: floor plan, walls folded out flat, the ceiling hinged off the
+# east wall. Drag anchors across folds and onto furniture; drag their rings to change reach.
+# The canvas is built on the Interaction Lab UI kit (_shared/ui): plate draws the net's fields and
+# the scope's curves per pixel, layout records the anchors, chrome and type into a draw list, and
+# ui rasterizes it over the plate.
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+panel:
+  mode: canvas
+  output: "Trip"
+  resolution: follow_panel
+
+buffers:
+  - { name: trip, structured: true, element_size: 64, element_count: 32, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+state_buffers:
+  - name: trip
+    max_elements: 32
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+data_inputs:
+  - name: "Shell"
+    slot: 0
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+  - name: "Furnish"
+    slot: 1
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+
+parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The kind's name beside an anchor under the pointer (the selected anchor always keeps its name). Turn it off to keep the canvas clear while you work." }
+  # 0..1 is the calibrated trip; 1..3 is OVERDRIVE -- every channel larger, finer and faster
+  - { name: dose,      display: "Dose",            type: float, min: 0.0, max: 3.0, default: 0.5, group: "Trip" }
+  - name: arc
+    display: "Envelope"
+    type: enum
+    options: [Steady, Waves, Come Up]
+    default: 1
+    group: "Trip"
+  - { name: tempo,     display: "Tempo",           type: float, min: 0.0, max: 3.0, default: 1.0, group: "Trip" }
+  - { name: breathe,   display: "Breathing",       type: float, min: 0.0, max: 1.0, default: 0.6, group: "Channels" }
+  - { name: drift,     display: "Drift (swim)",    type: float, min: 0.0, max: 1.0, default: 0.6, group: "Channels" }
+  - { name: melt,      display: "Melt",            type: float, min: 0.0, max: 1.0, default: 0.45, group: "Channels" }
+  - { name: geometry,  display: "Geometry",        type: float, min: 0.0, max: 1.0, default: 0.6, group: "Channels" }
+  - { name: colour,    display: "Colour",          type: float, min: 0.0, max: 1.0, default: 0.5, group: "Channels" }
+  # how much the furniture itself swells, slumps and twists (0: every piece holds its shape)
+  - { name: furniture, display: "Furniture",      type: float, min: 0.0, max: 1.0, default: 0.0, group: "Channels" }
+  # the size of the texture swim and the visual field's drift: 1 = broad 60 cm eddies, smaller finer
+  - { name: swim_scale, display: "Swim Scale",     type: float, min: 0.1, max: 2.0, default: 0.4, group: "Channels" }
+  - name: motif
+    display: "Geometry Motif"
+    type: enum
+    options: [Girih, Lattice, Mandala, Moire]
+    default: 0
+    group: "Channels"
+  - { name: variation, display: "Variation",       type: int,   min: 0, max: 999, default: 0, group: "Arrangement" }
+
+viewport:
+  hint: "Drag an anchor anywhere on the unfolded room -- across a fold, or onto furniture | drag its ring to change its reach | chips: kind, on/off, stronger, weaker, faster, slower; re-roll, motif, calmer, deeper, add, hold"
+  interactions: [events]
+  input:
+    pointer: [left]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select an anchor" }
+    - { gesture: left_drag, action: edit, label: "Move an anchor, or drag its ring" }
+
+passes:
+  - name: trip
+    shader: trip.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:trip"
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+  - name: plate
+    shader: plate.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:trip" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+    inputs:
+      - { slot: 0, source: "buffer:trip" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:plate" }
+
+data_outputs:
+  - name: "Trip"
+    buffer: "trip"
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+outputs:
+  - { name: "Trip", pass: ui }

@@ -2,6 +2,9 @@ name: "Variant Switcher UI"
 version: "1.0"
 mode: filter
 resolution: [1280, 720]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 
 panel:
   mode: canvas
@@ -24,6 +27,7 @@ buffers:
     element_size: 32
     element_count: 1
     persistent: true
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 
 state_buffers:
   - name: switcher_state
@@ -40,8 +44,6 @@ state_buffers:
 
 viewport:
   hint: "AUTO cycles the three Mux inputs. Click 1, 2, or 3 for a direct selection."
-  # ui-label: title = DIRECT VARIANT SWITCHER
-  # ui-label: subtitle = LIVE MUX OUTPUT / AUTO OR DIRECT SELECT
   controls:
     - { id: auto_mode, kind: toggle, param: auto_mode, rect: [0.55, 0.025, 0.68, 0.105], label: "AUTO" }
     - { id: select_1, kind: button, param: select_1, rect: [0.70, 0.025, 0.78, 0.105], label: "1" }
@@ -63,10 +65,30 @@ passes:
     inputs:
       - { slot: 0, source: "input:0" }
       - { slot: 1, source: "buffer:switcher_state" }
-    output: output
+
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: 'input:0'}
+      - {slot: 1, source: 'buffer:switcher_state'}
+    output: buffer:dl
+
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
+      - {slot: 2, source: 'pass:render'}
 
 outputs:
-  - { name: "UI", pass: render }
+  - { name: "UI", pass: ui }
 
 control_outputs:
   - { name: selected, buffer: switcher_state, element: 0, field_offset: 0, description: "Active Mux input, 0 through 2" }

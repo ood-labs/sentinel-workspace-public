@@ -1,0 +1,229 @@
+name: "FE Renderer"
+version: "1.0"
+# One renderer for every fixture type and every instance. Reads the rig (FE_Rig) and the decoded fixture
+# state (FE_Decode; without it every fixture shows its type's defaults). Draws each type's body parts posed
+# by pan/tilt, the emitting faces with each cell where it sits on the real unit, truss pipes and the deck.
+# The type tables come from the Fixture Rig node's FixtureRender port, so any GDTF in the rig draws with no per-type
+# code and no recompile.
+mode: generator
+resolution: [1280, 720]
+features: [camera]
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel adjusts speed"
+  interactions: [camera]
+
+parameters:
+  - { name: exposure,     display: "Exposure",       type: float, min: 0.05, max: 8,  default: 1.0, group: "Camera" }
+  - { name: bloom,        display: "Bloom",          type: float, min: 0,    max: 1,  default: 0.12, group: "Camera" }
+  - { name: sensor_white_start, display: "Sensor white start", type: float, min: 0, max: 10, default: 2.0, group: "Camera" }
+  - { name: sensor_response, display: "Sensor response", type: float, min: 0, max: 1, default: 0.16, group: "Camera" }
+  - { name: streak_strength, display: "Streaks",     type: float, min: 0,    max: 1,  default: 0.005, group: "Camera" }
+  - { name: streak_length, display: "Streak length", type: float, min: 0.01, max: 0.3, default: 0.08, group: "Camera" }
+  - { name: emitter_gain, display: "Emitter gain (per 100 kcd/m2)", type: float, min: 0, max: 50, default: 3.0, group: "Look" }
+  - { name: lens_glow,    display: "Lens glow off axis", type: float, min: 0, max: 0.2, default: 0.01, group: "Look" }
+  - { name: led_glow,     display: "LED glow off axis", type: float, min: 0, max: 0.2, default: 0.02, group: "Look" }
+  - { name: worklight,    display: "Work light",     type: float, min: 0,    max: 10, default: 0.35, group: "Look" }
+  - { name: floor_gloss,  display: "Deck gloss",     type: float, min: 0,    max: 1,  default: 0.35, group: "Look" }
+  - { name: floor_rough,  display: "Deck roughness", type: float, min: 0,    max: 1,  default: 0.35, group: "Look" }
+  - { name: haze,         display: "Haze density",   type: float, min: 0,    max: 0.3, default: 0.03, group: "Atmosphere" }
+  - { name: beam_gain,    display: "Scatter gain",   type: float, min: 0,    max: 200, default: 24.0, group: "Atmosphere" }
+  - { name: beam_falloff, display: "Beam shaft falloff (1 = inverse square)", type: float, min: 0, max: 1, default: 0.45, group: "Atmosphere" }
+  - { name: wash_gain,    display: "Wash glow in haze", type: float, min: 0, max: 1, default: 0.0025, group: "Atmosphere" }
+  - { name: wash_reach,   display: "Wash halo reach (m)", type: float, min: 0.2, max: 30, default: 4.0, group: "Atmosphere" }
+  - { name: room_glow,    display: "Room bounce (grid)", type: float, min: 0, max: 4, default: 0.0, group: "Atmosphere" }
+  - { name: fog_contrast, display: "Smoke contrast", type: float, min: 0,    max: 1, default: 0.85, group: "Atmosphere" }
+  - { name: fog_scale,    display: "Smoke scale (1/m)", type: float, min: 0.02, max: 2, default: 0.45, group: "Atmosphere" }
+  - { name: fog_speed,    display: "Smoke drift",    type: float, min: 0,    max: 3, default: 0.5, group: "Atmosphere" }
+  - { name: fog_forward,  display: "Forward scatter", type: float, min: 0,   max: 0.9, default: 0.4, group: "Atmosphere" }
+  - { name: volume_steps, display: "Room bounce steps", type: int, min: 4,   max: 64, default: 24, group: "Quality" }
+  - { name: beam_lod,     display: "Merge beams under (px apart)", type: float, min: 0, max: 8, default: 2.0, group: "Quality" }
+  - { name: surface_gain, display: "Deck light gain", type: float, min: 0,   max: 50, default: 3.75, group: "Atmosphere" }
+  - { name: floor_albedo, display: "Deck albedo",    type: float, min: 0,    max: 1, default: 0.06, group: "Atmosphere" }
+
+data_inputs:
+  - name: "Rig"
+    slot: 0
+    schema:
+      - { name: position, type: float3 }
+      - { name: type,     type: uint }
+      - { name: rotation, type: float3 }
+      - { name: mode,     type: uint }
+      - { name: u0,       type: uint }
+      - { name: a0,       type: uint }
+      - { name: u1,       type: uint }
+      - { name: a1,       type: uint }
+      - { name: u2,       type: uint }
+      - { name: a2,       type: uint }
+      - { name: group,    type: uint }
+      - { name: flags,    type: uint }
+      - { name: u3,       type: uint }
+      - { name: a3,       type: uint }
+      - { name: r0,       type: uint }
+      - { name: r1,       type: uint }
+  - name: "State"
+    slot: 1
+    schema:
+      - { name: v, type: float2 }
+  # The Fixture Rig node's FixtureRender port: the type tables of every FE_Rig record.
+  - name: "FixtureRender"
+    slot: 2
+    schema:
+      - { name: w, type: uint, count: 4 }
+
+buffers:
+  # Per instance: 6 pose rows + FE_CELLS_CAP (128) emitter cells of float4 (FE_FRAME_STRIDE = 134).
+  - { name: frame,   structured: true, element_size: 16, element_count: 137216 }
+  # Per (instance, cell slot): 3 float4 light-source records, FE_CELLS_CAP slots per instance.
+  - { name: sources, structured: true, element_size: 16, element_count: 393216 }
+  # Light grid for the smoke: 48 x 20 x 36 cells of irradiance.
+  - { name: grid,    structured: true, element_size: 16, element_count: 34560 }
+  # Per 16 x 16 screen tile (up to 1920 x 1080 = 120 x 68 tiles): culled light lists, then the per-source
+  # table of the most crowded tiles (fe_tiles.hlsli).
+  - { name: tiles,   structured: true, element_size: 4,  element_count: 4986784 }
+  - { name: tile_stats, structured: true, element_size: 16, element_count: 1 }
+
+control_outputs:
+  - { name: tile_overflow,       buffer: tile_stats, element: 0, field_offset: 0, description: "Screen tiles whose narrow beams exceeded the per-tile list (beams dropped there)" }
+  - { name: tile_overflow_broad, buffer: tile_stats, element: 0, field_offset: 4, description: "Screen tiles whose wide sources kept by sampling exceeded the per-tile list (sources dropped there)" }
+  - { name: tile_max_narrow,     buffer: tile_stats, element: 0, field_offset: 8, description: "Most narrow-beam candidates any screen tile had" }
+  - { name: tile_max_broad,      buffer: tile_stats, element: 0, field_offset: 12, description: "Most wide-source candidates any screen tile had" }
+
+passes:
+  - name: prep
+    shader: prep.hlsl
+    target: cs_5_0
+    dispatch: [2048, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+    output: "buffer:frame"
+  - name: sources
+    shader: sources.hlsl
+    target: cs_5_0
+    dispatch: [2048, 1, 1]
+    inputs:
+      - { slot: 0, source: "buffer:frame" }
+      - { slot: 1, source: "data:2" }
+    output: "buffer:sources"
+  - name: lightgrid
+    shader: lightgrid.hlsl
+    target: cs_5_0
+    dispatch: [540, 1, 1]
+    inputs:
+      - { slot: 0, source: "buffer:sources" }
+      - { slot: 1, source: "buffer:frame" }
+      - { slot: 2, source: "data:2" }
+    output: "buffer:grid"
+  - name: bodies
+    shader: bodies.hlsl
+    target: draw
+    vertex_count: 2654208
+    topology: trianglelist
+    depth: true
+    depth_write: true
+    cull: none
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "buffer:frame" }
+      - { slot: 1, source: "data:2" }
+  - name: faces
+    shader: faces.hlsl
+    target: draw
+    vertex_count: 49152
+    topology: trianglelist
+    depth: true
+    depth_write: true
+    cull: none
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "buffer:frame" }
+      - { slot: 1, source: "data:2" }
+  - name: rigging
+    shader: rigging.hlsl
+    target: draw
+    vertex_count: 73734
+    topology: trianglelist
+    depth: true
+    depth_write: true
+    cull: none
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "buffer:frame" }
+  - name: nearest
+    shader: nearest.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "pass:bodies" }
+      - { slot: 1, source: "pass:faces" }
+      - { slot: 2, source: "pass:rigging" }
+  - name: tiles
+    shader: tiles.hlsl
+    target: cs_5_0
+    dispatch: [120, 68, 1]
+    inputs:
+      - { slot: 0, source: "buffer:sources" }
+      - { slot: 1, source: "buffer:frame" }
+      - { slot: 2, source: "data:2" }
+    output: "buffer:tiles"
+  - name: tile_stats
+    shader: tile_stats.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - { slot: 0, source: "buffer:tiles" }
+    output: "buffer:tile_stats"
+  - name: volume
+    shader: volume.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    resolution_scale: 0.5
+    inputs:
+      - { slot: 0, source: "buffer:sources" }
+      - { slot: 1, source: "pass:nearest" }
+      - { slot: 3, source: "buffer:grid" }
+      - { slot: 4, source: "buffer:tiles" }
+  - name: beams
+    shader: beams.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "buffer:sources" }
+      - { slot: 1, source: "pass:nearest" }
+      - { slot: 2, source: "buffer:tiles" }
+  - name: reflections
+    shader: reflections.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "pass:nearest" }
+  - name: hdr
+    shader: hdr.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - { slot: 0, source: "pass:nearest" }
+      - { slot: 1, source: "pass:volume" }
+      - { slot: 2, source: "pass:beams" }
+      - { slot: 3, source: "pass:reflections" }
+  - { name: bloom_d0, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.5,     inputs: [{ slot: 0, source: "pass:hdr" }] }
+  - { name: bloom_d1, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.25,    inputs: [{ slot: 0, source: "pass:bloom_d0" }] }
+  - { name: bloom_d2, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.125,   inputs: [{ slot: 0, source: "pass:bloom_d1" }] }
+  - { name: bloom_d3, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.0625,  inputs: [{ slot: 0, source: "pass:bloom_d2" }] }
+  - { name: bloom_d4, shader: bloom_down.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.03125, inputs: [{ slot: 0, source: "pass:bloom_d3" }] }
+  - { name: bloom_u3, shader: bloom_up.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.0625, inputs: [{ slot: 0, source: "pass:bloom_d4" }, { slot: 1, source: "pass:bloom_d3" }] }
+  - { name: bloom_u2, shader: bloom_up.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.125,  inputs: [{ slot: 0, source: "pass:bloom_u3" }, { slot: 1, source: "pass:bloom_d2" }] }
+  - { name: bloom_u1, shader: bloom_up.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.25,   inputs: [{ slot: 0, source: "pass:bloom_u2" }, { slot: 1, source: "pass:bloom_d1" }] }
+  - { name: bloom_u0, shader: bloom_up.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.5,    inputs: [{ slot: 0, source: "pass:bloom_u1" }, { slot: 1, source: "pass:bloom_d0" }] }
+  - { name: streak_seed, shader: streak_seed.hlsl, target: cs_5_0, format: RGBA16F, resolution_scale: 0.25, inputs: [{ slot: 0, source: "pass:bloom_d1" }] }
+  - { name: streaks,     shader: streaks.hlsl,     target: cs_5_0, format: RGBA16F, resolution_scale: 0.25, inputs: [{ slot: 0, source: "pass:streak_seed" }] }
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "pass:hdr" }
+      - { slot: 1, source: "pass:bloom_u0" }
+      - { slot: 2, source: "pass:streaks" }
+    output: output

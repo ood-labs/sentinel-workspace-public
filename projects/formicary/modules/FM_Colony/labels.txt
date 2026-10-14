@@ -1,0 +1,75 @@
+# FM_Colony - the colony canvas's words. Regenerate: python -B tools/il_type.py labels FM_Colony
+TITLE      @bold @track=0.14 = FORMICARY
+SUBTITLE   @sans = colony and stigmergy
+POPULATION @bold @track=0.08 = POPULATION
+P_STEADY   @bold @track=0.08 = STEADY TRAIL
+P_DORMANT  @bold @track=0.08 = DORMANT POOL
+
+ARENA      @bold @track=0.08 = ARENA, LIVE
+GAIT       @bold @track=0.08 = GAIT
+ANT        @bold @track=0.08 = ANT
+TRIPOD_A   @bold @track=0.06 = TRIPOD A
+TRIPOD_B   @bold @track=0.06 = TRIPOD B
+SPEED_LANE @bold @track=0.06 = SPEED
+
+# the chart's lane captions, in row order (colony_view.hlsli fcLaneLeg: legs 0 2 4 1 3 5)
+ROW_0      @mono = L1
+ROW_1      @mono = L3
+ROW_2      @mono = R2
+ROW_3      @mono = L2
+ROW_4      @mono = R1
+ROW_5      @mono = R3
+
+# the arena legend
+LG_FOOD    @sans = food scent
+LG_HOME    @sans = home scent
+LG_FOCUS   @sans = focus ant
+LG_PLANTED @sans = planted
+LG_LIFTED  @sans = lifted
+LG_SLIP    @sans = slipping
+
+# the readout column
+COLONY     @bold @track=0.08 = COLONY
+ANTS       @sans = ants
+WALKING    @sans = walking
+CARRYING   @sans = carrying
+SPEED      @sans = mean speed
+BASE       @sans = base
+FOOTING    @bold @track=0.08 = FOOTING
+SLIP       @sans = mean slip
+WORST      @sans = worst foot
+ALARM      @sans = alarm
+LANES      @bold @track=0.08 = LANES
+LANE       @sans = lane
+OFF_TRAIL  @sans = off trail
+POOL       @bold @track=0.08 = POOL
+ON_PLATE   @sans = on the plate
+DORMANT    @sans = dormant
+STATIONS   @sans = stations on
+U_MMS      @sans = mm/s
+U_MM       @sans = mm
+U_PCT      @sans = %
+U_S        @sans = s
+
+# the inspector
+C_TASK     @sans = task
+T_OUT      @bold @track=0.06 = OUTBOUND
+T_LOAD     @bold @track=0.06 = LOADING
+T_LADEN    @bold @track=0.06 = LADEN
+T_UNLOAD   @bold @track=0.06 = UNLOADING
+T_DORMANT  @bold @track=0.06 = DORMANT
+C_SPEED    @sans = speed
+C_LOAD     @sans = load
+C_BODY     @sans = body
+C_FROM     @sans = from
+F_NEST     @bold @track=0.06 = NEST
+F_STATION  @bold @track=0.06 = STATION
+C_AGE      @sans = out for
+FOCUS      @bold @track=0.06 = FOCUS
+C_AGO      @sans = s ago
+C_DOWN     @sans = legs down
+C_SLIP     @sans = slip
+
+# footer
+K_HOVER    @sans = Hover
+D_INSPECT  @sans = inspect an ant, or a step of the gait chart

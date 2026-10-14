@@ -1,0 +1,49 @@
+# LR_Lighting - the lighting desk's words. Regenerate: python -B tools/il_type.py labels LR_Lighting
+TITLE       @bold @track=0.14 = LIVING ROOM
+SUBTITLE    @sans = lighting desk
+
+# the title row: the records the desk draws from, and the records it emits
+ARCH        @bold @track=0.08 = ARCHITECTURE
+FURN        @bold @track=0.08 = FURNISHINGS
+LIGHTS      @bold @track=0.08 = LIGHT RECORDS
+
+# the plan
+PLAN        @bold @track=0.08 = ROOM PLAN
+GRID        @sans = grid 1 m
+WAITING     @sans = waiting for the architecture and furnishings records
+
+# the control pane and its four sliders, manifest order (layout.hlsl counts from S_0)
+CONTROLS    @bold @track=0.08 = LIGHTING CONTROLS
+S_0         @bold @track=0.08 = WINDOW DAYLIGHT
+S_1         @bold @track=0.08 = PRACTICAL LAMPS
+S_2         @bold @track=0.08 = AMBIENT FILL
+S_3         @bold @track=0.08 = SHADOW SOFTNESS
+
+# the legend: the light types (consecutive: DAY, LAMPS, FILL)
+TYPES       @bold @track=0.08 = LIGHT TYPES
+T_0         @bold @track=0.08 = DAY
+T_1         @bold @track=0.08 = LAMPS
+T_2         @bold @track=0.08 = FILL
+
+# the six records in emit_lights.hlsl order (layout.hlsl counts from L_0)
+L_0         @bold = WINDOW DAYLIGHT
+L_1         @bold = LEFT PENDANT
+L_2         @bold = RIGHT PENDANT
+L_3         @bold = FLOOR LAMP
+L_4         @bold = TABLE LAMP
+L_5         @bold = AMBIENT FILL
+
+# the inspector's rows (consecutive: layout.hlsl counts from I_0)
+I_0         @bold @track=0.08 = INTENSITY
+I_1         @bold @track=0.08 = HEIGHT
+I_2         @bold @track=0.08 = RANGE
+I_3         @bold @track=0.08 = SOFTNESS
+I_4         @bold @track=0.08 = SET BY
+M           @sans = m
+TIMES       @sans = x
+
+# verbs
+K_DRAG      @sans = Drag
+D_DRAG      @sans = set a level
+K_HOVER     @sans = Hover
+D_HOVER     @sans = inspect a light

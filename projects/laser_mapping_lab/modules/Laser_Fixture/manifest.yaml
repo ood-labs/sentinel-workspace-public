@@ -17,7 +17,21 @@ resolution: [640, 400]
 # studio laser's distortion: corner-only mapping misses by ~11 cm, and mapping the simulation
 # takes the same Spacing, Bow and Centre a real laser does (scripts/galvo_model.py).
 
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - {name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false}
+
+# The Plan and Elevation canvas is only looked at (no node takes it as video). It keeps its fixed
+# size on purpose: its drawing loops over every beam per pixel, so following the panel would scale
+# that cost with the panel. Its rects still come from the live extent (lf_view.hlsli). Hover
+# inspects a beam or the fixture; nothing is stored.
+viewport:
+  hint: 'Hover a beam or the fixture to inspect it'
+  interactions: [events]
+  input: {pointer: [left]}
+
 parameters:
+  - {name: tooltips, display: Tooltips, type: bool, default: true, description: "The card beside the pointer that inspects the beam or fixture under it (where it lands, its sweep and timing, or the fixture's place, aim and power). Turn it off to keep the canvas clear while you work."}
   - {name: adaptive_curves, display: Adaptive Curve Detail (Experimental), type: bool, default: false, group: Scanner Reconstruction, hidden: true}
   - {name: curve_tolerance, display: Scan Curve Tolerance, type: float, min: 0.00001, max: 0.002, default: 0.0001, group: Scanner Reconstruction, hidden: true}
   - {name: curve_smoothing, display: Scan Curve Smoothing, type: float, min: 0, max: 1, default: 1, group: Scanner Reconstruction}
@@ -84,6 +98,7 @@ buffers:
   - {name: curve_map, structured: true, element_size: 16, element_count: 4096}
   - {name: fixtures, structured: true, element_size: 80, element_count: 5}
   - {name: beams, structured: true, element_size: 112, element_count: 4096}
+  - {name: dl, structured: true, element_size: 16, element_count: 24577}
 
 passes:
   # One copy of the input per cook; curve_map and project both read it (see stream.hlsli).
@@ -101,9 +116,25 @@ passes:
   - name: preview
     shader: preview.hlsl
     target: cs_5_0
-    inputs: [{slot: 0, source: 'buffer:beams'}]
+    inputs: [{slot: 0, source: 'buffer:beams'}, {slot: 7, source: 'pass:project'}]
+  # The canvas's words, rulers, readouts and inspector (layout.hlsl), drawn over preview by the
+  # shared UI kit (ui.hlsl). The pass: inputs only order the passes within a cook.
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: 'buffer:dl'
+    inputs: [{slot: 0, source: 'buffer:beams'}, {slot: 1, source: 'buffer:fixtures'}, {slot: 6, source: 'pass:fixtures'}, {slot: 7, source: 'pass:preview'}]
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs: [{slot: 0, source: 'buffer:dl'}, {slot: 1, source: 'asset:type'}, {slot: 2, source: 'pass:preview'}, {slot: 7, source: 'pass:layout'}]
 
-outputs: [{name: Plan and Elevation, pass: preview}]
+outputs: [{name: Plan and Elevation, pass: ui}]
 
 data_outputs:
   - name: World Scan

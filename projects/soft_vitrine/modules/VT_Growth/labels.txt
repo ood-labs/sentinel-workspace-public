@@ -1,0 +1,69 @@
+# VT_Growth - the Growth View's words. Regenerate: python -B tools/il_type.py labels VT_Growth
+TITLE        @bold @track=0.14 = SOFT VITRINE
+SUBTITLE     @sans = growth
+
+# the live counts in the header (each family beside its identity dot)
+N_MASS       @bold @track=0.08 = MASS NODES
+N_STROKE     @bold @track=0.08 = STROKE POINTS
+N_GROUPS     @bold @track=0.08 = GROUPS
+OF           @sans = of
+# the grower's budget, not a capacity: every live mass gets at least 6 nodes, so a small Mass
+# Nodes budget is exceeded (8 masses on a budget of 32 grow 48)
+BUDGET       @sans = budget
+
+STAGE        @bold @track=0.08 = STAGE
+STAGE_D      @sans = masses projected at z = 0, strokes in stage space
+WAITING      @sans = waiting for the plan
+
+# the tally (README: load-bearing)
+TALLY        @bold @track=0.08 = GROUP TALLY
+L_DECLARED   @sans = declared
+L_FOUND      @sans = found
+L_SHORT      @sans = short
+L_SCALE      @sans = full height
+U_NODES      @sans = nodes
+SHORT        @bold @track=0.08 = SHORT
+F_MASSES     @bold @track=0.08 = MASSES
+F_STROKES    @bold @track=0.08 = STROKES
+
+# a group's family, mass first (layout.hlsl counts from R_MASS)
+R_MASS       @bold @track=0.08 = MASS
+R_STROKE     @bold @track=0.08 = STROKE
+
+# kinds, in vitrine.hlsli order (layout.hlsl counts from MK_0 and SK_0)
+MK_0         @sans = melt
+MK_1         @sans = blob
+MK_2         @sans = ribbon
+MK_3         @sans = arms
+MK_4         @sans = hand
+MK_5         @sans = star hand
+SK_0         @sans = squiggle
+SK_1         @sans = bundle
+SK_2         @sans = branch
+SK_3         @sans = arc
+SK_4         @sans = tangle
+
+# materials, in MAT_* order (layout.hlsl counts from MAT_0)
+MAT_0        @sans = clay
+MAT_1        @sans = chrome
+MAT_2        @sans = frost
+MAT_3        @sans = gloss
+
+# the inspector
+I_NODES      @bold @track=0.08 = NODES
+I_POINTS     @bold @track=0.08 = POINTS
+I_MATERIAL   @bold @track=0.08 = MATERIAL
+I_BOUND      @bold @track=0.08 = BOUND RADIUS
+I_DEPTH      @bold @track=0.08 = DEPTH
+I_CENTRE     @bold @track=0.08 = CENTRE
+EMPTY        @sans = no group: its anchor is off or too small
+U_WORLD      @sans = world
+U_PCT        @sans = % of frame
+U_COMMA      @sans = ,
+D_FAR        @sans = far
+D_MID        @sans = mid
+D_NEAR       @sans = near
+
+# footer
+K_HOVER      @sans = Hover
+D_HOVER      @sans = inspect a group or its tally bar

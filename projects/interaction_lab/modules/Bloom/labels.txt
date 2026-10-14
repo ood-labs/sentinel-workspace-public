@@ -1,0 +1,8 @@
+# Bloom - the labels of the Bloom's readout. Regenerate: python tools/il_type.py labels Bloom
+INPUTS      @bold @track=0.08 = INPUTS
+PETALS      @sans = petals
+DEPTH       @sans = depth
+TWIST       @sans = twist
+SPIN        @sans = spin
+SIZE        @sans = size
+HUE         @sans = hue

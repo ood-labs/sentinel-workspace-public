@@ -1,0 +1,83 @@
+# Pattern - the labels of the Pattern editor. Regenerate: python tools/il_type.py labels Pattern
+TITLE       @bold @track=0.08 = PATTERN
+SUBTITLE    @sans = six voices, six lengths, one clock
+BAR         @sans = bar
+DOT         @mono = .
+HPS         @sans = hits / s
+COLON       @mono = :
+
+E_0         @sans = steps
+E_1         @sans = velocity
+E_2         @sans = chance
+E_3         @sans = ratchet
+E_4         @sans = nudge
+PLAY        @bold @track=0.06 = PLAY
+STOP        @bold @track=0.06 = STOP
+AHEAD_D     @sans = each hit leaves 100 ms early, with the time it is due
+F_0         @sans = note
+F_1         @sans = length
+F_2         @sans = turn
+F_3         @sans = hits
+F_4         @sans = velocity
+F_5         @sans = chance
+F_6         @sans = nudge
+F_7         @sans = bpm
+F_8         @sans = swing
+F_9         @sans = ratchet
+PCT         @sans = %
+
+GRID        @bold @track=0.06 = GRID
+GRID_D      @sans = each lane loops at its own length: drag its bracket
+M           @bold = M
+S           @bold = S
+N_0         @sans = C
+N_1         @sans = C#
+N_2         @sans = D
+N_3         @sans = D#
+N_4         @sans = E
+N_5         @sans = F
+N_6         @sans = F#
+N_7         @sans = G
+N_8         @sans = G#
+N_9         @sans = A
+N_10        @sans = A#
+N_11        @sans = B
+
+RINGS       @bold @track=0.06 = RINGS
+RINGS_D     @sans = a ring per lane: the hands meet when every cycle restarts
+REALIGN     @sans = all in step again in
+OF_STEPS    @sans = steps  /  min:sec
+
+LANE        @bold @track=0.06 = LANE
+STEP        @bold @track=0.06 = STEP
+OF          @sans = of
+ON          @sans = on
+OFF         @sans = off
+MUTE        @bold @track=0.04 = MUTE
+SOLO        @bold @track=0.04 = SOLO
+EUCLID_D    @sans = hits: spread that many evenly (Euclid)
+R_0         @mono = 1
+R_1         @mono = 2
+R_2         @mono = 3
+R_3         @mono = 4
+
+TAPE        @bold @track=0.06 = TAPE
+TAPE_D      @sans = the hits as they went out: hollow where the chance said no
+NOW         @sans = now
+AHEAD       @sans = sent ahead
+
+# hint bar (pairs)
+H_K0        @sans = Click / drag cells
+H_K1        @sans = 1 - 5
+H_K2        @sans = Drag a ring
+H_K3        @sans = Space  0
+H_K4        @sans = Enter  E
+H_K5        @sans = M  S  Backspace
+H_K6        @sans = R  Z
+H_D0        @sans = set / paint
+H_D1        @sans = what to paint
+H_D2        @sans = turn its lane
+H_D3        @sans = play, to the top
+H_D4        @sans = toggle, spread evenly
+H_D5        @sans = mute, solo, clear
+H_D6        @sans = default, undo

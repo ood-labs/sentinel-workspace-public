@@ -1,0 +1,103 @@
+name: "FE Rig"
+version: "1.0"
+# The fixture engine's rig: one 80-byte record per fixture (rig type, engine mode, world mount pose, up to four DMX
+# breaks) for up to 1024 fixtures, taken from a Fixture Rig node's Fixtures port and read through its FixtureRender
+# port, so any type the rig holds draws with no per-type code. Placement and patch are the Fixture Rig node's. The
+# preview is the lighting plot: plan, front elevation and patch.
+mode: generator
+resolution: [1280, 720]
+# every_frame: the output pass reads the bounds pass's buffer one cook late, so on_dirty would leave the
+# plot one change behind until the next edit.
+execution: every_frame
+
+parameters:
+  # The plot's frame: the stage width it spans and the trim line of its elevation.
+  - { name: rig_width,   display: "Plot width (m)",        type: float, min: 4, max: 60,  default: 14, group: "Plot" }
+  - { name: trim,        display: "Trim height (m)",       type: float, min: 2, max: 20,  default: 6.5, group: "Plot" }
+
+data_inputs:
+  # The Fixture Rig node's Fixtures port. Unconnected, the rig is empty.
+  - name: "Fixtures"
+    slot: 0
+    schema:
+      - { name: axis_x, type: float4 }
+      - { name: axis_y, type: float4 }
+      - { name: axis_z, type: float4 }
+      - { name: origin, type: float4 }
+      - { name: ids,    type: uint, count: 4 }
+      - { name: dmx01,  type: uint, count: 4 }
+      - { name: dmx23,  type: uint, count: 4 }
+      - { name: meta,   type: uint, count: 4 }
+  # The Fixture Rig node's FixtureRender port: the type tables every FE module reads.
+  - name: "FixtureRender"
+    slot: 1
+    schema:
+      - { name: w, type: uint, count: 4 }
+
+buffers:
+  - { name: rig,    structured: true, element_size: 80, element_count: 1024 }
+  - { name: bounds, structured: true, element_size: 16, element_count: 2048 }
+  - { name: status, structured: true, element_size: 16, element_count: 2 }
+
+control_outputs:
+  - { name: rig_state,    buffer: status, element: 0, field_offset: 0,  description: "0 a rig from the Fixture Rig node, 1 no Fixture Rig records or no FixtureRender tables (an empty rig)" }
+  - { name: fixtures,     buffer: status, element: 0, field_offset: 4,  description: "Fixture Rig records the rig holds" }
+  - { name: unknown,      buffer: status, element: 0, field_offset: 8,  description: "Fixture Rig records with no rig type or no engine mode for their GDTF mode" }
+  - { name: over,         buffer: status, element: 0, field_offset: 12, description: "Fixture Rig records past the engine's 1024" }
+  - { name: placeholders, buffer: status, element: 1, field_offset: 0,  description: "Records whose type the engine cannot draw (alarm-colour placeholders)" }
+
+data_outputs:
+  - name: "Rig"
+    buffer: rig
+    schema:
+      - { name: position, type: float3 }
+      - { name: type,     type: uint }
+      - { name: rotation, type: float3 }
+      - { name: mode,     type: uint }
+      - { name: u0,       type: uint }
+      - { name: a0,       type: uint }
+      - { name: u1,       type: uint }
+      - { name: a1,       type: uint }
+      - { name: u2,       type: uint }
+      - { name: a2,       type: uint }
+      - { name: group,    type: uint }
+      - { name: flags,    type: uint }
+      - { name: u3,       type: uint }
+      - { name: a3,       type: uint }
+      - { name: r0,       type: uint }
+      - { name: r1,       type: uint }
+
+passes:
+  - name: rig
+    shader: rig.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+    output: "buffer:rig"
+  - name: status
+    shader: status.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+    output: "buffer:status"
+  - name: bounds
+    shader: bounds.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - { slot: 0, source: "buffer:rig" }
+      - { slot: 1, source: "data:1" }
+    output: "buffer:bounds"
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:rig" }
+      - { slot: 1, source: "buffer:bounds" }
+      - { slot: 2, source: "buffer:status" }
+      - { slot: 3, source: "data:1" }
+    output: output

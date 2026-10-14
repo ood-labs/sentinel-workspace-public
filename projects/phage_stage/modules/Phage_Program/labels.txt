@@ -1,0 +1,132 @@
+# Phage_Program - the programmer sheet's words. Regenerate: python tools/il_type.py labels Phage_Program
+TITLE       @bold @track=0.14 = PHAGE
+SUBTITLE    @sans = programmer sheet
+COMMIT      @bold @track=0.08 = COMMIT
+MASTER      @bold @track=0.08 = MASTER
+PITCH       @bold @track=0.08 = PITCH
+PALETTE     @bold @track=0.08 = PALETTE
+PAL_A       @bold = A
+PAL_B       @bold = B
+PAL_C       @bold = C
+WAITING     @sans = waiting for the committed program
+
+# layer groups, in sheet column order (layout.hlsl counts from G_MOVE)
+G_MOVE      @bold @track=0.08 = MOVE
+G_BEAM      @bold @track=0.08 = BEAM
+G_HALO      @bold @track=0.08 = HALO
+G_TUBE      @bold @track=0.08 = TUBE
+G_PLATES    @bold @track=0.08 = PLATES
+G_PIXELS    @bold @track=0.08 = PIXELS
+G_CHASE     @bold @track=0.08 = CHASE
+G_AXES      @bold @track=0.08 = AXES
+# the fixture type over its layers (from T_HALO_BEAM, in sheet order)
+T_HALO_BEAM @sans = Halo Beam
+T_STROBE    @sans = Linear Strobe
+T_BATTEN    @sans = Pixel Batten
+T_TRUSS     @sans = truss
+
+# attribute rows, in the order sheet.hlsli's sheetAttr() reads them (layout.hlsl counts from A_PAN)
+A_PAN       @bold @track=0.06 = PAN
+A_TILT      @bold @track=0.06 = TILT
+A_LEVEL     @bold @track=0.06 = LEVEL
+A_RING      @bold @track=0.06 = RING / PLATE
+A_COLOUR    @bold @track=0.06 = COLOUR
+A_COLOUR2   @bold @track=0.06 = COLOUR 2
+A_MOVE      @bold @track=0.06 = MOVE LANE
+A_CHASE     @bold @track=0.06 = CHASE LANE
+A_CLANE     @bold @track=0.06 = COLOUR LANE
+A_PANSIZE   @bold @track=0.06 = PAN SIZE
+A_TILTSIZE  @bold @track=0.06 = TILT SIZE
+A_SPREAD    @bold @track=0.06 = SPREAD
+A_WIDTH     @bold @track=0.06 = WIDTH
+A_OFFSET    @bold @track=0.06 = OFFSET
+A_DIRECTION @bold @track=0.06 = DIRECTION
+A_LOOK      @bold @track=0.06 = LOOK
+A_ORDER     @bold @track=0.06 = ORDER
+
+# the inspector: which fixture (singular, in fixture-type order from N_MOVER)
+N_MOVER     @bold @track=0.08 = MOVER
+N_STROBE    @bold @track=0.08 = STROBE
+N_BAR       @bold @track=0.08 = BAR
+N_AXIS      @bold @track=0.08 = AXIS
+N_BODY      @bold @track=0.08 = BODY
+N_CAPSID    @bold @track=0.08 = CAPSID
+N_LEG       @bold @track=0.08 = LEG
+SLOT        @sans = slot
+ROW         @sans = row
+NOT_READ    @sans = not read by
+U_DEG       @sans = deg
+U_M         @sans = m
+U_PCT       @sans = %
+# the truss axes read pan / tilt as motion
+X_YAW       @bold @track=0.08 = YAW
+X_HEIGHT    @bold @track=0.08 = HEIGHT
+X_SPIN      @bold @track=0.08 = SPIN
+X_SHEATH    @bold @track=0.08 = SHEATH
+X_SWING     @bold @track=0.08 = SWING
+X_LIFT      @bold @track=0.08 = LIFT
+# lanes 0-5 (layout.hlsl counts from LANE_OFF)
+LANE_OFF    @bold @track=0.06 = OFF
+LANE_KICK   @bold @track=0.06 = KICK
+LANE_SNARE  @bold @track=0.06 = SNARE
+LANE_HIHAT  @bold @track=0.06 = HI-HAT
+LANE_BUILD  @bold @track=0.06 = BUILD
+LANE_PHRASE @bold @track=0.06 = PHRASE
+FORWARD     @bold @track=0.06 = FORWARD
+REVERSE     @bold @track=0.06 = REVERSE
+# chase orders 0-7 (from ORD_AROUND)
+ORD_AROUND  @bold @track=0.06 = AROUND
+ORD_MIRROR  @bold @track=0.06 = MIRROR
+ORD_OUT     @bold @track=0.06 = OUT
+ORD_UP      @bold @track=0.06 = UP
+ORD_FRONT   @bold @track=0.06 = FRONT
+ORD_SIDE    @bold @track=0.06 = SIDE
+ORD_SHUFFLE @bold @track=0.06 = SHUFFLE
+ORD_LEG     @bold @track=0.06 = LEG
+# strobe looks 0-5 (from SLK_PULSE)
+SLK_PULSE   @bold @track=0.06 = PULSE
+SLK_STROBE  @bold @track=0.06 = STROBE
+SLK_SPARKLE @bold @track=0.06 = SPARKLE
+SLK_BLINDER @bold @track=0.06 = BLINDER
+SLK_GLOW    @bold @track=0.06 = GLOW
+SLK_OFF     @bold @track=0.06 = OFF
+# pixel-bar content 0-15 (from LK_SOLID)
+LK_SOLID     @bold @track=0.06 = SOLID
+LK_CHASE     @bold @track=0.06 = CHASE
+LK_PULSE     @bold @track=0.06 = PULSE
+LK_SEGMENTS  @bold @track=0.06 = SEGMENTS
+LK_SCATTER   @bold @track=0.06 = SCATTER
+LK_COMET     @bold @track=0.06 = COMET
+LK_TWIN      @bold @track=0.06 = TWIN
+LK_FILL      @bold @track=0.06 = FILL
+LK_SCANNER   @bold @track=0.06 = SCANNER
+LK_BARCODE   @bold @track=0.06 = BARCODE
+LK_PLASMA    @bold @track=0.06 = PLASMA
+LK_SPARKLE   @bold @track=0.06 = SPARKLE
+LK_HEARTBEAT @bold @track=0.06 = HEARTBEAT
+LK_CLIMB     @bold @track=0.06 = CLIMB
+LK_STROBE    @bold @track=0.06 = STROBE
+LK_RIPPLE    @bold @track=0.06 = RIPPLE
+# mover / axis FX: repeats x1-x8 (from FX_X1), then STEP, JMP, RND; SPIN quarter rates (from SPIN_Q)
+FX_NONE     @bold @track=0.06 = NO FX
+FX_X1       @bold @track=0.06 = x1
+FX_X2       @bold @track=0.06 = x2
+FX_X4       @bold @track=0.06 = x4
+FX_X8       @bold @track=0.06 = x8
+FX_STEP     @bold @track=0.06 = STEP
+FX_JMP      @bold @track=0.06 = JMP
+FX_RND      @bold @track=0.06 = RND
+FX_SPIN     @bold @track=0.06 = SPIN
+SPIN_Q      @bold @track=0.06 = 1/4 TURN
+SPIN_H      @bold @track=0.06 = 1/2 TURN
+SPIN_1      @bold @track=0.06 = 1 TURN
+SPIN_2      @bold @track=0.06 = 2 TURNS
+FX_GLIDE    @bold @track=0.06 = GLIDE
+FX_GROUP    @bold @track=0.06 = GROUP
+FX_HOLD     @bold @track=0.06 = HOLD
+# the key, shown while nothing is pointed at
+KEY_VALUE   @bold @track=0.08 = VALUE
+KEY_MIN     @sans = min
+KEY_MAX     @sans = max
+KEY_EMPTY   @sans = not read by that layer
+KEY_HINT    @sans = point at a cell to read it

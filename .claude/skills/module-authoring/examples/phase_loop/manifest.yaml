@@ -1,6 +1,9 @@
 name: "Phase Loop Demo"
 version: "1.0"
-description: "1280x720 geometric loop test for phase scrubbing and free-run playback. A progress arc, an orbiting lead dot with a center hand, and three satellite dots all advance with a normalized phase (0..1) that wraps seamlessly. Leave animation_speed at 0 and sweep phase 0->1 to scrub the loop deterministically (one revolution per unit); raise animation_speed to free-run on _Time."
+# 1280x720 geometric loop test for phase scrubbing and free-run playback. A progress arc, an
+# orbiting lead dot with a center hand, and three satellite dots all advance with a normalized
+# phase (0..1) that wraps seamlessly. Leave animation_speed at 0 and sweep phase 0->1 to scrub the
+# loop deterministically (one revolution per unit); raise animation_speed to free-run on _Time.
 mode: generator
 resolution: [1280, 720]
 

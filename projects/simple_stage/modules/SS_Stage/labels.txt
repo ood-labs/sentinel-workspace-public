@@ -1,0 +1,38 @@
+# SS_Stage - the stage axonometric's words. Regenerate: python tools/il_type.py labels SS_Stage
+TITLE       @bold @track=0.14 = SIMPLE STAGE
+SUBTITLE    @sans = flown trusses and plot
+TUBES       @bold @track=0.08 = TUBES
+SOLIDS      @bold @track=0.08 = SOLIDS
+MEMBERS     @bold @track=0.08 = MEMBERS
+FIXTURES    @bold @track=0.08 = FIXTURES
+HINT        @sans = point at a member or a fixture to read it
+# the key
+K_CHORDS    @bold @track=0.08 = CHORDS
+K_LACING    @bold @track=0.08 = LACING
+K_FIXTURES  @bold @track=0.08 = FIXTURES
+K_SLOT      @sans = numbers are program slots
+K_GRID      @sans = floor grid 1 m
+# the member card: the part, its piece, then its figures
+N_FRONT     @bold @track=0.08 = FRONT TRUSS
+N_BACK      @bold @track=0.08 = BACK TRUSS
+N_WALL      @bold @track=0.08 = WALL TRUSS
+P_SECTION   @sans = section
+SKU_F34     @sans = F34 square truss
+MEMBER      @bold @track=0.08 = MEMBER
+LENGTH      @bold @track=0.08 = LENGTH
+TRUSS       @bold @track=0.08 = TRUSS
+BAYS        @bold @track=0.08 = BAYS
+M           @sans = m
+# the fixture card
+F_FRONT_ROW    @bold @track=0.08 = FRONT ROW
+F_BACK_ROW     @bold @track=0.08 = BACK ROW
+F_TRUSS_STROBE @bold @track=0.08 = TRUSS STROBE
+F_FLOOR_STROBE @bold @track=0.08 = FLOOR STROBE
+F_WALL         @bold @track=0.08 = WALL
+T_HALO         @sans = Halo Beam, hung below its truss
+T_STROBE       @sans = Linear Strobe, on the front truss's face
+T_FLOOR        @sans = Linear Strobe, standing on the deck
+T_BATTEN       @sans = Pixel Batten 1000 run, hung on the wall truss
+SLOT        @bold @track=0.08 = SLOT
+HEIGHT      @bold @track=0.08 = HEIGHT
+UNITS       @bold @track=0.08 = UNITS

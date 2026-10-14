@@ -1,6 +1,6 @@
 # kuka_cell
 
-A cell of six-axis industrial arms, transcribed from a KR QUANTEC-class reference photograph,
+A cell of six-axis industrial arms, transcribed from a reference photograph of a heavy-payload industrial robot,
 arrayed by a directly-editable floor plan, and driven by four independent pattern channels at
 once.
 
@@ -57,8 +57,8 @@ it is invisible in the render until two machines have already collided.
 
 It is calibrated, not decorative: a Standard frame reaches 2.93 m, so any two bases closer than
 5.86 m are in conflict. The shipped `pitch` default of 6.4 m clears it. Set `arrangement = Ring`
-with 18 arms at radius 8.6 and the readout goes to **CLSH 20** — 3.0 m of arc spacing against a
-5.86 m requirement — before you have rendered a single frame.
+with 18 arms at radius 8.6 and the readout goes to **CLASHING PAIRS 20** — 3.0 m of arc spacing
+against a 5.86 m requirement — before you have rendered a single frame.
 
 `KA_Pose` carries the other two failure modes, which are motion rather than layout: a joint
 sitting on its limit turns that bar red in the matrix, and a tool that has gone through the floor
@@ -439,7 +439,7 @@ pattern enums *alone*, so a show change never touches rates or amounts.
 
 ## Scene Group surface
 
-`KUKA Cell` exposes eight controls, all verified through the group path:
+The cell's Scene Group exposes eight controls, all verified through the group path:
 
 Arrangement · Arms · Channel Split · Variation · Master Rate · Rally · Hit Power · Light Rig
 
@@ -454,12 +454,18 @@ No camera control is exposed there, per the camera contract.
 
 ---
 
-## Direct manipulation — what needs exercising by hand
+## Direct manipulation
 
-Injected input does not reach Module viewport events, so the gesture paths below **could not be
-machine-proven** and need exercising by hand in the `KA_Cell` preview. Everything reachable was
-verified: buffer persistence, signature-driven regeneration, pick maths against known record
-coordinates, the derived selection/overlap/outside flags, and the inspector readouts.
+**Exercised with injected viewport input, and partly with real input.** In the `KA_Cell` preview,
+a click, a drag in each strip, every key below and a drag on the target were each driven through
+the panel, and each changed the published `Cell` records as described. With real mouse and
+keyboard events (Windows `SendInput`), a plan-strip drag held for 10 s followed the cursor and did
+not drift after release, and `A`, `D`, `E` and `X` each acted exactly once per press: one 15° turn,
+one ×1.12 step, one arm off. In `KA_Robot`, each real `R` flips the Scope once. The elevation strip,
+the target and the other keys have not had a real-input pass yet. Keys reach the canvas once it has
+been clicked.
+
+An arm switched off with `X` cannot be picked again, so switch it back on before you deselect it.
 
 | Gesture | Effect |
 | --- | --- |
@@ -478,10 +484,19 @@ coordinates, the derived selection/overlap/outside flags, and the inspector read
 Dragging the **target** grabs its live orbiting point but moves its *anchor*, so the orbit keeps
 running under your hand.
 
-`KA_Rally` and `KA_Pose` declare no viewport interaction at all, deliberately. Every control on
-them is an exact numeric or enum choice, which Properties already does better than a
-shader-drawn slider, and the one genuinely spatial control — the Point At target — is a place in
-the cell, so it belongs to the plan authority and you drag it there.
+**Hover** is the other hand test, on all three instrument canvases. In `KA_Cell` the arm or target
+under the pointer gets a ring in both strips and a card (identity, channel and frame, position,
+heading, reach, rise, pedestal; the target's live position and orbit); `KA_Pose` lifts the row,
+tool stem or channel station under the pointer and cards the arm (six joints against their limits,
+tool height, and its rally role or channel pattern); `KA_Rally` rings the player under the pointer
+and cards its role, timing, hit tally, swing and the reach it is elected on. Hover is read from the
+pointer each cook and never stored, and the cards must flip away from the canvas edges.
+
+`KA_Rally` and `KA_Pose` declare a HOVER-ONLY viewport, deliberately: pointing inspects, and
+nothing is ever written. Every control on them is an exact numeric or enum choice, which
+Properties already does better than a shader-drawn slider, and the one genuinely spatial control
+— the Point At target — is a place in the cell, so it belongs to the plan authority and you drag
+it there.
 
 ---
 

@@ -1,0 +1,60 @@
+# KA_Rally - the rally court's words. Regenerate: python -B tools/il_type.py labels KA_Rally
+TITLE        @bold @track=0.14 = ARMS
+SUBTITLE     @sans = rally court
+COURT        @bold @track=0.08 = COURT
+GRID         @sans = grid 1 m, 5 m
+FLIGHT       @bold @track=0.08 = FLIGHT
+NEXT_4S      @sans = next 4 s
+STRIKE       @bold @track=0.06 = STRIKE
+M            @sans = m
+MPS          @sans = m/s
+SEC          @sans = s
+DASH         @mono = -
+
+PLAY         @bold @track=0.08 = PLAY
+# the play state, in KA_PLAY_* order (layout.hlsl counts from ST_IDLE)
+ST_IDLE      @bold @track=0.10 = IDLE
+ST_LIVE      @bold @track=0.10 = LIVE
+ST_DROP      @bold @track=0.10 = DROP
+RALLY        @bold @track=0.06 = RALLY
+HITS         @sans = hits in a row
+PLAYERS      @bold @track=0.06 = PLAYERS
+BALL_H       @bold @track=0.06 = BALL HEIGHT
+BALL_V       @bold @track=0.06 = BALL SPEED
+STRIKER      @bold @track=0.06 = STRIKER
+CONTACT_IN   @bold @track=0.06 = CONTACT IN
+LAST         @bold @track=0.06 = LAST STRIKER
+NO_REACH     @bold @track=0.08 = NO ARM CAN REACH IT
+BEST         @bold @track=0.06 = BEST
+HISTORY      @bold @track=0.06 = LAST 24 RALLIES
+MEAN         @sans = mean
+HITS_U       @sans = hits
+NO_HISTORY   @sans = no rally finished yet
+
+# the hover card
+ARM          @bold @track=0.08 = ARM
+# channels A-D (layout.hlsl counts from CH_A)
+CH_A         @bold @track=0.06 = CHANNEL A
+CH_B         @bold @track=0.06 = CHANNEL B
+CH_C         @bold @track=0.06 = CHANNEL C
+CH_D         @bold @track=0.06 = CHANNEL D
+# rally roles, in KA_ROLE_* order from WATCH (layout.hlsl counts from RO_WATCH)
+RO_WATCH     @bold @track=0.06 = WATCHING
+RO_RECEIVE   @bold @track=0.06 = RECEIVING
+RO_STRIKE    @bold @track=0.06 = STRIKING
+RO_RECOVER   @bold @track=0.06 = RECOVERING
+BENCHED      @bold @track=0.06 = NOT PLAYING
+BENCH_NOTE   @sans = its channel is off the court
+RECOVERS     @bold @track=0.06 = RECOVERS IN
+HITS_T       @bold @track=0.06 = HITS
+REACH_S      @bold @track=0.06 = REACH AT STRIKE
+SWING        @bold @track=0.06 = SWING
+
+# footer: hover, then the legend
+K_HOVER      @sans = Hover
+D_HOVER      @sans = inspect a player
+LG_CHANNEL   @sans = channel
+LG_ELECTED   @sans = elected to hit
+LG_BENCHED   @sans = not playing
+LG_REACH     @sans = reach at strike height
+LG_PATH      @sans = predicted path

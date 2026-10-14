@@ -2,6 +2,7 @@
 // and pixel-bar glow in closed form (1/d^2 line integrals, cone terms at closest approach). Each 8 x 8
 // group first stages, in groupshared memory, only the lights whose volume can reach its view cone
 // (the sum does not care about order), so a pixel neither reads nor tests the rest.
+#include "taa.hlsli"
 #include "../_shared/phage_fixture.hlsli"
 StructuredBuffer<PhOptical> Sources:register(t0);
 #include "../_shared/phage_venue.hlsli"
@@ -48,8 +49,8 @@ float pointGlow(float3 p,float3 ro,float3 rd,float limit){float t0=dot(p-ro,rd);
 bool sphereInCone(float3 c,float r,float3 ro,float3 dc,float tanA,float secA){
  float3 v=c-ro;if(dot(v,v)<=r*r)return true;float along=dot(v,dc);
  return along>-r&&length(v-dc*along)<along*tanA+r*secA;}
-groupshared float4 gB0[128],gB1[128],gB2[128];   // beams: position+reach, axis+field tangent, energy+beam tangent
-groupshared float4 gW0[224],gW1[224],gW2[224];   // ring glows and strobes, same layout
+groupshared float4 gB0[192],gB1[192],gB2[192];   // beams (movers, narrow guests): position+reach, axis+field tangent, energy+beam tangent
+groupshared float4 gW0[288],gW1[288],gW2[288];   // ring glows, strobes and wide guests, same layout
 groupshared float4 gE0[96],gE1[96],gE2[96];      // bar emitters: a+length, b, energy
 groupshared uint gNB,gNW,gNE;
 [numthreads(8,8,1)]void main(uint3 tid:SV_DispatchThreadID,uint3 gid:SV_GroupID,uint gi:SV_GroupIndex){
@@ -62,7 +63,7 @@ groupshared uint gNB,gNW,gNE;
  float tanA=sqrt(1-cosA*cosA)/cosA,secA=1/cosA;
  if(gi==0){gNB=0;gNW=0;gNE=0;}
  GroupMemoryBarrierWithGroupSync();
- if(haze>0&&beam_gain>0){[loop]for(uint k=gi;k<448;k+=64){
+ if(haze>0&&beam_gain>0){[loop]for(uint k=gi;k<512;k+=64){
   if(k<128){PhOptical b=Sources[k*2];if(b.active<.5||b.intensity<=0||!any(b.colour>0))continue;
    bool hit=false;float seg=b.reach/8;
    [loop]for(uint s=0;s<8&&!hit;s++){float t=(s+.5)*seg;hit=sphereInCone(b.position+b.normal*t,.09+(t+seg*.5)*b.field_tangent+seg*.5,ro,dc,tanA,secA);}
@@ -72,13 +73,21 @@ groupshared uint gNB,gNW,gNE;
    else{b=Sources[k];if(b.active<.5||b.intensity<.002||!any(b.colour>0))continue;f=strobe_haze;}
    if(sphereInCone(b.position,b.reach,ro,dc,tanA,secA)){uint j;InterlockedAdd(gNW,1,j);
     gW0[j]=float4(b.position,b.reach);gW1[j]=float4(b.normal,b.field_tangent);gW2[j]=float4(b.colour*b.intensity*f,b.beam_tangent);}}
+  else if(k>=448){PhOptical b=Sources[352+k-448];bool on=b.active>.5&&b.intensity>.001&&any(b.colour>0);
+   if(on&&b.padding.x<3.5){bool hit=false;float seg=b.reach/8;
+    [loop]for(uint s=0;s<8&&!hit;s++){float t=(s+.5)*seg;hit=sphereInCone(b.position+b.normal*t,.09+(t+seg*.5)*b.field_tangent+seg*.5,ro,dc,tanA,secA);}
+    if(hit){uint j;InterlockedAdd(gNB,1,j);gB0[j]=float4(b.position,b.reach);gB1[j]=float4(b.normal,b.field_tangent);gB2[j]=float4(b.colour*b.intensity,b.beam_tangent);}}
+   else if(on&&sphereInCone(b.position,b.reach,ro,dc,tanA,secA)){uint j;InterlockedAdd(gNW,1,j);
+    gW0[j]=float4(b.position,b.reach);gW1[j]=float4(b.normal,b.field_tangent);gW2[j]=float4(b.colour*b.intensity*strobe_haze,b.beam_tangent);}}
   else if(bar_glow>0){uint e=k-352;float4 a=Venue[PV_EMIT+3*e],bb=Venue[PV_EMIT+3*e+1],r=Venue[PV_EMIT+3*e+2];if(!any(r.rgb>.001))continue;
    float len=length(bb.xyz-a.xyz);
    if(sphereInCone((a.xyz+bb.xyz)*.5,len*.5+glow_range,ro,dc,tanA,secA)){uint j;InterlockedAdd(gNE,1,j);
     gE0[j]=float4(a.xyz,len);gE1[j]=float4(bb.xyz,0);gE2[j]=float4(r.rgb*len*.004*bar_glow/max(beam_gain,.001),0);}}}}
  GroupMemoryBarrierWithGroupSync();
  if(!inside)return;
- float2 uv=(tid.xy+.5)/float2(w,h),ndc=float2(uv.x*2-1,1-uv.y*2);
+ // With taa on, each frame samples its own sub-pixel position (taa.hlsli), so the resolve averages 8 positions per
+ // half-resolution pixel and a beam's edge behind the crowd stops stepping.
+ float2 uv=(tid.xy+.5+(taa>.5?taaJitter():float2(0,0)))/float2(w,h),ndc=float2(uv.x*2-1,1-uv.y*2);
  float4 nearW=mul(_InvViewProjMatrix,float4(ndc,0,1)),farW=mul(_InvViewProjMatrix,float4(ndc,1,1));
  nearW/=nearW.w;farW/=farW.w;float3 rd=normalize(farW.xyz-nearW.xyz);
  float depth=_Tex1.SampleLevel(PointSampler,uv,0).a;float limit=depth>0?depth:_CameraFar;float3 result=0;

@@ -1,0 +1,100 @@
+name: "Scope"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# Four probe lanes and a gate strip for the Control Atoms Script. The probes are ordinary
+# parameters, each driven by a ref() expression on one of the Script's signal outputs:
+#   probe_a = ref("Atoms/control_outputs/lfo")    probe_b = ref("Atoms/control_outputs/env")
+#   probe_c = ref("Atoms/control_outputs/sh")     probe_d = ref("Atoms/control_outputs/slew")
+#   probe_gate = ref("Atoms/control_outputs/gate")
+# Expressions evaluate once per frame, so the Scope records one sample per cook: the Script runs
+# at 240 Hz, the parameters it drives see it at the frame rate. Point the expressions anywhere
+# (any node's control outputs) to scope something else, and rename the lanes in labels.txt.
+
+panel:
+  mode: canvas
+  output: "Scope"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  - { name: probe_a,    display: "Probe A (lfo)",  type: float, min: -1.0, max: 2.0, default: 0.0, group: "Probes" }
+  - { name: probe_b,    display: "Probe B (env)",  type: float, min: -1.0, max: 2.0, default: 0.0, group: "Probes" }
+  - { name: probe_c,    display: "Probe C (s&h)",  type: float, min: -1.0, max: 2.0, default: 0.0, group: "Probes" }
+  - { name: probe_d,    display: "Probe D (slew)", type: float, min: -1.0, max: 2.0, default: 0.0, group: "Probes" }
+  - { name: probe_gate, display: "Gate",           type: float, min: 0.0,  max: 1.0, default: 0.0, group: "Probes" }
+
+viewport:
+  hint: "Drag: place the active cursor (placing holds the trace). Shift-drag: the other cursor. 1 / 2: active cursor A / B. Space: hold / resume. Z / X or wheel: zoom. C: clear cursors."
+  interactions: [events]
+  input:
+    pointer: [left, wheel]
+    keyboard: [space, z, x, c, "1", "2"]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: cursor, label: "Place the active cursor (Shift: the other)" }
+    - { gesture: left_click, action: place_cursor, label: "Place the active cursor (Shift: the other)" }
+    - { gesture: wheel, action: zoom, label: "Zoom the time window" }
+    - { key: space, action: hold, label: "Hold / release" }
+    - { key: z, action: zoom_in, label: "Zoom in" }
+    - { key: x, action: zoom_out, label: "Zoom out" }
+    - { key: c, action: clear, label: "Clear cursors" }
+    - { key: "1", action: cursor_a, label: "Active cursor A" }
+    - { key: "2", action: cursor_b, label: "Active cursor B" }
+
+buffers:
+  # scope.hlsli: 1 header + 1024 samples
+  - { name: ring, structured: true, element_size: 32, element_count: 1025, persistent: true }
+  - { name: dl,   structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+passes:
+  - name: sample
+    shader: sample.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ring"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:ring" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Scope", pass: raster }
+
+data_outputs:
+  - name: "Samples"
+    buffer: "ring"
+    description: "0 header (now, window s; cursor A, cursor B time; latches; flags; event watermark; samples written), then a 1024-sample ring (time, gate; probe A, probe B; probe C; probe D) at index 1 + n % 1024."
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: c, type: float }
+      - { name: d, type: float }
+      - { name: e, type: uint }
+      - { name: f, type: uint }
+
+control_outputs:
+  - { name: window_s, buffer: ring, element: 0, field_offset: 4,  description: "The visible time window in seconds" }
+  - { name: cursor_a, buffer: ring, element: 0, field_offset: 8,  description: "Cursor A's moment (this node's clock; 0 = none)" }
+  - { name: cursor_b, buffer: ring, element: 0, field_offset: 12, description: "Cursor B's moment (this node's clock; 0 = none)" }

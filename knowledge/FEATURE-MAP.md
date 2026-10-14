@@ -2,6 +2,7 @@
 
 This folder is the shipped agent reference for Sentinel. Start here when a user asks what Sentinel can create, how nodes connect, or how one feature can drive another.
 
+
 Reusable existing-state creative continuation prompts and the hybrid workflow vocabulary live in `knowledge/creative-exploration-goals.md`.
 The mandatory internal-camera default for authored 3D, including the narrow external-camera exception and proof contract, lives in `knowledge/internal-camera-template.md`.
 For unstable GPU feedback, exact ABAB flicker, runaway driven fields, and persistent-state corruption, use `knowledge/feedback-simulation-troubleshooting.md`.
@@ -50,7 +51,7 @@ Tracking and analysis:
 - `audio`: WASAPI loopback, microphone, or paced WAV capture. Emits PCM, Spectrum, and Mel Bands data plus `level` and `peak` control outputs. See `audio-reactivity.md`.
 - `mediapipe`: face and hand tracking in one composable node. Emits landmarks plus gesture control outputs.
 - `facemesh`: hidden compatibility alias for old face-only projects.
-- `features`: model-free blob, corner, and line feature extraction. Emits data ports and control outputs.
+- `features`: model-free blob, corner, line and edge feature extraction. Emits data ports and control outputs.
 - `detection`: YOLOX-S object detections.
 - `personseg`: person segmentation masks.
 - `pose`: human pose keypoints.
@@ -62,28 +63,20 @@ Geometry:
 
 - `meshsource`: imports OBJ, FBX, GLB, or glTF geometry and publishes one canonical semantic Mesh output. Route that Mesh pin directly into a Module with `mesh_inputs`. See `mesh-import.md`.
 - `meshunpack`: specialized zero-copy adapter exposing the semantic Mesh as separate vertex, index, and submesh pins. Normal imported-mesh renderers should consume the semantic Mesh directly.
+- `fixturerig`: one lighting rig from an MVR or built in Sentinel, with types resolved against a GDTF library folder; publishes `Fixtures`, `SceneObjects`, `FixtureTypes` and `FixtureRender` data ports for rig Modules and the fixture engine, exports MVR and collects GDTFs. Driven by `sentinel_fixture`. See `fixture-import.md`.
 
 Shading and generative tools:
 
-- `conductor`:
-
-- Control outputs: `bpm`, `total_beats`, `beat`, `bar`, `beat_phase`, `bar_phase`, `is_downbeat`, `quantum`, `loop_phase`, per-cue `cue_phase`/`enter_phase`/`exit_phase`, macros `energy`/`tightness`/`spread`, and timecode outputs.
-- Data port: `Cue Records` for project-authored timeline or cue visualizations.
-
-`atlas`:
-
-- Data port: `Slot Occupancy` records for scene-spawner modules; readbacks report `occupied_count`, per-slot sequences, and cycle state.
-
-`module`: authored multi-pass shader projects with parameters, typed data ports, control outputs, and optional 3D/raster passes.
-- `hlslshader`: single HLSL post-process shader, development builds only. Build new work as a Module.
+- `module`: authored multi-pass shader projects with parameters, typed data ports, control outputs, and optional 3D/raster passes. Every authored visual is a Module.
 - `shaderproject`: hidden compatibility alias for module-style shader projects.
+- `hlslshader`: single HLSL post-process shader in development builds only; release builds do not have it. Build new work as a Module.
 
 Scene system and sequencing:
 
 - `conductor`: musical and timecode clocks, cues, macros, and quantized triggers published as control outputs. Loads cue sheets through `sentinel_conductor`. See `motion-choreography.md`.
-- `mux`: real-time select-1-of-N video switch (`selected`), with `solo_upstream` auto-holding non-selected StreamDiff variants. In `source_mode=Groups` it becomes the Scene Switcher, collecting Scene Groups wirelessly with cuts, crossfades, and OSC look triggers. See `scene-system.md`.
+- `mux`: real-time select-1-of-N video switch (`selected`), with `solo_upstream` auto-holding non-selected StreamDiff variants. In Wired mode `fade_time` crossfades between inputs (0 cuts), and every cut or fade waits up to 4 frames for a fresh incoming frame. In `source_mode=Groups` it becomes the Scene Switcher, collecting Scene Groups wirelessly with cuts, crossfades, and OSC look triggers. See `scene-system.md` and `video-source.md`.
 - `groupoutput`: Scene Group endpoint node that marks a group's final texture and resolution/fit for Scene Switcher collection. See `scene-system.md`.
-- `atlas`: multi-pass still bank collecting aligned color/segmentation/depth/data columns per captured still, with a self-timing capture cycle and a `Slot Occupancy` data pin. See `scene-system.md`.
+- `atlas`: hidden compatibility type that loads existing Atlas projects (a multi-pass still bank with a `Slot Occupancy` data pin). It is absent from the spawn menus; build new atlas-style work as Modules. See `scene-system.md`.
 - `camera`: wireless fly/orbit camera rig (control node). Camera-capable modules bind via `camera_ref` or through their Scene Group. See `scene-system.md`.
 - `camswitch`: Camera Switcher cutting or blending between camera nodes, with per-camera OSC triggers. See `scene-system.md`.
 
@@ -102,6 +95,7 @@ Lasers:
 
 - `laserout`: sends a Scan Signal to one laser projector over Simulate (the default, no hardware), Record, Ether Dream, LaserCube or ShowNET, through scanner protection, Frame Lock and Output Delay. Publishes `Sent Stream`. Real output needs the node's arm and the operator's ARM LASERS master. See `laser-output.md`.
 - `lasertrace`: traces pixels into ordered, frame-stable Scan Signal paths for Laser Out. See the `laser-trace-tuning` skill.
+- `lasermapping`: experimental camera-calibration mapping node. Map lasers with the Module chain in `laser-mapping.md` instead.
 
 Scripted control and controllers (Control nodes):
 
@@ -118,9 +112,30 @@ Lighting and show control (Control nodes, no pixel output):
 
 Utility and output:
 
-- Video File sources: `.mp4` and `.mov` clips decoded to BGRA8 when the codec is supported. Current supported lanes are NVDEC H.264/H.265 plus native HAP/HAP Alpha. AV1, audio, HDR/float output, trim/cue, and reverse playback are not supported in this release.
+- Video File sources: `.mp4` and `.mov` clips decoded to BGRA8 when the codec is supported. HAP, HAP Alpha, HAP Q and HAP Q Alpha decode on a background reader; H.264/H.265 decode through NVDEC with colour taken from the file's tags. A clip decodes only while something consumes it. `actions/preroll`, `actions/restart` and `ended_count` drive show sequencing; `tools/templates/scripts/clip_sequencer.luau` plays a clip list through a wired Mux from one Event. AV1, audio, HDR/float output, trim/cue, and reverse playback are not supported in this release. See `video-source.md`.
 - `vsr`: RTX Video Super Resolution.
 - Spout and NDI output objects send graph results to other applications.
+
+### Trial video output
+
+In a trial install, Spout, NDI and display output share one budget of 921,600
+pixels (a 1280x720 image, in any shape) across every output running at once.
+When the running outputs ask for more, Sentinel scales all of them down by the
+same factor, keeping their proportions, and stretches a scaled display output to
+fill its screen. Spout and NDI input are not limited.
+
+A smaller or softer output in a trial install is this limit at work, so leave the
+graph, resolution, fit mode and receiver as they are. Read the limit from:
+
+- `sentinel_app action=status`: `license.video_out` reports `budget_px` (null
+  when licensed), `requested_px`, `delivered_px` and, per output,
+  `requested` and `delivered` sizes. `license.video_in` reads `unlimited`.
+- `sentinel_pipeline action=list_outputs`: each output carries `trial_clamped`,
+  and a clamped one adds `delivered_width`, `delivered_height` and a status
+  line such as `Sending 1280×720 of 1920×1080, trial.`
+
+The output's configured size is unchanged, so a license restores full size on
+the next frame. Stopping one output lets the others grow back.
 
 Use `list_types` for the authoritative list in the current build.
 
@@ -133,7 +148,7 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 | `streamdiff` | yes | Real-time SDXL image generation. Requires StreamDiff engine packs. |
 | `mediapipe` | yes | Composable face and hand tracking, landmarks, gesture control outputs. |
 | `facemesh` | hidden | Compatibility alias for old face-only projects. Prefer `mediapipe`. |
-| `features` | yes | Model-free blob, corner, and line feature extraction. |
+| `features` | yes | Model-free blob, corner, line and edge feature extraction. |
 | `audio` | yes | Audio In for WASAPI loopback, microphone, or paced WAV sources, with PCM, Spectrum, and Mel Bands data outputs. |
 | `detection` | yes | YOLOX-S object detections. Requires `auxiliary-detection`. |
 | `personseg` | yes | Person segmentation masks. Requires personseg engines. |
@@ -147,9 +162,9 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 | `opticalflow` | yes | NVIDIA hardware optical flow. |
 | `vsr` | yes | RTX Video Super Resolution. |
 | `conductor` | yes | Musical/timecode clocks, cues, macros, quantized triggers as control outputs. Cue sheets load via `sentinel_conductor`. |
-| `mux` | yes | Real-time select-1-of-N video switch; `solo_upstream` auto-holds non-selected StreamDiff variants. In `source_mode=Groups` it becomes the Scene Switcher, collecting Scene Groups wirelessly. |
+| `mux` | yes | Real-time select-1-of-N video switch with `fade_time` crossfades in Wired mode; `solo_upstream` auto-holds non-selected StreamDiff variants. In `source_mode=Groups` it becomes the Scene Switcher, collecting Scene Groups wirelessly. |
 | `groupoutput` | yes | Scene Group output endpoint: marks a group's final texture, resolution, and fit mode for Scene Switcher collection. |
-| `atlas` | yes | Multi-pass still bank (color/segmentation/depth/data columns per captured still) with a self-timing capture cycle. |
+| `atlas` | hidden | Compatibility type for existing Atlas projects (multi-pass still bank). Build new work as Modules. |
 | `camera` | yes | Wireless fly/orbit camera rig (control node, no pixel output). Camera-capable modules bind via `camera_ref` or through their Scene Group. |
 | `camswitch` | yes | Camera Switcher: cut or quaternion-blend between camera nodes, with per-camera OSC triggers (control node). |
 | `dmxin` | yes | DMX In over Art-Net or sACN into a typed `DMX` data port; universe preview in the node body (control node). |
@@ -161,6 +176,8 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 | `bundlesplit` | yes | Splits a Bundle into its video and one data output per key. |
 | `laserout` | yes | Laser Out: Scan Signal to a laser projector over Simulate, Record, Ether Dream, LaserCube or ShowNET, with a `Sent Stream` output (control sink). |
 | `lasertrace` | yes | Laser Trace: pixels into ordered Scan Signal paths with a preview. |
+| `lasermapping` | yes | Experimental camera-calibration laser mapping. Map with the Module chain in `laser-mapping.md`. |
+| `fixturerig` | yes | Fixture Rig: one GDTF lighting rig from an MVR or built in Sentinel, with `Fixtures`, `SceneObjects`, `FixtureTypes` and `FixtureRender` data ports (control node). |
 | `script` | yes | Sandboxed Luau Script node with Signal and Event pins and a control window (control node). |
 | `midiin` | yes | MIDI In: Signal and timestamped Event outputs from a MIDI device (control node). |
 | `midiout` | yes | MIDI Out: timestamped MIDI from Event and Signal inputs (control sink). |
@@ -220,7 +237,32 @@ A normal DIST build includes the following; call `list_types` for the exact curr
 `oscout`:
 
 - Control outputs: `active_slots` (enabled message count), `send_errors`, `over_budget`.
-- Actions: `add_message`, `remove_message`, `list_messages` under `/sentinel/pipelines/<id>/actions/`, called through `sentinel_state action=invoke`.
+- Actions: `add_message`, `remove_message`, `list_messages` under `/sentinel/pipelines/<id>/actions/`, called through `sentinel_state action=invoke` with the arguments in `args`.
+
+`conductor`:
+
+- Control outputs: `bpm`, `total_beats`, `beat`, `bar`, `beat_phase`, `bar_phase`, `is_downbeat`, `quantum`, `loop_phase`, per-cue `cue_phase`/`enter_phase`/`exit_phase`, macros `energy`/`tightness`/`spread`, and timecode outputs.
+- Data port: `Cue Records` for project-authored timeline or cue visualizations.
+
+`fixturerig`:
+
+- Data ports: `Fixtures` (128-byte records), `SceneObjects` (96-byte records), `FixtureTypes` and `FixtureRender` (16-byte rows, layout version 1). See `fixture-import.md`.
+
+`lasertrace`:
+
+- Data port: `Scan Signal` (80-byte records). Control outputs include `strokes`, `segments`, `lit_length`, `blank_ratio`, `over_budget` and timing (`cpu_ms`, `gpu_ms`, `order_ms`).
+
+`laserout`:
+
+- Data port: `Sent Stream`, the cycle actually sent after scanner protection. Read effects and previs from it. See `laser-output.md`.
+
+Video File sources:
+
+- Read-only status under `/sentinel/sources/<id>/`: `ended_count`, `ended_at_ns`, `shownFrame`, `ready_frames`, `late_frames`, `demanded`. Actions `preroll` and `restart`. See `video-source.md`.
+
+`atlas` (compatibility):
+
+- Data port: `Slot Occupancy` records; readbacks report `occupied_count`, per-slot sequences, and cycle state.
 
 ## Node Modes
 
@@ -279,3 +321,17 @@ drive an authored Module parameter from a path such as
 - [Motion Choreography And Sequencing](motion-choreography.md)
 - [Precise Construction: Blueprints And SDF Audit](precise-construction.md)
 - [First-Run Engines](first-run-engines.md)
+- [Fixture Import: GDTF and MVR](fixture-import.md)
+- [Stage Equipment: Conventions, Contracts And Rigging Rules](stage-equipment.md)
+- [Imported Mesh Workflow](mesh-import.md)
+- [Internal Camera Template for Authored 3D](internal-camera-template.md)
+- [Modular Procedural Systems](modular-procedural-systems.md)
+- [GPU Cloth And XPBD Modules](gpu-cloth-and-xpbd.md)
+- [Feedback Simulation Troubleshooting](feedback-simulation-troubleshooting.md)
+- [Flat Cartoon Look in 3D (and Recursive Zoom Loops)](flat-cartoon-3d.md)
+- [Reference Build Method](reference-build-method.md)
+- [Open-Ended Creative Exploration Goals](creative-exploration-goals.md)
+- [Performance And Proof](performance-proof.md)
+- [Sentinel Vision Evaluation](vision-eval.md)
+- [Example Authoring and Reuse](example-authoring.md)
+- [Example Map](EXAMPLE-MAP.md)

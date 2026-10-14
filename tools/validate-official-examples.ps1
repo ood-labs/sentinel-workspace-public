@@ -89,6 +89,33 @@ function Get-ModuleDependencyClosure(
         $queue.Enqueue($resolved)
     }
 
+    # Files a manifest loads as assets (the kit's type atlas, data tables) are dependencies too.
+    $assetMatches = [regex]::Matches(
+        $manifestText,
+        '(?m)(?:^\s*|[,{]\s*)file\s*:\s*["'']?([^\s,"''}\]]+)'
+    )
+    foreach ($match in $assetMatches) {
+        $asset = [string]$match.Groups[1].Value
+        if ([IO.Path]::IsPathRooted($asset)) {
+            $errors.Add("manifest asset is rooted: $asset")
+            continue
+        }
+        $resolved = Get-FullPath (Join-Path $ModuleDir $asset)
+        if (-not (Test-IsUnder $ProjectDir $resolved)) {
+            $errors.Add("manifest asset escapes its project: $asset")
+            continue
+        }
+        if (-not (Test-Path -LiteralPath $resolved -PathType Leaf)) {
+            $errors.Add("manifest asset is missing: $asset")
+            continue
+        }
+        $key = $resolved.ToLowerInvariant()
+        if (-not $seen.ContainsKey($key)) {
+            $seen[$key] = $true
+            $files.Add($resolved)
+        }
+    }
+
     while ($queue.Count -gt 0) {
         $current = $queue.Dequeue()
         $key = $current.ToLowerInvariant()
@@ -600,6 +627,11 @@ foreach ($projectName in $Projects) {
                 if (-not $reachableFiles.ContainsKey($entry.FullName.ToLowerInvariant())) {
                     Add-Unique $unusedSharedFiles $relative
                 }
+            } elseif ($reachableFiles.ContainsKey($entry.FullName.ToLowerInvariant())) {
+                continue    # a manifest asset an active module loads
+            } elseif ($entry.Extension -ieq '.txt' -and @(Get-ChildItem -LiteralPath $entry.DirectoryName -File |
+                    Where-Object { $reachableFiles.ContainsKey($_.FullName.ToLowerInvariant()) }).Count -gt 0) {
+                continue    # a licence beside an asset in use
             } elseif ($entry.Name -ne [string]$config.Scientifica.LicenseFileName) {
                 Add-Unique $unusedSharedFiles $relative
             }

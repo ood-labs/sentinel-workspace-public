@@ -1,0 +1,128 @@
+name: "Timeline"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# A keyframe editor for a four-layer title sting (Ring, Sun, Block, Bar; x, y, scale, rotation and
+# opacity each), in panes that share one selection and one playhead:
+#   STAGE      the picture at the playhead (the program's own shading), the selected layer's frame,
+#              scale and rotation handles, and its motion path with a dot per frame - the spacing is
+#              the speed - plus onion ghosts; dragging on it keys at the playhead
+#   INSPECTOR  the layer's values at the playhead as drag fields, a key toggle per channel, and the
+#              primary key's interpolation (hold / linear / ease / spring / back) with its parameters
+#   TRANSPORT  play, frame, loop, speed, onion
+#   SHEETS     the layer list, a ruler with the loop, the dope sheet (layers, and the selected layer's
+#              channels) and the graph of the active channel, on one time axis; two splitters
+# The keys publish as "Motion" (see _shared/timeline.hlsli); the Sting renders them with motion blur.
+#
+# All four passes run every cook (the playhead moves). On 0.6.3 passes run in reverse manifest
+# order, so the picture trails the reducer by a cook or two; nothing here depends on the order.
+
+panel:
+  mode: canvas
+  output: "Timeline"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  - { name: onion_step, display: "Onion spacing", type: int, min: 1, max: 12, default: 4, group: "Stage", description: "Frames between the onion ghosts (two either side of the playhead)" }
+
+viewport:
+  hint: "Stage: click a layer to select it; drag it, its square handle or its ring handle to key position, scale or rotation at the playhead; drag a dot on the motion path to move that key. Inspector: drag a value to key it, click a diamond to key / unkey, click a mode, drag a parameter. Ruler: scrub; drag the triangles to set the loop. Dope sheet: click keys (Shift adds), drag to retime, drag empty to box select, double-click to add. Graph: drag keys and the selected keys' ease handles, drag empty to pan, wheel to zoom. Space play, Left / Right a frame, Up / Down key to key, Enter loop start, 1-5 interpolation, Backspace delete, Tab next layer, O onion, F frame, R default sting (Z brings yours back), Z undo."
+  interactions: [events]
+  input:
+    pointer: [left, wheel]
+    keyboard: [space, left, right, up, down, enter, "1", "2", "3", "4", "5", backspace, tab, o, f, r, z]
+    gestures: [click, double_click, drag]
+  bindings:
+    - { gesture: left_drag, action: edit, label: "Key on the stage; drag fields; scrub and loop; retime and box select; graph keys, handles and pan; splitters" }
+    - { gesture: left_click, action: select, label: "Select a layer, a key (Shift: toggle), a mode; toggle a key; play, speed, onion" }
+    - { gesture: left_double_click, action: add_key, label: "Add a key on a channel row or the graph" }
+    - { gesture: wheel, action: zoom, label: "Zoom the graph's values, or the sheets' time, about the pointer" }
+    - { key: space, action: play, label: "Play / pause" }
+    - { key: left, action: frame_back, label: "A frame back" }
+    - { key: right, action: frame_on, label: "A frame on" }
+    - { key: up, action: previous_key, label: "The previous key of the selected layer" }
+    - { key: down, action: next_key, label: "The next key of the selected layer" }
+    - { key: enter, action: loop_start, label: "To the loop's start" }
+    - { key: "1", action: hold, label: "Hold" }
+    - { key: "2", action: linear, label: "Linear" }
+    - { key: "3", action: ease, label: "Ease" }
+    - { key: "4", action: spring, label: "Spring" }
+    - { key: "5", action: back, label: "Back" }
+    - { key: backspace, action: delete, label: "Delete the selected keys" }
+    - { key: tab, action: next_layer, label: "Select the next layer" }
+    - { key: o, action: onion, label: "Onion skin" }
+    - { key: f, action: frame, label: "Frame the graph and the loop" }
+    - { key: r, action: reset, label: "The default sting (Z brings yours back)" }
+    - { key: z, action: undo, label: "Undo (again: redo)" }
+
+buffers:
+  # _shared/timeline.hlsli + tl.hlsli: the Motion records, then working state and the undo snapshot
+  - { name: state, structured: true, element_size: 16, element_count: 343, persistent: true }
+  # stage.hlsl: the picture at the playhead, inside the stage pane
+  - { name: stage, format: RGBA8, scale: 1.0 }
+  - { name: dl,    structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+# The loop, the format, the key counts and the keys (167 records) serialize into the project, node
+# presets and undo payloads. The working state after them is never restored.
+state_buffers:
+  - name: state
+    max_elements: 167
+    schema:
+      - { name: v, type: float4 }
+
+passes:
+  - name: reduce
+    shader: reduce.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:state"
+  - name: stage
+    shader: stage.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:stage"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "buffer:stage" }
+    output: output
+
+outputs:
+  - { name: "Timeline", pass: raster }
+
+control_outputs:
+  - { name: frame,   buffer: state, element: 167, field_offset: 0, description: "The playhead, in frames (fractional while playing)" }
+  - { name: playing, buffer: state, element: 167, field_offset: 4, description: "1 while playing" }
+  - { name: phase,   buffer: state, element: 174, field_offset: 8, description: "Where the playhead is in the loop, 0..1" }
+
+data_outputs:
+  - name: "Motion"
+    buffer: "state"
+    description: "float4 records (see _shared/timeline.hlsli): 0 = (loop in, loop out, frames, fps), 1 = (format magic), 2..6 = key counts (four channels a record), 7 + channel * 8 + i = key (frame, value, mode + 8 * selected, ease params q(p0) + 4096 * q(p1)) with channel = layer * 5 + attribute (layers Ring, Sun, Block, Bar; attributes x, y, scale, rotation, opacity), 167 = (playhead frame, playing, speed index, -). Read it with timeline.hlsli's tlValue / tlPose / tlComposite."
+    schema:
+      - { name: v, type: float4 }

@@ -2,7 +2,7 @@
 
 Map a laser onto a surface. The same graph drives a real laser, and when you don't have one it drives a simulated laser in a hazy warehouse.
 
-The simulated laser is a raw scanner on a stand, beside and slightly in front of a video projector, about 6 m from a drywall mock-up. The projector throws the selected content onto a 3 × 1.8 m frame on the drywall, already mapped, as a MadMapper-mapped projector would be.
+The simulated laser is a raw scanner on a stand, beside and slightly in front of a video projector, about 6 m from a drywall mock-up. The projector throws the selected content onto a 3 × 1.8 m frame on the drywall, already mapped, as a projector mapped in projection-mapping software would be.
 
 Because the laser stands off-axis and its scanner distorts like a real one, the standard Alignment Grid lands keystoned, bowed and unevenly spaced. You map it exactly as you would on site: match the corners, straighten and even out the lines with Scanner Correction, then finish with the handles until the laser grid lies on the projected grid.
 
@@ -189,10 +189,10 @@ These talk to Sentinel over `sentinel-mcp` and are proof tools, not part of the 
 | `Mapper_Out`, `Shapes_Out`, `Trace_Out` | Each look's Group Output. |
 | `Look_Select` | The look switcher: a Mux in Groups mode. |
 | `Laser_Split` | Bundle Split: `laser.a.scan` for the mapper. |
-| `Mapping_Editor` | The mapping you edit: one 5 × 5 handle lattice plus Scanner Correction (Bow, Spacing and Centre, corner-anchored), and the zoning masks, with a pan/zoom canvas, box select and arrow-key nudge. Publishes the Calibration (mapping, masks and polygon points). |
-| `Adaptive_Mapping` | Compiles the Scan Signal through the Calibration with adaptive subdivision, tolerance and record budget, cuts it at the zoning masks, turns hidden geometry into single jumps, and keeps the joint flags. Publishes the Mapped Scan and Compiler Stats. Scans are ILDA space (+y up); the editor is screen space, converted at the warp. |
+| `Mapping_Editor` | The mapping you edit: one 5 × 5 handle lattice plus Scanner Correction (Bow, Spacing and Centre, corner-anchored), and the zoning masks, with a pan/zoom canvas, box select and arrow-key nudge. Hover a handle or a mask to read where it sits. Publishes the Calibration (mapping, masks and polygon points). |
+| `Adaptive_Mapping` | Compiles the Scan Signal through the Calibration with adaptive subdivision, tolerance and record budget, cuts it at the zoning masks, turns hidden geometry into single jumps, and keeps the joint flags. Publishes the Mapped Scan and Compiler Stats. Its canvas draws the mapped path in the scanner field beside the compiler's readouts and four seconds of record counts; hover a lit record to read its ends, length and timing. Scans are ILDA space (+y up); the editor is screen space, converted at the warp. |
 | `Laser_Sim` | The laser output: a Laser Out on `simulate`, always armed, with node-enforced scanner protection and the Sent Stream. Switch its protocol to drive a real laser. |
-| `Laser_Fixture` | The simulated physical laser: pose, scan field, galvo distortion and lag. Turns the Sent Stream into world-space beams and publishes the housing. |
+| `Laser_Fixture` | The simulated physical laser: pose, scan field, galvo distortion and lag. Turns the Sent Stream into world-space beams and publishes the housing. Its preview is a plan and an elevation of the fixture and its beams; hover a beam or the fixture to read where it lands. |
 | `Laser_Previs` | The warehouse, drywall, video projector and simulated laser in haze, with frame presets Operator, Audience and Wall and quality presets Draft, Live and Beauty. This is the program view. |
 
 ## Provenance
@@ -203,4 +203,4 @@ These talk to Sentinel over `sentinel-mcp` and are proof tools, not part of the 
   - Changes to the fixture: room-scale defaults, raw optics, galvo distortion and lag, and reading Laser Out's Sent Stream.
   - Changes to the renderer: one laser, the projector mapped to the 3 × 1.8 m frame and fed by Look_Select's video, its beam in haze, and the site model replaced by the warehouse.
   - Hashes: `docs/blink_laser_source.sha256`.
-- The scientifica font tables in `modules/_shared/fonts/` keep their licence file.
+- The UI type is IBM Plex Sans Condensed and IBM Plex Mono (SIL OFL 1.1), baked by `tools/il_type.py` into `modules/_shared/type/il_type.png` with its licence beside it.

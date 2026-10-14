@@ -1,0 +1,112 @@
+name: "Ramp Desk"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# A palette instrument: colour stops on a ramp, each coloured on an OKLCH plane that shows where
+# sRGB ends, blended in OKLab (or OKLCH, or sRGB for comparison) into 256 entries any node can read
+# ("Palette" data). The lanes under the ramp share its t axis: the same stops blended three ways,
+# the ramp seen as lightness and with each dichromacy, and its lightness, chroma and step curves -
+# so an uneven ramp, a muddy blend or a colour-blind collision reads at a glance.
+#
+# The reducer is the one pass marked `time_dependent: false`: it runs when input arrives (or a
+# parameter, the panel size or a reload changes) and at no other time. Its buffer is the published
+# Palette, so the Palette changes only when the stops do, and an `execution: on_dirty` consumer
+# (Relief) sleeps between edits. Nothing else here depends on pass order (see ramp.hlsli).
+
+panel:
+  mode: canvas
+  output: "Ramp Desk"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  - { name: blend_space, display: "Blend", type: enum, options: [OKLab, OKLCH, sRGB], default: 0, group: "Palette", description: "How the stops blend into the published entries: OKLab (even, complements meet in grey), OKLCH (hue swings the short way, chroma kept), sRGB (what most software does)" }
+
+viewport:
+  hint: "Click the ramp: add a stop. Drag a stop: move it (down and off the lane: remove it). Drag a diamond: lean the blend (double-click: even). Drag or click the plane and the hue strip: colour the selected stop. Tab: next stop. Arrows: nudge position / lightness. Backspace: remove. F: flip. E: space evenly. R: built-in palettes (Z brings the edit back). Z: undo."
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [tab, backspace, f, e, r, z, left, right, up, down]
+    gestures: [click, double_click, drag]
+  bindings:
+    - { gesture: left_click, action: add_or_select, label: "Add a stop on the ramp; select a stop or a row; colour on the plane or hue strip" }
+    - { gesture: left_drag, action: edit, label: "Move a stop (down and off: remove), lean a blend, colour the stop" }
+    - { gesture: left_double_click, action: even, label: "Even out a midpoint diamond" }
+    - { key: tab, action: next, label: "Select the next stop" }
+    - { key: backspace, action: remove, label: "Remove the selected stop" }
+    - { key: f, action: flip, label: "Flip the ramp" }
+    - { key: e, action: even_space, label: "Space the stops evenly" }
+    - { key: r, action: builtin, label: "The next built-in palette (Z brings the edit back)" }
+    - { key: z, action: undo, label: "Undo (again: redo)" }
+    - { key: left, action: earlier, label: "Move the stop one entry left" }
+    - { key: right, action: later, label: "Move the stop one entry right" }
+    - { key: up, action: lighter, label: "Lightness +0.01" }
+    - { key: down, action: darker, label: "Lightness -0.01" }
+
+buffers:
+  # ramp.hlsli: the Palette (head, 12 stops, 256 entries), then working state and the undo snapshot
+  - { name: state,  structured: true, element_size: 16, element_count: 310, persistent: true }
+  # swatch.hlsl: every colour field, per pixel, where the layout shows it
+  - { name: swatch, format: RGBA8, scale: 1.0 }
+  - { name: dl,     structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+# The head and the stops (25 records) serialize into the project, node presets and undo payloads. The
+# entries are recomputed from them; the working state after them is never restored.
+state_buffers:
+  - name: state
+    max_elements: 25
+    schema:
+      - { name: v, type: float4 }
+
+passes:
+  - name: reduce
+    shader: reduce.hlsl
+    target: cs_5_0
+    time_dependent: false
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:state"
+  - name: swatch
+    shader: swatch.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:swatch"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "buffer:swatch" }
+    output: output
+
+outputs:
+  - { name: "Ramp Desk", pass: raster }
+
+data_outputs:
+  - name: "Palette"
+    buffer: "state"
+    description: "float4 records (see _shared/palette.hlsli): 0 = (stops, 256, blend 0 OKLab 1 OKLCH 2 sRGB, revision hash: equal means unchanged); 1 + 2i = stop i (t, midpoint, -, -), 2 + 2i = (L, C asked, h degrees, C shown); 25 + k = entry k at t = k / 255 (display sRGB r, g, b, 1 where sRGB could not show the blend and its chroma was brought in). Records 281 on are the desk's working state. Written only when the stops change."
+    schema:
+      - { name: v, type: float4 }

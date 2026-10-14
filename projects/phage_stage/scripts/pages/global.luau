@@ -34,10 +34,16 @@ page.on_frame=function(dt)
     Camera.frame(dt)
     Transport.tick(dt)
     page.top_labels[2]="CAM "..Camera.time_label()
-    -- Keep serialized records aligned with live native edits and look recalls.
+    -- Keep the knobs aligned with values written from outside (a look recall, a preset). Pages run before the
+    -- encoder flush, and an encoder's own write lands a frame later, so adopting the stored value every frame
+    -- undid every turn: adopt only when the stored value changes, and never under a turning knob.
+    local now=host.time.now()
     for _,r in ipairs(page.params) do
         local value=tonumber(host.state.get(root.."/"..r.key))
-        if value then r.value=value end
+        if value and value~=r.state_seen then
+            r.state_seen=value
+            if not r.dirty and now-(r.last_delta_t or -1e9)>.5 then r.value=value end
+        end
     end
 end
 page.on_stop=function() page.on_leave();Side.stop();Transport.stop() end

@@ -2,6 +2,9 @@ name: PHAGE / Construction Plan
 version: '1.0'
 mode: generator
 resolution: [1400, 820]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 panel:
   mode: canvas
   output: Plan
@@ -18,14 +21,15 @@ viewport:
     - {key: s, action: symmetry, label: 'Mirror edits left/right'}
     - {key: r, action: reset_leg, label: 'Reset selected leg'}
 parameters:
+  - {name: tooltips, display: Tooltips, type: bool, default: true, description: 'The card beside the pointer that names the leg under it, its reach and its hand edits, and follows a leg while you drag it. Turn it off to keep the canvas clear while you work.'}
   - {name: stance, type: enum, options: [Reference, Spider, Mantis, Crab], default: 0, group: Stance}
   - {name: plate_height, type: float, default: 6.2, min: 4.5, max: 9, group: Body}
   - {name: plate_radius, type: float, default: 5.4, min: 4, max: 7.5, group: Body}
   - {name: plate_inner, type: float, default: 3.4, min: 2, max: 5, group: Body}
   - {name: plate_depth, type: float, default: 0.7, min: 0.4, max: 1.2, group: Body}
-  - {name: sheath_radius, type: float, default: 1.5, min: 0.8, max: 2.4, group: Body}
+  - {name: sheath_radius, type: float, default: 1.845, min: 0.8, max: 2.4, group: Body}
   - {name: collar_height, type: float, default: 11.0, min: 9, max: 14, group: Body}
-  - {name: collar_radius, type: float, default: 2.8, min: 2, max: 4, group: Body}
+  - {name: collar_radius, type: float, default: 3.71, min: 2, max: 4, group: Body}
   - {name: capsid_size, type: float, default: 1.95, min: 1.4, max: 2.6, group: Capsid}
   - {name: capsid_stretch, type: float, default: 1.3, min: 1, max: 1.7, group: Capsid}
   - {name: knee_radius, type: float, default: 11.0, min: 8, max: 14, group: Legs}
@@ -63,6 +67,7 @@ buffers:
   - {name: rest_pieces, structured: true, element_size: 16, element_count: 1536}
   - {name: marks, structured: true, element_size: 64, element_count: 1152}
   - {name: bins, structured: true, element_size: 4, element_count: 786432}
+  - {name: dl, structured: true, element_size: 16, element_count: 24577}   # il_draw IL_DL_SIZE
 state_buffers:
   - name: edits
     max_elements: 16
@@ -118,7 +123,25 @@ passes:
       - {slot: 0, source: buffer:edits}
       - {slot: 1, source: buffer:marks}
       - {slot: 2, source: buffer:bins}
-    output: output
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: 'buffer:edits'}
+      - {slot: 1, source: 'buffer:marks'}
+    output: buffer:dl
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
+      - {slot: 2, source: 'pass:preview'}
 data_outputs:
   - name: Design
     buffer: design
@@ -130,4 +153,4 @@ data_outputs:
       - {name: value, type: float4}
 outputs:
   - name: Plan
-    pass: preview
+    pass: ui

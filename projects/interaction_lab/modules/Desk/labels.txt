@@ -1,0 +1,25 @@
+# Desk - the panel of the Desk station. Regenerate: python tools/il_type.py labels Desk
+TITLE       @bold @track=0.08 = DESK
+SUBTITLE    @sans = host pads and faders as events; a Script lights them back
+
+PROGRAM     @bold @track=0.06 = PROGRAM
+STACK       @bold @track=0.06 = STACK
+C_FADE      @bold @track=0.06 = FADE
+C_MASTER    @bold @track=0.06 = MASTER
+UNIT_S      @mono = s
+PCT         @mono = %
+BLACKOUT    @bold @track=0.06 = BLACKOUT
+FADING      @bold @track=0.06 = FADING
+QUIET       @sans = no feedback yet: wire the Cue Brain both ways
+
+# hint bar (pairs)
+K_CUE       @sans = Click a cue
+K_GO        @sans = GO
+K_BACK      @sans = BACK
+K_BO        @sans = Hold BLACKOUT
+K_FADERS    @sans = Faders
+D_CUE       @sans = make it next
+D_GO        @sans = crossfade to it
+D_BACK      @sans = previous cue
+D_BO        @sans = 0.65 s to kill, tap to restore
+D_FADERS    @sans = fade time, master

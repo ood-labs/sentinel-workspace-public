@@ -16,7 +16,7 @@ RWStructuredBuffer<PlanRec> Plan : register(u0);
 #define PLAN_VERSION 1.8
 
 // ---------------------------------------------------------------------------
-// Archetype tables, transcribed from where the reference actually puts things.
+// Archetype tables: where the authored Vitrine arrangement puts things.
 // Stage space, origin top-left, +y down. Seed jitter moves them; dragging overrides them.
 // ---------------------------------------------------------------------------
 
@@ -148,7 +148,7 @@ float2 applyPreset(float2 p, uint slot, float s, out float scaleMul)
         return g;
     }
 
-    // 0 Vitrine — the transcribed reference arrangement, breathed in or out from centre.
+    // 0 Vitrine: the authored arrangement, breathed in or out from centre.
     float2 j = (vt_hash22(float2(s * 5.7 + (float)slot * 3.3, 2.9)) - 0.5) * 2.0 * jitter;
     return c + (p - c) * spread + j;
 }
@@ -188,7 +188,7 @@ void buildMasses(float s)
         float2 rndSz  = MASS_SIZE[i] * float2(lerp(0.70, 1.45, vt_rnd(rs, 3.0)),
                                               lerp(0.75, 1.30, vt_rnd(rs, 4.0)));
 
-        // `variation` blends the transcribed reference arrangement into a free draw from the
+        // `variation` blends the authored Vitrine arrangement into a free draw from the
         // same vocabulary. At 0 the tables are used verbatim, so the default look is exact.
         float2 pos = lerp(MASS_POS[i], rndPos, v);
         float2 sz  = lerp(MASS_SIZE[i], rndSz, v);
@@ -219,8 +219,8 @@ void buildMasses(float s)
 // This is the difference between "randomized" and "usable". A free positional draw piles two or
 // three masses on the same spot roughly every other seed, and the result reads as a mistake
 // rather than as a new arrangement. A few relaxation passes over 16 records costs nothing and
-// makes every seed presentable. It runs ONLY when variation is engaged, so the reference
-// arrangement is never nudged off its transcribed positions.
+// makes every seed presentable. It runs ONLY when variation is engaged, so the Vitrine
+// arrangement is never nudged off its authored positions.
 void relaxMasses()
 {
     for (uint iter = 0u; iter < 6u; iter++)
@@ -364,40 +364,15 @@ void buildPlates(float s)
     }
 }
 
-// Nearest pickable record under a stage-space point. Smallest hit wins so a dash sitting on a
-// big plate stays reachable; masses and strokes win inside their core disc.
-uint pickRecord(float2 p)
-{
-    uint best = 0u; float bestScore = 1e9;
-    for (uint m = 0u; m < PLAN_MASSES; m++)
-    {
-        PlanRec r = Plan[PLAN_MASS_0 + m];
-        if (r.active < 0.5) continue;
-        float d = length(p - r.pos);
-        if (d < r.size.x * 0.55 && d < bestScore) { bestScore = d; best = PLAN_MASS_0 + m + 1u; }
-    }
-    if (best != 0u) return best;
-    for (uint st = 0u; st < PLAN_STROKES; st++)
-    {
-        PlanRec r = Plan[PLAN_STROKE_0 + st];
-        if (r.active < 0.5) continue;
-        float d = length((p - r.pos) / max(r.size, 0.01));
-        if (d < 1.0 && d < bestScore) { bestScore = d; best = PLAN_STROKE_0 + st + 1u; }
-    }
-    if (best != 0u) return best;
-    for (uint i = 0u; i < PLAN_PLATES; i++)
-    {
-        PlanRec r = Plan[PLAN_PLATE_0 + i];
-        if (r.active < 0.5) continue;
-        float2 q = abs(p - r.pos) - r.size - 0.006;
-        if (max(q.x, q.y) < 0.0)
-        {
-            float area = r.size.x * r.size.y;
-            if (area < bestScore) { bestScore = area; best = PLAN_PLATE_0 + i + 1u; }
-        }
-    }
-    return best;
-}
+// pickRecord(p): the nearest pickable record under a stage-space point. It lives in pick.hlsli so
+// the canvas's hover inspector (layout.hlsl) uses exactly this test.
+#include "pick.hlsli"
+
+// The host hands an event back on later cooks until newer input replaces it, so each event is
+// consumed once, by sequence (knowledge/ui-authoring.md). This pass only cooks when something
+// changes, which hid it, but any parameter change is such a cook: after a quick tap of K, every
+// cook of a Properties slider drag cycled the selected record's kind again.
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
 
 [numthreads(1, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
@@ -411,10 +386,19 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     uint n = min((uint)_ViewportEventCount, 64u);
 
+    // The header is full, so the newest event consumed rides in the stage record's seed (asuint).
+    uint lastSeq = asuint(Plan[PLAN_STAGE].seed);
+    uint ringMax = 0u;
+    for (uint er = 0u; er < n; er++) ringMax = max(ringMax, _ViewportEvents[er].sequence);
+    if (n > 0u && ringMax < lastSeq) lastSeq = 0u;   // the host's counter restarted (app restart, reload)
+    uint newLast = lastSeq;
+
     // --- pass 1: keys. R changes the salt, so it must land before the signature test.
     for (uint e = 0u; e < n; e++)
     {
         ViewportEvent ev = _ViewportEvents[e];
+        if (!isFresh(ev.sequence, lastSeq)) continue;      // consumed on an earlier cook
+        newLast = (ev.sequence > lastSeq) ? max(newLast, ev.sequence) : ev.sequence;
         if (ev.type != 4u || ev.phase != 1u) continue;
         uint c = (uint)ev.code;
         if (c == 18u) salt += 1.0;                                   // R  reseed
@@ -473,7 +457,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     for (uint e2 = 0u; e2 < n; e2++)
     {
         ViewportEvent ev = _ViewportEvents[e2];
-        if (ev.type != 5u) continue;
+        if (!isFresh(ev.sequence, lastSeq) || ev.type != 5u) continue;
         float2 p = ev.position;
         if (ev.code == 1u && ev.phase == 7u)
         {
@@ -519,6 +503,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     st.pos = float2(horizon, room_depth);
     st.role = ROLE_HEADER;
     st.active = 1.0;
+    st.seed = asfloat(newLast);
     Plan[PLAN_STAGE] = st;
 
     hdr.pos    = float2(sig, sel);

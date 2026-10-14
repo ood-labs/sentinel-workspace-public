@@ -1,0 +1,89 @@
+name: "Plotter"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+# A pen plotter drawing the Path Desk's paths on paper. Its speed is planned from the curvature the
+# desk publishes - the pen slows into tight turns, all but stops at corners, and runs on straights -
+# and the ink it lays is the time it spent: a slow line is darker and a little wider. Pen-up moves,
+# drops and lifts as a real plotter makes them; a pencil underdrawing shows edits at once; old ink
+# fades with the ink memory, so an edit is drawn over a ghost of the line before it.
+# The pen comes back to the desk as control outputs: ref("Plotter/control_outputs/pen_x") etc.
+
+
+data_inputs:
+  - name: "Path"
+    slot: 0
+    schema:
+      - { name: v, type: float4 }
+
+parameters:
+  - { name: speed,     display: "Top speed",    type: float, min: 60.0,  max: 1600.0, default: 520.0,  group: "Motion", description: "Fastest the pen moves on paper (px/s)" }
+  - { name: cornering, display: "Cornering",    type: float, min: 200.0, max: 8000.0, default: 1500.0, group: "Motion", description: "Sideways acceleration a turn allows (px/s^2): lower slows every curve" }
+  - { name: accel,     display: "Acceleration", type: float, min: 200.0, max: 8000.0, default: 2600.0, group: "Motion", description: "How fast the pen gains and sheds speed along the path (px/s^2)" }
+  - { name: travel,    display: "Pen-up speed", type: float, min: 200.0, max: 4000.0, default: 1600.0, group: "Motion", description: "Peak speed of the moves between paths, pen up (px/s)" }
+  - { name: lift,      display: "Lift time",    type: float, min: 0.02,  max: 0.5,    default: 0.12,   group: "Motion", description: "Seconds to lower or raise the pen" }
+  - { name: nib,       display: "Nib",          type: float, min: 0.8,   max: 6.0,    default: 2.2,    group: "Ink", description: "Line width at the speed a full line is laid (px)" }
+  - { name: flow,      display: "Flow",         type: float, min: 0.2,   max: 3.0,    default: 1.0,    group: "Ink", description: "Ink laid per second the nib spends on the paper" }
+  - { name: memory,    display: "Ink memory",   type: float, min: 5.0,   max: 600.0,  default: 45.0,   group: "Ink", description: "Half-life of the ink on the sheet (s); 600 keeps every line" }
+  - { name: pencil,    display: "Pencil",       type: float, min: 0.0,   max: 1.0,    default: 0.6,    group: "Ink", description: "Strength of the pencil underdrawing of the whole plot" }
+
+buffers:
+  - { name: plan,   structured: true, element_size: 16, element_count: 1159, persistent: true }   # plotter.hlsli
+  - { name: paper,  format: RGBA16F, scale: 1.0, persistent: true }                               # ink density per pen
+  - { name: pencil, structured: true, element_size: 4, element_count: 921601 }                     # 1280 x 720 (cook << 8 | coverage), cook
+
+passes:
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    time_dependent: true
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:plan"
+  # read-modify-write of the persistent sheet in one pass (no ping-pong)
+  - name: ink
+    shader: ink.hlsl
+    target: cs_5_0
+    time_dependent: true
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+      - { slot: 1, source: "buffer:paper" }
+    output: "buffer:paper"
+  # stamped with the cook number instead of cleared (see pencil.hlsl)
+  - name: pencil
+    shader: pencil.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1024
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:pencil"
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    format: RGBA8
+    time_dependent: true
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+      - { slot: 1, source: "buffer:paper" }
+      - { slot: 2, source: "buffer:pencil" }
+    output: output
+
+outputs:
+  - { name: "Plot", pass: present }
+
+control_outputs:
+  - { name: pen_x,    buffer: plan, element: 1, field_offset: 0,  description: "The pen across the sheet (program px)" }
+  - { name: pen_y,    buffer: plan, element: 1, field_offset: 4,  description: "The pen down the sheet (program px)" }
+  - { name: pen_d,    buffer: plan, element: 1, field_offset: 8,  description: "How far along the plot's pen-down length the pen is (px)" }
+  - { name: pen_down, buffer: plan, element: 1, field_offset: 12, description: "1 while the pen is on the paper" }
+  - { name: speed,    buffer: plan, element: 2, field_offset: 0,  description: "The pen's speed now (px/s)" }
+  - { name: plots,    buffer: plan, element: 2, field_offset: 4,  description: "Plots finished" }

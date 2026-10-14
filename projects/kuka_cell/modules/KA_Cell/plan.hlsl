@@ -122,6 +122,7 @@ void buildTarget()
     t.seed   = 3.0;
     t.flags  = 0.0;
     t.active = 1.0;
+    t.spare  = old.spare;      // the event watermark rides here (see isFresh); a rebuild keeps it
     Cell[KA_TARGET] = t;
 }
 
@@ -178,6 +179,12 @@ uint pickArm(KaMap m, float2 uv, int strip)
     return best;
 }
 
+// The host hands an event back on later cooks until newer input replaces it, so each event is
+// consumed once, by sequence (knowledge/ui-authoring.md). Unguarded, a key-down was re-applied on
+// every cook until its key-up arrived: one tap of A turned an arm several 15-degree steps, and X
+// and K landed wherever the count left them.
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
+
 [numthreads(1, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
 {
@@ -190,10 +197,20 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     uint n = min((uint)_ViewportEventCount, 64u);
 
+    // The header is full, so the newest event consumed rides in the target record's spare
+    // (asuint), which nothing else reads.
+    uint lastSeq = asuint(Cell[KA_TARGET].spare);
+    uint ringMax = 0u;
+    for (uint er = 0u; er < n; er++) ringMax = max(ringMax, _ViewportEvents[er].sequence);
+    if (n > 0u && ringMax < lastSeq) lastSeq = 0u;   // the host's counter restarted (app restart, reload)
+    uint newLast = lastSeq;
+
     // --- pass 1: keys. R changes the salt, so it lands before the signature test.
     for (uint e = 0u; e < n; e++)
     {
         ViewportEvent ev = _ViewportEvents[e];
+        if (!isFresh(ev.sequence, lastSeq)) continue;      // consumed on an earlier cook
+        newLast = (ev.sequence > lastSeq) ? max(newLast, ev.sequence) : ev.sequence;
         if (ev.type == 4u && ev.phase == 1u)
         {
             uint c = (uint)ev.code;
@@ -248,7 +265,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     for (uint e2 = 0u; e2 < n; e2++)
     {
         ViewportEvent ev = _ViewportEvents[e2];
-        if (ev.type != 5u) continue;
+        if (!isFresh(ev.sequence, lastSeq) || ev.type != 5u) continue;
         float2 p = ev.position;
 
         if (ev.code == 1u && ev.phase == 7u)              // click: select
@@ -352,6 +369,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         uint tf = (uint)t.flags & ~KF_SELECTED;
         if (sel > 0.5 && (uint)(sel - 1.0) == KA_TARGET) tf |= KF_SELECTED;
         t.flags = (float)tf;
+        t.spare = asfloat(newLast);
         Cell[KA_TARGET] = t;
     }
 

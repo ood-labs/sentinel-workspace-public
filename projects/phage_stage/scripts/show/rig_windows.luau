@@ -33,9 +33,9 @@ function M.render(ctx: any,windows: {any},focused: any,lit: (any) -> boolean,lab
         local cols=w.spec.width or 4;local cellWidth=width/cols
         for n,cell in ipairs(w.spec.cells) do
             local px,py=x+((n-1)%cols)*cellWidth,ctx.cy+20+math.floor((n-1)/cols)*12
-            local active=lit(cell)
-            display.rect(px,py,cellWidth-2,10,if active then color else C.INK.window_cell,true)
-            C.text(px+3,py+1,label(cell),8,if active then 0x080C12 else color)
+            local active,ink=lit(cell),cell.color or color
+            display.rect(px,py,cellWidth-2,10,if active then ink else C.INK.window_cell,true)
+            C.text(px+3,py+1,label(cell),8,if active then 0x080C12 else ink)
         end
     end
 end

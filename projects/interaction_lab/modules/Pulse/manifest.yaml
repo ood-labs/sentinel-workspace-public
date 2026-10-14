@@ -1,0 +1,99 @@
+name: "Pulse"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+# The machine of the Pulse Bus station. Strikes are found on the GPU (sim) and appended to the
+# EventOut "Impacts"; the Pulse Bus Script turns them into notes for MIDI Out. The Script's answer
+# cannot come back here - the graph is acyclic, so a node never hears its own echo - it goes on to
+# Resonance, downstream, which takes this node's Program and World as well.
+
+# Standard, not canvas: a fixed 1280x720 stage, letterboxed, hit-tested in image coordinates.
+panel:
+  mode: standard
+  output: "Editor"
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  - { name: gravity,      display: "Gravity",       type: float, min: 200.0, max: 3000.0, default: 1500.0, group: "Physics" }
+  - { name: bounce,       display: "Bounce",        type: float, min: 0.1, max: 0.9, default: 0.42, group: "Physics" }
+  # a contact slower than this (design px/s) is a roll, not a strike, and sends nothing
+  - { name: strike_floor, display: "Strike Floor",  type: float, min: 0.0, max: 400.0, default: 70.0, group: "Physics" }
+  - { name: auto_rate,    display: "Auto Drop",     type: float, min: 0.2, max: 8.0, default: 1.6, group: "Dropper" }
+
+viewport:
+  hint: "Click to drop a ball, drag to pour. Space toggles the auto dropper, C clears the stage."
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [space, c]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: drop, label: "Drop a ball here" }
+    - { gesture: left_drag, action: pour, label: "Pour balls along the drag" }
+    - { key: space, action: auto, label: "Toggle the auto dropper" }
+    - { key: c, action: clear, label: "Clear the stage" }
+
+event_outputs:
+  - { name: "Impacts", capacity: 256 }
+
+buffers:
+  # pulse.hlsli: W_COUNT = 2 + 64 balls + 12 sparks + 64 history
+  - { name: world, structured: true, element_size: 32, element_count: 142, persistent: true }
+  - { name: dl,    structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+passes:
+  - name: sim
+    shader: sim.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:world"
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "buffer:world" }
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:world" }
+    output: "buffer:dl"
+  - name: editor
+    shader: editor.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:render" }
+
+outputs:
+  - { name: "Program", pass: render }
+  - { name: "Editor",  pass: editor }
+
+data_outputs:
+  - name: "World"
+    buffer: "world"
+    description: "0 header (auto phase, last pour; pointer; spawns; event watermark; flags), 1 stats (strikes in c), 2..65 balls (pos, vel, radius 0 = free, age, id), 66..77 per-bar sparks (strike time, along; speed, ball), 78..141 strike history (time, bar; speed, along)."
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: c, type: float }
+      - { name: d, type: float }
+      - { name: e, type: uint }
+      - { name: f, type: uint }
+
+# counters are stored as exact floats so a control output reads them directly
+control_outputs:
+  - { name: strikes,       buffer: world, element: 1, field_offset: 16, description: "Strikes the GPU has sent on Impacts since the node started" }

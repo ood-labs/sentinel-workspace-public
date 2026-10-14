@@ -431,6 +431,18 @@ NoteOff on a later tick, into a MIDI Out node. Keep the held note in
 collision contacts) feeds a Script Event input; the script maps each contact
 to a note, keeps the contact's `timestamp_ns`, and emits into MIDI Out.
 
+**Clip sequencing.** `tools/templates/scripts/clip_sequencer.luau` plays a list of
+Video File sources through a Wired-mode Mux from one `go` Event. Source paths
+work like pipeline paths: it subscribes to
+`/sentinel/sources/<id>/ended_count`, readies the next clip with
+`sentinel.invoke("/sentinel/sources/<id>/actions/preroll", {time = 0})`,
+sets `playing` and the Mux's `selected` to start it, and emits
+`clip_started`, `clip_ended` and `sequence_ended`. A clip's end is a rise in
+`ended_count`; `currentTime`, `duration` and `playbackRate` only time when the
+next clip starts its fade.
+Copy it into the project's `scripts/` folder rather than editing the example.
+See `knowledge/video-source.md`.
+
 ## Gotchas
 
 - Host calls at the top level of the file fail the manifest evaluation.

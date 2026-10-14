@@ -5,6 +5,7 @@ RWStructuredBuffer<float4> E:register(u0);
 #include "plan_design.hlsli"
 #include "../_shared/phage_anatomy.hlsli"
 #include "layout.hlsli"
+#include "pick.hlsli"
 float4 clampEdit(float4 v){return float4(clamp(v.x,-6,6),clamp(v.y,-5,5),clamp(v.z,-5,5),clamp(v.w,-5,6));}
 void writeLeg(uint i,float4 v,bool sym){
  v=clampEdit(v);E[4+i]=v;
@@ -13,7 +14,12 @@ void writeLeg(uint i,float4 v,bool sym){
 [numthreads(1,1,1)]void main(uint3 id:SV_DispatchThreadID){
  if(E[0].w!=PLAN_MAGIC){for(uint k=0;k<16;k++)E[k]=0;E[0]=float4(1,0,0,PLAN_MAGIC);E[3]=float4(1,0,0,0);}
  PhDesign D=phLoad();PhPose R=phRest();
- for(uint k=0;k<min((uint)_ViewportEventCount,64u);k++){
+ // The saved watermark outlives the host's per-node event counter, which restarts at 1 when the
+ // node is recreated (project load, app restart). A ring that tops out below it means a restart.
+ uint n=min((uint)_ViewportEventCount,64u);float ringMax=0;
+ for(uint r=0;r<n;r++)ringMax=max(ringMax,(float)_ViewportEvents[r].sequence);
+ if(n>0&&ringMax<E[3].y)E[3].y=0;
+ for(uint k=0;k<n;k++){
   ViewportEvent e=_ViewportEvents[k];float seq=(float)e.sequence;
   if(seq<=E[3].y&&seq>E[3].y-4096)continue;E[3].y=seq;
   float2 px=e.position*_Resolution;int sel=(int)E[0].x-1;bool sym=E[3].x>.5;
@@ -24,14 +30,7 @@ void writeLeg(uint i,float4 v,bool sym){
    else if(e.code>=33&&e.code<=38)E[0].x=e.code-32;
   }
   if(e.type==2&&e.phase==1&&e.code==0){
-   int pick=-1;float kind=0;float best=12;
-   if(inRect(px,planRect())){
-    for(uint i=0;i<6;i++){float d=length(px-planPx(phAnkle(D,R,i)));if(d<best){best=d;pick=(int)i;kind=1;}}
-    if(pick<0){best=7;for(uint i=0;i<6;i++){float3 h=phHip(D,R,i),kn=phKnee(D,R,i),a=phAnkle(D,R,i);
-     float d=min(segDist(px,planPx(h),planPx(kn)),segDist(px,planPx(kn),planPx(a)));if(d<best){best=d;pick=(int)i;kind=0;}}}
-   }else if(inRect(px,sectRect())&&sel>=0){
-    float az=phLegAz((uint)sel);if(length(px-sectPx(phKnee(D,R,(uint)sel),az))<14){pick=sel;kind=2;}
-   }
+   int2 pk=planPick(px,sel,D,R);int pick=pk.x;float kind=(float)pk.y;
    if(pick>=0){E[0].x=pick+1;E[0].y=kind;E[0].z=kind>0?1:0;E[1]=E[4+pick];E[2]=float4(px,0,0);}
   }
   if(E[0].z>.5&&E[0].x>0&&((e.type==5&&e.code==3&&(e.phase==6||e.phase==7))||(e.type==1&&ViewportButtonDown(0)))){

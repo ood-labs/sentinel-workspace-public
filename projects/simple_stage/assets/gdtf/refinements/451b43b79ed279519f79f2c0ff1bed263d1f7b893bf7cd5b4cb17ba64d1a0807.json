@@ -1,0 +1,54 @@
+{
+ "accepted": [],
+ "gdtf": {
+  "data_version": "1.2",
+  "file": "Sentinel@Pixel Batten 1000.gdtf",
+  "fixture_type_id": "D2F7C3E6-56FF-517F-A8AD-8601E8424853",
+  "manufacturer": "Sentinel",
+  "name": "Pixel Batten 1000",
+  "sha256": "451b43b79ed279519f79f2c0ff1bed263d1f7b893bf7cd5b4cb17ba64d1a0807"
+ },
+ "notes": [],
+ "overrides": [
+  {
+   "address": "face:face0/cells",
+   "author": "agent",
+   "date": "2026-10-03",
+   "reason": "Confirmed, not changed: Pixel 1 to Pixel 20 at 50 mm pitch from -X, three channels each, as tools/phage_gdtf.py writes them; PHAGE's plot lays each batten with +X along its run, and Phage_DMX samples pixel k where it sits on the run.",
+   "source": {
+    "document": "PHAGE fixture spec, projects/phage_stage/assets/gdtf/FIXTURES.md (Sentinel Pixel Batten 1000, Cells)",
+    "kind": "datasheet",
+    "note": "Sentinel's own design, written by tools/phage_gdtf.py, 2026-10-03"
+   },
+   "value": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  }
+ ],
+ "schema": "sentinel.gdtf-refinement",
+ "verification": {
+  "by": "agent",
+  "date": "2026-10-03",
+  "reference": "PHAGE's pixel runs (the design this type is written from) via Phage_DMX: 420 battens encoded through this type from the LED texture at each pixel's place on its run; 57 universes over Art-Net loopback, 0 channels different held still (Sentinel 0.6.4, 2026-10-03)"
+ },
+ "version": 1
+}

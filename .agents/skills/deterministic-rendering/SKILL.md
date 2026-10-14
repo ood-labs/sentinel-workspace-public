@@ -62,6 +62,27 @@ required and must be between 1 and 1,000,000. `slot` and `start_time` default to
 
 Record the returned `job_id`. Sentinel permits one render job at a time.
 
+## Render several outputs in one job
+
+When several pipelines show the same timeline (a program and a previs fed by
+it, say), render them in one job instead of one job each. Pass `pipeline_ids`
+(up to 8) and, if any output is not slot 0, a matching `slots` list in place of
+`pipeline_id` and `slot`:
+
+```text
+sentinel_capture action="render_sequence"
+  pipeline_ids=["Program", "Previs"]
+  fps=30
+  frame_count=4502
+  filepath="C:\\renders\\show"
+```
+
+Content time steps and the graph cooks once per frame, and each output gets its
+own PNG sequence and manifest in `<filepath>/<pipeline id>`. Status lists them
+under `targets`; the job's counters are the lowest across outputs. Relative
+`tracks` keys resolve under the first listed pipeline. Available on builds after
+0.6.4.
+
 ## Apply parameter tracks
 
 Pass `tracks` as an object. A short key resolves under the subject pipeline's

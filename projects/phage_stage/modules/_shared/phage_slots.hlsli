@@ -5,6 +5,11 @@
 #define PH_TAU 6.2831853
 #define PH_DESIGN_COUNT 20
 #define PH_SLOTS 248
+// Phage_Program rows: 0-247 each slot's base layer (MOVE, TUBE, PIXELS, the axes), then the movers' BEAM at
+// slot + PH_BEAM0 and the second layer (HALO, PLATES, CHASE) at slot + PH_LAYER2 (tools/phage_program.py).
+#define PH_ROWS 616
+#define PH_BEAM0 248
+#define PH_LAYER2 376
 #define PH_MOVER0 0
 #define PH_MOVERS 128
 #define PH_STROBE0 128

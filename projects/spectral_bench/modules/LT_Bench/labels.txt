@@ -1,0 +1,158 @@
+# LT_Bench - the plan canvas's words. Regenerate: python -B tools/il_type.py labels LT_Bench
+TITLE        @bold @track=0.14 = SPECTRAL
+SUBTITLE     @sans = bench plan
+
+# header readouts
+SPREAD       @bold @track=0.08 = SPREAD
+ELEMENTS     @bold @track=0.08 = ELEMENTS
+SOURCES      @bold @track=0.08 = SOURCES
+ALARM        @bold @track=0.08 = ALARM
+
+# units
+DEG          @sans = deg
+MM           @sans = mm
+NM           @sans = nm
+PCT          @sans = %
+SLASH        @sans = /
+
+# the plan plate
+PLAN         @bold @track=0.08 = BENCH PLAN
+GRID         @sans = grid 25 / 100 mm
+FANS_ALL     @sans = fans of every source
+FANS_RAIL    @sans = fan of the rail source only
+EMPTY        @sans = empty bench - A adds an element, S a source
+
+# the rail plate
+LADDER       @bold @track=0.08 = EVENT LADDER
+DEVIATION    @bold @track=0.08 = DEVIATION
+SRC          @bold @track=0.08 = SRC
+POWER        @sans = power
+NO_BEAM      @sans = this source has no live beam
+
+# element kinds, in bench.hlsli's EK_ order (layout.hlsl counts from K_PRISM), then the source
+K_PRISM      @bold @track=0.08 = PRISM
+K_MIRROR     @bold @track=0.08 = MIRROR
+K_SLAB       @bold @track=0.08 = SLAB
+K_LENS       @bold @track=0.08 = LENS
+K_SPLITTER   @bold @track=0.08 = SPLITTER
+K_SCREEN     @bold @track=0.08 = SCREEN
+K_BLOCK      @bold @track=0.08 = BLOCK
+K_SOURCE     @bold @track=0.08 = SOURCE
+
+# glasses, in GM_ order (the manifest's Glass options; counts from G_CROWN)
+G_CROWN      @sans = Crown BK7
+G_FLINT      @sans = Flint SF10
+G_SILICA     @sans = Fused Silica
+G_SAPPHIRE   @sans = Sapphire
+G_DIAMOND    @sans = Diamond
+G_WATER      @sans = Water
+
+# a source: spectrum (SP_ order), beam (BP_ order), transverse profile (flat top, gaussian)
+SP_WHITE     @sans = White
+SP_TUNGSTEN  @sans = Tungsten
+SP_TRIAD     @sans = Laser Triad
+SP_BAND      @sans = Narrow Band
+BP_COLL      @sans = Collimated
+BP_FAN       @sans = Fan
+BP_CONV      @sans = Converging
+SH_FLAT      @sans = flat top
+SH_GAUSS     @sans = gaussian
+
+# inspector captions
+C_N          @sans = n
+C_APEX       @sans = apex
+C_REFLECT    @sans = reflects
+C_SPLIT      @sans = splits
+C_RADIUS     @sans = radius
+C_SIZE       @sans = size
+C_HEADING    @sans = heading
+C_LIT        @sans = lit after
+C_INCIDENCE  @sans = incidence
+C_APERTURE   @sans = aperture
+C_FAN        @sans = fan
+C_WAIST      @sans = waist
+C_BAND       @sans = band
+C_WIDE       @sans = wide
+C_POWER      @sans = power
+C_DEVIATION  @sans = deviation
+C_STEP       @sans = interaction
+C_AIR        @sans = in air
+C_GLASS      @sans = in glass, n
+C_AT         @sans = at
+C_HAND       @sans = placed by hand
+
+# record states
+S_OFF        @bold @track=0.08 = OFF
+S_UNLIT      @bold @track=0.08 = UNLIT
+S_TIR        @bold @track=0.08 = TIR
+S_AIM        @bold @track=0.08 = AIM
+S_SET        @bold @track=0.08 = SET
+S_RAIL       @bold @track=0.08 = ON THE RAIL
+D_OFF        @sans = switched off - X turns it back on
+D_UNLIT      @sans = no light reaches it
+D_TIR        @sans = the spectrum is trapped at the exit face
+D_AIM        @sans = aims itself on the next cook
+D_SET        @sans = held where it last aimed
+D_MANUAL     @sans = rotated by hand - P re-aims it
+
+# events, in optics.hlsli's EV_ order: the legend's names (layout.hlsl counts from E_EMIT) ...
+E_EMIT       @sans = emit
+E_ENTER      @sans = enter
+E_EXIT       @sans = exit
+E_MIRROR     @sans = mirror
+E_FRESNEL    @sans = fresnel
+E_TIR        @sans = TIR
+E_SCREEN     @sans = screen
+E_ABSORB     @sans = absorb
+E_ESCAPE     @sans = escape
+E_EXHAUST    @sans = budget
+# ... and what each one means, for the inspector (counts from W_EMIT)
+W_EMIT       @sans = leaves the source
+W_ENTER      @sans = refracts into the glass
+W_EXIT       @sans = refracts out of the glass - disperses
+W_MIRROR     @sans = reflects off a mirror
+W_FRESNEL    @sans = partial reflection at a face
+W_TIR        @sans = total internal reflection
+W_SCREEN     @sans = lands on a screen
+W_ABSORB     @sans = absorbed by a block
+W_ESCAPE     @sans = leaves the bench
+W_EXHAUST    @sans = out of interaction budget
+
+# footer: the manifest's bindings, key then verb, in the same order (counts from KEY_A / DO_A)
+KEY_A        @sans = A
+KEY_S        @sans = S
+KEY_D        @sans = D
+KEY_0        @mono = 0
+KEY_K        @sans = K
+KEY_M        @sans = M
+KEY_P        @sans = P
+KEY_X        @sans = X
+KEY_N        @sans = N
+KEY_R        @sans = R
+KEY_CLICK    @sans = Click
+KEY_DRAG     @sans = Drag
+KEY_RDRAG    @sans = Right-drag
+KEY_WHEEL    @sans = Wheel
+KEY_C        @sans = C
+KEY_G        @sans = G
+KEY_H        @sans = H
+DO_A         @sans = add
+DO_S         @sans = source
+DO_D         @sans = remove
+DO_0         @sans = wipe
+DO_K         @sans = kind
+DO_M         @sans = glass
+DO_P         @sans = auto
+DO_X         @sans = on/off
+DO_N         @sans = re-roll
+DO_R         @sans = reseed
+DO_CLICK     @sans = select
+DO_DRAG      @sans = move
+DO_RDRAG     @sans = rotate
+DO_WHEEL     @sans = size
+DO_C         @sans = deselect
+DO_G         @sans = grow
+DO_H         @sans = shrink
+# K and M on a selected SOURCE cycle its spectrum and beam instead
+DO_KS        @sans = spectrum
+DO_MS        @sans = beam

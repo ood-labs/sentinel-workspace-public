@@ -102,8 +102,8 @@ FM_Audio (Audio In) --Spectrum--> FM_Bands --kick--> [expression] --> FM_Colony 
 ```
 
 `FM_Bands` is **cloth_lab's `cloth_bands`, vendored into this project unmodified apart from its
-name**, together with its dependency closure — `_shared/au_hud/au_text.hlsli` and
-`_shared/fonts/` including the Scientifica licence. The workspace rule is that a show bundles its
+name**; its canvas draws its type through this project's vendored UI kit (`_shared/ui/` and
+`_shared/type/`, IBM Plex under the SIL OFL), as cloth_lab's copy does. The workspace rule is that a show bundles its
 own copy of the analyser rather than linking to Cloth Lab at runtime. It was deliberately *not*
 reimplemented: per-lane dB thresholds against a rolling baseline, refractory gating and the ring
 catch-up contract against the audio node's generation counter are subtle, and rewriting all of it
@@ -271,7 +271,7 @@ now correct for every consumer instead of being something only the beauty pass k
 
 It was planned as one and it cannot be. Deposit and sense are a closed loop: the field is
 written by ants and read by ants. Splitting that across a graph edge is a cycle, and the graph
-is a DAG. koi_tank's trick of closing a loop through control outputs carries one float, not a
+is a DAG. Closing a loop through control outputs and expressions carries one float, not a
 texture. The chemical memory therefore belongs to the colony that owns it — which is also the
 honest reading, since the field is the colony's state and not the arena's.
 
@@ -292,16 +292,23 @@ alone would have been a grey duplicate of the photograph.
   equidistant are not, and the gap between a lane's end and its ghost tick is exactly the cost
   of the detour. It also carries the measured traffic fed back from the colony, and the
   **failure mode** — a route through an obstacle or off the arena draws in alarm red, in the
-  plan, in its lane, and in the status row.
+  plan, in its lane, and in the footer's status.
 
 Verbs: click select, drag move, drag a route's mid handle to bend it, `M` obstacle kind,
 `F`/`V` more/less, `G`/`H` recruitment, `B` auto-route around obstacles, `X` on/off, `N` re-roll
-one, `R` reseed, `P` palette, `C` clear.
+one, `R` reseed, `P` palette, `C` clear the selection. The footer and the selection pane show these
+as keycaps, the selection pane only the ones that act on what is selected.
+
+Hover inspects without selecting: the record under the pointer gets an ink ring and a card of its
+real values — exactly the record a click there would select — and a lane in the flow strip names
+its route in both strips. The canvas is full-bleed and follows its panel; every rect is a fraction
+of the live extent, the same fractions `plan.hlsl` hit-tests through.
 
 `FM_Colony` carries the second readout the renderer cannot give: a **Hildebrand footfall chart**
 for the focused ant, lanes ordered by tripod rather than by leg number, so a correct alternating
 gait is unmistakably three-on/three-off and a broken one is unmistakably not. Measured foot slip
-draws in alarm red on the bar it happened on.
+draws in alarm red on the bar it happened on. Hover an ant in the arena, or a step of the chart,
+for its card; the readout column traces mean speed and foot slip over the last few seconds.
 
 ---
 
@@ -650,22 +657,26 @@ the other channels down.
 
 ## Honest gaps
 
-- **The gesture paths cannot be machine-proven.** Injected input does not reach Module viewport
-  events, so every click, drag and key path in `FM_Plan` and `FM_Stage` was built and reasoned
-  through but not exercised over MCP. What *is* verified: the pick maths shares one coordinate
-  conversion with the canvas that draws it, the record round-trip through the data port, the
-  signature/rebuild behaviour, the blocked-route detection, and the persistence of the plan
-  buffer.
-  **Exercise by hand:** click a cache and confirm it turns amber; drag it; drag a route's mid
-  handle and confirm the curve follows the cursor rather than lagging it by half; press `B` with
-  obstacles on and watch the route bend clear; press `M`, `F`/`V`, `G`/`H`, `X`, `N`, `R`, `P`;
-  press `A` on the plan and on the stage and confirm a station lands under the cursor in both.
-- **`FM_Stage`'s command path IS verified, up to the viewport events.** Driving `stage_cmd`,
-  `stage_act`, `stage_x` and `stage_z` by hand with the expressions temporarily cleared, a place
-  command put a station in slot 4 at footprint (−0.3077, −0.6111) — which is (−40.0, −55.0) mm,
-  bit-for-bit what was sent — and a toggle command switched it off, with the plan's `STA` readout
-  following from 05 to 04. What remains unproven is only the half that turns a real click into
-  those control outputs.
+- **The gesture paths have been exercised, most of them with injected input.** Every click, drag
+  and key path in `FM_Plan` has been driven through the panel with injected input (`sentinel_ui`),
+  including the BLOCKED chip and auto-route. With real mouse and keyboard events (Windows
+  `SendInput`), a food source drags, `F` and `V` move its payload one ×1.18 / ×0.85 step per
+  press, `X` switches it off and on one toggle per press, and a held `FM_Bands` threshold drag
+  follows the pointer. Also verified: the pick maths shares one coordinate conversion with the
+  canvas that draws it, the record round-trip through the data port, the signature/rebuild
+  behaviour, the blocked-route detection, and the persistence of the plan buffer.
+  **Still worth a pass by hand:** drag a route's mid handle and confirm the curve follows the
+  cursor rather than lagging it by half; press `B` with obstacles on and watch the route bend
+  clear; press `M`, `G`/`H`, `N`, `R`, `P`; press `A` on the plan and on the stage and confirm a
+  station lands under the cursor in both.
+- **A record switched off with `X` cannot be picked again**, in `FM_Plan` or on the stage, so
+  switch it back on before you deselect it.
+- **`FM_Stage`'s command path IS verified.** Driving `stage_cmd`, `stage_act`, `stage_x` and
+  `stage_z` by hand with the expressions temporarily cleared, a place command put a station in
+  slot 4 at footprint (−0.3077, −0.6111) — which is (−40.0, −55.0) mm, bit-for-bit what was sent
+  — and a toggle command switched it off, with the plan's `STA` readout following from 05 to 04.
+  A real `A` and then `X` on the stage each produced exactly one command (`cmd` 0 → 1 → 2): one
+  station placed, then muted.
 - **The ground lane's accuracy was not measured against a known point.** The unprojection is
   built from `_InvViewProjMatrix` and looks right — the reach ellipses sit on the sweep and track
   the camera — but nobody has clicked a specific ant and checked the returned millimetres against

@@ -108,7 +108,7 @@ float3 liveryColour()
     if (l == 2) return float3(0.905, 0.660, 0.045);
     if (l == 3) return float3(0.800, 0.760, 0.685);
     if (l == 4) return float3(0.085, 0.245, 0.470);
-    return float3(0.855, 0.290, 0.040);          // KUKA orange
+    return float3(0.855, 0.290, 0.040);          // safety orange
 }
 
 // The beach ball's panels. Six gores alternating white with three colours, which is the thing

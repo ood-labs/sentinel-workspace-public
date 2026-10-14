@@ -1,0 +1,68 @@
+# LT_Trace - the scope canvas's words. Regenerate: python -B tools/il_type.py labels LT_Trace
+TITLE        @bold @track=0.14 = TRACE
+SUBTITLE     @sans = transport scope
+
+# header readouts
+TRAPPED      @bold @track=0.08 = TRAPPED
+SOURCES      @bold @track=0.08 = SOURCES
+LANES        @bold @track=0.08 = LANES
+DRAWN        @bold @track=0.08 = DRAWN
+
+# units
+NM           @sans = nm
+DEG          @sans = deg
+PCT          @sans = %
+
+# the plate: what the quality rung buys (the header's LANES is their product)
+PATHS        @bold @track=0.08 = TRACED PATHS
+Q_RAYS       @sans = rays per source
+Q_WAVES      @sans = wavelengths
+Q_PATHS      @sans = light paths
+Q_BOUNCES    @sans = bounces
+NONE         @sans = nothing is emitting - switch a source on in the bench plan
+
+# the legend
+ALARM_KEY    @sans = TIR or out of budget
+POWER_KEY    @sans = brighter carries more power
+
+# the inspector: a lane's branch (counts from B_MAIN) and what it means (from BM_MAIN)
+B_MAIN       @bold @track=0.08 = MAIN
+B_ONE        @bold @track=0.08 = BRANCH 1
+B_TWO        @bold @track=0.08 = BRANCH 2
+BM_MAIN      @sans = takes no reflected branch
+BM_ONE       @sans = split off at the first surface
+BM_TWO       @sans = split off at the second surface
+C_SOURCE     @sans = source
+C_RAY        @sans = ray
+C_OF         @sans = of
+C_STEP       @sans = interaction
+C_POWER      @sans = power
+C_DEVIATION  @sans = deviation
+C_AIR        @sans = in air
+C_GLASS      @sans = in glass, n
+C_AT         @sans = at
+
+# element kinds, in bench.hlsli's EK_ order (layout.hlsl counts from K_PRISM)
+K_PRISM      @bold @track=0.08 = PRISM
+K_MIRROR     @bold @track=0.08 = MIRROR
+K_SLAB       @bold @track=0.08 = SLAB
+K_LENS       @bold @track=0.08 = LENS
+K_SPLITTER   @bold @track=0.08 = SPLITTER
+K_SCREEN     @bold @track=0.08 = SCREEN
+K_BLOCK      @bold @track=0.08 = BLOCK
+
+# what happened at a segment's end, in EV_ order (counts from W_EMIT)
+W_EMIT       @sans = leaves the source
+W_ENTER      @sans = refracts into the glass
+W_EXIT       @sans = refracts out of the glass - disperses
+W_MIRROR     @sans = reflects off a mirror
+W_FRESNEL    @sans = partial reflection at a face
+W_TIR        @sans = total internal reflection
+W_SCREEN     @sans = lands on a screen
+W_ABSORB     @sans = absorbed by a block
+W_ESCAPE     @sans = leaves the bench
+W_EXHAUST    @sans = out of interaction budget
+
+# footer: the one gesture this canvas has
+KEY_HOVER    @sans = Hover
+DO_HOVER     @sans = inspect a traced path

@@ -1,250 +1,253 @@
 # Interaction Lab
 
-Interaction Lab is a bundled example project for authored viewport tools. It contains four
-full-panel stations, four single-purpose micro instruments, one downstream renderer that proves a
-data contract, and a live Audio In analysis branch.
+Interaction Lab is the reference set for Sentinel's interaction surface: fourteen stations, each a
+complete small instrument, built on one shared UI foundation and proven with real input on
+Sentinel 0.6.3. Agents learn what a Module can do from here, so every station shows a capability
+end to end: the gesture, the durable state it writes, the data or events it publishes, and the
+picture that changes because of it.
 
-Load `interaction_lab.sentinel` in Sentinel. Each station is boxed and labeled in the graph;
-double-click a Module node to use its viewport.
-
-| Scene Group | Station | What it is for |
-| --- | --- | --- |
-| `01 - SPLINE DESK` | `Spline_Desk`, `Spline_Output` | Direct point/handle editing, and the data contract that survives a rebuild |
-| `02 - GIZMO DESK` | `Gizmo_Desk` | Host-owned selection and a 3D transform gizmo over lit geometry |
-| `03 - MOTION CONSOLE` | `Motion_Console` | A compact interface designed around one operator workflow |
-| `04 - STYLE AUTHORITY` | `Style_Authority` | The live theme source: every v3 primitive drawn at the published values |
-
-## Micro instruments
-
-The micro set is the path of least resistance for ordinary graph work. Each Module does one job,
-has a small control surface, publishes honest scalar state, and uses Style Authority's `Theme`
-data port when it is connected. Without that link, each falls back to the same neutral amber
-theme, so it remains independently usable.
-
-| Module | Single responsibility | Important outputs |
-| --- | --- | --- |
-| `Micro_LFO` | continuity-safe scalar modulation with rate, depth, and four shapes | `value`, `bipolar`, `phase` |
-| `Micro_Scope` | fixed-cadence history for one expression-driven scalar | `current`, `recent_min`, `recent_max` |
-| `Micro_Sequencer` | eight toggleable gates at a continuity-safe step rate | `gate`, `step`, `step_count`, `phase` |
-| `Micro_Envelope` | attack/release smoothing for one gate | `value`, `gate`, `rise_count`, `fall_count` |
-
-The saved lab demonstrates the intended small chain: `Micro_LFO/value` drives
-`Micro_Scope/signal`, and `Micro_Sequencer/gate` drives `Micro_Envelope/gate`. Those are live
-expressions, not decorative wiring.
-
-Study these Modules in place as small examples of timing, state, data ports, and responsive
-panel design. They remain project-local teaching references rather than a stock Module catalog.
-For a new project, reimplement the relevant contract for that project's actual control problem
-and visual language. Copy one only when the user explicitly asks to fork or remix Interaction
-Lab.
-
-`Scope_Audio` defaults to **Device**, **Loopback**, **Default loopback** so the audio scope and
-signal trails work portably without a bundled test file. Silence is a healthy state; play audio on
-the Windows default output to exercise the analysis panels.
-
-Scene Groups are flat, never nested, and control-only: the lab is a tool and data-flow reference,
-so it has no Group Output endpoint. Each group exposes five to seven curated controls rather than
-mirroring its node's internals.
-
-## The v3 language
-
-Every station is built on `_shared/ui/sui3_*.hlsli` and follows the same rules. They are worth
-reading as a set, because each one is a decision that was measured rather than assumed.
-
-**Full-panel, extent-driven.** Every station declares
-`panel: { mode: canvas, output: <name>, resolution: follow_panel }`, so the render size is whatever
-the dock gives it. That means no layout may assume an extent. Geometry is proportional, strokes and
-glyphs are in pixels, and text scale steps on integers derived from `min(W/1280, H/720)` — the
-smaller axis ratio, because height alone puts giant glyphs in a wide, short dock. The root
-`resolution:` remains as a fallback for a hidden or unsized panel.
-
-**Captions are dropped, never overlapped.** A caption is a fixed pixel height sitting in a
-normalized gap, so the gap shrinks with the panel while the caption does not. Every station has a
-`*CapFits`/`*LabelFits` helper, and a label that cannot fit its gap is not drawn. This single defect
-class — a fixed-pixel label placed in a normalized gap — accounted for six separate layout bugs
-across the rebuild.
-
-**The host owns the hit rects.** Control rectangles come from `_ui.generated.hlsli`, compiled from
-the manifest's `viewport.controls` block by `tools/module-ui.ps1 generate`. The shader draws from
-the same numbers the host hit-tests against, so a click cannot land off a control by construction.
-`tools/module-ui.ps1 validate` fails if the generated file drifts from the manifest.
-
-**Amber means something.** The accent marks the active selection and established live values, never
-hover and never decoration. The only other chroma in the lab is red/green/blue on the gizmo's axis
-handles, where the colour carries direction. A hue audit of Gizmo Desk's output finds 0.23%
-chromatic pixels, all amber or axis, with the remaining 63 pixels being antialiasing blends between
-two palette colours.
-
-**Actions are ordinary parameters, not buttons.** No station drives an action from a `type: button`
-parameter global, because that global is a one-way latch that survives `force_reload` — and because
-button parameters **cannot be exposed on a Scene Group at all**. Every action is either a bool read
-as a rising edge or an `int` on a bank, so it undoes, presets, saves with the project, and takes
-OSC. Where a station renders its own clickable plate, the shader reads that control's `down` bit
-from the interaction flags rather than the parameter.
-
-**Numbers are attached to what they describe.** Every station prints its live values next to the
-control that produces them, read back from the same buffer the control outputs are taken from, so a
-readout cannot drift from what the graph receives.
-
-## Spline Desk
-
-`Spline_Desk` edits knots directly: anchors, both handles, tangent continuity, per-lane selection,
-marquee, and undo. Selection is amber brackets on the anchor; tangent mode is the terminal's
-*shape* — free is an open ring, aligned is a ring plus bar, mirrored is a filled disc — so the mode
-is readable without the label.
-
-Controls: `V`/SELECT and `P`/PEN choose the tool; drag an anchor to move it with its handles as a
-rigid set, or a handle to shape the segment; drag empty space to marquee-select, Shift adds and
-Control subtracts; `T` cycles free/aligned/mirrored; `O` toggles the path closed; Backspace deletes
-the selection; Enter advances through eight lanes; Escape cancels; `Ctrl+Z` undoes.
-
-Data outputs — `Spline Headers`, `Spline Knots`, `Sampled Path` (512 PNode-compatible records),
-`Editor Selection` — are unchanged from the previous editor.
-
-`Spline_Output` is deliberately unchanged from before the rebuild and is byte-identical to
-`modules/Spline_Output`. It consumes the desk's `Sampled Path` port and is the proof the contract
-survived: a downstream consumer written against the old editor still works against the new one.
-
-Undo is worth understanding before you copy it. An edit that undo must reverse is **armed on one
-cook and executed on the next**, and the snapshot is taken on the arm cook. This is not caution: the
-pass graph is a cycle — `snapshot` reads the knots and `update` writes them, while `update` reads
-the snapshot and `snapshot` writes it — and the scheduler runs `update` first. A snapshot taken on
-the command frame therefore records the state *after* the edit, and undo restores the desk to where
-it already is. The arm cook mutates nothing, so it is order-independent by construction.
-
-Undo also restores everything except the selection bit. Selection is view state; a closed path is
-document state. Keeping the whole flags word to protect the selection is what made closing a path
-the one edit undo could never reverse.
-
-## Gizmo Desk
-
-`Gizmo_Desk` places twelve selectable objects — sphere, box, torus, capsule — on a lit ground plane
-and transforms them with a translate/rotate/scale gizmo. Selection is host-owned through a
-`ray_query` provider, so `sentinel_viewport action=pick` drives the same path a real click does and
-reports `source: User`; shift extends. Multi-selection transforms use one shared pivot, so two
-selected objects orbit together while each keeps its own orientation.
-
-Controls: click to select, Shift-click to extend; `1`/`2`/`3` choose move, rotate and scale; `4`
-switches world/local; drag an axis arrow, a rotation ring, or the amber centre for uniform scale;
-Escape cancels. Handle acquisition happens on mouse-down and is held until commit or cancel, so a
-fast drag or a pause mid-gesture cannot lose the handle.
-
-The objects are **raymarched lit solids, not screen-space outlines**. A transform gizmo can only be
-judged against shaded geometry, because a rotation and a non-uniform scale are both invisible on a
-flat silhouette. Shading is strictly greyscale so the axis colours stay the only chroma.
-
-Two raymarching details generalize. The hit epsilon scales with distance and the step floor is tied
-to it, testing `d < eps` rather than `abs(d) < eps`: with a fixed floor, a ray that overshoots the
-surface lands inside at a negative distance and marches inward forever, which prints a scatter of
-black pixels exactly where a surface faces the camera dead-on. And the selection rim is *blended*
-toward amber rather than added — an additive rim on an already-lit body clips the red channel first
-and drifts the hue to yellow.
-
-Numeric orbit (`do_orbit` / `orbit_axis` / `orbit_degrees`) applies an exact rotation about the same
-shared pivot the drag uses, and it is the only way to transform a selection from OSC, a Conductor
-cue, or an expression. It is also the honest reason it exists: no automated call can produce a
-pointer drag, so this is the only code path that exercises the transform maths without a hand on the
-mouse. It proves the maths and the shared pivot. It does not prove the drag that normally reaches
-them, and it is not a substitute for it.
-
-Data outputs: `Scene Objects` (durable transforms for sixteen slots) and `Gizmo State`, plus the
-declared viewport descriptors and pick result through the standard selection provider.
-
-## Motion Console
-
-`Motion_Console` is the reference for an interface designed around one operator workflow rather
-than a generic dashboard. Four semantic lanes — Prompt, Energy, Camera, Pulse — place live
-waveform, numeric state, rate, amplitude and shape together. The master strip, bias pad, burst,
-mute and meters sit in a narrow rail because they affect or summarize the whole system.
-
-The reusable lesson is not "make every UI monochrome" or "always use four lanes." It is that every
-region earns its space by changing the system or explaining live state.
-
-The XY bias pad follows the resolved host contract: Properties and Canvas gestures are both
-Y-up, so a pointer near the top writes a high Y value and the published `bias_y` is that same
-unmodified value. Rendering converts that value to the Y-down canvas exactly once through
-`sui3PadPoint`. If you reimplement the pad, verify both top and bottom through real interaction
-rather than assuming the direction.
-
-Control outputs publish the four lanes, XY bias, combined energy, pulse, the burst envelope and a
-burst-fire count, so the console can drive other nodes through expressions.
-
-## Style Authority
-
-`Style_Authority` merges what were three separate stations — a UI kit gallery, a font sampler, and
-a style tuner — into one live specimen sheet. It draws every v3 primitive at the currently
-published theme and prints the exact values leaving the node beside them.
-
-It is a *source*, not a mock-up: the specimens read the same buffer the control outputs are taken
-from. That claim only holds if every published metric actually drives the sheet, which is precisely
-what went wrong once — `body_scale` was published, printed in the readout table, and never passed
-into the layout function at all. If you add a metric here, make the sheet consume it, or it is a
-label rather than a value.
-
-Two honest limits. Glyph scales are integers because the face is a bitmap, so `1.8` renders as `1x`
-while the readout prints `1.80`. And `control_height` is published for downstream use but does not
-resize this station's own controls, because those rects belong to the host — the same property that
-makes clicks land correctly. It is deliberately not on the group's control surface.
-
-All UI text is built from Scientifica's regular glyph data; titles take a small synthetic edge
-weight from the same regular face rather than switching to a bold font.
-
-## Extents
-
-Every station is verified legible at 640x360, 1600x900 and 1920x403 in addition to its live dock
-extent. Testing a forced extent requires a throwaway node: a panel that is open owns its module's
-render size, so editing `resolution:` and reloading does not change it.
-
-One known limit: host control rects are static normalized values, so hit regions scale with the
-panel and fall below the 32px minimum somewhere under 1000px wide. The drawn controls remain
-correct and aligned; they simply become small targets.
-
-## Performance
-
-Five-sample profile of the whole lab: **10.09 ms** mean, against a 14.88 ms ceiling measured on the
-seven-station predecessor.
-
-Read that profile carefully. `sentinel_graph action=profile` is a CPU wall-clock profiler, and the
-dominant per-node number tracks *which station currently owns the active canvas panel*, not how much
-that station draws. Disabling Style Authority's entire primitives grid — roughly forty percent of
-its drawing — changed its number by nothing. Use it to spot a node that has fallen over, not to
-tune a shader.
-
-## Architecture and scope
-
-Everything here is authored content: YAML manifests, HLSL passes, persistent structured buffers,
-typed data ports, and a `.sentinel` graph. No Sentinel application source, IPC command, native
-widget, or engine feature was added or changed.
-
-This is a foundation rather than a full DCC toolset. It does not include snapping, spline segment
-insertion, depth-tested gizmo fading, or host-mirrored sub-object selection. Those can be layered on
-as additional Module passes and controls without changing the application. Captures and
-machine-generated proof bundles are intentionally excluded from the public project.
-
-Numeric transform entry belongs on that deferred list too, and an earlier draft of this file dropped
-it from the list without saying so while adding the feature above. It is present, deliberately, for
-the reason given there. The rest of the list stands.
+Load `interaction_lab.sentinel`. Each station is a numbered Scene Group in the graph; open a
+node's window to use its canvas. A group's Properties hold that station's few honest controls.
 
 ## Component map
 
-This is a set of independent teaching stations, not one program-output chain.
+| # | Station | Nodes | Tier | What it teaches |
+| --- | --- | --- | --- | --- |
+| 00 | Kit | `Kit` | basic | the foundation's specimen: palette, type, every widget, and the host controls' round trip (an XY pad whose stored, published, read-out and drawn values agree) |
+| 01 | Touch | `Touch` | basic | pointer and keys on a surface: strokes, a Space latch, undo, clear; durable through save, reload and preset recall |
+| 02 | Handles | `Handles` | basic | drag to move, right-drag to turn: four fixtures whose transforms are ordinary parameters, each with a round grab ring |
+| 03 | Still Life | `Still_Life` | basic | host-owned selection and picking in a marched 3D scene through the internal camera: click, Shift add, body slide, ring turn, Esc cancel |
+| 04 | Pulse Bus | `Pulse`, `Pulse_Bus`, `Resonance` | basic | GPU physics appends an Impact event per strike, a Script picks the note, MIDI Out plays it, and the echo comes back to a renderer on the physics clock |
+| 05 | Control Atoms + Scope | `Atoms`, `Scope` | basic | a Script as a control source (LFO, envelope, sample and hold, slew on the 240 Hz clock) with its own desk window; a scope that reads it through `ref()` |
+| 06 | Desk | `Stage`, `Desk`, `Cue_Brain` | basic | a panel of pads, faders and readouts driving a Script that runs a cue stack: GO and BACK crossfades, a guarded blackout, live feedback to the pads |
+| 07 | Curve Desk | `Curve_Desk` | instrument | a bezier key editor (a bouncing ball in three channels) with handles, box select, modes, auto handles and a spacing chart |
+| 08 | Path Desk + Plotter | `Path_Desk`, `Plotter` | instrument | a pen tool and path editor read as curvature, feeding a plotter that plans its speed like CNC firmware and lays ink that pools at corners |
+| 09 | Ramp Desk + Relief | `Ramp_Desk`, `Relief` | instrument | colour stops on an OKLCH plane, gamut-mapped into a published palette; a relief map that renders only when something changes |
+| 10 | Patch Bay + Bloom | `Patch_Bay`, `Bloom` | instrument | cables, a matrix and bipolar depths patching five sources into six outputs that swing a guilloche rosette through expressions |
+| 11 | Timeline + Sting | `Timeline`, `Sting` | sequence | a keyframe editor (stage, inspector, transport, dope sheet, graph) on four layers, drawn as a title sting with motion blur from the curves |
+| 12 | Pattern + Pattern Bus | `Pattern`, `Pattern_Bus` | sequence | a polymetric step sequencer whose hits leave 100 ms ahead on a GPU event port and land on the grid within a millisecond |
+| 13 | Score + Program | `Score`, `Program` | sequence | an act sequencer: a camera flown through a hall along marks, title cards between, hand-offs (cut, dip, glide), rendered by a Program whose internal camera the Score drives |
+| - | Sound | `MIDI_Merge`, `Synth` | shared | one Script merging the Pulse Bus and the Pattern Bus into the one MIDI Out |
 
-| Component | Type | Receives | Publishes or contributes |
-| --- | --- | --- | --- |
-| `Style_Authority` | Module | Canvas control gestures | responsive style and layout station |
-| `Motion_Console` | Module | Canvas gestures and time | scalable LFO panel and scalar control outputs |
-| `Spline_Desk` | Module | pointer/keyboard events | durable spline state and sampled path records |
-| `Spline_Output` | Module | `Spline_Desk` sampled path | downstream rendered proof of the data contract |
-| `Gizmo_Desk` | Module | selection and viewport edits | durable object transforms and camera-aware gizmos |
-| `Scope_Audio` | Audio In | Windows default loopback endpoint | PCM, Spectrum, Mel Bands, level, and peak |
-| `Data_Scope` | Module | `Scope_Audio` texture/data inputs | auto-ranging low/mid/high traces |
-| `Signal_Trails` | Module | scalar expression drivers | four cook-rate trace lanes |
-| `Micro_LFO` | Module | optional `Style_Authority/Theme` | continuity-safe unipolar/bipolar scalar modulation |
-| `Micro_Scope` | Module | optional theme plus one scalar expression | fixed-cadence auto-ranged trace and exact retained bounds |
-| `Micro_Sequencer` | Module | optional theme plus rate/gate gestures | gate, step index, phase, and monotonic step counter |
-| `Micro_Envelope` | Module | optional theme plus a gate | attack/release value and monotonic edge counters |
+## Before you start
 
-The saved workspace focuses the relevant station rather than defining a Group
-Output. Audio In requires no engine pack. Study the interaction contracts and
-responsive layout decisions; reimplement the needed interaction in the owning
-project instead of copying these station Modules.
+- **The lab makes sound.** `Synth` is a MIDI Out on the default Windows port (Microsoft GS
+  Wavetable Synth). Pulse (04) strikes notes as balls fall and the Pattern (12) plays as soon as the
+  project loads. To silence it: Space in the Pattern window, or `mute` in the 12 or 04 group. The
+  Sound group's `channel` set to 10 turns every note into drums.
+- **Everything running costs about 10 ms of GPU** on an RTX 5060 Laptop GPU (27 nodes). Disable
+  the Scene Groups you are not using to give the rest the headroom.
+- **Use the canvases with the mouse and keyboard.** Each station's gestures and keys are listed
+  below; injected input proved all of them except what is marked *by hand*.
+
+## The stations
+
+**00 Kit.** The specimen sheet for `modules/_shared/ui`: the instrument palette (graphite ground, a
+grey ladder, amber only for the selection and live readings, red only for broken), Plex Sans
+Condensed and Plex Mono as SDF type, and every widget. Its host controls (toggle, fire, radio
+pads, hold and latch, level, amount, an XY pad) are manifest controls, so the host owns them:
+change one in Properties and the canvas follows, drag it on the canvas and Properties follows.
+When the window has the height, a Widget States pane shows the widgets a module draws itself -
+chip, slider, knob, toggle, segmented row, meter with a peak hold, keycaps, value row - in each
+state they have (rest, hot, down, on), on the Kit's own amount, level and mode, so they move with
+the host controls. The pad follows the XY authority contract: the stored parameter is never flipped, `ilPadPoint`
+draws it and `ilPadValue` inverts a pointer, and the readout, the reticle and the published value
+are checked against each other (the pad shows AGREE).
+
+**01 Touch.** Click, drag, double-click, keys 1 - 4, a Space latch that holds either way, Backspace
+undo, C clear. Strokes start at the press, lift where they leave the surface and restart when
+they re-enter. Ink lives in a `state_buffer`, so it survives a reload, a save and a preset recall
+without replaying old events. *By hand:* wheel.
+
+**02 Handles.** A lamp and three blocks, each a position and a rotation parameter, each with a
+round grab ring that has hover and held states. Sentinel 0.6.3 measures the grab radius in
+normalized image coordinates, so on this 16:9 frame a handle also grabs up to 64 px left and right
+of its centre, past its 36 px ring (Sentinel bug #174); the ring lights wherever a click would
+grab. Move and rotate commit as ordinary parameter edits, so OSC,
+expressions and undo all work. **On Sentinel 0.6.3 nothing moves until release.** Param gestures are documented to preview
+live, but 0.6.3 writes the parameter only when the button comes up, and while the host holds the
+drag the module receives no input at all (no events, no buttons, the pointer frozen at the press),
+so nothing in the module can draw the drag either. That is Sentinel bug #173, and this station is
+its test: drag a ring and the object should follow the pointer while the button is held; right-drag
+and it should turn while held. *By hand:* that live preview, once the engine provides it.
+
+**03 Still Life.** The internal camera and host selection together: click selects, Shift adds, a
+miss clears; drag a body to slide the whole selection, arrows nudge, the ring turns, Esc cancels.
+The selection outline is registered to the render from a flown viewpoint. Presets: the frame
+contract `Frame · Table` (camera only) and a four-rung quality ladder (`Quality · Draft / Live /
+Beauty / Hero (capture only)`). *By hand:* RMB look.
+
+**04 Pulse Bus.** `Pulse` runs the physics on the GPU and appends one Impact record per strike to
+an event port; the `Pulse Bus` Script turns each into a note on a scale and sends it to MIDI Out,
+then echoes the played note to `Resonance` (video, data and event inputs at once) on Pulse's
+clock: strike to echo is 25 ms, and every echo is drawn linked to its strike. The Script's window
+has scale pads and a mute.
+
+**05 Control Atoms + Scope.** The `Atoms` Script makes an LFO, an ADSR, a sample and hold and a slew
+as Signal outputs on the 240 Hz clock (7 us a tick), with a desk in its own window: knobs, shape
+pads, an LFO gate toggle and a held Gate pad over live previews. `Scope` plots all five through
+`ref()` expressions: drag places and holds cursors A and B (1 and 2 choose), Space holds, Z and X
+zoom, C clears. *By hand:* wheel zoom.
+
+**06 Desk.** A panel module (readouts, eleven pads, two faders over a Stage preview) sends its
+gestures to the `Cue Brain` Script, which runs the cue stack and writes the Stage: a cue pad makes
+the next cue, GO crossfades (GO during a fade completes it), BACK fades back and reverses a fade
+from where it is, the FADE and MASTER faders set the time and the level, and the blackout is
+guarded - a tap is ignored, holding engages it (at 0.65 s), a tap restores. Lit, selected, fading, colour and value
+feedback go back to the pads.
+
+**07 Curve Desk.** Keys snap to frames, neighbours clamp, handles stay aligned until B breaks them,
+box select, Backspace, double-click a curve to insert, 1 / 2 / 3 for step / linear / bezier, A
+for auto handles (flat at extremes, Fritsch-Carlson limited), arrows, F frame, middle-drag pan,
+ruler and chart scrub, Space play, R reset with Z bringing the edit back. Publishes `Curves` and
+travel / height / squash / phase control outputs. Presets: `Curves · Bounce`, `Curves · Soft
+contacts` (state only). *By hand:* wheel zoom, Shift-click.
+
+**08 Path Desk + Plotter.** Up to six pen paths on a plotter's sheet: P is the pen (click a corner,
+drag a smooth anchor, click an open end to continue, the first anchor to close, Enter to finish),
+edit mode drags anchors and handles, double-click splits a curve exactly (de Casteljau) or
+toggles an anchor's kind, O finds a short plot order. The curvature comb and a radius strip read
+the geometry. `Path` (1024 arc-length samples) feeds the `Plotter`, which plans speed as CNC
+firmware does - a curvature speed limit, forward and backward acceleration passes, minimum-jerk
+pen-up moves - and lays ink by speed on a persistent sheet, with a pencil underdrawing that shows
+an edit at once. The pen comes back to the Path Desk through `ref()`.
+
+**09 Ramp Desk + Relief.** Up to twelve stops coloured on an OKLCH plane (lightness up, chroma
+across, hatched where sRGB ends) and a hue strip, blended in OKLab, OKLCH or sRGB into 256
+gamut-mapped entries published as `Palette`. Lanes show the ramp blended three ways, as lightness,
+as each dichromat sees it, and as lightness, chroma and step curves. A stop asking for more chroma
+than sRGB has keeps its ask and is shown brought in. `Relief` is `execution: on_dirty` with one
+`time_dependent: false` pass: it renders once per change and costs nothing while idle. Presets:
+`Palette · Hypsometric / Ink / Thermal / Diverging` (state only).
+
+**10 Patch Bay + Bloom.** Five sources and an external `input` patched by cables into six outputs,
+each resting on its base and swung bipolar by every cable into it (a negative depth inverts and
+draws dashed). Click a cable to select it; drag its knob or the inspector's; drag jack to jack to
+patch, a plug to re-patch or into the air to unplug; the matrix patches and unpatches; drag along
+a meter to set a base; M mutes. Outputs are control outputs `out_1 .. out_6`; the `Bloom` rosette
+rides them through expressions, and the bay's input rides the Curve Desk's ball. Presets:
+`Default patch`, `S&H storm` (state only).
+
+**11 Timeline + Sting.** Four layers (Ring, Sun, Block, Bar) by five channels, up to eight keys a
+channel, each key hold, linear, ease, spring or back. One canvas holds the stage (motion paths,
+onion skin), the inspector, the transport (speeds, loop in and out), the dope sheet and the graph
+with ease handles; every one of their gestures was proven with injected input. The Sting draws the same
+layers, motion-blurred across the shutter from the curves themselves. Presets: the Sting's
+quality ladder `Quality 1 Draft .. 4 Hero (capture only)`, scoped to samples and resolution.
+*By hand:* wheel zoom, Shift-click.
+
+**12 Pattern + Pattern Bus.** Six lanes on one sixteenth clock, each its own length (the factory
+16 12 7 5 9 11 realign every 55,440 steps); per step: on, velocity, chance, ratchet, nudge; swing.
+Grid, rings, lane and step inspectors and a tape of every hit against the steps. Hits leave on a
+GPU event port 100 ms before they are due with their "due in"; the `Pattern Bus` Script stamps
+them and MIDI Out holds each until its time: NoteOn within +-0.6 ms of the swung grid. Presets:
+`Pattern 1 Six lengths (factory, 96 bpm)`, `Pattern 2 Clave, bell, tresillo (108 bpm)`.
+
+**13 Score + Program.** A show of acts on one clock. A rail act flies the camera through a
+colonnaded hall along up to eight marks (eye, target and lens at a fraction of the act); a card
+act is a title card (word, disc, bar). Every act has a light (day, dusk, night), a length and a
+hand-off to the next: cut, dip through black, or glide (the camera and light blend between rails,
+a card dissolves). The canvas holds the plan over the elevation (sharing the hall's long axis),
+a schematic VIEW through the camera at the playhead, the inspectors, the act lane and a camera
+track plotting eye height and lens over the whole show. The `Program` renders the hall - day sun,
+dusk through the open end, night lamp pools under the moon, soft shadows, occlusion, a traced
+reflection off the glossy works - and draws the cards from the same header the stage uses. The
+Score's VIEW outline lies on the Program's render within a pixel. Presets: `Score 1 The hall by
+day and night` (the default show), `Score 2 Nocturne` (state only); the Program's quality ladder
+`Program Quality 1 Draft .. 4 Hero (capture only)` and its frame contract `Frame · The door (fly
+from here)`. *By hand:* RMB look in the Program.
+
+### Flying the Program's camera
+
+The Score drives the Program's internal camera by six expressions:
+
+```text
+camera_pos_x  = ref("Score/control_outputs/cam_x")
+camera_pos_y  = ref("Score/control_outputs/cam_y")
+camera_pos_z  = ref("Score/control_outputs/cam_z")
+camera_yaw    = ref("Score/control_outputs/cam_yaw")
+camera_pitch  = ref("Score/control_outputs/cam_pitch")
+camera_fov    = ref("Score/control_outputs/cam_fov")
+```
+
+Clear them to fly it yourself (WASD, RMB look, wheel for speed); recall `Frame · The door` to
+start from the hall door. Set them again with `sentinel_expression set` to give the camera back to
+the Score. While they are set, the frame preset changes nothing - the expressions win the next
+frame. `camera_fov` is the vertical field of view.
+
+## The foundation
+
+`modules/_shared/ui/`:
+
+| File | Role |
+| --- | --- |
+| `il_core.hlsli` | palette (on `plan_theme.hlsli`), rect and SDF helpers, coverage, the UI scale from the smaller axis |
+| `il_draw.hlsli` | the GPU draw list: a layout pass records commands, text is expanded by 64 threads, record-heavy drawing goes into parallel batches |
+| `il_ui.hlsli` | widgets on the draw list, including the XY pad authority (`ilPadPoint`, `ilPadValue`) |
+| `il_raster.hlsli` | the generic tiled rasterizer every canvas shares |
+| `il_events.hlsli` | ordered viewport events consumed once by sequence, latches, wheel notches |
+| `il_pane.hlsli` | splitters and per-pane views |
+| `il_text.hlsli` | per-pixel SDF text for program renderers that need a few labels |
+
+A station is `reduce` (events to durable state, one thread) then `layout` (the draw list) then
+`raster`. Labels are written in each module's `labels.txt` and generated with
+`python tools/il_type.py labels <Module>`; `python tools/fxc_check.py <Module> <pass> [--Od]`
+compiles one pass offline and times it. The other shared headers carry each data contract once
+for both ends: `plot.hlsli` (Path Desk and Plotter), `palette.hlsli` (Ramp Desk and Relief),
+`timeline.hlsli` (Timeline and Sting), `score.hlsli` (Score and Program).
+
+## Ideas worth taking
+
+Study these as ideas and rebuild them for your own problem; copy a station only to fork it.
+
+- **Durable state with undo.** Canvas edits live in a `state_buffer`, not parameters; a snapshot
+  swap gives Z, R restores the default, and state-only presets carry whole edits.
+- **One authority per value.** Host controls stay in Properties; the canvas edits what Properties
+  cannot (points, paths, cables, acts), and nothing is stored twice.
+- **Typed routes.** Data ports (`Path`, `Palette`, `Motion`, `Score`), event ports (`Impacts`,
+  `Hits`), Signal outputs (Atoms) and control outputs; expressions as back edges where a link
+  would make a cycle (the Plotter's pen back to the Path Desk, the Score's camera to the Program).
+- **Scripts as glue.** A Script turns events into notes (Pulse Bus, Pattern Bus), runs a cue stack
+  (Cue Brain), makes control signals (Atoms) or merges streams (MIDI Merge), with its own window.
+- **Musical time is sent ahead**, never placed on frames: stamp `timestamp + due in` and let MIDI
+  Out schedule it.
+- **Narrow presets.** Quality ladders scoped to quality, frame contracts scoped to the camera,
+  shows and patches scoped to state; the defaults are always a rung you can work in.
+
+## Measured
+
+GPU time per frame, each measured with its own canvas open at 1579x1162 while the other stations
+ran: Kit 0.35 ms, Touch 0.83,
+Handles 0.49, Pulse 0.82, Resonance 0.45, Scope 1.10, Desk and Stage 0.17 each, Curve Desk 0.91,
+Path Desk 1.46, Plotter 0.63, Ramp Desk 0.91, Relief 1.09 per render and nothing idle, Patch Bay
+1.41, Timeline 1.05, Pattern 0.87, Score 1.21. The whole lab, all 27 nodes, about 10 ms.
+
+Quality ladders, as ratios to the default rung (which is always the working one):
+
+| Node | Draft | Live | Beauty | Hero (capture only) |
+| --- | --- | --- | --- | --- |
+| Still Life (march pass) | 0.41 | 1.00 | 1.11 | 3.9 |
+| Sting (samples, resolution) | 0.49 | 1.00 | 3.4 | 15 |
+| Program | 0.73 | 1.00 (1.04 ms) | 1.06 | 4.1 |
+
+Identical presets measured several times apart depending on how many node previews were open, so
+compare ratios, not absolutes. MIDI: 458 recorded notes left MIDI Out a median 0.98 ms after their
+scheduled time (p95 3.9 ms).
+
+## Building on 0.6.3
+
+What this build taught, as it shapes every station:
+
+- Module passes run in **reverse** manifest order. One-pass nodes and passes that read only their
+  own buffer are robust to it; the Program marches and composites in one pass for this reason.
+- FXC evaluates both sides of `?:`, compile time grows superlinearly with one inlined body (fold
+  repeated calls into loops), and a runtime loop count is a constant bound with an early break.
+- An event input takes one link; merge streams with a Script.
+- Injected input must be issued one call at a time, readbacks and GPU timestamps lag by many
+  frames, and an enum option labelled with a bare numeral catches numeric writes.
+- Module outputs are displayed exactly as written: encode for display yourself.
+
+## Licences
+
+IBM Plex Sans Condensed and IBM Plex Mono are used under the SIL Open Font License 1.1
+(`modules/_shared/type/IBM_PLEX_OFL.txt`; the source fonts and licence are in `tools/fonts/`).

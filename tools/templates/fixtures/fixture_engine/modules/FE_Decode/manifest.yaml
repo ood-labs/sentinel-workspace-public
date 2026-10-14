@@ -1,0 +1,76 @@
+name: "FE Decode"
+version: "1.0"
+# DMX -> fixture state for every fixture of the rig, through the Fixture Rig node's FixtureRender tables. The DMX can
+# come from FE_Console (the built-in programmer) or from DMX In (a real console over Art-Net / sACN): universes are
+# found by their metadata address. Publishes one state row of (fn, param) slots per fixture, at the port's state
+# stride.
+mode: generator
+resolution: [1280, 720]
+
+data_inputs:
+  - name: "Rig"
+    slot: 0
+    schema:
+      - { name: position, type: float3 }
+      - { name: type,     type: uint }
+      - { name: rotation, type: float3 }
+      - { name: mode,     type: uint }
+      - { name: u0,       type: uint }
+      - { name: a0,       type: uint }
+      - { name: u1,       type: uint }
+      - { name: a1,       type: uint }
+      - { name: u2,       type: uint }
+      - { name: a2,       type: uint }
+      - { name: group,    type: uint }
+      - { name: flags,    type: uint }
+      - { name: u3,       type: uint }
+      - { name: a3,       type: uint }
+      - { name: r0,       type: uint }
+      - { name: r1,       type: uint }
+  - name: "DMX"
+    slot: 1
+    schema:
+      - { name: channels, type: uint, count: 512 }
+  # The Fixture Rig node's FixtureRender port: the type tables of every FE_Rig record.
+  - name: "FixtureRender"
+    slot: 2
+    schema:
+      - { name: w, type: uint, count: 4 }
+
+buffers:
+  - { name: table, structured: true, element_size: 4, element_count: 1024 }
+  # FE_N_MAX fixtures x FE_STATE_CAP slots, so any rig the port describes fits.
+  - { name: state, structured: true, element_size: 8, element_count: 1048576 }
+
+data_outputs:
+  - name: "State"
+    buffer: state
+    schema:
+      - { name: v, type: float2 }
+
+passes:
+  - name: index
+    shader: index.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - { slot: 1, source: "data:1" }
+    output: "buffer:table"
+  - name: decode
+    shader: decode.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "buffer:table" }
+      - { slot: 3, source: "data:2" }
+    output: "buffer:state"
+  - name: view
+    shader: view.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:2" }
+    output: output

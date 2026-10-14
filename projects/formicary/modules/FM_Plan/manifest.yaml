@@ -8,14 +8,29 @@ resolution: [1200, 820]
 # obstacle mask from these records, FM_Colony steers on these routes, FM_Render draws these
 # solids. None of them re-decides anything.
 #
-# 1200 x 820 on purpose: the plan strip, the flow strip and normalized viewport pointer
-# coordinates all pass through the one conversion in layout.hlsli, so what you click is what
-# you see.
+# 1200 x 820 is the canvas off-panel; in its panel it follows the panel (below). The plan strip, the
+# flow strip and normalized viewport pointer coordinates all pass through the one conversion in
+# layout.hlsli at whatever the extent is, so what you click is what you see - at any panel size.
+
+# Full-bleed: the canvas is only looked at (nothing consumes "Plan View" as video), so its extent is
+# the panel's. Every rect is a fraction of the live extent (layout.hlsli, plan_view.hlsli), which is
+# what plan.hlsl hit-tests through, so a resize can never make the picture and the pick disagree.
+panel:
+  mode: canvas
+  output: "Plan View"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 
 buffers:
   # 52, up from 36: sixteen station slots appended after the palette. Appended rather than
   # inserted, so every index below FM_STA_0 keeps the value it has always had.
   - { name: plan, structured: true, element_size: 80, element_count: 52, persistent: true }
+
+  # The UI kit's draw list: layout records the type and chrome, ui rasterizes it over the canvas.
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 
 state_buffers:
   - name: plan
@@ -63,6 +78,7 @@ viewport:
     - { key: c, action: clear_selection, label: "Clear selection" }
 
 parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The card beside the pointer that names the record under it (or the route of the lane under it) and lists its values. Turn it off to keep the canvas clear while you work." }
   # EXPLORATION AXIS 1 — what the colony is doing with the plane. Structural: it changes the
   # topology of the network, not how any of it looks.
   - name: arrangement
@@ -195,11 +211,35 @@ passes:
     thread_group_x: 1
     thread_group_y: 1
     output: "buffer:plan"
+  # The drawing: the plan strip and the flow strip on their plates. No type.
   - name: canvas
     shader: canvas.hlsl
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:plan" }
+
+  # The UI kit: one thread records the title row, plate captions, ruler numbers, lane tags, the
+  # readout column, the hover inspector and the keycap footer into the draw list; ui rasterizes it
+  # over the canvas at the panel's extent.
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+    output: "buffer:dl"
+
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:canvas" }
 
 data_outputs:
   - name: "Plan"
@@ -208,4 +248,4 @@ data_outputs:
 
 outputs:
   # named distinctly from the "Plan" DATA output so a link never has to disambiguate by slot
-  - { name: "Plan View", pass: canvas }
+  - { name: "Plan View", pass: ui }

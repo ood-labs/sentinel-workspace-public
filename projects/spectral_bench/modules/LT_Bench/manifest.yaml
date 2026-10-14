@@ -2,6 +2,9 @@ name: "LT Bench"
 version: "0.1"
 mode: generator
 resolution: [900, 1000]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 
 # The plan authority for spectral_bench. Owns BENCH SPACE and is the only node that decides where
 # anything sits or what it is. Publishes one record buffer consumed by LT_Trace and LT_Field.
@@ -19,6 +22,8 @@ buffers:
   # 12 emitters x 32 wavelengths x 14 segments. One chief block PER SOURCE, so the plan can draw
   # every beam on the bench; the rail picks one block out of it with `Rail Source`.
   - { name: chief, structured: true, element_size: 52, element_count: 5376, persistent: false }
+  # The UI kit's draw list (il_draw IL_DL_SIZE): layout.hlsl records, ui.hlsl rasterizes.
+  - { name: dl,    structured: true, element_size: 16, element_count: 24577 }
 
 state_buffers:
   - name: plan
@@ -151,6 +156,7 @@ parameters:
   # ---- appearance / readout only ----------------------------------------------------------------
   # WHICH SOURCE the spectral rail reads. The ladder and the deviation profile are readouts of ONE
   # beam — they cannot be shared — so this picks it. The plan strip is not restricted by it.
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, group: "Readout", description: "The card beside the pointer that inspects the element, source or ray under it, or the record being dragged. Turn it off to keep the canvas clear while you work." }
   - { name: rail_target, display: "Rail Source", type: int, min: 0, max: 11, default: 0, group: "Readout" }
   # How many chief fans the PLAN draws. All Sources is the honest default: a bench with three
   # lights that draws one beam is a diagram lying about its own subject. Rail Source is there for
@@ -164,6 +170,11 @@ parameters:
     flags: button_grid
     group: "Readout"
 
+# ORDER EDGES. Sentinel 0.6.3 orders passes by their `pass:` inputs only. A pass that reads
+# another pass's `buffer:` with no `pass:` edge to it can run first and read the PREVIOUS cook's
+# records, so the time-independent passes sit one edit behind and the bench opens with no light.
+# Every buffer reader below therefore also names its writer as a `pass:` input on a spare slot.
+# No shader reads those slots; they exist only to order the passes.
 passes:
   - name: plan
     shader: plan.hlsl
@@ -183,6 +194,9 @@ passes:
     output: "buffer:chief"
     inputs:
       - { slot: 0, source: "buffer:plan" }
+      - { slot: 1, source: "pass:plan" }       # order edge
+  # The drawing only. Every word, number, frame, hover outline and the inspector is layout.hlsl's,
+  # drawn over this by the shared UI kit in `ui`.
   - name: canvas
     shader: canvas.hlsl
     target: cs_5_0
@@ -190,6 +204,30 @@ passes:
     inputs:
       - { slot: 0, source: "buffer:plan" }
       - { slot: 1, source: "buffer:chief" }
+      - { slot: 2, source: "pass:plan" }       # order edge
+      - { slot: 3, source: "pass:chief" }      # order edge
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+    inputs:
+      - { slot: 0, source: "buffer:plan" }
+      - { slot: 1, source: "buffer:chief" }
+      - { slot: 2, source: "pass:plan" }       # order edge
+      - { slot: 3, source: "pass:chief" }      # order edge
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:canvas" }
+      - { slot: 3, source: "pass:layout" }     # order edge
 
 data_outputs:
   - name: "Bench"
@@ -215,4 +253,4 @@ data_outputs:
       - { name: wl1,    type: float }
 
 outputs:
-  - { name: "Plan View", pass: canvas }
+  - { name: "Plan View", pass: ui }

@@ -1,0 +1,23 @@
+# Variant_Switcher_UI - the switcher's words. Regenerate: python -B tools/il_type.py labels Variant_Switcher_UI
+# (it also refreshes _ui.generated.hlsli from the manifest's viewport.controls)
+TITLE        @bold @track=0.08 = STREAMDIFF
+SUBTITLE     @sans = direct variant switcher
+
+# the four host controls, in manifest order (layout.hlsl counts from C_AUTO)
+C_AUTO       @bold = AUTO
+C_1          @bold = 1
+C_2          @bold = 2
+C_3          @bold = 3
+
+# the readout row
+LIVE         @bold @track=0.08 = LIVE MUX OUTPUT
+INPUT        @sans = input
+NEXT_IN      @sans = next in
+OF           @sans = of
+U_S          @sans = s
+DIRECT       @sans = direct select
+
+# the keycap footer
+K_CLICK      @sans = Click
+D_AUTO       @sans = AUTO to cycle the three inputs
+D_PICK       @sans = 1, 2 or 3 to pick one

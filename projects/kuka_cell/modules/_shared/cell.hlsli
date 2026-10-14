@@ -66,6 +66,8 @@ struct KaRec
 //   seed    reseed salt
 //   flags   cell depth
 //   active  1
+//   spare   tallest standing rise, which fits the elevation strip
+// The target record's spare carries KA_Cell's newest consumed viewport event (asuint).
 
 // The renderer's durable UI state. One record, 16 bytes. Small because it should stay small:
 // this is for things a KEY or a GESTURE changes, which cannot be parameters because a shader
@@ -77,7 +79,9 @@ struct KaUi
     float init;         // 0 until the buffer has been adopted from the parameter once
     float timer;        // seconds in the current dwell, for the timed cycle
     float prevTouch;    // last seen cumulative contact count, for the per-volley cut
-    float s1, s2, s3;
+    float s1;           // touches since the last cut, for the per-volley cut
+    float s2;           // asuint: the newest viewport event consumed (ui.hlsl consumes each once)
+    float s3;
 };
 
 // 16 floats / 64 bytes. float3 members deliberately sit on 16-byte offsets.
@@ -214,7 +218,7 @@ float ka_travelTime(float c1, float c2, float c3, float c4, float c5, float c6,
     return worst;
 }
 
-// Joint limits, KUKA-plausible and applied in KA_Pose so no pattern can produce a pose the
+// Joint limits, plausible for a heavy-payload arm and applied in KA_Pose so no pattern can produce a pose the
 // renderer would have to draw as a broken machine.
 static const float2 KA_LIM[6] = {
     float2(-185.0, 185.0) * KA_D2R,
@@ -224,6 +228,21 @@ static const float2 KA_LIM[6] = {
     float2(-125.0, 125.0) * KA_D2R,
     float2(-350.0, 350.0) * KA_D2R
 };
+
+// A joint sitting on its stop: within 0.5% of either end of its range. This is the one rule every
+// "on a limit" readout uses (the pose matrix's red bars, its count, the scope's tool marks).
+// KA_ALARM_LIMIT records only KA_Pose's own clamp, and the rally integrator clamps its targets
+// before KA_Pose sees them, so an arm parked on a stop while it watches the ball never sets it.
+bool ka_jointOnStop(float v, uint c)
+{
+    float t = saturate((v - KA_LIM[c].x) / max(KA_LIM[c].y - KA_LIM[c].x, 1e-4));
+    return t < 0.005 || t > 0.995;
+}
+bool ka_armOnStop(KaPose p)
+{
+    return ka_jointOnStop(p.a1, 0u) || ka_jointOnStop(p.a2, 1u) || ka_jointOnStop(p.a3, 2u)
+        || ka_jointOnStop(p.a4, 3u) || ka_jointOnStop(p.a5, 4u) || ka_jointOnStop(p.a6, 5u);
+}
 
 // ---------------------------------------------------------------------------
 // Forward kinematics. ONE implementation: the pose node publishes the results, the plan draws

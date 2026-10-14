@@ -15,7 +15,7 @@ Use a Module when you need:
 - a scalar control output that can drive expressions;
 - persistent buffers or multi-pass feedback.
 
-For simple one-file post-processing, `hlslshader` may be enough.
+Simple one-file post-processing is a one-pass Module too; release builds have no other shader node.
 
 ## Demand-driven execution
 
@@ -105,6 +105,20 @@ uint parity = Acc[stampIndex] & 1u;
 ```
 
 The same caution applies to any same-cook write a later pass depends on. Where the data can carry its own ordering — a timestamp per record — validate against that instead of against an index, and the question of which generation was served stops mattering at all.
+
+## Pass Execution Order
+
+Each cook runs a Module's passes in the order the manifest declares them, with two adjustments:
+
+- a pass runs after every pass it reads through `pass:<name>`, wherever that pass is declared;
+- a pass that reads `buffer:<name>` runs after the nearest pass declared above it that outputs `buffer:<name>`, so it sees that pass's write from the same cook. A later writer of the same buffer waits for the readers above it.
+
+Declare passes in the order the data flows, and every hop is current within the cook, for texture and structured buffers alike. A buffer reader declared above every writer of its buffer sees the previous cook's contents (zeros on the first cook), which is how a feedback loop through a buffer works: the pass that consumes last cook's state goes first, the pass that writes the new state after it.
+
+Sentinel 0.6.3 and earlier could run a buffer reader before its writer, so each pass-to-pass hop added a cook of lag. One SDF interior's lens built its bloom through a copy, a bright pass and six pyramid steps, and every lamp's halo reached the screen seven frames after the lamp did. Examples written then give readers a `pass:<writer>` input on a spare slot, or read the external input directly to save hops; both stay harmless.
+
+- **Prove timing with stamps, not by eye.** A swatch comparing one pass's stamped frame counter with another's is decisive (`BR_Lens` view `Bloom Timing`).
+- **An image from an earlier cook reprojects through its own camera.** Feedback buffers and readers declared above their writers see last cook's image. Write the camera an image was rendered with (view-projection, its inverse, eye, jitter) into a header row of the image itself and reproject through it, never through the cbuffer's camera. Keep filter taps off the header texels.
 
 ## Ring Buffers: Never Draw The Wrap Seam
 
@@ -224,8 +238,9 @@ For authored 3D, use the Module's internal camera by default and read `internal-
 Modules that need ordered pointer, gesture, or keyboard edges in their shaders add
 `events` to `viewport.interactions` (available on installs at 0.5.30 or newer).
 Current bundled examples include `projects/streamdiff_canvas/modules/Paint_Canvas/`
-for paint gestures and `projects/interaction_lab/modules/Spline_Desk/` for
-selection and editing.
+for paint gestures, `projects/interaction_lab/modules/Touch/` for ordered pointer
+and key edges, and `projects/interaction_lab/modules/PathDesk/` for selection and
+editing.
 
 ### Manifest
 
@@ -246,7 +261,7 @@ viewport:
 Token vocabularies (invalid tokens fail compile with a field-qualified message such as `viewport.bindings[1].gesture`):
 
 - `input.pointer`: `left`, `right`, `middle`, `wheel`
-- `input.keyboard`: single characters `a`-`z` and `0`-`9`, plus `escape`, `tab`, `enter`, `space`, `backspace`, `left`, `right`, `up`, `down`, `shift`, `control`, `alt`
+- `input.keyboard`: single characters `a`-`z` and `0`-`9`, plus `escape`, `tab`, `enter`, `space`, `backspace`, `left`, `right`, `up`, `down`, `shift`, `control`, `alt`. Builds 0.6.11 and newer add `period` and `minus` and deliver the numeric keypad (NumLock on) through the same tokens: keypad digits as `0`-`9`, keypad Enter as `enter`, the keypad decimal point as `period` and keypad minus as `minus`, so a typed-value entry works from either keyboard
 - `input.gestures`: `click`, `double_click`, `drag`
 - `bindings[].gesture` uses a DIFFERENT vocabulary than `input.gestures`: `left_click`, `right_click`, `middle_click`, `shift_left_click`, `shift_right_click`, `shift_middle_click`, `left_double_click`, `right_double_click`, `middle_double_click`, `left_drag`, `right_drag`, `middle_drag`, `wheel`
 
@@ -258,17 +273,19 @@ Every pass of an events module gets a cbuffer snapshot and an event array:
 
 - Snapshot (safe to read in any pass, any thread): `_ViewportEventCount`, `_ViewportPointerPosition` (float2), `_ViewportPointerDelta`, `_ViewportWheelDelta` (frame-summed scroll notches), `_ViewportButtons`, `_ViewportModifiers`, `_ViewportCaptureFlags`, `_ViewportKeyBits` (uint4), `_ViewportAbiVersion`, `_ViewportFrameSequence`, `_ViewportOverflowCount`.
 - `StructuredBuffer<ViewportEvent> _ViewportEvents` at `t127`, `_ViewportEventCount` valid entries (max 64), fields `type`, `phase`, `code`, `modifiers`, `position` (float2), `delta` (float2), `value`, `sequence`, `flags`, `device`.
-- Helper functions: `ViewportKeyDown(key)`, `ViewportButtonDown(button)`, `ViewportModifierDown(modifier)`; constants `VIEWPORT_EVENT_FLAG_REPEAT/SYNTHETIC/HOST_CONSUMED/CAPTURE_CANCEL` and `VIEWPORT_MODIFIER_SHIFT/CONTROL/ALT/SUPER`.
+- Helper functions: `ViewportKeyDown(key)`, `ViewportButtonDown(button)`, `ViewportModifierDown(modifier)`, `ViewportPointerInside()`; constants `VIEWPORT_EVENT_FLAG_REPEAT/SYNTHETIC/HOST_CONSUMED/CAPTURE_CANCEL/POINTER_LEAVE`, `VIEWPORT_CAPTURE_POINTER_INSIDE` and `VIEWPORT_MODIFIER_SHIFT/CONTROL/ALT/SUPER`.
 
-Event vocabulary (frozen v1 ABI): `type` none 0, pointer move 1, pointer button 2, wheel 3, key 4, gesture 5, capture 6. `phase` press 1, repeat 2, release 3, double-click 4, begin 5, update 6, end 7, cancel 8. Pointer `code`: left 0, right 1, middle 2. Gesture `code`: click 1, double-click 2, drag 3. Key `code`: A-Z are 1-26 (so C is 3, X is 24), digits 0-9 are 32-41, Escape 48, Tab 49, Enter 50, Space 51, Backspace 52, arrows 53-56, Shift 57, Control 58, Alt 59.
+Event vocabulary (frozen v1 ABI): `type` none 0, pointer move 1, pointer button 2, wheel 3, key 4, gesture 5, capture 6. `phase` press 1, repeat 2, release 3, double-click 4, begin 5, update 6, end 7, cancel 8. Pointer `code`: left 0, right 1, middle 2. Gesture `code`: click 1, double-click 2, drag 3. Key `code`: A-Z are 1-26 (so C is 3, X is 24), digits 0-9 are 32-41, Escape 48, Tab 49, Enter 50, Space 51, Backspace 52, arrows 53-56, Shift 57, Control 58, Alt 59, Period 60, Minus 61. Keypad keys give the main keys' codes.
 
 Verified conventions:
 
 - `event.position` and `_ViewportPointerPosition` are normalized preview coordinates in exactly the same space as a full-resolution pass's `uv`. A click in the preview center arrives as position (0.5, 0.5).
 - A completed click gesture arrives as ONE event: type 5, code 1, phase 7 (end). Drags stream type 5, code 3 with phase 5 begin, 6 update per movement, 7 end (8 on cancel), each carrying the current position. Raw pointer presses (type 2, phase 1) also arrive when `pointer` interests include the button.
 - Key presses are type 4, phase 1 edges; held keys are also visible any frame through `ViewportKeyDown()`.
-- **Consume each event once, by `sequence`.** An event can be handed back on later cooks until
-  newer input arrives (a wheel notch was replayed every frame until the mouse moved). Held keys
+- **The pointer outside the panel.** `ViewportPointerInside()` (bit 0 of `_ViewportCaptureFlags`) is true only while the pointer is over the panel image, with Sentinel focused. While it is false, `_ViewportPointerPosition` keeps the last position inside; during a drag that started inside, it follows the pointer clamped to 0..1. The cook after the pointer leaves gets one pointer move (type 1) flagged `VIEWPORT_EVENT_FLAG_POINTER_LEAVE` (32) at that last position. Gate hover rings, hover cards and crosshairs on `ViewportPointerInside()` so they clear when the pointer goes.
+- **Consume each event once, by `sequence`.** Builds through 0.6.4 hand a batch back on every
+  later cook until newer input arrives (a wheel notch was replayed every frame until the mouse
+  moved); later builds deliver each batch to one cook. A sequence watermark is correct on both. Held keys
   also auto-repeat: latch toggles on press/release, and scale wheel actions by `ev.value`. A Standard panel
   scrolls on the plain wheel, so wheel-driven editors belong in a Canvas panel. See
   `knowledge/ui-authoring.md` (Mouse Wheel And Held Keys).
@@ -292,7 +309,7 @@ state:
 
 1. A `dispatch: [1, 1, 1]` events pass reads `_ViewportEvents`, updates control values (palette, brush size, toggles), writes a bounded splat queue (position + strength entries), and bumps a generation counter whenever it queued work.
 2. The full-resolution pass compares the generation against the last one it consumed (remembered in its own buffer) and applies queued splats exactly once, no matter how many cooks share one input frame.
-3. Render passes read only derived state plus the cosmetic snapshot values (`_ViewportPointerPosition`, `ViewportButtonDown`) for cursor rings and hints.
+3. Render passes read only derived state plus the cosmetic snapshot values (`_ViewportPointerPosition`, `ViewportButtonDown`, `ViewportPointerInside`) for cursor rings and hints, drawing hover only while `ViewportPointerInside()` is true.
 
 This keeps event handling single-threaded and testable, dedupes work across cooks, and keeps heavy passes free of event logic.
 
@@ -308,7 +325,12 @@ Installs at 0.5.31 or newer add higher-level authoring surfaces on top of raw ev
 
 ### Param gestures
 
-`viewport.param_gestures` binds drags to ordinary parameters. Left-drag within `radius` of `position_param` moves it; right-drag adjusts the optional `rotation_param`. Declare the target parameters `hidden: true` when the viewport should be their only visible editor. Edits preview live and commit once on release as one undo entry.
+`viewport.param_gestures` binds drags to ordinary parameters. Left-drag within `radius` of `position_param` moves it; right-drag adjusts the optional `rotation_param`. Declare the target parameters `hidden: true` when the viewport should be their only visible editor.
+
+- `radius` is measured in units of the image height, so the grab area is a circle: `radius: 0.05` reaches 36 px in every direction on 1280x720 and 54 px on 1920x1080. Draw a handle's grab ring with the same metric, `length((uv - pos) * float2(aspect, 1)) <= radius` with `aspect = width / height`.
+- The grab is tested where the button went down. When handles overlap, the nearest one wins.
+- Left-drag puts `position_param` under the pointer. Right-drag adds `(x - press x) * rotation_scale` to the rotation it started from; `rotation_scale` defaults to 360 per image width.
+- The parameter follows the pointer on every move while the button is held, so the Module redraws live. Release commits the whole drag as one undo entry. Escape or a capture cancel puts the parameter back.
 
 ```yaml
 parameters:
@@ -393,6 +415,18 @@ sentinel_pipeline action=compile_status pipeline_id=<id>
 ```
 
 Use `force_reload` after changing files or recovering from a compile error.
+
+Shaders compile in a separate worker process, so a D3DCompiler crash fails that one compile with a structured error
+and the app and every other Module keep running. `compile_status` reports elapsed, budget and remaining time. A
+compile is marked slow after two minutes and overdue past its budget (five minutes by default); it keeps running, and
+a late result for the current source is still accepted. `compile_extend` raises the budget (`timeout_sec` up to
+3600), and `compile_abandon` with `confirm: true` and a `reason` ignores the result. A compile that takes minutes is a
+shader problem to fix (see the call-site budget above), not a budget to raise. `compile_check project_dir=<dir>`
+runs the same compiler offline; pass the `job_id` it returns as `compile_job_id` to `compile_check_status`.
+
+**A reload keeps a flown camera.** `camera_yaw` wraps into -pi..pi as the camera turns and `camera_pitch` stops at 89 degrees, so `force_reload` re-applies the same view. Sentinel 0.6.3 and earlier let a Fly-mode yaw run past 2 pi, and a reload clamped it to ±6.28 and turned the camera; on those builds, set `camera_yaw` to the true heading wrapped into (-pi, pi] before reloading.
+
+The HLSL preprocessor rejects a function-like macro with an empty parameter list. `#define NAME() expr` fails with `X1500: unexpected token ')'`. For an overridable no-argument accessor, use an object-like macro (`#ifndef X_REC` / `#define X_REC TRIP_REC(30)`) and use it bare.
 
 ## Authoring Order
 

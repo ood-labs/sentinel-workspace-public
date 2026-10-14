@@ -1,0 +1,68 @@
+name: "Desk"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# A cue desk made of host controls with no parameters behind them (viewport.panel: true). Every
+# press, release and fader move leaves on the Module's `panel` Event output - wire it to the Cue
+# Brain Script - and the Script's answers come back on `panel_feedback`: which pads are lit, which
+# cue is next (selected), how far a fade or a blackout hold has run (fading), pad colours, fader
+# values, and the readouts' text (panel.label). This module decides nothing: it draws what the
+# host controls report, over a preview of the Program it is wired to.
+
+panel:
+  mode: standard
+  output: "Desk"
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+inputs:
+  - { name: "Program", slot: 0, required: false }
+
+viewport:
+  hint: "Click a cue to make it next. GO crossfades to it. BACK returns. Hold BLACKOUT 0.65 s (tap to restore). Faders: fade time, master."
+  panel: true
+  controls:
+    - { id: r_now,    kind: readout, rect: [0.5906, 0.0778, 0.9875, 0.1333], label: "CUE -" }
+    - { id: r_next,   kind: readout, rect: [0.5906, 0.1389, 0.9875, 0.1833], label: "NEXT -" }
+    - { id: go,       kind: pad, mode: go,        rect: [0.5906, 0.2167, 0.7844, 0.4167], label: "GO" }
+    - { id: back,     kind: pad, mode: momentary, rect: [0.7938, 0.2167, 0.9875, 0.3083], label: "BACK" }
+    - { id: blackout, kind: pad, mode: momentary, rect: [0.7938, 0.3250, 0.9875, 0.4167], label: "BLACKOUT" }
+    - { id: fade,     kind: fader,                rect: [0.5938, 0.4778, 0.6344, 0.6111], label: "FADE" }
+    - { id: master,   kind: fader,                rect: [0.6531, 0.4778, 0.6938, 0.6111], label: "MASTER" }
+    - { id: cue1,     kind: pad, mode: momentary, rect: [0.0125, 0.6667, 0.1289, 0.8194], label: "PRESET" }
+    - { id: cue2,     kind: pad, mode: momentary, rect: [0.1352, 0.6667, 0.2516, 0.8194], label: "DAWN" }
+    - { id: cue3,     kind: pad, mode: momentary, rect: [0.2578, 0.6667, 0.3742, 0.8194], label: "AMBER WASH" }
+    - { id: cue4,     kind: pad, mode: momentary, rect: [0.3805, 0.6667, 0.4969, 0.8194], label: "SPLIT" }
+    - { id: cue5,     kind: pad, mode: momentary, rect: [0.5031, 0.6667, 0.6195, 0.8194], label: "COLD" }
+    - { id: cue6,     kind: pad, mode: momentary, rect: [0.6258, 0.6667, 0.7422, 0.8194], label: "SOLO" }
+    - { id: cue7,     kind: pad, mode: momentary, rect: [0.7484, 0.6667, 0.8648, 0.8194], label: "STORM" }
+    - { id: cue8,     kind: pad, mode: momentary, rect: [0.8711, 0.6667, 0.9875, 0.8194], label: "FINALE" }
+
+buffers:
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+passes:
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "input:0" }
+    output: output
+
+outputs:
+  - { name: "Desk", pass: raster }

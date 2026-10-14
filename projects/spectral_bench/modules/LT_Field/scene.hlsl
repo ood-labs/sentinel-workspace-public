@@ -14,27 +14,33 @@
 #include "../_shared/bench.hlsli"
 #include "../_shared/optics.hlsli"
 #include "../_shared/shapes.hlsli"
+#include "view.hlsli"
 StructuredBuffer<BenchRec> Bench : register(t0);
 StructuredBuffer<PathSeg>  Paths : register(t1);
 StructuredBuffer<uint>     Bins  : register(t2);
+// Each segment's pixel position, width, reach, colour and hot-spot weight, resolved once per cook
+// by segs.hlsl. The beam colours are the CIE response at each traced wavelength, worked out there.
+StructuredBuffer<SegPx>    Segs  : register(t3);
 RWTexture2D<float4> OutputUAV : register(u0);
-#include "segwidth.hlsli"
 
-// Summing RGB(wl) over an equal-energy spectrum lands near (0.34, 0.33, 0.35) per sample, so a
-// white beam needs about 3x to come back out white. Measured from the CIE fit rather than dialled
-// in by eye, so changing the wavelength count cannot tint the beam.
-#define LT_WHITE_NORM 2.95
-
-float3 ltBeamColour(float wl)
-{
-    return ltWavelengthRGB(wl) * LT_WHITE_NORM;
-}
+// A 32-pixel tile's list is everything that might touch ANY of its 1024 pixels, and the halo
+// reach is about a tile wide, so most of a list misses any one 8x8 group in it. Each group
+// therefore narrows its tile's list to the segments that can reach the group before its pixels
+// walk it. The test is conservative — a pixel is never further than 3.5 * sqrt(2) from its group
+// centre — so every segment a pixel would have drawn survives, in the same order, and the image
+// is unchanged. A group whose narrowed list would not fit walks the full tile list instead.
+#define LT_SUB_CAP    2048
+#define LT_SUB_MARGIN 5.0
+groupshared uint gsSeg[LT_SUB_CAP];
+groupshared uint gsRun[64];
 
 [numthreads(8, 8, 1)]
-void main(uint3 DTid : SV_DispatchThreadID)
+void main(uint3 DTid : SV_DispatchThreadID, uint3 Gid : SV_GroupID, uint gi : SV_GroupIndex)
 {
+    // No early return: every thread has to reach the group's barriers below. A thread outside
+    // the frame still helps narrow the list and simply does not write.
     uint2 px = DTid.xy;
-    if (px.x >= (uint)_Resolution.x || px.y >= (uint)_Resolution.y) return;
+    bool inFrame = px.x < (uint)_Resolution.x && px.y < (uint)_Resolution.y;
 
     float2 res = _Resolution.xy;
     float2 P = (float2)px + 0.5;
@@ -45,10 +51,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     gDispGain = max(H.par, 0.01);
 
     PathSeg PH = Paths[LT_PATH_HDR];
-    uint nRay  = (uint)clamp(PH.b.x, 1.0, (float)LT_MAX_RAY);
     uint nWave = (uint)clamp(PH.b.y, 1.0, (float)LT_MAX_WAVE);
-    uint nBranch = (uint)clamp(PH.wl, 1.0, (float)LT_BRANCH);
-    uint stride = (uint)clamp(PH.depth, 1.0, (float)LT_MAX_SEG);
     uint raysPer = (uint)clamp(PH.evt, 1.0, (float)LT_MAX_RAY);
 
     int viewMode = (int)clamp((float)view_mode, 0.0, 2.0);
@@ -157,6 +160,39 @@ void main(uint3 DTid : SV_DispatchThreadID)
     uint cnt = min(Bins[base], (uint)LT_BIN_CAP);
     uint over = Bins[base + 1u];
 
+    // Narrow the tile's list to this group: each thread takes a contiguous run of it, counts the
+    // survivors, and a prefix over the counts places them, so the order is the tile's own.
+    float2 gc = float2(Gid.xy) * 8.0 + 4.0;
+    uint per = (cnt + 63u) / 64u;
+    uint j0 = min(gi * per, cnt);
+    uint j1 = min(j0 + per, cnt);
+    uint mine = 0u;
+    [loop] for (uint j = j0; j < j1; ++j)
+    {
+        SegPx s = Segs[Bins[base + 2u + j]];
+        if (ltSdSeg(gc, s.ab.xy, s.ab.zw) <= s.w.y + LT_SUB_MARGIN) mine++;
+    }
+    gsRun[gi] = mine;
+    GroupMemoryBarrierWithGroupSync();
+    uint at = 0u, kept = 0u;
+    [loop] for (uint k = 0u; k < 64u; ++k)
+    {
+        uint h = gsRun[k];
+        if (k < gi) at += h;
+        kept += h;
+    }
+    [loop] for (uint j2 = j0; j2 < j1 && at < (uint)LT_SUB_CAP; ++j2)
+    {
+        uint idx = Bins[base + 2u + j2];
+        SegPx s = Segs[idx];
+        if (ltSdSeg(gc, s.ab.xy, s.ab.zw) <= s.w.y + LT_SUB_MARGIN) { gsSeg[at] = idx; at++; }
+    }
+    GroupMemoryBarrierWithGroupSync();
+    bool narrowed = kept <= (uint)LT_SUB_CAP;
+    uint walk = narrowed ? kept : cnt;
+
+    if (!inFrame) return;
+
     if (viewMode == 2)
     {
         // OCCUPANCY. How many segments each tile carries, and which tiles overflowed. A silent
@@ -177,19 +213,17 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     float3 light = 0.0.xxx;
 
-    [loop] for (uint bi = 0u; bi < cnt; ++bi)
+    // The interaction hot-spot size, from the BASE width (see the interaction points below).
+    float sw = max(coreW * 2.5, 1.8);
+
+    [loop] for (uint bi = 0u; bi < walk; ++bi)
     {
-        uint idx = Bins[base + 2u + bi];
-        PathSeg g = Paths[idx];
-        if (g.power <= 1e-4) continue;
-
-        float2 a = ltFieldToPix(g.a, view_center, view_zoom, res);
-        float2 b = ltFieldToPix(g.b, view_center, view_zoom, res);
-        float d = ltSdSeg(P, a, b);
-        float3 c = ltBeamColour(g.wl) * g.power;
-
-        float localW = ltSegWidth(g, coreW, ppb, nRay, nWave, nBranch, stride);
-        if (d > ltSegReach(localW, coreW, haze)) continue;
+        SegPx s = Segs[narrowed ? gsSeg[bi] : Bins[base + 2u + bi]];
+        float2 b = s.ab.zw;
+        float d = ltSdSeg(P, s.ab.xy, b);
+        if (d > s.w.y) continue;
+        float localW = s.w.x;
+        float3 c = s.col.rgb;
 
         // ======================================================================================
         // THE BEAM IS A SHEET, NOT N FILAMENTS.
@@ -215,25 +249,19 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float halo = exp(-(d * d) / (haloW * haloW)) * haze * 0.14;
 
         // Inside glass the beam travels through a medium that scatters far less than air, so it
-        // reads as a tight bright filament rather than a smoky column. Derived from the segment's
-        // own recorded index, so a denser glass gets a brighter internal caustic for free.
-        if (g.ior > 1.001)
-        {
-            core *= 1.0 + (g.ior - 1.0) * 0.55;
-            halo *= 0.55;
-        }
+        // reads as a tight bright filament rather than a smoky column (gains from segs.hlsl).
+        core *= s.w.z;
+        halo *= s.w.w;
 
         light += c * (core + halo);
 
         // Interaction points. A refraction or a reflection is a real concentration of light —
         // the blown-out star on the entry face of the reference photograph is exactly this — so
         // every event that is not a plain escape gets a small radial burst.
-        int evE = (int)g.evtEnd;
-        if (evE != EV_ESCAPE)
+        float hot = s.col.a;
+        if (hot > 0.0)
         {
             float dv = length(P - b);
-            float hot = (evE == EV_SCREEN) ? 1.35 : ((evE == EV_ENTER || evE == EV_EXIT) ? 1.0
-                      : ((evE == EV_MIRROR) ? 0.8 : 0.45));
             // Sized from the BASE width, not the widened one. A hot spot is a point highlight,
             // and letting it scale with the local ray spacing pushes its falloff past the radius
             // the binner expanded by — which shows up as 16-pixel blocks around the brightest
@@ -241,7 +269,6 @@ void main(uint3 DTid : SV_DispatchThreadID)
             // The hot spot keeps a size of its own: it is a point highlight, and tying it to a
             // ribbon that may now be a fraction of a pixel would erase it exactly where the light
             // is most concentrated.
-            float sw = max(coreW * 2.5, 1.8);
             light += c * hot * exp(-(dv * dv) / (sw * sw * 5.5)) * spark;
         }
     }

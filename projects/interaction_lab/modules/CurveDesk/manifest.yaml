@@ -1,0 +1,140 @@
+name: "Curve Desk"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# A keyframe curve instrument: three channels of a bouncing ball (travel, height, squash) as keys
+# with bezier handles over one loop, and a spacing chart that draws the ball on twos so the curves
+# read the way an animator reads them - bunched ghosts are an ease, even ones a constant speed.
+# The keys are durable records (state buffer, survives reload and save). Published: the curves
+# sampled across the loop ("Curves" data) and the values at the playhead as control outputs, so any
+# parameter can follow a channel:  =ref("Curve_Desk/control_outputs/height")
+
+panel:
+  mode: canvas
+  output: "Curve Desk"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  - { name: length_s, display: "Loop length", type: float, min: 0.5, max: 8.0, default: 2.0, group: "Timing" }
+  - { name: fps,      display: "Frame rate",  type: int,   min: 6,   max: 60,  default: 24,  group: "Timing" }
+  - { name: snap,     display: "Snap keys to frames", type: bool, default: true, group: "Timing" }
+
+viewport:
+  hint: "Drag a key: move (snaps to frames). Drag a handle: shape. Drag empty: box select. Double-click a curve: add a key. Backspace: remove. 1 2 3: step / linear / bezier. A / B: auto / break handles. Arrows: nudge. F, wheel, middle-drag: frame, zoom, pan. Click the ruler or chart: scrub. Space: play. R: reset (Z brings it back). Z: undo."
+  interactions: [events]
+  input:
+    pointer: [left, middle, wheel]
+    keyboard: [space, backspace, escape, "1", "2", "3", a, b, f, r, z, left, right, up, down]
+    gestures: [click, double_click, drag]
+  bindings:
+    - { gesture: left_drag, action: edit, label: "Move keys, shape handles, box select, scrub" }
+    - { gesture: left_click, action: select, label: "Select a key (Shift: toggle); scrub on the ruler or chart" }
+    - { gesture: left_double_click, action: add_key, label: "Add a key on the curve" }
+    - { gesture: middle_drag, action: pan, label: "Pan the graph" }
+    - { gesture: wheel, action: zoom, label: "Zoom about the pointer" }
+    - { key: space, action: play, label: "Play / pause" }
+    - { key: backspace, action: remove, label: "Remove the selected keys" }
+    - { key: escape, action: deselect, label: "Clear the selection" }
+    - { key: "1", action: step, label: "Step" }
+    - { key: "2", action: linear, label: "Linear" }
+    - { key: "3", action: bezier, label: "Bezier" }
+    - { key: a, action: auto, label: "Auto handles" }
+    - { key: b, action: break, label: "Break / re-align handles" }
+    - { key: f, action: frame, label: "Frame all" }
+    - { key: r, action: reset, label: "Back to the default ball (Z brings the edit back)" }
+    - { key: z, action: undo, label: "Undo (again: redo)" }
+    - { key: left, action: nudge_left, label: "Nudge a frame earlier" }
+    - { key: right, action: nudge_right, label: "Nudge a frame later" }
+    - { key: up, action: nudge_up, label: "Nudge up 0.01" }
+    - { key: down, action: nudge_down, label: "Nudge down 0.01" }
+
+buffers:
+  # curve.hlsli: the saved header and 48 keys, then working state and the undo snapshot
+  - { name: state,  structured: true, element_size: 32, element_count: 101, persistent: true }
+  # sample.hlsl: header, playhead values, 256 samples
+  - { name: curves, structured: true, element_size: 16, element_count: 258 }
+  - { name: dl,     structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+# The first 49 records - the keys and their counts - serialize into the project, node presets and
+# undo payloads (`persistent: true` alone only survives a reload). The working state after them (view,
+# playhead, event watermark, drag, undo snapshot) is never restored: a recalled preset must not
+# replay the input that followed it.
+state_buffers:
+  - name: state
+    max_elements: 49
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: c, type: float }
+      - { name: d, type: float }
+      - { name: e, type: uint }
+      - { name: f, type: uint }
+
+passes:
+  - name: reduce
+    shader: reduce.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:state"
+  - name: sample
+    shader: sample.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 256
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:curves"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "buffer:curves" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Curve Desk", pass: raster }
+
+data_outputs:
+  - name: "Curves"
+    buffer: "curves"
+    description: "float4 records: 0 = (playhead s, phase 0..1, loop length s, playing), 1 = the playhead's (travel, height, squash, frame), 2..257 = sample k at t = k / 255 * length: (travel, height, squash, t)."
+    schema:
+      - { name: v, type: float4 }
+  - name: "Keys"
+    buffer: "state"
+    description: "The records (see curve.hlsli): 0 = key counts (5 bits per channel) | hidden channels << 15, then 16 key slots per channel (travel, height, squash) in time order - a = (t, v), b = in handle (dt, dv), (c, d) = out handle, e = interpolation | handles << 2 | selected << 4 - then working state and the undo snapshot."
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: c, type: float }
+      - { name: d, type: float }
+      - { name: e, type: uint }
+      - { name: f, type: uint }
+
+control_outputs:
+  - { name: travel, buffer: curves, element: 1, field_offset: 0, description: "Travel at the playhead (0 left .. 1 right)" }
+  - { name: height, buffer: curves, element: 1, field_offset: 4, description: "Height at the playhead (0 on the ground .. 1 the first apex)" }
+  - { name: squash, buffer: curves, element: 1, field_offset: 8, description: "Squash (-) / stretch (+) at the playhead" }
+  - { name: phase,  buffer: curves, element: 0, field_offset: 4, description: "Where the playhead is in the loop, 0..1" }

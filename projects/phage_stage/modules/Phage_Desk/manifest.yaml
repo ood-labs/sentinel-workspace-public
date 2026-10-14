@@ -2,109 +2,132 @@
 name: PHAGE / Desk
 version: '1.0'
 mode: generator
-resolution: [1600, 720]
+resolution: [1600, 760]
+compile_optimization: fast_compile
 panel:
   mode: canvas
   output: Desk
+  resolution: follow_panel
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 viewport:
+  hint: "Click a look to recall it: a FULL LOOK lights its four parts. Hold BLACKOUT or STROBE. The arrows orbit the camera."
   panel: true
   controls:
-    - {id: tap, kind: pad, mode: momentary, rect: [0.01250, 0.02778, 0.09375, 0.12500], label: "TAP"}
-    - {id: play, kind: pad, mode: momentary, rect: [0.09750, 0.02778, 0.17875, 0.12500], label: "PLAY"}
-    - {id: stop, kind: pad, mode: momentary, rect: [0.18250, 0.02778, 0.26375, 0.12500], label: "STOP"}
-    - {id: sync, kind: pad, mode: momentary, rect: [0.26750, 0.02778, 0.34875, 0.12500], label: "SYNC"}
-    - {id: bpm, kind: readout, rect: [0.36500, 0.02778, 0.54000, 0.12500], label: "---.- BPM"}
-    - {id: beat, kind: readout, rect: [0.54000, 0.02778, 0.76250, 0.12500], label: "BAR - BEAT -"}
-    - {id: blackout, kind: pad, mode: momentary, rect: [0.77125, 0.02778, 0.87750, 0.12500], label: "BLACKOUT"}
-    - {id: strobe, kind: pad, mode: momentary, rect: [0.88125, 0.02778, 0.98750, 0.12500], label: "STROBE"}
-    - {id: head_complete, kind: readout, rect: [0.01250, 0.15556, 0.49062, 0.19167], label: "FULL LOOKS"}
-    - {id: complete_1, kind: pad, mode: momentary, rect: [0.01250, 0.20000, 0.06898, 0.27778], label: "GENESIS"}
-    - {id: complete_2, kind: pad, mode: momentary, rect: [0.07273, 0.20000, 0.12922, 0.27778], label: "LULL"}
-    - {id: complete_3, kind: pad, mode: momentary, rect: [0.13297, 0.20000, 0.18945, 0.27778], label: "DEEP"}
-    - {id: complete_4, kind: pad, mode: momentary, rect: [0.19320, 0.20000, 0.24969, 0.27778], label: "EMBERS"}
-    - {id: complete_5, kind: pad, mode: momentary, rect: [0.25344, 0.20000, 0.30992, 0.27778], label: "HEARTBEAT"}
-    - {id: complete_6, kind: pad, mode: momentary, rect: [0.31367, 0.20000, 0.37016, 0.27778], label: "PROCESSION"}
-    - {id: complete_7, kind: pad, mode: momentary, rect: [0.37391, 0.20000, 0.43039, 0.27778], label: "SWELL"}
-    - {id: complete_8, kind: pad, mode: momentary, rect: [0.43414, 0.20000, 0.49062, 0.27778], label: "CAROUSEL"}
-    - {id: complete_9, kind: pad, mode: momentary, rect: [0.01250, 0.28611, 0.06898, 0.36389], label: "ASCENT"}
-    - {id: complete_10, kind: pad, mode: momentary, rect: [0.07273, 0.28611, 0.12922, 0.36389], label: "PRESSURE"}
-    - {id: complete_11, kind: pad, mode: momentary, rect: [0.13297, 0.28611, 0.18945, 0.36389], label: "IGNITION"}
-    - {id: complete_12, kind: pad, mode: momentary, rect: [0.19320, 0.28611, 0.24969, 0.36389], label: "ZERO"}
-    - {id: complete_13, kind: pad, mode: momentary, rect: [0.25344, 0.28611, 0.30992, 0.36389], label: "RIOT"}
-    - {id: complete_14, kind: pad, mode: momentary, rect: [0.31367, 0.28611, 0.37016, 0.36389], label: "STORM"}
-    - {id: complete_15, kind: pad, mode: momentary, rect: [0.37391, 0.28611, 0.43039, 0.36389], label: "SHATTER"}
-    - {id: complete_16, kind: pad, mode: momentary, rect: [0.43414, 0.28611, 0.49062, 0.36389], label: "SUPERNOVA"}
-    - {id: head_static, kind: readout, rect: [0.50938, 0.15556, 0.82750, 0.19167], label: "STATIC"}
-    - {id: static_1, kind: pad, mode: momentary, rect: [0.50938, 0.20000, 0.56586, 0.27778], label: "ORIGIN"}
-    - {id: static_2, kind: pad, mode: momentary, rect: [0.56961, 0.20000, 0.62609, 0.27778], label: "CATHEDRAL"}
-    - {id: static_3, kind: pad, mode: momentary, rect: [0.62984, 0.20000, 0.68633, 0.27778], label: "SUNBURST"}
-    - {id: static_4, kind: pad, mode: momentary, rect: [0.69008, 0.20000, 0.74656, 0.27778], label: "CROWN"}
-    - {id: static_5, kind: pad, mode: momentary, rect: [0.75031, 0.20000, 0.80680, 0.27778], label: "FIBERS"}
-    - {id: static_6, kind: pad, mode: momentary, rect: [0.81055, 0.20000, 0.86703, 0.27778], label: "HELIX"}
-    - {id: static_7, kind: pad, mode: momentary, rect: [0.87078, 0.20000, 0.92727, 0.27778], label: "CAGE"}
-    - {id: static_8, kind: pad, mode: momentary, rect: [0.93102, 0.20000, 0.98750, 0.27778], label: "FRONT"}
-    - {id: static_9, kind: pad, mode: momentary, rect: [0.50938, 0.28611, 0.56586, 0.36389], label: "NEEDLES"}
-    - {id: static_10, kind: pad, mode: momentary, rect: [0.56961, 0.28611, 0.62609, 0.36389], label: "X-FIRE"}
-    - {id: static_11, kind: pad, mode: momentary, rect: [0.62984, 0.28611, 0.68633, 0.36389], label: "HALO"}
-    - {id: static_12, kind: pad, mode: momentary, rect: [0.69008, 0.28611, 0.74656, 0.36389], label: "PINPOINT"}
-    - {id: static_13, kind: pad, mode: momentary, rect: [0.75031, 0.28611, 0.80680, 0.36389], label: "REST"}
-    - {id: static_14, kind: pad, mode: momentary, rect: [0.81055, 0.28611, 0.86703, 0.36389], label: "RISE"}
-    - {id: static_15, kind: pad, mode: momentary, rect: [0.87078, 0.28611, 0.92727, 0.36389], label: "INJECT"}
-    - {id: static_16, kind: pad, mode: momentary, rect: [0.93102, 0.28611, 0.98750, 0.36389], label: "BLOOM"}
-    - {id: tier_static, kind: readout, rect: [0.83125, 0.15556, 0.98750, 0.18889], label: "13-16 TRUSS POSES"}
-    - {id: head_effects, kind: readout, rect: [0.01250, 0.40278, 0.21188, 0.43889], label: "EFFECTS"}
-    - {id: effects_1, kind: pad, mode: momentary, rect: [0.01250, 0.44722, 0.06898, 0.52500], label: "DRIFT"}
-    - {id: effects_2, kind: pad, mode: momentary, rect: [0.07273, 0.44722, 0.12922, 0.52500], label: "TIDE"}
-    - {id: effects_3, kind: pad, mode: momentary, rect: [0.13297, 0.44722, 0.18945, 0.52500], label: "BREATHE"}
-    - {id: effects_4, kind: pad, mode: momentary, rect: [0.19320, 0.44722, 0.24969, 0.52500], label: "EMBER"}
-    - {id: effects_5, kind: pad, mode: momentary, rect: [0.25344, 0.44722, 0.30992, 0.52500], label: "PULSE"}
-    - {id: effects_6, kind: pad, mode: momentary, rect: [0.31367, 0.44722, 0.37016, 0.52500], label: "WALK"}
-    - {id: effects_7, kind: pad, mode: momentary, rect: [0.37391, 0.44722, 0.43039, 0.52500], label: "SWAY"}
-    - {id: effects_8, kind: pad, mode: momentary, rect: [0.43414, 0.44722, 0.49062, 0.52500], label: "ORBIT"}
-    - {id: effects_9, kind: pad, mode: momentary, rect: [0.01250, 0.53333, 0.06898, 0.61111], label: "ASCEND"}
-    - {id: effects_10, kind: pad, mode: momentary, rect: [0.07273, 0.53333, 0.12922, 0.61111], label: "TENSION"}
-    - {id: effects_11, kind: pad, mode: momentary, rect: [0.13297, 0.53333, 0.18945, 0.61111], label: "LAUNCH"}
-    - {id: effects_12, kind: pad, mode: momentary, rect: [0.19320, 0.53333, 0.24969, 0.61111], label: "COUNTDOWN"}
-    - {id: effects_13, kind: pad, mode: momentary, rect: [0.25344, 0.53333, 0.30992, 0.61111], label: "RIOT"}
-    - {id: effects_14, kind: pad, mode: momentary, rect: [0.31367, 0.53333, 0.37016, 0.61111], label: "STORM"}
-    - {id: effects_15, kind: pad, mode: momentary, rect: [0.37391, 0.53333, 0.43039, 0.61111], label: "SHATTER"}
-    - {id: effects_16, kind: pad, mode: momentary, rect: [0.43414, 0.53333, 0.49062, 0.61111], label: "SUPERNOVA"}
-    - {id: tier_calm, kind: readout, rect: [0.21563, 0.40278, 0.28063, 0.43611], label: "CALM"}
-    - {id: tier_groove, kind: readout, rect: [0.28437, 0.40278, 0.34937, 0.43611], label: "GROOVE"}
-    - {id: tier_build, kind: readout, rect: [0.35313, 0.40278, 0.41813, 0.43611], label: "BUILD"}
-    - {id: tier_crazy, kind: readout, rect: [0.42188, 0.40278, 0.48688, 0.43611], label: "CRAZY"}
-    - {id: head_color, kind: readout, rect: [0.50938, 0.40278, 0.98750, 0.43889], label: "COLOR"}
-    - {id: color_1, kind: pad, mode: momentary, rect: [0.50938, 0.44722, 0.56586, 0.52500], label: "WHITE"}
-    - {id: color_2, kind: pad, mode: momentary, rect: [0.56961, 0.44722, 0.62609, 0.52500], label: "ICE"}
-    - {id: color_3, kind: pad, mode: momentary, rect: [0.62984, 0.44722, 0.68633, 0.52500], label: "PHAGE"}
-    - {id: color_4, kind: pad, mode: momentary, rect: [0.69008, 0.44722, 0.74656, 0.52500], label: "INFRARED"}
-    - {id: color_5, kind: pad, mode: momentary, rect: [0.75031, 0.44722, 0.80680, 0.52500], label: "SODIUM"}
-    - {id: color_6, kind: pad, mode: momentary, rect: [0.81055, 0.44722, 0.86703, 0.52500], label: "VIRAL"}
-    - {id: color_7, kind: pad, mode: momentary, rect: [0.87078, 0.44722, 0.92727, 0.52500], label: "UV"}
-    - {id: color_8, kind: pad, mode: momentary, rect: [0.93102, 0.44722, 0.98750, 0.52500], label: "ROSE"}
-    - {id: color_9, kind: pad, mode: momentary, rect: [0.50938, 0.53333, 0.56586, 0.61111], label: "GLACIER"}
-    - {id: color_10, kind: pad, mode: momentary, rect: [0.56961, 0.53333, 0.62609, 0.61111], label: "BIOLUME"}
-    - {id: color_11, kind: pad, mode: momentary, rect: [0.62984, 0.53333, 0.68633, 0.61111], label: "MAGMA"}
-    - {id: color_12, kind: pad, mode: momentary, rect: [0.69008, 0.53333, 0.74656, 0.61111], label: "DUSK"}
-    - {id: color_13, kind: pad, mode: momentary, rect: [0.75031, 0.53333, 0.80680, 0.61111], label: "TOXIC"}
-    - {id: color_14, kind: pad, mode: momentary, rect: [0.81055, 0.53333, 0.86703, 0.61111], label: "UV SPLIT"}
-    - {id: color_15, kind: pad, mode: momentary, rect: [0.87078, 0.53333, 0.92727, 0.61111], label: "CORAL"}
-    - {id: color_16, kind: pad, mode: momentary, rect: [0.93102, 0.53333, 0.98750, 0.61111], label: "SPLIT"}
-    - {id: head_camera, kind: readout, rect: [0.01250, 0.66667, 0.37500, 0.70278], label: "CAMERA"}
-    - {id: cam_up, kind: pad, mode: momentary, rect: [0.07625, 0.71389, 0.13625, 0.79444], label: "UP"}
-    - {id: cam_left, kind: pad, mode: momentary, rect: [0.01250, 0.80278, 0.07250, 0.88333], label: "<"}
-    - {id: cam_down, kind: pad, mode: momentary, rect: [0.07625, 0.80278, 0.13625, 0.88333], label: "DOWN"}
-    - {id: cam_right, kind: pad, mode: momentary, rect: [0.14000, 0.80278, 0.20000, 0.88333], label: ">"}
-    - {id: cam_in, kind: pad, mode: momentary, rect: [0.26750, 0.71389, 0.32750, 0.79444], label: "IN"}
-    - {id: cam_out, kind: pad, mode: momentary, rect: [0.26750, 0.80278, 0.32750, 0.88333], label: "OUT"}
-    - {id: cam_home, kind: pad, mode: momentary, rect: [0.33125, 0.71389, 0.39125, 0.79444], label: "HOME"}
-    - {id: head_status, kind: readout, rect: [0.40000, 0.66667, 0.98750, 0.70278], label: "PROGRAMMER"}
-    - {id: status, kind: readout, rect: [0.40000, 0.71389, 0.98750, 0.88333], label: "DESK READY"}
-    - {id: legend_full, kind: readout, rect: [0.01250, 0.91667, 0.49062, 0.97222], label: "FULL LOOK = STATIC + TRUSS POSE + EFFECTS + COLOR"}
-    - {id: legend_fx, kind: readout, rect: [0.50938, 0.91667, 0.98750, 0.97222], label: "EFFECTS: CALM / GROOVE / BUILD (16 BEATS) / CRAZY"}
+    - {id: tap, kind: pad, mode: momentary, rect: [0.13500, 0.02632, 0.20000, 0.12632], label: "TAP"}
+    - {id: play, kind: pad, mode: momentary, rect: [0.20500, 0.02632, 0.27000, 0.12632], label: "PLAY"}
+    - {id: stop, kind: pad, mode: momentary, rect: [0.27500, 0.02632, 0.34000, 0.12632], label: "STOP"}
+    - {id: sync, kind: pad, mode: momentary, rect: [0.34500, 0.02632, 0.41000, 0.12632], label: "SYNC"}
+    - {id: bpm, kind: readout, rect: [0.42500, 0.02632, 0.57500, 0.12632], label: "---.- BPM"}
+    - {id: beat, kind: readout, rect: [0.58000, 0.02632, 0.75000, 0.12632], label: "BAR - BEAT -"}
+    - {id: blackout, kind: pad, mode: momentary, rect: [0.77250, 0.02632, 0.87750, 0.12632], label: "BLACKOUT"}
+    - {id: strobe, kind: pad, mode: momentary, rect: [0.88250, 0.02632, 0.98750, 0.12632], label: "STROBE"}
+    - {id: head_complete, kind: readout, rect: [0.01250, 0.15789, 0.49250, 0.18947], label: "FULL LOOKS"}
+    - {id: complete_1, kind: pad, mode: momentary, rect: [0.01250, 0.20000, 0.06828, 0.28684], label: "GENESIS"}
+    - {id: complete_2, kind: pad, mode: momentary, rect: [0.07203, 0.20000, 0.12781, 0.28684], label: "TIDEWATER"}
+    - {id: complete_3, kind: pad, mode: momentary, rect: [0.13156, 0.20000, 0.18734, 0.28684], label: "CAROUSEL"}
+    - {id: complete_4, kind: pad, mode: momentary, rect: [0.19109, 0.20000, 0.24688, 0.28684], label: "PULSE"}
+    - {id: complete_5, kind: pad, mode: momentary, rect: [0.25812, 0.20000, 0.31391, 0.28684], label: "RADAR"}
+    - {id: complete_6, kind: pad, mode: momentary, rect: [0.31766, 0.20000, 0.37344, 0.28684], label: "PROCESSION"}
+    - {id: complete_7, kind: pad, mode: momentary, rect: [0.37719, 0.20000, 0.43297, 0.28684], label: "DIALOGUE"}
+    - {id: complete_8, kind: pad, mode: momentary, rect: [0.43672, 0.20000, 0.49250, 0.28684], label: "DESCENT"}
+    - {id: complete_9, kind: pad, mode: momentary, rect: [0.01250, 0.29474, 0.06828, 0.38158], label: "IGNITION"}
+    - {id: complete_10, kind: pad, mode: momentary, rect: [0.07203, 0.29474, 0.12781, 0.38158], label: "INJECTION"}
+    - {id: complete_11, kind: pad, mode: momentary, rect: [0.13156, 0.29474, 0.18734, 0.38158], label: "CHARGE"}
+    - {id: complete_12, kind: pad, mode: momentary, rect: [0.19109, 0.29474, 0.24688, 0.38158], label: "ASCENT"}
+    - {id: complete_13, kind: pad, mode: momentary, rect: [0.25812, 0.29474, 0.31391, 0.38158], label: "DETONATION"}
+    - {id: complete_14, kind: pad, mode: momentary, rect: [0.31766, 0.29474, 0.37344, 0.38158], label: "SHOCKWAVE"}
+    - {id: complete_15, kind: pad, mode: momentary, rect: [0.37719, 0.29474, 0.43297, 0.38158], label: "CASCADE"}
+    - {id: complete_16, kind: pad, mode: momentary, rect: [0.43672, 0.29474, 0.49250, 0.38158], label: "SUPERNOVA"}
+    - {id: head_static, kind: readout, rect: [0.50750, 0.15789, 0.82750, 0.18947], label: "STATIC"}
+    - {id: static_1, kind: pad, mode: momentary, rect: [0.50750, 0.20000, 0.56328, 0.28684], label: "ORIGIN"}
+    - {id: static_2, kind: pad, mode: momentary, rect: [0.56703, 0.20000, 0.62281, 0.28684], label: "CATHEDRAL"}
+    - {id: static_3, kind: pad, mode: momentary, rect: [0.62656, 0.20000, 0.68234, 0.28684], label: "SUNBURST"}
+    - {id: static_4, kind: pad, mode: momentary, rect: [0.68609, 0.20000, 0.74187, 0.28684], label: "CROWN"}
+    - {id: static_5, kind: pad, mode: momentary, rect: [0.75313, 0.20000, 0.80891, 0.28684], label: "FIBERS"}
+    - {id: static_6, kind: pad, mode: momentary, rect: [0.81266, 0.20000, 0.86844, 0.28684], label: "HELIX"}
+    - {id: static_7, kind: pad, mode: momentary, rect: [0.87219, 0.20000, 0.92797, 0.28684], label: "CAGE"}
+    - {id: static_8, kind: pad, mode: momentary, rect: [0.93172, 0.20000, 0.98750, 0.28684], label: "FRONT"}
+    - {id: static_9, kind: pad, mode: momentary, rect: [0.50750, 0.29474, 0.56328, 0.38158], label: "NEEDLES"}
+    - {id: static_10, kind: pad, mode: momentary, rect: [0.56703, 0.29474, 0.62281, 0.38158], label: "X-FIRE"}
+    - {id: static_11, kind: pad, mode: momentary, rect: [0.62656, 0.29474, 0.68234, 0.38158], label: "HALO"}
+    - {id: static_12, kind: pad, mode: momentary, rect: [0.68609, 0.29474, 0.74187, 0.38158], label: "PINPOINT"}
+    - {id: static_13, kind: pad, mode: momentary, rect: [0.75313, 0.29474, 0.80891, 0.38158], label: "REST"}
+    - {id: static_14, kind: pad, mode: momentary, rect: [0.81266, 0.29474, 0.86844, 0.38158], label: "RISE"}
+    - {id: static_15, kind: pad, mode: momentary, rect: [0.87219, 0.29474, 0.92797, 0.38158], label: "INJECT"}
+    - {id: static_16, kind: pad, mode: momentary, rect: [0.93172, 0.29474, 0.98750, 0.38158], label: "BLOOM"}
+    - {id: tier_static, kind: readout, rect: [0.83125, 0.15789, 0.98750, 0.18947], label: "13-16 TRUSS POSES"}
+    - {id: head_effects, kind: readout, rect: [0.01250, 0.41316, 0.21750, 0.44474], label: "EFFECTS"}
+    - {id: effects_1, kind: pad, mode: momentary, rect: [0.01250, 0.45526, 0.06828, 0.54211], label: "AWAKEN"}
+    - {id: effects_2, kind: pad, mode: momentary, rect: [0.07203, 0.45526, 0.12781, 0.54211], label: "TIDE"}
+    - {id: effects_3, kind: pad, mode: momentary, rect: [0.13156, 0.45526, 0.18734, 0.54211], label: "ORBIT"}
+    - {id: effects_4, kind: pad, mode: momentary, rect: [0.19109, 0.45526, 0.24688, 0.54211], label: "HEARTBEAT"}
+    - {id: effects_5, kind: pad, mode: momentary, rect: [0.25812, 0.45526, 0.31391, 0.54211], label: "SCAN"}
+    - {id: effects_6, kind: pad, mode: momentary, rect: [0.31766, 0.45526, 0.37344, 0.54211], label: "WALK"}
+    - {id: effects_7, kind: pad, mode: momentary, rect: [0.37719, 0.45526, 0.43297, 0.54211], label: "ANSWER"}
+    - {id: effects_8, kind: pad, mode: momentary, rect: [0.43672, 0.45526, 0.49250, 0.54211], label: "FALL"}
+    - {id: effects_9, kind: pad, mode: momentary, rect: [0.01250, 0.55000, 0.06828, 0.63684], label: "IGNITION"}
+    - {id: effects_10, kind: pad, mode: momentary, rect: [0.07203, 0.55000, 0.12781, 0.63684], label: "INJECT"}
+    - {id: effects_11, kind: pad, mode: momentary, rect: [0.13156, 0.55000, 0.18734, 0.63684], label: "CHARGE"}
+    - {id: effects_12, kind: pad, mode: momentary, rect: [0.19109, 0.55000, 0.24688, 0.63684], label: "RISER"}
+    - {id: effects_13, kind: pad, mode: momentary, rect: [0.25812, 0.55000, 0.31391, 0.63684], label: "DETONATE"}
+    - {id: effects_14, kind: pad, mode: momentary, rect: [0.31766, 0.55000, 0.37344, 0.63684], label: "SHOCKWAVE"}
+    - {id: effects_15, kind: pad, mode: momentary, rect: [0.37719, 0.55000, 0.43297, 0.63684], label: "CASCADE"}
+    - {id: effects_16, kind: pad, mode: momentary, rect: [0.43672, 0.55000, 0.49250, 0.63684], label: "SUPERNOVA"}
+    - {id: tier_calm, kind: readout, rect: [0.22125, 0.41316, 0.28625, 0.44474], label: "CALM"}
+    - {id: tier_groove, kind: readout, rect: [0.29000, 0.41316, 0.35500, 0.44474], label: "GROOVE"}
+    - {id: tier_build, kind: readout, rect: [0.35875, 0.41316, 0.42375, 0.44474], label: "BUILD"}
+    - {id: tier_crazy, kind: readout, rect: [0.42750, 0.41316, 0.49250, 0.44474], label: "CRAZY"}
+    - {id: head_color, kind: readout, rect: [0.50750, 0.41316, 0.98750, 0.44474], label: "COLOR"}
+    - {id: color_1, kind: pad, mode: momentary, rect: [0.50750, 0.45526, 0.56328, 0.54211], label: "WHITE"}
+    - {id: color_2, kind: pad, mode: momentary, rect: [0.56703, 0.45526, 0.62281, 0.54211], label: "ICE"}
+    - {id: color_3, kind: pad, mode: momentary, rect: [0.62656, 0.45526, 0.68234, 0.54211], label: "PHAGE"}
+    - {id: color_4, kind: pad, mode: momentary, rect: [0.68609, 0.45526, 0.74187, 0.54211], label: "INFRARED"}
+    - {id: color_5, kind: pad, mode: momentary, rect: [0.75313, 0.45526, 0.80891, 0.54211], label: "SODIUM"}
+    - {id: color_6, kind: pad, mode: momentary, rect: [0.81266, 0.45526, 0.86844, 0.54211], label: "VIRAL"}
+    - {id: color_7, kind: pad, mode: momentary, rect: [0.87219, 0.45526, 0.92797, 0.54211], label: "UV"}
+    - {id: color_8, kind: pad, mode: momentary, rect: [0.93172, 0.45526, 0.98750, 0.54211], label: "ROSE"}
+    - {id: color_9, kind: pad, mode: momentary, rect: [0.50750, 0.55000, 0.56328, 0.63684], label: "GLACIER"}
+    - {id: color_10, kind: pad, mode: momentary, rect: [0.56703, 0.55000, 0.62281, 0.63684], label: "BIOLUME"}
+    - {id: color_11, kind: pad, mode: momentary, rect: [0.62656, 0.55000, 0.68234, 0.63684], label: "MAGMA"}
+    - {id: color_12, kind: pad, mode: momentary, rect: [0.68609, 0.55000, 0.74187, 0.63684], label: "DUSK"}
+    - {id: color_13, kind: pad, mode: momentary, rect: [0.75313, 0.55000, 0.80891, 0.63684], label: "TOXIC"}
+    - {id: color_14, kind: pad, mode: momentary, rect: [0.81266, 0.55000, 0.86844, 0.63684], label: "UV SPLIT"}
+    - {id: color_15, kind: pad, mode: momentary, rect: [0.87219, 0.55000, 0.92797, 0.63684], label: "CORAL"}
+    - {id: color_16, kind: pad, mode: momentary, rect: [0.93172, 0.55000, 0.98750, 0.63684], label: "SPLIT"}
+    - {id: head_camera, kind: readout, rect: [0.01250, 0.66842, 0.33750, 0.70000], label: "CAMERA"}
+    - {id: cam_up, kind: pad, mode: momentary, rect: [0.06725, 0.71053, 0.11850, 0.81842], label: "UP"}
+    - {id: cam_left, kind: pad, mode: momentary, rect: [0.01250, 0.82632, 0.06375, 0.93421], label: "<"}
+    - {id: cam_down, kind: pad, mode: momentary, rect: [0.06725, 0.82632, 0.11850, 0.93421], label: "DOWN"}
+    - {id: cam_right, kind: pad, mode: momentary, rect: [0.12200, 0.82632, 0.17325, 0.93421], label: ">"}
+    - {id: cam_in, kind: pad, mode: momentary, rect: [0.23150, 0.71053, 0.28275, 0.81842], label: "IN"}
+    - {id: cam_out, kind: pad, mode: momentary, rect: [0.23150, 0.82632, 0.28275, 0.93421], label: "OUT"}
+    - {id: cam_home, kind: pad, mode: momentary, rect: [0.28625, 0.71053, 0.33750, 0.81842], label: "HOME"}
+    - {id: head_status, kind: readout, rect: [0.35250, 0.84737, 0.98750, 0.87895], label: "PROGRAMMER"}
+    - {id: status, kind: readout, rect: [0.35250, 0.88684, 0.98750, 0.97368], label: "DESK READY"}
+    - {id: legend_full, kind: readout, rect: [0.35250, 0.70789, 0.98750, 0.78684], label: "FULL LOOK = STATIC + TRUSS POSE + EFFECTS + COLOR"}
+    - {id: legend_fx, kind: readout, rect: [0.35250, 0.79211, 0.98750, 0.81842], label: "EFFECTS: CALM / GROOVE / BUILD (16 BEATS) / CRAZY"}
+buffers:
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 passes:
-  - name: render
-    shader: render.hlsl
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+    output: output
 outputs:
   - name: Desk
-    pass: render
+    pass: raster

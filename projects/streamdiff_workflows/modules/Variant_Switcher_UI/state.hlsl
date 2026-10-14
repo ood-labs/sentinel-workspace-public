@@ -1,5 +1,14 @@
-#include "../_shared/ui/sui_interaction.hlsli"
 #include "_ui.generated.hlsli"
+
+// A host control's pressed bit: the host's packed flags for the first 16 controls, bit 1 (bit 0 is
+// hover) - the same read this pass has always made, so the selection logic below is unchanged.
+bool controlDown(uint controlIndex)
+{
+    uint4 packed = _ViewportControlFlags[controlIndex / 4u];
+    uint lane = controlIndex & 3u;
+    uint flags = lane == 0u ? packed.x : (lane == 1u ? packed.y : (lane == 2u ? packed.z : packed.w));
+    return (flags & 2u) != 0u;
+}
 
 struct SwitcherState
 {
@@ -21,9 +30,9 @@ void main(uint3 tid : SV_DispatchThreadID)
     SwitcherState prior = OutputState[0];
     SwitcherState next = prior;
 
-    float oneDown = suiInteraction(UI_INDEX_SELECT_1).down ? 1.0 : 0.0;
-    float twoDown = suiInteraction(UI_INDEX_SELECT_2).down ? 1.0 : 0.0;
-    float threeDown = suiInteraction(UI_INDEX_SELECT_3).down ? 1.0 : 0.0;
+    float oneDown = controlDown(UI_SELECT_1) ? 1.0 : 0.0;
+    float twoDown = controlDown(UI_SELECT_2) ? 1.0 : 0.0;
+    float threeDown = controlDown(UI_SELECT_3) ? 1.0 : 0.0;
     bool chooseOne = oneDown > 0.5 && prior.one_latch <= 0.5;
     bool chooseTwo = twoDown > 0.5 && prior.two_latch <= 0.5;
     bool chooseThree = threeDown > 0.5 && prior.three_latch <= 0.5;

@@ -1,0 +1,33 @@
+# Phage_Assembly - the truss axonometric's words. Regenerate: python tools/il_type.py labels Phage_Assembly
+TITLE       @bold @track=0.14 = PHAGE
+SUBTITLE    @sans = truss assembly
+TUBES       @bold @track=0.08 = TUBES
+SOLIDS      @bold @track=0.08 = SOLIDS
+MEMBERS     @bold @track=0.08 = MEMBERS
+HINT        @sans = point at a member to read it
+# the key
+K_CHORDS    @bold @track=0.08 = CHORDS
+K_LACING    @bold @track=0.08 = LACING
+K_SOLIDS    @bold @track=0.08 = SOLIDS
+K_GRID      @sans = floor grid 5 m
+# the member card: part, piece, then its figures
+N_PLATE     @bold @track=0.08 = PLATE
+N_SHEATH    @bold @track=0.08 = SHEATH
+N_COLLAR    @bold @track=0.08 = COLLAR
+N_CAPSID    @bold @track=0.08 = CAPSID
+N_LEG       @bold @track=0.08 = LEG
+N_BOOTH     @bold @track=0.08 = BOOTH
+P_OUTER     @sans = outer ring
+P_INNER     @sans = inner ring
+P_SPOKE     @sans = spoke
+P_UPRIGHT   @sans = upright
+P_RING      @sans = ring
+P_EDGE      @sans = edge
+P_UPPER     @sans = upper, hip to knee
+P_LOWER     @sans = lower, knee to foot
+P_POST      @sans = post
+MEMBER      @bold @track=0.08 = MEMBER
+LENGTH      @bold @track=0.08 = LENGTH
+TRUSS       @bold @track=0.08 = TRUSS
+BAYS        @bold @track=0.08 = BAYS
+M           @sans = m

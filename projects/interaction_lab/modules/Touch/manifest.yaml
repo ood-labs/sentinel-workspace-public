@@ -1,0 +1,110 @@
+name: "Touch"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# The input primer: ordered viewport events consumed exactly once by two independent reducers,
+# a live event log with the counters that make the four input rules visible, and durable ink.
+
+panel:
+  mode: canvas
+  output: "Touch"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+viewport:
+  hint: "Click: ripple. Drag: ink. Double-click or C: clear. Ctrl+wheel: brush. 1-4: ink. Space: fade. Backspace: undo stroke."
+  interactions: [events]
+  input:
+    pointer: [left, wheel]
+    keyboard: ["1", "2", "3", "4", space, backspace, c]
+    gestures: [click, double_click, drag]
+  bindings:
+    - { gesture: left_click, action: ripple, label: "Ripple" }
+    - { gesture: left_drag, action: ink, label: "Lay ink" }
+    - { gesture: left_double_click, action: clear, label: "Clear" }
+    - { gesture: wheel, action: brush, label: "Brush width (Ctrl+wheel when the preview takes the wheel)" }
+    - { key: "1", action: ink_1, label: "Ink 1" }
+    - { key: "2", action: ink_2, label: "Ink 2" }
+    - { key: "3", action: ink_3, label: "Ink 3" }
+    - { key: "4", action: ink_4, label: "Ink 4" }
+    - { key: space, action: fade, label: "Toggle fade (latched)" }
+    - { key: backspace, action: undo, label: "Undo last stroke" }
+    - { key: c, action: clear_all, label: "Clear" }
+
+buffers:
+  - { name: ink, structured: true, element_size: 16, element_count: 1028, persistent: true }   # 3 header + 1024 points + 1 working
+  - { name: observe, structured: true, element_size: 16, element_count: 96, persistent: true }   # touch.hlsli O_SIZE
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }                     # il_draw IL_DL_SIZE
+
+# The ink ring is document state: it saves with the project and rides presets and undo. Its event
+# watermark lives in the record after it (1027), outside the saved range, so a restore never replays
+# the strokes drawn since.
+state_buffers:
+  - name: ink
+    max_elements: 1027
+    schema:
+      - { name: a, type: uint }
+      - { name: b, type: uint }
+      - { name: c, type: uint }
+      - { name: d, type: uint }
+
+passes:
+  - name: ink
+    shader: ink.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:ink"
+  - name: observe
+    shader: observe.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:observe"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:ink" }
+      - { slot: 1, source: "buffer:observe" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Touch", pass: raster }
+
+data_outputs:
+  - name: "Ink Points"
+    buffer: "ink"
+    description: "Durable ink: 3 header records, then up to 1024 points (u, v in 0..1 of the surface; code = width + 64*ink + 256*stroke; birth time). Floats are stored as bit patterns; skip the header."
+    schema:
+      - { name: u, type: float }
+      - { name: v, type: float }
+      - { name: code, type: float }
+      - { name: birth, type: float }
+
+control_outputs:
+  - { name: consumed, buffer: observe, element: 2, field_offset: 0,  description: "Events consumed exactly once since the node started" }
+  - { name: pointer_u, buffer: observe, element: 2, field_offset: 4, description: "Last pointer position on the surface, 0..1 across" }
+  - { name: pointer_v, buffer: observe, element: 2, field_offset: 8, description: "Last pointer position on the surface, 0..1 down" }
+  - { name: strokes,  buffer: ink, element: 2, field_offset: 0,  description: "Strokes drawn (monotonic id)" }
+  - { name: points,   buffer: ink, element: 2, field_offset: 4,  description: "Live points in the ink ring" }
+  - { name: brush,    buffer: ink, element: 2, field_offset: 8,  description: "Brush width in ui px" }

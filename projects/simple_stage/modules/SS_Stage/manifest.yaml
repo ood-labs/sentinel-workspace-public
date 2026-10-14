@@ -1,0 +1,141 @@
+name: SIMPLE STAGE / Stage
+version: '1.0'
+mode: generator
+resolution: [1280, 760]
+# The construction model: three flown truss lines, solved from stock F34 parts by tools/ss_stage.py, and every
+# fixture mount on it (_shared/ss_stage.hlsli). This node publishes it - Mounts, Bar Pieces and Structure, in the
+# layouts PHAGE's Kinetics and Assembly publish - so Lighting, the Venue and the renderer read one model and nothing
+# downstream re-derives a position. The canvas is an axonometric of the real generated tubes, solids and fixtures,
+# with each fixture's program slot; point at a member or a fixture to read it.
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+panel:
+  mode: canvas
+  output: Stage Axonometric
+  resolution: follow_panel
+viewport:
+  hint: 'Point at a member or a fixture: it lights, and the card (Tooltips) gives the part or the fixture, its slot and its figures.'
+  interactions: [events]
+  input:
+    pointer: [left]
+parameters:
+  - {name: tooltips, display: Tooltips, type: bool, default: true, description: 'The card beside the pointer that names the truss member or fixture under it, with its part or slot and its figures. Turn it off to keep the canvas clear while you work.'}
+buffers:
+  - {name: members, structured: true, element_size: 64, element_count: 32}
+  - {name: mounts, structured: true, element_size: 80, element_count: 64}
+  - {name: pieces, structured: true, element_size: 64, element_count: 64}
+  - {name: structure, structured: true, element_size: 64, element_count: 3136}
+  - {name: marks, structured: true, element_size: 64, element_count: 183}
+  - {name: hover, structured: true, element_size: 16, element_count: 1}
+  - {name: bins, structured: true, element_size: 4, element_count: 786432}
+  - {name: dl, structured: true, element_size: 16, element_count: 24577}   # il_draw IL_DL_SIZE
+passes:
+  - name: members
+    shader: members.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    output: buffer:members
+  - name: mounts
+    shader: mounts.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    output: buffer:mounts
+  - name: pieces
+    shader: pieces.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    output: buffer:pieces
+  - name: structure
+    shader: structure.hlsl
+    target: cs_5_0
+    dispatch: [49, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:members}
+    output: buffer:structure
+  - name: marks
+    shader: marks.hlsl
+    target: cs_5_0
+    dispatch: [3, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:members}
+      - {slot: 1, source: buffer:structure}
+      - {slot: 2, source: buffer:mounts}
+      - {slot: 3, source: buffer:pieces}
+    output: buffer:marks
+  - name: hover
+    shader: hover.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:marks}
+    output: buffer:hover
+  - name: bins
+    shader: bins.hlsl
+    target: cs_5_0
+    dispatch: [128, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:marks}
+    output: buffer:bins
+  - name: preview
+    shader: preview.hlsl
+    target: cs_5_0
+    inputs:
+      - {slot: 0, source: buffer:members}
+      - {slot: 1, source: buffer:structure}
+      - {slot: 2, source: buffer:marks}
+      - {slot: 3, source: buffer:bins}
+      - {slot: 4, source: buffer:hover}
+      - {slot: 5, source: buffer:mounts}
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:marks}
+      - {slot: 1, source: buffer:hover}
+      - {slot: 2, source: buffer:members}
+      - {slot: 3, source: buffer:mounts}
+    output: buffer:dl
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
+      - {slot: 2, source: 'pass:preview'}
+data_outputs:
+  - name: Mounts
+    buffer: mounts
+    schema:
+      - {name: position, type: float3}
+      - {name: fixture_id, type: float}
+      - {name: up, type: float3}
+      - {name: kind, type: float}
+      - {name: fwd, type: float3}
+      - {name: active, type: float}
+      - {name: extra, type: float4}
+      - {name: rest, type: float4}
+  - name: Bar Pieces
+    buffer: pieces
+    schema:
+      - {name: a, type: float4}
+      - {name: b, type: float4}
+      - {name: n, type: float4}
+      - {name: w, type: float4}
+  - name: Structure
+    buffer: structure
+    schema:
+      - {name: a, type: float4}
+      - {name: b, type: float4}
+      - {name: c, type: float4}
+      - {name: d, type: float4}
+outputs:
+  - name: Stage Axonometric
+    pass: ui

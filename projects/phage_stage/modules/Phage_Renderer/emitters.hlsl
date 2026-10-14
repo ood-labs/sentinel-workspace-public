@@ -1,5 +1,6 @@
 // Strobes (dark housing, white-hot tube, two RGB plates) and pixel bars (extrusion + a strip of
 // 5 cm pixels sampled from the LED texture at each pixel's own centre).
+#include "taa.hlsli"
 #include "../_shared/phage_fixture.hlsli"
 StructuredBuffer<PhStrobe> Strobes:register(t0); // Optics buffer, strobe records from PH_OPT_STROBE0
 struct PhPiece{float4 a;float4 b;float4 n;float4 w;};StructuredBuffer<PhPiece> Q:register(t1);
@@ -12,7 +13,7 @@ float3 boxCorner(uint v,out float3 n){uint f=v/6,k=v%6;float2 uv=float2(k==1||k=
  if(f<2){n=float3(s,0,0);return float3(s,uv);}if(f<4){n=float3(0,s,0);return float3(uv.x,s,uv.y);}n=float3(0,0,s);return float3(uv,s);}
 float3 quadCorner(uint k){return float3(k==1||k==4||k==5?1:-1,k==2||k==3||k==5?1:-1,0);}
 V VSMain(uint id:SV_VertexID){V o=(V)0;o.pos=float4(0,0,-1,1);float3 p,n;
- if(id<STROBE_COUNT*STROBE_VERTS){uint si=id/STROBE_VERTS,v=id%STROBE_VERTS;if(PH_OPT_STROBE0+si>=_Data1_Count)return o;PhStrobe s=Strobes[PH_OPT_STROBE0+si];if(s.active<.5)return o;
+ if(id<STROBE_COUNT*STROBE_VERTS){uint si=id/STROBE_VERTS,v=id%STROBE_VERTS;if(PH_OPT_STROBE0+si>=3312u)return o;PhStrobe s=Strobes[PH_OPT_STROBE0+si];if(s.active<.5)return o;
   float3 L=s.up,F=s.fwd,W=normalize(cross(F,L));float hl=s.length*.5;
   if(v<36){float3 q=boxCorner(v,n);p=s.position-F*.07+L*q.x*hl+W*q.y*.13+F*q.z*.065;n=L*n.x+W*n.y+F*n.z;o.info=float4(0,0,0,0);}
   else if(v<72){float3 q=boxCorner(v-36,n);p=s.position+F*.012+L*q.x*hl*.93+W*q.y*.02+F*q.z*.02;n=L*n.x+W*n.y+F*n.z;o.emit=float4(s.tube_colour*s.tube,1);o.info=float4(1,0,0,0);}
@@ -21,7 +22,7 @@ V VSMain(uint id:SV_VertexID){V o=(V)0;o.pos=float4(0,0,-1,1);float3 p,n;
   float3 A=q.a.xyz,B=q.b.xyz,D=normalize(B-A),N=q.n.xyz;N=normalize(N-D*dot(N,D));float3 S=normalize(cross(D,N));float hl=length(B-A)*.5;float3 C=(A+B)*.5;
   if(v<36){float3 c=boxCorner(v,n);p=C-N*.03+D*c.x*hl+S*c.y*.045+N*c.z*.03;n=D*n.x+S*n.y+N*n.z;o.info=float4(3,0,0,0);}
   else{float3 c=quadCorner(v-36);p=C+N*.002+D*c.x*hl+S*c.y*.022;n=N;o.info=float4(4,lerp(q.a.w,q.b.w,c.x*.5+.5),q.n.w,q.w.x/max(1e-3,q.b.w-q.a.w));}}
- o.world=p;o.normal=n;o.pos=mul(_ViewProjMatrix,float4(p,1));return o;}
+ o.world=p;o.normal=n;o.pos=taaClip(p);return o;}
 float4 PSMain(V i):SV_TARGET0{
  float3 n=normalize(i.normal),v=normalize(_CameraPos-i.world);float kind=i.info.x;float3 c;
  float key=.02+.08*saturate(dot(n,normalize(float3(-.4,.8,.5))));

@@ -1,0 +1,26 @@
+# SS_Venue - the arena drawing's words. Regenerate: python tools/il_type.py labels SS_Venue
+TITLE        @bold @track=0.14 = SIMPLE STAGE
+SUBTITLE     @sans = club
+PLAN         @bold @track=0.08 = PLAN
+SECTION      @bold @track=0.08 = LONG SECTION
+STAGE        @bold @track=0.08 = STAGE
+AUDIENCE     @bold @track=0.08 = AUDIENCE
+ROOF_STEEL   @bold @track=0.08 = CEILING STEEL
+KINETIC_MAX  @bold @track=0.08 = TOP OF THE RIG
+M            @sans = m
+X            @sans = x
+
+ROOM         @bold @track=0.08 = ROOM
+PEOPLE       @bold @track=0.08 = PEOPLE
+HALL         @bold @track=0.08 = SIZE
+BARS_LIT     @bold @track=0.08 = PIXEL RUNS LIT
+OF           @sans = of
+CAPSID_TOP   @bold @track=0.08 = TOP OF THE RIG
+CLEARANCE    @bold @track=0.08 = CLEARANCE UNDER THE STEEL
+TOO_LOW      @bold @track=0.08 = TOO LOW
+
+# the cursor's inspector
+Z            @sans = z
+HEIGHT       @sans = height
+FROM_STAGE   @sans = from the stage centre
+UNDER_STEEL  @sans = under the ceiling steel

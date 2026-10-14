@@ -2,7 +2,9 @@ name: "Generation Controller"
 version: "1.0"
 mode: generator
 resolution: [960, 540]
-time_dependent: true
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 
 panel:
   mode: canvas
@@ -11,19 +13,9 @@ panel:
 
 viewport:
   hint: "Control generation mode, prompt travel speed, and Pattern Canvas stamp cadence."
-  # ui-label: manual = MANUAL
-  # ui-label: interval = INTERVAL
-  # ui-label: continuous = CONTINUOUS
-  # ui-label: run = RUN
-  # ui-label: linked = LINKED
-  # ui-label: generate = GENERATE
-  # ui-label: next = NEXT PROMPT
-  # ui-label: prompt = PROMPT
-  # ui-label: cycle = CYCLE
-  # ui-label: held = HELD
-  # ui-label: generating = GENERATING
-  # ui-label: prompt_rate = PROMPT RATE
-  # ui-label: stamp_speed = STAMP SPEED
+  # the pointer only feeds hover and the inspectors in layout.hlsl; no pass reads events
+  interactions: [events]
+  input: { pointer: [left] }
   controls:
     - { id: mode, kind: slider, param: mode, rect: [0.020, 0.030, 0.360, 0.140], label: "Mode" }
     - { id: transport, kind: toggle, param: transport_run, rect: [0.380, 0.030, 0.490, 0.140], label: "Run" }
@@ -34,6 +26,7 @@ viewport:
     - { id: stamp_speed, kind: slider, param: stamp_rate, rect: [0.530, 0.270, 0.950, 0.400], label: "Stamp Speed" }
 
 parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The cards beside the pointer over the prompt bank (what it takes to reach that prompt, and when) and over the activity lanes (how long ago, open or shut, stamped). Turn it off to keep the canvas clear while you work." }
   - { name: mode, display: "Mode", type: int, min: 0, max: 2, default: 1, group: "Generation", description: "0 Manual, 1 Interval, 2 Continuous." }
   - { name: transport_run, display: "Run", type: bool, default: true, group: "Generation", description: "Master transport for automatic generation and Pattern Canvas stamping." }
   - { name: link_stamps, display: "Link Stamps", type: bool, default: true, group: "Generation", description: "When enabled, Interval and manual generation events stamp only after their render window completes. When disabled, stamping follows Stamp Speed independently." }
@@ -48,6 +41,8 @@ parameters:
 
 buffers:
   - { name: generation_state, structured: true, element_size: 16, element_count: 4, persistent: true }
+  - { name: history, structured: true, element_size: 16, element_count: 258, persistent: true }   # gc_history.hlsli
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 
 passes:
   - name: update
@@ -60,12 +55,36 @@ passes:
       - { slot: 0, source: "buffer:generation_state" }
     output: "buffer:generation_state"
 
+  - name: history
+    shader: history.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:generation_state" }
+    output: "buffer:history"
+
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: 'buffer:generation_state'}
+      - {slot: 1, source: 'buffer:history'}
+    output: buffer:dl
+
   - name: ui
     shader: ui.hlsl
     target: cs_5_0
     format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
     inputs:
-      - { slot: 0, source: "buffer:generation_state" }
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
     output: output
 
 outputs:

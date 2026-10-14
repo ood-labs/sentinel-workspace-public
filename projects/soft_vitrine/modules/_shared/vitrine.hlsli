@@ -23,7 +23,8 @@
 #define PLAN_MASSES    16u
 // Global stage geometry. The horizon is a PLACEMENT decision, so the plan authority owns it:
 // VT_Stage draws the wall/floor seam there and VT_Composite mirrors reflections about the same
-// number. pos = (horizon, room_depth).
+// number. pos = (horizon, room_depth). seed carries VT_Plan's newest consumed viewport event
+// (asuint), which nothing downstream reads.
 #define PLAN_STAGE     62u
 #define PLAN_HEADER    63u
 #define PLAN_RECORDS   64u

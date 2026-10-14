@@ -394,45 +394,45 @@ float4 mainImage(float2 uv) { return float4(leaked_fixture(), uv, 1.0); }
     $tooFewControls = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
     if (-not (@($tooFewControls.projects[0].errors) -match 'expose 6-10 controls')) { throw 'Out-of-range Scene Group control count was not rejected.' }
     New-FixtureProject 'modules/Active'
-
-    # Script nodes: scripts/ ships, literal requires resolve through .luaurc aliases
-    # and relative paths, and each broken variant is rejected with a specific error.
-    function Set-ScriptFixture([string]$ScriptPath) {
-        New-FixtureProject 'modules/Active'
-        $json = [IO.File]::ReadAllText($fixtureFile) | ConvertFrom-Json
-        $json.pipelines += [pscustomobject]@{ id = 'Surface'; displayName = 'Surface'; type = 'script'; parameters = [pscustomobject]@{ script_path = $ScriptPath } }
-        Write-Utf8 $fixtureFile (($json | ConvertTo-Json -Depth 12) + "`n")
-    }
-    $scriptsDir = Join-Path $projectRoot 'scripts'
-    Write-Utf8 (Join-Path $projectRoot 'README.md') ($fixtureReadme + "| Surface | Script node running scripts/surface.luau. |`n")
-    Write-Utf8 (Join-Path $scriptsDir '.luaurc') "{`"aliases`": {`"lib`": `"./lib`"}}`n"
-    Write-Utf8 (Join-Path $scriptsDir 'lib/helper.luau') "return {}`n"
-    Write-Utf8 (Join-Path $scriptsDir 'show/init.luau') "return {}`n"
-    $goodScript = "local script = {manifest = {name = `"Fixture`"}}`nfunction script.init() local h = require(`"@lib/helper`"); local s = require(`"./show`") end`nreturn script`n"
-    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') $goodScript
-    Set-ScriptFixture 'scripts/surface.luau'
-    $scriptClean = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 0
-    if (-not $scriptClean.portable) { throw "Valid Script project was rejected: $($scriptClean.projects[0].errors -join '; ')" }
-
-    Set-ScriptFixture 'scripts/missing.luau'
-    $missingScript = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
-    if (-not (@($missingScript.projects[0].errors) -match 'script_path does not resolve')) { throw 'Missing script_path was not rejected.' }
-    Set-ScriptFixture 'scripts/surface.luau'
-
-    Write-Utf8 (Join-Path $scriptsDir '.luaurc') "{`"aliases`": {`"lib`": `"../../../outside`"}}`n"
-    $escapedAlias = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
-    if (-not (@($escapedAlias.projects[0].errors) -match "alias 'lib' does not resolve inside")) { throw 'Escaping .luaurc alias was not rejected.' }
-    Write-Utf8 (Join-Path $scriptsDir '.luaurc') "{`"aliases`": {`"lib`": `"./lib`"}}`n"
-
-    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') ($goodScript + "-- data lives in C:/Shows/private`n")
-    $absoluteScript = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
-    if (@($absoluteScript.projects[0].absolute_paths).Count -eq 0) { throw 'Absolute path inside a .luau file was not reported.' }
-
-    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') ($goodScript.Replace('"./show"', '"./show/missing"'))
-    $missingRequire = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
-    if (-not (@($missingRequire.projects[0].errors) -match "unresolved require './show/missing'")) { throw 'Unresolved require was not rejected.' }
-    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') $goodScript
-
+
+    # Script nodes: scripts/ ships, literal requires resolve through .luaurc aliases
+    # and relative paths, and each broken variant is rejected with a specific error.
+    function Set-ScriptFixture([string]$ScriptPath) {
+        New-FixtureProject 'modules/Active'
+        $json = [IO.File]::ReadAllText($fixtureFile) | ConvertFrom-Json
+        $json.pipelines += [pscustomobject]@{ id = 'Surface'; displayName = 'Surface'; type = 'script'; parameters = [pscustomobject]@{ script_path = $ScriptPath } }
+        Write-Utf8 $fixtureFile (($json | ConvertTo-Json -Depth 12) + "`n")
+    }
+    $scriptsDir = Join-Path $projectRoot 'scripts'
+    Write-Utf8 (Join-Path $projectRoot 'README.md') ($fixtureReadme + "| Surface | Script node running scripts/surface.luau. |`n")
+    Write-Utf8 (Join-Path $scriptsDir '.luaurc') "{`"aliases`": {`"lib`": `"./lib`"}}`n"
+    Write-Utf8 (Join-Path $scriptsDir 'lib/helper.luau') "return {}`n"
+    Write-Utf8 (Join-Path $scriptsDir 'show/init.luau') "return {}`n"
+    $goodScript = "local script = {manifest = {name = `"Fixture`"}}`nfunction script.init() local h = require(`"@lib/helper`"); local s = require(`"./show`") end`nreturn script`n"
+    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') $goodScript
+    Set-ScriptFixture 'scripts/surface.luau'
+    $scriptClean = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 0
+    if (-not $scriptClean.portable) { throw "Valid Script project was rejected: $($scriptClean.projects[0].errors -join '; ')" }
+
+    Set-ScriptFixture 'scripts/missing.luau'
+    $missingScript = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($missingScript.projects[0].errors) -match 'script_path does not resolve')) { throw 'Missing script_path was not rejected.' }
+    Set-ScriptFixture 'scripts/surface.luau'
+
+    Write-Utf8 (Join-Path $scriptsDir '.luaurc') "{`"aliases`": {`"lib`": `"../../../outside`"}}`n"
+    $escapedAlias = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($escapedAlias.projects[0].errors) -match "alias 'lib' does not resolve inside")) { throw 'Escaping .luaurc alias was not rejected.' }
+    Write-Utf8 (Join-Path $scriptsDir '.luaurc') "{`"aliases`": {`"lib`": `"./lib`"}}`n"
+
+    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') ($goodScript + "-- data lives in C:/Shows/private`n")
+    $absoluteScript = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (@($absoluteScript.projects[0].absolute_paths).Count -eq 0) { throw 'Absolute path inside a .luau file was not reported.' }
+
+    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') ($goodScript.Replace('"./show"', '"./show/missing"'))
+    $missingRequire = Invoke-JsonScript $validator @('-Root', $sourceRoot, '-Projects', 'industrial_lattice', '-ConfigPath', $config, '-Json') 1
+    if (-not (@($missingRequire.projects[0].errors) -match "unresolved require './show/missing'")) { throw 'Unresolved require was not rejected.' }
+    Write-Utf8 (Join-Path $scriptsDir 'surface.luau') $goodScript
+
     Set-ScriptFixture 'scripts/surface.luau'
 
     # Dry-run must be non-mutating and list only the selected fixture project.

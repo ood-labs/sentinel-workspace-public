@@ -345,7 +345,7 @@ float2 ka_armLocal(float3 pa, float3 pb, KaSpec sp, float ped,
     {
         // Evaluated ENTIRELY in the carousel frame. Anchoring the first segment to the base
         // frame is more literally correct and visibly tears the conduit in half the moment A1
-        // turns, because the two frames are only aligned at a1 = 0. A KUKA dress pack rides the
+        // turns, because the two frames are only aligned at a1 = 0. An industrial arm's dress pack rides the
         // rotating column anyway.
         float3 c0 = float3(-sp.ped_r * 0.62, ped + sp.ped_h * 0.90, sp.ped_r * 0.52);
         float3 c1 = float3(-sp.ped_r * 0.95, ped + sp.turret * 0.92, sp.ped_r * 0.58);

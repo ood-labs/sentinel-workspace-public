@@ -1,0 +1,122 @@
+name: "Score"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# An act sequencer for a short show: up to eight acts on one clock, each a RAIL (a camera move
+# through the hall, set by 2 - 6 marks) or a CARD (a title: a word, a disc, a bar), each handing off
+# to the next by a cut, a dip through black or a glide (between rails the camera blends from one
+# act's pose into the next one's first mark - one camera, always). Panes that share one selection:
+#   ACTS     the show on one time axis: drag an act to reorder it, its right edge to resize it; the
+#            selected rail's marks as ticks you can retime; the ruler scrubs
+#   SPACE    rails: the PLAN over the ELEVATION, sharing the hall's z axis, with the rail drawn
+#            through the marks (eye squares, aim rings) - drag either, in either view
+#            cards: the 16:9 STAGE, its word, disc and bar to drag and size
+#   VIEW     what the camera sees at the playhead, in outline: drag it to aim the selected mark
+#   MARK / ITEM, ACT   the selection's fields
+# The show publishes as "Score" (see _shared/score.hlsli); the camera leaves as control outputs that
+# drive the Program's internal camera by expression; the Program renders the hall through it.
+#
+# Every pass runs every cook (the playhead moves). On 0.6.3 passes run in reverse manifest order, so
+# the picture trails the reducer by a cook or two; nothing here depends on the order.
+
+panel:
+  mode: canvas
+  output: "Score"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+viewport:
+  hint: "Acts: click to select, drag to reorder, drag the right edge for its length, drag a mark's tick to retime it, double-click a rail for a mark; the ruler scrubs. Space (rails): drag a mark's eye (square) or aim (ring) in the plan or the elevation, click one to look through it, double-click the rail to add one. Stage (cards): drag the word, disc or bar, or the selected one's corner. View: drag to aim the selected mark. Fields: drag. Space play, 0 to the top, Left / Right act, Up / Down mark or item, A add a mark, Backspace delete it (or the act), D duplicate, K kind, H hand-off, L light or word, R default show (Z brings yours back), Z undo."
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [space, "0", left, right, up, down, a, backspace, d, k, h, l, r, z]
+    gestures: [click, double_click, drag]
+  bindings:
+    - { gesture: left_drag, action: edit, label: "Reorder and resize acts, retime marks, scrub; move eyes, aims and card items; aim in the view; drag fields; the splitters" }
+    - { gesture: left_click, action: select, label: "Select an act, a mark (the playhead goes to it), an item; play, loop, kind, hand-off, light, word" }
+    - { gesture: left_double_click, action: add_mark, label: "A mark where the rail passes, or at that moment in the lane" }
+    - { key: space, action: play, label: "Play / stop" }
+    - { key: "0", action: top, label: "To the top (of the act, when it loops)" }
+    - { key: left, action: act_back, label: "The act before" }
+    - { key: right, action: act_on, label: "The act after" }
+    - { key: up, action: mark_back, label: "The mark (or item) before" }
+    - { key: down, action: mark_on, label: "The mark (or item) after" }
+    - { key: a, action: add_mark, label: "Add a mark after the selected one" }
+    - { key: backspace, action: delete, label: "Delete the mark; with none selected, the act" }
+    - { key: d, action: duplicate, label: "Duplicate the act" }
+    - { key: k, action: kind, label: "Rail <-> card" }
+    - { key: h, action: hand_off, label: "Cut, dip, glide" }
+    - { key: l, action: light, label: "Day, dusk, night (rails); the word (cards)" }
+    - { key: r, action: reset, label: "The default show (Z brings yours back)" }
+    - { key: z, action: undo, label: "Undo (again: redo)" }
+
+buffers:
+  # _shared/score.hlsli + sc.hlsli: the show (114 records), working state, what the playhead
+  # resolves to, and the undo snapshot
+  - { name: state, structured: true, element_size: 16, element_count: 242, persistent: true }
+  - { name: dl,    structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+# The acts, their marks and items (114 records) serialize into the project, node presets and undo
+# payloads. The working state after them is never restored.
+state_buffers:
+  - name: state
+    max_elements: 114
+    schema:
+      - { name: v, type: float4 }
+
+passes:
+  - name: reduce
+    shader: reduce.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:state"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Score", pass: raster }
+
+# The camera, in the internal camera's own terms: drive the Program's camera_pos_x / y / z,
+# camera_yaw, camera_pitch and camera_fov with ref() expressions on these.
+control_outputs:
+  - { name: cam_x,     buffer: state, element: 123, field_offset: 0,  description: "The camera's eye x (m)" }
+  - { name: cam_y,     buffer: state, element: 123, field_offset: 4,  description: "The camera's eye y, its height (m)" }
+  - { name: cam_z,     buffer: state, element: 123, field_offset: 8,  description: "The camera's eye z, down the hall (m)" }
+  - { name: cam_fov,   buffer: state, element: 123, field_offset: 12, description: "The camera's vertical field of view (degrees)" }
+  - { name: cam_yaw,   buffer: state, element: 125, field_offset: 0,  description: "The camera's yaw (radians): atan2(dir.x, dir.z)" }
+  - { name: cam_pitch, buffer: state, element: 125, field_offset: 4,  description: "The camera's pitch (radians): asin(dir.y)" }
+  - { name: time,      buffer: state, element: 114, field_offset: 0,  description: "The playhead (s)" }
+  - { name: playing,   buffer: state, element: 114, field_offset: 4,  description: "1 while playing" }
+  - { name: act,       buffer: state, element: 121, field_offset: 0,  description: "The act showing (0-based)" }
+  - { name: hand_off,  buffer: state, element: 121, field_offset: 8,  description: "How far through its hand-off the act is (0..1; 0 outside one)" }
+
+data_outputs:
+  - name: "Score"
+    buffer: "state"
+    description: "float4 records (see _shared/score.hlsli): 0 = (acts), 1 = (format magic), 2 + 14 a = act a: (kind, duration, hand-off, hand-off s), (light, word, marks, -), then 6 x 2 records: a rail mark (eye, at) (aim, fov) or a card item (x, y, size, shown); 121 = (act A, act B, hand-off progress, hand-off kind), 122 = (time into A, -, show length, acts), 123 / 124 = the camera's eye + fov and aim, 125 = (yaw, pitch), 126 = (light A, light B, kind A, kind B)."
+    schema:
+      - { name: v, type: float4 }

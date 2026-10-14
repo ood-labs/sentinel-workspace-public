@@ -1,0 +1,62 @@
+# Generation_Controller - the generation desk's words. Regenerate: python -B tools/il_type.py labels Generation_Controller
+# (it also refreshes _ui.generated.hlsli from the manifest's viewport.controls)
+TITLE        @bold @track=0.08 = STREAMDIFF
+SUBTITLE     @sans = generation
+
+# the mode segments, in parameter order (layout.hlsl counts from M_MANUAL)
+M_MANUAL     @bold = MANUAL
+M_INTERVAL   @bold = INTERVAL
+M_CONTINUOUS @bold = CONTINUOUS
+
+# the four host toggles, in manifest order (layout.hlsl counts from C_RUN)
+C_RUN        @bold = RUN
+C_LINKED     @bold = LINKED
+C_GENERATE   @bold = GENERATE
+C_NEXT       @bold = NEXT PROMPT
+
+# the sliders: caption, unit, and what the value means in the current mode
+PROMPT_RATE  @bold @track=0.08 = PROMPT RATE
+STAMP_SPEED  @bold @track=0.08 = STAMP SPEED
+PER_S        @sans = /s
+U_S          @sans = s
+EVERY        @sans = every
+N_MANUAL     @sans = unused in manual
+N_TRAVEL     @sans = prompts a second
+N_LINKED     @sans = one stamp per window
+
+# status
+HELD         @bold @track=0.08 = HELD
+GENERATING   @bold @track=0.08 = GENERATING
+
+# the prompt readout and the bank
+BANK         @bold @track=0.08 = PROMPT BANK
+PROMPT       @bold @track=0.08 = PROMPT
+CYCLE        @bold @track=0.08 = CYCLE
+WINDOWS_U    @sans = windows
+
+# the activity ring
+ACTIVITY     @bold @track=0.08 = ACTIVITY
+LAST_8       @sans = last 8 s
+L_WINDOWS    @bold @track=0.06 = WINDOWS
+L_STAMPS     @bold @track=0.06 = STAMPS
+
+# the inspectors
+I_STEP       @sans = step ahead
+I_STEPS      @sans = steps ahead
+I_PRESS      @sans = press of Next Prompt
+I_PRESSES    @sans = presses of Next Prompt
+I_AHEAD      @sans = prompt ahead
+I_AHEADS     @sans = prompts ahead
+I_IN         @sans = in
+I_NOW        @sans = live now
+I_SKIP       @sans = the step skips it
+I_AGO        @sans = s ago
+I_OPEN       @sans = window open
+I_SHUT       @sans = held
+I_STAMP      @sans = + stamp
+
+# the gestures (host controls only: this module reads no events of its own)
+K_CLICK      @sans = Click
+K_DRAG       @sans = Drag
+D_CLICK      @sans = a chip or a mode
+D_DRAG       @sans = a rate

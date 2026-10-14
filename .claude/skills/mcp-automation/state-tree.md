@@ -46,11 +46,11 @@ source_values = client.list_values(f"/sentinel/sources/{source['id']}")
 client.invoke_action(f"/sentinel/sources/{source['id']}/actions/connect")
 
 # Create pipeline and modify parameter via tree
-pipeline = client.create_pipeline("colorcorrect")
-client.set_state_value(f"/sentinel/pipelines/{pipeline['id']}/parameters/brightness", 0.75)
+pipeline = client.create_pipeline("mux")
+client.set_state_value(f"/sentinel/pipelines/{pipeline['id']}/parameters/fade_time", 0.75)
 
 # Read back with metadata
-info = client.get_state_value(f"/sentinel/pipelines/{pipeline['id']}/parameters/brightness")
+info = client.get_state_value(f"/sentinel/pipelines/{pipeline['id']}/parameters/fade_time")
 print(f"Value: {info['value']}, Type: {info['valueType']}, Range: {info['min']}-{info['max']}")
 
 # List all available actions

@@ -1,0 +1,82 @@
+# Path Desk - the labels of the Path Desk station. Regenerate: python tools/il_type.py labels PathDesk
+TITLE       @bold @track=0.08 = PATH DESK
+SUBTITLE    @sans = pen paths for a plotter, read as curvature
+
+PATHS       @bold @track=0.06 = PATHS
+PATH        @bold @track=0.04 = PATH
+OPEN        @sans = open
+CLOSED      @sans = closed
+ANCHORS     @sans = anchors
+PX          @mono = px
+FREE        @sans = free: P draws a path
+INK_0       @sans = blue-black
+INK_1       @sans = sepia
+INK_2       @sans = vermilion
+INK_3       @sans = verdigris
+
+PLOT        @bold @track=0.06 = PLOT
+PEN_DOWN    @sans = pen down
+TRAVEL      @sans = pen-up travel
+NPATHS      @sans = paths
+SLASH       @mono = /
+
+KIND_0      @sans = corner
+KIND_1      @sans = smooth
+KIND_2      @sans = aligned
+KIND_3      @sans = broken
+
+EDIT        @bold @track=0.06 = EDIT
+PEN         @bold @track=0.06 = PEN
+ANCHOR      @sans = anchor
+SELECTED    @sans = anchors selected
+X           @mono = x
+Y           @mono = y
+
+CURVATURE   @bold @track=0.06 = CURVATURE
+ALONG       @sans = radius along the plot
+R           @mono = r
+PLOTTER     @sans = plotter
+
+# hint bar, edit with nothing selected (pairs)
+K_A0        @sans = P
+K_A1        @sans = Drag empty
+K_A2        @sans = Double-click a curve
+K_A3        @sans = Click a path row
+K_A4        @sans = O
+K_A5        @sans = C  K
+K_A6        @sans = R  Z
+D_A0        @sans = draw with the pen
+D_A1        @sans = box select
+D_A2        @sans = add an anchor
+D_A3        @sans = select the path
+D_A4        @sans = shortest plot order
+D_A5        @sans = close, comb
+D_A6        @sans = reset, undo
+
+# hint bar, anchors selected (pairs)
+K_B0        @sans = Drag
+K_B1        @sans = Drag a handle
+K_B2        @sans = Double-click
+K_B3        @sans = 1  2  B
+K_B4        @sans = Arrows
+K_B5        @sans = Backspace
+D_B0        @sans = move
+D_B1        @sans = shape
+D_B2        @sans = corner or smooth
+D_B3        @sans = corner, smooth, break
+D_B4        @sans = nudge
+D_B5        @sans = delete
+
+# hint bar, the pen engaged (pairs)
+K_C0        @sans = Click
+K_C1        @sans = Drag
+K_C2        @sans = Click an open end
+K_C3        @sans = Click the first anchor
+K_C4        @sans = Enter
+K_C5        @sans = Esc
+D_C0        @sans = corner
+D_C1        @sans = smooth
+D_C2        @sans = carry on drawing it
+D_C3        @sans = close the path
+D_C4        @sans = finish it open
+D_C5        @sans = stop drawing

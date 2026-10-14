@@ -1,0 +1,53 @@
+# Phage_Show - the show monitor's words. Regenerate: python tools/il_type.py labels Phage_Show
+TITLE       @bold @track=0.14 = PHAGE
+SUBTITLE    @sans = show state
+BPM         @bold @track=0.08 = BPM
+BEAT        @bold @track=0.08 = BEAT
+STOPPED     @bold @track=0.08 = STOPPED
+WAITING     @sans = waiting for the show state
+
+LANES       @bold @track=0.08 = LANES
+COUNT       @bold @track=0.08 = COUNT
+# the five lanes, in Show State order (layout.hlsl counts from L_KICK)
+L_KICK      @bold @track=0.06 = KICK
+L_SNARE     @bold @track=0.06 = SNARE
+L_HIHAT     @bold @track=0.06 = HI-HAT
+L_BUILD     @bold @track=0.06 = BUILD
+L_PHRASE    @bold @track=0.06 = PHRASE
+
+PALETTES    @bold @track=0.08 = PALETTES
+PAL_A       @bold = A
+PAL_B       @bold = B
+PAL_C       @bold = C
+
+STROBE      @bold @track=0.08 = STROBE
+PER_BEAT    @sans = per beat
+DUTY        @bold @track=0.08 = DUTY
+GATE        @bold @track=0.08 = GATE
+HELD        @bold @track=0.08 = HELD
+BLACKOUT    @bold @track=0.08 = BLACKOUT
+
+SOURCE      @bold @track=0.08 = SOURCE
+PROGRAMMER  @bold @track=0.06 = PROGRAMMER
+REFERENCE   @bold @track=0.06 = REFERENCE CHASE
+HOLD        @bold @track=0.06 = HOLD
+KINETICS    @bold @track=0.08 = KINETICS
+LANES13     @bold @track=0.08 = LANES 1-3
+INTERNAL    @bold @track=0.06 = INTERNAL
+SURFACE     @bold @track=0.06 = SURFACE
+
+# the lanes pane's columns and the lane card
+H_CHASE     @bold @track=0.08 = CHASE ACROSS THE RIG
+H_TAPE      @bold @track=0.08 = LAST 8 BEATS
+STEPS       @sans = steps from the Surface
+CYCLE       @bold @track=0.08 = CYCLE
+REST        @bold @track=0.08 = REST
+OFFSET      @bold @track=0.08 = OFFSET
+LENGTH      @bold @track=0.08 = LENGTH
+RAMP        @bold @track=0.08 = RAMP
+PULSES      @bold @track=0.08 = PULSES
+THROUGH     @bold @track=0.08 = THROUGH
+LAST_HIT    @bold @track=0.08 = LAST HIT
+BEATS       @sans = beats
+BEATS_AGO   @sans = beats ago
+U_PCT       @sans = %

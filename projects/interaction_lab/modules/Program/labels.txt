@@ -1,0 +1,9 @@
+# Program - the cards' words (exactly the Score's W_0..W_5, so the stage and the program agree) and
+# the slate. Regenerate: python tools/il_type.py labels Program
+W_0         @bold @track=0.10 = THE HALL
+W_1         @bold @track=0.10 = OVERTURE
+W_2         @bold @track=0.10 = INTERVAL
+W_3         @bold @track=0.10 = ACT TWO
+W_4         @bold @track=0.10 = FINALE
+W_5         @bold @track=0.10 = CODA
+NOSCORE     @sans = no Score connected: the hall by day

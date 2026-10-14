@@ -1,0 +1,103 @@
+name: "Resonance"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+# The listening end of the Pulse Bus station. Three kinds of input in one module:
+#   a video input  - Pulse's Program (the machine)
+#   a data input   - Pulse's World records (where each ball hit, the strike history)
+#   an event input - the Pulse Bus Script's echo: one NoteOn per strike it played, Triggers on retune
+# It exists because the graph is acyclic: Pulse cannot receive the answer to its own events, so
+# the answer lands one node downstream and is composited over Pulse's image here.
+
+panel:
+  mode: standard
+  output: "Editor"
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+inputs:
+  - { name: "Machine", slot: 0, required: true }
+
+data_inputs:
+  - name: "World"
+    slot: 0
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: c, type: float }
+      - { name: d, type: float }
+      - { name: e, type: uint }
+      - { name: f, type: uint }
+
+event_inputs:
+  - { name: "Echo", capacity: 256 }
+
+parameters:
+  - { name: ring_time, display: "Ring Time", type: float, min: 0.1, max: 3.0, default: 0.9, group: "Look" }
+  - { name: glow,      display: "Glow",      type: float, min: 0.0, max: 2.0, default: 1.0, group: "Look" }
+
+buffers:
+  # pulse.hlsli: B_COUNT = 12 bars + 1 header + 64 echo history
+  - { name: bars, structured: true, element_size: 32, element_count: 77, persistent: true }
+  - { name: dl,   structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+passes:
+  - name: echo
+    shader: echo.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+    output: "buffer:bars"
+  - name: render
+    shader: render.hlsl
+    target: cs_5_0
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "buffer:bars" }
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:bars" }
+    output: "buffer:dl"
+  - name: editor
+    shader: editor.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:render" }
+
+outputs:
+  - { name: "Program", pass: render }
+  - { name: "Editor",  pass: editor }
+
+data_outputs:
+  - name: "Bars"
+    buffer: "bars"
+    description: "0..11 bars (ring time, velocity; note, retune time; round trip ms; echoes; note known), 12 header (echoes, round trip ms smoothed; last echo seq; history index), 13..76 echo history (echo time, bar; strike stamp, note; velocity)."
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: c, type: float }
+      - { name: d, type: float }
+      - { name: e, type: uint }
+      - { name: f, type: uint }
+
+control_outputs:
+  - { name: played,        buffer: bars, element: 12, field_offset: 0, description: "Echoes received: strikes the Script played" }
+  - { name: round_trip_ms, buffer: bars, element: 12, field_offset: 4, description: "Smoothed strike-to-echo time: GPU to Script and on to this node (ms)" }

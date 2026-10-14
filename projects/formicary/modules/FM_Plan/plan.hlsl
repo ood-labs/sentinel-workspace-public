@@ -678,6 +678,12 @@ uint pickRecord(float2 w, FmLayout L, FmRec arena)
     return best;
 }
 
+// The host hands an event back on later cooks until newer input replaces it, so each event is
+// consumed once, by sequence (knowledge/ui-authoring.md). Unguarded, a key-down was re-applied on
+// every cook until its key-up arrived: one tap of F multiplied the payload by 1.18 four times, and
+// X and M landed wherever the count left them.
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
+
 [numthreads(1, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
 {
@@ -706,11 +712,20 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     uint n = min((uint)_ViewportEventCount, 64u);
 
+    // The newest event consumed rides in hdr.flags (asuint; see isFresh).
+    uint lastSeq = asuint(hdr.flags);
+    uint ringMax = 0u;
+    for (uint evr = 0u; evr < n; evr++) ringMax = max(ringMax, _ViewportEvents[evr].sequence);
+    if (n > 0u && ringMax < lastSeq) lastSeq = 0u;   // the host's counter restarted (app restart, reload)
+    uint newLast = lastSeq;
+
     // The pointer position is harvested BEFORE the keys are handled, so pressing A places a
     // station where the cursor is in the same batch of events rather than one cook behind it.
     for (uint evp = 0u; evp < n; evp++)
     {
         ViewportEvent evq = _ViewportEvents[evp];
+        if (!isFresh(evq.sequence, lastSeq)) continue;      // consumed on an earlier cook
+        newLast = (evq.sequence > lastSeq) ? max(newLast, evq.sequence) : evq.sequence;
         if (evq.type != 5u) continue;
         float2 pxq = evq.position * _Resolution.xy;
         if (fmInPlanStrip(L, pxq)) lastPtr = fmPxToPlan(L, pxq);
@@ -721,7 +736,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     for (uint ev0 = 0u; ev0 < n; ev0++)
     {
         ViewportEvent ev = _ViewportEvents[ev0];
-        if (ev.type != 4u || ev.phase != 1u) continue;
+        if (!isFresh(ev.sequence, lastSeq) || ev.type != 4u || ev.phase != 1u) continue;
         uint c = (uint)ev.code;
 
         if (c == 18u) { salt += 1.0; }                       // R  reseed the arrangement
@@ -971,7 +986,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     for (uint ev1 = 0u; ev1 < n; ev1++)
     {
         ViewportEvent ev = _ViewportEvents[ev1];
-        if (ev.type != 5u) continue;
+        if (!isFresh(ev.sequence, lastSeq) || ev.type != 5u) continue;
 
         float2 px = ev.position * _Resolution.xy;
         bool inPlan = fmInPlanStrip(L, px);
@@ -1105,7 +1120,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     // Selection is derived from the ONE stored index and written onto the records as a display
     // flag. It is never the source of truth — that is `sel` — so the two cannot disagree.
-    uint liveCache = 0u, liveEdge = 0u, blocked = 0u, liveSta = 0u;
+    uint liveCache = 0u, liveEdge = 0u, blocked = 0u;
     float maxRoute = 1.0, totalRecruit = 0.0, totalPayload = 0.0;
     for (uint i = 0u; i < FM_COUNT; i++)
     {
@@ -1117,7 +1132,6 @@ void main(uint3 DTid : SV_DispatchThreadID)
         Plan[i] = r;
 
         if (r.active < 0.5) continue;
-        if (r.role == ROLE_STA) liveSta++;
         if (r.role == ROLE_CACHE) { liveCache++; totalPayload += r.p0; }
         if (r.role == ROLE_EDGE)
         {
@@ -1139,7 +1153,9 @@ void main(uint3 DTid : SV_DispatchThreadID)
     // which nothing read — hdr.kind already carries the lane count the layout needs.
     hdr.p2     = totalRecruit;
     hdr.p3     = maxRoute;
-    hdr.flags  = (float)liveSta;
+    // flags carries the newest viewport event consumed (asuint; see isFresh). It held the live
+    // station count, which nothing read.
+    hdr.flags  = asfloat(newLast);
     hdr.active = 1.0;
     hdr.pad0   = lastPtr.x;
     hdr.pad1   = lastPtr.y;

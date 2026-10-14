@@ -4,6 +4,25 @@ execution: every_frame
 resolution:
 - 640
 - 440
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+- name: type
+  type: texture
+  file: ../_shared/type/il_type.png
+  srgb: false
+# The Mapped Path canvas is only looked at (no node takes it as video), so it fills its panel and
+# lays out from the live extent (am_view.hlsli). Hover inspects a record; nothing is stored.
+panel:
+  mode: canvas
+  output: Mapped Path
+  resolution: follow_panel
+viewport:
+  hint: 'Hover a lit record of the mapped path to inspect it'
+  interactions:
+  - events
+  input:
+    pointer:
+    - left
 data_inputs:
 - name: Scan Signal
   slot: 0
@@ -32,6 +51,11 @@ parameters:
   - Adaptive
   - Endpoints Only
   default: 0
+- name: tooltips
+  display: Tooltips
+  description: The card beside the pointer that inspects the lit record under it (its ends, length, time in the cycle and joint flag). Turn it off to keep the canvas clear while you work.
+  type: bool
+  default: true
 - name: tolerance
   display: Warp Error Tolerance
   type: float
@@ -84,6 +108,16 @@ buffers:
   structured: true
   element_size: 16
   element_count: 4
+# the canvas's records-out trace (history.hlsl, am_hist.hlsli) and the UI kit's draw list
+- name: hist
+  structured: true
+  element_size: 16
+  element_count: 129
+  persistent: true
+- name: dl
+  structured: true
+  element_size: 16
+  element_count: 24577
 passes:
 - name: analyze0
   shader: analyze0.hlsl
@@ -197,6 +231,21 @@ passes:
   - slot: 8
     source: pass:final0
   output: buffer:stats
+- name: history
+  shader: history.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 1
+  thread_group_y: 1
+  inputs:
+  - slot: 0
+    source: buffer:stats
+  - slot: 7
+    source: pass:stats
+  output: buffer:hist
 - name: draw
   shader: draw.hlsl
   target: draw
@@ -220,9 +269,46 @@ passes:
     source: pass:stats
   - slot: 1
     source: buffer:stats
+# preview draws the field and the path; layout records the words, readouts, trace, inspector and
+# verb; ui (the shared UI kit) draws them over it. Each names the passes it follows.
+- name: layout
+  shader: layout.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 64
+  thread_group_y: 1
+  inputs:
+  - slot: 0
+    source: buffer:out0
+  - slot: 1
+    source: buffer:stats
+  - slot: 2
+    source: buffer:hist
+  - slot: 6
+    source: pass:history
+  - slot: 7
+    source: pass:preview
+  output: buffer:dl
+- name: ui
+  shader: ui.hlsl
+  target: cs_5_0
+  thread_group_x: 16
+  thread_group_y: 16
+  inputs:
+  - slot: 0
+    source: buffer:dl
+  - slot: 1
+    source: asset:type
+  - slot: 2
+    source: pass:preview
+  - slot: 7
+    source: pass:layout
 outputs:
 - name: Mapped Path
-  pass: preview
+  pass: ui
 data_outputs:
 - name: Mapped Scan
   buffer: out0

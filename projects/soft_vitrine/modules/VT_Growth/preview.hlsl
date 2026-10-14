@@ -1,74 +1,171 @@
-// VT_Growth / preview.hlsl — the expander's own diagnostic surface.
+// VT_Growth / preview.hlsl — the expander's own diagnostic surface, the DRAWING only.
 //
-// Two panels over one canvas, because this node publishes two genuinely different record
-// families and both must be inspectable:
-//   * masses  — front-projected world nodes as discs with their bonds, tinted by GROUP, with
-//               each group's bounding sphere (the thing the ray-marcher culls against) drawn.
-//   * strokes — stage-space polylines at their real published radius and per-node accent hue.
+// This node publishes two genuinely different record families and both must be inspectable on
+// one stage:
+//   * masses  — front-projected world nodes as discs with their bonds, in the mass family's
+//               identity hue (the plan canvas's), each group a step lighter or darker so
+//               clusters stay separable; the material is a value chip at each core (legend in
+//               the footer); each group's bounding sphere (the thing the ray-marcher culls
+//               against) is dashed.
+//   * strokes — stage-space polylines at their real published radius and per-node accent tone.
 // A parameter that changes structure must visibly change this picture.
+//
+// The rects come from growth_view.hlsli (the canvas follows its panel). The words, the counts, the
+// group tally, the hover inspector and the verbs are recorded by layout.hlsl and drawn over this
+// by the shared UI kit (ui.hlsl). Pixels outside the stage skip the record loops.
+//
+// Every record is a small mark, but every stage pixel used to test all 768 of them, every frame
+// the growth breathes. So each 8x8 group first shortlists the records whose ink can reach it
+// (vgNear), in record order, and its pixels walk only that. The reach of each mark is read off the
+// drawing below — vt_fill is zero from 0.75 px outside a shape — and the group test adds the
+// group's half-diagonal, so nothing a pixel would draw is dropped and the picture is unchanged.
 #include "../_shared/vitrine.hlsli"
-#include "../_shared/microfont.hlsli"
+#include "../_shared/ui/il_core.hlsli"
+#include "growth_view.hlsli"
 
 StructuredBuffer<LimbRec> Limbs : register(t0);
 RWTexture2D<float4> OutputUAV : register(u0);
 
-static const float3 MAT_TINT[4] = {
-    float3(0.95, 0.45, 0.30), float3(0.88, 0.92, 1.00),
-    float3(0.72, 0.78, 0.98), float3(0.55, 0.95, 0.70)
-};
+// material, as the plan canvas draws it: a value ramp (clay, chrome, frost, gloss)
+float3 matTint(uint m) { return ptRamp(m == 0u ? 0.15 : (m == 1u ? 1.00 : (m == 2u ? 0.70 : 0.42))); }
 
-// world (x,y) -> canvas uv, the same front projection the canonical camera uses at z = 0
-float2 worldToUV(float3 w) { return float2(w.x * 0.5 + 0.5, 0.5 - w.y * 0.5); }
+groupshared uint gsRec[LIMB_RECORDS];
+groupshared uint gsRun[64];
+
+float vgDist(float2 p, float2 a, float2 b)
+{
+    float2 pa = p - a, ba = b - a;
+    float dd = dot(ba, ba);
+    return (dd > 0.0) ? length(pa - ba * saturate(dot(pa, ba) / dd)) : length(pa);
+}
+
+// Can record `i` put any ink within `m` (uv) of `c`? Each reach is the furthest the matching
+// drawing below can be non-zero; radii are floored at 0 so a degenerate record stays covered.
+bool vgNear(uint i, float2 c, float px, float m)
+{
+    LimbRec n = Limbs[i];
+    if (n.active < 0.5) return false;
+    float2 a, b;
+    float reach;
+    if (i < LIMB_HEADERS)                                   // dashed bounds ring
+    {
+        bool isMass = (i < LIMB_STROKE_H_0);
+        a = b = isMass ? gvWorldToUV(n.pos) : n.pos.xy;
+        reach = max(isMass ? n.radius * 0.5 : n.radius, 0.0) + 1.45 * px;
+    }
+    else if (i < LIMB_MASS_CAP)                             // mass disc, and its bond
+    {
+        a = b = gvWorldToUV(n.pos);
+        reach = max(n.radius * 0.5, 0.0);
+        if (n.parent >= 0.0)
+        {
+            LimbRec pr = Limbs[(uint)n.parent];
+            a = gvWorldToUV(pr.pos);
+            reach = max(reach, pr.radius * 0.5 * 0.55);
+        }
+        reach += 0.75 * px;
+    }
+    else                                                    // stroke node, its bond or start ring
+    {
+        a = b = n.pos.xy;
+        if (n.parent >= 0.0)
+        {
+            LimbRec pr = Limbs[(uint)n.parent];
+            a = pr.pos.xy;
+            reach = max(max(pr.radius, n.radius), 0.0) + 0.75 * px;
+        }
+        else reach = 1.9 * max(n.radius, 0.0) + 1.35 * px;
+    }
+    return vgDist(c, a, b) <= reach + m;
+}
 
 [numthreads(8, 8, 1)]
-void main(uint3 DTid : SV_DispatchThreadID)
+void main(uint3 DTid : SV_DispatchThreadID, uint3 Gid : SV_GroupID, uint gi : SV_GroupIndex)
 {
-    uint2 pixel = DTid.xy;
-    if (pixel.x >= (uint)_Resolution.x || pixel.y >= (uint)_Resolution.y) return;
-    float2 uv = ((float2)pixel + 0.5) / _Resolution.xy;
-    float px = 1.0 / _Resolution.y;
+    uint W, H;
+    OutputUAV.GetDimensions(W, H);
+    // No early return: every thread has to reach the group's barriers below.
+    bool inImage = DTid.x < W && DTid.y < H;
+    float2 P = (float2)DTid.xy + 0.5;
+    GVLayout L = gvLayout(float2(W, H));
 
-    float3 col = float3(0.045, 0.050, 0.062);
-    float d2 = min(abs(frac(uv.x * 4.0) - 0.5), abs(frac(uv.y * 4.0) - 0.5)) * 0.25;
-    col += 0.035 * (1.0 - smoothstep(0.0, 1.4 * px, d2));
-
-    uint massNodes = 0u, strokeNodes = 0u, groups = 0u;
-
-    // ------------------------------------------------------------------ group bounds
-    // Drawn first and faintly: these are the culling spheres, not the geometry.
-    for (uint g = 0u; g < LIMB_HEADERS; g++)
+    // The group's shortlist, in record order: 64 threads x 12 records, counted, then placed by a
+    // prefix over the counts. A pixel is never more than 3.5 * sqrt(2) px from its group centre.
     {
+        float sideG = gvSide(L);
+        float pxG = 1.0 / sideG;
+        float2 c = (float2(Gid.xy) * 8.0 + 4.0 - L.stage.xy) / sideG;
+        float mG = 5.0 * pxG;
+        uint j0 = gi * (LIMB_RECORDS / 64u), j1 = j0 + LIMB_RECORDS / 64u;
+        uint mine = 0u;
+        for (uint j = j0; j < j1; ++j) if (vgNear(j, c, pxG, mG)) mine++;
+        gsRun[gi] = mine;
+        GroupMemoryBarrierWithGroupSync();
+        uint at = 0u;
+        for (uint k = 0u; k < gi; ++k) at += gsRun[k];
+        for (uint j2 = j0; j2 < j1; ++j2) if (vgNear(j2, c, pxG, mG)) { gsRec[at] = j2; at++; }
+        GroupMemoryBarrierWithGroupSync();
+    }
+    uint kept = 0u;
+    for (uint k2 = 0u; k2 < 64u; ++k2) kept += gsRun[k2];
+    if (!inImage) return;
+
+    // the stage and tally plates (layout.hlsl draws their edges, captions and the bars)
+    float3 col = IL_FIELD;
+    ilOver(col, IL_PANEL, ilFill(ilSdBox(P, L.stage, IL_RADIUS * L.s)));
+    ilOver(col, IL_PANEL, ilFill(ilSdBox(P, L.tally, IL_RADIUS * L.s)));
+    if (!ilIn(P, L.stage))
+    {
+        OutputUAV[DTid.xy] = float4(col, 1.0);
+        return;
+    }
+
+    float side = gvSide(L);
+    float2 uv = (P - L.stage.xy) / side;
+    float px = 1.0 / side;
+
+    // quarter grid, the centre lines a step stronger
+    float2 q = P - L.stage.xy;
+    ilOver(col, IL_GRID, max(ilGridLine(q.x, 0.25 * side, 1.0), ilGridLine(q.y, 0.25 * side, 1.0)));
+    ilOver(col, IL_EDGE, max(ilGridLine(q.x - 0.5 * side, side, 1.0), ilGridLine(q.y - 0.5 * side, side, 1.0)) * 0.7);
+
+    // The shortlist is in record order, so the three families still draw in turn: the group
+    // bounds, then the mass limbs, then the stroke limbs.
+    [loop]
+    for (uint t = 0u; t < kept; t++)
+    {
+    uint ri = gsRec[t];
+    // ------------------------------------------------------------------ group bounds
+    // Drawn first and faintly, dashed: these are the culling spheres, not the geometry.
+    if (ri < LIMB_HEADERS)
+    {
+        uint g = ri;
         LimbRec h = Limbs[g];
         if (h.active < 0.5) continue;
-        groups++;
         bool isMass = (g < LIMB_STROKE_H_0);
-        float2 c = isMass ? worldToUV(h.pos) : h.pos.xy;
+        float2 c = isMass ? gvWorldToUV(h.pos) : h.pos.xy;
         float r = isMass ? h.radius * 0.5 : h.radius;
-        float3 tint = isMass ? float3(0.95, 0.40, 0.70) : vt_accent(h.material);
         float dr = abs(length(uv - c) - r) - 0.7 * px;
-        // dashed, so a bound never reads as an object
         float dash = step(0.45, frac(atan2(uv.y - c.y, uv.x - c.x) * 5.6));
-        col = lerp(col, tint, vt_fill(dr, px) * 0.30 * dash);
+        col = lerp(col, IL_DIM, vt_fill(dr, px) * 0.55 * dash);
     }
 
     // ------------------------------------------------------------------ mass limbs
-    [loop]
-    for (uint i = LIMB_NODE_0; i < LIMB_MASS_CAP; i++)
+    else if (ri < LIMB_MASS_CAP)
     {
-        LimbRec n = Limbs[i];
+        LimbRec n = Limbs[ri];
         if (n.active < 0.5) continue;
-        massNodes++;
 
-        float2 c = worldToUV(n.pos);
+        float2 c = gvWorldToUV(n.pos);
         float r = n.radius * 0.5;                       // world radius -> uv (half-extent = 1.0)
-        // group tint keeps clusters separable; material stays visible as the core chip
-        float3 tint = vt_body(frac(n.group * 0.137 + 0.05));
+        // the family hue, a value step per group so neighbouring clusters stay separable
+        float3 tint = PT_ID_B * lerp(0.70, 1.20, frac(n.group * 0.618034));
 
         // bond to parent, tapered, so the topology is readable
         if (n.parent >= 0.0)
         {
             LimbRec pr = Limbs[(uint)n.parent];
-            float2 pc = worldToUV(pr.pos);
+            float2 pc = gvWorldToUV(pr.pos);
             float db = vt_dTaper(uv, pc, c, pr.radius * 0.5 * 0.55, r * 0.55);
             col = lerp(col, tint * 0.55, vt_fill(db, px));
         }
@@ -76,21 +173,20 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float dn = length(uv - c) - r;
         col = lerp(col, tint, vt_fill(dn, px) * 0.85);
         // shallow shade so overlapping nodes stay countable
-        col = lerp(col, tint * 1.6, vt_fill(dn + r * 0.55, px) * 0.5);
-        col = lerp(col, MAT_TINT[((uint)n.material) & 3u], vt_fill(dn + r * 0.82, px) * 0.9);
+        col = lerp(col, tint * 1.4, vt_fill(dn + r * 0.55, px) * 0.5);
+        col = lerp(col, matTint(((uint)n.material) & 3u), vt_fill(dn + r * 0.82, px) * 0.9);
     }
 
     // ------------------------------------------------------------------ stroke limbs
-    [loop]
-    for (uint s = LIMB_STROKE_0; s < LIMB_RECORDS; s++)
+    else
     {
-        LimbRec n = Limbs[s];
+        LimbRec n = Limbs[ri];
         if (n.active < 0.5) continue;
-        strokeNodes++;
 
+        // the point's own accent tone: the near-black one lifted so it reads, then damped
         float3 tint = vt_accent(n.material);
         float lum = dot(tint, float3(0.299, 0.587, 0.114));
-        tint = lerp(normalize(tint + 0.09) * 0.66, tint, saturate(lum * 3.2));   // preview lift
+        tint = ptSampleColour(lerp(normalize(tint + 0.09) * 0.66, tint, saturate(lum * 3.2)));
 
         if (n.parent >= 0.0)
         {
@@ -101,68 +197,12 @@ void main(uint3 DTid : SV_DispatchThreadID)
         else
         {
             // run starts get a ring, so it is obvious where a polyline begins
-            col = lerp(col, float3(1, 1, 1),
+            col = lerp(col, IL_INK,
                        vt_fill(abs(length(uv - n.pos.xy) - n.radius * 1.9) - 0.6 * px, px) * 0.7);
         }
-        col = lerp(col, tint * 1.15, vt_fill(length(uv - n.pos.xy) - n.radius, px) * 0.8);
+        col = lerp(col, tint, vt_fill(length(uv - n.pos.xy) - n.radius, px) * 0.8);
+    }
     }
 
-    // ------------------------------------------------------------------ group tally
-    // One bar per group along the bottom: outline = the node count the header DECLARES,
-    // fill = the nodes actually found active in that group's range. A short fill means the
-    // grower wrote fewer records than it promised, which is otherwise invisible in the picture.
-    // Restricted to the strip so the inner scan only costs ~8% of pixels.
-    if (uv.y > 0.915)
-    {
-        float slotW = 0.88 / (float)LIMB_HEADERS;
-        float fx = (uv.x - 0.06) / slotW;
-        if (fx >= 0.0 && fx < (float)LIMB_HEADERS)
-        {
-            uint g = (uint)fx;
-            float inner = frac(fx);
-            LimbRec h = Limbs[g];
-            uint declared = (uint)max(h.group, 0.0);
-            uint firstIdx = (uint)max(h.parent, 0.0);
-            uint found = 0u;
-            [loop]
-            for (uint k = 0u; k < declared && k < 64u; k++)
-                if (Limbs[firstIdx + k].active > 0.5) found++;
-
-            float bh = saturate((float)declared / 64.0);
-            float fillFrac = (declared > 0u) ? (float)found / (float)declared : 0.0;
-            float yb = (uv.y - 0.915) / 0.085;            // 0 top .. 1 bottom of the strip
-            float lvl = 1.0 - yb;
-            if (inner > 0.12 && inner < 0.88 && h.active > 0.5)
-            {
-                float3 barTint = (g < LIMB_STROKE_H_0) ? float3(0.96, 0.42, 0.66)
-                                                       : float3(0.98, 0.78, 0.30);
-                if (lvl < bh)
-                {
-                    bool filled = lvl < bh * fillFrac;
-                    // a short fill turns red — an unmissable signal, not a subtle one
-                    col = filled ? barTint : lerp(col, float3(0.85, 0.12, 0.12), 0.75);
-                }
-            }
-        }
-    }
-
-    // ------------------------------------------------------------------ readout
-    {
-        float2 cell = float2(0.0110, 0.0155);
-        uint vals[3] = { massNodes, strokeNodes, groups };
-        uint letters[3] = { 22u, 28u, 16u };   // M  S  G
-        float3 tints[3] = { float3(0.96, 0.42, 0.66), float3(0.98, 0.78, 0.30), float3(0.55, 0.85, 1.0) };
-        for (uint row = 0u; row < 3u; row++)
-        {
-            float2 rp = uv - (float2(0.014, 0.014) + float2(0.0, (float)row * 0.021));
-            float t = mf_glyph(rp / cell, letters[row]);
-            t += mf_num((rp - float2(cell.x * 1.6, 0.0)) / float2(cell.x * 2.4, cell.y), vals[row], 3u);
-            col = lerp(col, tints[row], saturate(t) * 0.95);
-        }
-    }
-
-    float2 fq = abs(uv - 0.5) - 0.5 + 0.004;
-    col = lerp(col, float3(0.28, 0.32, 0.40), vt_fill(abs(max(fq.x, fq.y)) - 0.7 * px, px));
-
-    OutputUAV[pixel] = float4(col, 1.0);
+    OutputUAV[DTid.xy] = float4(col, 1.0);
 }

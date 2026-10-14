@@ -1,0 +1,74 @@
+# Timeline - the labels of the Timeline editor. Regenerate: python tools/il_type.py labels Timeline
+TITLE       @bold @track=0.08 = TIMELINE
+SUBTITLE    @sans = a title sting in four layers, keyed
+FRAME       @sans = frame
+SLASH       @mono = /
+SEC         @sans = s
+FPS         @sans = fps
+
+STAGE       @bold @track=0.06 = STAGE
+STAGE_D     @sans = the picture at the playhead: drag on it to key here
+LAYER       @bold @track=0.06 = LAYER
+L_0         @bold @track=0.02 = Ring
+L_1         @bold @track=0.02 = Sun
+L_2         @bold @track=0.02 = Block
+L_3         @bold @track=0.02 = Bar
+K_0         @sans = ring
+K_1         @sans = disc
+K_2         @sans = square
+K_3         @sans = bar
+A_0         @sans = x
+A_1         @sans = y
+A_2         @sans = scale
+A_3         @sans = rotation
+A_4         @sans = opacity
+U_DEG       @sans = deg
+
+KEY         @bold @track=0.06 = KEY
+KEY_NONE    @sans = click a key in the dope sheet or the graph
+KEY_LAST    @sans = the last key: its mode shapes a segment added after it
+AT          @sans = at frame
+M_0         @sans = hold
+M_1         @sans = linear
+M_2         @sans = ease
+M_3         @sans = spring
+M_4         @sans = back
+P_EASE0     @sans = ease out (leaving)
+P_EASE1     @sans = ease in (arriving)
+P_SPRING    @sans = bounce
+P_BACK0     @sans = anticipation
+P_BACK1     @sans = overshoot
+P_NONE      @sans = no parameters
+PCT         @sans = %
+
+PLAY        @bold @track=0.06 = PLAY
+PAUSE       @bold @track=0.06 = PAUSE
+LOOP        @sans = loop
+DASH        @mono = -
+S_0         @mono = 1/4
+S_1         @mono = 1/2
+S_2         @mono = 1x
+S_3         @mono = 2x
+ONION       @bold @track=0.04 = ONION
+TR_D        @sans = click or drag the ruler to scrub; its triangles are the loop
+
+LAYERS      @bold @track=0.06 = LAYERS
+GRAPH       @bold @track=0.06 = GRAPH
+GRAPH_D     @sans = grey: its other moving channels,
+GRAPH_D2    @sans = each scaled to fit the graph
+
+# hint bar (pairs)
+H_K0        @sans = Drag a layer
+H_K1        @sans = Drag a value
+H_K2        @sans = Drag keys
+H_K3        @sans = Double-click
+H_K4        @sans = 1 - 5
+H_K5        @sans = Space  Up Down
+H_K6        @sans = O  F  R  Z
+H_D0        @sans = key its position
+H_D1        @sans = key it
+H_D2        @sans = retime
+H_D3        @sans = add a key
+H_D4        @sans = interpolation
+H_D5        @sans = play, jump key to key
+H_D6        @sans = onion, frame, reset, undo

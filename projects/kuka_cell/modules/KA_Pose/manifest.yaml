@@ -2,6 +2,18 @@ name: "KA Pose"
 version: "0.1"
 mode: generator
 resolution: [1024, 640]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+panel:
+  mode: canvas
+  output: "Pose Scope"
+  resolution: follow_panel
+viewport:
+  hint: "Point at a matrix row, a tool stem or a channel station to inspect it"
+  interactions: [events]
+  input:
+    pointer: [left]
 
 # The choreographer. Reads KA_Cell's arm records and produces six joint angles per machine,
 # plus the forward kinematics the plan and the renderer both need.
@@ -14,13 +26,15 @@ resolution: [1024, 640]
 # bearing, position along X, depth — so a wave really does travel across the floor, and a ripple
 # really does start at the middle. Nothing here has its own parallel copy of where anything is.
 #
-# NO VIEWPORT INTERACTION, deliberately. Every control here is an exact numeric or enum choice,
+# NO EDITING INTERACTION, deliberately. Every control here is an exact numeric or enum choice,
 # which Properties already does better than a shader-drawn slider, and the one genuinely spatial
 # control — the Point At target — is a place in the cell, so it is a record in KA_Cell and you
-# drag it there. This node's canvas is a pure instrument.
+# drag it there. This node's canvas is a pure instrument: its viewport block is HOVER ONLY —
+# pointing at a row, a tool stem or a station inspects it, and nothing is ever written.
 
 buffers:
   - { name: pose, structured: true, element_size: 64, element_count: 50, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 
 state_buffers:
   - name: pose
@@ -78,6 +92,7 @@ data_inputs:
       - { name: dropFlag, type: float }
 
 parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The card beside the pointer that shows the hovered arm's tag, channel and six joints against their limits. Turn it off to keep the canvas clear while you work." }
   # MASTER. `clock` integrates against _DeltaTime inside solve.hlsl and is measured in CYCLES,
   # so a channel at rate 1.0 completes exactly one loop per second at master rate 1.0, and
   # `phase` 0 -> 1 is exactly one loop. That is what makes a sweep_record motion proof honest.
@@ -148,6 +163,26 @@ passes:
       - { slot: 0, source: "buffer:pose" }
       - { slot: 1, source: "data:0" }
       - { slot: 2, source: "data:1" }
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:pose" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+    output: "buffer:dl"
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:scope" }
 
 data_outputs:
   - name: "Pose"
@@ -167,4 +202,4 @@ data_outputs:
       - { name: ph, type: float }
 
 outputs:
-  - { name: "Pose Scope", pass: scope }
+  - { name: "Pose Scope", pass: ui }

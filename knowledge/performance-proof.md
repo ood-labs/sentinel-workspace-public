@@ -10,8 +10,11 @@ Call:
 sentinel_graph action=profile summary=true sort_by=wall_time_ms
 ```
 
-Useful `sort_by` values:
+Useful `sort_by` values (any numeric per-node field works):
 
+- `own_ms` (the default): the node's `process()` time minus identified GPU interop and synchronization waits. Needs Detailed Profiling.
+- `gpu_ms`: GPU time from timestamp queries for nodes that support them (Modules, with `gpu_passes` per pass, and native nodes such as Laser Trace), a few frames behind; null elsewhere. Needs Detailed Profiling.
+- `sync_wait_ms`: time spent waiting on GPU interop synchronization. Needs Detailed Profiling.
 - `wall_time_ms`: per-node CPU wall time around the latest graph `process()` call.
 - `cook_hz`: rolling node process rate over a window of up to one second.
 - `avg_frame_ms`: the pipeline's own rolling average from `PipelineStats`.
@@ -28,7 +31,16 @@ The profile returns:
 - graph link counts, including data links
 - hotspot reasons such as unhealthy, no frames, process failure, or high wall time
 
-This is a lightweight profiler. It uses CPU wall-clock timing around graph node processing. It does not split GPU kernel time, inference time, CPU readback, queue wait, or synchronization yet.
+Basic frame, health, topology and counter fields are always filled in. Per-node CPU attribution, synchronization waits and Module GPU timing (aggregate and per pass, in `gpu_passes`) are collected only while **Detailed Profiling** is on: the Stats panel toggle, or `/sentinel/settings/detailed_profiling_enabled`. With it off those values are null and `hotspots` is empty. It costs a little per frame, so read the setting first, enable it, wait for a sample (the response carries the sample frame and its age), capture what you need, then restore the setting:
+
+```text
+sentinel_state action=get path=/sentinel/settings/detailed_profiling_enabled
+sentinel_state action=set path=/sentinel/settings/detailed_profiling_enabled value=true
+sentinel_graph action=profile summary=true sort_by=gpu_ms limit=10
+sentinel_state action=set path=/sentinel/settings/detailed_profiling_enabled value=<previous>
+```
+
+`wall_time_ms` equals `own_ms` plus `sync_wait_ms`. GPU time is excluded from the CPU attribution totals, and inference engines without timestamp support report `gpu_ms` null.
 
 Cook rate is measured over a rolling window of up to one second. New nodes
 warm up across that window, and inactive windows expire after five seconds.

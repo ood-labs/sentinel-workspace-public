@@ -1,0 +1,111 @@
+name: "FE Console"
+version: "1.0"
+# A built-in lighting console for the rig: the programmer builds every fixture's target state from a look
+# (colour, intensity, movement, pixel pattern, strobe) and the fixture's console role (mover, strobe, wash, bar or
+# pixel), and the encoder writes it as DMX for the whole patch through each type's ranges. Any type works: the tables
+# come from the Fixture Rig node's FixtureRender port. The DMX port is the standard schema, so it feeds FE_Decode and
+# DMX Out (Art-Net / sACN) alike. The preview shows every live universe as DMX In / Out draw them.
+mode: generator
+resolution: [1280, 720]
+
+parameters:
+  - { name: look,       display: "Look",            type: enum,  options: [Static, Wave, Chase, Pulse], default: 1, group: "Look" }
+  - { name: master,     display: "Master",          type: float, min: 0, max: 1,   default: 1.0, group: "Look" }
+  # Levels per console role.
+  - { name: mover_level, display: "Mover level",     type: float, min: 0, max: 1,   default: 1.0, group: "Look" }
+  - { name: bar_level,  display: "Bar and pixel level", type: float, min: 0, max: 1, default: 0.6, group: "Look" }
+  - { name: strobe_level, display: "Strobe level",   type: float, min: 0, max: 1,   default: 0.35, group: "Look" }
+  - { name: wash_level, display: "Wash level",       type: float, min: 0, max: 1,   default: 0.8, group: "Look" }
+  - { name: hue,        display: "Hue",             type: float, min: 0, max: 1,   default: 0.58, group: "Colour" }
+  - { name: spread,     display: "Hue spread",      type: float, min: 0, max: 1,   default: 0.25, group: "Colour" }
+  - { name: saturation, display: "Saturation",      type: float, min: 0, max: 1,   default: 0.85, group: "Colour" }
+  - { name: white,      display: "White add",       type: float, min: 0, max: 1,   default: 0.0, group: "Colour" }
+  - { name: beams,      display: "Cool white (beams)", type: float, min: 0, max: 1, default: 0.0, group: "Colour" }
+  - { name: speed,      display: "Speed",           type: float, min: 0, max: 4,   default: 1.0, group: "Motion" }
+  - { name: movement,   display: "Movement",        type: float, min: 0, max: 1,   default: 0.6, group: "Motion" }
+  - { name: pan,        display: "Pan (deg)",       type: float, min: -270, max: 270, default: 0.0, group: "Motion" }
+  - { name: tilt,       display: "Tilt (deg)",      type: float, min: -112.5, max: 112.5, default: 28.0, group: "Motion" }
+  - { name: strobe,     display: "Strobe (Hz, 0 off)", type: float, min: 0, max: 25, default: 0.0, group: "Motion" }
+
+data_inputs:
+  - name: "Rig"
+    slot: 0
+    schema:
+      - { name: position, type: float3 }
+      - { name: type,     type: uint }
+      - { name: rotation, type: float3 }
+      - { name: mode,     type: uint }
+      - { name: u0,       type: uint }
+      - { name: a0,       type: uint }
+      - { name: u1,       type: uint }
+      - { name: a1,       type: uint }
+      - { name: u2,       type: uint }
+      - { name: a2,       type: uint }
+      - { name: group,    type: uint }
+      - { name: flags,    type: uint }
+      - { name: u3,       type: uint }
+      - { name: a3,       type: uint }
+      - { name: r0,       type: uint }
+      - { name: r1,       type: uint }
+  # The Fixture Rig node's FixtureRender port: the type tables of every FE_Rig record.
+  - name: "FixtureRender"
+    slot: 1
+    schema:
+      - { name: w, type: uint, count: 4 }
+
+buffers:
+  # FE_N_MAX fixtures x FE_STATE_CAP slots, rows at the tables' state stride.
+  - { name: state, structured: true, element_size: 8,    element_count: 1048576 }
+  - { name: status, structured: true, element_size: 16,  element_count: 2 }
+  - { name: dmx,   structured: true, element_size: 2048, element_count: 1033 }
+
+control_outputs:
+  - { name: fixtures,  buffer: status, element: 0, field_offset: 0,  description: "Fixtures the console programs" }
+  - { name: skipped,   buffer: status, element: 0, field_offset: 4,  description: "Fixtures skipped: their type is a placeholder the engine cannot draw" }
+  - { name: movers,    buffer: status, element: 0, field_offset: 8,  description: "Fixtures in the mover role (pan and tilt)" }
+  - { name: strobes,   buffer: status, element: 0, field_offset: 12, description: "Fixtures in the strobe role" }
+  - { name: washes,    buffer: status, element: 1, field_offset: 0,  description: "Fixtures in the wash role" }
+  - { name: bars,      buffer: status, element: 1, field_offset: 4,  description: "Fixtures in the bar and pixel role" }
+
+data_outputs:
+  - name: "ProgramState"
+    buffer: state
+    schema:
+      - { name: v, type: float2 }
+  - name: "DMX"
+    buffer: dmx
+    schema:
+      - { name: channels, type: uint, count: 512 }
+
+passes:
+  - name: program
+    shader: program.hlsl
+    target: cs_5_0
+    dispatch: [16, 1024, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+    output: "buffer:state"
+  - name: encode
+    shader: encode.hlsl
+    target: cs_5_0
+    dispatch: [8, 1033, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:state" }
+      - { slot: 2, source: "data:1" }
+    output: "buffer:dmx"
+  - name: census
+    shader: census.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+    output: "buffer:status"
+  - name: view
+    shader: view.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:dmx" }
+    output: output

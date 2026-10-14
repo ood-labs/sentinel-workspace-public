@@ -1,10 +1,11 @@
+#include "taa.hlsli"
 #include "../_shared/room_materials.hlsli"
 #include "surface_lights.hlsli"
 struct Architecture{float4 center,extent,surface,rotation;};
 Architecture archBox(uint j){Architecture a;uint b=PV_ARCH+4*j;a.center=Venue[b];a.extent=Venue[b+1];a.surface=Venue[b+2];a.rotation=Venue[b+3];return a;}
 struct V{float4 pos:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 surface:TEXCOORD2;float mat:TEXCOORD3;};
 V VSMain(uint id:SV_VertexID){V o=(V)0;Architecture a=archBox(id/36);if(a.extent.w<.5){o.pos=float4(0,0,-2,1);return o;}uint f=(id%36)/6,k=id%6;float2 uv=float2(k==1||k==4||k==5?1:-1,k==2||k==3||k==5?1:-1);float s=f%2==0?-1:1;float3 q;
-if(f<2){q=float3(s,uv);o.normal=float3(s,0,0);}else if(f<4){q=float3(uv.x,s,uv.y);o.normal=float3(0,s,0);}else{q=float3(uv,s);o.normal=float3(0,0,s);}float3 local=q*a.extent.xyz;float cs=cos(a.rotation.x),sn=sin(a.rotation.x);local.xy=float2(cs*local.x-sn*local.y,sn*local.x+cs*local.y);o.normal.xy=float2(cs*o.normal.x-sn*o.normal.y,sn*o.normal.x+cs*o.normal.y);o.world=a.center.xyz+local;o.surface=a.surface;o.mat=a.center.w;o.pos=mul(_ViewProjMatrix,float4(o.world,1));return o;}
+if(f<2){q=float3(s,uv);o.normal=float3(s,0,0);}else if(f<4){q=float3(uv.x,s,uv.y);o.normal=float3(0,s,0);}else{q=float3(uv,s);o.normal=float3(0,0,s);}float3 local=q*a.extent.xyz;float cs=cos(a.rotation.x),sn=sin(a.rotation.x);local.xy=float2(cs*local.x-sn*local.y,sn*local.x+cs*local.y);o.normal.xy=float2(cs*o.normal.x-sn*o.normal.y,sn*o.normal.x+cs*o.normal.y);o.world=a.center.xyz+local;o.surface=a.surface;o.mat=a.center.w;o.pos=taaClip(o.world);return o;}
 float4 PSMain(V i):SV_TARGET{
  float3 n=normalize(i.normal),v=normalize(_CameraPos-i.world);if(dot(n,v)<0)n=-n;
  RoomSettings room=roomSettings();float3 p=i.world;float2 uv=abs(n.y)>.5?p.xz:abs(n.x)>.5?p.zy:p.xy;

@@ -34,10 +34,14 @@ subject is actually organised along — **wavelength**. So `LT_Bench`'s canvas i
 - **Bench plan**, in millimetres on a 25/100 mm graticule. True element profiles, a chief fan per
   source as 32 grey hairlines with the two extreme wavelengths drawn in their own colour so the
   envelope is legible, the apex angle called out where a draughtsman would put it.
-- **Spectral rail.** Left, an **event ladder**: wavelength (700 nm top) × interaction index, each
-  cell coloured by what happened there, with the light still being carried drawn as a fill height
-  inside the cell. Right, the **deviation profile**: total bend in degrees against wavelength. The
-  width of that curve *is* the dispersion, and it is printed in the header as `SPREAD`.
+- **Spectral rail.** Left, an **event ladder**: the rail source's 32 lanes (red at the top) ×
+  interaction index, each cell coloured by what happened there, with the light still being carried
+  drawn as a fill height inside the cell. Right, the **deviation profile**: total bend in degrees
+  for the same lanes, so a mark sits level with its own ladder row. The width of that curve *is*
+  the dispersion, and it is printed in the header as `SPREAD`. The rows are named by the
+  wavelengths the source actually emits: 400–700 nm for white or tungsten, a laser triad's three
+  lines at the middle of their three blocks, a narrow band's few nanometres at its ends and centre.
+  A fixed 400–700 scale beside a triad is a label attached to nothing.
 
 ### Every source draws, but only one can be on the rail
 
@@ -63,7 +67,7 @@ same attention whichever source emitted it.
 rung: measured on the three-source bench below with all four previews open, the canvas pass runs
 **2.5x** with three fans against one, and the cost tracks the number of fans *drawn*, not the
 number of sources on the bench. The `chief` trace pass itself is unconditional and unmeasurable
-next to it — 0.05 ms of a node total that stays under 0.7 ms, against ~9 ms for `LT_Field`.
+next to it — 0.05 ms of a node total that stays under 0.7 ms, a small fraction of `LT_Field`.
 
 ### The failure modes are drawn
 
@@ -186,7 +190,19 @@ guard belongs at the top of the handler rather than on each key.
 
 Capacity is 12 sources and 64 elements. Events deliver only while the preview is **focused** —
 clicking it focuses it, and a hot reload drops focus, so the first click after an edit just
-refocuses. The full keymap is also published as a Controls strip beside the preview.
+refocuses. The full keymap is drawn as keycaps along the foot of the canvas, and published as the
+host's Controls strip too.
+
+**Hover** inspects without selecting, on both instrument canvases. In `LT_Bench` the element or
+source under the pointer gets an outline of exactly what a click there would pick, and a card of
+its real values — glass and index, apex, size and heading in millimetres and degrees, and what the
+light did there: lit, unlit, TIR, or its one-shot aim. A ladder cell cards one wavelength at one
+interaction (the event, the power left, the deviation so far, the medium and the element it
+reached); a deviation mark cards its lane's last segment, and either one lights the lane's row in
+the ladder, its mark in the profile and its path across the bench. `LT_Trace`'s scope is
+HOVER ONLY: pointing at a traced line lifts that lane through the whole bench and cards its source,
+ray, wavelength, branch, power and deviation. Hover is read from the pointer each cook and never
+stored.
 
 **Getting back.** `0` empties the bench completely — sources, elements, generated and hand-built
 alike — and deliberately does *not* re-roll, so you are left with a blank bench to build on. `R`
@@ -263,9 +279,25 @@ Growth is capped at 8× the base width, and the cap is set by the *worst* family
 A beam is a sparse one-dimensional mark: it covers a few thousand pixels out of nine hundred
 thousand. Per-pixel looping over every segment is the wrong cost model by two orders of magnitude.
 
-`LT_Field/bins.hlsl` collects, per 32-pixel tile, the segments that could touch it — **by gather,
-one thread per tile**, so no atomics, no clear pass, and a bit-identical result every cook. The
-renderer tests only its own tile's list.
+`LT_Field` works it out in three small passes before the image:
+
+- `segs.hlsl` resolves every traced segment into program pixels **once** — its position, how wide
+  this ray is drawn here, how far it puts ink, its colour and its hot-spot weight.
+- `rows.hlsl` shortlists, per row of 32-pixel tiles, the segments whose footprint reaches that row.
+- `bins.hlsl` collects, per tile, the segments from its row's shortlist that could touch it.
+
+All three gather rather than scatter: one 64-thread group per row or tile, the threads splitting
+the list into contiguous runs, with a prefix over their counts placing the hits. The lists
+therefore come out in segment order, exactly as one thread walking them would build them: no
+atomics, no clear pass, and a bit-identical result every cook. The renderer then narrows its
+tile's list to each 8x8 group of pixels before the pixels walk it. That test is conservative by
+the group's half-diagonal, so nothing a pixel would draw is dropped.
+
+That structure is a performance fix, measured on an RTX 5060 Laptop GPU: one field cook went from
+29 ms to under 5 ms at the default rung, and the captures were pixel-identical at Draft, Live and
+Hero. Previously the renderer re-derived each segment's width, colour and position for every pixel
+that tested it. The binner walked every segment once per tile, serially, while the GPU sat nearly
+empty.
 
 Three things this got wrong first, each visible only in a capture:
 
@@ -278,8 +310,8 @@ Three things this got wrong first, each visible only in a capture:
   falloff reaches past what the binner expanded by.
 
 The **Occupancy** view draws the tile lists and paints any tile that overflowed in red. It found
-all three. Capacity (2046 per tile) was measured from it, not guessed — the worst tile is the one
-containing the prism, because every lane in the graph passes through it.
+all three. Capacity (4094 per tile) was measured from it, not guessed — see the quality ladder
+for which tile is the worst.
 
 ---
 
@@ -317,16 +349,18 @@ the total, so switching profile changes the beam's shape and not how much light 
 Renders at **1920x1080**; the framing is resolution-independent because pixels-per-bench-unit
 scales with the frame, so raising the resolution is pure sampling and leaves the composition alone.
 
-Measured in one sitting on a five-prism hand-built bench, all four node previews open, whole-graph
-GPU time. Published as ratios, because identical presets measure 3-5x apart in this workspace
-depending only on how many previews are open.
+Measured in one sitting on the bench as shipped, on an RTX 5060 Laptop GPU, as whole-graph GPU
+time while a bench parameter changed every frame. That is the cost of a drag, or of hovering the
+bench, when the plan, the trace and the field all re-cook. The project was as it opens. Published
+as ratios, because identical presets measure 3-5x apart in this workspace depending only on how
+many previews are open.
 
 | Preset | λ / rays / bounces / paths | Relative cost |
 | --- | --- | ---: |
 | Draft | 10 / 5 / 5 / 1 | 1.0x |
-| **Live (default)** | **20 / 12 / 7 / 3** | **5.9x** |
-| Beauty | 28 / 14 / 10 / 3 | between |
-| Hero — capture only | 32 / 28 / 14 / 3 | 16.6x, and the app drops to 30 fps |
+| **Live (default)** | **20 / 12 / 7 / 3** | **2.1x** |
+| Beauty | 28 / 14 / 10 / 3 | 2.7x |
+| Hero — capture only | 32 / 28 / 14 / 3 | 4.1x, most of a 60 fps frame on a laptop by itself |
 
 Quality is bought along the **wavelength** axis first, because that is the axis the image is about:
 two more wavelengths beat four times the rays at a fraction of the cost. Rays buy spatial detail
@@ -387,12 +421,30 @@ element still falls back to a prism, because a bench with no prism is not this b
 The expensive physics and field stages retain their outputs between changes. `LT_Trace` and
 `LT_Field` use `execution: on_dirty`, and every pass in both nodes declares
 `time_dependent: false`. They wake for edited bench records, quality or look parameters,
-resolution changes, and recompilation.
+viewport input, resolution changes, and recompilation.
 
 `LT_Bench` keeps the default scheduler policy because its authored canvas follows the panel
 resolution. Its plan, chief-ray, and canvas passes are individually non-time-dependent, so GPU
 dispatch is skipped until the panel, parameters, durable editor state, or viewport input changes.
-`LT_Lens` remains continuous because it consumes the image texture and animates film grain.
+Its `layout` and `ui` passes — the type, the frame and the hover inspector — run every frame so
+hover reads the live pointer: measured idle with all four previews open, they cost about as much
+as `LT_Lens` (0.37 against 0.33 ms of GPU per frame). `LT_Lens` remains continuous because it
+consumes the image texture and animates film grain.
+
+**Order edges.** Sentinel 0.6.3 orders a Module's passes by their `pass:` inputs only. A pass that
+reads another pass's `buffer:` without a `pass:` edge to it can run *first* and read the previous
+cook's contents, and for a time-independent pass nothing corrects that until the next change. That
+is how this example used to open: no fans in the plan, an empty scope, no light in the field — and
+after every edit it showed the edit before. Every buffer reader in `LT_Bench`, `LT_Trace` and
+`LT_Field` therefore also names its writer as a `pass:` input on a spare slot no shader reads.
+Prove it the same way: a fresh project load, then one discrete edit and its restore.
+
+**Hovering the bench wakes the chain.** Viewport input wakes every time-independent pass, and the
+plan pass republishes `Bench` whenever it runs, so while the pointer is over `LT_Bench` the trace
+and the field re-cook every frame: one second of (injected) hover cost 62 cooks of each, exactly
+as in the 0.6.3 release copy. The cure belongs in the engine: bare pointer motion should not wake
+a plan that acts only on clicks, drags, wheel and keys, or an unchanged buffer should not bump its
+generation.
 
 ---
 
@@ -400,17 +452,26 @@ dispatch is skipped until the panel, parameters, durable editor state, or viewpo
 
 **Verified from live state and captures:** all four nodes healthy with frames advancing; the
 element/source record contract via the plan canvas and the trace scope; minimum-deviation solving
-and prism re-centring; the TIR alarm, the unlit-element alarm (`ALARM 01`) and the deviation
+and prism re-centring; the TIR alarm, the unlit-element alarm (`ALARM 1`) and the deviation
 readout; the tile-overflow diagnostic; all eight Scene Group controls writing through to their
 members; the four quality rungs and the frame preset. Per-emitter chief blocks were proved by
 moving `Rail Source` between two live sources on a three-source bench: the plan keeps all three
 fans, the emphasis and the amber ring follow the target, and the ladder and deviation profile
 change completely — which they cannot do if both are reading the same block.
 
-**Not machine-verifiable:** injected input does not reach Module viewport events, so **every
-pointer and keyboard gesture in `LT_Bench` needs exercising by hand** — click-select, drag-move,
-right-drag-rotate, wheel-resize, and the A / S / Backspace / Z / K / M / P / X / N / R / C keys.
-The pick maths is checked against known record coordinates and the persistence path is the standard
-`state_buffers` one, but the gestures themselves are unproven.
+**Exercised with injected viewport input, and partly with real input.** Click-select, drag-move,
+right-drag-rotate and the A / S / D / 0 / G / H / K / M / P / X / N / R keys were each driven
+through the `LT_Bench` panel and changed the published `Bench` records or the header counts as
+described; R re-rolled the generated chain around a hand-added source, which survived. With real
+mouse and keyboard events (Windows `SendInput`), a held drag follows the pointer, one wheel notch
+resizes the selection by one ×1.10 step and stays put through later parameter edits, and A adds
+one element and D removes it. Right-drag rotate and the other keys have not had a real-input pass.
 
 Detailed profiling was toggled on for the ladder measurements and returned to off.
+
+**Verified for the UI revamp:** a fresh project load shows the fans, the ladder, the deviation
+profile, a populated scope and a lit field; a dispersion edit and its restore reach all three
+nodes in the same cook; hover cards on a prism, a ladder cell, a deviation mark and a traced lane;
+the lane axis on the shipped triad source and on a white one. Hover was driven by injected pointer
+input, and after the pointer left a panel the last card stayed drawn until the next input arrived
+(Interaction Lab's stations behave the same), so check with a real mouse that leaving clears it.

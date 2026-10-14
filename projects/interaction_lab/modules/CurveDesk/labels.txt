@@ -1,0 +1,62 @@
+# Curve Desk - the labels of the Curve Desk station. Regenerate: python tools/il_type.py labels CurveDesk
+TITLE       @bold @track=0.08 = CURVE DESK
+SUBTITLE    @sans = keys and tangents for a bouncing ball, read as spacing
+
+CHANNELS    @bold @track=0.06 = CHANNELS
+CH_0        @bold @track=0.04 = TRAVEL
+CH_1        @bold @track=0.04 = HEIGHT
+CH_2        @bold @track=0.04 = SQUASH
+CH_0_D      @sans = across the stage
+CH_1_D      @sans = above the ground
+CH_2_D      @sans = squash and stretch
+HIDDEN      @sans = hidden
+KEYS        @sans = keys
+
+SPACING     @bold @track=0.06 = SPACING
+ON_TWOS     @sans = a ghost every 2 frames
+FPS         @sans = fps
+LOOP        @sans = loop
+
+UNIT_S      @mono = s
+F           @mono = f
+T           @mono = t
+V           @mono = v
+SLASH       @mono = /
+KEY         @sans = key
+SELECTED    @sans = keys selected
+I_0         @sans = step
+I_1         @sans = linear
+I_2         @sans = bezier
+H_0         @sans = auto
+H_1         @sans = aligned
+H_2         @sans = broken
+PLAYING     @bold @track=0.06 = PLAYING
+PAUSED      @bold @track=0.06 = PAUSED
+
+# hint bar, nothing selected (pairs)
+K_A0        @sans = Drag a key
+K_A1        @sans = Drag empty
+K_A2        @sans = Double-click a curve
+K_A3        @sans = F  wheel  middle-drag
+K_A4        @sans = Click ruler or chart
+K_A5        @sans = Space  R
+D_A0        @sans = move it
+D_A1        @sans = box select
+D_A2        @sans = add a key
+D_A3        @sans = frame, zoom, pan
+D_A4        @sans = scrub
+D_A5        @sans = play, reset
+
+# hint bar, keys selected (pairs)
+K_B0        @sans = Drag a handle
+K_B1        @sans = 1  2  3
+K_B2        @sans = A  B
+K_B3        @sans = Arrows
+K_B4        @sans = Backspace
+K_B5        @sans = Z
+D_B0        @sans = shape the curve
+D_B1        @sans = step, linear, bezier
+D_B2        @sans = auto, break
+D_B3        @sans = nudge
+D_B4        @sans = remove
+D_B5        @sans = undo

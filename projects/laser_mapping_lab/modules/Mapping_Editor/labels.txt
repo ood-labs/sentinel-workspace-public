@@ -1,0 +1,98 @@
+# Mapping_Editor - the editing canvas's words. Regenerate: python -B tools/il_type.py labels Mapping_Editor
+TITLE        @bold @track=0.14 = LASER MAPPING
+SUBTITLE     @sans = mapping editor
+INVALID      @bold @track=0.08 = MAPPING INVALID
+INVALID_D    @sans = the corners must make a convex quad
+
+# the side panel, in masks.hlsli's hit-test order (layout.hlsl counts from TAB_0 and TOOL_0)
+TAB_0        @bold = MAPPING
+TAB_1        @bold = MASKS
+TOOL_0       @bold = RECT
+TOOL_1       @bold = ELLIPSE
+TOOL_2       @bold = POLYGON
+# a mask row: its kind (KIND_0..2, the record's kind order), its mode and state
+KIND_0       @sans = Rect
+KIND_1       @sans = Ellipse
+KIND_2       @sans = Polygon
+DRAWING      @sans = drawing
+BLOCK        @bold @track=0.06 = BLOCK
+ONLY_IN      @bold @track=0.06 = ONLY IN
+ON           @bold @track=0.06 = ON
+OFF          @bold @track=0.06 = OFF
+NO_MASKS     @sans = No masks
+
+# the inspector
+I_HANDLE     @bold @track=0.08 = HANDLE
+H_CORNER     @sans = corner
+H_EDGE       @sans = edge
+H_INNER      @sans = inner
+I_AT         @bold @track=0.08 = AT
+I_BEND       @bold @track=0.08 = BEND
+H_NOTE_C     @sans = drag: the perspective of the whole grid
+H_NOTE_B     @sans = drag: bends the lattice here
+I_MASK       @bold @track=0.08 = MASK
+I_CENTRE     @bold @track=0.08 = CENTRE
+I_SIZE       @bold @track=0.08 = SIZE
+I_ANGLE      @bold @track=0.08 = ANGLE
+I_POINTS     @bold @track=0.08 = POINTS
+I_MARGIN     @bold @track=0.08 = MARGIN
+GROWS        @sans = grows it
+SHRINKS      @sans = shrinks it
+U_FIELD      @sans = field
+U_DEG        @sans = deg
+U_COMMA      @sans = ,
+U_TIMES      @sans = x
+
+# the footer's readouts
+SELECTED     @bold @track=0.08 = SELECTED
+N_MASKS      @bold @track=0.08 = MASKS
+N_POINTS     @bold @track=0.08 = POINTS
+OF           @sans = of
+ZOOM         @bold @track=0.08 = ZOOM
+
+# footer verbs: keys then what they do, one block per mode, from viewport.hint and canvas.hlsl
+# mapping (9)
+MK_0         @sans = Drag
+MK_1         @sans = Shift
+MK_2         @sans = Wheel
+MK_3         @sans = Middle drag
+MK_4         @sans = F
+MK_5         @sans = Arrows
+MK_6         @sans = Alt
+MK_7         @sans = Ctrl+A
+MK_8         @sans = Esc
+MD_0         @sans = move a handle, or box-select
+MD_1         @sans = add
+MD_2         @sans = zoom
+MD_3         @sans = pan
+MD_4         @sans = fit
+MD_5         @sans = nudge 1 px
+MD_6         @sans = 10x finer drag
+MD_7         @sans = select all
+MD_8         @sans = cancel
+# masks (7)
+SK_0         @sans = Drag
+SK_1         @sans = Drag
+SK_2         @sans = Click
+SK_3         @sans = Shift
+SK_4         @sans = Wheel
+SK_5         @sans = Middle drag
+SK_6         @sans = F
+SD_0         @sans = draw a shape
+SD_1         @sans = move, resize or turn a mask
+SD_2         @sans = polygon edge: add a point
+SD_3         @sans = square, circle, 15 deg
+SD_4         @sans = zoom
+SD_5         @sans = pan
+SD_6         @sans = fit
+# drawing a polygon (5)
+PK_0         @sans = Click
+PK_1         @sans = Double-click
+PK_2         @sans = Enter
+PK_3         @sans = Esc
+PK_4         @sans = Right-click
+PD_0         @sans = add a point (the first one closes)
+PD_1         @sans = close
+PD_2         @sans = close
+PD_3         @sans = close
+PD_4         @sans = close

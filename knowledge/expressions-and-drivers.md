@@ -98,7 +98,7 @@ That makes one node's control surface drivable from another's without a data lin
 
 When two camera-capable renderers must show the same viewpoint, the obvious answer is one `camera` node with both nodes' `camera_ref` pointed at it. That is correct for show-level camera switching, and **wrong whenever either node needs viewport interaction**.
 
-With `camera_ref` set, the host takes over the viewport's pointer events to drive the external camera. A Module's own event reducer will see them flagged `HOST_CONSUMED` and skip them — which is the correct thing for it to do, but it means any authored pointer interaction on that node silently stops working. A click-to-interact surface simply stops responding, with nothing in health or logs to say why.
+With `camera_ref` set, the host takes over the viewport's pointer events to drive the external camera. A Module's own event reducer will see them flagged `HOST_CONSUMED` and skip them. That is correct for the reducer, but it means any authored pointer interaction on that node silently stops working. A click-to-interact surface simply stops responding, with nothing in health or logs to say why.
 
 The alternative keeps interaction intact: let the **interactive** node own its internal camera, and drive the follower's camera parameters by expression.
 
@@ -118,6 +118,25 @@ Two things to get right:
 
 Cost: expressions evaluate a cook behind, so the follower trails by one frame **while the camera is moving** and is exact the moment it stops. For a zero-lag follower, have the leader publish its view matrix as a data output and consume it downstream in the same cook.
 
+## Parameter Binds
+
+A bind links two or more pipeline parameters both ways: writing any one of them, from the UI, MCP, OSC, an expression
+or a control output, moves the others to the same value before the next cook. Use it where two nodes must share a
+value and either may be the one a person adjusts.
+
+```text
+sentinel_expression action=set_bind path=/sentinel/pipelines/Look_A/parameters/hue peer_path=/sentinel/pipelines/Look_B/parameters/hue
+sentinel_expression action=list_binds
+sentinel_expression action=clear_bind path=/sentinel/pipelines/Look_A/parameters/hue
+```
+
+`set_bind` also takes `endpoints=[...]` for three or more, and merges into an existing network. Endpoints must be
+pipeline parameters (source values such as `/sentinel/sources/<id>/playbackRate` are refused). A network may hold at
+most one expression-driven endpoint, which drives the rest. Binds save with the project, survive renames and import,
+and drop an endpoint whose node or parameter is deleted. Properties tints a bound row blue with a `#` suffix, and its
+context menu lists the peers and offers Unbind. Scene Group exposed parameters are binds between the group parameter
+and the member parameter.
+
 ## Rename Safety
 
 Use real rename operations, not delete-and-recreate, when changing node names. Sentinel rewrites stored expressions during true renames so references keep working.
@@ -129,5 +148,6 @@ Useful MCP actions:
 - `sentinel_expression action=get path=<state path>`
 - `sentinel_expression action=clear path=<state path>`
 - `sentinel_expression action=list`
+- `sentinel_expression action=list_binds`
 
 Use `sentinel_pipeline info` to find parameter names and current control output summaries.

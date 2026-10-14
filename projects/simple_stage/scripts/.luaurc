@@ -1,0 +1,7 @@
+{
+  "aliases": {
+    "push2os": "./vendor/push2os/src",
+    "show": "./show",
+    "pages": "./pages"
+  }
+}

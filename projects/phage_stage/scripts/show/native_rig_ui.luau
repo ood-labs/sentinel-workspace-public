@@ -4,7 +4,7 @@ local groupSlot=1
 local name="Group 1"
 return function(ui,rig)
     ui.text("programmer","RIG: "..rig.message)
-    ui.text("selection","Selected: "..#rig.status.selection.." | Drag-select in Phage_Lighting")
+    ui.text("selection","Selected: "..#(rig.status.fixtures or {}).." fixtures, "..#rig.status.selection.." layers | Drag-select in Phage_Lighting")
     local bankLabels={};for i,bank in ipairs(rig.attribute_banks) do bankLabels[i]=bank.label end
     local bankChanged,bankIndex=ui.combo("attribute_bank","Knob controls",rig.editor_bank.value or 1,bankLabels)
     if bankChanged then rig.editor_bank.value=bankIndex end

@@ -1,0 +1,2 @@
+# Runtime records MIDI Out writes while it records (see README, "Measured").
+.sentinel/midi-records/

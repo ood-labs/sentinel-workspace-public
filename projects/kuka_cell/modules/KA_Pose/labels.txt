@@ -1,0 +1,65 @@
+# KA_Pose - the pose scope's words. Regenerate: python -B tools/il_type.py labels KA_Pose
+TITLE        @bold @track=0.14 = ARMS
+SUBTITLE     @sans = pose
+ARMS         @bold @track=0.08 = ARMS
+FLOORED      @bold @track=0.08 = THROUGH FLOOR
+ON_LIMIT     @bold @track=0.08 = ON LIMIT
+
+# the four channel stations (layout.hlsl counts from CH_A)
+CH_A         @bold @track=0.08 = CHANNEL A
+CH_B         @bold @track=0.08 = CHANNEL B
+CH_C         @bold @track=0.08 = CHANNEL C
+CH_D         @bold @track=0.08 = CHANNEL D
+# the pattern enum, in the manifest's order (layout.hlsl counts from PAT_HOLD)
+PAT_HOLD     @bold @track=0.04 = HOLD
+PAT_WAVE     @bold @track=0.04 = WAVE
+PAT_RIPPLE   @bold @track=0.04 = RIPPLE
+PAT_SPIRAL   @bold @track=0.04 = SPIRAL
+PAT_CANON    @bold @track=0.04 = CANON
+PAT_BREATHE  @bold @track=0.04 = BREATHE
+PAT_POINT    @bold @track=0.04 = POINT AT
+PAT_SCAN     @bold @track=0.04 = SCAN
+PAT_SWAY     @bold @track=0.04 = SWAY
+PAT_DRIFT    @bold @track=0.04 = DRIFT
+PAT_SALUTE   @bold @track=0.04 = SALUTE
+PAT_FOLD     @bold @track=0.04 = FOLD
+RATE         @bold @track=0.06 = RATE
+AMOUNT       @bold @track=0.06 = AMOUNT
+ARMS_U       @sans = arms
+TIMES        @sans = x
+
+# the matrix header: the gutter, then the six axes (layout.hlsl counts from J_A1)
+ARM          @bold @track=0.08 = ARM
+J_A1         @bold @track=0.06 = A1
+J_A2         @bold @track=0.06 = A2
+J_A3         @bold @track=0.06 = A3
+J_A4         @bold @track=0.06 = A4
+J_A5         @bold @track=0.06 = A5
+J_A6         @bold @track=0.06 = A6
+TOOL         @bold @track=0.08 = TOOL
+HEIGHT       @bold @track=0.08 = HEIGHT
+TARGET       @sans = target
+
+# the hover card
+DEG          @sans = deg
+M            @sans = m
+SLASH        @sans = /
+RALLY        @bold @track=0.06 = RALLY
+# rally roles, in KA_ROLE_* order from WATCH (layout.hlsl counts from RO_WATCH)
+RO_WATCH     @bold @track=0.06 = WATCHING
+RO_RECEIVE   @bold @track=0.06 = RECEIVING
+RO_STRIKE    @bold @track=0.06 = STRIKING
+RO_RECOVER   @bold @track=0.06 = RECOVERING
+FLOOR_TAG    @bold @track=0.06 = THROUGH FLOOR
+LIMIT_TAG    @bold @track=0.06 = ON LIMIT
+SELF_TAG     @bold @track=0.06 = INTO PEDESTAL
+LIMITS       @sans = limits
+
+# footer: hover, then the legend for the gutter swatches and the marks
+K_HOVER      @sans = Hover
+D_HOVER      @sans = inspect an arm, a tool or a channel
+LG_CHANNEL   @sans = channel
+LG_RALLY     @sans = in the rally
+LG_STRIKE    @sans = striking or receiving
+LG_ALARM     @sans = on a limit, through the floor
+LG_TARGET    @sans = target height

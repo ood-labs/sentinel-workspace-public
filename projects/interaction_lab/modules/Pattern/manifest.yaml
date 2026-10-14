@@ -1,0 +1,127 @@
+name: "Pattern"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# A polymetric step sequencer: six lanes on one sixteenth-note clock, each its own length (1-16), so
+# they drift against each other and line up again only every LCM(lengths) steps (55,440 for the
+# default 16 12 7 5 9 11). A step: on, velocity, chance, ratchet (1-4 hits inside it), nudge. Panes
+# that share one selection:
+#   GRID     each lane's steps at its own length, in the edit layer's terms, with its end bracket
+#   RINGS    each lane's cycle as a ring of steps (turned by its turn) with a hand sweeping it; the
+#            hands point up together only when every cycle restarts at once
+#   LANE     note, length, turn, hits (spreads that many evenly - a Euclidean rhythm), mute, solo
+#   STEP     velocity, chance, nudge, ratchet
+#   TAPE     every hit as it went out, against the steps, and what has been sent ahead of now
+#
+# Timing: the reducer sends each hit on EventOut "Hits" PT_LOOKAHEAD (100 ms) BEFORE it is due, with
+# how long until it is due, once. A frame is 16.7 ms; the groove must not be. The Pattern Bus script
+# turns "due in" into an absolute timestamp, and MIDI Out schedules the note at exactly that time, so
+# the hits land where the clock puts them, not where the frames fall.
+#
+# Every pass runs every cook (the clock moves). On 0.6.3 passes run in reverse manifest order, so
+# the picture trails the reducer by a cook or two; the clock and the events do not depend on it.
+
+panel:
+  mode: canvas
+  output: "Pattern"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+viewport:
+  hint: "Grid: click a cell to set it (steps: toggle; velocity / chance / ratchet / nudge: from the click's height), drag along a lane to paint, drag a lane's bracket for its length, click a lane's M / S. Rings: drag a ring round to turn its lane, click a dot to toggle it. Lane: drag note, length, turn, hits (spreads that many evenly), MUTE, SOLO. Step: drag velocity, chance, nudge; click a ratchet count. Tools: click an edit layer and PLAY; drag bpm and swing. Space play, 0 to the top, 1-5 edit layer, Tab / Up / Down lane, Left / Right step, Enter toggle, E spread evenly, M mute, S solo, Backspace clear the lane, R default pattern (Z brings yours back), Z undo."
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [space, "0", "1", "2", "3", "4", "5", tab, up, down, left, right, enter, e, m, s, backspace, r, z]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: edit, label: "Paint a lane; drag a bracket (length), a ring (turn), a field; the splitters" }
+    - { gesture: left_click, action: select, label: "Set a step; select a lane; mute / solo; an edit layer; play; a ratchet count" }
+    - { key: space, action: play, label: "Play / stop" }
+    - { key: "0", action: top, label: "Back to the top" }
+    - { key: "1", action: layer_steps, label: "Paint steps" }
+    - { key: "2", action: layer_velocity, label: "Paint velocity" }
+    - { key: "3", action: layer_chance, label: "Paint chance" }
+    - { key: "4", action: layer_ratchet, label: "Paint ratchet" }
+    - { key: "5", action: layer_nudge, label: "Paint nudge" }
+    - { key: tab, action: next_lane, label: "The next lane" }
+    - { key: up, action: lane_up, label: "The lane above" }
+    - { key: down, action: lane_down, label: "The lane below" }
+    - { key: left, action: step_back, label: "The step before" }
+    - { key: right, action: step_on, label: "The step after" }
+    - { key: enter, action: toggle, label: "Toggle the selected step" }
+    - { key: e, action: spread, label: "Spread the lane's hits evenly" }
+    - { key: m, action: mute, label: "Mute the lane" }
+    - { key: s, action: solo, label: "Solo the lane" }
+    - { key: backspace, action: clear, label: "Clear the lane" }
+    - { key: r, action: reset, label: "The default pattern (Z brings yours back)" }
+    - { key: z, action: undo, label: "Undo (again: redo)" }
+
+buffers:
+  # pt.hlsli: the pattern (110 records), then the clock, the history and the undo snapshot
+  - { name: state, structured: true, element_size: 16, element_count: 358, persistent: true }
+  - { name: dl,    structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+# The tempo, swing, lanes and steps (110 records) serialize into the project, node presets and undo
+# payloads. The clock, the history and everything after them is working state, never restored.
+state_buffers:
+  - name: state
+    max_elements: 110
+    schema:
+      - { name: v, type: float4 }
+
+event_outputs:
+  - { name: "Hits", capacity: 256 }
+
+passes:
+  - name: reduce
+    shader: reduce.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:state"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Pattern", pass: raster }
+
+control_outputs:
+  - { name: step,    buffer: state, element: 110, field_offset: 4,  description: "The clock, in sixteenths since the top" }
+  - { name: playing, buffer: state, element: 110, field_offset: 0,  description: "1 while playing" }
+  - { name: lane_1,  buffer: state, element: 117, field_offset: 0,  description: "Lane 1's envelope: up to a hit's velocity as it sounds, decaying (0..1)" }
+  - { name: lane_2,  buffer: state, element: 117, field_offset: 4,  description: "Lane 2's envelope" }
+  - { name: lane_3,  buffer: state, element: 117, field_offset: 8,  description: "Lane 3's envelope" }
+  - { name: lane_4,  buffer: state, element: 117, field_offset: 12, description: "Lane 4's envelope" }
+  - { name: lane_5,  buffer: state, element: 118, field_offset: 0,  description: "Lane 5's envelope" }
+  - { name: lane_6,  buffer: state, element: 118, field_offset: 4,  description: "Lane 6's envelope" }
+  - { name: rate,    buffer: state, element: 118, field_offset: 8,  description: "Hits that sounded in the last bar (16 steps), per second; 0 when stopped" }
+
+data_outputs:
+  - name: "Pattern"
+    buffer: "state"
+    description: "float4 records (see pt.hlsli): 0 = (bpm, swing), 2 + lane = (length, turn, note, mute 1 + solo 2), 8 + lane = (hits), 14 + lane * 16 + i = step (on + 2 * (ratchet - 1), velocity, chance, nudge), 110 = (playing, step whole, step fraction), 117 / 118 = lane envelopes, 119 + h = the last 128 hits (step whole, offset, lane + 8 * flags, velocity)."
+    schema:
+      - { name: v, type: float4 }

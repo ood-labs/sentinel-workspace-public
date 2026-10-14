@@ -1,0 +1,108 @@
+# Score - the labels of the Score editor. Regenerate: python tools/il_type.py labels Score
+TITLE       @bold @track=0.08 = SCORE
+SUBTITLE    @sans = acts on one clock: a camera through the hall, cards between
+TIME        @sans = time
+SLASH       @mono = /
+COLON       @mono = :
+DOT         @mono = .
+ACTW        @sans = act
+OF          @sans = of
+
+PLAY        @bold @track=0.06 = PLAY
+STOP        @bold @track=0.06 = STOP
+LOOP_0      @sans = show
+LOOP_1      @sans = act
+LOOP_D      @sans = loop the show, or only the selected act
+TOOLS_D     @sans = select a mark and the view looks through it
+
+SPACE       @bold @track=0.06 = SPACE
+PLAN        @sans = plan, looking down: the hall runs left to right
+ELEV        @sans = elevation, from the side: height up
+RAIL_D      @sans = eye: square, aim: ring; double-click the rail for a mark
+AX_X        @mono = x
+AX_Y        @mono = y
+STAGE       @bold @track=0.06 = STAGE
+STAGE_D     @sans = the card: drag a thing, or its corner for its size
+
+VIEW        @bold @track=0.06 = VIEW
+VIEW_D      @sans = the camera at the playhead: drag to aim the selected mark
+VIEW_CARD   @sans = a card is showing
+FOV         @sans = fov
+DEG         @sans = deg
+EYE         @sans = eye height
+TOAIM       @sans = to the aim
+MU          @sans = m
+
+MARK        @bold @track=0.06 = MARK
+MARK_NONE   @sans = click a mark's eye or aim, or its tick in the lane
+F_0         @sans = at
+F_1         @sans = fov
+F_2         @sans = eye x
+F_3         @sans = eye y
+F_4         @sans = eye z
+F_5         @sans = aim x
+F_6         @sans = aim y
+F_7         @sans = aim z
+PCT         @sans = %
+
+ITEM        @bold @track=0.06 = ITEM
+ITEM_NONE   @sans = click the word, the disc or the bar on the stage
+IT_0        @sans = word
+IT_1        @sans = disc
+IT_2        @sans = bar
+F_8         @sans = x
+F_9         @sans = y
+F_10        @sans = size
+SHOWN       @bold @track=0.04 = SHOWN
+HIDDEN      @bold @track=0.04 = HIDDEN
+
+ACTS        @bold @track=0.06 = ACTS
+ACTS_D      @sans = drag an act to reorder it, its right edge to resize it
+K_0         @bold @track=0.02 = rail
+K_1         @bold @track=0.02 = card
+KS_0        @sans = rail
+KS_1        @sans = card
+H_0         @sans = cut
+H_1         @sans = dip
+H_2         @sans = glide
+SEC         @sans = s
+
+ACT         @bold @track=0.06 = ACT
+KIND        @sans = kind
+HAND        @sans = hand-off to the next act
+LIGHT       @sans = light
+WORDL       @sans = word: click to change it
+F_11        @sans = length
+F_12        @sans = hand-off
+LI_0        @sans = day
+LI_1        @sans = dusk
+LI_2        @sans = night
+TRK_H       @sans = eye height, 0 - 12 m
+TRK_L       @sans = lens, 10 - 90 deg
+TRK_W       @sans = wall top
+STARTS      @sans = starts
+ENDS        @sans = ends
+LAST_LOOP   @sans = the last act: hands off to act 1 while the show loops
+LAST_END    @sans = loops on itself while the loop is set to act
+
+W_0         @bold @track=0.10 = THE HALL
+W_1         @bold @track=0.10 = OVERTURE
+W_2         @bold @track=0.10 = INTERVAL
+W_3         @bold @track=0.10 = ACT TWO
+W_4         @bold @track=0.10 = FINALE
+W_5         @bold @track=0.10 = CODA
+
+H_K0        @mono = Click / drag
+H_D0        @sans = select, move, aim
+H_K1        @mono = Space 0
+H_D1        @sans = play, to the top
+H_K2        @mono = Left Right
+H_D2        @sans = act
+H_K3        @mono = Up Down
+H_D3        @sans = mark or item
+H_K4        @mono = A Backspace
+H_D4        @sans = add, delete
+H_K5        @mono = D K H L
+H_D5        @sans = duplicate, kind, hand-off, light
+H_K6        @mono = R Z
+H_D6        @sans = default, undo

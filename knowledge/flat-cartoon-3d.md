@@ -1,7 +1,7 @@
 # Flat Cartoon Look in 3D (and Recursive Zoom Loops)
 
-Techniques proven building `projects/droste_heads/` — a seamlessly looping,
-raymarched 3D SDF rebuild of a flat 2D cartoon reel. Read this before any job
+Techniques proven building a seamlessly looping, raymarched 3D SDF piece in a
+flat 2D cartoon style (not bundled in this workspace). Read this before any job
 whose reference is *drawn* rather than rendered, and before any droste /
 infinite-zoom loop.
 

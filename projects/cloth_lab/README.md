@@ -115,6 +115,10 @@ The engine is built on three shared headers, bundled here under `modules/_shared
 - `viewport/pick3d.hlsli` — camera ray from pointer, nearest-along-ray pick key,
   and the event-handling rules.
 
+`cloth_bands` draws its type and chrome with the shared UI kit in `modules/_shared/ui/`. The
+type is IBM Plex Sans Condensed and IBM Plex Mono (SIL OFL 1.1), baked by `tools/il_type.py`
+into `modules/_shared/type/il_type.png` with its licence beside it.
+
 Engineering notes and the traps behind them: `knowledge/gpu-cloth-and-xpbd.md`.
 Audio wiring: `knowledge/audio-reactivity.md`.
 

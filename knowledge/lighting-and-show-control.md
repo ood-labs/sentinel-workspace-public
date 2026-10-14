@@ -47,7 +47,10 @@ Parameters that matter:
 - `send_rate_hz` (default 40, max 44) and `keepalive_hz` (default 1): changed universes send at the send rate, unchanged ones resend at the keepalive rate.
 - `enabled_universes`: a zero-based record-index mask such as `0,2-4`; empty sends all live records. `port_address_offset` shifts every address after selection.
 - Art-Net only: `legacy_broadcast` with an explicit `interface_address`. It is labeled non-conformant on purpose; unicast is the default and the right choice for Art-Net 4 gear.
+- Art-Net only: `source_port`. `6454` (default) sends from the Art-Net port that DMX In shares. `any` sends from a temporary port and never takes 6454, so a visualiser on the same machine (Depence, Capture) can receive Art-Net whatever order the two programs start in. The node body then reads `Port N, not 6454`: Art-Net 4 expects 6454, and a receiver that checks the source port may drop these packets.
 - sACN only: `priority` (default 100, 0 to 200), `sacn_sync_address` (0 disables synchronization), `sacn_terminate_on_stop` (default on, tells receivers the stream ended).
+
+DMX Out gives up UDP 6454 while `protocol` is `sacn`; switching back to Art-Net takes it again. A DMX In anywhere in the project keeps 6454 bound for receiving, and two receivers cannot share it on Windows, so a visualiser and a DMX In on one machine need different adapters or sACN. `Get-NetUDPEndpoint -LocalPort 6454` shows which process holds the port.
 
 Control outputs: `packets_per_second`, `universes_sent`, `readbacks_dropped`, `send_errors`. A climbing `send_errors` means the destination is unreachable or the adapter is wrong; `health_reasons` in `sentinel_pipeline info` names a bind problem.
 
@@ -74,7 +77,7 @@ Header slot 0 is the schema version and reads 2 on current builds. Slot 1 is the
 
 Declare the port in a Module manifest as a data input or output with one field, `channels`, type `uint`, count 512, and read the live count from the header rather than assuming the configured capacity. Capacity is `elementCount - 9` records.
 
-Readback for proof: `sentinel_pipeline action=capture_data_port pipeline_id=<id> port=DMX max_elements=<n>`. Set `max_elements` explicitly to reach the universe records you want; the default only covers the first few.
+Readback for proof: `sentinel_pipeline action=capture_data_port pipeline_id=<id> port_name=DMX max_elements=<n>`. Set `max_elements` explicitly to reach the universe records you want; the default only covers the first few.
 
 ## Recipes
 
@@ -122,7 +125,7 @@ In trial, DMX Out sends 1 universe and DMX In receives 4 across the whole runnin
 Create it with `type=oscout`. A fresh node has no messages. Add each one with a single StateTree action that creates the message, registers its parameters, and binds its value source:
 
 ```text
-sentinel_state action=invoke path=/sentinel/pipelines/<id>/actions/add_message address=/live/brightness type=float expr=ref("audio_in/control_outputs/level")
+sentinel_state action=invoke path=/sentinel/pipelines/<id>/actions/add_message args={"address": "/live/brightness", "type": "float", "expr": "ref(\"audio_in/control_outputs/level\")"}
 ```
 
 The response carries the message `id`, the writable `path` of its value parameter, and `expression_ok`. Without `expr`, the value parameter is a plain float you can write or drive later with `sentinel_expression action=set`. `list_messages` returns every message with its id, address, type, enabled flag, current value, expression, and last send time. `remove_message` takes an `id` and clears its expression. Ids are stable for the life of the project and never reused, so a remove in the middle of the list does not renumber anything.

@@ -22,11 +22,28 @@ page.params[4].format=function(): string
     end
     return fourth_format()
 end
+-- Pad page 1: the look banks; pages 2-4 (Octave Up / Down): a page per fixture type, a bank per layer plus the
+-- whole fixture, own windows (programmer_surface).
+local rootOf=function() return root end
 page.windows={
-    UI.bank("programmer_groups",function() return root end,0,"static",7,4,4),
-    UI.bank("static_bank",function() return root end,4,"effects",7,4,4),
-    UI.bank("color_presets",function() return root end,0,"color",3,4,4),
-    UI.bank("full_looks",function() return root end,4,"complete",3,4,4)}
+    UI.bank("programmer_groups",rootOf,0,"static",7,4,4,1),
+    UI.bank("static_bank",rootOf,4,"effects",7,4,4,1),
+    UI.bank("color_presets",rootOf,0,"color",3,4,4,1),
+    UI.bank("full_looks",rootOf,4,"complete",3,4,4,1),
+    UI.bank("fx_move",rootOf,0,"move",7,4,4,2),
+    UI.bank("fx_beam",rootOf,4,"beam",7,4,4,2),
+    UI.bank("fx_halo",rootOf,0,"halo",3,4,4,2),
+    UI.bank("fx_heads",rootOf,4,"heads",3,4,4,2),
+    UI.bank("fx_tube",rootOf,0,"tube",7,4,4,3),
+    UI.bank("fx_plates",rootOf,4,"plates",7,4,4,3),
+    UI.bank("fx_strobes",rootOf,4,"strobes",3,4,4,3),
+    UI.bank("fx_pixels",rootOf,0,"pixels",7,4,4,4),
+    UI.bank("fx_chase",rootOf,4,"chase",7,4,4,4),
+    UI.bank("fx_battens",rootOf,4,"battens",3,4,4,4),
+    UI.bank("seq_rig",rootOf,0,"sequence",7,4,4,5),
+    UI.bank("seq_heads",rootOf,4,"seq_heads",7,4,4,5),
+    UI.bank("seq_strobes",rootOf,0,"seq_strobes",3,4,4,5),
+    UI.bank("seq_battens",rootOf,4,"seq_battens",3,4,4,5)}
 page.top={
     {kind="menu",menu=Attributes.menu,is_lit=function() return true end},
     {kind="trigger",on_press=function() M.request("undo") end,is_lit=function() return M.status.undo_available==true end},
@@ -38,12 +55,12 @@ page.top={
     {kind="trigger",on_press=Attributes.toggle_mode,is_lit=function() return M.editor_absolute.value==1 end},
 }
 page.top_labels=function() return {Attributes.bank().label.." >","UNDO EDITS","RESET SEL","STORE",string.upper(M.preset_kind).." >","UPDATE","FX OFF",if M.editor_absolute.value==1 then "ABSOLUTE" else "RELATIVE"} end
-page.on_bind=function(bound_root: string) root=bound_root;M.start(root) end
+page.on_bind=function(bound_root: string) root=bound_root;M.start(root);UI.bind() end
 page.on_frame=function(_dt: number,t: number) M.tick(t) end
 -- The root schedules bounded background work separately from display rendering.
 page.on_leave=function() M.mode="";M.reset_held=false;M.reset_used=false end
 page.render=function(ctx: any)
-    Windows.render(ctx,page.windows,page.desktop_window,UI.lit,UI.label)
+    Windows.render(ctx,UI.visible(),page.desktop_window,UI.lit,UI.label)
     UI.status(ctx)
 end
 

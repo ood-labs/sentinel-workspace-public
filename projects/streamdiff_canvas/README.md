@@ -42,9 +42,11 @@ texture.
 ## Generation Controller
 
 Generation timing is owned entirely by the Generation Controller, not either
-canvas. Its full-panel interface exposes Mode, Run, Generate, and Next Prompt.
-The body displays the live prompt position, cycle count, hold state, and timing
-progress.
+canvas. Its full-panel interface exposes Mode, Run, Linked, Generate, and Next
+Prompt. The body displays the hold state StreamDiff is receiving, the live
+prompt and window count, the prompt bank with its playhead (hover a prompt to
+see how far away it is and, while running, when it comes up), and the last
+eight seconds of render windows and stamps (hover for any moment).
 
 - **Manual** holds StreamDiff until Generate or Next Prompt changes.
 - **Interval** advances by Prompt Step at Prompt Rate and opens StreamDiff for

@@ -1,0 +1,34 @@
+# Paint_Canvas - the canvas editor's words. Regenerate: python -B tools/il_type.py labels Paint_Canvas
+TITLE        @bold @track=0.08 = STREAMDIFF
+SUBTITLE     @sans = paint canvas
+CLEAR        @bold = CLEAR
+
+# toolbar readouts
+BRUSH        @bold @track=0.08 = BRUSH
+ZOOM         @bold @track=0.08 = ZOOM
+PX           @sans = px
+PCT          @sans = %
+
+# the output thumbnails beside the canvas; the depth blend names in parameter order (Over, Max, Add)
+DEPTH        @bold @track=0.08 = DEPTH
+MASK         @bold @track=0.08 = MASK
+B_OVER       @sans = over
+B_MAX        @sans = max
+B_ADD        @sans = add
+
+# the keycap footer: the manifest's bindings, keys then what they do, in the same order
+# (layout.hlsl counts from K_CLICK and D_CLICK)
+K_CLICK      @sans = Click
+K_DRAG       @sans = Drag
+K_MIDDLE     @sans = Middle drag
+K_WHEEL      @sans = Wheel
+K_ALT        @sans = Alt+Wheel
+K_F          @sans = F
+K_X          @sans = X
+D_CLICK      @sans = stamp
+D_DRAG       @sans = paint
+D_MIDDLE     @sans = pan
+D_WHEEL      @sans = zoom
+D_ALT        @sans = brush size
+D_F          @sans = fit
+D_X          @sans = clear

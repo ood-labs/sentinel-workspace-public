@@ -1,0 +1,181 @@
+# BR_Furnish - the furnishing plan's words. Regenerate: python tools/il_type.py labels BR_Furnish
+TITLE        @bold @track=0.14 = BR FURNISH
+SUB          @sans = the furnishing plan
+PIECES       @sans = pieces
+EDITED       @sans = edited
+ALARMS       @sans = alarms
+
+# arrangements and layerings, in the manifest's order (layout.hlsl counts from ARR0 / LAY0)
+ARR0         @bold @track=0.06 = HEARTH
+ARR1         @bold @track=0.06 = FACING
+ARR2         @bold @track=0.06 = VIEW
+ARR3         @bold @track=0.06 = READING
+LAY0         @sans = essentials
+LAY1         @sans = lived-in
+LAY2         @sans = collected
+
+# kinds, in FK_ order (layout.hlsl counts from K0)
+K0           @bold @track=0.06 = NONE
+K1           @bold @track=0.06 = SOFA
+K2           @bold @track=0.06 = ARMCHAIR
+K3           @bold @track=0.06 = COFFEE TABLE
+K4           @bold @track=0.06 = SIDE TABLE
+K5           @bold @track=0.06 = RUG
+K6           @bold @track=0.06 = FLOOR LAMP
+K7           @bold @track=0.06 = TABLE LAMP
+K8           @bold @track=0.06 = PENDANT
+K9           @bold @track=0.06 = BOOKCASE
+K10          @bold @track=0.06 = CONSOLE
+K11          @bold @track=0.06 = PLANT
+K12          @bold @track=0.06 = WALL PIECE
+K13          @bold @track=0.06 = CUSHION
+K14          @bold @track=0.06 = BOOKS
+K15          @bold @track=0.06 = VASE
+K16          @bold @track=0.06 = LOGS
+
+# variants, per kind in variant order (layout.hlsl's variantLabel counts from each kind's first)
+V1_0         @sans = track arm
+V1_1         @sans = rolled arm
+V1_2         @sans = loveseat
+V2_0         @sans = lounge
+V2_1         @sans = club
+V2_2         @sans = wingback
+V3_0         @sans = walnut
+V3_1         @sans = travertine
+V3_2         @sans = ottoman
+V4_0         @sans = pedestal
+V4_1         @sans = square
+V4_2         @sans = drum
+V5_0         @sans = fringed
+V5_1         @sans = bound
+V5_2         @sans = oversize
+V6_0         @sans = arc
+V6_1         @sans = tripod
+V6_2         @sans = column
+V7_0         @sans = gourd
+V7_1         @sans = brass stem
+V8_0         @sans = globe
+V8_1         @sans = lantern
+V8_2         @sans = dome
+V9_0         @sans = tall
+V9_1         @sans = wide
+V10_0        @sans = sideboard
+V11_0        @sans = fiddle-leaf fig
+V11_1        @sans = snake plant
+V11_2        @sans = olive
+V12_0        @sans = print
+V12_1        @sans = canvas
+V12_2        @sans = round mirror
+V13_0        @sans = square
+V13_1        @sans = lumbar
+V14_0        @sans = stack
+V15_0        @sans = stems
+V16_0        @sans = grate
+
+# materials, in material-id order (layout.hlsl counts from M0)
+M0           @sans = floor
+M1           @sans = wall
+M2           @sans = ceiling
+M3           @sans = trim
+M4           @sans = window
+M5           @sans = glass
+M6           @sans = door
+M7           @sans = stone
+M8           @sans = iron
+M9           @sans = sheer
+M10          @sans = linen
+M11          @sans = leather
+M12          @sans = walnut
+M13          @sans = brass
+M14          @sans = ceramic
+M15          @sans = wool
+M16          @sans = velvet
+M17          @sans = paper
+M18          @sans = leaf
+M19          @sans = terracotta
+M20          @sans = shade
+M21          @sans = bulb
+M22          @sans = black metal
+M23          @sans = marble
+
+# walls, S E N W (layout.hlsl counts from WALL0)
+WALL0        @sans = south
+WALL1        @sans = east
+WALL2        @sans = north
+WALL3        @sans = west
+
+# the inspector
+INSPECTOR    @bold @track=0.08 = INSPECTOR
+NOSEL        @sans = nothing selected
+NOSEL2       @sans = click a piece in the plan or the section
+SIZE         @sans = size
+POS          @sans = at
+ROT          @sans = turn
+DEG          @sans = deg
+HOST         @sans = host
+ON           @sans = on
+HANGS        @sans = off
+WALLON       @sans = wall
+MANTEL       @sans = the mantel
+FIREBOX      @sans = the firebox
+FREE         @sans = free standing
+MAT          @sans = material
+X            @sans = x
+M            @sans = m
+COMMA        @sans = ,
+HIDDEN       @sans = hidden
+EDITEDTAG    @sans = edited
+ALARMTAG     @sans = breaks a rule
+
+# chips: with a selection (CH_VAR..CH_RESET), without (CH_REROLL..CH_RESETALL)
+CH_VAR       @sans = Variant
+CH_MAT       @sans = Material
+CH_HIDE      @sans = Hide
+CH_SHOW      @sans = Show
+CH_RESET     @sans = Reset
+CH_REROLL    @sans = Re-roll
+CH_UNHIDE    @sans = Unhide all
+CH_RESETALL  @sans = Reset all
+
+# keys (pairs)
+K_V          @sans = V
+D_V          @sans = variant
+K_M          @sans = M
+D_M          @sans = material
+K_H          @sans = H
+D_H          @sans = hide
+K_R          @sans = R
+D_R          @sans = reset
+K_N          @sans = N
+D_N          @sans = re-roll
+K_0          @sans = 0
+D_0          @sans = reset all
+K_ESC        @sans = Esc
+D_ESC        @sans = clear
+
+# the design rules, in row order (layout.hlsl counts from R_COFFEE)
+RULES        @bold @track=0.08 = DESIGN RULES
+R_COFFEE     @sans = coffee gap
+R_CONV       @sans = conversation
+R_WALK       @sans = walkway
+R_HEARTH     @sans = hearth
+R_DOOR       @sans = door swing
+R_OVER       @sans = overlaps
+R_RUG        @sans = legs on rug
+CLEAR        @sans = clear
+BLOCKED      @sans = blocked
+NONE         @sans = none
+OF           @sans = of
+
+# the plan and the section
+PLAN         @bold @track=0.08 = PLAN
+SECTION      @bold @track=0.08 = SECTION
+LOOKING      @sans = looking
+CUT          @sans = cut
+N            @bold = N
+K_CLICK      @sans = Click
+D_CLICK      @sans = select
+K_DRAG       @sans = Drag
+D_DRAG       @sans = move; the knob turns, the edge grips resize
+D_REHOST     @sans = a lamp dropped on another table re-hosts
+SEC_HINT     @sans = drag to slide along the wall, raise art, drop the pendant

@@ -48,9 +48,27 @@ float phSpinRate(float code){return exp2(round(code)-50);}
 float2 phStepPoint(float trigger,float offset,float reverse){
  const float2 Q[5]={float2(0,0),float2(1,.35),float2(-1,.35),float2(.55,-1),float2(-.55,-1)};
  int n=(int)fmod(trigger,1000)+(int)round(offset*5);if(reverse>.5)n=-n;return Q[((n%5)+5)%5];}
+// 52-63: GLIDE, eased moves between positions: 52 + repeats bits (a new position every lane cycle x1/x2/x4/x8),
+// +4 a random position per head instead of the five-point figure, +8 one random position per group (a formation the
+// group moves to together). Each head sets off rank x spread + offset of a step late and takes width of a step to
+// arrive, so a move ripples through a group and groups set off one after another.
+bool phGlideFx(float code){return code>=51.5&&code<63.5;}
+float2 phGlidePoint(float n,uint fx,float seed,float reverse){
+ if((fx&12u)!=0u){float sd=fmod(n,997);return float2(phHash(float3(seed,sd,1)),phHash(float3(seed,sd,2)))*2-1;}
+ const float2 Q[5]={float2(0,0),float2(1,.35),float2(-1,.35),float2(.55,-1),float2(-.55,-1)};
+ int k=(int)fmod(fmod(n,5)+5,5);if(reverse>.5)k=(5-k)%5;return Q[k];}
+float2 phGlide(PhProgram pr,float4 l,uint lane,float rank,float slot,float group){
+ uint fx=(uint)round(pr.timing.w)-52u;float rep=exp2((float)(fx&3u));
+ float u=(l.z+l.x)*rep-saturate(rank)*pr.movement.w-pr.timing.y;
+ float n=floor(u),e=smoothstep(0,1,saturate(frac(u)/max(.05,pr.timing.x)));
+ float seed=(fx&8u)!=0u?group+101.0:slot;
+ float2 p=lerp(phGlidePoint(n-1,fx,seed,pr.timing.z),phGlidePoint(n,fx,seed,pr.timing.z),e);
+ return float2(pr.movement.y,pr.movement.z)*p*(lane==PH_LANE_BUILD?l.y:1);}
 // Pan/tilt offset (degrees) for a movement lane. BUILD sweeps pan with a growing amplitude and
-// raises tilt with the ramp; other lanes circle, STEP or JUMP.
-float2 phMoveOffset(PhProgram pr,float4 l,uint lane,float rank,float slot){
+// raises tilt with the ramp; other lanes circle (a sweep or a nod with one size at 0), STEP, JUMP or GLIDE.
+// group: the head's family, the seed of a GLIDE formation.
+float2 phMoveOffset(PhProgram pr,float4 l,uint lane,float rank,float slot,float group){
+ if(phGlideFx(pr.timing.w))return phGlide(pr,l,lane,rank,slot,group);
  float2 amp=float2(pr.movement.y,pr.movement.z);uint fx=phMoverFx(pr.timing.w);
  float ph=l.x-rank*pr.movement.w+pr.timing.y;
  if(fx&16)return amp*phStepPoint(l.z,pr.timing.y,pr.timing.z)*(lane==PH_LANE_BUILD?l.y:1);
@@ -58,14 +76,20 @@ float2 phMoveOffset(PhProgram pr,float4 l,uint lane,float rank,float slot){
  if(lane==PH_LANE_BUILD)return float2(amp.x*sin(ph*6.2831853),amp.y)*l.y;
  return l.y*float2(amp.x*sin(ph*6.2831853),amp.y*cos(ph*6.2831853));
 }
+float2 phMoveOffset(PhProgram pr,float4 l,uint lane,float rank,float slot){return phMoveOffset(pr,l,lane,rank,slot,slot);}
 // Continuous spin angle (degrees, 0-360) for SPIN codes; lanes must be REPEAT-style for smooth turns.
 float phSpinAngle(PhProgram pr,float4 l,float rank){
  float cyc=fmod(l.z,64.0)+l.x-rank*pr.movement.w+pr.timing.y;
  return 360.0*frac(cyc*phSpinRate(pr.timing.w)*(pr.timing.z>.5?-1:1));
 }
 // Intensity chase: lane pulse with repeats and RND gate (movers), shared by strobe/bar CHASE.
+// HOLD (codes 24-27, the JMP bit, which moves heads but never touched light): a window instead of a pulse, open for
+// WIDTH of each lane cycle (x repeats) from OFFSET, rippling through the group by rank x SPREAD, closed otherwise; at
+// its narrowest WIDTH it never opens. Windows on different groups hand the light from one group to the next.
 float phChase(PhProgram pr,float4 l,float rank,float slot){
  uint fx=phMoverFx(pr.timing.w);float p=(l.x+pr.timing.y)*exp2((float)(fx&3));
+ if((fx&8u)!=0u){float age=frac(p-saturate(rank)*pr.movement.w);float w=max(.01,pr.timing.x);
+  return l.y*smoothstep(0,.012,age)*(1-smoothstep(w-.012,w,age))*saturate((w-.01)*200);}
  float v=l.y*phPulse(p,rank,pr.timing.x,pr.movement.w);
  if(fx&4){float n=floor(p-saturate(rank)*pr.movement.w);v*=phHash(float3(slot,fmod(l.z,997),n))<.34?1:0;}
  return v;

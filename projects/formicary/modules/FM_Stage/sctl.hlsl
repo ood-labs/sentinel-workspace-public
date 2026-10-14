@@ -64,6 +64,12 @@ uint pickStation(float2 w, float worldPerPx)
     return best;
 }
 
+// The host hands an event back on later cooks until newer input replaces it, so each event is
+// consumed once, by sequence (knowledge/ui-authoring.md). Unguarded, a key-down was re-applied on
+// every cook until its key-up arrived, so one tap of A placed several stations and X landed
+// wherever the count left it.
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
+
 [numthreads(1, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
 {
@@ -103,10 +109,18 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     uint n = min((uint)_ViewportEventCount, 64u);
 
+    uint lastSeq = asuint(c.lastSeq);
+    uint ringMax = 0u;
+    for (uint er = 0u; er < n; er++) ringMax = max(ringMax, _ViewportEvents[er].sequence);
+    if (n > 0u && ringMax < lastSeq) lastSeq = 0u;   // the host's counter restarted (app restart, reload)
+    uint newLast = lastSeq;
+
     // ---- POINTER
     for (uint e0 = 0u; e0 < n; e0++)
     {
         ViewportEvent ev = _ViewportEvents[e0];
+        if (!isFresh(ev.sequence, lastSeq)) continue;      // consumed on an earlier cook
+        newLast = (ev.sequence > lastSeq) ? max(newLast, ev.sequence) : ev.sequence;
         if (ev.type != 5u) continue;
 
         float2 px = ev.position * _Resolution.xy;
@@ -154,7 +168,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     for (uint e1 = 0u; e1 < n; e1++)
     {
         ViewportEvent ev = _ViewportEvents[e1];
-        if (ev.type != 4u || ev.phase != 1u) continue;
+        if (!isFresh(ev.sequence, lastSeq) || ev.type != 4u || ev.phase != 1u) continue;
         uint k = (uint)ev.code;
 
         if (k == 3u) { c.sel = 0.0; }                   // C  clear
@@ -185,5 +199,6 @@ void main(uint3 DTid : SV_DispatchThreadID)
     // is exactly right, because the last position is where the cursor is.
     if (c.cmd > startCmd + 1.0) c.cmd = startCmd + 1.0;
 
+    c.lastSeq = asfloat(newLast);
     Ctl[0] = c;
 }

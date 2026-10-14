@@ -1,0 +1,136 @@
+name: "BR Light"
+version: "1.0"
+mode: generator
+execution: on_dirty
+resolution: [1280, 900]
+compile_optimization: fast_compile
+
+# The LIGHTING AUTHORITY for breathing_room: the sun (from the time of day, the date, the latitude
+# and the building's compass bearing, so golden hour comes in through the west windows when it
+# would), every lamp BR_Furnish placed (on/off, dimmer, colour temperature) and the fire in the
+# grate. It never places anything -- lamps are found in the furniture records by their role, the
+# fireplace in the shell's openings.
+#
+# The canvas is a SUN-PATH chart with the windows, the street trees and the skyline mapped onto
+# the sky (drag the sun along its path), a DAY strip (golden and blue hours; drag the playhead),
+# and a PLAN showing the sun patches each window throws on the floor and every lamp's light pool
+# as rings of equal floor illuminance (drag the middle ring to set how far its light reaches).
+# The canvas is built on the Interaction Lab UI kit (_shared/ui): plate draws the sky and the plan
+# per pixel, layout records the paths, rings, chrome and type into a draw list, and ui rasterizes it
+# over them.
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+panel:
+  mode: canvas
+  output: "Light"
+  resolution: follow_panel
+
+buffers:
+  - { name: light, structured: true, element_size: 64, element_count: 32, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+state_buffers:
+  - name: light
+    max_elements: 32
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+data_inputs:
+  - name: "Shell"
+    slot: 0
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+  - name: "Furnish"
+    slot: 1
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+
+parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The time cards beside the pointer on the sun path and the day track, and a lamp's reach beside it while you hover or hold its ring (the readout keeps it). Turn it off to keep the canvas clear while you work." }
+  - { name: time_of_day, display: "Time Of Day (h)", type: float, min: 0.0, max: 24.0, default: 16.25, group: "Sun" }
+  - { name: day_of_year, display: "Day Of Year", type: int, min: 1, max: 365, default: 265, group: "Sun" }
+  - { name: latitude, display: "Latitude (deg)", type: float, min: -60.0, max: 70.0, default: 51.5, group: "Sun" }
+  - { name: compass, display: "Building Bearing (deg)", type: float, min: 0.0, max: 360.0, default: 0.0, group: "Sun" }
+  - { name: sun_intensity, display: "Sun Intensity", type: float, min: 0.0, max: 60.0, default: 16.0, group: "Sun" }
+  - { name: sky_gain, display: "Sky Gain", type: float, min: 0.0, max: 4.0, default: 1.0, group: "Sun" }
+  - { name: sun_softness, display: "Sun Softness", type: float, min: 0.004, max: 0.1, default: 0.008, group: "Sun" }
+  - { name: trees, display: "Street Trees", type: float, min: 0.0, max: 1.0, default: 0.5, group: "Outside" }
+  - { name: wind, display: "Wind In Trees", type: float, min: 0.0, max: 1.0, default: 0.35, group: "Outside" }
+  - { name: lamps_on, display: "Lamps On", type: bool, default: true, group: "Lamps" }
+  - { name: lamp_master, display: "Lamp Dimmer", type: float, min: 0.0, max: 4.0, default: 1.0, group: "Lamps" }
+  - { name: lamp_kelvin, display: "Lamp Colour (K)", type: float, min: 1800.0, max: 4500.0, default: 2700.0, group: "Lamps" }
+  - { name: fire, display: "Fire", type: bool, default: true, group: "Fire" }
+  - { name: fire_power, display: "Fire Power", type: float, min: 0.0, max: 4.0, default: 1.0, group: "Fire" }
+  - { name: fire_flicker, display: "Fire Flicker", type: float, min: 0.0, max: 1.0, default: 0.6, group: "Fire" }
+
+viewport:
+  hint: "Drag the sun along its path or the day playhead to set the time | click a lamp to select, drag its middle ring to set its reach | chips: golden hour, blue hour, midday; on/off, warmer, cooler"
+  interactions: [events]
+  input:
+    pointer: [left]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select a lamp, or set the time" }
+    - { gesture: left_drag, action: edit, label: "Drag the sun, the playhead or a light pool" }
+
+passes:
+  - name: light
+    shader: light.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:light"
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+  - name: plate
+    shader: plate.hlsl
+    time_dependent: false
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:light" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+      - { slot: 7, source: "pass:light" }
+  - name: layout
+    shader: layout.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+    inputs:
+      - { slot: 0, source: "buffer:light" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "data:1" }
+      - { slot: 7, source: "pass:plate" }
+  - name: ui
+    shader: ui.hlsl
+    time_dependent: false
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:plate" }
+      - { slot: 7, source: "pass:layout" }
+
+data_outputs:
+  - name: "Light"
+    buffer: "light"
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+outputs:
+  - { name: "Light", pass: ui }

@@ -1,0 +1,85 @@
+# Kit - the lab's living specimen. Regenerate with: python tools/il_type.py labels Kit
+TITLE        @bold @track=0.08 = INTERACTION LAB
+SUBTITLE     @sans = Kit  -  type, palette, widget states and host controls
+EXTENT       @sans = extent
+SCALE        @sans = ui scale
+
+# pane titles
+P_TYPE       @bold @track=0.07 = TYPE
+P_PALETTE    @bold @track=0.07 = PALETTE
+P_CONTROLS   @bold @track=0.07 = HOST CONTROLS
+P_STATES     @bold @track=0.07 = WIDGET STATES
+
+# type specimen
+T_SANS_CAP   @bold @track=0.05 = SANS CONDENSED
+T_SANS       @sans = Captions, labels and body. Condensed, so dense panes keep room.
+T_BOLD_CAP   @bold @track=0.05 = SEMIBOLD
+T_BOLD       @bold = Pane titles and the name of whatever is selected.
+T_MONO_CAP   @bold @track=0.05 = MONO
+T_MONO       @mono = 0123456789  -12.50  +3.14  00:01:23.08
+T_RAMP_CAP   @bold @track=0.05 = SIZE RAMP
+T_AA         @sans = Ag
+T_LIVE_CAP   @bold @track=0.05 = LIVE SIZE
+T_LIVE       @sans = Signal
+T_PX         @sans = px
+T_NOTE       @sans = One atlas, three faces, any size: each glyph is a distance.
+
+# palette
+C_FIELD      @sans = field
+C_WELL       @sans = well
+C_PANEL      @sans = panel
+C_RAISE      @sans = raise
+C_GRID       @sans = grid
+C_EDGE       @sans = edge
+C_RULE       @sans = rule
+C_DIM        @sans = dim
+C_MID        @sans = mid
+C_INK        @sans = ink
+C_ACCENT     @bold = ACCENT
+C_ACCENT_D   @sans = selection, live reading
+C_ALARM      @bold = ALARM
+C_ALARM_D    @sans = broken state only
+C_ID         @bold = IDENTITY
+C_ID_D       @sans = a closed set of four
+C_LADDER     @sans = value ladder - all chrome lives here
+
+# widget states: the module-drawn widgets, each in the states it has
+S_REST       @bold @track=0.05 = REST
+S_HOT        @bold @track=0.05 = HOT
+S_DOWN       @bold @track=0.05 = DOWN
+S_ON         @bold @track=0.05 = ON
+S_REST_D     @sans = as drawn
+S_HOT_D      @sans = pointer over
+S_DOWN_D     @sans = pressed or dragged
+S_ON_D       @sans = chosen or engaged
+S_CHIP       @sans = chip
+S_SLIDER     @sans = slider  -  amount
+S_KNOB       @sans = knob  -  level
+S_TOGGLE     @sans = toggle
+S_CHIP_L     @sans = Loop
+S_SEG_A      @sans = A
+S_SEG_B      @sans = B
+S_SEG_C      @sans = C
+S_SEG_CAP    @sans = segmented  -  mode
+S_METER_CAP  @sans = meter  -  level and its peak
+S_KEY_CAP    @sans = keycaps
+S_VAL_CAP    @sans = value row  -  amount
+S_KEY_SPACE  @sans = Space
+S_KEY_Z      @sans = Z
+S_AMOUNT     @sans = amount
+
+# controls captions
+K_AMOUNT     @sans = slider  -  amount
+K_ENABLED    @sans = toggle
+K_FIRE       @sans = button  -  presses
+K_MODE       @sans = radio pads  -  one int parameter
+K_HOLD       @sans = momentary + toggle pads
+K_POINT      @sans = xypad  -  the Y-up authority
+K_LEVEL      @sans = fader
+K_STORED     @sans = stored
+K_PUBLISHED  @sans = published
+K_HOST       @sans = host
+K_AGREE      @bold = AGREE
+K_DRIFT      @bold = DRIFT
+K_X          @mono = x
+K_Y          @mono = y

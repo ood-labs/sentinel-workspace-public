@@ -165,9 +165,8 @@ Two mistakes that make a strain readout lie:
   fly speed, so one scroll does two jobs. Require a modifier and offer a key as a
   guaranteed alternative.
 - `grabs`-style monotonic counters in the interaction record, exposed as a data
-  output, are how you prove the gesture path works: state writes never exercise it,
-  and injected input does not fire Module viewport events, so a real drag is the
-  only proof. Read the counter afterwards.
+  output, are how you prove the gesture path works: state writes never exercise it;
+  a real drag or `sentinel_ui action=drag_at` does. Read the counter afterwards.
 
 ## Draw Pass Gotchas
 

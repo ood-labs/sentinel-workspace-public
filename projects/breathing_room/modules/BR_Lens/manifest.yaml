@@ -1,0 +1,103 @@
+name: "BR Lens"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+
+# The CAMERA and the EYE for breathing_room: everything between the renderer's linear radiance and
+# the final picture. The renderer draws what the room does (including the trip's surface effects);
+# this node draws what the eye does with it:
+#   the visual field   the whole image breathes, drifts, twists and sags around the trip's anchors
+#                      (projected through the same camera), because drug visuals are distortions
+#                      of seeing, not of the room
+#   bloom              four levels (1/2 .. 1/16) of a soft-knee bright pass, each made straight
+#                      from the renderer's image (glow.hlsl)
+#   the grade          camera white balance, exposure, the trip's colour (saturation deepening with
+#                      the dose, hues drifting in broad slow regions), contrast, a filmic view that
+#                      burns highlights through yellow to white, vignette, edge fringing, grain
+# Inputs: BR_Render's "HDR" (radiance + depth), BR_Trip's records, BR_Render's scene records.
+#
+# TIMING: this build hands a pass another pass's buffer a cook late, per hop. The grade reads the
+# renderer's image itself (no hop) and every glow level is one hop from it, so the glow trails the
+# picture by one cook and is reprojected through the camera it carries. (A seven-pass pyramid here
+# put every lamp's halo seven frames behind the picture.)
+
+inputs:
+  - { name: "HDR", slot: 0, required: true }
+
+buffers:
+  # the glow levels, each a tent over BR_Render's image (glow.hlsl). g0 also carries the camera of
+  # the image it was made from in texels (0..19, 0) (br_camtexels.hlsli)
+  - { name: g0, format: RGBA16F, scale: 0.5,    persistent: false }
+  - { name: g1, format: RGBA16F, scale: 0.25,   persistent: false }
+  - { name: g2, format: RGBA16F, scale: 0.125,  persistent: false }
+  - { name: g3, format: RGBA16F, scale: 0.0625, persistent: false }
+
+data_inputs:
+  - name: "Trip"
+    slot: 0
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+  - name: "Scene"
+    slot: 1
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+
+parameters:
+  - { name: exposure,        display: "Exposure (EV)",       type: float, min: -4.0, max: 4.0, default: 1.0, group: "Exposure" }
+  - { name: white_balance,   display: "White Balance (K)",   type: float, min: 2000.0, max: 9000.0, default: 4300.0, group: "Exposure" }
+  - { name: saturation,      display: "Saturation",          type: float, min: 0.0, max: 2.0, default: 1.0, group: "Grade" }
+  - { name: contrast,        display: "Contrast",            type: float, min: 0.5, max: 1.6, default: 1.06, group: "Grade" }
+  - { name: bloom,           display: "Bloom",               type: float, min: 0.0, max: 1.0, default: 0.35, group: "Grade" }
+  - { name: bloom_threshold, display: "Bloom Threshold",     type: float, min: 0.2, max: 4.0, default: 1.2, group: "Grade" }
+  - { name: vignette,        display: "Vignette",            type: float, min: 0.0, max: 1.0, default: 0.28, group: "Grade" }
+  - { name: grain,           display: "Grain",               type: float, min: 0.0, max: 1.0, default: 0.25, group: "Grade" }
+  - { name: aberration,      display: "Edge Fringing",       type: float, min: 0.0, max: 1.0, default: 0.3, group: "Grade" }
+  - { name: trip_warp,       display: "Visual Field Warp",   type: float, min: 0.0, max: 2.0, default: 0.42, group: "Trip" }
+  - { name: lamp_rainbows,   display: "Lamp Rainbows",       type: float, min: 0.0, max: 3.0, default: 0.15, group: "Trip" }
+  - name: view
+    display: "View"
+    type: enum
+    options: [Final, Depth, Bloom, Bloom Timing]
+    default: 0
+    group: "Review"
+
+passes:
+  # four glow levels, each read straight from the renderer's image: one hop, so one cook late
+  - name: glow0
+    shader: glow.hlsl
+    target: cs_5_0
+    output: "buffer:g0"
+    inputs:
+      - { slot: 0, source: "input:0" }
+  - name: glow1
+    shader: glow.hlsl
+    target: cs_5_0
+    output: "buffer:g1"
+    inputs:
+      - { slot: 0, source: "input:0" }
+  - name: glow2
+    shader: glow.hlsl
+    target: cs_5_0
+    output: "buffer:g2"
+    inputs:
+      - { slot: 0, source: "input:0" }
+  - name: glow3
+    shader: glow.hlsl
+    target: cs_5_0
+    output: "buffer:g3"
+    inputs:
+      - { slot: 0, source: "input:0" }
+  # the visual field, the glow (looked up through its own camera) and the grade
+  - name: grade
+    shader: grade.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "input:0" }
+      - { slot: 1, source: "buffer:g0" }
+      - { slot: 2, source: "buffer:g1" }
+      - { slot: 3, source: "buffer:g2" }
+      - { slot: 4, source: "buffer:g3" }
+      - { slot: 5, source: "data:0" }
+      - { slot: 6, source: "data:1" }
+
+outputs:
+  - { name: "Lens", pass: grade }

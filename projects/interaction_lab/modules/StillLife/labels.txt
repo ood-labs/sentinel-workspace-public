@@ -1,0 +1,42 @@
+# Still Life - host selection, a gizmo, durable objects. Regenerate: python tools/il_type.py labels StillLife
+TITLE       @bold @track=0.08 = STILL LIFE
+SUBTITLE    @sans = host selection, a gizmo, durable objects, the internal camera
+
+# object names (index = kind - 1)
+N_VASE      @bold @track=0.07 = VASE
+N_ORB       @bold @track=0.07 = ORB
+N_RING      @bold @track=0.07 = RING
+N_BLOCK     @bold @track=0.07 = BLOCK
+N_CONE      @bold @track=0.07 = CONE
+
+SEL_NONE    @sans = nothing selected
+SEL_N       @sans = selected
+R_X         @mono = x
+R_Y         @mono = y
+R_Z         @mono = z
+R_TURN      @mono = turn
+
+# what a press will do (index = handle - 1)
+G_MX        @sans = move along x
+G_MY        @sans = move along y
+G_MZ        @sans = move along z
+G_TX        @sans = turn about x
+G_TY        @sans = turn about y
+G_TZ        @sans = turn about z
+G_BODY      @sans = slide on the table
+
+# hint bar (pairs)
+K_CLICK     @sans = Click
+K_SHIFT     @sans = Shift-click
+K_DRAG      @sans = Drag
+K_ARROW     @sans = Arrow
+K_RING      @sans = Ring
+K_ESC       @sans = Esc
+K_RMB       @sans = RMB + WASD
+D_CLICK     @sans = select
+D_SHIFT     @sans = add
+D_DRAG      @sans = slide
+D_ARROW     @sans = move
+D_RING      @sans = turn
+D_ESC       @sans = cancel
+D_RMB       @sans = fly

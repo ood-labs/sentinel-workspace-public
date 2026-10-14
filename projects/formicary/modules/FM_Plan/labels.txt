@@ -1,0 +1,144 @@
+# FM_Plan - the plan canvas's words. Regenerate: python -B tools/il_type.py labels FM_Plan
+TITLE        @bold @track=0.14 = FORMICARY
+SUBTITLE     @sans = plan and route lengths
+ARRANGEMENT  @bold @track=0.08 = ARRANGEMENT
+# the arrangement enum, in the manifest's order (layout.hlsl counts from AR_0)
+AR_0         @bold @track=0.08 = TRAIL CROP
+AR_1         @bold @track=0.08 = FORAGING FAN
+AR_2         @bold @track=0.08 = TRUNK TRAIL
+AR_3         @bold @track=0.08 = RAID FRONT
+FACES        @bold @track=0.08 = FACES
+FACE_0       @bold @track=0.08 = CAMERA SIDE
+FACE_1       @bold @track=0.08 = FAR SIDE
+
+PLAN         @bold @track=0.08 = PLAN
+ARENA        @bold @track=0.08 = ARENA
+FLOW         @bold @track=0.08 = ROUTE LENGTH, WALKED
+LG_STRAIGHT  @sans = straight line
+LG_MEASURED  @sans = measured share
+LG_NONE      @sans = not measured
+LG_KIND      @sans = food kind
+TEN_MM       @sans = 10 mm
+
+# the readout column
+P_ARR        @bold @track=0.08 = RECORDS
+R_FOOD       @sans = food sources
+R_TRAILS     @sans = trails
+R_STATIONS   @sans = stations
+R_OBST       @sans = obstacles
+P_ROUTES     @bold @track=0.08 = ROUTES
+R_LONGEST    @sans = longest walk
+R_RECRUIT    @sans = recruitment
+NO_TRAIL     @sans = no trail on
+P_LIVE       @bold @track=0.08 = LIVE
+NO_READING   @sans = no reading
+R_WALKING    @sans = walking
+R_LADEN      @sans = laden
+R_SPEED      @sans = speed
+R_SLIP       @sans = foot slip
+P_SEL        @bold @track=0.08 = SELECTION
+NOTHING      @sans = click a record to select it
+
+# records (layout.hlsl counts from K_NEST)
+K_NEST       @bold @track=0.08 = NEST
+K_FOOD       @bold @track=0.08 = FOOD
+K_OBST       @bold @track=0.08 = OBSTACLE
+K_ROUTE      @bold @track=0.08 = ROUTE
+K_STATION    @bold @track=0.08 = STATION
+OB_0         @bold @track=0.06 = PEBBLE
+OB_1         @bold @track=0.06 = TWIG
+OB_2         @bold @track=0.06 = LEAF
+SK_0         @bold @track=0.06 = EMITTER
+SK_1         @bold @track=0.06 = ATTRACTOR
+SK_2         @bold @track=0.06 = REPELLER
+SK_3         @bold @track=0.06 = SINK
+EM_0         @bold @track=0.06 = DRIP
+EM_1         @bold @track=0.06 = BURST
+EM_2         @bold @track=0.06 = RING
+AM_0         @bold @track=0.06 = STEADY
+AM_1         @bold @track=0.06 = PULSE
+SM_0         @bold @track=0.06 = RECYCLE
+SM_1         @bold @track=0.06 = CONSUME
+FK_0         @bold @track=0.06 = KIND A
+FK_1         @bold @track=0.06 = KIND B
+FK_2         @bold @track=0.06 = KIND C
+ST_OFF       @bold @track=0.08 = OFF
+ST_EDITED    @bold @track=0.08 = EDITED
+ST_BLOCKED   @bold @track=0.08 = BLOCKED
+C_KIND       @sans = kind
+C_MODE       @sans = mode
+C_RADIUS     @sans = radius
+C_AT         @sans = at
+C_PAYLOAD    @sans = payload
+C_LENGTH     @sans = length
+C_WIDTH      @sans = width
+C_HEIGHT     @sans = height
+C_YAW        @sans = yaw
+C_STRENGTH   @sans = strength
+C_REACH      @sans = reach
+C_PULSE      @sans = pulse
+C_BURST      @sans = burst
+C_BUDGET     @sans = budget
+C_SPREAD     @sans = spread
+C_FIRED      @sans = fired
+C_FROM       @sans = from
+C_WALKED     @sans = walked
+C_STRAIGHT   @sans = straight
+C_DETOUR     @sans = detour
+C_RECRUIT    @sans = recruitment
+C_CLEAR      @sans = clearance
+ARROW        @sans = to
+UNLIMITED    @sans = no limit
+NONE_NEAR    @sans = nothing near
+GAIN         @sans = gain
+DRAIN        @sans = drain
+U_MM         @sans = mm
+U_DEG        @sans = deg
+U_HZ         @sans = Hz
+U_PCT        @sans = %
+U_PER_S      @sans = ants/s
+U_ANTS       @sans = ants
+U_X          @sans = x
+U_MMS        @sans = mm/s
+
+S_BLOCKED    @bold @track=0.08 = BLOCKED
+S_CLEAR      @bold @track=0.08 = ALL ROUTES CLEAR
+S_ROUTES     @sans = routes through an obstacle or off the arena
+
+# keys and gestures (layout.hlsl draws them as keycaps; KEY_A..KEY_C also letter the food-kind legend)
+KEY_CLICK    @sans = Click
+KEY_DRAG     @sans = Drag
+KEY_A        @sans = A
+KEY_B        @sans = B
+KEY_C        @sans = C
+KEY_D        @sans = D
+KEY_E        @sans = E
+KEY_F        @sans = F
+KEY_G        @sans = G
+KEY_H        @sans = H
+KEY_M        @sans = M
+KEY_N        @sans = N
+KEY_P        @sans = P
+KEY_R        @sans = R
+KEY_T        @sans = T
+KEY_V        @sans = V
+KEY_X        @sans = X
+D_SELECT     @sans = select
+D_MOVE       @sans = move, bend a route
+D_ADD        @sans = add a station
+D_ROUTE      @sans = auto-route
+D_RESEED     @sans = reseed
+D_PALETTE    @sans = palette
+D_CLEAR      @sans = clear selection
+V_KIND       @sans = kind
+V_MODE       @sans = mode
+V_FIRE       @sans = fire
+V_DELETE     @sans = delete
+V_STRENGTH   @sans = strength
+V_REACH      @sans = reach
+V_SIZE       @sans = size
+V_PAYLOAD    @sans = payload
+V_RECRUIT    @sans = recruitment
+V_ROUTE      @sans = route around
+V_REROLL     @sans = re-roll
+V_ONOFF      @sans = on / off

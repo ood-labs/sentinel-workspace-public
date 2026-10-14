@@ -16,29 +16,18 @@
             MinimumNodePresets = 2
             Exemptions = @('approved-ungrouped-instrument', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
-        living_room_sdf = @{
-            ProjectFile = 'living_room_sdf.sentinel'
+        # Replaces living_room_sdf as the room example; its blueprints live on as tools/templates/blueprints/living_room.
+        breathing_room = @{
+            ProjectFile = 'breathing_room.sentinel'
             SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-6/living-room-sdf.json')
-            MinimumSceneGroups = 1
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            RequireNodePreviews = $true
-            MinimumGroupPresets = 3
-            MinimumNodePresets = 2
-            Exemptions = @()
-        }
-        matik_plate = @{
-            ProjectFile = 'matik_plate.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-6/matik-plate.json')
+            ProofRecords = @('.release/reviews/release-0.6.8/breathing_room.json')
             MinimumSceneGroups = 1
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
             RequireNodePreviews = $true
             MinimumGroupPresets = 0
-            MinimumNodePresets = 6
-            Exemptions = @('scene-group-presets', 'technical-workflow-output')
+            MinimumNodePresets = 7
+            Exemptions = @()
         }
         formicary = @{
             ProjectFile = 'formicary.sentinel'
@@ -76,39 +65,6 @@
             MinimumNodePresets = 5
             Exemptions = @('scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
-        face_collage = @{
-            ProjectFile = 'face_collage.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-6/face-collage.json')
-            MinimumSceneGroups = 1
-            RequiresGroupOutput = $true
-            MinimumGroupPresets = 3
-            MinimumNodePresets = 2
-            Exemptions = @()
-        }
-        strata = @{
-            ProjectFile = 'strata.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-6/strata.json')
-            MinimumSceneGroups = 1
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            RequireNodePreviews = $true
-            MinimumGroupPresets = 3
-            MinimumNodePresets = 1
-            Exemptions = @('scene-group-controls')
-        }
-        industrial_lattice = @{
-            ProjectFile = 'industrial_lattice.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-6/industrial-lattice.json')
-            MinimumSceneGroups = 0
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 2
-            Exemptions = @('approved-compact-study', 'object-picking', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
-        }
         camera_reference = @{
             ProjectFile = 'camera_reference.sentinel'
             SharedModules = @()
@@ -120,18 +76,6 @@
             MinimumGroupPresets = 0
             MinimumNodePresets = 0
             Exemptions = @('focused-reference', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
-        }
-        touchdesigner_new_project = @{
-            ProjectFile = 'touchdesigner_new_project.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-6/touchdesigner-new-project.json')
-            MinimumSceneGroups = 0
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            RequireNodePreviews = $true
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 0
-            Exemptions = @('starter-reference', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
         streamdiff_workflows = @{
             ProjectFiles = @(
@@ -170,17 +114,6 @@
             MinimumNodePresets = 1
             Exemptions = @('scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
-        scientific_organism = @{
-            ProjectFile = 'scientific_organism.sentinel'
-            ProofRecords = @('.release/reviews/phase-6/scientific-organism.json')
-            SharedModules = @()
-            MinimumSceneGroups = 1
-            RequiresGroupOutput = $true
-            MinimumGroupPresets = 3
-            MinimumNodePresets = 4
-            RequireNodePreviews = $true
-            Exemptions = @()
-        }
         soft_vitrine = @{
             ProjectFile = 'soft_vitrine.sentinel'
             SharedModules = @()
@@ -192,18 +125,6 @@
             MinimumGroupPresets = 3
             MinimumNodePresets = 6
             Exemptions = @('scene-group-presets', 'technical-workflow-output')
-        }
-        autopsia = @{
-            ProjectFile = 'autopsia.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-6/autopsia.json')
-            MinimumSceneGroups = 1
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 2
-            RequireNodePreviews = $true
-            Exemptions = @('scene-group-presets')
         }
         streamdiff_canvas = @{
             ProjectFile = 'streamdiff_canvas.sentinel'
@@ -217,61 +138,6 @@
             RequireNodePreviews = $true
             Exemptions = @('scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
         }
-        vitreous_cross = @{
-            ProjectFile = 'vitreous_cross.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-7/vitreous-cross.json')
-            MinimumSceneGroups = 1
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 4
-            Exemptions = @('scene-group-presets', 'technical-workflow-output')
-        }
-        sunward_corridor = @{
-            ProjectFile = 'sunward_corridor.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-7/sunward-corridor.json')
-            MinimumSceneGroups = 1
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 0
-            Exemptions = @('scene-group-presets', 'technical-workflow-output')
-        }
-        axon_press = @{
-            ProjectFile = 'axon_press.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-7/axon-press.json')
-            MinimumSceneGroups = 0
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 8
-            Exemptions = @('approved-compact-study', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
-        }
-        koi_tank = @{
-            ProjectFile = 'koi_tank.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-7/koi-tank.json')
-            MinimumSceneGroups = 0
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 8
-            Exemptions = @('approved-compact-study', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
-        }
-        reactor_shaft = @{
-            ProjectFile = 'reactor_shaft.sentinel'
-            SharedModules = @()
-            ProofRecords = @('.release/reviews/phase-7/reactor-shaft.json')
-            MinimumSceneGroups = 1
-            RequiresGroupOutput = $false
-            ExpectedGroupOutputs = 0
-            MinimumGroupPresets = 0
-            MinimumNodePresets = 4
-            Exemptions = @('scene-group-presets', 'technical-workflow-output')
-        }
         # Committed directly (scripts/, presets/ and docs/ are outside AllowedProjectDirectories),
         # so promotion skips it; the validator, audit and workspace manifest still cover it.
         phage_stage = @{
@@ -279,7 +145,21 @@
             Promote = $false
             SharedModules = @()
             # Reviewed in phase 10 as stagerig_phage; renamed phage_stage for 0.6.1.
-            ProofRecords = @('.release/reviews/phase-10/stagerig_phage.json')
+            ProofRecords = @('.release/reviews/phase-10/stagerig_phage.json', '.release/reviews/release-0.6.8/phage_stage.json')
+            MinimumSceneGroups = 0
+            RequiresGroupOutput = $false
+            ExpectedGroupOutputs = 0
+            RequireNodePreviews = $true
+            MinimumGroupPresets = 0
+            MinimumNodePresets = 5
+            Exemptions = @('approved-ungrouped-instrument', 'scene-group-controls', 'scene-group-presets', 'technical-workflow-output')
+        }
+        # The club-scale stage on PHAGE's show system, committed directly like PHAGE (scripts/, presets/, docs/ and rigs/).
+        simple_stage = @{
+            ProjectFile = 'simple_stage.sentinel'
+            Promote = $false
+            SharedModules = @()
+            ProofRecords = @('.release/reviews/release-0.6.8/simple_stage.json')
             MinimumSceneGroups = 0
             RequiresGroupOutput = $false
             ExpectedGroupOutputs = 0
@@ -312,16 +192,16 @@
             RedistributionStatus = 'cleared'
             Evidence = '.release/reviews/phase-6/streamdiff-workflow-05.json'
         }
-        @{
-            Path = 'projects/touchdesigner_new_project/images/jellybeans.png'
-            Source = 'User-selected replacement image'
-            Purpose = 'Portable image input for the TouchDesigner starter reference'
-            RedistributionStatus = 'cleared'
-            Evidence = '.release/reviews/phase-6/touchdesigner-new-project.json'
-        }
     )
+    # Generated by the workspace's own tools: the IBM Plex type atlas (tools/il_type.py, OFL notice beside every copy),
+    # the stage examples' GDTF thumbnails (their GDTF writers) and README images (captures of the projects), and
+    # Formicary's synthesised kick.
     GeneratedMediaPatterns = @(
-        'projects/axon_press/hero.png'
+        'projects/*/modules/_shared/type/il_type.png',
+        'tools/templates/*/*/modules/_shared/type/il_type.png',
+        'projects/*/assets/gdtf/thumbnails/*.png',
+        'projects/simple_stage/docs/*.png',
+        'projects/formicary/audio/kick_120bpm.wav'
     )
 
     SupportedTopLevelTools = @(
@@ -388,7 +268,10 @@
             'projects',
             'tools/templates/module-includes',
             'tools/templates/dmx',
-            'tools/templates/module-ui'
+            'tools/templates/fixtures',
+            'tools/templates/blueprints',
+            'tools/templates/module-ui',
+            'tools/templates/scripts'
         )
         Files = @(
             '.gitignore',

@@ -1,0 +1,60 @@
+# Ramp Desk - the labels of the Ramp Desk station. Regenerate: python tools/il_type.py labels RampDesk
+TITLE       @bold @track=0.08 = RAMP DESK
+SUBTITLE    @sans = colour stops for a palette, blended in OKLab
+
+STOPS       @bold @track=0.06 = STOPS
+STOPS_L     @sans = stops
+STOP        @bold @track=0.04 = STOP
+FREE        @sans = click the ramp to add a stop
+
+COLOUR      @bold @track=0.06 = COLOUR
+PLANE_D     @sans = lightness up, chroma across, at its hue
+L_          @mono = L
+C_          @mono = C
+H_          @mono = h
+T_          @mono = t
+ASKED       @sans = asked
+CLIPPED     @sans = outside sRGB: chroma brought in
+INSIDE      @sans = inside sRGB
+
+RAMP        @bold @track=0.06 = RAMP
+BLEND_0     @sans = blended in OKLab
+BLEND_1     @sans = blended in OKLCH
+BLEND_2     @sans = blended in sRGB
+ENTRIES     @sans = 256 entries published
+REMOVE      @sans = release to remove
+
+G_0         @bold @track=0.06 = BLEND
+G_1         @bold @track=0.06 = SEEN AS
+G_2         @bold @track=0.06 = ALONG THE RAMP
+G_0_D       @sans = the same stops in each space
+G_1_D       @sans = lightness alone, then each dichromacy
+G_2_D       @sans = lightness, chroma, and the step from one entry to the next
+LN_0        @mono = OKLAB
+LN_1        @mono = OKLCH
+LN_2        @mono = SRGB
+LN_3        @mono = LIGHT
+LN_4        @mono = DEUTAN
+LN_5        @mono = PROTAN
+LN_6        @mono = TRITAN
+LN_7        @mono = L
+LN_8        @mono = C
+LN_9        @mono = STEP
+MEAN        @sans = mean
+OUTSIDE     @sans = outside sRGB
+
+# hint bar (pairs)
+K_A0        @sans = Click the ramp
+K_A1        @sans = Drag a stop
+K_A2        @sans = Drag a diamond
+K_A3        @sans = Drag the plane, the hue
+K_A4        @sans = Tab  Arrows  Backspace
+K_A5        @sans = F  E
+K_A6        @sans = R  Z
+D_A0        @sans = add a stop
+D_A1        @sans = move it; down and off removes it
+D_A2        @sans = lean the blend
+D_A3        @sans = colour the stop
+D_A4        @sans = next, nudge, remove
+D_A5        @sans = flip, space evenly
+D_A6        @sans = built-in palettes, undo

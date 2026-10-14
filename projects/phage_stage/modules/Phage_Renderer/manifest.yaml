@@ -6,37 +6,27 @@ features: [camera]
 viewport:
   hint: RMB look, WASD move, wheel speed
   interactions: [camera]
-inputs:
-  - {name: LED RGB, slot: 0}
+# The program image of what the DMX says. Every Fixture Rig fixture's DMX (Phage_Lighting's, or a DMX In's to play
+# from a console) is decoded through its own GDTF (vis_decode), each fixture sits where the show's fixture table has the
+# truss carry it (Rig Fixtures), and the decoded state becomes the movers' pose and optics, the strobes, the pixel-bar
+# texture (PHAGE's own types, drawn by PHAGE's models) and every other type's body, cells and beams from its GDTF
+# (guest_*). The vis_* passes are that decode; everything after draws it.
 data_inputs:
-  - name: Pose
+  - name: DMX
     slot: 0
     schema:
-      - {name: position, type: float3}
-      - {name: fixture_id, type: float}
-      - {name: up, type: float3}
-      - {name: pan, type: float}
-      - {name: fwd, type: float3}
-      - {name: tilt, type: float}
-      - {name: target_pan, type: float}
-      - {name: target_tilt, type: float}
-      - {name: scale, type: float}
-      - {name: active, type: float}
-  - name: Optics
+      - {name: channels, type: uint, count: 512}
+  - name: Rig Fixtures
     slot: 1
     schema:
-      - {name: position, type: float3}
-      - {name: fixture_id, type: float}
-      - {name: normal, type: float3}
-      - {name: local_id, type: float}
-      - {name: colour, type: float3}
-      - {name: intensity, type: float}
-      - {name: beam_tangent, type: float}
-      - {name: field_tangent, type: float}
-      - {name: reach, type: float}
-      - {name: active, type: float}
-      - {name: frost, type: float}
-      - {name: padding, type: float3}
+      - {name: ids, type: uint, count: 4}
+      - {name: run, type: uint, count: 4}
+      - {name: patch, type: uint, count: 4}
+      - {name: x, type: float4}
+      - {name: y, type: float4}
+      - {name: z, type: float4}
+      - {name: o, type: float4}
+      - {name: rest, type: float4}
   - name: Bar Pieces
     slot: 2
     schema:
@@ -59,8 +49,19 @@ data_inputs:
     slot: 5
     schema:
       - {name: value, type: float4}
+  - name: FixtureRender
+    slot: 6
+    schema:
+      - {name: w, type: uint, count: 4}
+  - name: Design
+    slot: 7
+    schema:
+      - {name: value, type: float4}
 parameters:
   - {name: worklight, type: float, default: 0.15, min: 0, max: 4}
+  - {name: optic_beam_gain, label: Decoded beam gain, type: float, default: 64, min: 0, max: 512, description: 'Render intensity per unit of decoded beam dimmer: 8 x 2^boost, as Lighting draws it (boost 3).'}
+  - {name: optic_halo_gain, label: Decoded halo gain, type: float, default: 1.6, min: 0, max: 16, description: 'Render intensity per unit of decoded halo dimmer: 0.2 x 2^boost (boost 3).'}
+  - {name: reach, label: Beam reach, type: float, default: 40, min: 5, max: 80}
   - {name: exposure, type: float, default: 1.0, min: 0.1, max: 4}
   - {name: haze, type: float, default: 0.03, min: 0, max: 1}
   - {name: beam_gain, type: float, default: 10.000000, min: 0, max: 20}
@@ -79,16 +80,117 @@ parameters:
   - {name: ring_haze, label: Mover ring haze, type: float, default: 0.35, min: 0, max: 2}
   - {name: crowd_bob, type: float, default: 1.0, min: 0, max: 3}
   - {name: volume_samples, type: int, default: 8, min: 4, max: 32}
+  - {name: taa, label: Temporal anti-aliasing, type: float, default: 1, min: 0, max: 1, description: 'Above 0.5 every raster pass jitters a sub-pixel step each frame and taa.hlsl averages the frames along the camera, clipped to what each frame shows. 0 draws one sample per pixel.'}
+  - {name: taa_feedback, label: TAA history weight, type: float, default: 0.9, min: 0.5, max: 0.97, description: 'How much of the history a still pixel keeps each frame: higher is smoother and slower to settle.'}
 buffers:
-  - {name: sources, structured: true, element_size: 80, element_count: 352}
+  - {name: vinst, structured: true, element_size: 32, element_count: 1024}
+  - {name: vstate, structured: true, element_size: 8, element_count: 1048576}
+  - {name: vframes, structured: true, element_size: 64, element_count: 1024}
+  - {name: poses, structured: true, element_size: 64, element_count: 128}
+  - {name: optics, structured: true, element_size: 80, element_count: 3312}   # PHAGE's 3248, then 64 guest sources
+  - {name: runs, structured: true, element_size: 4, element_count: 2048}
+  - {name: glist, structured: true, element_size: 4, element_count: 65}
+  - {name: gframe, structured: true, element_size: 16, element_count: 8576}   # 64 guests x 134 rows
+  - {name: sources, structured: true, element_size: 80, element_count: 416}   # lightgrid.hlsli LG_SOURCES
   - {name: lightgrid, structured: true, element_size: 4, element_count: 1044480}
+  - {name: taa_history, format: RGBA16F, scale: 1.0, persistent: true}           # last frame's resolved image
+  - {name: taa_cam, structured: true, element_size: 16, element_count: 8, persistent: true}   # last frame's camera
 passes:
+  - name: vis_inst
+    shader: vis_inst.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:1'}
+      - {slot: 1, source: 'data:6'}
+    output: buffer:vinst
+  - name: vis_decode
+    shader: vis_decode.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:vinst}
+      - {slot: 1, source: 'data:6'}
+      - {slot: 2, source: 'data:0'}
+    output: buffer:vstate
+  - name: vis_frames
+    shader: vis_frames.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:vinst}
+      - {slot: 1, source: 'data:1'}
+      - {slot: 2, source: 'data:6'}
+    output: buffer:vframes
+  - name: vis_guests
+    shader: vis_guests.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:vinst}
+      - {slot: 1, source: 'data:6'}
+    output: buffer:glist
+  - name: vis_gframe
+    shader: vis_gframe.hlsl
+    target: cs_5_0
+    dispatch: [128, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:vinst}
+      - {slot: 1, source: buffer:vframes}
+      - {slot: 2, source: buffer:vstate}
+      - {slot: 3, source: buffer:glist}
+      - {slot: 4, source: 'data:6'}
+    output: buffer:gframe
+  - name: vis_pose
+    shader: vis_pose.hlsl
+    target: cs_5_0
+    dispatch: [2, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:vinst}
+      - {slot: 1, source: buffer:vframes}
+      - {slot: 2, source: buffer:vstate}
+      - {slot: 3, source: 'data:6'}
+      - {slot: 4, source: 'data:7'}
+    output: buffer:poses
+  - name: vis_optics
+    shader: vis_optics.hlsl
+    target: cs_5_0
+    dispatch: [52, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:poses}
+      - {slot: 1, source: buffer:vinst}
+      - {slot: 2, source: buffer:vframes}
+      - {slot: 3, source: buffer:vstate}
+      - {slot: 4, source: 'data:6'}
+      - {slot: 5, source: 'data:7'}
+      - {slot: 6, source: buffer:gframe}
+      - {slot: 7, source: buffer:glist}
+    output: buffer:optics
+  - name: vis_runs
+    shader: vis_runs.hlsl
+    target: cs_5_0
+    dispatch: [32, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:vinst}
+    output: buffer:runs
+  - name: vis_led
+    shader: vis_led.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    resolution: [1024, 64]     # fixed: the renderer and the venue sample it, so it must not follow the panel
+    inputs:
+      - {slot: 0, source: buffer:vinst}
+      - {slot: 1, source: buffer:vstate}
+      - {slot: 2, source: buffer:runs}
+      - {slot: 3, source: 'data:6'}
+      - {slot: 4, source: 'data:2'}
+      - {slot: 5, source: 'data:5'}
   - name: sources
     shader: sources.hlsl
     target: cs_5_0
-    dispatch: [6, 1, 1]
+    dispatch: [7, 1, 1]
     inputs:
-      - {slot: 0, source: 'data:1'}
+      - {slot: 0, source: buffer:optics}
     output: buffer:sources
   - name: lightgrid
     shader: lightgrid.hlsl
@@ -108,8 +210,8 @@ passes:
     cull: none
     format: RGBA16F
     inputs:
-      - {slot: 0, source: 'data:0'}
-      - {slot: 1, source: 'data:1'}
+      - {slot: 0, source: buffer:poses}
+      - {slot: 1, source: buffer:optics}
   - name: structure
     shader: structure.hlsl
     target: draw
@@ -148,9 +250,9 @@ passes:
     cull: none
     format: RGBA16F
     inputs:
-      - {slot: 0, source: 'data:1'}
+      - {slot: 0, source: buffer:optics}
       - {slot: 1, source: 'data:2'}
-      - {slot: 2, source: 'input:0'}
+      - {slot: 2, source: 'pass:vis_led'}
   - name: crowd
     shader: crowd.hlsl
     target: draw
@@ -178,6 +280,30 @@ passes:
       - {slot: 1, source: 'buffer:sources'}
       - {slot: 2, source: 'data:4'}
       - {slot: 3, source: 'buffer:lightgrid'}
+  - name: guest_bodies
+    shader: guest_bodies.hlsl
+    target: draw
+    vertex_count: 165888      # 64 guests x 8 parts x 324
+    topology: trianglelist
+    depth: true
+    depth_write: true
+    cull: none
+    format: RGBA16F
+    inputs:
+      - {slot: 0, source: buffer:gframe}
+      - {slot: 1, source: 'data:6'}
+  - name: guest_faces
+    shader: guest_faces.hlsl
+    target: draw
+    vertex_count: 3072        # 64 guests x 8 faces x 6
+    topology: trianglelist
+    depth: true
+    depth_write: true
+    cull: none
+    format: RGBA16F
+    inputs:
+      - {slot: 0, source: buffer:gframe}
+      - {slot: 1, source: 'data:6'}
   - name: nearest
     shader: nearest.hlsl
     target: cs_5_0
@@ -189,6 +315,8 @@ passes:
       - {slot: 3, source: 'pass:emitters'}
       - {slot: 4, source: 'pass:crowd'}
       - {slot: 5, source: 'pass:venue'}
+      - {slot: 6, source: 'pass:guest_bodies'}
+      - {slot: 7, source: 'pass:guest_faces'}
   - name: volume
     shader: volume.hlsl
     target: cs_5_0
@@ -214,13 +342,36 @@ passes:
       - {slot: 0, source: 'pass:nearest'}
       - {slot: 1, source: 'pass:volume'}
       - {slot: 2, source: 'pass:floor_reflections'}
+  # Temporal anti-aliasing: the resolve reads last frame's history and camera (declared before their writers), then
+  # keeps this frame's for the next.
+  - name: taa
+    shader: taa.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - {slot: 0, source: 'pass:hdr_scene'}
+      - {slot: 1, source: 'buffer:taa_history'}
+      - {slot: 2, source: 'pass:nearest'}
+      - {slot: 3, source: 'buffer:taa_cam'}
+  - name: taa_store
+    shader: taa_store.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    inputs:
+      - {slot: 0, source: 'pass:taa'}
+    output: buffer:taa_history
+  - name: taa_cam
+    shader: taa_cam.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    output: buffer:taa_cam
   - name: bloom_d0
     shader: bloom_down.hlsl
     target: cs_5_0
     format: RGBA16F
     resolution_scale: 0.5
     inputs:
-      - {slot: 0, source: 'pass:hdr_scene'}
+      - {slot: 0, source: 'pass:taa'}
   - name: bloom_d1
     shader: bloom_down.hlsl
     target: cs_5_0
@@ -298,7 +449,7 @@ passes:
   - name: present
     shader: present.hlsl
     inputs:
-      - {slot: 0, source: 'pass:hdr_scene'}
+      - {slot: 0, source: 'pass:taa'}
       - {slot: 1, source: 'pass:bloom_u0'}
       - {slot: 2, source: 'pass:streaks'}
 outputs:

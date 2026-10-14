@@ -1,0 +1,37 @@
+# Scope - four probe lanes for the Control Atoms. Regenerate: python tools/il_type.py labels Scope
+TITLE       @bold @track=0.08 = SCOPE
+SUBTITLE    @sans = Control Atoms through ref() expressions, one sample per frame
+
+# lanes (index order = probe order)
+L_A         @bold @track=0.06 = LFO
+L_B         @bold @track=0.06 = ENV
+L_C         @bold @track=0.06 = S&H
+L_D         @bold @track=0.06 = SLEW
+L_GATE      @bold @track=0.06 = GATE
+L_A_D       @sans = Atoms  lfo
+L_B_D       @sans = Atoms  env
+L_C_D       @sans = Atoms  sh
+L_D_D       @sans = Atoms  slew
+L_GATE_D    @sans = Atoms  gate
+
+HOLD        @bold @track=0.06 = HOLD
+WIN         @sans = window
+UNIT_S      @mono = s
+NOW         @mono = now
+DASH        @mono = -
+APART       @sans = apart
+BA          @sans = B-A
+
+# hint bar (pairs)
+K_DRAG      @sans = Drag
+K_SHIFT     @sans = Shift-drag
+K_SPACE     @sans = Space
+K_ZX        @sans = Z  X
+K_C         @sans = C
+K_12        @sans = 1  2
+D_DRAG      @sans = place cursor, holds the trace
+D_SHIFT     @sans = the other cursor
+D_SPACE     @sans = hold / resume
+D_ZX        @sans = zoom
+D_C         @sans = clear cursors
+D_12        @sans = active cursor A / B

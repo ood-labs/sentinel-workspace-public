@@ -1,0 +1,132 @@
+name: "BR Furnish"
+version: "1.0"
+mode: generator
+execution: on_dirty
+resolution: [1280, 960]
+# An instrument canvas, not a renderer: skipping the legacy optimizer keeps edits iterable.
+compile_optimization: fast_compile
+
+# The FURNITURE AUTHORITY for breathing_room. Owns every piece in the room -- what it is, which
+# variant, where it stands, what it hangs off -- and nothing else decides that. BR_Render draws the
+# published records; BR_Light reads the lamps out of them.
+#
+# The layout is RELATIONAL: an arrangement (hearth, facing, view, reading) builds a conversation
+# group around a focal wall and hangs everything else off it -- side tables off the sofa, lamps on
+# tables, shelves in the chimney alcoves, art at eye level over the console, the mirror over the
+# mantel. Variation re-rolls RELATIONSHIPS (which way the chairs turn, which arm the lamp stands
+# by, which variants pair), never free coordinates, so every seed is a room. The canvas edits
+# individual pieces as deltas in their parent's frame, and the two keep composing.
+#
+# The canvas is a FURNISHING PLAN with live design rules (coffee gap, conversation circle, hearth
+# keep-clear, door swing, overlaps, the walkway from the door to the windows) and a SECTION through
+# the room with hidden lines removed. The canvas is built on the Interaction Lab UI kit (_shared/ui):
+# plate draws the plan and section per pixel, layout records the panes, readouts, handles and type
+# into a draw list, and ui rasterizes it over the drawing.
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+panel:
+  mode: canvas
+  output: "Furnishing Plan"
+  resolution: follow_panel
+
+buffers:
+  - { name: furnish, structured: true, element_size: 64, element_count: 112, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+state_buffers:
+  - name: furnish
+    max_elements: 112
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+data_inputs:
+  - name: "Shell"
+    slot: 0
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+
+parameters:
+  - { name: arrangement, display: "Arrangement", type: enum, options: [Hearth, Facing, View, Reading], default: 0, flags: button_grid, group: "Layout" }
+  - { name: layering, display: "Layering", type: enum, options: [Essentials, Lived-in, Collected], default: 1, flags: button_grid, group: "Layout" }
+  - { name: variation, display: "Variation", type: int, min: 0, max: 999, default: 7, group: "Layout" }
+  - { name: coffee_gap, display: "Coffee Table Gap (m)", type: float, min: 0.30, max: 0.70, default: 0.45, group: "Layout" }
+  - { name: walkway, display: "Walkway Target (m)", type: float, min: 0.60, max: 1.40, default: 0.90, group: "Rules" }
+  - { name: snap, display: "Snap (m)", type: float, min: 0.0, max: 0.25, default: 0.05, group: "Editor" }
+
+viewport:
+  hint: "Click select | drag to move (a lamp dropped on another table re-hosts) | knob turns | edge grips resize | drag in the section to slide along the wall, raise art or drop the pendant | V variant  M material  H hide  R reset  N re-roll  0 reset all"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [v, m, h, r, n, "0", escape]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select a piece in the plan or the section" }
+    - { gesture: left_drag, action: edit, label: "Move, turn, resize or re-host" }
+    - { key: v, action: variant, label: "Cycle the piece's variant" }
+    - { key: m, action: material, label: "Cycle the piece's material" }
+    - { key: h, action: hide, label: "Hide / show the piece" }
+    - { key: r, action: reset, label: "Reset the selected piece" }
+    - { key: n, action: reroll, label: "Re-roll the arrangement's relationships" }
+    - { key: "0", action: reset_all, label: "Reset every edit" }
+    - { key: escape, action: deselect, label: "Clear selection" }
+
+passes:
+  - name: furnish
+    shader: furnish.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:furnish"
+    inputs:
+      - { slot: 0, source: "data:0" }
+  - name: plate
+    shader: plate.hlsl
+    time_dependent: false
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:furnish" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 7, source: "pass:furnish" }
+  - name: layout
+    shader: layout.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+    inputs:
+      - { slot: 0, source: "buffer:furnish" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 7, source: "pass:plate" }
+  - name: ui
+    shader: ui.hlsl
+    time_dependent: false
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:plate" }
+      - { slot: 7, source: "pass:layout" }
+
+data_outputs:
+  - name: "Furnish"
+    buffer: "furnish"
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+outputs:
+  - { name: "Furnishing Plan", pass: ui }

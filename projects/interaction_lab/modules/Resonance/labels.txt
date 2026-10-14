@@ -1,0 +1,31 @@
+# Resonance - the Script's answer to Pulse, echoed into a second module. Regenerate: python tools/il_type.py labels Resonance
+TITLE       @bold @track=0.08 = RESONANCE
+SUBTITLE    @sans = what the Script played, echoed into a second module
+
+# pitch classes (index = note % 12)
+PC_C        @bold = C
+PC_CS       @bold = C#
+PC_D        @bold = D
+PC_DS       @bold = D#
+PC_E        @bold = E
+PC_F        @bold = F
+PC_FS       @bold = F#
+PC_G        @bold = G
+PC_GS       @bold = G#
+PC_A        @bold = A
+PC_AS       @bold = A#
+PC_B        @bold = B
+
+# the scope
+S_OUT       @bold @track=0.06 = OUT
+S_IN        @bold @track=0.06 = IN
+S_OUT_D     @sans = Pulse  Impacts
+S_IN_D      @sans = EventIn  Echo
+S_STRIKES   @sans = strikes in view
+S_PLAYED    @sans = played in view
+S_TRIP      @sans = round trip
+S_MS        @mono = ms
+S_NOW       @mono = now
+S_AGO       @mono = -4 s
+WAITING     @sans = no echo yet: wire Pulse Bus echo to this node's Echo input
+FOOT        @sans = play the machine in Pulse - this node only listens

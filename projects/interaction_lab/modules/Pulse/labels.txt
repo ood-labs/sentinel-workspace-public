@@ -1,0 +1,18 @@
+# Pulse - the machine of the Pulse Bus station. Regenerate: python tools/il_type.py labels Pulse
+TITLE       @bold @track=0.08 = PULSE
+SUBTITLE    @sans = the machine: every strike leaves the GPU as an Impact event
+
+S_OUT       @bold @track=0.06 = OUT
+S_OUT_D     @sans = EventOut  Impacts
+S_STRIKES   @sans = strikes
+AUTO        @bold @track=0.06 = AUTO
+
+# hint bar (pairs)
+K_CLICK     @sans = Click
+K_DRAG      @sans = Drag
+K_SPACE     @sans = Space
+K_C         @sans = C
+D_CLICK     @sans = drop
+D_DRAG      @sans = pour
+D_SPACE     @sans = auto drop
+D_C         @sans = clear

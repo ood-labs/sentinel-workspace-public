@@ -15,10 +15,10 @@ function A.count(key: string): number
         counts={};kinds={}
         local selected={}
         for _,id in ipairs(M.status.selection) do selected[id]=true end
-        for i,f in ipairs(M.fixtures) do if selected[f.id] then
+        for i,r in ipairs(M.row_list) do if selected[r.id] then
             for attribute in pairs(M.groups[i]) do
                 counts[attribute]=(counts[attribute] or 0)+1
-                kinds[attribute]=kinds[attribute] or {};kinds[attribute][f.kind]=true
+                kinds[attribute]=kinds[attribute] or {};kinds[attribute][r.kind]=true
             end
         end end
         counts_status=M.status
@@ -26,20 +26,10 @@ function A.count(key: string): number
     end
     return counts[key] or 0
 end
--- LOOK codes mean different things per fixture kind: name them for the kinds actually selected.
+-- Each layer's LOOK knob (MOVE FX, BEAM FX...) carries its own names (attribute_catalog).
 function A.choice(key: string,attr: any,value: number): string
     local v=math.floor(value+.5)
-    if key=="look" then
-        A.count(key)
-        local k=kinds[key] or {}
-        local movers=k[0] or k[3]
-        if k[1] and not k[2] and not movers then
-            return attr.strobe_choices[v+1] or (if v>=16 and v<48 then attr.choices[v+1] else "PULSE")
-        elseif k[2] and not k[1] and not movers then return attr.choices[math.min(v,15)+1]
-        elseif movers and not k[1] and not k[2] then return if v<16 then "NO FX" else (attr.choices[v+1] or "?") end
-        return "LOOK "..v
-    end
-    return attr.choices[v+1] or "?"
+    return attr.choices[v+1] or ("LOOK "..v)
 end
 function A.bank(): any
     local bank=Catalog.banks[M.editor_bank.value or 1]
@@ -89,7 +79,17 @@ function A.encoders(): {any}
         local choice_accum=0
         local choice_context=""
         local function resolve(): (string?,any)
-            local key=A.bank().attributes[slot]
+            -- The bank's attributes the selection carries, packed left, so a knob is never a dead "--" between live
+            -- ones: a Halo Beam selection shows BEAM and HALO first, a strobe one TUBE and PLATES, a batten one BAR LEVEL
+            -- and CHASE DEPTH.
+            local bank=A.bank()
+            local key=bank.attributes[slot]
+            if #M.status.selection>0 then
+                local n=0;key=nil
+                for _,k in ipairs(bank.attributes) do if A.count(k)>0 then
+                    n+=1;if n==slot then key=k;break end
+                end end
+            end
             return key,if key then Catalog.attributes[key] else nil
         end
         rec.on_delta=function(delta: number)

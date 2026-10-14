@@ -8,7 +8,7 @@ This workspace is the user-writable Sentinel agent workspace. It is seeded by Se
 - `knowledge/`: product reference docs. Start with `knowledge/FEATURE-MAP.md`.
   Use `knowledge/performance-proof.md` when you need to prove or diagnose runtime performance.
 
-Sentinel is a GPU-accelerated live video application for performance and interactive visuals. It combines Spout/NDI/camera/image/pattern/video sources, real-time AI generation, tracking, depth, segmentation, object detection, shader modules, and Spout/NDI output.
+Sentinel is a GPU-accelerated live video application for performance and interactive visuals. It combines Spout/NDI/camera/image/pattern/video sources, real-time AI generation, tracking, depth, segmentation, object detection, shader modules, and Spout/NDI output with show control: video playback, DMX, OSC and MIDI, Luau scripts and controller surfaces, laser output, and GDTF/MVR fixture rigs.
 
 ## Workspace Ownership
 
@@ -51,20 +51,41 @@ Every number or label must derive from real live state and remain attached to wh
 
 When the job is to build a specific ambitious result from a reference image or brief, read `knowledge/reference-build-method.md` first. Before writing code, inventory every visual element in the reference and name the node decomposition and data contract; hybrid references are normal and unify under one record buffer with a `role` discriminator.
 
-Elect one plan-authority node that owns placement; downstream nodes derive from its records and never re-decide them. Whenever the composition has an arrangement worth randomizing or exploring — most reference work — that plan authority must be DIRECTLY MANIPULABLE, not a seed and a variation slider: select an element, move it, and change the two or three properties that actually define it, over a persistent signature-driven record buffer so edits survive. "The brief was an image, not an editor" does not exempt it, and neither does the fact that injected input cannot machine-prove the gestures — build them and report what needs exercising by hand. A generative node must generate a complete result procedurally and let interaction override individual records, so it is useful before it is edited. Build exploration axes as shipped `enum` presets: sweep them, bake the winner as the default, and repair the losers instead of deleting them. Bake tuned values into manifests before the final save, and state plainly whatever you could not verify.
+Elect one plan-authority node that owns placement; downstream nodes derive from its records and never re-decide them. Whenever the composition has an arrangement worth randomizing or exploring (most reference work), that plan authority must be DIRECTLY MANIPULABLE, not a seed and a variation slider: select an element, move it, and change the two or three properties that actually define it, over a persistent signature-driven record buffer so edits survive. "The brief was an image, not an editor" does not exempt it. Exercise the gestures with `sentinel_ui action=click_at` and `drag_at` on a panel that is open and in front, confirm delivery with the viewport's `delivered_boundary_count`, and report what still needs a hand test (wheel and key paths). A generative node must generate a complete result procedurally and let interaction override individual records, so it is useful before it is edited. Build exploration axes as shipped `enum` presets: sweep them, bake the winner as the default, and repair the losers instead of deleting them. Bake tuned values into manifests before the final save, and state plainly whatever you could not verify.
 
-**Design the scaffold for the subject. The plan authority is a CONTRACT, not a template.** What is fixed is single authority, persistent records, direct manipulation, and an honest preview. What is wide open — and what you are expected to be inventive about — is the projection, the verbs, and the readouts. Ask what a draughtsman would actually draw for *this* thing, then build that. One front elevation is the right answer for a frontal collage and the wrong answer for anything whose depth, height, or extent along a path carries the composition; a single view that cannot show the axis the subject is organised along is a scaffold that hides its own subject. Reach for a second or third projection, a section scrubbed along a path, a timeline, a network view, or a spatial readout with a correctness check built in, whenever the subject is organised that way. `projects/sunward_corridor/modules/SC_Plan` is the bar for tailoring: a draughtsman's plan-over-elevation sharing one z axis, where the plan strip owns lateral drift and the elevation strip owns rise from the same handle, plus a flight-path line that turns red where the corridor bends through its own wall. `projects/soft_vitrine/modules/VT_Plan` is the bar for editing flexibility and for randomness that still composes. Study both; copy neither.
+**Design the scaffold for the subject. The plan authority is a CONTRACT, not a template.** What is fixed is single authority, persistent records, direct manipulation, and an honest preview. What is wide open, and what you are expected to be inventive about, is the projection, the verbs, and the readouts. Ask what a draughtsman would actually draw for *this* thing, then build that. One front elevation is the right answer for a frontal collage and the wrong answer for anything whose depth, height, or extent along a path carries the composition; a single view that cannot show the axis the subject is organised along is a scaffold that hides its own subject. Reach for a second or third projection, a section scrubbed along a path, a timeline, a network view, or a spatial readout with a correctness check built in, whenever the subject is organised that way. `projects/spectral_bench/modules/LT_Bench` is the bar for tailoring: a bench plan over a spectral rail, because a plan shows where the light goes but not the axis the subject is organised along, wavelength. The rail draws an event ladder (wavelength by interaction) and a deviation profile whose width is the dispersion, and marks in red every element no light reaches and every wavelength that dies. `projects/kuka_cell/modules/KA_Cell` is the plan-over-elevation form: two strips sharing one metres-per-pixel scale, the same handle editing both, and floor two arms can both reach shaded red. `projects/soft_vitrine/modules/VT_Plan` is the bar for editing flexibility and for randomness that still composes. Study them; copy none.
 
 **Ship narrow-scoped node presets as part of the build, not as an afterthought.** A preset that saves everything is a snapshot; a preset that saves one concern is a tool. Save each to project scope with an explicit `params` list, and give every ambitious build at least these two families:
 
-- **A frame contract** on the renderer, scoped to the camera parameters ALONE — the pose you composed to. The internal camera is meant to be flown, so the composed viewpoint is lost the first time anyone explores, and it is not recoverable from anything else in the project. Save it as soon as the pose is chosen, and recall it before any final capture.
-- **A quality ladder** on any node heavy enough to be worth trading, scoped to the quality parameters ALONE, roughly Draft / Live / Beauty / Hero. The manifest defaults must be a rung you can comfortably *work* in — never the top rung; a project that opens too heavy to touch is a broken deliverable. Make the top rung genuinely capture-only and say so in its name or the README, because at some cost it stops being slow and starts making the whole application unusable. Measure each rung, publish the numbers as ratios rather than absolutes, and state what else was running: identical presets measured 3-5x apart depending only on how many node previews were open.
+- **A frame contract** on the renderer, scoped to the camera parameters ALONE: the pose you composed to. The internal camera is meant to be flown, so the composed viewpoint is lost the first time anyone explores, and it is not recoverable from anything else in the project. Save it as soon as the pose is chosen, and recall it before any final capture.
+- **A quality ladder** on any node heavy enough to be worth trading, scoped to the quality parameters ALONE, roughly Draft / Live / Beauty / Hero. The manifest defaults must be a rung you can comfortably *work* in, never the top rung; a project that opens too heavy to touch is a broken deliverable. Make the top rung genuinely capture-only and say so in its name or the README, because at some cost it stops being slow and starts making the whole application unusable. Measure each rung, publish the numbers as ratios rather than absolutes, and state what else was running: identical presets measured 3-5x apart depending only on how many node previews were open.
 
-Extend the same idea wherever a build has separable concerns worth recalling independently — a look, a palette, a motion feel. Narrow scope is the whole point: recalling the camera must not disturb the look, and recalling a quality rung must not disturb the framing.
+Extend the same idea wherever a build has separable concerns worth recalling independently: a look, a palette, a motion feel. Narrow scope is the whole point: recalling the camera must not disturb the look, and recalling a quality rung must not disturb the framing.
 
-**Decide what a re-roll means while you are still inventorying, not after the build.** Randomizable arrangement is a layout-time design decision, so name the exploration handles alongside the node decomposition and data contract. Then randomize whatever actually carries the subject's identity: for a scatter that is coordinates, but for anything whose identity is RELATIONAL — interlocking, containment, attachment, adjacency, periodicity — drawing fresh coordinates per record destroys the very relationships that make it the thing it is, and every seed reads as debris no matter how well stratified the draw is. Randomize the relationships instead, and give the draw explicit guarantees (see `knowledge/reference-build-method.md`) so an arbitrary seed is presentable by construction rather than by luck. Once the reference is transcribed and proven, push past it: the transcription is the floor, not the ceiling.
+**Decide what a re-roll means while you are still inventorying, not after the build.** Randomizable arrangement is a layout-time design decision, so name the exploration handles alongside the node decomposition and data contract. Then randomize whatever actually carries the subject's identity: for a scatter that is coordinates, but for anything whose identity is RELATIONAL (interlocking, containment, attachment, adjacency, periodicity), drawing fresh coordinates per record destroys the very relationships that make it the thing it is, and every seed reads as debris no matter how well stratified the draw is. Randomize the relationships instead, and give the draw explicit guarantees (see `knowledge/reference-build-method.md`) so an arbitrary seed is presentable by construction rather than by luck. Once the reference is transcribed and proven, push past it: the transcription is the floor, not the ceiling.
 
 ## Examples Are References, Not A Stock Module Library
+
+**The shipped collection is the reference set.** The example projects listed in
+`knowledge/EXAMPLE-MAP.md` are the references for technique and quality on this
+build: each was reviewed against this version of Sentinel and built to the
+standards in this manual, and every install refreshes them together with this
+manual and the knowledge. In the default workspace an install also retires the
+examples a build drops: one the user never changed is removed, and a changed
+one, like a changed copy of a current example, moves to
+`.sentinel/workspace-backups/upgrade-to-<version>/projects/`. Every other
+project stays, so `projects/` can hold more than the collection: examples
+retired before the workspace tracked them (the map names them), projects made
+with older versions of Sentinel or with earlier models, and the user's own work.
+None of that is a reference. Do not
+study it, copy from it or adopt its conventions unless the user points you at
+it, and when they do, check what it does against this manual before trusting
+it. Where an older project and the collection disagree, the collection wins.
+
+The collection is the floor, not the ceiling. Hold new work to its standards,
+then go past it wherever the subject asks for something bolder or stranger: no
+example is the limit of what Sentinel can do, and a new piece should look like
+its own subject, not like one of them.
 
 Choose references in proportion to the problem. Start with the smallest useful
 evidence set, then widen it when each additional reference answers a specific
@@ -85,8 +106,8 @@ or extend that exact example.
 
 Reusing a module already authored in the user's current project is normal when
 it remains the right abstraction. Generic infrastructure with no creative
-identity of its own—licensed font tables, low-level math helpers, or the neutral
-`tools/templates/module-ui/` scaffold—may also be vendored into the owning
+identity of its own (licensed font tables, low-level math helpers, or the neutral
+`tools/templates/module-ui/` scaffold) may also be vendored into the owning
 project. Preserve licenses, copy only the recursive dependency closure, and
 never link one project to another project's Module directory. See
 `knowledge/example-authoring.md`.
@@ -105,9 +126,9 @@ License activation is deliberately manual in the app UI.
 
 ## Pipeline Types In DIST Builds
 
-Call `list_types` for the exact current catalog; DIST builds intentionally omit dev-only and experimental types. The full DIST type table — roles, visibility, engine-pack requirements, and the compatibility aliases (`facemesh`, `shaderproject`) — lives in `knowledge/FEATURE-MAP.md`.
+Call `list_types` for the exact current catalog; DIST builds intentionally omit dev-only and experimental types. The full DIST type table, with roles, visibility, engine-pack requirements, and the compatibility aliases (`facemesh`, `shaderproject`), lives in `knowledge/FEATURE-MAP.md`.
 
-Orientation: `module` (authored multi-pass HLSL projects) for authored visuals (`hlslshader` exists only in development builds); `streamdiff` for real-time generation; `mediapipe`, `features`, `detection`, `pose`, `depthestimation`, `personseg`, `matting`, and `opticalflow` for tracking and analysis; `meshsource` for static 3D import; `audio` for WASAPI/WAV audio data; `vsr` for upscaling; `conductor`, `mux`, `groupoutput`, `atlas`, `camera`, and `camswitch` for choreography and the scene system; `bundlepack` and `bundlesplit` for Bundle cables that carry video plus data; `laserout` and `lasertrace` for lasers; `dmxin`, `dmxout`, and `oscout` for lighting and show control over Art-Net, sACN, and OSC; `script`, `midiin`, `midiout`, and `push2display` for scripted control, MIDI controllers and the Ableton Push 2 and Push 3 displays.
+Orientation: `module` (authored multi-pass HLSL projects) for authored visuals (`hlslshader` exists only in development builds); `streamdiff` for real-time generation; `mediapipe`, `features`, `detection`, `pose`, `depthestimation`, `personseg`, `matting`, and `opticalflow` for tracking and analysis; `meshsource` (and `meshunpack`) for static 3D import; `fixturerig` for GDTF lighting rigs from MVR or built in Sentinel; `audio` for WASAPI/WAV audio data; `vsr` for upscaling; `conductor`, `mux`, `groupoutput`, `camera`, and `camswitch` for choreography and the scene system (`atlas` is a hidden compatibility type); `bundlepack` and `bundlesplit` for Bundle cables that carry video plus data; `laserout` and `lasertrace` for lasers (`lasermapping` is experimental; map with the Module chain in `knowledge/laser-mapping.md`); `dmxin`, `dmxout`, and `oscout` for lighting and show control over Art-Net, sACN, and OSC; `script`, `midiin`, `midiout`, and `push2display` for scripted control, MIDI controllers and the Ableton Push 2 and Push 3 displays.
 
 ## Graph Basics
 
@@ -141,13 +162,13 @@ Complete this entire cycle before authoring or creating the next node:
 
 Continue through the cycle without requiring approval after every node unless the user asks for checkpoints. The requirement is visible incremental construction, not stop-and-confirm gating.
 
-Preserve the graph's evolving layout with `place_relative`, explicit geometry, or `layout_neighborhood`; never use whole-graph `auto_layout` to repair or hide bulk creation. Whole-graph `auto_layout` is appropriate only when the user explicitly requests it or when topology surgery leaves the graph unreadable in signal-flow order — treat that as a layout-only checkpoint: inspect the graph first, run it, verify the new order, then refocus and reopen the active node.
+Preserve the graph's evolving layout with `place_relative`, explicit geometry, or `layout_neighborhood`; never use whole-graph `auto_layout` to repair or hide bulk creation. Whole-graph `auto_layout` is appropriate only when the user explicitly requests it or when topology surgery leaves the graph unreadable in signal-flow order. Treat that as a layout-only checkpoint: inspect the graph first, run it, verify the new order, then refocus and reopen the active node.
 
 Generator, plan, layout, assembly, and data-transform nodes must provide a meaningful visual preview of their own intermediate state, showing active records and their spatial structure, direction, grouping, weight, or type as appropriate. A downstream renderer and `capture_data_port` are additional proof, not substitutes for an inspectable node preview.
 
 For authored 3D, the renderer's native internal camera is the mandatory default; read `knowledge/internal-camera-template.md` before writing or modifying a 3D renderer and follow its manifest, shader, and proof contract exactly. Use an explicit external camera only when multiple separate camera-capable 3D renderer nodes genuinely require one synchronized viewpoint or show-level camera switching, and state that justification before creating it. Never promote camera parameters onto a Scene Group or other top-level surface.
 
-Keep Scene Group control surfaces deliberately small — roughly four to eight high-impact controls, each tested in the open Scene Group Properties (see Scene Groups below).
+Keep Scene Group control surfaces deliberately small: roughly four to eight high-impact controls, each tested in the open Scene Group Properties (see Scene Groups below).
 
 ## Health And Proof
 
@@ -155,7 +176,7 @@ Trust live health, frames, and captures.
 
 Use `sentinel_pipeline action=info` and check `stats.healthy`, `stats.health_reasons`, `stats.statusMessage`, `stats.framesProcessed`, `stats.has_preview_srv`, and output resolution and format.
 
-Use `sentinel_graph action=profile summary=true sort_by=wall_time_ms` for the latest frame breakdown, per-node wall time, rolling `cook_hz`, PipelineStats, link counts, and hotspot reasons. Use rolling cook rate for cadence comparisons because `frames_processed` is a lifetime total. This is a lightweight CPU wall-clock profiler for graph triage, not a deep GPU timestamp profiler.
+Use `sentinel_graph action=profile summary=true sort_by=wall_time_ms` for the latest frame breakdown, per-node wall time, rolling `cook_hz`, PipelineStats, link counts, and hotspot reasons. Use rolling cook rate for cadence comparisons because `frames_processed` is a lifetime total. Per-node CPU attribution and per-pass Module GPU timing (`sort_by=gpu_ms`) need Detailed Profiling on (`/sentinel/settings/detailed_profiling_enabled`); read the setting, enable it for the measurement and restore it after. See `knowledge/performance-proof.md`.
 
 Proof tools:
 
@@ -176,7 +197,7 @@ For quick creative builds, keep the canonical visible chain at 1280x720 or a com
 
 ## Scaled-Pass Coordinate Discipline
 
-When a Module pass writes to a texture buffer with `scale` below `1.0`, do not assume `_Resolution` is the scaled target extent — derive bounds, UVs, and aspect from the actual texture with `GetDimensions`, and prove the effect-producing pass itself rather than trusting a full-resolution overlay. Full discipline: `knowledge/module-pipeline.md`.
+When a Module pass writes to a texture buffer with `scale` below `1.0`, do not assume `_Resolution` is the scaled target extent. Derive bounds, UVs, and aspect from the actual texture with `GetDimensions`, and prove the effect-producing pass itself rather than trusting a full-resolution overlay. Full discipline: `knowledge/module-pipeline.md`.
 
 ## Demand-Driven Module Execution
 
@@ -198,10 +219,10 @@ Module creates with `project_dir` are atomic, but shader compilation can continu
 Use:
 
 - `sentinel_pipeline action=compile_status pipeline_id=<id>`
-- `sentinel_pipeline action=compile_check project_dir=<dir>`
+- `sentinel_pipeline action=compile_check project_dir=<dir>` (poll `compile_check_status compile_job_id=<job_id>`)
 - `sentinel_pipeline action=force_reload pipeline_id=<id>`
 
-Do not assume a module is ready until compile status is `ok` and the pipeline health/stats confirm it.
+Do not assume a module is ready until compile status is `ok` and the pipeline health/stats confirm it. Shaders compile in a worker process, so a compiler crash fails one compile and nothing else. A compile running past two minutes is marked slow, and past its budget (five minutes by default) overdue; it keeps going. Treat a slow compile as a shader to simplify (`knowledge/module-pipeline.md`); `compile_extend` and `compile_abandon` exist for the rare deliberate exception.
 
 ## Control Outputs And Expressions
 
@@ -223,7 +244,7 @@ Do not use a plain StateTree `set` to write `=ref(...)`. Use the expression comm
 
 ## Audio Reactivity
 
-Audio In is pipeline type `audio` on builds whose live `list_types` response includes it; published builds at or below 0.5.48 may omit it. Use `source_mode=Device` for live WASAPI capture (flow `Loopback` for a playback endpoint, `Microphone` for a recording endpoint) or `source_mode=File` for deterministic paced PCM WAV playback. Audio In publishes three typed data ports — `PCM` (stereo waveform history), `Spectrum` (64-hop linear FFT ring), and `Mel Bands` (64-hop, 138 perceptual bands) — plus scalar `level` and `peak` control outputs that can drive parameters directly.
+Audio In is pipeline type `audio`. Use `source_mode=Device` for live WASAPI capture (flow `Loopback` for a playback endpoint, `Microphone` for a recording endpoint) or `source_mode=File` for deterministic paced PCM WAV playback. Audio In publishes three typed data ports, `PCM` (stereo waveform history), `Spectrum` (64-hop linear FFT ring), and `Mel Bands` (64-hop, 138 perceptual bands), plus scalar `level` and `peak` control outputs that can drive parameters directly.
 
 For beat, onset, and drum-driven work, inspect the Audio Bands architecture in `projects/cloth_lab/modules/cloth_bands` and reimplement the needed analysis in the owning project unless the user explicitly requests a Cloth Lab remix. Use the monotonic `kick_count` / `snare_count` / `hat_count` for per-hit edges and `kick` / `snare` / `hat` for 0-1 envelopes; its per-lane dB thresholds gate internally. Superseded `pulse2_*` and `cryo_pulse` experiments are not part of the curated public module library; do not recreate or build new work on them.
 
@@ -241,22 +262,22 @@ Modules can declare viewport behavior in a manifest `viewport:` block: interacti
 
 Do not build authored Canvas panels that merely duplicate Properties sliders. Keep exact numeric shaping, colors, toggles, and ordinary enums in Properties. Use viewport UI for interactions Properties cannot express well: selecting and moving objects, editing points and splines, painting fields, manipulating regions and falloffs, camera/gizmo work, spatial triggers, and performance gestures. Keep telemetry compact and contextual.
 
-Follow Interaction Lab's Style Authority contract for every `point2D` or `xypad`. The host parameter is the single source of truth and remains unmodified in state, data, and control outputs. Declare a plain non-inverted control rectangle; render through the project-local `sui3PadPoint` helper and invert through `sui3PadValue` when needed. Never hand-roll pad coordinate arithmetic, never add `1.0 - value.y` outside that shared helper, and never publish a flipped copy. Before accepting any XY control, drive the real pad at top and bottom and prove that the stored value, published value, readout, and rendered reticle all agree. Reference: `projects/interaction_lab/modules/Style_Authority/`.
+Follow the XY pad contract for every `point2D` or `xypad`. The host parameter is the single source of truth and remains unmodified in state, data, and control outputs. Declare a plain non-inverted control rectangle; render through one project-local value-to-pixel helper and invert through its exact inverse when needed: `sui3PadPoint` / `sui3PadValue` from the neutral `tools/templates/module-ui/` kit, or the equivalent pair of a project's own UI foundation (Interaction Lab's is `ilPadPoint` / `ilPadValue` in `modules/_shared/ui/il_ui.hlsli`). Never hand-roll pad coordinate arithmetic, never add `1.0 - value.y` outside that shared helper, and never publish a flipped copy. Before accepting any XY control, drive the real pad at top and bottom and prove that the stored value, published value, readout, and rendered reticle all agree. Reference: `projects/interaction_lab/modules/Kit/`, whose pad prints its parameter, stored copy, and host control state side by side with an AGREE / DRIFT verdict.
 
 Separate the canonical Program renderer from the flexible editor Canvas: the renderer keeps an intentional output such as 1280x720, while a `follow_panel` editor displays an aspect-correct fitted Program preview, remaps pointer coordinates into that stage rectangle, owns durable interaction state, and publishes structured control data. Do not stretch a canonical image to fill the panel. Prove click, drag, selection, clear, and other primary gestures with real viewport input. See `knowledge/ui-authoring.md`.
 
 ### Plan And Editor Canvases Are Instruments: Mostly Monochrome
 
-A plan authority's canvas is read, not admired. Style every plan, editor, console and diagnostic canvas from the shared instrument palette in `tools/templates/module-ui/shared/plan_theme.hlsli` — vendor that file into the owning project's `modules/_shared/` and include it from there. It matches Interaction Lab's `sui3` theme, so diagrams and UI stations read as one family: a near-black **neutral** ground (a blue ground reads as "screen", a neutral one reads as "instrument"), a grey value ladder, and a reserved accent.
+A plan authority's canvas is read, not admired. Style every plan, editor, console and diagnostic canvas from the shared instrument palette in `tools/templates/module-ui/shared/plan_theme.hlsli`: vendor that file into the owning project's `modules/_shared/` and include it from there. It matches the same template's `sui3` theme, and Interaction Lab's UI foundation (`modules/_shared/ui/il_core.hlsli`) is built on it, so diagrams and UI stations read as one family: a near-black **neutral** ground (a blue ground reads as "screen", a neutral one reads as "instrument"), a grey value ladder, and a reserved accent.
 
-**Mostly monochrome. Hue only where it carries information.** Keep the ground, panel fills, hairlines, ticks, grids, frames, captions and any ordinal ramp (kind, rank, weight — use `ptRamp`) grey. Spend hue only on things a value genuinely cannot say, and be able to name every use:
+**Mostly monochrome. Hue only where it carries information.** Keep the ground, panel fills, hairlines, ticks, grids, frames, captions and any ordinal ramp (kind, rank, weight; use `ptRamp`) grey. Spend hue only on things a value genuinely cannot say, and be able to name every use:
 
-1. **Accent** (`PT_ACCENT`, amber) — reserved for the active selection and an established live reading such as a playhead. Never hover, never decoration, never idle chrome.
-2. **Alarm** (`PT_ALARM`, red) — the one state meaning the composition is broken. Deliberately not amber so it cannot be confused with a selection.
-3. **Identity** (`ptId`) — a small closed unordered set the viewer must tell apart at a glance: which of three walls, which lane, which axis. Four members at most; beyond that use the ramp.
-4. **A record's own colour** (`ptSampleColour`) — when the record stores a colour the user chose, showing it is information. Always pass it through the helper: it pulls toward grey and flattens luminance so a saturated record cannot outshine the accent or impersonate it.
+1. **Accent** (`PT_ACCENT`, amber): reserved for the active selection and an established live reading such as a playhead. Never hover, never decoration, never idle chrome.
+2. **Alarm** (`PT_ALARM`, red): the one state meaning the composition is broken. Deliberately not amber so it cannot be confused with a selection.
+3. **Identity** (`ptId`): a small closed unordered set the viewer must tell apart at a glance: which of three walls, which lane, which axis. Four members at most; beyond that use the ramp.
+4. **A record's own colour** (`ptSampleColour`): when the record stores a colour the user chose, showing it is information. Always pass it through the helper: it pulls toward grey and flattens luminance so a saturated record cannot outshine the accent or impersonate it.
 
-Route any real image the canvas previews (a generated plate, a material chip) through `ptInset` — it is data rather than chrome, so it keeps its colour, but at full strength it outranks every readout in the frame.
+Route any real image the canvas previews (a generated plate, a material chip) through `ptInset`. It is data rather than chrome, so it keeps its colour, but at full strength it outranks every readout in the frame.
 
 Both failure modes are real. A saturated diagram competes with the program image it exists to explain; a fully monochrome one turns three identical grey curves into a tangle and throws away colour the records already hold. Judge from a capture, and check that the accent is still the first thing the eye lands on.
 
@@ -264,17 +285,21 @@ Both failure modes are real. A saturated diagram competes with the program image
 
 For staggered entrances, beat-locked motion, cue-driven shows, and timecoded sequences, create a `conductor` node and use the `sentinel_conductor` tool (`load_sheet`, `bake_sheet`, `status`, `fire`, `jump`, `set_tempo`, `transport`). Cue sheets compile into live expressions plus tweakable sheet parameters. Module motion uses the shared vocabulary in `knowledge/motion-choreography.md` (matching ExprTk functions `spring`, `spring_v`, `stagger`, `anticipate`, `loop_noise`); never hand-roll springs, integrate phase for anything rate-driven, and bundle any HLSL helper with the owning project.
 
-StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` switches variants live with `solo_upstream`; an `atlas` banks aligned stills for 3D scene spawning. To mix whole looks, author each look as a Scene Group containing exactly one `groupoutput` and set a Mux to `source_mode=Groups` (the Scene Switcher, with cuts, `fade_time` crossfades, and per-look OSC triggers). The focused examples under `projects/streamdiff_workflows/` cover one routing pattern each; open one at a time to avoid engine-memory spikes. See `knowledge/streamdiff.md` and `knowledge/scene-system.md`.
+StreamDiff nodes support `hold` (freeze diffusion while staying live) and `render_one`/`render_count` one-shot stills; a `mux` switches variants live with `solo_upstream` and crossfades wired inputs with `fade_time`. To mix whole looks, author each look as a Scene Group containing exactly one `groupoutput` and set a Mux to `source_mode=Groups` (the Scene Switcher, with cuts, `fade_time` crossfades, and per-look OSC triggers). The focused examples under `projects/streamdiff_workflows/` cover one routing pattern each; open one at a time to avoid engine-memory spikes. See `knowledge/streamdiff.md` and `knowledge/scene-system.md`.
 
 For a choreographed motion-graphics sequence (2D, 3D, generated or hybrid acts chained by designed transitions under one editable, scrubbable score), use the `motion-graphics-sequences` skill. It fixes the timing and placement contract, and asks you to design the node graph for the piece rather than reuse a stock shape.
 
 ## Stage Rigs And Light Shows
 
-For a concert lighting rig or any show a lighting programmer plays (beam movers, strobes, pixel bars, a moving truss, static/effects/colour/full look banks, a desk panel or a Push 2), use the `stage-rig-authoring` skill. `projects/phage_stage/` is the reference build: read its README and `docs/PROCESS.md` before designing. Fork its show system when the user wants a rig on that system, but design the anatomy, fixtures, renderer look and looks fresh for the user's reference.
+For a concert lighting rig or any show a lighting programmer plays (beam movers, strobes, pixel bars, a moving truss, static/effects/colour/full look banks, a desk panel or a Push 2 or Push 3), use the `stage-rig-authoring` skill. `projects/phage_stage/` is the reference build: read its README and `docs/PROCESS.md` before designing. Fork its show system when the user wants a rig on that system, but design the anatomy, fixtures, renderer look and looks fresh for the user's reference.
+
+## Stage Equipment From Spec Sheets
+
+When a user supplies a spec sheet, manual, DMX chart, dimension drawing or model name and wants that equipment in Sentinel (a moving head with its real gobos, prism, zoom and channel layout, a truss series, a speaker or line array, a generator, a truck), use the `equipment-from-specs` skill. A sourced fact sheet comes before any geometry, the manufacturer's documents stay out of the project, and a recreation is described as built from the published spec, never as photometrically calibrated, load-rated or safe to rig. Conventions, record contracts and rigging rules are in `knowledge/stage-equipment.md`.
 
 ## Precise 3D Construction
 
-When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against an explicit project-specific kind registry, relax under-constrained layouts with warm-start stability, and compile to a generated project-local Module publishing `PNodes` records. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints, registry, and renderer: `projects/living_room_sdf/`. See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
+When a 3D scene is objects with real dimensions and relationships (tucked chairs, seated appliances, clear aisles), author a YAML blueprint and use the `sentinel_blueprint` tool (`validate`, `compile`, `audit`, `solve_report`) instead of hand-placing coordinates. Blueprints resolve relations against an explicit project-specific kind registry, relax under-constrained layouts with warm-start stability, and compile to a generated project-local Module publishing `PNodes` records. Audit sidecars assert measured dimensions against the live distance field. Author relations first, dimensions second. Reference blueprints, registry, and renderer: `tools/templates/blueprints/living_room/` (its README runs the whole chain). See `knowledge/precise-construction.md` and the `procedural-geometry-authoring` skill.
 
 ## Imported 3D Meshes
 
@@ -284,6 +309,19 @@ renderer Module that declares `mesh_inputs`. This keeps vertices, indices, and
 submeshes on one atomic graph cable. Leave Mesh Unpack out of the normal path;
 use it only when a specialized graph truly needs three separate raw data pins.
 See `knowledge/mesh-import.md`.
+
+## Lighting Fixtures From GDTF And MVR
+
+Use `fixturerig` for real lighting rigs. One node owns one rig: it imports an MVR (or starts empty and is built in
+Sentinel), resolves fixture types against a folder of GDTFs set in `library_dir`, and publishes `Fixtures`,
+`SceneObjects`, `FixtureTypes` and `FixtureRender` data ports. The `sentinel_fixture` tool inspects GDTFs and MVRs,
+edits the rig, exports it as MVR and collects its GDTFs. Modules decode any fixture's DMX on the GPU with the includes
+in `tools/templates/module-includes/fixtures/`; `tools/templates/fixtures/rig_probe/` draws any rig, and
+`tools/templates/fixtures/fixture_engine/` (the fixture engine's four Modules, added beside the node) renders any type
+dragged onto its plan, with looks over DMX. Each type carries a readiness tier; to make one match its data sheet, use
+the `fixture-refinement` skill, which fixes only what the report flags through `sentinel_fixture action=refine`. Keep
+manufacturer GDTFs and documents out of shared projects, and collect only when the user asks. See
+`knowledge/fixture-import.md`.
 
 ## Scene Groups
 
@@ -301,17 +339,23 @@ A Scene Group exports as a portable `.sentinel` project with `sentinel_graph act
 
 ## Node Presets
 
-The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`) provides identity-aware per-node presets in library, project, or bundled scope. Installs at 0.5.29 or newer carry it; otherwise presets remain available through the Properties preset strip. `save` requires an explicit `params` and/or `groups` selection; identity follows the node type and Module project; `recall` returns `applied[]` and `skipped[]` and fails loudly when nothing applies. Verified call shapes: `knowledge/FEATURE-MAP.md`.
+The `sentinel_preset` tool (`list`, `save`, `recall`, `update`, `delete`, `rename`, `bundle`, `copy_to_library`) provides identity-aware per-node presets in library, project, or bundled scope. Properties shows the same presets in its preset strip. `save` requires an explicit `params` and/or `groups` selection; identity follows the node type and Module project; `recall` returns `applied[]` and `skipped[]` and fails loudly when nothing applies. Verified call shapes: `knowledge/FEATURE-MAP.md`.
 
 ## Outputs
 
 Never create a Spout output, NDI output, output node, or external sender as a default finishing step. A request to make a complete graph, composition, scene, project, capture, or proof does not authorize an output node. Create one only when the user explicitly asks for Spout, NDI, an external sender, or an output node. When explicitly requested, use `sentinel_pipeline action=create_output`, wire or route it, and verify that frames are actually moving. Otherwise finish at the final processing or renderer pipeline and use its preview/capture for proof.
 
+In a trial install, Spout, NDI and display output share a 1280x720 pixel budget and are scaled down together when they ask for more; a smaller or softer output there is the trial limit at work. See `knowledge/FEATURE-MAP.md` (Trial video output) and `license.video_out` in `sentinel_app action=status`.
+
 OSC receive configuration is available through StateTree. Read or set `/sentinel/osc/receive_port`, then verify the OSC section in `sentinel_app action=diagnostic` or by sending a real OSC message.
+
+## Video Clips And Show Playback
+
+Video files are sources: `sentinel_pipeline action=create_source source_type=video video_path=<file>`. Use HAP or HAP Q for shows; they decode on a background reader so a busy editor does not stall playback, while H.264 and H.265 decode on NVDEC with colour from the file's tags. A clip decodes only while something consumes it. To cut or crossfade between clips, wire them into a Mux in Wired mode and set `fade_time`, then change `selected`. To play a list from one trigger, use `tools/templates/scripts/clip_sequencer.luau` in a Script node: it prerolls each next clip (`actions/preroll`) and watches `ended_count`. Transcode, controls and the sequencer's parameters: `knowledge/video-source.md`.
 
 ## Lighting And Show Control
 
-`dmxin` receives DMX over Art-Net or sACN into a typed `DMX` data port and draws the selected universe in its node body; `dmxout` sends a `DMX` port to fixtures; `oscout` sends values to any OSC receiver. Wire DMX ports with `sentinel_graph action=add_link`. Create OSC messages one call at a time with the node's `add_message` action, passing the address, the type, and a `ref()` expression as the value source. Read `packets_per_second` on the DMX nodes and look at the universe grid before trusting a fixture. Ready Modules for reading a console channel and driving a fixture ship in `tools/templates/dmx/`. Follow the `dmx-show-control` skill; details, including universe numbering and the DMX buffer layout for Modules: `knowledge/lighting-and-show-control.md`.
+`dmxin` receives DMX over Art-Net or sACN into a typed `DMX` data port and draws the selected universe in its node body; `dmxout` sends a `DMX` port to fixtures; `oscout` sends values to any OSC receiver. Wire DMX ports with `sentinel_graph action=add_link`. Create OSC messages one call at a time with the node's `add_message` action, passing the address, the type, and a `ref()` expression as the value source in the invoke's `args` object. Read `packets_per_second` on the DMX nodes and look at the universe grid before trusting a fixture. Ready Modules for reading a console channel and driving a fixture ship in `tools/templates/dmx/`. Follow the `dmx-show-control` skill; details, including universe numbering and the DMX buffer layout for Modules: `knowledge/lighting-and-show-control.md`.
 
 ## Lasers
 
@@ -336,6 +380,7 @@ Start with:
 - `knowledge/tracking-suite.md`
 - `knowledge/module-pipeline.md`
 - `knowledge/mesh-import.md`
+- `knowledge/fixture-import.md`
 - `knowledge/ui-authoring.md`
 - `knowledge/video-source.md`
 - `knowledge/streamdiff.md`
@@ -349,6 +394,7 @@ Start with:
 - `knowledge/show-control-desk.md`
 - `knowledge/motion-choreography.md`
 - `knowledge/precise-construction.md`
+- `knowledge/stage-equipment.md`
 - `knowledge/gpu-cloth-and-xpbd.md`
 
 Use skills for authoring details:
@@ -363,12 +409,14 @@ Use skills for authoring details:
 - `motion-eval`
 - `motion-graphics-sequences`
 - `stage-rig-authoring`
+- `equipment-from-specs`
 - `laser-show-setup`
 - `laser-content-authoring`
 - `laser-trace-tuning`
 - `script-node-authoring`
 - `controller-surface-authoring`
 - `dmx-show-control`
+- `fixture-refinement`
 - `sentinel-bug-report`
 - `setup-mcp`
 

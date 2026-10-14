@@ -2,9 +2,11 @@
 
 Use this contract when a Sentinel scene is a system of editable generators,
 structured data, and downstream renderers rather than one self-contained visual
-effect. The curated public examples are `projects/living_room_sdf/` for
-dimensioned construction and `projects/scientific_organism/` for a typed-data
-procedural composition. Study their contracts and node boundaries, not their
+effect. The curated public examples are `projects/breathing_room/` for a room
+split into editable generators (shell, furnishings, light, rug, trip) feeding one
+renderer, `tools/templates/blueprints/living_room/` for dimensioned construction from blueprints, and
+`projects/phage_stage/` for a large typed-data system whose every node keeps an
+inspectable preview. Study their contracts and node boundaries, not their
 visual language or module names; new work should begin from a new semantic
 direction.
 

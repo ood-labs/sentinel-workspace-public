@@ -1,0 +1,20 @@
+# Handles - param_gestures. Regenerate with: python tools/il_type.py labels Handles
+TITLE       @bold @track=0.08 = HANDLES
+SUBTITLE    @sans = four objects, eight ordinary parameters, no event code
+
+# handle names (index = handle)
+N_LAMP      @bold @track=0.07 = LAMP
+N_BLADE     @bold @track=0.07 = BLADE
+N_PRISM     @bold @track=0.07 = PRISM
+N_ARC       @bold @track=0.07 = ARC
+
+R_X         @mono = x
+R_Y         @mono = y
+R_ROT       @mono = rot
+
+# hint bar
+K_DRAG      @sans = Drag
+K_RDRAG     @sans = Right-drag
+D_DRAG      @sans = move
+D_RDRAG     @sans = rotate
+D_UNDO      @sans = each drag is one undo entry

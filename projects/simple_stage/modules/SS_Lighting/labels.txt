@@ -1,0 +1,58 @@
+# SS_Lighting - the fixture canvas's words. Regenerate: python tools/il_type.py labels SS_Lighting
+TITLE       @bold @track=0.14 = SIMPLE STAGE
+SUBTITLE    @sans = fixtures
+
+# the 16 group buttons, in lighting.hlsli's order (layout.hlsl counts from G_ALL)
+G_ALL       @bold = ALL
+G_NONE      @bold = NONE
+G_MOVERS    @bold = HEADS
+G_STROBES   @bold = STROBES
+G_BARS      @bold = WALL
+G_FRONT     @bold = FRONT ROW
+G_BACK      @bold = BACK ROW
+G_LEFT      @bold = LEFT
+G_RIGHT     @bold = RIGHT
+G_INNER     @bold = INNER
+G_MIDDLE    @bold = MIDDLE
+G_OUTER     @bold = OUTER
+G_ODD       @bold = ODD
+G_EVEN      @bold = EVEN
+G_FHEADS    @bold = TRUSS STROBES
+G_BHEADS    @bold = FLOOR STROBES
+
+FRONT       @bold @track=0.08 = FRONT ELEVATION
+PLAN        @bold @track=0.08 = PLAN, AUDIENCE BELOW
+GRID        @sans = grid 1 m
+WAITING     @sans = waiting for the fixture mounts
+SELECTED    @bold @track=0.08 = SELECTED
+PROGRAMMER  @bold @track=0.08 = PROGRAMMER
+REFERENCE   @bold @track=0.08 = REFERENCE
+HIGHLIGHT   @bold @track=0.08 = HIGHLIGHT
+SOLO        @bold @track=0.08 = SOLO
+
+# footer (pairs)
+K_CLICK     @sans = Click
+K_DRAG      @sans = Drag
+K_SHIFT     @sans = Shift
+K_CTRL      @sans = Ctrl
+K_A         @sans = A
+K_ESC       @sans = Esc
+D_CLICK     @sans = select
+D_DRAG      @sans = box select
+D_SHIFT     @sans = add
+D_CTRL      @sans = toggle
+D_A         @sans = all
+D_ESC       @sans = clear
+
+# the hover inspector (layout.hlsl counts N_MOVER + family)
+N_MOVER     @bold @track=0.08 = HEAD
+N_STROBE    @bold @track=0.08 = STROBE
+N_BAR       @bold @track=0.08 = RUN
+SLOT        @sans = slot
+LEVEL       @bold @track=0.08 = LEVEL
+PAN         @bold @track=0.08 = PAN
+TILT        @bold @track=0.08 = TILT
+TUBE        @bold @track=0.08 = TUBE
+PLATE_L     @bold @track=0.08 = PLATE
+U_PCT       @sans = %
+NOTE_BAR    @sans = a pixel run: its battens draw its content

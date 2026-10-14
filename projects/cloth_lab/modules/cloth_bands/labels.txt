@@ -1,0 +1,53 @@
+# Audio Bands - the panel's words. Regenerate: python -B tools/il_type.py labels <this module>
+TITLE      @bold @track=0.14 = AUDIO BANDS
+SUBTITLE   @sans = kick, snare and hat onsets
+REFERENCE  @bold @track=0.08 = REFERENCE
+ROLLING    @bold @track=0.08 = ROLLING LEVEL
+FIXED      @bold @track=0.08 = FIXED
+WAITING    @sans = waiting for the spectrum
+
+# the lanes, in bands.hlsli's order (layout.hlsl counts from L_KICK)
+L_KICK     @bold @track=0.08 = KICK
+L_SNARE    @bold @track=0.08 = SNARE
+L_HAT      @bold @track=0.08 = HAT
+
+# the octave ruler, 31.25 Hz doubling (layout.hlsl counts from HZ_31)
+HZ_31      @mono = 31
+HZ_63      @mono = 63
+HZ_125     @mono = 125
+HZ_250     @mono = 250
+HZ_500     @mono = 500
+HZ_1K      @mono = 1k
+HZ_2K      @mono = 2k
+HZ_4K      @mono = 4k
+HZ_8K      @mono = 8k
+HZ_16K     @mono = 16k
+
+U_HZ       @sans = Hz
+U_KHZ      @sans = kHz
+U_DB       @sans = dB
+U_OCT      @sans = oct
+DASH       @mono = -
+GATED      @bold @track=0.08 = GATED
+SCALE      @sans = full scale
+HITS       @sans = hits
+HIT        @bold @track=0.08 = HIT
+
+# the inspector
+C_SPAN     @sans = span
+C_THRESH   @sans = threshold
+C_FIRES    @sans = fires above
+C_LEVEL    @sans = level
+C_PEAK     @sans = peak flux
+C_FLUX     @sans = flux
+C_AGO      @sans = s ago
+
+# footer (pairs)
+K_DRAG     @sans = Drag
+K_BAR      @sans = Drag bar
+K_RDRAG    @sans = Right drag
+K_HOVER    @sans = Hover
+D_MOVE     @sans = move a band
+D_THRESH   @sans = set its threshold
+D_RESIZE   @sans = resize it
+D_INSPECT  @sans = inspect

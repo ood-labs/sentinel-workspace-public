@@ -13,7 +13,7 @@ If one node is meant to be a complete control surface, editor, HUD, or dashboard
 
 In-repo modular references worth reading before starting:
 `projects/interaction_lab/interaction_lab.sentinel`,
-`projects/scientific_organism/`, and `projects/living_room_sdf/`. Treat them as
+`projects/phage_stage/`, and `projects/breathing_room/`. Treat them as
 architectural references, not runtime dependency libraries. For editable
 procedural systems, read `knowledge/modular-procedural-systems.md` before
 authoring.
@@ -32,7 +32,7 @@ Blueprint producers compile to generated Module projects that publish fixed 48-b
 - `sentinel_blueprint solve_report` and `sentinel_blueprint audit` for independent record-level checks.
 - A renderer capture plus `sentinel_vision action="eval"` for visible scene claims. If it reports a missing or rejected key, run `sentinel_vision action="status"` and have the user paste their provider key (OpenRouter or another OpenAI-compatible provider) into the returned workspace `vision.json` `api_key` field, then rerun `status` until `key_present` and `key_ok` are true. Never take keys through chat or tool arguments.
 
-The public smoke blueprint is `projects/living_room_sdf/blueprints/living_room_architecture.yaml`; validate it before compiling or creating a live pipeline.
+The public smoke blueprint is `tools/templates/blueprints/living_room/blueprints/living_room_architecture.yaml`; validate it before compiling or creating a live pipeline.
 
 ---
 
@@ -68,10 +68,11 @@ For architectural and other multi-editor procedural systems:
 - Derive render placement, selection descriptors, picking, and drag inversion from one edit-rectangle transform. A visible handle must pick the exact object or cell it appears to control.
 - Keep logical edits in declared state buffers and preserve drag ownership through commit/cancel.
 - For authored 3D, use the renderer's internal camera as the mandatory default and read `knowledge/internal-camera-template.md`. Declare `features: [camera]` plus `viewport.interactions: [camera]`, keep `camera_ref` empty, save Fly as the default, and do not invent Hero/Architectural Orbit shader modes. Use an external camera only when multiple separate 3D renderer nodes require one synchronized viewpoint or show-level switching.
+- When the camera-owning renderer feeds a post node (lens, grade, compositor), the user watches the post node, and its preview does not fly the renderer's camera on its own. Route it by default. Right-click the renderer's input tile in the post node's preview (input tiles: the small triangle at the preview's top right; over MCP, `sentinel_ui click_at` with `button=1` on the tile's centre) so the tile reads "Mouse -> <renderer>". Verify it with a screenshot of the post node's panel. It saves as `mousePassthroughSlot` on the post node. This is input passthrough, not the old node-level viewport target. See `knowledge/ui-interactions.md`.
 - Keep HDR internal if useful, but publish 8-bit sRGB color for video consumers and a separate native depth lane for structural conditioning.
 - Treat StreamDiff or other AI interpretation as optional. Prove the procedural renderer and auxiliary outputs first.
 
-Use `projects/living_room_sdf/` for a dimensioned construction example, `projects/scientific_organism/` for a typed-data procedural composition, and `knowledge/modular-procedural-systems.md` as the reusable acceptance contract. Treat their node boundaries as architecture examples, not visual templates.
+Use `tools/templates/blueprints/living_room/` for a dimensioned construction example, `projects/breathing_room/` for a room split into editable generators, `projects/phage_stage/` for a large typed-data system with inspectable previews, and `knowledge/modular-procedural-systems.md` as the reusable acceptance contract. Treat their node boundaries as architecture examples, not visual templates.
 
 ---
 
@@ -90,7 +91,7 @@ Three common archetypes:
 
 If the reference is a routing problem, an atlas will fight you the whole way, and vice versa. Choosing the wrong contract is the most expensive mistake in this workflow, so name the archetype out loud before building.
 
-**Hybrids are normal.** A dense collage of technical panels wrapped around organic 3D masses is a routing problem *and* an organic problem. Do not run two parallel contracts: unify them under **one record buffer with a `role` discriminator**, so a single data link carries the whole plan and every consumer takes the records it cares about. `projects/matik_plate/` does this — one 128-record buffer where `role` separates instrument cells from organism anchors from a header record.
+**Hybrids are normal.** A dense collage of technical panels wrapped around organic 3D masses is a routing problem *and* an organic problem. Do not run two parallel contracts: unify them under **one record buffer with a `role` discriminator**, so a single data link carries the whole plan and every consumer takes the records it cares about. `projects/soft_vitrine/` does this — one 64-record `Plan` buffer where `role` separates flat plates from stroke anchors, mass anchors and a global stage record.
 
 ---
 
@@ -104,7 +105,7 @@ This is stronger than "one layout transform, at the generator" below. The transf
 - Its preview becomes the diagnostic surface for the whole graph. Over-invest in it.
 - Anything derivable from the records is derived, not republished as a second lane.
 
-**The authority is a contract, not a template.** Fixed: single authority, persistent records, direct manipulation, an honest preview. Open — and yours to design per subject — the **projection**, the **verbs**, and the **readouts**. Ask what a draughtsman would draw for *this* thing. One front elevation suits a frontal arrangement and hides the subject of anything organised by depth, height, or extent along a path; reach for two orthographic strips sharing an axis, a section scrubbed along a path, a timeline, or a network view when that is what the thing is. Put the failure mode in the diagram too — self-intersection, leaving the frame, a mass escaping its container. `projects/sunward_corridor/modules/SC_Plan` is the bar for tailoring: plan over elevation on one z axis, the same handle editing both, and a flight line that turns red where the corridor bends through its own wall. Full guidance: `knowledge/reference-build-method.md` §2.5.
+**The authority is a contract, not a template.** Fixed: single authority, persistent records, direct manipulation, an honest preview. Open — and yours to design per subject — the **projection**, the **verbs**, and the **readouts**. Ask what a draughtsman would draw for *this* thing. One front elevation suits a frontal arrangement and hides the subject of anything organised by depth, height, or extent along a path; reach for two orthographic strips sharing an axis, a section scrubbed along a path, a timeline, or a network view when that is what the thing is. Put the failure mode in the diagram too — self-intersection, leaving the frame, a mass escaping its container. `projects/spectral_bench/modules/LT_Bench` is the bar for tailoring: a bench plan over a spectral rail, because the axis a bench is organised along is wavelength, with every unlit element and every lost wavelength drawn red. `projects/kuka_cell/modules/KA_Cell` is the plan-over-elevation form: one scale, the same handle editing both. Full guidance: `knowledge/reference-build-method.md` §2.5.
 
 ### Generate, then override
 
@@ -173,6 +174,9 @@ Use typed controls, and make every one visibly matter:
 - A seed, preset, or mode must change whole route structures or families, not add tiny jitter. If a control barely changes the image, redesign it. Useful controls for a routing scene: route preset, route density, expanded-canvas scale/offset, width scale, and explicit accent pattern controls.
 - Avoid hidden randomness where the user needs direct control. For a "one large dash" look, expose `dash_count` (precise float range) and `dash_offset` (explicit 0..1 phase) instead of silently hashing route ids into a phase.
 - Keep experimental controls default-off when they can damage the design language. Do not apply organic sine displacement or wavy paths to a hard graphic-design reference; controlled width profiles and rounded joins are a different language from noise.
+- Give intensity-style controls headroom past the calibrated look. Users explore by pushing past tasteful. Keep 0..1 exactly as tuned and add an overdrive region above it (for example dose 1..3) that scales amplitude, spatial frequency and speed together. Cap anything that costs march steps.
+- Give each kind of effect its own channel when a user may want it alone. A single "breathe" that also resized the furniture had to be split so furniture could hold its shape while the field still breathed.
+- Anything that travels or turns at a slider-controlled rate reads a clock integrated in the node that owns time, never `time * amount`, which jumps when the slider moves.
 
 ### Exploration axes are shipped presets, not throwaway variants
 

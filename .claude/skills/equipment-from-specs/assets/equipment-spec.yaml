@@ -1,0 +1,100 @@
+# Equipment fact sheet. Copy to <project>/docs/specs/<item-id>.yaml and fill it in BEFORE building.
+# Every number the build uses appears in `facts` (or, for DMX, in `dmx`) with where it came from.
+#
+# status, for every value:
+#   sourced    - stated in a source document (give doc id + page/section)
+#   derived    - computed from sourced values (give the formula)
+#   inferred   - read off a drawing, plot or photo (give the method and the scale reference)
+#   assumed    - a labelled guess the build needs; list every one in the README
+#   not-stated - no document gives it; value null until the build needs a labelled default
+#   absent     - the feature does not exist on this model (e.g. no iris)
+# Add `weak: true` when evidence is thin (e.g. slot order guessed from part-number suffixes).
+#
+# Units: metres, degrees, seconds, kilograms. Keep the original value and unit in `as_written`.
+version: 2
+item:
+  id: null              # stable kebab-case id, e.g. moving-head-acme-xyz
+  family: null          # fixture | truss | rigging-hardware | speaker | line-array | generator | vehicle | other
+  manufacturer: null    # named only to identify the source; never implies endorsement
+  model: null
+  variant: null         # cabinet variant, truss series, etc. (DMX modes go under `dmx`)
+
+sources:                # documents stay OUTSIDE any project you share; record them here
+  - id: manual
+    kind: null          # product-page | user-manual | data-sheet | dmx-chart | gdtf | dimension-drawing | photometrics | photo | cad
+    title: null
+    revision: null      # revision or date printed on the document itself
+    url: null           # manufacturer URL; if a mirror, the mirror URL plus `mirror_of`
+    mirror_of: null     # only for a byte-identical or same-revision copy of the manufacturer's file
+    retrieved: null
+    local_path: null    # outside the project, e.g. <workspace>/sources/<item-id>/manual.pdf
+
+conflicts:              # every disagreement, including inside one document, and the decision
+  - field: null
+    readings: []        # [{value, source, page}]
+    decision: null
+    rule: null          # which ranking rule decided it (skill step 1.4)
+
+facts:                  # THE home for every value. One entry per value.
+  - field: null         # dotted name, e.g. body.depth_head_horizontal, zoom.spot.beam_min, gobo_static.slot_3
+    value: null
+    as_written: null    # "540 deg", "21.6 in"
+    status: null
+    source: null        # source id + page or section
+    note: null          # pose it applies to, definition used (e.g. "manufacturer's field = 10%?"), method
+
+# --- Coverage checklists: the facts each family needs. Record them in `facts`, not here. ---
+#
+# all families:   geometry.origin (the plane the mount fastens to; protruding feet are geometry, not origin),
+#                 envelope per pose with and without brackets/hardware, landmarks (pivots, lens centre,
+#                 hinge points, pickup holes, skid feet), mounts (clamp, omega, base plate, skid, deck, frame)
+# fixture:        emitters vs control zones, zone layout and address order; colour system (CMY, wheel slots
+#                 incl. split/anchor positions, CTO, additive emitters); static and rotating gobo wheels
+#                 (slot order tied to DMX values, each slot's pattern, geometric vs artwork); effect or
+#                 animation wheel; prisms (facets, linear/circular, rotation, centre beam); beam shaper or
+#                 framing; frost(s); iris; focus (range, autofocus); hot-spot; optical application modes and
+#                 the zoom range in each (beam and field at both ends; note the manufacturer's definition of
+#                 "field"); strobe and shutter; pan/tilt ranges; travel time or fastest commanded move time
+# photometrics:   beam and field angle at each zoom end, illuminance at stated distances, the mode measured
+# truss:          series, section (square/triangle/ladder), outside size, chord OD + wall, brace OD + wall +
+#                 pattern, connector family, stock lengths, corner/junction/base envelopes and their ports
+# speaker:        envelope, taper and splay range per joint, drivers (size, count, position), rigging points
+#                 (hinges, links, pins, frame pickups), the manufacturer's supported stacking
+# generator/vehicle: envelope, relations (wheelbase, axles, deck height, door hinge lines, skid spacing),
+#                 keepouts including full door sweeps
+
+dmx:                    # fixtures only. Prefer a GDTF file or the DMX chart over the manual (step 1.4).
+  modes:
+    - name: null
+      footprint: null   # channel count
+  channels:             # one entry per attribute row of the chart
+    - attribute: null   # pan, pan_fine, gobo_static, gobo_rot_index, prism1, cmy_c, ...
+      ch: {}            # channel number per mode name; omit a mode where the attribute is absent
+      res: null         # single | coarse | fine
+      fine_of: null     # for a fine channel, the coarse attribute it refines
+      default: null
+      type: null        # step | proportional | mixed
+      depends_on: null  # {attribute, range or latched mode} that changes this channel's meaning
+      activation: null  # {hold_s, condition} for latched or protected functions (lamp, reset, settings)
+      scales: []        # when one value drives several concurrent scales, one entry each
+      source: null      # source id + page
+      ranges:
+        - {from: null, to: null, function: null, value_at_from: null, value_at_to: null, type: null, anchors: []}
+  interlocks:           # what blocks what, e.g. beam shaper blocks prisms, gobos and frost
+    - when: null
+      blocks: []
+      source: null
+  simulated: []         # attributes the decoder will drive; everything else is listed as ignored in the README
+
+# Recorded for documentation only. Never used to claim load, rigging or electrical capacity.
+documentation_only:
+  weight: null
+  power: null
+  ratings: []
+
+proof:                  # filled while building; see the skill's gates
+  - gate: null
+    claim: null
+    evidence: null      # capture path, readback, test output
+    result: null
+    limits: null

@@ -1,0 +1,62 @@
+# Phage_Lighting - the fixture canvas's words. Regenerate: python tools/il_type.py labels Phage_Lighting
+TITLE       @bold @track=0.14 = PHAGE
+SUBTITLE    @sans = fixtures
+
+# the 16 group buttons, in lighting.hlsli's order (layout.hlsl counts from G_ALL)
+G_ALL       @bold = ALL
+G_NONE      @bold = NONE
+G_MOVERS    @bold = MOVERS
+G_STROBES   @bold = STROBES
+G_BARS      @bold = BARS
+G_AXES      @bold = AXES
+G_LEFT      @bold = LEFT
+G_RIGHT     @bold = RIGHT
+G_PLATE     @bold = PLATE
+G_CAPSID    @bold = CAPSID
+G_COLLAR    @bold = COLLAR
+G_KNEES     @bold = KNEES
+G_FEET      @bold = FEET
+G_BOOTH     @bold = BOOTH
+G_LEGS      @bold = LEGS
+G_ODD       @bold = ODD
+
+FRONT       @bold @track=0.08 = FRONT ELEVATION
+PLAN        @bold @track=0.08 = PLAN, AUDIENCE BELOW
+GRID        @sans = grid 5 m
+WAITING     @sans = waiting for the fixture mounts
+SELECTED    @bold @track=0.08 = SELECTED
+PROGRAMMER  @bold @track=0.08 = PROGRAMMER
+REFERENCE   @bold @track=0.08 = REFERENCE
+HIGHLIGHT   @bold @track=0.08 = HIGHLIGHT
+SOLO        @bold @track=0.08 = SOLO
+
+# footer (pairs)
+K_CLICK     @sans = Click
+K_DRAG      @sans = Drag
+K_SHIFT     @sans = Shift
+K_CTRL      @sans = Ctrl
+K_A         @sans = A
+K_ESC       @sans = Esc
+D_CLICK     @sans = select
+D_DRAG      @sans = box select
+D_SHIFT     @sans = add
+D_CTRL      @sans = toggle
+D_A         @sans = all
+D_ESC       @sans = clear
+
+# the hover inspector (layout.hlsl counts N_MOVER + family)
+N_MOVER     @bold @track=0.08 = MOVER
+N_STROBE    @bold @track=0.08 = STROBE
+N_BAR       @bold @track=0.08 = BAR
+N_BODY      @bold @track=0.08 = BODY
+N_CAPSID    @bold @track=0.08 = CAPSID
+N_LEG       @bold @track=0.08 = LEG
+SLOT        @sans = slot
+LEVEL       @bold @track=0.08 = LEVEL
+PAN         @bold @track=0.08 = PAN
+TILT        @bold @track=0.08 = TILT
+TUBE        @bold @track=0.08 = TUBE
+PLATE_L     @bold @track=0.08 = PLATE
+U_PCT       @sans = %
+NOTE_BAR    @sans = a pixel bar: its content is on the Pixel Bars monitor
+NOTE_AXIS   @sans = a truss axis: its motion is on Motion Control

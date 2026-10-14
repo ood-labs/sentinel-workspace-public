@@ -4,6 +4,9 @@ mode: generator
 resolution: [1200, 820]
 working_format: RGBA16F
 output_format: RGBA16F
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 
 # The colony. It owns where the ants are, what they are carrying, where their feet are, and the
 # pheromone field they left behind. FM_Render draws these records and re-decides none of them.
@@ -13,6 +16,13 @@ output_format: RGBA16F
 # a graph is a DAG. koi_tank's trick of closing a loop through control outputs and expressions
 # carries one float, not a texture. So the chemical memory belongs to the colony that owns it,
 # which is also the honest reading — the field is the colony's state, not the arena's.
+
+# Hover only. The canvas's inspector reads the pointer snapshot to show the ant, or the moment of
+# the gait chart, under it. No pass consumes an event and nothing here edits the colony.
+viewport:
+  interactions: [events]
+  input:
+    pointer: [left]
 
 buffers:
   # 128 ants at 96 bytes. The record grew by four floats for the station system; see the
@@ -31,6 +41,13 @@ buffers:
 
   # What each station has done. 16 stations plus a summary element.
   - { name: stations, structured: true, element_size: 64, element_count: 17, persistent: true }
+
+  # The colony-wide history the canvas traces: a header and 128 samples of (speed, slip, traffic,
+  # laden), one every 1/30 s of wall clock. Written by mtrace, read only by the canvas's layout.
+  - { name: mtrace, structured: true, element_size: 16, element_count: 129, persistent: true }
+
+  # The UI kit's draw list: layout records the type and chrome, ui rasterizes it over the canvas.
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 
   # The pheromone field. Half scale => 600 x 410 over a 260 x 180 mm arena, about 0.44 mm per
   # texel. It was quarter scale for a 160 mm arena and 4.2 mm ants; at 1.5 mm ants over a 260 mm
@@ -222,6 +239,7 @@ parameters:
   - { name: field_gain, display: "Field Gain", type: float, min: 0.0, max: 8.0, default: 0.55, group: "Preview" }
   - { name: show_feet,  display: "Feet",       type: bool,  default: true,                     group: "Preview" }
   - { name: foot_all,   display: "All Feet",   type: bool,  default: true,                     group: "Preview" }
+  - { name: tooltips,   display: "Tooltips",   type: bool,  default: true,                     group: "Preview", description: "The card beside the pointer that inspects the ant under it, or the moment of the gait chart under it. Turn it off to keep the canvas clear while you work." }
 
 passes:
   # The clock. Reads NOTHING any downstream pass writes, or the dependency scheduler has a cycle
@@ -377,6 +395,20 @@ passes:
       - { slot: 2, source: "data:0" }
       - { slot: 3, source: "buffer:ants" }
 
+  # The canvas's history: a sample of the measured aggregates every 1/30 s of wall clock, so the
+  # readout column can trace what moves (speed on the beat, slip against its alarm). Ordered after
+  # meas by buffer dependency; it reads its own ring through the UAV.
+  - name: mtrace
+    shader: mtrace.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 1, source: "buffer:meas" }
+    output: "buffer:mtrace"
+
+  # The drawing: the arena with the field and the ants, and the footfall chart. No type.
   - name: canvas
     shader: canvas.hlsl
     target: cs_5_0
@@ -387,6 +419,34 @@ passes:
       - { slot: 3, source: "data:0" }
       - { slot: 4, source: "buffer:pher" }
       - { slot: 5, source: "buffer:ghist" }
+
+  # The UI kit: one thread group records the type, readouts, traces, legend, inspector and footer
+  # into the draw list (and finds the ant under the pointer); ui rasterizes it over the canvas.
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:ants" }
+      - { slot: 1, source: "buffer:feet" }
+      - { slot: 2, source: "buffer:meas" }
+      - { slot: 3, source: "data:0" }
+      - { slot: 4, source: "buffer:ghist" }
+      - { slot: 5, source: "buffer:mtrace" }
+      - { slot: 6, source: "buffer:stations" }
+    output: "buffer:dl"
+
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:canvas" }
 
 data_outputs:
   - name: "Ants"
@@ -416,7 +476,7 @@ control_outputs:
   - { name: sta_released, buffer: stations, element: 16, field_offset: 12, description: "Ants released this cook" }
 
 outputs:
-  - { name: "Colony View", pass: canvas }
+  - { name: "Colony View", pass: ui }
   - { name: "Field", pass: field_out }
   # Sampled by FM_Render's sweep. Arena-space. Published by the BLIT, never by `shad` itself —
   # a buffer-writing pass has no SRV and the pin would be hollow.

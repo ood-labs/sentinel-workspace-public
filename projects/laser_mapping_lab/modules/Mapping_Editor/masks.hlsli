@@ -12,8 +12,6 @@
 // exists, inside at least one of them. Order never matters, and inverting a mask is Block <-> Only-In.
 #ifndef MASKS_HLSLI
 #define MASKS_HLSLI
-#include "mask_labels.hlsli"
-#include "../_shared/fonts/scientifica_ascii.hlsli"
 #define MASK_MAX 16
 #define POLY_MAX 32
 #define MASK_PT0 33
@@ -70,7 +68,7 @@ float maskDistance(uint j,float2 q){
 }
 
 // ---- The side panel, in panel pixels (origin top-left, +y down). Shared by the canvas pass
-// (hit testing) and the editor pass (drawing), so the two can never disagree.
+// (hit testing) and the layout pass (drawing and hover), so the two can never disagree.
 #define PANEL_W 196
 #define ROW_Y0 76
 #define ROW_H 24
@@ -98,10 +96,4 @@ uint panelHit(float2 p,uint count,out uint row){
  }
  return 1;
 }
-
-// 8x11 glyphs on a 7 px advance.
-float glyph(float2 p,float2 a,uint code){int2 v=(int2)floor(p-a);if(any(v<0)||v.x>=8||v.y>=11||code<33||code>126)return 0;return (scientificaRowForFace(0,code,v.y)>>(7-v.x))&1;}
-float label(float2 p,float2 a,uint id){float2 v=p-a;if(any(v<0)||v.y>=11||v.x>=56)return 0;uint col=(uint)v.x/7;return glyph(p,a+float2(col*7,0),ML[id*8+col]);}
-float hint(float2 p,float2 a,uint id){float2 v=p-a;if(any(v<0)||v.y>=11||v.x>=196)return 0;uint col=(uint)v.x/7;return glyph(p,a+float2(col*7,0),MH[id*28+col]);}
-float digits2(float2 p,float2 a,uint n){float2 v=p-a;if(any(v<0)||v.y>=11||v.x>=14)return 0;uint col=(uint)v.x/7;uint d=col==0?n/10:n%10;if(col==0&&d==0)return 0;return glyph(p,a+float2(col*7,0),48+d);}
 #endif

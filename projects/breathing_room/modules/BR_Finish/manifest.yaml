@@ -1,0 +1,123 @@
+name: "BR Finish"
+version: "1.0"
+mode: generator
+execution: on_dirty
+resolution: [1280, 860]
+compile_optimization: fast_compile
+
+# The MATERIAL AUTHORITY for breathing_room: 24 fixed semantic slots (br_records.hlsli) that every
+# geometry record names by id. Colours are the finish schedule -- authored sRGB here, stored linear.
+# The canvas renders every slot with the renderer's own pattern families and BRDF
+# (_shared/br_shade.hlsli), so the board is an honest preview of the room's surfaces.
+# Clicking a sample selects it; the selection is published for the renderer's Scope view.
+# The canvas is built on the Interaction Lab UI kit (_shared/ui): plate shades the samples per
+# pixel, layout records the cards' edges, captions and numbers into a draw list, and ui
+# rasterizes it over the samples.
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+panel:
+  mode: canvas
+  output: "Finish Schedule"
+  resolution: follow_panel
+
+buffers:
+  - { name: finish, structured: true, element_size: 64, element_count: 32, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+parameters:
+  - { name: floor_tone,     display: "Floor Tone",      type: color, default: [0.64, 0.43, 0.25], group: "Floor" }
+  - { name: floor_grain,    display: "Floor Grain",     type: color, default: [0.40, 0.24, 0.12], group: "Floor" }
+  - { name: floor_rough,    display: "Floor Roughness", type: float, min: 0.05, max: 1.0, default: 0.32, group: "Floor" }
+  - { name: floor_varnish,  display: "Floor Varnish",   type: float, min: 0.0,  max: 1.0, default: 0.85, group: "Floor" }
+
+  - { name: wall_paint,     display: "Wall Paint",      type: color, default: [0.86, 0.81, 0.72], group: "Walls" }
+  - { name: wall_rough,     display: "Wall Roughness",  type: float, min: 0.3, max: 1.0, default: 0.88, group: "Walls" }
+  - { name: ceiling_paint,  display: "Ceiling Paint",   type: color, default: [0.90, 0.88, 0.83], group: "Walls" }
+  - { name: trim_paint,     display: "Trim + Doors",    type: color, default: [0.90, 0.88, 0.82], group: "Walls" }
+  - { name: trim_rough,     display: "Trim Roughness",  type: float, min: 0.1, max: 1.0, default: 0.38, group: "Walls" }
+  - { name: window_paint,   display: "Window Sash",     type: color, default: [0.88, 0.86, 0.80], group: "Walls" }
+  - { name: radiator_paint, display: "Radiator",        type: color, default: [0.82, 0.79, 0.72], group: "Walls" }
+  - { name: stone_base,     display: "Mantel Marble",   type: color, default: [0.88, 0.87, 0.84], group: "Walls" }
+  - { name: stone_vein,     display: "Marble Vein",     type: color, default: [0.46, 0.45, 0.44], group: "Walls" }
+
+  - { name: linen_colour,   display: "Sofa Linen",      type: color, default: [0.74, 0.67, 0.57], group: "Textiles" }
+  - { name: velvet_colour,  display: "Velvet",          type: color, default: [0.66, 0.30, 0.17], group: "Textiles" }
+  - { name: sheer_colour,   display: "Sheers",          type: color, default: [0.95, 0.92, 0.86], group: "Textiles" }
+  - { name: sheer_trans,    display: "Sheer Translucency", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Textiles" }
+  - { name: shade_colour,   display: "Lampshade",       type: color, default: [0.95, 0.89, 0.78], group: "Textiles" }
+
+  - { name: leather_colour, display: "Leather",         type: color, default: [0.56, 0.29, 0.14], group: "Furniture" }
+  - { name: walnut_colour,  display: "Walnut",          type: color, default: [0.42, 0.27, 0.17], group: "Furniture" }
+  - { name: brass_colour,   display: "Brass",           type: color, default: [0.95, 0.78, 0.48], group: "Furniture" }
+  - { name: brass_rough,    display: "Brass Roughness", type: float, min: 0.05, max: 0.9, default: 0.28, group: "Furniture" }
+  - { name: glaze_colour,   display: "Ceramic Glaze",   type: color, default: [0.46, 0.50, 0.30], group: "Furniture" }
+  - { name: travertine_colour, display: "Travertine",   type: color, default: [0.82, 0.74, 0.62], group: "Furniture" }
+  - { name: leaf_colour,    display: "Leaves",          type: color, default: [0.25, 0.40, 0.16], group: "Furniture" }
+  - { name: terracotta_colour, display: "Terracotta",   type: color, default: [0.74, 0.42, 0.27], group: "Furniture" }
+
+  - { name: texture_scale,  display: "Pattern Scale",   type: float, min: 0.4, max: 2.5, default: 1.0, group: "Global" }
+
+viewport:
+  hint: "Click a sample to select it (BR Render's Scope view shows where it is used) | Esc clears"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [escape]
+    gestures: [click]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select material" }
+    - { key: escape, action: deselect, label: "Clear selection" }
+
+passes:
+  - name: finish
+    shader: finish.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:finish"
+  - name: plate
+    shader: plate.hlsl
+    time_dependent: false
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:finish" }
+      - { slot: 7, source: "pass:finish" }
+  - name: layout
+    shader: layout.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+    inputs:
+      - { slot: 0, source: "buffer:finish" }
+      - { slot: 7, source: "pass:plate" }
+  - name: ui
+    shader: ui.hlsl
+    time_dependent: false
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:plate" }
+      - { slot: 7, source: "pass:layout" }
+
+data_outputs:
+  - name: "Finish"
+    buffer: "finish"
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+outputs:
+  - { name: "Finish Schedule", pass: ui }

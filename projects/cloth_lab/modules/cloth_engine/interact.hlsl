@@ -28,6 +28,8 @@ groupshared float gKey[PICK_GROUP];
 groupshared uint  gWho[PICK_GROUP];
 groupshared float gDepth[PICK_GROUP];
 
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
+
 [numthreads(1024, 1, 1)]
 void main(uint3 gtid : SV_GroupThreadID)
 {
@@ -104,11 +106,24 @@ void main(uint3 gtid : SV_GroupThreadID)
     uint picked = gWho[0];
     float pickedDepth = gDepth[0];
 
+    // Each event is consumed once, by sequence. The host hands an event back on
+    // later cooks until newer input replaces it, so unguarded a key-down was
+    // re-applied until its key-up arrived: one tap of R queued several resets,
+    // and Z / V / Alt+wheel stepped the brush several times. The record is
+    // full, so the newest event consumed rides in element 1 (asuint).
     uint n = min(_ViewportEventCount, 64u);
+    uint lastSeq = asuint(Out[1].target.x);
+    uint ringMax = 0u;
+    [loop]
+    for (uint r = 0u; r < n; ++r) ringMax = max(ringMax, _ViewportEvents[r].sequence);
+    if (n > 0u && ringMax < lastSeq) lastSeq = 0u;   // the host's counter restarted (app restart, reload)
+    uint newLast = lastSeq;
     [loop]
     for (uint e = 0u; e < n; ++e)
     {
         ViewportEvent ev = _ViewportEvents[e];
+        if (!isFresh(ev.sequence, lastSeq)) continue;     // consumed on an earlier cook
+        newLast = (ev.sequence > lastSeq) ? max(newLast, ev.sequence) : ev.sequence;
 
         // Acquire ONLY on a real left-button press edge.
         //
@@ -138,7 +153,7 @@ void main(uint3 gtid : SV_GroupThreadID)
         // Alt+wheel only. Plain wheel belongs to the host camera (orbit dolly /
         // fly speed); reading it here too meant one scroll did two jobs at once.
         if (ev.type == 3u && (ev.modifiers & VIEWPORT_MODIFIER_ALT) != 0u)
-            st.radius = clamp(st.radius * pow(1.15, ev.value), 0.02, 3.0);
+            st.radius = clamp(st.radius * pow(1.15, clamp(ev.value, -3.0, 3.0)), 0.02, 3.0);
 
         if (ev.type == 4u && ev.phase == 1u)     // key edges
         {
@@ -211,4 +226,7 @@ void main(uint3 gtid : SV_GroupThreadID)
     }
 
     Out[0] = st;
+    InteractState mark = (InteractState)0;
+    mark.target.x = asfloat(newLast);
+    Out[1] = mark;
 }

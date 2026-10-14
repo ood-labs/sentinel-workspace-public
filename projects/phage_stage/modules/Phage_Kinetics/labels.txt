@@ -1,0 +1,24 @@
+# Phage_Kinetics - the motion-control canvas's words. Regenerate: python tools/il_type.py labels Phage_Kinetics
+TITLE       @bold @track=0.14 = PHAGE
+SUBTITLE    @sans = motion control
+DRIVE       @bold @track=0.08 = DRIVE
+PROGRAMMER  @bold @track=0.08 = PROGRAMMER
+MANUAL      @bold @track=0.08 = MANUAL
+DEMO        @bold @track=0.08 = DEMO
+REST_HOLD   @bold @track=0.08 = REST HOLD
+WAITING     @sans = waiting for the design
+PLAN_LIVE   @bold @track=0.08 = PLAN, LIVE
+FRONT       @bold @track=0.08 = FRONT ELEVATION
+
+BODY        @bold @track=0.08 = BODY
+CAPSID      @bold @track=0.08 = CAPSID
+LEG         @bold @track=0.08 = LEG
+HEIGHT      @bold @track=0.08 = HEIGHT
+YAW         @bold @track=0.08 = YAW
+SPIN        @bold @track=0.08 = SPIN
+SHEATH      @bold @track=0.08 = SHEATH
+SWING       @bold @track=0.08 = SWING
+LIFT        @bold @track=0.08 = LIFT
+M           @sans = m
+DEG         @sans = deg
+TO          @sans = to

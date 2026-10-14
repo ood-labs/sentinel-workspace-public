@@ -1,0 +1,76 @@
+# Touch - the input primer. Regenerate with: python tools/il_type.py labels Touch
+TITLE       @bold @track=0.08 = TOUCH
+SUBTITLE    @sans = ordered viewport events, each consumed exactly once
+P_SURFACE   @bold @track=0.07 = SURFACE
+P_LOG       @bold @track=0.07 = EVENT LOG
+P_RULES     @bold @track=0.07 = INPUT RULES
+
+# counters
+C_CONSUMED  @sans = consumed
+C_STALE     @sans = stale repeats skipped
+C_RESETS    @sans = watermark resets
+C_MOVES     @sans = pointer moves
+C_WHEEL     @sans = wheel notches
+C_STROKES   @sans = strokes drawn
+C_POINTS    @sans = points
+C_BRUSH     @sans = brush px
+C_FADE_ON   @bold = FADE ON
+C_FADE_OFF  @sans = fade off
+
+# log header
+H_SEQ       @sans = seq
+H_TYPE      @sans = type
+H_PHASE     @sans = phase
+H_CODE      @sans = code
+H_MODS      @sans = mods
+H_POS       @sans = position
+H_VAL       @sans = value
+
+# event type names (index = type)
+T_NONE      @mono = -
+T_MOVE      @mono = MOVE
+T_BUTTON    @mono = BUTTON
+T_WHEEL     @mono = WHEEL
+T_KEY       @mono = KEY
+T_GESTURE   @mono = GESTURE
+T_CAPTURE   @mono = CAPTURE
+
+# phase names (index = phase)
+PH_NONE     @mono = -
+PH_PRESS    @mono = press
+PH_REPEAT   @mono = repeat
+PH_RELEASE  @mono = release
+PH_DOUBLE   @mono = double
+PH_BEGIN    @mono = begin
+PH_UPDATE   @mono = update
+PH_END      @mono = end
+PH_CANCEL   @mono = cancel
+
+M_SHIFT     @mono = S
+M_CTRL      @mono = C
+M_ALT       @mono = A
+
+# the four rules, as ink.hlsl and observe.hlsl enforce them
+R1          @sans = 1  consume by sequence: a replayed event is skipped
+R2          @sans = 2  ring max below the watermark: host restarted, re-arm
+R3          @sans = 3  wheel scales by notches (fractional), clamped per event
+R4          @sans = 4  toggles latch on press and re-arm on release
+
+# hint bar
+K_CLICK     @sans = Click
+K_DRAG      @sans = Drag
+K_DBL       @sans = Dbl-click
+K_WHEEL     @sans = Ctrl+Wheel
+K_14        @sans = 1-4
+K_SPACE     @sans = Space
+K_BKSP      @sans = Bksp
+K_C         @sans = C
+D_CLICK     @sans = ripple
+D_DRAG      @sans = ink
+D_DBL       @sans = clear
+D_WHEEL     @sans = brush
+D_14        @sans = ink colour
+D_SPACE     @sans = fade
+D_BKSP      @sans = undo stroke
+D_C         @sans = clear
+EMPTY       @sans = Drag here to ink. Every event you make is listed on the right.

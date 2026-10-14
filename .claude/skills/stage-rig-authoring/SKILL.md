@@ -19,6 +19,11 @@ frame rate with hundreds of fixtures in haze.
 Also read `knowledge/reference-build-method.md` and the `module-authoring`, `module-ui-authoring`
 and `mcp-automation` skills.
 
+**When the rig is the user's own physical lights**, the same system drives them: a Fixture Rig node imports the
+real patch as an MVR against its GDTFs, the console's DMX goes out over Art-Net, and the previz decodes that same
+DMX. `projects/simple_stage/` is the reference at club scale (76 GDTF fixtures in 7 universes, sized like a real
+club). Section 10 has the rules a rig that drives real fixtures adds.
+
 **What to take and what to design.**
 
 - **Take:** the show system is infrastructure with no creative identity. When the user wants a
@@ -37,25 +42,34 @@ and `mcp-automation` skills.
 2. **Stable program slots.** Give each fixture family a fixed slot range with headroom. Fixture
    counts switch rows on and off; they never move a fixture to another row. Stored looks then
    survive every rig change.
-3. **A packed per-fixture programmer.** Rows x attributes, written in batches and committed as one
-   revision, so a half-written look is never visible.
-4. **Layered banks with disjoint ownership:**
+3. **The fixture rig is the authority.** Real fixture types (GDTFs) placed and patched in one Fixture Rig node,
+   imported from an MVR. The console reads it and rebuilds its fixture table every frame: which program slot or
+   pixel run each fixture plays, where the truss carries it, its pan and tilt limits from its GDTF. Groups, DMX and
+   the render follow from that table, so a fixture added to or deleted from the rig plays, encodes and draws with no
+   other edit. Never keep a second fixture list in a Module.
+4. **The render is the DMX.** The console encodes every fixture through its GDTF; the renderer decodes that DMX and
+   draws it. What you see is what a real rig would receive, and an external console plays the same picture.
+5. **A packed, layered programmer.** Rows x attributes, one row per layer of each fixture type (a moving head's
+   MOVE, BEAM and HALO), written in batches and committed as one revision, so a half-written look is never visible.
+6. **Layered banks with disjoint ownership:**
    - static owns pan, tilt, level and ring;
    - colour owns palettes and routing;
    - effects owns every effect attribute and the strobe clock;
    - full owns everything, plus the render globals.
 
-   Disjoint ownership is what lets banks mix live.
-5. **One show surface.** A Script node owns programming and playback behind a `rig_command` state
+   Disjoint ownership is what lets banks mix live. Each fixture type also gets a pad page: a bank per layer
+   plus a whole-fixture bank.
+7. **One show surface.** A Script node owns programming and playback behind a `rig_command` state
    seam, with an ack. The desk, the Push 2 and automation all send the same commands.
-6. **Pads tell the truth.**
+8. **Pads tell the truth.**
    - A FULL look lights itself plus the parts it was built from.
    - Any later partial recall unlights the FULL pad.
    - The lit set persists across reloads.
-7. **Useful before programming.** Every node shows a meaningful result before the programmer
+9. **Useful before programming.** Every node shows a meaningful result before the programmer
    engages: a reference aim and chase, a reference pixel chase, a demo drive for kinetics.
-8. **Proven live.** Every look is recalled and captured on the running rig. Anything that moves is
-   judged in filmstrips, not stills.
+10. **Proven live.** Every look is recalled and captured on the running rig. Anything that moves is
+   judged in filmstrips, not stills. A change that must not alter a look is proven channel for channel on the
+   DMX (`projects/phage_stage/tools/phage_baseline.py`).
 
 ## 2. Design the rig for the reference
 
@@ -84,10 +98,16 @@ Work this out and write it in the response before creating a node:
 PHAGE's graph is one answer, not a template:
 
 ```text
-Plan -> Kinetics -> Assembly / Venue / Lighting / LED -> Renderer
-Program + Show + Clock -> Kinetics / Lighting / LED
+Plan -> Kinetics -> Assembly / Venue / Lighting
+Fixture Rig (MVR + GDTFs) -> Lighting (the console: fixture table, looks, pixel content, DMX)
+Lighting -> DMX Out (Art-Net) and -> Renderer (decodes the DMX) ; Lighting LED Pixels -> Venue
+Program + Show + Clock -> Kinetics / Lighting
 Surface <-> Desk (panel events and feedback), Surface -> Push 2 Display
 ```
+
+- **Fewer nodes, not more.** The console is one node: fixture table, motors, optics, pixel content and the DMX
+  encode with its own proof outputs. The renderer decodes the DMX itself. PHAGE once had separate DMX, LED and
+  visualiser nodes and folded them in, because every extra node was another copy of the fixture list.
 
 - **Budget the data inputs at design time.** A Module takes at most 8 data inputs. List the
   renderer's inputs first, then pack related records into one buffer behind a documented header row.
@@ -116,6 +136,11 @@ Surface <-> Desk (panel events and feedback), Surface -> Push 2 Display
   - the pad titles, from the look definitions;
   - the desk manifest, shader layout and index map, from one control list. Then run
     `tools/module-ui.ps1 generate` for `_ui.generated.hlsli`.
+- **A desk is a full-bleed Canvas that follows its panel.** The generator emits
+  `panel: {mode: canvas, output: Desk, resolution: follow_panel}`. Lay the controls out in normalized rects and
+  scale text by `min(_Resolution / DESK_SIZE)`, so the desk fills any window without stretched type. After every
+  regenerate and reload, check `info` that the output size follows the window. The operator asked for this; desks
+  kept shipping at a fixed 1600 x 720.
 - **Mirror the groups.** Define selection groups identically in Luau (programmer) and HLSL (canvas).
 - **Budgets.** Give the Surface a 2 ms tick budget and a 64 MB heap, and measure both.
 
@@ -130,6 +155,7 @@ Script-node traps, each hit in PHAGE:
 | `SNAPSHOT_RECORD_MISSING` after adding durable state | Never add push2os `persist` records to a shipped surface. `host.state.register` values reset on reload too. Put durable additions in the entry script's serialize table. |
 | A fire-once write (for example the BUILD origin) is sometimes lost | Retry until the write lands. |
 | `[push2os] bank save failed: false` in the log | The asynchronous save is still pending. It is harmless. |
+| A page's knobs do nothing: every turn snaps back | push2os runs page `on_frame` before the encoder flush. A page that copies stored state onto its params every frame erases each turn. Adopt a stored value only when it changed, and never while the record is dirty or within 0.5 s of its last delta. Fixed in PHAGE's GLOBAL page on 2026-10-03; forks made earlier carry the bug. |
 
 ## 5. Programming the looks
 
@@ -213,16 +239,20 @@ PHAGE cut its GPU time from 41 ms to 5.8 ms per frame with 196 fixtures, on a la
 - **Frame contract.** A camera-only node preset for the composed view.
 - **Quality ladder.** Resolution and volume samples only, Draft/Live/Beauty/Hero. Default to Live,
   mark Hero capture-only, and publish measured ratios.
-- **Push 2 Display.** Set `record_png_every` to 0. Its default writes a PNG every second into the
-  project. Gitignore `**/.sentinel/display-records/` and `**/presets/.sentinel-*.lock`.
+- **Push 2 Display.** Set `transport` to 1 (WinUSB): a new node defaults to 0, Record, which renders
+  happily (status `record ...`) while the hardware screen stays dark. Check the status names the Push's
+  WinUSB device. Set `record_png_every` to 0: its default writes a PNG every second into the project.
+  Gitignore `**/.sentinel/display-records/` and `**/presets/.sentinel-*.lock`.
 - **Shipping in this repository.**
   - Register the project in `tools/official-examples.config.psd1`, which drives the validator, the
     audit and the workspace manifest.
   - Add a review record under `.release/reviews/`.
   - Run `tools/validate-official-examples.ps1 -Projects <name>` and
     `tools/module-ui.ps1 validate` on the desk.
-- **Report what automation cannot prove.** Injected input does not reach Module viewport events, so
-  canvas drags, canvas clicks, the desk's click hop and Push 2 hardware need a hand test.
+- **Prove gestures, and report what automation cannot.** `sentinel_ui action=click_at` and `drag_at`
+  reach Module viewport events (`/sentinel/pipelines/<id>/viewport/delivered_boundary_count` grows by
+  3 per click), so canvas clicks, drags and the desk's click hop can be exercised and read back. Wheel,
+  keys and Push 2 hardware still need a hand test.
 
 ## 9. Module traps
 
@@ -238,3 +268,49 @@ PHAGE cut its GPU time from 41 ms to 5.8 ms per frame with 196 fixtures, on a la
 | The renderer goes dark after a scripted manifest edit | The edit dropped an `output:` line. Diff every scripted manifest change. |
 | Black 8 x 8 tiles | NaN in a data port: `atan2(0, 0)` or `pow` of a negative base. Guard it and scan every port. |
 | A node shows the wrong data | `_DataN_Count` is numbered by manifest data-input order, not the pass slot. |
+
+## 10. A real room
+
+For a user's real lights, work in this order: inventory, patch, Art-Net, camera match and layered programming.
+The rules a rig that drives real fixtures adds on top of PHAGE:
+
+- **The previz decodes the console's DMX.** Never render the programmer's intent directly. Then what you see
+  is what the room receives, and a decode mismatch is a bug you can measure.
+- **A stage programmer the user can grab.** Draw the room in FRONT, PLAN and SIDE views, with every beam
+  running to where it lands. Click or box-select, then drag the landing ring in the plane of the view.
+  MIRROR is relative to the fixture being held. The sheet only publishes selections, aims and commands
+  (stamped with the producer's `_Time`). The Surface owns the programmer, and both the Push and the sheet
+  edit one selection.
+- **Name every knob for what it drives on that fixture.** The program fields are generic (level, ring), but
+  the operator programs fixtures. Expose per-kind aliases: DIMMER and GOBO on a mover; RGB ZONES, WHITE BARS and
+  GOLD BEAMS on a strobe panel (one per layer row); HEADS on a pixel bar. Show only the knobs the selection has, packed left. A knob
+  labelled "GOBO / GOLD" on a fixture with no gobo is a bug report waiting to happen.
+- **Every fixture is layers, and looks build up from them.** Give each fixture type about three program rows, one per
+  layer: an LF2405 its gold lenses, white bars and RGB zones; a moving head MOVE, BEAM (the dimmer) and COLOR (wheel,
+  gobo); a tilting pixel bar TILT, PIXELS and WHITE. Each layer then has its own look, lane, sizes and level, and
+  movement never shares spread / offset / LOOK with the intensity chase. Each fixture type gets a pad page: a bank per
+  layer plus a whole-fixture bank (all layers with levels, colour and aim). A rig EFFECT is one whole-fixture look per
+  type, and FULL looks sit on top. The operator builds the same way: layer pads, then a fixture pad, then a global
+  look. `projects/phage_stage` is the reference: its pad pages 2-4 are a bank per layer plus a whole-fixture bank
+  for each fixture type, and `projects/simple_stage`'s programmer edits the same layers.
+- **One LOOK knob per layer** (MOVE FX, BEAM FX, GOLD FX...), each an alias onto the LOOK field with its own names
+  and a musical step order. A whole fixture selected then shows its layers' looks side by side, never "LOOK 23".
+- **Migrate banks when the row count grows.** Derive the new rows from the rows that drove that layer before, so an
+  old look plays the way it did, and leave a layer untouched in a fixture bank that never held it (PHAGE's
+  `scripts/show/rig_codec.luau` upgrades a bank packed before the layers existed).
+- **Beat looks, not only cycles.** A club rig needs hits that land in set places at set moments (beat zones COUNT,
+  PAIRS, POP, STACK, THE ONE; HIT, ALT; SNAP, PUNCH, DROP), with layers given complementary beat roles, not one chase
+  everywhere. Flash layers (white bars, white LEDs) flash at full over their level, so a flash pad shows over any
+  static look; a moving head's dimmer stays its master.
+- **Judge looks in motion.** One frame says nothing about a chase. Capture the previz over a few beats into a contact
+  sheet stamped with each frame's place in the bar (`projects/simple_stage/tools/ss_review.py` writes sheets and
+  filmstrips through the same command seam the desk uses), and fix what reads
+  as a wash, a whiteout or a dead bar before handing looks to the operator.
+- **Symmetric controls the operator asks for.** FAN swings the selected movers in or out together; NO FX
+  as the first EFFECTS pad holds everything still, with strobe rows STEADY at their own levels.
+- **Real outputs from the show surface.** The GLOBAL page's HAZE drives the fog machines' DMX, not just the
+  preview. No look stores it, so a recall never changes the haze.
+- **Blinking fixtures:** check the effects layer (a PHRASE lane fades to black every 16 beats), then the DMX
+  line. Wireless DMX transmitters caused the studio's dropouts.
+- **Calibrate before programming.** Datasheet photometry was 10-30x off in a real room. Match the previz to
+  a camera of the room so looks built in the sim read the same there.

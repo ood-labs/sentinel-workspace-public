@@ -143,8 +143,8 @@ PhMount phStrobeMount(PhDesign D,PhPose P,uint s){
  else if(s<36){uint i=s-30;m.active=D.strobes0.w>.5?1:0;float3 o=phDir(phLegAz(i));
   m.position=phAnkle(D,P,i)+o*(D.spikeR+.12)-float3(0,.55,0);m.fwd=o;m.up=phTan(phLegAz(i));m.extra=float4(13,i,i,10+i);}
  else if(s<41){uint k=s-36,f=k<2?k:k+1;m.active=D.strobes1.x>.5?1:0;float3 ax=phCapFaceAxis(f);
-  float dist=f==2?2*D.capS*D.capK:2*D.capS;float3 n=phRotY(ax,phCapYaw(P));
-  m.position=phCapCenter(D,P)+n*(dist+D.capTruss*.5+.1);m.fwd=n;m.up=phRotY(f==2?float3(1,0,0):float3(0,1,0),phCapYaw(P));m.extra=float4(14,k,-1,3);}
+  bool vert=f==2||f==3;float dist=vert?2*D.capS*D.capK:2*D.capS;float3 n=phRotY(ax,phCapYaw(P));
+  m.position=phCapCenter(D,P)+n*(dist+D.capTruss*.5+.1);m.fwd=n;m.up=phRotY(vert?float3(1,0,0):float3(0,1,0),phCapYaw(P));m.extra=float4(14,k,-1,3);}
  else if(s<47){uint k=s-41,n=(uint)D.strobes1.y;m.active=k<n?1:0;
   // Four across the riser front, then one on each flank.
   if(k<4){m.position=float3(lerp(-D.riserW*.36,D.riserW*.36,(float)k/3.0),D.riserH*.55,D.riserD*.5+.14);m.fwd=float3(0,0,1);m.up=float3(1,0,0);}

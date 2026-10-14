@@ -1,6 +1,6 @@
 ---
 name: laser-content-authoring
-description: Author Module pipeline projects that drive physical lasers — vectorizable binary outputs, pixel-exact stroke and dot sizing, blanking margins, calibration sources, persistent trail buffers, click-driven spawning, multi-laser color routing, and HStack composition for routing N laser channels through a single Spout/NDI sender to MadMapper. Use when building laser-show content, calibrating real line and dot sizes, or multi-output Module projects that combine a "watch this" color channel with one or more "trace this" laser channels.
+description: Author Module pipeline projects that drive physical lasers — vectorizable binary outputs, pixel-exact stroke and dot sizing, blanking margins, calibration sources, persistent trail buffers, click-driven spawning, multi-laser color routing, and HStack composition for routing N laser channels through a single Spout/NDI sender to external laser software. Use when building laser-show content, calibrating real line and dot sizes, or multi-output Module projects that combine a "watch this" color channel with one or more "trace this" laser channels.
 ---
 
 # Laser Content Authoring (Module Patterns)
@@ -45,10 +45,10 @@ eye protection, safety lens, beam dump, physical kill tested, and no light
 while disarmed before any low-power arm. Until that gate, use record or
 explicit numeric loopback test tools and leave physical DACs alone.
 
-The raster Spout/NDI to MadMapper path below remains available for users
+The raster Spout/NDI path to external laser software below remains available for users
 who want the external vectorizer workflow.
 
-Patterns for Module projects that produce content for physical laser projection. The output goes Spout/NDI → MadMapper → laser DAC. The laser controller traces white pixels as beam paths, so laser channels must be **vectorizable**: pure white-on-black, crisp edges, no gradients or anti-aliasing. The color channel beside it can be lush HDR for monitor preview / video projection.
+Patterns for Module projects that produce content for physical laser projection. The output goes Spout/NDI → external laser software → laser DAC. The laser controller traces white pixels as beam paths, so laser channels must be **vectorizable**: pure white-on-black, crisp edges, no gradients or anti-aliasing. The color channel beside it can be lush HDR for monitor preview / video projection.
 
 The patterns below are self-contained and are intended to be authored as bundled
 Module projects under `projects/<project>/modules/`.
@@ -310,7 +310,7 @@ Why two near-identical files instead of one parameterized pass: Module passes sh
 
 ## Pattern: HStack Composition (TouchDesigner Layout TOP equivalent)
 
-For routing N laser channels through a single physical Spout sender (so MadMapper only needs one input zone instead of N), build a thin Module that takes N video inputs and packs them horizontally into a wide output.
+For routing N laser channels through a single physical Spout sender (so the laser software only needs one input zone instead of N), build a thin Module that takes N video inputs and packs them horizontally into a wide output.
 
 **`hstack_3` project — manifest:**
 
@@ -361,11 +361,11 @@ void main(uint3 DTid : SV_DispatchThreadID) {
 }
 ```
 
-Wire all your laser-content module's outputs (Color + Laser 1 + Laser 2) into HStack's three inputs, then point HStack's single Out at one Spout sender. MadMapper receives a 5760×1080 stream and slices it into three 1920-wide zones — left = video preview, middle = laser 1, right = laser 2.
+Wire all your laser-content module's outputs (Color + Laser 1 + Laser 2) into HStack's three inputs, then point HStack's single Out at one Spout sender. The laser software receives a 5760×1080 stream and slices it into three 1920-wide zones — left = video preview, middle = laser 1, right = laser 2.
 
 **Why this pattern beats N separate Spout senders:** one sender is one DX11 shared texture; three senders are three. Less driver overhead, less bandwidth, simpler routing config.
 
-**Future extension:** swap HStack for a "switcher" Module that crossfades between multiple laser-content modules, all at once — one downstream Spout sender, but the upstream content can change live without re-wiring MadMapper.
+**Future extension:** swap HStack for a "switcher" Module that crossfades between multiple laser-content modules, all at once — one downstream Spout sender, but the upstream content can change live without re-wiring the laser software.
 
 ---
 
@@ -444,7 +444,7 @@ passes while the bug is still there.
 ### Output naming
 
 When a project sends both channels over Spout, the output nodes are named `Laser` and
-`Projector`, with sender names `Sentinel-Laser` and `Sentinel-Projector`. MadMapper
+`Projector`, with sender names `Sentinel-Laser` and `Sentinel-Projector`. The laser software
 and the DAC get patched once against those names; a per-project sender name means
 re-patching every show. Only create output nodes when the user explicitly asks for
 them — they are never a default finishing step.
@@ -562,7 +562,7 @@ Each module gets its own dedicated `HStack 3` pipeline at **5760×1080** wired:
 - module.Laser 1 → hstack.`B` (slot 1)
 - module.Laser 2 → hstack.`C` (slot 2)
 
-Multiple modules + HStacks can render simultaneously. A downstream switcher/mux module routes one HStack's Out at a time into the single `FullOut` Spout sender — MadMapper sees one 5760×1080 stream and slices it into three 1920-wide zones.
+Multiple modules + HStacks can render simultaneously. A downstream switcher/mux module routes one HStack's Out at a time into the single `FullOut` Spout sender — The laser software sees one 5760×1080 stream and slices it into three 1920-wide zones.
 
 If an HStack silently clamps its width, check the module's declared `resolution`
 against what the node reports in `sentinel_pipeline action=info` before assuming

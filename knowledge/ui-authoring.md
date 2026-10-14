@@ -31,6 +31,11 @@ Whatever visual language you choose:
 - express strokes, glyph sizes, and grab affordances in pixels;
 - make rendered control geometry match the manifest hit rectangles;
 - derive control visuals from live values, not decorative hover state;
+- in a tool someone works in for long stretches (a mapper, plan editor or
+  programmer), give every card or tooltip that pops up beside the pointer a
+  `tooltips` bool parameter (display "Tooltips", default on) that turns it off,
+  so it never covers the points being placed; hover highlights and fixed
+  readouts stay;
 - keep required font licenses beside every vendored font table.
 
 ## Scaffold And Generate
@@ -118,8 +123,8 @@ float2 resolution = float2(width, height);
 
 ## Scrolling Data Traces
 
-Interaction Lab's scalar plots use its project-bundled
-`projects/interaction_lab/modules/_shared/ui/sui3_trace.hlsli` helper. It gives a strip chart the behaviour
+The neutral UI kit's strip-chart helper,
+`tools/templates/module-ui/shared/ui/sui3_trace.hlsli` (vendor it beside `sui3_core.hlsli`, its one dependency), gives a strip chart the behaviour
 a TouchDesigner CHOP viewer has: the plot advances at the rate of the data rather
 than the frame rate, and it rescales itself continuously to the signal's recent
 dynamics. Every function is pure and takes its extents as arguments, so a state
@@ -134,13 +139,13 @@ Four mechanisms make the plot honest. Each was measured in
 
 **Decaying-peak autoscale.** A fixed full scale is wrong for every input. Measured peaks on real drums run past 24 dB while a quiet pad barely reaches 4, so one case clips and the other draws a flat line along the bottom. `sui3PeakDecay` holds a rolling peak with instant attack and a half-life release; 4 seconds is the measured point where the scale follows a change of material without twitching on individual hits. Always pass a `minFs` floor to `sui3FullScale`. Without one, a silent input autoscales its own noise to full height and looks like it is working.
 
-Pass `sui3FullScale` the maximum over the displayed samples as well as the decayed peak, as `max(windowMax, decayedPeak)`. The decay is anchored at the present moment while the plot shows history, so when the half-life is short relative to the span, a loud passage still fully on screen has already decayed the peak below its own samples and the plot clips itself. Measured in Data Scope on identical material at a 5 second span against a 0.25 second half-life, as a fraction of strip height: the decayed peak alone gave peak 1.000, p95 1.000, median 1.000, while `max(windowMax, decayedPeak)` gave peak 0.875, p95 0.855, median 0.614. The 0.875 is exactly the 1.15 headroom, so the tallest sample sits just below the top edge. Severity scales with the span-to-half-life ratio: the same break at the 3 second and 4 second defaults measured only 0.896, which looks almost correct at a glance, so check this with a number rather than by eye.
+Pass `sui3FullScale` the maximum over the displayed samples as well as the decayed peak, as `max(windowMax, decayedPeak)`. The decay is anchored at the present moment while the plot shows history, so when the half-life is short relative to the span, a loud passage still fully on screen has already decayed the peak below its own samples and the plot clips itself. Measured in the first Interaction Lab's Data Scope station on identical material at a 5 second span against a 0.25 second half-life, as a fraction of strip height: the decayed peak alone gave peak 1.000, p95 1.000, median 1.000, while `max(windowMax, decayedPeak)` gave peak 0.875, p95 0.855, median 0.614. The 0.875 is exactly the 1.15 headroom, so the tallest sample sits just below the top edge. Severity scales with the span-to-half-life ratio: the same break at the 3 second and 4 second defaults measured only 0.896, which looks almost correct at a glance, so check this with a number rather than by eye.
 
 **Max-reduce, never mean, but only when downsampling.** At long spans one pixel column covers many samples. `sui3TraceSpan` returns the index range a column covers and the caller takes the maximum over it. Averaging hides precisely the transient the plot exists to show. The span is capped at eight samples per column because an uncapped per-pixel loop at a long span is a frame-rate cliff.
 
-Max-reduce is wrong in the other direction. When the plot has more pixel columns than samples, several adjacent columns land on the same sample, the reduced value is piecewise constant, and a smooth signal is drawn as a staircase. That is the normal case for a cook-rate stream on a wide panel: Signal Trails plots 481 samples across 1600 pixels at an 8 second span, roughly three columns per sample, and every step had a three-pixel tread. Test with `sui3TraceUpsampling` and, when it is true, take `sui3TraceFrac` and interpolate between `floor(pos)` and `floor(pos) + 1` instead of reducing.
+Max-reduce is wrong in the other direction. When the plot has more pixel columns than samples, several adjacent columns land on the same sample, the reduced value is piecewise constant, and a smooth signal is drawn as a staircase. That is the normal case for a cook-rate stream on a wide panel: the first Interaction Lab's Signal Trails station plotted 481 samples across 1600 pixels at an 8 second span, roughly three columns per sample, and every step had a three-pixel tread. Test with `sui3TraceUpsampling` and, when it is true, take `sui3TraceFrac` and interpolate between `floor(pos)` and `floor(pos) + 1` instead of reducing.
 
-**Smooth the interval when sampling at cook rate.** Never pass a raw `_DeltaTime` to `sui3TraceSamples`. The sample count sets the horizontal mapping, so recomputing it from the instantaneous frame delta rescales the whole time axis every frame. Measured in Signal Trails at a nominal 60 fps, the plotted window swung across 12.4 samples of an 8 second span, a 2.6% horizontal stretch on every cook, which at 1600 pixels is about 42 pixels of visible jitter anchored at the live edge. `sui3SmoothDt` with an alpha of 0.02 took that to 0.8 samples, or 0.16%. A stream-driven consumer does not need this: its interval is `hop_size / sample_rate` and is exactly constant.
+**Smooth the interval when sampling at cook rate.** Never pass a raw `_DeltaTime` to `sui3TraceSamples`. The sample count sets the horizontal mapping, so recomputing it from the instantaneous frame delta rescales the whole time axis every frame. Measured in that Signal Trails station at a nominal 60 fps, the plotted window swung across 12.4 samples of an 8 second span, a 2.6% horizontal stretch on every cook, which at 1600 pixels is about 42 pixels of visible jitter anchored at the live edge. `sui3SmoothDt` with an alpha of 0.02 took that to 0.8 samples, or 0.16%. A stream-driven consumer does not need this: its interval is `hop_size / sample_rate` and is exactly constant.
 
 **Clamp the sample index to what has been written.** `writeIdx` is the next slot to write, not the last one written, and that slot still holds the sample from one full ring ago. Fetching it plots data from a thousand samples in the past at the live edge, appearing as a spike or notch welded to the rightmost column that never scrolls away. Pass every index through `sui3TraceClampIndex` in both the reduce and interpolate paths; the interpolating path is worse because it reaches one sample further for its segment endpoint.
 
@@ -148,7 +153,7 @@ Max-reduce is wrong in the other direction. When the plot has more pixel columns
 
 **Scale the reference line too.** Pass any threshold or reference level into `sui3FullScale` as `refLevel`. A threshold set above the recent peak otherwise pins itself to the top edge, where it stops reading as a threshold and becomes the rect border, losing the one thing the strip is for: how far under the line the peaks are falling.
 
-The strip's Y is value-up, so value 0 sits on the bottom edge. This matches Style Authority's pad contract: the host value remains unmodified everywhere, and pad rendering goes through `sui3PadPoint`. Do not reproduce the helper with local `1.0 - value.y` arithmetic; centralizing the conversion is what prevents the host, Properties, published data, readout, and reticle from drifting apart. Time runs oldest-left to newest-right, so the trace scrolls right to left.
+The strip's Y is value-up, so value 0 sits on the bottom edge. This matches the XY pad contract: the host value remains unmodified everywhere, and pad rendering goes through `sui3PadPoint`. Do not reproduce the helper with local `1.0 - value.y` arithmetic; centralizing the conversion is what prevents the host, Properties, published data, readout, and reticle from drifting apart. Time runs oldest-left to newest-right, so the trace scrolls right to left.
 
 Do not reach for this when a single current value is the whole story. A number, a bar, or a meter is more legible than a trace, and a trace of a value that does not change is a horizontal line that costs a ring buffer.
 
@@ -179,27 +184,42 @@ Users can recover through `Panel Presentation > Follow Module | Standard | Canva
 
 ## Mouse Wheel And Held Keys (Windows)
 
-Two input bugs recur every time an authored editor reads the wheel or a toggle key. Both are
-invisible over MCP (injected input never reaches Module viewport events), so design them out
-up front.
+Two input bugs recur every time an authored editor reads the wheel or a toggle key. Neither can be
+proven over MCP (`sentinel_ui` injects clicks and drags; wheel notches cannot be injected and key
+delivery to a Module viewport is unverified), so design them out up front.
 
-### Stale events are replayed until newer input arrives
+### Stale events are replayed on builds through 0.6.4
 
-**This is the root cause of "one scroll keeps going until I move the mouse".** Measured in
-Threshold Rush: a single wheel notch showed up as one wheel event on *every cook* — 1,538 of
-them in one session, one per cook — and the count only stopped growing when the mouse moved.
-Sentinel can hand the same event back on later cooks until newer input replaces it, so a shader
-that applies every event in `_ViewportEvents` re-applies a stale notch 60 times a second. The
-same replay makes a toggle key strobe.
+**This is the root cause of "one scroll keeps going until I move the mouse".** Measured in a
+score editor: a single wheel notch showed up as one wheel event on *every cook*, 1,538 of
+them in one session, and the count only stopped growing when the mouse moved. Builds through
+0.6.4 hand a batch back on every later cook until newer input replaces it, so a shader that
+applies every event in `_ViewportEvents` re-applies a stale notch 60 times a second, and a
+toggle key strobes. Later builds deliver each batch to exactly one cook (sentinel-bugs #115).
 
-**Consume each event exactly once, by its `sequence` number.** Keep the last consumed sequence
-in the persistent state buffer (bit-exact via `asfloat` / `asuint`), and skip anything not newer.
-Treat a large backwards jump as a counter reset (for example after a project load):
+**Consume each event exactly once, by its `sequence` number.** It keeps a Module correct on
+every build. Keep the last consumed sequence in the persistent state buffer (bit-exact via
+`asfloat` / `asuint`), and skip anything not newer.
+
+**A saved watermark outlives the host's counter.** Only a buffer listed in `state_buffers` (its
+declared range) is saved with the project and comes back after a reload or an app restart. A plain
+`persistent: true` buffer keeps its contents from cook to cook while the node runs and starts empty
+when the project loads. The host's `sequence` counter starts over from zero on load, so a watermark
+kept in a `state_buffers` range comes back larger than every new sequence. Without
+a reset check every new event reads as `seq <= lastSeq`, and the editor silently ignores all
+pointer, wheel and key input until the counter climbs past the old watermark (thousands of
+events). Host-owned manifest `controls` still work, so it looks like a hit-test bug. The large
+backwards-jump test in `isFresh` does **not** catch it. Detect it instead: if the ring is non-empty
+and its newest sequence is below the watermark, the counter reset, so drop the watermark to zero.
+In steady state the ring max is always >= the watermark, so this only fires after a reset:
 
 ```hlsl
 bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
 
 uint lastSeq = asuint(state.lastSeq);
+uint ringMax = 0u;
+for (uint r = 0u; r < n; r++) ringMax = max(ringMax, _ViewportEvents[r].sequence);
+if (n > 0u && ringMax < lastSeq) lastSeq = 0u;           // host counter reset (app restart)
 uint newLast = lastSeq;
 for (uint i = 0u; i < n; i++)
 {
@@ -212,7 +232,7 @@ state.lastSeq = asfloat(newLast);
 ```
 
 Apply the same guard to *every* loop over `_ViewportEvents`: keys, pointer, gestures and wheel.
-Worked in Threshold Rush's `TR_Score` editor (not bundled in this public workspace).
+Reference: `projects/interaction_lab/modules/_shared/ui/il_events.hlsli` (`ilEvWatermark` applies the reset rule).
 
 ### Scale by the notch amount, not once per event
 
@@ -267,8 +287,7 @@ if (ev.type == 4u && ev.code == 51u)                              // Space
 }
 ```
 
-Worked in Threshold Rush's `TR_Score` editor (wheel, Space latch, Canvas presentation), which
-is not bundled in this public workspace.
+Reference: `projects/interaction_lab/modules/_shared/ui/il_events.hlsli` (`ilWheel` and the latch rule).
 
 ## Canonical Program And Flexible Editor
 
@@ -297,13 +316,14 @@ Prove controls with real or injected pointer input, not StateTree writes alone. 
 
 ## Reference Examples
 
-- `projects/interaction_lab/modules/Style_Authority/`: responsive style and layout station.
-- `projects/interaction_lab/modules/Spline_Desk/`: authored sub-object editing with persistent state and typed outputs.
-- `projects/interaction_lab/modules/Gizmo_Desk/`: selection, multi-object transforms, projected handles, and camera-aware rotation rings.
-- `projects/interaction_lab/modules/Motion_Console/`: responsive performance controls and durable action state.
-- `projects/interaction_lab/modules/data_scope/` and `projects/interaction_lab/modules/signal_trails/`: bundled `sui3_trace.hlsli` consumers.
-- `projects/cloth_lab/modules/cloth_bands/`: the reference consumer, with three auto-ranging strip charts and an on-plot threshold handle.
-- `projects/interaction_lab/interaction_lab.sentinel`: bundled review project.
+- `projects/interaction_lab/modules/Kit/`: the shared UI foundation's specimen: every widget, host-owned manifest controls, and the XY pad round trip.
+- `projects/interaction_lab/modules/Touch/`: ordered pointer and key events into a durable `state_buffer` (strokes, latch, undo, clear).
+- `projects/interaction_lab/modules/Handles/` and `projects/interaction_lab/modules/StillLife/`: drag-and-turn handles over ordinary parameters; host-owned selection and picking in a marched 3D scene through the internal camera.
+- `projects/interaction_lab/modules/CurveDesk/`, `PathDesk/`, and `RampDesk/`: sub-object editors (bezier keys, a pen tool, colour stops on an OKLCH plane) with persistent state and typed outputs.
+- `projects/interaction_lab/modules/PatchBay/`: cables, a matrix, and bipolar depths publishing control outputs that drive expressions.
+- `projects/interaction_lab/modules/Timeline/`, `Pattern/`, and `Score/`: sequencers with several interactive views in one canvas, publishing data, GPU events, and camera control outputs.
+- `projects/cloth_lab/modules/cloth_bands/`: the reference strip-chart consumer, with three auto-ranging strip charts and an on-plot threshold handle.
+- `projects/interaction_lab/interaction_lab.sentinel`: bundled review project, one Scene Group per station.
 
 Study these for interaction architecture and proof strategy. Do not copy their
 project-specific visual language or Modules into unrelated work unless the user

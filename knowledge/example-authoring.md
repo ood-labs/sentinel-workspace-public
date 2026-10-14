@@ -1,9 +1,28 @@
 # Example Authoring and Reuse
 
-The projects in `projects/` are finished teaching references. Use them to learn
-how Sentinel graphs are structured, how data contracts move between nodes, and
-how a complete project packages its dependencies. They are not a stock module
-library.
+The example projects listed in `knowledge/EXAMPLE-MAP.md` are finished teaching
+references. Use them to learn how Sentinel graphs are structured, how data
+contracts move between nodes, and how a complete project packages its
+dependencies. They are not a stock module library.
+
+## The reference set
+
+Only the projects in the map are references. Every install refreshes them, with
+the manuals and the knowledge, to the versions reviewed for this build. In the
+default workspace it retires the examples a build drops (an unchanged one is
+removed, a changed one moves to
+`.sentinel/workspace-backups/upgrade-to-<version>/projects/`) and leaves every
+other project in place. So a workspace can also hold examples retired before it
+tracked them (the map's *Retired examples* lists them), projects made with older
+versions of Sentinel or with earlier models, and the user's own work. Those are
+not references for technique or quality: leave them alone unless the user asks
+you to work from one, and then check what it does against the manual before
+copying any of it.
+
+The collection sets the floor. Meet its standards for authority, persistent
+records, direct manipulation, honest previews, narrow presets and measured
+performance, then push past it: invent the projection, the interaction and the
+look the new subject needs, even where no example has gone.
 
 ## Start from the user's problem
 

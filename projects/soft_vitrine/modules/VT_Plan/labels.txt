@@ -1,0 +1,80 @@
+# VT_Plan - the plan canvas's words. Regenerate: python -B tools/il_type.py labels VT_Plan
+TITLE        @bold @track=0.14 = SOFT VITRINE
+SUBTITLE     @sans = plan
+
+# the live cast, in the header (each with its role's identity dot, so the counts are the legend)
+N_MASSES     @bold @track=0.08 = MASSES
+N_STROKES    @bold @track=0.08 = STROKES
+N_PLATES     @bold @track=0.08 = PLATES
+SELECTED     @bold @track=0.08 = SELECTED
+NONE         @sans = none
+
+# a record's role, in ROLE_* order (layout.hlsl counts from R_PLATE)
+R_PLATE      @bold @track=0.08 = PLATE
+R_STROKE     @bold @track=0.08 = STROKE
+R_MASS       @bold @track=0.08 = MASS
+
+# kinds, in vitrine.hlsli order (layout.hlsl counts from PK_0, SK_0 and MK_0)
+PK_0         @sans = grid plate
+PK_1         @sans = checker
+PK_2         @sans = star panel
+PK_3         @sans = shelf
+PK_4         @sans = dash
+PK_5         @sans = bean
+SK_0         @sans = squiggle
+SK_1         @sans = bundle
+SK_2         @sans = branch
+SK_3         @sans = arc
+SK_4         @sans = tangle
+MK_0         @sans = melt
+MK_1         @sans = blob
+MK_2         @sans = ribbon
+MK_3         @sans = arms
+MK_4         @sans = hand
+MK_5         @sans = star hand
+
+# materials, in MAT_* order (layout.hlsl counts from MAT_0)
+MAT_0        @sans = clay
+MAT_1        @sans = chrome
+MAT_2        @sans = frost
+MAT_3        @sans = gloss
+
+# the inspector
+I_MATERIAL   @bold @track=0.08 = MATERIAL
+I_RESERVE    @bold @track=0.08 = RESERVE RADIUS
+I_SHARE      @bold @track=0.08 = NODE SHARE
+I_EXTENT     @bold @track=0.08 = EXTENT
+I_WEIGHT     @bold @track=0.08 = WEIGHT
+I_SIZE       @bold @track=0.08 = SIZE
+I_LAYER      @bold @track=0.08 = LAYER
+I_ANGLE      @bold @track=0.08 = ANGLE
+I_DEPTH      @bold @track=0.08 = DEPTH
+I_AT         @bold @track=0.08 = AT
+EDITED       @bold @track=0.08 = EDITED
+U_PCT        @sans = % of frame
+U_DEG        @sans = deg
+U_TIMES      @sans = x
+U_COMMA      @sans = ,
+L_FRONT      @sans = in front of the masses
+L_BACK       @sans = behind the masses
+D_FAR        @sans = far
+D_MID        @sans = mid
+D_NEAR       @sans = near
+
+# footer: the manifest's viewport.bindings, key then what it does
+K_CLICK      @sans = Click
+K_DRAG       @sans = Drag
+K_K          @sans = K
+K_M          @sans = M
+K_X          @sans = X
+K_N          @sans = N
+K_R          @sans = R
+K_C          @sans = C
+D_CLICK      @sans = select
+D_DRAG       @sans = move
+D_K          @sans = kind
+D_M          @sans = material
+D_X          @sans = on / off
+D_N          @sans = re-roll
+D_R          @sans = reseed layout
+D_C          @sans = clear selection

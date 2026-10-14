@@ -225,6 +225,7 @@ uint ltLaneIndex(uint ray, uint wave, uint branch, uint nWave, uint nBranch)
 //           downstream node: two numbers that must be kept in agreement by hand will disagree.
 //   wl0   = resolved total deviation of the chief path, degrees
 //   wl1   = resolved spectral spread at the last interaction, degrees
+//   flags = the newest viewport event LT_Bench has consumed (asuint), so each is applied once
 
 bool  LtFlag(BenchRec r, uint bit) { return (((uint)max(r.flags, 0.0)) & bit) != 0u; }
 bool  LtFlagF(float f, uint bit)   { return (((uint)max(f, 0.0)) & bit) != 0u; }

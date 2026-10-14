@@ -3,6 +3,10 @@
 -- Configure this file in the editor's Luau definition-file settings.
 
 export type Scalar = number | boolean | string
+export type PadMode = "momentary" | "toggle" | "radio" | "go"
+export type PadState = "empty" | "loaded" | "active" | "selected" | "fading"
+export type Role = "neutral" | "accent" | "go" | "kill" | "warn" | "freeze" | "link" | "expression"
+export type EdgeKind = "press" | "release"
 export type EventRecord = {
     source_id: number, sequence: number, timestamp_ns: number,
     intra_frame_offset: number, event_type: number, payload_len: number,
@@ -79,6 +83,10 @@ declare sentinel: {
     get: (path: string) -> Scalar?,
     set: (path: string, value: Scalar) -> boolean,
     invoke: (path: string, args: {[any]: any}?) -> boolean,
+}
+
+declare panel: {
+    label: (pipeline_id: string, control_id: string, text: string) -> boolean,
 }
 
 declare log: {
@@ -159,6 +167,32 @@ export type Ui = {
     circle_filled: (x: number, y: number, radius: number, color: number) -> (boolean, number?),
     text_at: (x: number, y: number, color: number, text: string) -> (boolean, number?),
     polyline: (points: {{number}}, color: number, thickness: number?) -> (boolean, number?),
+    pad: (id: string, label: string, mode: PadMode?, state: PadState?, role_or_color: (Role | number)?, icon: string?, fade: number?, width: number?, height: number?) -> (boolean, boolean, boolean),
+    next_edge: () -> (string?, EdgeKind?, number?),
+    grid_begin: (id: string, cols: number, rows: number, cell_width: number, cell_height: number, gap_x: number?, gap_y: number?) -> (),
+    grid_cell: (col: number, row: number) -> (),
+    grid_end: () -> (),
+    strip_begin: (id: string, direction: "horizontal" | "vertical", item_size: number, gap: number?) -> (),
+    strip_end: () -> (),
+    section: (id: string, title: string, icon: string?) -> (),
+    row: (label: string) -> (),
+    bank_header: (id: string, title: string, page: number, pages: number, live_mask: number?, labels: {string}?) -> number?,
+    pad_grid: (id: string, cols: number, rows: number, cell_width: number, cell_height: number, labels: {string}, states: {PadState}?, colors: {Role | number}?, mode: PadMode?, fades: {number}?) -> (number?, number?, number?),
+    tap_tempo: (id: string, beat_phase: number?, width: number?, height: number?) -> (boolean, number?),
+    transport: (id: string, running: boolean) -> (boolean, boolean, boolean),
+    readout: (id: string, text: string, size: number?, role_or_color: (Role | number)?) -> (),
+    fader: (id: string, label: string, value: number, default: number, min: number, max: number, direction: ("vertical" | "horizontal")?, role_or_color: (Role | number)?, flags: string?, width: number?, height: number?) -> (boolean, number),
+    knob: (id: string, label: string, value: number, default: number, min: number, max: number, size: number?, role_or_color: (Role | number)?, flags: string?) -> (boolean, number),
+    crossfader: (id: string, value: number, default: number?, width: number?, role_or_color: (Role | number)?) -> (boolean, number),
+    xy: (id: string, label: string, x: number, y: number, default_x: number?, default_y: number?, min: number?, max: number?, size: number?) -> (boolean, number, number),
+    meter: (id: string, level: number, peak: number?, direction: ("vertical" | "horizontal")?, width: number?, height: number?, role_or_color: (Role | number)?) -> (),
+    lamp: (id: string, on: boolean, role_or_color: (Role | number)?, label: string?, size: number?) -> (),
+    value_tile: (id: string, label: string, text: string, role_or_color: (Role | number)?, width: number?, height: number?) -> (),
+    meter_bound: (id: string, path: string, min: number?, max: number?, direction: ("vertical" | "horizontal")?, width: number?, height: number?, role_or_color: (Role | number)?) -> (),
+    readout_bound: (id: string, path: string, format: string?, size: number?, role_or_color: (Role | number)?) -> (),
+    lamp_bound: (id: string, path: string, role_or_color: (Role | number)?, label: string?, size: number?) -> (),
+    submaster: (id: string, label: string, level: number, meter: number?, role_or_color: (Role | number)?, on: boolean?, width: number?, height: number?) -> (boolean, number),
+    guarded: (id: string, label: string, style: ("hold" | "arm")?, role_or_color: (Role | number)?, width: number?, height: number?) -> boolean,
     get: (id: string) -> (boolean, Scalar),
 }
 

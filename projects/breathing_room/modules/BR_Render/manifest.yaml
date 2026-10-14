@@ -1,0 +1,239 @@
+name: "BR Render"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+features: [camera]
+output_format: RGBA16F
+working_format: RGBA16F
+compile_optimization: fast_compile
+
+# The RENDERER for breathing_room. Owns the internal camera, every surface, the light transport
+# and the frame. Re-decides nothing about placement: the room comes from BR_Shell, finishes from
+# BR_Finish, furniture from BR_Furnish, sun/sky/lamps from BR_Light, the trip from BR_Trip, the
+# rug design from BR_Rug. Any unlinked input falls back to the house defaults.
+#
+# Light transport: analytic-plane + sphere-traced primary visibility; sun with soft SDF shadows
+# that, once outside, pass glass, sheer curtains and a volumetric street-tree canopy; multi-bounce
+# diffuse GI from an irradiance-probe volume; traced glossy reflections; normalised SDF AO;
+# window glass and sheers as a composited translucent layer; volumetric sunbeams with dust;
+# temporal accumulation (progressive supersampling while the camera holds still).
+#
+# Outputs: "Preview" (neutral filmic view for judging the renderer itself) and "HDR" (linear
+# radiance, and in alpha the distance each pixel's image moves with -- the surface, or a sheer in
+# front of a window, the trees outside, a mirror's virtual image -- for BR_Lens).
+
+viewport:
+  hint: "Fly camera: RMB look, WASD move, wheel speed. Hold still to let the image converge."
+  interactions: [camera]
+
+buffers:
+  - { name: scene,   structured: true, element_size: 64, element_count: 224,   persistent: true }
+  - { name: skylut,  structured: true, element_size: 16, element_count: 2048,  persistent: false }
+  - { name: probes,  structured: true, element_size: 64, element_count: 16384, persistent: true }
+  - { name: aper,    structured: true, element_size: 16, element_count: 24,    persistent: false }
+  - { name: sunvol,  structured: true, element_size: 4,  element_count: 131072, persistent: false }
+  - { name: gbuf,    format: RGBA32F, scale: 1.0,  persistent: false }
+  - { name: hdr,     format: RGBA16F, scale: 1.0,  persistent: false }
+  # the beams, and their accumulation: 32-bit because alpha packs transmittance with the length each
+  # texel's ray integrated (render_common: fogPack), which the resolve needs to upsample them
+  - { name: fog,     format: RGBA32F, scale: 0.25, persistent: false }
+  - { name: foghist, format: RGBA32F, scale: 0.25, persistent: true }
+  - { name: history, format: RGBA16F, scale: 1.0,  persistent: true }
+
+data_inputs:
+  # Each upstream authority APPENDS its input when it comes online (an unbound data input
+  # blocks the whole module, and appending never renumbers an existing link).
+  - name: "Shell"
+    slot: 0
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+  - name: "Finish"
+    slot: 1
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+  - name: "Furnish"
+    slot: 2
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+  - name: "Light"
+    slot: 3
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+  - name: "Trip"
+    slot: 4
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+  - name: "Rug"
+    slot: 5
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+
+parameters:
+  # ---- quality (the ladder presets write ONLY these). Defaults are the LAPTOP rung, which holds
+  # 60 fps on an 8 GB laptop GPU (README, "Performance"); Live, Beauty and Hero are recalled from the
+  # presets. Render Scale is the fraction of the frame gbuf and shade render each cook; the resolve
+  # accumulates their jittered samples back to full resolution (render_common: renderRes).
+  - { name: render_scale, display: "Render Scale",      type: float, min: 0.35, max: 1.0, default: 0.4, group: "Quality" }
+  - { name: march_steps,  display: "Primary Steps",     type: int,   min: 32, max: 400, default: 128, group: "Quality" }
+  - { name: shadow_steps, display: "Shadow Steps",      type: int,   min: 8,  max: 200, default: 24,  group: "Quality" }
+  - { name: refl_steps,   display: "Reflection Steps",  type: int,   min: 0,  max: 200, default: 16,  group: "Quality" }
+  - { name: gi_budget,    display: "GI Probes / Frame", type: int,   min: 64, max: 4096, default: 512, group: "Quality" }
+  - { name: fog_steps,    display: "Beam Samples",      type: int,   min: 0,  max: 128, default: 16,  group: "Quality" }
+  - { name: taa,          display: "Temporal AA",       type: bool,  default: true, group: "Quality" }
+  - { name: taa_floor,    display: "Accumulation Floor", type: float, min: 0.01, max: 0.5, default: 0.04, group: "Quality" }
+
+  # ---- light transport
+  - { name: sun_direct,   display: "Direct Sun",        type: bool,  default: true, group: "Light Transport" }
+  - { name: gi_gain,      display: "Bounce Gain",       type: float, min: 0.0, max: 3.0, default: 1.0, group: "Light Transport" }
+  - { name: gi_bounce,    display: "Bounce Feedback",   type: float, min: 0.0, max: 1.0, default: 0.92, group: "Light Transport" }
+  - { name: gi_hysteresis, display: "GI Hysteresis",    type: float, min: 0.005, max: 1.0, default: 0.015, group: "Light Transport" }
+  - { name: ao_radius,    display: "AO Reach (m)",      type: float, min: 0.05, max: 1.5, default: 0.45, group: "Light Transport" }
+  - { name: ao_gain,      display: "AO Strength",       type: float, min: 0.0, max: 2.0, default: 0.85, group: "Light Transport" }
+  - { name: fog_density,  display: "Air Density",       type: float, min: 0.0, max: 0.4, default: 0.018, group: "Light Transport" }
+  - { name: dust_amount,  display: "Dust",              type: float, min: 0.0, max: 1.0, default: 0.6, group: "Light Transport" }
+
+  # ---- stand-in sun (used only while BR Light is unlinked)
+  - { name: sun_azimuth,  display: "Sun Azimuth (deg)",   type: float, min: 0.0, max: 360.0, default: 252.0, group: "Stand-in Sun" }
+  - { name: sun_elevation, display: "Sun Elevation (deg)", type: float, min: -10.0, max: 80.0, default: 24.0, group: "Stand-in Sun" }
+  - { name: sun_intensity, display: "Sun Intensity",      type: float, min: 0.0, max: 60.0, default: 16.0, group: "Stand-in Sun" }
+  - { name: sky_intensity, display: "Sky Gain",           type: float, min: 0.0, max: 4.0, default: 1.0, group: "Stand-in Sun" }
+  - { name: sun_softness,  display: "Sun Softness",       type: float, min: 0.004, max: 0.3, default: 0.008, group: "Stand-in Sun" }
+  - { name: tree_wind,     display: "Wind In Trees",      type: float, min: 0.0, max: 1.0, default: 0.35, group: "Stand-in Sun" }
+  - { name: tree_density,  display: "Street Trees",       type: float, min: 0.0, max: 1.0, default: 0.6, group: "Stand-in Sun" }
+
+  # ---- review
+  - { name: preview_ev,   display: "Preview Exposure (EV)", type: float, min: -8.0, max: 8.0, default: 1.0, group: "Review" }
+  - { name: white_balance, display: "Preview White Balance (K)", type: float, min: 2000.0, max: 9000.0, default: 4300.0, group: "Review" }
+  - name: view
+    display: "View"
+    type: enum
+    options: [Beauty, Albedo, Normals, Depth, March Steps, Material, Sun Visibility, Bounce (GI), Ambient Occlusion, Reflection, Parts, Raw Shade (pre-TAA), Raw G-Buffer, TAA Probe, Beams, Hit Kind, G Normal, Scope (Finish Selection)]
+    default: 0
+    group: "Review"
+  - { name: reset_accum,  display: "Reset Accumulation", type: bool, default: false, group: "Review" }
+
+passes:
+  - name: prep
+    shader: prep.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:scene"
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "data:3" }
+      - { slot: 4, source: "data:4" }
+      - { slot: 5, source: "data:5" }
+  - name: sunvol
+    shader: sunvol.hlsl
+    target: cs_5_0
+    dispatch: [2048, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:sunvol"
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+  - name: sky
+    shader: sky.hlsl
+    target: cs_5_0
+    dispatch: [8, 4, 1]
+    thread_group_x: 8
+    thread_group_y: 8
+    output: "buffer:skylut"
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+  - name: aperture
+    shader: aperture.hlsl
+    target: cs_5_0
+    dispatch: [8, 1, 1]
+    thread_group_x: 48
+    thread_group_y: 1
+    output: "buffer:aper"
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+      - { slot: 1, source: "buffer:skylut" }
+  - name: probes
+    shader: probes.hlsl
+    target: cs_5_0
+    dispatch: [4096, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:probes"
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+      - { slot: 1, source: "buffer:skylut" }
+      - { slot: 2, source: "buffer:aper" }
+  - name: gbuf
+    shader: gbuf.hlsl
+    target: cs_5_0
+    format: RGBA32F
+    output: "buffer:gbuf"
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+  - name: shade
+    shader: shade.hlsl
+    target: cs_5_0
+    output: "buffer:hdr"
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+      - { slot: 1, source: "buffer:skylut" }
+      - { slot: 2, source: "buffer:probes" }
+      - { slot: 3, source: "buffer:gbuf" }
+  - name: fog
+    shader: fog.hlsl
+    target: cs_5_0
+    output: "buffer:fog"
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+      - { slot: 1, source: "buffer:skylut" }
+      - { slot: 2, source: "buffer:gbuf" }
+      - { slot: 3, source: "buffer:sunvol" }
+      - { slot: 4, source: "buffer:probes" }
+  # the jittered beam march accumulated over time at its own resolution, where a 3x3 neighbourhood
+  # can see its noise (the main TAA, at full resolution, could not -- and the haze flickered in motion)
+  - name: fogtaa
+    shader: fogtaa.hlsl
+    target: cs_5_0
+    output: "buffer:foghist"
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+      - { slot: 1, source: "buffer:fog" }
+      - { slot: 3, source: "buffer:foghist" }
+  # the beams brought into the shaded image's camera and composited (depth-aware upsampling), then
+  # temporal accumulation. Every image here carries its own camera (br_camtexels.hlsli).
+  - name: resolve
+    shader: resolve.hlsl
+    target: cs_5_0
+    output: "buffer:history"
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+      - { slot: 1, source: "buffer:hdr" }
+      - { slot: 2, source: "buffer:foghist" }
+      - { slot: 4, source: "buffer:history" }
+  - name: present
+    shader: present.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+      - { slot: 1, source: "buffer:history" }
+      - { slot: 2, source: "buffer:hdr" }
+      - { slot: 3, source: "buffer:gbuf" }
+  - name: hdrout
+    shader: hdrout.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:scene" }
+      - { slot: 1, source: "buffer:history" }
+
+data_outputs:
+  # the normalised scene the renderer is drawing (room, openings, sun, frame, lamps, objects,
+  # materials) -- a diagnostic lane, and the source for anything that must agree with the render
+  - name: "Scene"
+    buffer: "scene"
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+  # what each opening shows of the outside: 8 openings x 3 rows (street, canopy/skyline, sky),
+  # mean radiance through the glass -- the window light the GI probes add analytically
+  - name: "Apertures"
+    buffer: "aper"
+    schema: [ { name: radiance, type: float4 } ]
+
+outputs:
+  - { name: "Preview", pass: present }
+  - { name: "HDR", pass: hdrout }

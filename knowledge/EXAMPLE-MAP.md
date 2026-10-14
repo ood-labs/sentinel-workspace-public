@@ -1,44 +1,38 @@
 # Example Map
 
+The projects in the table below are the example collection shipped with this
+build, and the only projects in a workspace that are references for technique
+and quality. Every install replaces this file and refreshes these projects, so
+the table is always the current collection. Anything else under `projects/` is
+not a reference unless the user asks you to work from it: an example retired
+from an earlier build (see *Retired examples* at the end), a project made with
+an older version of Sentinel or an earlier model, or the user's own work.
+
 Use this map to choose a teaching reference, not a ready-made solution. Read the
 selected project's README, inspect its saved graph, and reimplement the relevant
 architecture for the current problem. Project-specific Modules are copied only
 for an explicit fork or remix. See `example-authoring.md`.
 
+The collection is the floor, not the ceiling: match its standards, then push past
+them wherever the work calls for it.
+
 ## Collection at a glance
 
 | Project | Saved graphs | Live/AI dependencies | Core route | Reviewed output | Study it for |
 | --- | ---: | --- | --- | --- | --- |
-| `autopsia` | 1 | Features | authored specimen → proxy → Features → stabilizer → relief/census → grade | `au_grade` | closed analysis loops, stable identities, data-driven annotation |
-| `axon_press` | 1 | none | plan authority → press renderer → screen-fixed ink surface | `AX_Ink` | endless axonometric fall, fractal plate collage, print-finish post |
-| `benthic_plate` | 1 | none | plan authority/editor → growth expansion → tile-binned SDF march → printed plate | `BP_Plate` | screen-space tile binning of an acceleration layer, subtractive records, captions that are real readings |
+| `breathing_room` | 1 | none | shell/finish/furnishing/light/trip/rug authorities (64-byte records, one role range each) → SDF ray-march renderer (HDR + scene) → lens | `BR_Lens` | a realistic room whose every editor is a plan authority over persistent records, signature-driven regeneration that keeps hand edits, Lipschitz-safe SDF warps, and a replication-trip lens |
 | `camera_reference` | 1 | none | camera-capable grid renderer | `Native_Camera_Reference` | the native internal camera contract |
-| `cantilever_canyon` | 1 | none | plan authority/editor → parts+bounds → SDF march → atmosphere finish | `CC_Grade` | a purely relational record contract, a section-over-elevation scaffold with a standability readout, group-bounded marching |
-| `candy_effigy` | 1 | none | plan authority/editor → raymarched cast → lens finish | `CE_Grade` | world-space domain distortion as one coherent field, size-preserving record contract, the cost model of a warped march |
 | `cloth_lab` | 1 | Audio In | loopback audio → band analysis → XPBD cloth | `cloth_engine` | audio data ports, simulation, grabbing, tearing |
-| `droste_heads` | 1 | none | 2D face sketch + plan authority → raymarch → ink outlines | `DH_Ink` | flat cartoon art painted onto 3D as a decal, seamless recursive-zoom loop |
-| `face_collage` | 1 | MediaPipe, StreamDiff, Background Removal | face tracking/guide → StreamDiff → accumulation/cutout/composite/post | Group Output | tracking-conditioned generative collage |
-| `industrial_lattice` | 1 | none | infinite SDF lattice → monochrome post | `Post` | a compact two-node 3D graph |
-| `interaction_lab` | 1 | Audio In | independent UI/editor stations plus two data routes | station previews | Canvas panels, splines, selection, gizmos, traces |
+| `formicary` | 1 | Audio In (optional) | plan authority/editor (stations) → colony (pheromone field, gait, bucket grid) → macro renderer → exploded scope → macro-lens post; Audio In → band analysis → walk speed | `FM_Post` | a shared field that lives with the agents that write and read it, a loop closed through control outputs and expressions, editing on the program image |
+| `interaction_lab` | 1 | none (sound through MIDI Out) | fourteen station Scene Groups on one UI foundation; Scripts, GPU event ports, MIDI Out | station previews; `Program` | host controls, events and durable state, 3D picking, editors, patching, multi-view sequencers |
 | `kuka_cell` | 1 | none | cell plan authority/editor → ball/rally authority → four-channel choreographer + FK → SDF arm renderer | `KA_Robot` Program | a lattice randomizer that keeps an array an array, choreography whose phase is derived from floor position, a shared-object authority a crowd of agents responds to, per-tile instance culling |
 | `laser_mapping_lab` | 1 | none (a laser optional) | looks (Laser Look bundles) → Mux → Bundle Split → Mapping_Editor calibration → Adaptive_Mapping → Laser Out (simulate) → Sent Stream → simulated galvo laser → previs | `Laser_Previs` | mapping a laser to a surface, zoning masks, laser/projector sync, Scan Signal content and joint flags, previewing what a laser really draws |
-| `living_room_sdf` | 1 | none | architecture/furnishings/material/light records → SDF renderer → grade | `LR_Cinematic_Grade` | modular 3D construction and spatial editing |
-| `matik_plate` | 1 | none | interactive plan authority → organisms + instruments + circuitry → composite → post | `MX_Post` | plan authority, generate-then-override editing, hybrid record contract |
-| `ossuary_bloom` | 1 | none | plan authority/editor → growth expansion → studio env → SDF renderer → macro-lens post | `OB_Post` | anchors expanded into drawables with their own acceleration bounds in one buffer, and a catalogue of SDF faults that all present as bad lighting |
-| `pink_monolith` | 1 | none | plan authority → three press layers → action lines → image effects → print finish | `PM_Ink` | a full entrance/exit lifecycle for every record, compositional armatures, shape vocabularies as handles |
-| `prism_reliquary` | 1 | none | plan authority/editor → studio env → SDF renderer → filmic post | `PR_Post` | filmic rendering: thin-film refraction, bokeh depth of field, HDR bloom, layered antialiasing |
-| `reactor_shaft` | 1 | none | plan authority/editor → shaft renderer → lens finish | `RS_Lens` | endless machine-shaft zoom, role-discriminated record cast, emissive machinery |
-| `scientific_organism` | 1 | Features | biotic source → proxy/Features → temporal/topology/memory layers → renderer/grade | Group Output | a large, inspectable analysis-to-render system |
-| `skein` | 1 | none | plan authority (route/squadrons) → flock sim → sky panorama → per-bird march → scope/grade | `SK_Grade` | boids with bird-specific terms, a flight plan whose diagram draws its own failure modes, per-bird bounding-sphere marching with screen-tile lists |
+| `phage_stage` | 1 | none (Push 2 optional) | plan authority → kinetic truss → assembly/venue; Fixture Rig (MVR + GDTFs) → console (fixture table, looks, DMX through the GDTFs) → renderer that decodes the DMX in haze, played by a Script-node surface (desk panel, Push 2, layered per-fixture programmer, layered look banks) | `Phage_Renderer` | a complete playable show: a moving truss programmed as fixtures, 561 GDTF fixtures from an MVR whose render is its DMX, looks compiled from geometry, an energy-tier effects ladder, and a documented 41 → 5.8 ms GPU optimisation |
+| `simple_stage` | 1 | none (Push 2 optional) | static stage authority → Fixture Rig (MVR + GDTFs) → console (fixture table, looks, DMX through the GDTFs) → renderer that decodes the DMX in haze, played by PHAGE's show system (desk panel, Push 2, layered programmer, layered look banks) | `SS_Renderer` | a club-scale rig sized like a real club: two rows of hung beams, a 12-run pixel wall and strobes in 7 universes, symmetric looks with held formations, and a mirrored-content LED wall |
 | `soft_vitrine` | 1 | none | plan authority → stage/growth → volumes + strokes + plates → composite → post | `VT_Post` | hybrid 2D/3D record contracts, coverage lanes, seeded arrangement randomization |
-| `strata` | 1 | Features | background/plates/layout/marks → feature-reactive renderers → composite/post | `post_1` | modular 2D composition and proxy analysis |
+| `spectral_bench` | 1 | none | bench authority/editor → spectral path trace → tile-binned field → lens print | `LT_Lens` | a scaffold tailored to the subject's real axis (wavelength), failure modes drawn in the diagram, one thread per ray, wavelength and branch |
 | `streamdiff_canvas` | 1 | StreamDiff, Depth, Background Removal | paint/pattern fields → depth controls → StreamDiff → cutout | `Collage_Cutout` | direct manipulation of generative conditioning |
 | `streamdiff_workflows` | 6 | StreamDiff; Depth and Background Removal in study 05 | one focused routing pattern per graph | named StreamDiff/Mux/composite preview | small, isolated StreamDiff techniques |
-| `sunward_corridor` | 1 | none | plan authority/editor → corridor renderer → grid finish | `SC_Grid` | endless periodic zoom, one record contract for architecture and organic masses |
-| `koi_tank` | 1 | none | plan authority → water sim → photon caustics → koi school → optics → exploded instrument → post | `TP_Post` | wave simulation, photon caustics, procedural koi SDF, boids, depth-composited 3D overlay of live data |
-| `touchdesigner_new_project` | 1 | image asset only | Hermite signal → texture → image displacement → geometry → output | `Out` | typed signal-to-texture modulation |
-| `vitreous_cross` | 1 | none | plan authority/editor → studio env → SDF renderer → filmic post | `VC_Post` | ray-marched glass with real air-cavity lenses, HDR studio lighting, interior plates |
-| `phage_stage` | 1 | none (Push 2 optional) | plan authority → kinetic truss → assembly/venue/lighting/LED → light-grid HDR renderer, played by a Script-node surface (desk panel, Push 2, packed per-fixture programmer, layered look banks) | `Phage_Renderer` | a complete playable show: a moving truss programmed as fixtures, looks compiled from geometry, an energy-tier effects ladder, and a measured 41 → 5.8 ms GPU optimisation |
 
 ## Dependency and portability notes
 
@@ -47,45 +41,38 @@ for an explicit fork or remix. See `example-authoring.md`.
 - StreamDiff graphs require a compatible StreamDiff engine pack.
 - Depth Estimation requires the compatible auxiliary depth pack.
 - Background Removal requires its matting engine.
-- MediaPipe, Features, Audio In, and authored Modules need no TensorRT pack, but
-  their availability still comes from the live `list_types` response.
-- `projects/streamdiff_workflows/assets/dancer_vert.mp4` and
-  `projects/touchdesigner_new_project/images/jellybeans.png` are the only
-  bundled runtime media assets.
-- Scientifica-derived tables carry an OFL notice beside every retained copy.
+- Features, Audio In, and authored Modules need no engine pack. MediaPipe needs
+  `auxiliary-mediapipe-face` and/or `auxiliary-mediapipe-hands`. Availability
+  still comes from the live `list_types` and `engine_status` responses.
+- `projects/streamdiff_workflows/assets/dancer_vert.mp4` is the only bundled
+  runtime media asset taken from outside; `projects/formicary/audio/kick_120bpm.wav`
+  is generated.
+- PHAGE and SIMPLE STAGE carry their own GDTF fixture types (Sentinel's, written by
+  their tools, not manufacturer files) and the MVR their Fixture Rig imports.
+- The IBM Plex type atlas in each project's `modules/_shared/type/` folder carries
+  `IBM_PLEX_OFL.txt` beside it.
 
 ## Project routes
 
-### Autopsia
+### Breathing Room
 
-`au_stylus` publishes interventions to `au_specimen`. The specimen's plate is
-shaped for analysis by `au_proxy`, observed by the real `features` node
-`au_observe`, and stabilized into persistent agents by `au_stabilizer`.
-`au_relief` and `au_census` render complementary interpretations; `au_grade`
-produces the reviewed program image while `au_deck` supplies performance macros.
+A realistic SDF parlour that trips. `BR_Shell` owns the room and its openings, `BR_Finish` 24
+material slots, `BR_Furnish` every piece and its host, `BR_Light` the sun (from time, date,
+latitude and the building's bearing), lamps and fire, `BR_Trip` where and how the hallucination
+runs, and `BR_Rug` what is woven into the rug. Each publishes 64-byte records in its own role
+range (`projects/breathing_room/modules/_shared/br_records.hlsli`); `BR_Render` ray-marches them with the internal camera
+and hands HDR plus a Scene buffer to `BR_Lens`, which owns everything between radiance and the
+picture. A Scene Group ("Breathing Room") exposes eight controls, Dose first.
 
-Remix seam: replace the authored specimen and redefine the semantic observations
-while retaining the idea of stabilizing noisy findings before visualization.
+Study it for **plan authorities over persistent records**: parameters generate a complete room,
+canvas edits are stored as deltas on top, and regeneration is signature-driven and versioned
+(`PLAN_VERSION`), so a hand-placed lamp stays on its table when the room is resized. Also for
+**per-object SDF warps divided by their Lipschitz bound** so the march never steps through a
+breathing surface, **editors drawn as the draughtsman would** (an unfolded room, a sun-path
+chart, the rug laid flat), and a **narrow quality ladder** measured as ratios.
 
-### Benthic Plate
-
-`BP_Plan` is the plan authority and editor over one 160-record buffer where `role` separates a
-plate header, specimens, limbs and captions. Its canvas is an **elevation over a skeleton strip**:
-the elevation owns where each specimen sits, the skeleton strip blows up the selected specimen's
-limb tree in its own local space, because a footprint disc cannot show branch topology. `BP_Growth`
-expands limb anchors into curled marchable parts and publishes bounding capsules in the same
-buffer. `BP_Render` bins those bounds into 16px screen tiles before marching, and publishes
-RGBA16F with linear depth in alpha. `BP_Plate` is the printed finish.
-
-Study it for the **tile-binned acceleration layer** — the marcher tests only the runs its own tile
-can see, which turns cost into "how much ink is under this pixel" — and for **subtractive records**:
-fenestration holes are their own part kind because a void carved per segment is refilled by the
-neighbouring segments, and because a subtraction must never be pruned by a distance early-out.
-Also for **captions that are real readings**, derived from the anchored specimen's live record and
-suppressed when the field does not apply to that kind.
-
-Remix seam: take the tile binning, the subtraction-record contract and the two-projection scaffold.
-Do not take the bone/cobalt specimen cast.
+Remix seam: take the records contract, the delta-over-generation editors and the warp
+discipline. Design your own room, materials and effect; the trip's look is this project's own.
 
 ### Camera Reference
 
@@ -95,49 +82,6 @@ outputs. It owns Sentinel's internal Fly/Orbit camera and keeps `camera_ref`
 empty.
 
 Remix seam: use the camera contract, not the grid's visual design.
-
-### Candy Effigy
-
-`CE_Plan` is the plan authority and editor: it owns stage space and decides what is in
-the cast, where it sits, how deep it is and what colour it wears, over one persistent
-32-record `Icons` buffer discriminated by `kind`. `CE_Cast` ray-marches that cast and
-re-decides nothing about placement or palette; it owns the internal camera, the light rig
-and every surface. `CE_Grade` is the lens finish.
-
-Study it for the **`scale` contract** — one number meaning half the icon's width
-everywhere, so cycling a record's kind preserves its footprint with no bookkeeping and the
-size table reads directly as the composition's hierarchy. Also for **domain distortion
-evaluated in world space before any local transform**, which is what makes the cast read as
-suspended in a liquid rather than as per-object modifiers, and for its **cost model**: a
-warp stretches space, so the distance stops being a bound, every step shrinks, and
-frequency costs exactly as much as amount. Its README documents a measured 30.6 → 108.8 fps
-recovery, most of it an over-estimated Lipschitz bound.
-
-Remix seam: take the stage-space/pick-coordinate unification, the size contract, and the
-isolation control that routes a deterministic fraction of records into an effect. Do not
-take the kawaii vocabulary or the pale sage card.
-
-### Cantilever Canyon
-
-`CC_Plan` is the plan authority and editor: a worm's-eye brutalist canyon where a mass stores
-**who it hangs off, not where it is** — host, attach face, offset along that face, and how far it
-bites in. World transforms are a RESULT, resolved once into a cache riding above `CC_WORLD_BASE`
-in the same buffer, so nothing downstream re-decides placement. `CC_Fabric` expands masses into
-marchable parts, derives the rail runs from the two masses each spans, and publishes a spatial
-partition with per-group bounds in the same buffer. `CC_Render` marches with its internal camera
-and publishes linear depth in alpha; `CC_Grade` is atmosphere and film.
-
-Study it for the **purely relational record contract** — the clearest case in the collection where
-the subject's identity is interlocking rather than position, so randomising coordinates produces
-debris and randomising relationships produces buildings. Also for a **scaffold genuinely tailored
-to its subject**: a section over an elevation sharing the lateral axis, because the drama is reach
-over the void and a front elevation cannot show reach — carrying an interpenetration alarm, a
-protected-slot-core alarm, and a **sight line that turns red when there is nowhere in the canyon
-the eye can stand**. Its README documents the depth-in-alpha capture trap, unnormalised AO turning
-a reach control into a strength control, and why painted joints cannot make a facade brutalist.
-
-Remix seam: take the host/face/offset/bite contract, the guarantee list, and the standability
-readout. Do not take the concrete-and-overcast palette or the transcribed parent tree.
 
 ### Cloth Lab
 
@@ -149,36 +93,47 @@ and the internal camera.
 Remix seam: keep Audio In's chronological ring discipline and design a new
 analysis/visual mapping for the user's material.
 
-### Face Collage
+### Formicary
 
-`Face_Track`, `Face_DS`, and `Face_Guide` establish the face-conditioned guide.
-`SD_Face` generates the photographic source. `Accum`, `Face_Cutout`,
-`Clone_Overlay`, `Overlay_Comp`, `Editorial_Post`, and `Prompt_LFO` build and
-shape the collage before `Face_Collage_Group_Output`.
+`FM_Plan` is the plan authority: arena, nest, food, obstacles, the trail network, and the
+stations (emitters, attractors, repellers and sinks) placed on its plan. `FM_Colony` owns the
+ants: task state, stigmergic steering, a tripod gait with planted feet, the pheromone field, a
+bucket grid and contact shadows. `FM_Render` draws the procedural ants and the studio sweep
+through the internal camera, `FM_Scope` is an exploded instrument overlay that draws nothing of
+its own, and `FM_Post` is the macro lens and print. `FM_Stage` is the program image made
+editable: place and drive stations on the ants you are looking at. `FM_Audio` and `FM_Bands`
+drive walk speed from the kick through an expression.
 
-Remix seam: change the editorial system and prompt behavior; do not treat its
-collage Modules as generic templates.
+Study it for **a shared field that belongs to the agents that write and read it**: deposit and
+sense are a closed loop, so the pheromone lives inside the colony rather than across a graph
+edge. Also for **closing the colony-to-plan loop through control outputs and expressions**
+rather than a link, and for **editing on the program image itself**. Its README records why a
+sink placed on the food silently deletes the subject, and why an audio drive needs a presence
+gate.
 
-### Industrial Lattice
-
-`lattice` raymarches the repeated structural field with its native camera.
-`Post` provides the final monochrome finishing pass. The two-node route is
-intentionally legible and has no object-selection model.
-
-Remix seam: study how a compact generator/post graph exposes only honest
-controls.
+Remix seam: take the station contract, the field-inside-the-colony decision and the
+stage-as-editor pattern. Do not take the ants or the white sweep.
 
 ### Interaction Lab
 
-`Style_Authority`, `Motion_Console`, and `Gizmo_Desk` are independent authored
-panel/editor stations. `Spline_Desk` publishes sampled path data to
-`Spline_Output`. `Scope_Audio` feeds PCM/Spectrum data to `Data_Scope`;
-`Signal_Trails` is another trace-oriented station.
+Fourteen numbered stations, each its own Scene Group, built on one shared UI
+foundation (`modules/_shared/ui/`: draw list, SDF type, widgets, panes, events).
+Basic: `Kit` (host-owned controls and the XY round trip), `Touch` (ordered
+events into a `state_buffer`), `Handles` (drag and turn over parameters),
+`Still_Life` (host-owned selection and picking through the internal camera),
+`Pulse` (GPU impact events → `Pulse_Bus` → `MIDI_Merge` → `Synth`, echoed to
+`Resonance`), `Atoms` → `Scope` (a Script as a control source, read through
+`ref()`), `Desk` → `Cue_Brain` → `Stage` (a panel driving a cue stack).
+Instruments: `Curve_Desk`, `Path_Desk` → `Plotter`, `Ramp_Desk` → `Relief`,
+`Patch_Bay` → `Bloom`. Sequencers with several interactive views in one canvas:
+`Timeline` → `Sting`, `Pattern` → `Pattern_Bus` → the same MIDI Out, and
+`Score` → `Program`, whose internal camera the Score flies by expression.
 
 Remix seam: copy interaction architecture only at the level of ideas—manifest
-hit contracts, durable state, selection ownership, and responsive layout.
+hit contracts, durable state, selection ownership, event ports, and responsive
+layout.
 
-### KUKA Cell
+### Robot Cell
 
 `KA_Cell` is the plan authority for a floor of six-axis industrial arms: a plan
 strip over an elevation strip sharing one metres-per-pixel scale, with an
@@ -241,125 +196,55 @@ Remix seam: author new looks against the Laser Look contract (a Module with `bun
 Laser Trace plus Bundle Pack), and reuse the mapping chain as infrastructure. Replace the room in
 `site.hlsli` and the fixture pose with your own venue rather than copying the warehouse.
 
-### Living Room SDF
+### Stage Rig: PHAGE
 
-`LR_Architecture`, `LR_Furnishings`, `LR_Materials`, and `LR_Lighting` publish
-separate scene records. `LR_SDF_Renderer` consumes the construction data and
-owns the native camera. `LR_Cinematic_Grade` is the final presentation pass.
+`Phage_Plan` is the construction authority: stance presets, symmetric leg edits, and a plan
+over a radial leg section that turns a leg red when it cannot reach its foot. `Phage_Kinetics`
+moves the truss on eight speed- and acceleration-limited axes and publishes the live fixture
+mounts, so every fixture rides the truss. `Phage_Assembly` builds the truss tubes and
+`Phage_Venue` packs the arena and crowd into one buffer. `Phage_Rig`, a Fixture Rig node, imports
+the rig from `projects/phage_stage/assets/phage_rig.mvr`: 561 fixtures of PHAGE's own three GDTF types in 57
+universes. `Phage_Lighting`, the console, builds the show's fixture table from it every frame,
+plays the looks and encodes every fixture's DMX through its GDTF; `Phage_Renderer` decodes that
+DMX and draws it in haze, so the picture is what a real rig would receive. The `Phage_Surface`
+Script node writes `Phage_Program` (a row per layer of every fixture) and `Phage_Show` (lanes,
+palettes, strobe clock); `Phage_Desk` and a Push 2 play it.
 
-Remix seam: preserve separable plans and typed records, then define new object
-kinds, relations, materials, lighting, and rendering for the requested space.
+Study it for a **moving truss programmed as fixtures**: the eight axes are programmer rows, so
+lanes, movement FX and look banks drive steel exactly as they drive lights. Also for **a rig
+from MVR and GDTF whose render is its DMX**, **looks authored as geometry** and compiled per
+fixture against mounts captured from the live data port, **fixtures programmed as layers**
+(a beam's movement, beam and halo apart, a bank per layer), the **energy-tier effects ladder**
+with a BUILD lane that restarts on recall, and the optimisation recorded in `docs/PROCESS.md`:
+a world-space light grid, tile-culled haze with closed-form glows, and marks-plus-tile-bins
+canvases.
 
-### Matik Plate
+Remix seam: take the show system (surface, packed programmer, layered banks, `rig_command`
+seam), the look-compiler method and the optimisation patterns, through the
+`stage-rig-authoring` skill. Design a new anatomy, fixture plan, renderer look and look
+vocabulary for your own reference; do not copy the phage, its palettes or its looks.
 
-`MX_Console` is the plan authority: it generates the whole plate layout procedurally and lets
-click/drag/keyboard interaction override individual records, publishing one 128-record `Plate`
-buffer where `role` separates instrument cells from organism anchors. `MX_Organism` grows
-branching molecular trees from those anchors, sizing them from the reserve discs the console
-cleared. `MX_Wireframe` rasterizes them as opaque solids with white mesh lines and owns the
-internal camera. `MX_Instruments` and `MX_Circuitry` draw the panels and the connective field.
-`MX_Composite` stacks the layers, re-deriving panel knockout from the same records, and
-`MX_Post` finishes the image.
+### Stage Rig: SIMPLE STAGE
 
-Remix seam: take the plan-authority and generate-then-override architecture, not the
-monochrome technical-plate aesthetic. See `knowledge/reference-build-method.md`.
+PHAGE's show system on a stage sized like a real club. `SS_Stage` is a static construction
+authority: three flown truss lines of stock F34 parts, solved and audited by
+`projects/simple_stage/tools/ss_stage.py`, which also writes the MVR. `SS_Rig` imports it: 76 fixtures in 7
+universes (two rows of eight hung Halo Beams, twelve Linear Strobes, a wall of twelve pixel
+runs). `SS_Lighting` is the console and `SS_Renderer` decodes its DMX, as in PHAGE;
+`SS_Venue` is a club with a crowd. `SS_Surface`, `SS_Desk` and a Push 2 play 64 looks, 15
+sequences and a programmer that stores to any pad.
 
-### Ossuary Bloom
+Study it for **a rig the size of a real club** (what a venue owner would actually patch), for
+**looks designed as rules**: every shape, chase, colour routing and move is its own mirror
+image, checked field by field when `projects/simple_stage/tools/ss_looks.py` compiles them, and most effects hold
+the heads still while formation looks glide to a new symmetric position on a downbeat. Also
+for **a pixel wall whose content is symmetric by construction** (chevrons, a mirrored
+equaliser, rain seeded per mirrored pair of runs) and for **review tooling** that recalls
+looks through the desk's own command seam and writes contact sheets and filmstrips
+(`projects/simple_stage/tools/ss_review.py`).
 
-`OB_Plan` is the plan authority and editor over one 96-record `Cast` buffer whose `role`
-separates eight families, and it owns the show clock. `OB_Growth` expands those anchors
-into the primitives that actually get marched, plus one conservative bounding sphere per
-anchor. `OB_Env` authors the studio as a lat-long HDR panorama and light records.
-`OB_Render` marches four materials and publishes RGBA16F **with linear depth in alpha**;
-`OB_Post` is the macro lens.
-
-Study it for the **acceleration layer riding in the same buffer as the parts** above
-`GROUP_BASE`, so one data link carries the whole drawable scene and the marcher can never
-be handed parts whose bounds came from a different cook. Also for its **trap catalogue** —
-compounding `smin` inflating a phantom shell, a swept section with no longitudinal extent
-becoming an infinitely thin surface, a discriminated buffer's bare `else` rendering
-bounding volumes as dark spheres, and anisotropy bounds that starve the march. Every one of
-them presents as a lighting fault rather than a geometry fault, which is the actual lesson.
-
-Remix seam: take the anchor→parts→bounds expansion and the diagnostic `View` enums. Do not
-take the bone/chrome/crimson cast.
-
-### Pink Monolith
-
-`PM_Plan` is the plan authority over a 128-record buffer where `role` separates the
-panel architecture from spills, discs, screens, blades, tubes, a figure and props, and
-where **paint order is a record field** (`z`) rather than a lane — so a record can be
-dragged through the stack and a different renderer draws it without changing what it
-is. `PM_Surface` and `PM_Material` are two independent surface libraries addressed as
-one flat fill number space (0-15 ruled, 16-31 hand/material). `PM_Ground`,
-`PM_Structure` and `PM_Gesture` are three press layers compositing in paint order;
-`PM_Accent` derives anime-style action lines from record motion and publishes nothing;
-`PM_Effect` is the only layer that touches pixels it did not draw; `PM_Ink` is the
-print finish.
-
-Study it for the **entrance/exit lifecycle**: every record carries a drawn pose, a rest
-pose and a next-arrangement pose, and the renderers contain no animation code at all —
-they draw whatever pose the plan hands them. Also for the **armature**, a set of
-beziers derived from the mass along which the sharp families are strung, and whose
-tangent becomes each element's heading — so entrance motion follows the armature for
-free, because the Slide archetype already travels along a record's own heading.
-
-Remix seam: take the paint-order-as-a-record-field scaffold, the armature, and the
-category-weight pattern for making a shape vocabulary steerable. Do not take the hot
-pink/violet palette or the transcribed reference coordinates.
-
-### Prism Reliquary
-
-`PR_Plan` is the plan authority AND a direct-manipulation editor: it generates the whole
-composition from reference-image coordinates, lets you click-select, drag, and re-material
-individual elements over a persistent signature-driven buffer, and owns the show clock.
-`PR_Env` authors the studio as a lat-long HDR panorama, so every chrome, glass and fur
-highlight in the scene is reading one light rig. `PR_Render` ray-marches the whole cast with
-its internal camera and publishes RGBA16F **with linear depth in alpha**. `PR_Post` is the
-lens: gather-bokeh defocus, bloom, flare, aberration, grade, ACES, edge AA.
-
-Study it for **filmic quality** — a real thin-film interference model for the refractive
-membrane, depth of field with proper bokeh rather than a gaussian, HDR that survives the node
-boundary, and an antialiasing strategy that treats three different aliasing sources with
-three different tools. Its README documents the traps, including the `working_format` vs
-`output_format` distinction that silently kills a depth lane.
-
-Remix seam: take the optics and the plan-authority-as-editor architecture. Do not take the
-specific cast of objects.
-
-### Scientific Organism
-
-`Scientific_Seed_Lab` controls the system. `Scientific_Biotic_Source` feeds
-`Scientific_Analysis_Proxy` and `Scientific_Features`; temporalized findings
-drive the topology, synaptic field, filament memory, spectral archive, relief,
-glyph, and final renderer layers. `Scientific_Performance_Deck` shapes the live
-system, `Scientific_Final_Grade` finishes it, and
-`Scientific_Organism_Output` marks the Scene Group result.
-
-Remix seam: study responsibility boundaries and intermediate previews in a
-large graph, not its scientific-instrument aesthetic.
-
-### Skein
-
-`SK_Field` is the plan authority and editor: it owns the airspace, the sun, the wind, a closed
-ROUTE of linked waypoints and the SQUADRONS that fly it, over one persistent 32-record buffer
-discriminated by `role`. `SK_Flock` is the flock authority — virtual squadron leaders fly the route
-and provide the moving frame every formation station is expressed in, while a boids solve with a
-forward-only field of view and wingtip UPWASH SEEKING decides where each bird actually is.
-`SK_Sky` authors the sky as a lat-long HDR panorama so the renderer gets its background and its
-ambient from the same pixels. `SK_Render` marches each bird inside its OWN bounding sphere, fed by
-a per-screen-tile bird list, and publishes RGBA16F with linear depth in alpha. `SK_Scope` is a
-depth-composited 3D instrument branch; `SK_Grade` is the print.
-
-Study it for the **scaffold that draws its own failure modes**: the plan strip draws a corner
-tighter than the coordinated-turn radius as the red fillet arc that does not fit, and the elevation
-strip draws a leg steeper than the birds can climb plus the clearance floor. Also for **relational
-randomisation** — bird positions are simulated, so `variation` re-draws the waypoint *order*, not
-coordinates — and for a **preview framing** lesson: a diagram of flocking cannot be drawn at
-airspace scale, and the fix is a subject-following frame with a locator inset.
-
-Remix seam: take the flight-plan-as-plan-authority architecture, the upwash term, and the per-bird
-bounding-sphere march. Do not take the goose.
+Remix seam: take the show system and the look compiler as PHAGE's seam describes. Design your
+own stage, plot, looks and palettes; the GDTF types are Sentinel's own and may be reused.
 
 ### Soft Vitrine
 
@@ -380,40 +265,24 @@ Remix seam: take the hybrid record contract — one buffer, `role` discriminated
 stratified placement and preserved size hierarchy keep a random draw composed. Do not
 take the electric-blue toy-plastic palette.
 
-### Stage Rig: PHAGE
+### Spectral Bench
 
-`Phage_Plan` is the construction authority: stance presets, symmetric leg edits, and a plan
-over a radial leg section that turns a leg red when it cannot reach its foot. `Phage_Kinetics`
-moves the truss on eight speed- and acceleration-limited axes and publishes the live fixture
-mounts, so every fixture rides the truss. `Phage_Assembly` builds the truss tubes,
-`Phage_Venue` packs the arena and crowd into one buffer, `Phage_Lighting` runs 100 beam movers
-and 41 linear strobes, `Phage_LED` renders 47 pixel bars, and `Phage_Renderer` composes them in
-haze. The `Phage_Surface` Script node writes `Phage_Program` (248 rows x 17 attributes) and
-`Phage_Show` (lanes, palettes, strobe clock); `Phage_Desk` and a Push 2 play it.
+`LT_Bench` is the bench authority and editor: every source and element (prisms, mirrors, slabs,
+lenses, beam splitters, screens, blockers), where it is, what it is and what glass, in one
+77-record buffer. `LT_Trace` is the physics alone (Cauchy dispersion, Fresnel, total internal
+reflection), one thread per ray, wavelength and branch, publishing up to 32,256 path segments.
+`LT_Field` tile-bins the paths and draws the room, the glass and the light in HDR above 1.0.
+`LT_Lens` is the camera: halation, anamorphic streak, aberration, ACES and grain.
 
-Study it for a **moving truss programmed as fixtures**: the eight axes are programmer rows, so
-lanes, movement FX and look banks drive steel exactly as they drive lights. Also for **looks
-authored as geometry** and compiled per fixture against mounts captured from the live data port,
-the **energy-tier effects ladder** with a BUILD lane that restarts on recall, and a **measured
-optimisation from 41 ms to 5.8 ms of GPU per frame**: a world-space light grid, tile-culled haze
-with closed-form glows, and marks-plus-tile-bins canvases that keep eight live previews near
-1.4 ms.
-`docs/PROCESS.md` records the whole build, including every trap it hit.
+Study it for **a scaffold tailored to the axis the subject is organised along**: a bench plan
+over a spectral rail, with an event ladder (wavelength by interaction) and a deviation profile
+whose width is the dispersion. Also for **failure modes drawn in the diagram** (an unlit
+element, a wavelength lost to total internal reflection and a ray that runs out of interaction
+budget all read red), and for the rule that the rail reads one beam, because an average across
+sources would print a number no beam produces.
 
-Remix seam: take the show system (surface, packed programmer, layered banks, `rig_command`
-seam), the look-compiler method and the optimisation patterns, through the
-`stage-rig-authoring` skill. Design a new anatomy, fixture plan, renderer look and look
-vocabulary for your own reference; do not copy the phage, its palettes or its looks.
-
-### Strata
-
-`strata_bg`, `marble_panel`, `blob_layout`, and `marks` establish the
-composition. `features_0` analyzes an explicit proxy branch. `blob_render`,
-`wire_render`, and `corner_thread` map structure and findings into layers;
-`plate_comp` combines them and `post_1` finishes the image.
-
-Remix seam: retain the distinction between composition data, analysis proxy,
-layer renderers, and final treatment.
+Remix seam: take the plan-over-reading scaffold, the drawn failure modes and the
+physics/picture split. Do not take the prism composition.
 
 ### StreamDiff Canvas
 
@@ -445,12 +314,15 @@ The folder contains six independent graphs:
 
 Open one at a time to avoid unnecessary engine-memory pressure.
 
-### TouchDesigner Starter
+## Retired examples
 
-The bundled `Jellybeans_Image` source and `Hermite_Signal` feed
-`Signal_to_Texture`. `Vertical_Displace` applies that texture to the image,
-`Geometry_Pass` presents the displaced surface, and `Out` is the final texture.
+Earlier builds shipped these. In the default workspace an install retires them:
+an unchanged copy is removed, and a changed one moves to
+`.sentinel/workspace-backups/upgrade-to-<version>/projects/`. A custom workspace,
+or one that predates that tracking, may still hold them. They are not references: they were built to older standards,
+or a current example supersedes them.
 
-Remix seam: use the typed signal-to-texture boundary to replace familiar
-operator wiring with a purpose-built Sentinel graph.
-
+| Project | Last shipped | Study instead |
+| --- | --- | --- |
+| `living_room_sdf` | 0.6.3 | `breathing_room`; the blueprints and the Modules they feed are the template in `tools/templates/blueprints/living_room` |
+| `autopsia`, `axon_press`, `face_collage`, `industrial_lattice`, `koi_tank`, `matik_plate`, `reactor_shaft`, `scientific_organism`, `strata`, `sunward_corridor`, `touchdesigner_new_project`, `vitreous_cross` | 0.6.2 | the collection above |

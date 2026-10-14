@@ -1,0 +1,58 @@
+{
+ "accepted": [],
+ "gdtf": {
+  "data_version": "1.2",
+  "file": "Sentinel@Linear Strobe.gdtf",
+  "fixture_type_id": "1FD73680-D3EC-541E-AFA4-19A90581B2E5",
+  "manufacturer": "Sentinel",
+  "name": "Linear Strobe",
+  "sha256": "ed75efc6701941881e20bc3d1b15b34f26aadbba8ac35d6d27d0a41e0b08ee98"
+ },
+ "notes": [],
+ "overrides": [
+  {
+   "address": "face:face0/cells",
+   "author": "agent",
+   "date": "2026-10-03",
+   "reason": "Confirmed, not changed: the tube's 8 segments, then Plate 1's 8 (the -Y plate), then Plate 2's 8, each left to right along X, as tools/phage_gdtf.py writes them and the spec sheet states.",
+   "source": {
+    "document": "PHAGE fixture spec, projects/phage_stage/assets/gdtf/FIXTURES.md (Sentinel Linear Strobe, Cells)",
+    "kind": "datasheet",
+    "note": "Sentinel's own design, written by tools/phage_gdtf.py, 2026-10-03"
+   },
+   "value": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ]
+  }
+ ],
+ "schema": "sentinel.gdtf-refinement",
+ "verification": {
+  "by": "agent",
+  "date": "2026-10-03",
+  "reference": "PHAGE's strobes (the design this type is written from) via Phage_DMX: 41 strobes encoded through this type (tube level, colour temperature, plate level and colour); 57 universes over Art-Net loopback, 0 channels different held still (Sentinel 0.6.4, 2026-10-03)"
+ },
+ "version": 1
+}

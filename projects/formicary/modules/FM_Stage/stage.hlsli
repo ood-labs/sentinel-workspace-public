@@ -32,7 +32,7 @@ struct FmStgCtl
     float ptrX;       // last pointer ground position, world mm
     float ptrZ;
     float ptrOk;      // 1 when the pointer was over placeable ground
-    float pad0;
+    float lastSeq;    // asuint: the newest viewport event consumed (sctl.hlsl consumes each once)
 
     float pad1, pad2, pad3, pad4;
 };

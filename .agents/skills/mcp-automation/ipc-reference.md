@@ -59,17 +59,17 @@ All commands use ZeroMQ REQ/REP pattern on `tcp://127.0.0.1:5555`.
 
 // List pipelines
 {"cmd": "GET_PIPELINES"}
-// Response: {"status": "ok", "data": {"pipelines": [{"id": "colorcorrect_0", ...}]}}
+// Response: {"status": "ok", "data": {"pipelines": [{"id": "Glow", ...}]}}
 
 // Get pipeline parameters
-{"cmd": "GET_PIPELINE_INFO", "pipeline": "colorcorrect_0"}
+{"cmd": "GET_PIPELINE_INFO", "pipeline": "Glow"}
 // Response: {"status": "ok", "data": {"parameters": [...], "stats": {...}}}
 
 // Set value via StateTree
-{"cmd": "SET_STATE_VALUE", "path": "/sentinel/pipelines/colorcorrect_0/parameters/brightness", "value": 0.5}
+{"cmd": "SET_STATE_VALUE", "path": "/sentinel/pipelines/Glow/parameters/amount", "value": 0.5}
 
-// Invoke action
-{"cmd": "INVOKE_ACTION", "path": "/sentinel/pipelines/colorcorrect_0/actions/relaunch"}
+// Invoke action (action arguments sit beside path)
+{"cmd": "INVOKE_ACTION", "path": "/sentinel/sources/Clip/actions/preroll", "time": 0}
 
 // Load project
 {"cmd": "LOAD_PROJECT", "path": "C:/path/to/project.sentinel"}

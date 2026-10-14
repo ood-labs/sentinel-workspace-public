@@ -1,12 +1,19 @@
-// VT_Plan / canvas.hlsl — the schematic plan preview.
+// VT_Plan / canvas.hlsl — the schematic plan, the DRAWING only.
 //
 // This is the diagnostic surface for the entire show, so it decodes every field that matters
 // downstream: role, kind, material, depth band, growth reserve, stroke weight, active state,
 // hand-edited state and the current selection. It draws a PLAN, not a copy of the program
 // image — 1:1 with stage space so pick and drag cannot drift from what is drawn.
+//
+// The words, counts, kind numbers, hover highlight, inspector card and keycap footer are recorded
+// by layout.hlsl and drawn over this by the shared UI kit (ui.hlsl).
+//
+// Every record is drawn by every pixel, and a stroke's schematic spine is twelve segments, so each
+// record first checks whether this pixel is within its REACH: a radius around its anchor beyond
+// which every mark below is exactly zero (vt_fill is zero from 0.75 px outside a shape). The
+// reaches are read off the drawing, so a skipped record would have added nothing.
 #include "../_shared/vitrine.hlsli"
-#include "../_shared/microfont.hlsli"
-#include "../_shared/plan_theme.hlsli"
+#include "../_shared/ui/il_core.hlsli"
 
 StructuredBuffer<PlanRec> Plan : register(t0);
 RWTexture2D<float4> OutputUAV : register(u0);
@@ -32,7 +39,7 @@ float ring(float d, float w, float px) { return vt_fill(abs(d) - w, px); }
 //
 // The show's real palette includes a near-black accent and dark bodies; on a dark schematic
 // those vanish, so the plan first re-maps them to a readable brightness. It then puts them
-// through ptSampleColour: an element's own colour is genuine information (rule 4), but EVERY
+// through ptSampleFill: an element's own colour is genuine information (rule 4), but EVERY
 // element carries one here, and at full strength that turns the whole diagram into a louder
 // version of the render it exists to explain — and drowns the reserved accent.
 // This affects the diagnostic drawing only — no consumer reads a colour from this node.
@@ -57,23 +64,24 @@ void main(uint3 DTid : SV_DispatchThreadID)
 {
     uint2 pixel = DTid.xy;
     if (pixel.x >= (uint)_Resolution.x || pixel.y >= (uint)_Resolution.y) return;
-    float2 uv = ((float2)pixel + 0.5) / _Resolution.xy;
+    float2 P = (float2)pixel + 0.5;
+    float2 uv = P / _Resolution.xy;
     float px = 1.0 / _Resolution.y;
 
-    // --- ground: dark slate with a faint decimal grid so positions are readable ---
-    float3 col = PT_FIELD;
-    float d10 = min(abs(frac(uv.x * 10.0) - 0.5), abs(frac(uv.y * 10.0) - 0.5)) * 0.1;  // uv units
-    col += 0.030 * (1.0 - smoothstep(0.0, 1.2 * px, d10));
-    float d2 = min(abs(frac(uv.x * 2.0) - 0.5), abs(frac(uv.y * 2.0) - 0.5)) * 0.5;
-    col += 0.045 * (1.0 - smoothstep(0.0, 1.4 * px, d2));
+    // --- ground: the instrument field, a grid every tenth of the stage and the centre lines ---
+    float3 col = IL_FIELD;
+    float g10 = max(ilGridLine(P.x, 0.1 * _Resolution.x, 1.0), ilGridLine(P.y, 0.1 * _Resolution.y, 1.0));
+    float g2 = max(ilGridLine(P.x, 0.5 * _Resolution.x, 1.0), ilGridLine(P.y, 0.5 * _Resolution.y, 1.0));
+    ilOver(col, IL_GRID, g10);
+    ilOver(col, IL_EDGE, g2 * 0.7);
 
     PlanRec hdr = Plan[PLAN_HEADER];
     uint sel = (uint)hdr.pos.y;
 
     // horizon line, read from the same stage record the backdrop and compositor read
     float hz = Plan[PLAN_STAGE].pos.x;
-    col = lerp(col, PT_DIM, vt_fill(abs(uv.y - hz) - 0.0008, px) * 0.55);
-    col += PT_GRID * exp(-abs(uv.y - hz) * 55.0) * 0.5;
+    col = lerp(col, IL_DIM, vt_fill(abs(uv.y - hz) - 0.0008, px) * 0.55);
+    col += IL_GRID * exp(-abs(uv.y - hz) * 55.0) * 0.5;
 
     // ---------------------------------------------------------------- plates
     for (uint i = 0u; i < PLAN_PLATES; i++)
@@ -81,6 +89,12 @@ void main(uint3 DTid : SV_DispatchThreadID)
         PlanRec r = Plan[PLAN_PLATE_0 + i];
         uint fl = (uint)r.flags;
         float2 q = uv - r.pos;
+        // reach: the rounded box (any rotation) with its selection ring, or the front tick
+        float2 pb = max(r.size, 0.002);
+        float pr = min(r.size.x, r.size.y) * 0.35;
+        if (length(q) > max(length(pb) + 1.5 * abs(pr) + 0.006 + 2.1 * px,
+                            abs(r.size.y) + 0.006 + length(float2(r.size.x * 0.5, 0.0015)) + 0.8 * px))
+            continue;
         if ((int)r.kind == PK_DASH) q = vt_rot2(q, -r.phase);
         float d = vt_dRBox(q, max(r.size, 0.002), min(r.size.x, r.size.y) * 0.35);
 
@@ -97,17 +111,11 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
         // front/back band: a tick on the top edge means "composited in front of the masses"
         if ((fl & F_FRONT) != 0u && alive > 0.5)
-            col = lerp(col, PT_MID,
+            col = lerp(col, IL_MID,
                        vt_fill(vt_dBox(q - float2(0.0, -r.size.y - 0.006), float2(r.size.x * 0.5, 0.0015)), px));
 
-        // kind digit, only where there is room
-        if (alive > 0.5 && r.size.x > 0.030 && r.size.y > 0.022)
-        {
-            float2 tp = (q - float2(-r.size.x + 0.010, -r.size.y + 0.006)) / float2(0.014, 0.016);
-            col = lerp(col, PT_INK, mf_num(tp, (uint)r.kind, 1u) * 0.9);
-        }
         if (sel == PLAN_PLATE_0 + i + 1u)
-            col = lerp(col, PT_INK, ring(d - 0.006, 1.3 * px, px));
+            col = lerp(col, IL_ACCENT, ring(d - 0.006, 1.3 * px, px));
     }
 
     // ---------------------------------------------------------------- strokes
@@ -118,6 +126,12 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float3 tint = pv(vt_accent(r.tone));
         float2 e = max(r.size, 0.004);
         float2 q = uv - r.pos;
+        // reach: every spine archetype stays within 1.17 of the unit extent, and the ellipse,
+        // its ring and the selection ring end within 0.008 + 2.05 px of it
+        float emin = min(e.x, e.y);
+        float sw = max(r.phase, 0.05) * 0.010 + 0.6 * px;
+        if (length(q) > max(e.x, e.y) * (1.2 + max(0.008 + 2.1 * px, sw + 0.8 * px) / emin))
+            continue;
 
         // extent ellipse = the box the stroke will be grown inside
         float de = length(q / e) - 1.0;
@@ -166,13 +180,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float w = max(r.phase, 0.05) * 0.010 + 0.6 * px;
         col = lerp(col, tint * lerp(0.12, 1.0, alive), vt_fill(spineD - w, px));
 
-        if (alive > 0.5)
-        {
-            float2 tp = (q - float2(-e.x + 0.008, -e.y - 0.004)) / float2(0.013, 0.015);
-            col = lerp(col, PT_MID, mf_num(tp, (uint)r.kind, 1u) * 0.85);
-        }
         if (sel == PLAN_STROKE_0 + s + 1u)
-            col = lerp(col, PT_INK, ring(den - 0.008, 1.3 * px, px));
+            col = lerp(col, IL_ACCENT, ring(den - 0.008, 1.3 * px, px));
     }
 
     // ---------------------------------------------------------------- masses
@@ -183,19 +192,23 @@ void main(uint3 DTid : SV_DispatchThreadID)
         uint mat = (fl >> 8) & 15u;
         float alive = r.active;
         float2 q = uv - r.pos;
+        // reach: the reserve and selection rings, or the core with its badge, arc and edit ring
+        float coreR = r.size.x * 0.34 * saturate(r.size.y);
+        if (length(q) > max(abs(r.size.x), max(abs(coreR), 0.006)) + 0.04 + 3.0 * px)
+            continue;
         float3 body = pv(vt_body(r.tone));
 
         // dashed reserve ring — the clearance this mass owns, which VT_Growth sizes from
-        col = lerp(col, PT_DIM,
+        col = lerp(col, IL_DIM,
                    dashRing(q, r.size.x, 0.7 * px, px, 34.0) * lerp(0.10, 0.65, alive));
 
         // core disc, radius from the GROWTH SCALE so the two numbers are visibly different
         float core = r.size.x * 0.34 * saturate(r.size.y);
         float dc = length(q) - max(core, 0.006);
         col = lerp(col, body * lerp(0.14, 1.0, alive), vt_fill(dc, px));
-        col = lerp(col, PT_FIELD, ring(dc, 0.9 * px, px) * 0.6);
+        col = lerp(col, IL_FIELD, ring(dc, 0.9 * px, px) * 0.6);
 
-        // material badge: a small chip whose colour names the surface
+        // material badge: a small chip whose value names the surface (legend in the footer)
         float2 bq = q - float2(max(core, 0.006) + 0.010, 0.0);
         float db = vt_dRBox(bq, float2(0.0075, 0.0075), 0.002);
         col = lerp(col, MAT_TINT[mat] * lerp(0.15, 1.0, alive), vt_fill(db, px));
@@ -204,48 +217,18 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float ang = atan2(q.y, q.x);
         float arcT = saturate((ang + 3.14159) / 6.2831853);
         float dr = abs(length(q) - (max(core, 0.006) + 0.017)) - 0.0022;
-        col = lerp(col, PT_MID,
+        col = lerp(col, IL_MID,
                    vt_fill(dr, px) * step(arcT, saturate(r.grp)) * lerp(0.2, 0.9, alive));
 
-        if (alive > 0.5)
-        {
-            float2 tp = (q - float2(-0.009, -core - 0.024)) / float2(0.016, 0.018);
-            col = lerp(col, PT_INK, mf_num(tp, (uint)r.kind, 1u) * 0.95);
-        }
         if ((fl & F_EDITED) != 0u)
-            col = lerp(col, PT_MID, ring(length(q) - core - 0.028, 1.0 * px, px));
+            col = lerp(col, IL_MID, ring(length(q) - core - 0.028, 1.0 * px, px));
         if (sel == PLAN_MASS_0 + m + 1u)
         {
-            col = lerp(col, PT_ACCENT, ring(length(q) - r.size.x - 0.010, 1.4 * px, px));
-            col = lerp(col, PT_ACCENT,
+            col = lerp(col, IL_ACCENT, ring(length(q) - r.size.x - 0.010, 1.4 * px, px));
+            col = lerp(col, IL_ACCENT,
                        vt_fill(min(vt_dBox(q, float2(0.030, 0.0006)), vt_dBox(q, float2(0.0006, 0.030))), px));
         }
     }
-
-    // ---------------------------------------------------------------- readout
-    // live counts + selection, all from the header record, never from a second source of truth
-    {
-        float2 o = float2(0.016, 0.016);
-        float2 cell = float2(0.0125, 0.0175);
-        uint counts[3] = { (uint)hdr.grp, (uint)hdr.phase, (uint)hdr.flags };
-        uint letters[3] = { 22u, 28u, 25u };   // M S P  (MF_A = 10, so A+12, A+18, A+15)
-        for (uint row = 0u; row < 3u; row++)
-        {
-            float2 rp = uv - (o + float2(0.0, (float)row * 0.024));
-            float t = mf_glyph(rp / cell, letters[row]);
-            t += mf_num((rp - float2(cell.x * 1.6, 0.0)) / float2(cell.x * 2.0, cell.y), counts[row], 2u);
-            col = lerp(col, ROLE_TINT[2u - row] * 1.0, saturate(t) * 0.95);
-        }
-        // selected record index, right-aligned
-        float2 sp = uv - float2(0.905, 0.016);
-        float st = mf_glyph(sp / cell, MF_GT);   // '>' selection marker
-        st += mf_num((sp - float2(cell.x * 1.4, 0.0)) / float2(cell.x * 2.0, cell.y), sel, 2u);
-        col = lerp(col, PT_ACCENT, saturate(st) * (sel > 0u ? 0.95 : 0.30));
-    }
-
-    // frame
-    float2 fq = abs(uv - 0.5) - 0.5 + 0.004;
-    col = lerp(col, PT_RULE, ring(max(fq.x, fq.y), 0.7 * px, px));
 
     OutputUAV[pixel] = float4(col, 1.0);
 }

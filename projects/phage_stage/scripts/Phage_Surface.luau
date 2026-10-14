@@ -22,16 +22,17 @@ local rigUI: any=nil
 local nativeState: any=nil
 -- The lit look pads (static_rig.active_text) travel beside the push2os package, never inside it.
 local incomingLooks: string?=nil
+local incomingNames: string?=nil   -- fixture pad names (static_rig.fx_names), carried like the lit looks
 local function publishRig()
     local rig=runtime.rig()
     if not rig then return end
     if rig.message~=lastRigMessage then nativeState.set(root.."/programmer_message",rig.message);lastRigMessage=rig.message end
     local revision=rig.status.revision or 0
     if revision~=lastRigRevision then nativeState.set(root.."/programmer_revision",revision);lastRigRevision=revision end
-    local selection=#rig.status.selection
+    local selection=#(rig.status.fixtures or rig.status.selection)
     if selection~=lastRigSelection then nativeState.set(root.."/programmer_selection_count",selection);lastRigSelection=selection end
 end
-function script.deserialize(node: any,saved: any) incoming=saved.package;incomingLooks=saved.looks end
+function script.deserialize(node: any,saved: any) incoming=saved.package;incomingLooks=saved.looks;incomingNames=saved.fx_names end
 function script.init(node: any)
     rigUI=require("@show/native_rig_ui")
     state.begin_restore(true)
@@ -63,6 +64,7 @@ function script.control_process(node: any,ctx: any)
     if runtime and runtime.status().code=="RUNNING" then
         local rig=runtime.rig()
         if incomingLooks~=nil then rig.restore_active(incomingLooks);incomingLooks=nil end
+        if incomingNames~=nil then rig.restore_fx_names(incomingNames);incomingNames=nil end
         if serviceTick%4==0 or rig.job or rig.fast_pending then
             local ok,err=pcall(rig.service)
             if not ok then rig.message="ERROR: "..tostring(err) end
@@ -127,7 +129,8 @@ function script.serialize()
     if running then runtime.rig().flush_snapshot() end
     -- A failed or yielded boot has no complete package snapshot to serialize.
     return {package=if running then runtime.callbacks.on_serialize() else incoming,
-        looks=if running then runtime.rig().active_text else incomingLooks}
+        looks=if running then runtime.rig().active_text else incomingLooks,
+        fx_names=if running then runtime.rig().fx_names_text() else incomingNames}
 end
 function script.stop()
     if runtime and runtime.desk_panel() then pcall(runtime.desk_panel().stop) end

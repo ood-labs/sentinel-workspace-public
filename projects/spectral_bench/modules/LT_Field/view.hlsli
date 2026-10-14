@@ -32,6 +32,35 @@
 #define LT_BIN_STRIDE 4096
 #define LT_BIN_CAP    (LT_BIN_STRIDE - 2)
 
+// One traced segment as the program frame sees it, resolved once per cook by segs.hlsl so the
+// binner and the renderer read the same numbers instead of each re-deriving them.
+struct SegPx
+{
+    float4 ab;    // a.xy, b.xy in program pixels
+    float4 w;     // x: half-width here, y: reach (negative = draws nothing), z: core gain, w: halo gain
+    float4 col;   // rgb: beam colour x power; a: interaction hot-spot weight, 0 for an escape
+};
+
+// Whether a segment's footprint (its bounds grown by its own reach) can touch a band of rows or a
+// tile. The tile test is the row test AND the same test across, so a row's shortlist (rows.hlsl)
+// never drops anything a tile in that row needs.
+bool ltSegInRow(SegPx s, float y0, float y1)
+{
+    float rad = s.w.y;
+    if (rad < 0.0) return false;
+    float lo = min(s.ab.y, s.ab.w) - rad, hi = max(s.ab.y, s.ab.w) + rad;
+    return !(hi < y0 || lo > y1);
+}
+bool ltSegInTile(SegPx s, float2 t0, float2 t1)
+{
+    float rad = s.w.y;
+    float lo = min(s.ab.x, s.ab.z) - rad, hi = max(s.ab.x, s.ab.z) + rad;
+    return ltSegInRow(s, t0.y, t1.y) && !(hi < t0.x || lo > t1.x);
+}
+
+// Each row of tiles keeps a shortlist of segment indices: [0] = count, [1 ..] = indices.
+#define LT_ROW_STRIDE (LT_PATH_TOTAL + 1)
+
 float  ltPxPerBench(float zoom) { return (float)FIELD_W * max(zoom, 1e-3); }
 float2 ltFieldToPix(float2 b, float2 centre, float zoom, float2 res)
 {

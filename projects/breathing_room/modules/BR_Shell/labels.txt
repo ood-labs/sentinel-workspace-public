@@ -1,0 +1,97 @@
+# BR_Shell - the unfolded room's words. Regenerate: python tools/il_type.py labels BR_Shell
+TITLE        @bold @track=0.14 = BR SHELL
+SUB          @sans = unfolded room
+# styles, in the manifest's order (layout.hlsl counts from STYLE0)
+STYLE0       @sans = Parlor
+STYLE1       @sans = Loft
+STYLE2       @sans = Cottage
+STYLE3       @sans = Modern
+ROOMNAME     @bold @track=0.08 = LIVING ROOM
+SQM          @sans = sq m
+CUM          @sans = cu m
+CLG          @sans = ceiling
+X            @sans = x
+M            @sans = m
+
+# walls, in WALL_S..WALL_W order (layout.hlsl counts from WALL0)
+WALL0        @bold @track=0.08 = SOUTH
+WALL1        @bold @track=0.08 = EAST
+WALL2        @bold @track=0.08 = NORTH
+WALL3        @bold @track=0.08 = WEST
+# opening kinds, in OPEN_* order (layout.hlsl counts from K0)
+K0           @bold @track=0.04 = NONE
+K1           @bold @track=0.04 = DOUBLE-HUNG WINDOW
+K2           @bold @track=0.04 = CASEMENT WINDOW
+K3           @bold @track=0.04 = PICTURE WINDOW
+K4           @bold @track=0.04 = FRENCH DOOR
+K5           @bold @track=0.04 = DOOR
+K6           @bold @track=0.04 = ARCHWAY
+K7           @bold @track=0.04 = FIREPLACE
+
+# the inspector
+WALLWORD     @sans = wall
+NOSEL        @bold @track=0.08 = NOTHING SELECTED
+NOSEL_HINT   @sans = click an opening, a wall face or a ceiling line
+W            @sans = width
+H            @sans = height
+MANTEL       @sans = mantel
+SILL         @sans = sill
+FROM         @sans = from corner
+LENGTH       @sans = length
+CEIL_H       @sans = ceiling height
+EDITED       @sans = hand edited
+GENERATED    @sans = procedural
+CURT         @sans = curtains
+ON           @sans = on
+OFF          @sans = off
+CEILING      @bold @track=0.08 = CEILING LINE
+WALLSEL      @bold @track=0.08 = WALL FACE
+DRAG_WALL    @sans = drag it in the plan to move this wall
+DRAG_CEIL    @sans = drag it to set the ceiling height
+
+# the room's measures and alarms
+ROOM         @bold @track=0.08 = ROOM
+AREA         @sans = floor area
+PERIM        @sans = wall run
+VOLUME       @sans = volume
+OPENINGS     @sans = openings
+ALARMS       @bold @track=0.08 = ALARMS
+CLEAR        @sans = all clear
+A_OVERLAP    @sans = overlap
+A_CORNER     @sans = tight to corner
+A_HEAD       @sans = head above trim
+A_WIDE       @sans = wider than wall
+
+# scale and north
+SCALE        @sans = 1 m
+NORTH        @bold = N
+
+# inspector chips (the verb; its key is drawn beside it)
+CH_KIND      @sans = Kind
+CH_TOGGLE    @sans = On / off
+CH_CURT      @sans = Curtains
+CH_RESET     @sans = Reset
+CH_ADD       @sans = Add window
+CH_RROOM     @sans = Reset room
+CH_RALL      @sans = Reset all
+
+# keys (on the chips and in the key map)
+KEY_K        @mono = K
+KEY_X        @mono = X
+KEY_A        @mono = A
+KEY_C        @mono = C
+KEY_R        @mono = R
+KEY_0        @mono = 0
+KEY_ESC      @sans = Esc
+K_CLICK      @sans = Click
+K_DRAG       @sans = Drag
+D_SELECT     @sans = select
+D_MOVE       @sans = move, resize, re-host
+D_FACE       @sans = a wall face or ceiling line
+D_KIND       @sans = kind
+D_TOGGLE     @sans = on/off
+D_ADD        @sans = add at pointer
+D_CURT       @sans = curtains
+D_RESET      @sans = reset
+D_RALL       @sans = reset all
+D_ESC        @sans = deselect

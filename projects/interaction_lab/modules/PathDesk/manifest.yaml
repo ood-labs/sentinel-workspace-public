@@ -1,0 +1,139 @@
+name: "Path Desk"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# A pen tool for paths in space: anchors with bezier handles on a 1280 x 720 stage, up to six paths
+# that plot in order with the pen-up moves between them, a curvature comb on the active path and a
+# strip of curvature along the whole plot - the two places a draughtsman reads whether a curve is
+# fair. The paths are durable records (state buffer). Published: every path measured and sampled
+# evenly along its length ("Path" data, laid out in _shared/plot.hlsli), which the Plotter draws.
+# The plotter's pen comes back as four parameters fed by ref() expressions, so the desk shows where
+# the machine is without a graph link back:  =ref("Plotter/control_outputs/pen_x")
+
+panel:
+  mode: canvas
+  output: "Path Desk"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  - { name: pen_x,    display: "Pen x",    type: float, min: -100.0, max: 1400.0, default: 0.0,  group: "Follow the plotter", description: "The plotter's pen across the stage (program px). Feed with ref(\"Plotter/control_outputs/pen_x\")" }
+  - { name: pen_y,    display: "Pen y",    type: float, min: -100.0, max: 800.0,  default: 0.0,  group: "Follow the plotter", description: "The plotter's pen down the stage (program px). Feed with ref(\"Plotter/control_outputs/pen_y\")" }
+  - { name: pen_d,    display: "Pen along the plot", type: float, min: -1.0, max: 100000.0, default: -1.0, group: "Follow the plotter", description: "How far along the plot's pen-down length the pen is (px); below 0 hides the marker. Feed with ref(\"Plotter/control_outputs/pen_d\")" }
+  - { name: pen_down, display: "Pen down", type: float, min: 0.0, max: 1.0, default: 0.0, group: "Follow the plotter", description: "1 while the pen is on the paper. Feed with ref(\"Plotter/control_outputs/pen_down\")" }
+
+viewport:
+  hint: "P: pen (click a corner, drag a smooth anchor, click an open end to carry on, click the first anchor to close, Enter to finish, Esc to stop). Drag an anchor or handle to shape, drag empty to box select, double-click an anchor for corner / smooth, double-click a curve to add an anchor. 1 2 B: corner, smooth, break. C: close or open. O: shortest plot order. Backspace: delete. Arrows: nudge. K: comb. R: reset (Z brings it back). Z: undo."
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [p, enter, escape, backspace, "1", "2", b, c, k, o, r, z, left, right, up, down]
+    gestures: [click, double_click, drag]
+  bindings:
+    - { gesture: left_click, action: select_or_place, label: "Select an anchor; with the pen: place a corner, or close the path on its first anchor" }
+    - { gesture: left_drag, action: edit, label: "Move anchors, shape handles, box select; with the pen: place a smooth anchor" }
+    - { gesture: left_double_click, action: kind_or_add, label: "Corner / smooth on an anchor; add an anchor on a curve" }
+    - { key: p, action: pen, label: "Pen on / off" }
+    - { key: enter, action: finish, label: "Finish the path open" }
+    - { key: escape, action: stop, label: "Stop drawing; clear the selection" }
+    - { key: backspace, action: delete, label: "Delete the selected anchors" }
+    - { key: "1", action: corner, label: "Corner" }
+    - { key: "2", action: smooth, label: "Smooth" }
+    - { key: b, action: break, label: "Break / re-align handles" }
+    - { key: c, action: close, label: "Close / open the active path" }
+    - { key: k, action: comb, label: "Curvature comb on / off" }
+    - { key: o, action: order, label: "Shortest plot order (paths reordered, reversed where nearer)" }
+    - { key: r, action: reset, label: "Back to the default plot (Z brings the edit back)" }
+    - { key: z, action: undo, label: "Undo (again: redo)" }
+    - { key: left, action: nudge_left, label: "Nudge left a pixel" }
+    - { key: right, action: nudge_right, label: "Nudge right a pixel" }
+    - { key: up, action: nudge_up, label: "Nudge up a pixel" }
+    - { key: down, action: nudge_down, label: "Nudge down a pixel" }
+
+buffers:
+  # path.hlsli: the saved paths, then working state and the undo snapshot
+  - { name: state, structured: true, element_size: 32, element_count: 258, persistent: true }
+  # _shared/plot.hlsli: header, paths, anchors, 1024 samples
+  - { name: path,  structured: true, element_size: 16, element_count: 1151 }
+  - { name: dl,    structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+# The first 127 records - the paths - serialize into the project, node presets and undo payloads.
+# The working state after them (event watermark, drag, mode, undo snapshot) is never restored: a
+# recalled preset must not replay the input that followed it.
+state_buffers:
+  - name: state
+    max_elements: 127
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: c, type: float }
+      - { name: d, type: float }
+      - { name: e, type: uint }
+      - { name: f, type: uint }
+
+passes:
+  - name: reduce
+    shader: reduce.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:state"
+  - name: sample
+    shader: sample.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1024
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:path"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+      - { slot: 1, source: "buffer:path" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Path Desk", pass: raster }
+
+data_outputs:
+  - name: "Path"
+    buffer: "path"
+    description: "float4 records (see _shared/plot.hlsli): 0 = (paths, pen-down length px, samples in use, anchors), 1..6 = path (first sample, samples, length px, closed + 2 * pen), 7..126 = anchor (s px along its path, turn rad, x, y), 127..1150 = samples evenly along each path (x px, y px, heading rad, curvature 1/px). Program px of a 1280 x 720 frame, y down."
+    schema:
+      - { name: v, type: float4 }
+  - name: "Anchors"
+    buffer: "state"
+    description: "The records (see path.hlsli): 0 = anchor counts (5 bits per path), 1..6 = path (closed | pen << 1), 7..126 = 20 anchor slots per path - a = position, b = in handle, (c, d) = out handle (px), e = kind | selected << 4 - then working state and the undo snapshot."
+    schema:
+      - { name: a, type: float2 }
+      - { name: b, type: float2 }
+      - { name: c, type: float }
+      - { name: d, type: float }
+      - { name: e, type: uint }
+      - { name: f, type: uint }
+
+control_outputs:
+  - { name: paths,   buffer: path, element: 0, field_offset: 0,  description: "Paths in use" }
+  - { name: length,  buffer: path, element: 0, field_offset: 4,  description: "The plot's pen-down length (program px)" }
+  - { name: anchors, buffer: path, element: 0, field_offset: 12, description: "Anchors in use" }

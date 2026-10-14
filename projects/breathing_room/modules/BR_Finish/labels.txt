@@ -1,0 +1,74 @@
+# BR_Finish - the finish schedule's words. Regenerate: python tools/il_type.py labels BR_Finish
+TITLE        @bold @track=0.14 = BR FINISH
+SUBTITLE     @sans = finish schedule
+COUNT        @sans = materials
+SELECTED     @sans = selected
+NOSEL        @sans = nothing selected
+USED         @sans = the selection shows where it is used in BR Render's Scope view
+
+# a material's defining numbers: rough always, then each one that is not zero, in this order
+# (layout.hlsl counts from ROUGH)
+ROUGH        @sans = rough
+METAL        @sans = metal
+COAT         @sans = coat
+TRANS        @sans = trans
+SHEEN        @sans = sheen
+
+# footer (pairs)
+K_CLICK      @sans = Click
+K_ESC        @sans = Esc
+D_CLICK      @sans = select a sample
+D_ESC        @sans = clear
+D_PROPS      @sans = colours and roughness are set in Properties
+
+# slot codes, in slot order (layout.hlsl counts from C0)
+C0           @bold @track=0.06 = F-01
+C1           @bold @track=0.06 = W-01
+C2           @bold @track=0.06 = W-02
+C3           @bold @track=0.06 = T-01
+C4           @bold @track=0.06 = T-02
+C5           @bold @track=0.06 = G-01
+C6           @bold @track=0.06 = T-03
+C7           @bold @track=0.06 = S-01
+C8           @bold @track=0.06 = M-01
+C9           @bold @track=0.06 = X-01
+C10          @bold @track=0.06 = U-01
+C11          @bold @track=0.06 = U-02
+C12          @bold @track=0.06 = J-01
+C13          @bold @track=0.06 = M-02
+C14          @bold @track=0.06 = K-01
+C15          @bold @track=0.06 = R-01
+C16          @bold @track=0.06 = U-03
+C17          @bold @track=0.06 = P-01
+C18          @bold @track=0.06 = L-01
+C19          @bold @track=0.06 = K-02
+C20          @bold @track=0.06 = X-02
+C21          @bold @track=0.06 = E-01
+C22          @bold @track=0.06 = M-03
+C23          @bold @track=0.06 = S-02
+
+# slot names, in slot order (layout.hlsl counts from N0)
+N0           @sans = oak parquet
+N1           @sans = wall plaster
+N2           @sans = ceiling
+N3           @sans = trim enamel
+N4           @sans = window sash
+N5           @sans = window glass
+N6           @sans = door enamel
+N7           @sans = mantel marble
+N8           @sans = radiator iron
+N9           @sans = sheer linen
+N10          @sans = sofa linen
+N11          @sans = cognac leather
+N12          @sans = walnut
+N13          @sans = brass
+N14          @sans = olive glaze
+N15          @sans = wool pile
+N16          @sans = rust velvet
+N17          @sans = paper / books
+N18          @sans = leaf
+N19          @sans = terracotta
+N20          @sans = lampshade
+N21          @sans = bulb
+N22          @sans = black steel
+N23          @sans = travertine

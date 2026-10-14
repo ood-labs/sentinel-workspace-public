@@ -4,6 +4,12 @@ mode: generator
 resolution:
 - 1000
 - 700
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+- name: type
+  type: texture
+  file: ../_shared/type/il_type.png
+  srgb: false
 panel:
   mode: canvas
   output: Mapping Editor
@@ -31,6 +37,11 @@ parameters:
   display: Select All Points
   type: button
   default: 0
+- name: tooltips
+  display: Tooltips
+  description: The card beside the pointer that names the handle or mask under it, and shows its live values while you drag it. Turn it off while mapping so it never covers the points you are placing.
+  type: bool
+  default: true
 - name: extent_a
   display: Extent
   description: How much of the scanner's field the mapped corners may reach.
@@ -179,6 +190,11 @@ buffers:
   structured: true
   element_size: 16
   element_count: 577
+# the UI kit's draw list (il_draw IL_DL_SIZE)
+- name: dl
+  structured: true
+  element_size: 16
+  element_count: 24577
 state_buffers:
 - name: points
   max_elements: 156
@@ -290,9 +306,49 @@ passes:
   - slot: 7
     source: pass:gridpts
   time_dependent: false
+# editor draws the canvas; layout records the side panel (in masks.hlsli's hit-test rects), the
+# title, hover and inspector, and the verbs; ui (the shared UI kit) draws them over the canvas.
+# Every pass is time_dependent: false (on_dirty), so each names the pass it follows.
+- name: layout
+  shader: layout.hlsl
+  target: cs_5_0
+  dispatch:
+  - 1
+  - 1
+  - 1
+  thread_group_x: 64
+  thread_group_y: 1
+  inputs:
+  - slot: 0
+    source: buffer:calibration
+  - slot: 1
+    source: buffer:points
+  - slot: 2
+    source: buffer:canvas
+  - slot: 4
+    source: buffer:zones
+  - slot: 7
+    source: pass:editor
+  output: buffer:dl
+  time_dependent: false
+- name: ui
+  shader: ui.hlsl
+  target: cs_5_0
+  thread_group_x: 16
+  thread_group_y: 16
+  inputs:
+  - slot: 0
+    source: buffer:dl
+  - slot: 1
+    source: asset:type
+  - slot: 2
+    source: pass:editor
+  - slot: 7
+    source: pass:layout
+  time_dependent: false
 outputs:
 - name: Mapping Editor
-  pass: editor
+  pass: ui
 data_outputs:
 - name: Calibration
   description: The compiled mapping (0..31), zoning masks (32..64) and polygon points (65..576) for Adaptive Mapping.

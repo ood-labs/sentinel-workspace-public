@@ -19,11 +19,13 @@ ref("audio_bands/control_outputs/kick")
 ## The view
 
 It is a full-bleed Canvas panel at `follow_panel` resolution: the whole dock is
-the instrument, and it redraws at whatever size you give it. Every size in it —
-plot extents, gutters, stroke widths, text, the threshold grab zone — is a
-multiple of one UI unit derived from the panel height, and the spectrum reduces
-to one column per real pixel rather than stretching a fixed-width picture. Drag
-the dock wider and you get more frequency resolution, not a blurrier image.
+the instrument, and it redraws at whatever size you give it. Every size in the
+drawing — plot extents, gutters, the threshold grab zone — is a multiple of one
+UI unit derived from the panel height, the type and chrome are drawn by the
+project's shared UI kit (`_shared/ui/`) at the panel's scale, and the spectrum
+reduces to one column per real pixel rather than stretching a fixed-width
+picture. Drag the dock wider and you get more frequency resolution, not a
+blurrier image.
 
 The top half is the live spectrum on a log-Hz axis. Each lane's band is drawn on
 it as a shaded slab, and that slab is exactly the set of FFT bins the detector
@@ -32,8 +34,14 @@ sums. Under each band name is its span in Hz and its current level in dB.
 The bottom half is one strip per lane. Each shows that lane's onset value at
 analysis-hop resolution (187.5 Hz at the default hop size) over the last few
 seconds, with its threshold drawn across it as a dashed line, a tick where it
-fired, a flash block and a running hit count. The number at the strip's left is
-the strip's current full scale in dB.
+fired, a flash block and a running hit count. The strip's caption row gives its
+current full scale in dB.
+
+Hover anything for its numbers: a band on the spectrum shows its span in octaves
+and Hz, its threshold, the level it fires above, its level and peak flux and its
+hit count; empty spectrum shows the frequency and level under the pointer; a
+strip shows the onset value, threshold and level at that moment and how long ago
+it was. Hover only reads — it never edits a band.
 
 Everything you need to answer "why did that not trigger" is in that one picture:
 the peak is either above the dashed line or it is not.
@@ -56,8 +64,9 @@ the bar stays under the pointer rather than drifting over a long drag. The
 button and the grabbed band are latched on press and held for the whole drag, so
 a fast pointer cannot drop the edit or jump it to a neighbouring band.
 
-The threshold bar is drawn in the accent with a grab tab on the band's right
-edge, deliberately styled as a control rather than as a reading: it is a *flux*
+The threshold bar is drawn with a grab tab on the band's right edge — ink at
+rest, a step brighter under the pointer, the accent only while you hold it —
+deliberately styled as a control rather than as a reading: it is a *flux*
 threshold, while the axis behind it is *level*, and those are not the same
 quantity. Its value in dB is printed beside it, and the trace strip below shows
 the same threshold against the axis it actually belongs to.

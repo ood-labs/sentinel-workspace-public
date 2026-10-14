@@ -13,8 +13,8 @@
 #define LG_LIST 8
 #define LG_STRIDE 136
 #define LG_NEAR 4.0
-#define LG_SOURCES 352
-#define LG_CANDIDATES 224
+#define LG_SOURCES 416
+#define LG_CANDIDATES 288
 // Bounds are the Venue room bounds (width, length, height, floor), padded a metre on every side.
 float3 lgMin(float4 bounds){return float3(-bounds.x*.5-1,bounds.w-1,-bounds.y*.5-1);}
 float3 lgCellSize(float4 bounds){return float3(bounds.x+2,bounds.z+2,bounds.y+2)/float3(LG_X,LG_Y,LG_Z);}
@@ -23,5 +23,5 @@ uint lgCellOf(float3 p,float4 bounds){float3 g=floor((p-lgMin(bounds))/lgCellSiz
  return lgIndex((uint3)clamp(g,0,float3(LG_X-1,LG_Y-1,LG_Z-1)));}
 // Near-field weight of an emitter at distance d; the probe carries the complement.
 float lgWindow(float d){float x=saturate(1-d*d/(LG_NEAR*LG_NEAR));return x*x;}
-// Candidate k (0..223) -> sources row: 128 mover beams (even rows), then 96 strobe tube/plate rows.
+// Candidate k (0..287) -> sources row: 128 mover beams (even rows), then 96 strobe tube/plate rows, then 64 guests.
 uint lgSourceRow(uint k){return k<128?k*2:128+k;}

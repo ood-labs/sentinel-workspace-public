@@ -29,10 +29,12 @@ buffers:
     structured: true
     element_size: 16
     element_count: 4
+  # Element 0 is the interaction record. Element 1 is interact.hlsl's own bookkeeping: the newest
+  # viewport event it has consumed, which does not fit in the full 64-byte record.
   - name: interact_state
     structured: true
     element_size: 64
-    element_count: 1
+    element_count: 2
     persistent: true
 
 state_buffers:
@@ -236,6 +238,7 @@ data_outputs:
       - { name: pad,      type: float2 }
   - name: "Interaction"
     buffer: interact_state
+    description: "Element 0: the live grab, brush and strike state the solver reads. Element 1 is the events pass's own bookkeeping."
     schema:
       - { name: target, type: float3 }
       - { name: active, type: float }

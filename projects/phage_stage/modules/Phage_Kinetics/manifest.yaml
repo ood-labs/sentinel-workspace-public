@@ -2,10 +2,18 @@ name: PHAGE / Kinetic Truss
 version: '1.0'
 mode: generator
 resolution: [1400, 820]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 panel:
   mode: canvas
   output: Motion Control
   resolution: follow_panel
+viewport:
+  hint: 'Point at an axis row, or at a leg, the capsid or the body in either view: the same axis lights in the drawing and in the meters.'
+  interactions: [events]
+  input:
+    pointer: [left]
 parameters:
   - {name: drive, type: enum, options: [Programmer, Manual, Demo, Rest], default: 0, group: Motion}
   - {name: speed, type: float, default: 1.0, min: 0.1, max: 3.0, group: Motion, description: Scales every axis speed and acceleration.}
@@ -41,6 +49,7 @@ buffers:
   - {name: pieces, structured: true, element_size: 64, element_count: 768}
   - {name: marks, structured: true, element_size: 64, element_count: 448}
   - {name: bins, structured: true, element_size: 4, element_count: 786432}
+  - {name: dl, structured: true, element_size: 16, element_count: 24577}   # il_draw IL_DL_SIZE
 passes:
   - name: axes
     shader: axes.hlsl
@@ -100,7 +109,25 @@ passes:
       - {slot: 2, source: buffer:members}
       - {slot: 3, source: buffer:marks}
       - {slot: 4, source: buffer:bins}
-    output: output
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: 'buffer:axes'}
+    output: buffer:dl
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
+      - {slot: 2, source: 'pass:preview'}
 data_outputs:
   - name: Mounts
     buffer: mounts
@@ -133,4 +160,4 @@ data_outputs:
       - {name: value, type: float4}
 outputs:
   - name: Motion Control
-    pass: preview
+    pass: ui

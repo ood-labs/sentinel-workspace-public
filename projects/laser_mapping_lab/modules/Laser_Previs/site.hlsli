@@ -12,7 +12,7 @@ static const float2 FRAME_HALF = float2(1.5, 0.9);
 static const float TAPE_W = 0.048;
 
 // Frame-mapped wall coordinates: the video projector's image is mapped onto the taped frame
-// (as MadMapper would map it), so image uv (0,0) is the frame's top-left corner.
+// (as projection-mapping software would map it), so image uv (0,0) is the frame's top-left corner.
 float2 frameUV(float2 w) { return float2((w.x - (FRAME_C.x - FRAME_HALF.x)) / (2 * FRAME_HALF.x), ((FRAME_C.y + FRAME_HALF.y) - w.y) / (2 * FRAME_HALF.y)); }
 
 // ------------------------------------------------------------------ camera

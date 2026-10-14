@@ -1,0 +1,30 @@
+name: "Stage"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+# The Desk station's Program: a stage lit by the cue stack. Eight looks live in stage.hlsli; the
+# Cue Brain Script recalls them by writing cue_a, cue_b and mix (a crossfade moves the lights),
+# and master / blackout from the Desk's fader and guarded pad. Set them by hand to see a look.
+
+panel:
+  mode: standard
+  output: "Program"
+
+parameters:
+  - { name: cue_a,    display: "Cue A",    type: int,   min: 0,   max: 7,   default: 0,   group: "Driven by Cue Brain" }
+  - { name: cue_b,    display: "Cue B",    type: int,   min: 0,   max: 7,   default: 0,   group: "Driven by Cue Brain" }
+  - { name: mix,      display: "A to B",   type: float, min: 0.0, max: 1.0, default: 0.0, group: "Driven by Cue Brain" }
+  - { name: master,   display: "Master",   type: float, min: 0.0, max: 1.0, default: 1.0, group: "Driven by Cue Brain" }
+  - { name: blackout, display: "Blackout", type: bool,  default: false,                  group: "Driven by Cue Brain" }
+  - { name: haze,     display: "Haze",     type: float, min: 0.0, max: 1.0, default: 0.65, group: "Look" }
+
+passes:
+  - name: stage
+    shader: stage.hlsl
+    target: cs_5_0
+    thread_group_x: 8
+    thread_group_y: 8
+    output: output
+
+outputs:
+  - { name: "Program", pass: stage }

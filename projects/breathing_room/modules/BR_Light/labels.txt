@@ -1,0 +1,67 @@
+# BR_Light - the lighting authority's words. Regenerate: python tools/il_type.py labels BR_Light
+TITLE        @bold @track=0.14 = BR LIGHT
+SUBTITLE     @sans = sun and lamps
+SUNPATH      @bold @track=0.08 = SUN PATH
+DAY          @bold @track=0.08 = DAY
+PLAN         @bold @track=0.08 = WHERE THE LIGHT LANDS
+LIGHTS       @bold @track=0.08 = LIGHTS
+SUN          @bold @track=0.08 = SUN
+
+# readout captions
+C_SUN        @sans = sun
+C_TIME       @sans = time
+C_ELEV       @sans = elevation
+C_AZIM       @sans = azimuth
+C_RISE       @sans = sunrise
+C_SET        @sans = sunset
+C_STATE      @sans = state
+C_POWER      @sans = power
+C_TEMP       @sans = colour
+C_REACH      @sans = reach
+C_DAYN       @sans = day
+C_LAT        @sans = latitude
+GOLDEN       @sans = golden hour
+DEG          @sans = deg
+K            @sans = K
+M            @sans = m
+COLON        @mono = :
+LIGHTSON     @sans = lights on
+ON           @bold @track=0.06 = ON
+OFF          @bold @track=0.06 = OFF
+NOSHELL      @sans = BR_Shell not linked: a stand-in room, no windows
+NOFURN       @sans = BR_Furnish not linked: no lamps
+
+# the lights, in rack order (layout.hlsl counts from R0)
+R0           @bold @track=0.04 = LAMP A
+R1           @bold @track=0.04 = LAMP B
+R2           @bold @track=0.04 = FLOOR LAMP
+R3           @bold @track=0.04 = PENDANT
+R4           @bold @track=0.04 = LAMP C
+R5           @bold @track=0.04 = FIRE
+
+# compass, every 45 degrees (layout.hlsl counts from AZN; N again at 360)
+AZN          @sans = N
+AZNE         @sans = NE
+AZE          @sans = E
+AZSE         @sans = SE
+AZS          @sans = S
+AZSW         @sans = SW
+AZW          @sans = W
+AZNW         @sans = NW
+
+# chips: a selected light's (counted from CH_ONOFF), the sun's (counted from CH_GOLD)
+CH_ONOFF     @sans = On / off
+CH_WARM      @sans = Warmer
+CH_COOL      @sans = Cooler
+CH_RESET     @sans = Reset
+CH_GOLD      @sans = Golden hour
+CH_BLUE      @sans = Blue hour
+CH_NOON      @sans = Midday
+CH_RESETALL  @sans = Reset all
+
+# hints (pairs)
+K_DRAG       @sans = Drag
+K_CLICK      @sans = Click
+D_SUN        @sans = the sun along today's path
+D_LIGHT      @sans = a light
+D_RING       @sans = its middle ring: reach

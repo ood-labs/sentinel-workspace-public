@@ -1,0 +1,4 @@
+interface:
+  display_name: "Equipment From Specs"
+  short_description: "Recreate real fixtures, truss, speakers and power from their manufacturer documents"
+  default_prompt: "Use $equipment-from-specs to recreate this equipment in Sentinel from its spec sheet."

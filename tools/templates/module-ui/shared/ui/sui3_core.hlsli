@@ -242,11 +242,13 @@ float2 sui3PadPoint(float4 r, float2 val) {
 
 // Canvas pixel -> value. The exact inverse of sui3PadPoint. A pad that hit-tests
 // with its own arithmetic drifts from the drawing the moment one of the two is
-// edited.
+// edited -- and this one did: when sui3PadPoint went Y-up on 2026-07-27, its
+// inverse kept the old Y-down row (top edge -> 0) until 2026-10-02. Nothing
+// called it, which is the only reason nothing broke.
 float2 sui3PadValue(float4 r, float2 px) {
     r = sui3PadRect(r);
     float x = (px.x - r.x) / max(r.z - r.x, 1e-5);
-    float y = (px.y - r.y) / max(r.w - r.y, 1e-5);
+    float y = (r.w - px.y) / max(r.w - r.y, 1e-5);
     return saturate(float2(x, y));
 }
 

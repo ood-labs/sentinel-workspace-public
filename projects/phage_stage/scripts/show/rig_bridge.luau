@@ -16,6 +16,20 @@ local function write(node,key,value)
     end
     return true
 end
+-- Program parameter paths, built once per row: /sentinel/pipelines/Phage_Program/parameters/f<row>_<field>.
+local ROW_PATHS: {[number]: {string}}={}
+local function rowPaths(i: number): {string}
+    local t=ROW_PATHS[i]
+    if not t then t={};for k,key in ipairs(fields) do t[k]=path(PROGRAM,"f"..(i-1).."_"..key) end;ROW_PATHS[i]=t end
+    return t
+end
+local function send(p: string,value: any): boolean
+    if B.sent[p]~=value then
+        if host.sentinel.set(p,value)==false then return false end
+        B.sent[p]=value
+    end
+    return true
+end
 local function read(node,key)
     local p="/sentinel/pipelines/"..node.."/control_outputs/"..key
     host.sentinel.subscribe(p);return tonumber(host.sentinel.get(p))
@@ -27,17 +41,19 @@ function B.service(rig)
     if B.revision~=rig.revision and B.cursor<=#B.queue then B.queue={};B.cursor=1 end
     if B.revision~=rig.revision and B.cursor>#B.queue then
         if B.build_revision~=rig.revision then B.build_revision=rig.revision;B.build_cursor=1;B.build_queue={} end
-        for i=B.build_cursor,math.min(B.build_cursor+95,#rig.rows) do local row=rig.rows[i];for _,key in ipairs(fields) do
-            local name="f"..(i-1).."_"..key;local p=path(PROGRAM,name)
-            if B.sent[p]~=row[key] then table.insert(B.build_queue,{name,row[key]}) end
-        end end
-        B.build_cursor+=96
+        -- Rows as the tick's budget allows (static_rig busy), at least one a tick; a row cut off mid-way is redone.
+        repeat
+            local i=B.build_cursor;local row=rig.rows[i];local paths=rowPaths(i)
+            for k,key in ipairs(fields) do local v=row[key];if B.sent[paths[k]]~=v then table.insert(B.build_queue,{paths[k],v}) end end
+            B.build_cursor+=1
+        until B.build_cursor>#rig.rows or rig.busy()
+        rig.worked=true
         if B.build_cursor>#rig.rows then B.queue=B.build_queue;B.cursor=1;B.revision=rig.revision;B.build_revision=nil end
     end
     local budget=96
-    while B.cursor<=#B.queue and budget>0 do
+    while B.cursor<=#B.queue and budget>0 and (budget==96 or not rig.busy()) do
         local item=B.queue[B.cursor]
-        if not write(PROGRAM,item[1],item[2]) then return end
+        if not send(item[1],item[2]) then return end
         B.cursor+=1;budget-=1
     end
     if B.cursor>#B.queue and B.revision==rig.revision and B.revision>=0 then
@@ -65,7 +81,7 @@ function B.service(rig)
     -- kept pending until the host accepts it, so a busy frame cannot silently drop a build.
     if (rig.recall_serial or 0)~=B.recall_serial then
         B.recall_serial=rig.recall_serial or 0
-        if rig.recall_kind=="effects" or rig.recall_kind=="complete" then
+        if rig.recall_kind=="effects" or rig.recall_kind=="complete" or rig.recall_build then
             B.build_origin=math.max(0,math.ceil(tonumber(host.tempo.status().beat) or 0))
         end
     end
@@ -104,10 +120,11 @@ function B.service(rig)
         if valid then local previous=B.viewport_revision;B.viewport_revision=seq;if previous~=nil and seq>0 then rig.select(ids) end end
     end
     -- Programmer -> canvas.
-    local signature=table.concat(rig.status.selection,",")
+    local signature=table.concat(rig.status.fixtures or rig.status.selection,",")
     if B.selection~=signature then
         local words={};for w=1,16 do words[w]=0 end
-        for _,id in ipairs(rig.status.selection) do local i=tonumber(id);if i<256 then local w=math.floor(i/16)+1;words[w]+=2^(i%16) end end
+        -- The canvas shows fixtures: every selected layer marks its fixture's slot.
+        for _,id in ipairs(rig.status.fixtures or rig.status.selection) do local i=tonumber(id);if i<256 then local w=math.floor(i/16)+1;words[w]+=2^(i%16) end end
         for w=0,15 do if not write(LIGHTING,"remote_selection"..w,words[w+1]) then return end end
         B.selection_revision=math.floor(host.time.now()*1000)%10000000
         if not write(LIGHTING,"selection_apply",B.selection_revision) then return end

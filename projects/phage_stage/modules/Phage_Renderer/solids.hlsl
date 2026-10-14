@@ -1,4 +1,5 @@
 // Joint boxes, spike cones, riser, DJ table and the DJ, lit like the rest of the rig.
+#include "taa.hlsli"
 #include "../_shared/room_materials.hlsli"
 #include "surface_lights.hlsli"
 struct PhSolid{float4 c;float4 x;float4 y;float4 z;};StructuredBuffer<PhSolid> S:register(t0); // Structure buffer: solids follow the 13248 tubes
@@ -17,7 +18,7 @@ V VSMain(uint id:SV_VertexID){V o=(V)0;uint si=id/216,v=id%216;o.pos=float4(0,0,
   if(b==0){cen=float3(0,.24*H,0);half_=float3(.16,.24*H,.1);}else if(b==1){cen=float3(0,.62*H,0);half_=float3(.21,.15*H,.12);}
   else if(b==2){cen=float3(0,.87*H,0);half_=float3(.1,.065*H,.11);}else{float sd=b==3?-1:1;cen=float3(sd*.24,.7*H,.2);half_=float3(.055,.055,.24);}
   float3 q=boxCorner(v%36,n);float3 lp=cen+q*half_;p=s.c.xyz+X*lp.x+Y*lp.y+Z*lp.z;n=X*n.x+Y*n.y+Z*n.z;}
- o.world=p;o.normal=n;o.pos=mul(_ViewProjMatrix,float4(p,1));return o;}
+ o.world=p;o.normal=n;o.pos=taaClip(p);return o;}
 float4 PSMain(V i):SV_TARGET0{
  float3 n=normalize(i.normal),v=normalize(_CameraPos-i.world);if(dot(n,v)<0)n=-n;RoomSettings room=roomSettings();
  float3 albedo=float3(.8,.82,.85);float rough=room.material.x,metal=1;

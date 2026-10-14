@@ -1,0 +1,148 @@
+name: "Still Life"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+# Host selection + a gizmo + durable objects under the internal camera. The host owns selection
+# (it asks the pick pass, which marches the scene's own field) and the camera (RMB look, WASD
+# fly). The module owns the transforms: a press on an arrow, ring or object body decides the
+# drag, the reducer applies it from a snapshot, and the records persist in a state buffer.
+
+features: [camera]
+
+# Standard, not canvas: a fixed 1280x720 program frame, letterboxed (canvas would stretch it).
+panel:
+  mode: standard
+  output: "Editor"
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  # Live is the working rung; Hero (4 rays a pixel) is for captures only
+  - { name: quality, display: "Quality", type: enum, options: [Draft, Live, Beauty, "Hero (capture)"], default: 1, group: "Render" }
+  - { name: key_light, display: "Key Light", type: float, min: 0.0, max: 5.0, default: 1.7, group: "Render" }
+  - { name: ambient, display: "Ambient", type: float, min: 0.0, max: 3.0, default: 0.75, group: "Render" }
+  - { name: exposure, display: "Exposure", type: float, min: 0.2, max: 3.0, default: 1.0, group: "Render" }
+  - { name: reset_layout, display: "Reset Arrangement", type: button, group: "Objects" }
+
+viewport:
+  hint: "Click an object to select it, Shift-click to add. Drag a body to slide it, an arrow to move, a ring to turn; Esc cancels. RMB look, WASD fly."
+  interactions: [events, selection, camera]
+  selection: { mode: multiple, provider: ray_query, result_buffer: pick_result, object_buffer: viewport_objects }
+  input:
+    pointer: [left]                    # RMB stays with the host camera (look)
+    keyboard: [escape, shift]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select the object under the pointer" }
+    - { gesture: shift_left_click, action: add_selection, label: "Add to the selection" }
+    - { gesture: left_drag, action: transform, label: "Slide, move or turn" }
+    - { key: escape, action: cancel, label: "Cancel the drag" }
+
+buffers:
+  # records 0..8 are durable (header + 8 objects); 9 = edit state, 10..17 = drag snapshots
+  - { name: objects, structured: true, element_size: 64, element_count: 18, persistent: true }
+  - { name: viewport_objects, structured: true, element_size: 120, element_count: 8, persistent: true }
+  - { name: pick_result, structured: true, element_size: 40, element_count: 1, persistent: true }
+  - { name: beauty, format: RGBA16F, scale: 1.0 }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }
+
+state_buffers:
+  - name: objects
+    max_elements: 9
+    schema:
+      - { name: pos, type: float3 }
+      - { name: kind, type: uint }
+      - { name: rot, type: float4 }
+      - { name: scale, type: float }
+      - { name: id, type: uint }
+      - { name: colour, type: float }
+      - { name: flags, type: uint }
+      - { name: spare, type: float4 }
+
+passes:
+  - name: reduce
+    shader: reduce.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:objects"
+  - name: descriptors
+    shader: descriptors.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 8
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:objects" }
+    output: "buffer:viewport_objects"
+  - name: pick
+    shader: pick.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:objects" }
+    output: "buffer:pick_result"
+  - name: march
+    shader: march.hlsl
+    target: cs_5_0
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "buffer:objects" }
+    output: "buffer:beauty"
+  - name: program
+    shader: program.hlsl
+    target: cs_5_0
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "buffer:beauty" }
+  - name: outline
+    shader: outline.hlsl
+    target: cs_5_0
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "buffer:beauty" }
+      - { slot: 1, source: "buffer:objects" }
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:objects" }
+    output: "buffer:dl"
+  - name: editor
+    shader: editor.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:outline" }
+
+outputs:
+  - { name: "Program", pass: program }
+  - { name: "Editor",  pass: editor }
+
+data_outputs:
+  - name: "Objects"
+    buffer: "objects"
+    description: "Record 0 is a header; records 1..8 are the objects (pivot, kind 0 = empty, quaternion, scale, host id, rgb24 colour)."
+    schema:
+      - { name: pos, type: float3 }
+      - { name: kind, type: uint }
+      - { name: rot, type: float4 }
+      - { name: scale, type: float }
+      - { name: id, type: uint }
+      - { name: colour, type: float }
+      - { name: flags, type: uint }
+      - { name: spare, type: float4 }

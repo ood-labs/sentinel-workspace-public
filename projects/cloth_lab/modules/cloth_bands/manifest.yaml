@@ -3,6 +3,9 @@ version: "1.0"
 mode: generator
 resolution: [1280, 720]
 features: [audio]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 
 # Kick / snare / hat detection in ONE node. Pick a frequency band on the
 # spectrum, set a threshold, get a trigger. That is the entire model.
@@ -64,6 +67,7 @@ parameters:
 
   - { name: trace_seconds, display: "Trace Span (s)",    group: "View", type: float, min: 0.5, max: 8.0,  default: 2.5, description: "How much detection history the trace strips show. Display only - no effect on detection." }
   - { name: db_floor,      display: "Display Floor (dB)", group: "View", type: float, min: -120.0, max: -20.0, default: -90.0, description: "Bottom of the spectrum display in dB. Display only - it does not affect detection, and it is NOT the -70 dB signal gate that decides whether a lane is allowed to fire." }
+  - { name: tooltips,      display: "Tooltips",          group: "View", type: bool, default: true, description: "The frequency and level tag over the spectrum, and the cards beside the pointer that show the band or hop under it (and the band while you drag it). Turn it off to keep the canvas clear while you work." }
 
 data_inputs:
   - name: "Spectrum"
@@ -84,7 +88,7 @@ buffers:
   # [0..2] lane bands (lo_hz, hi_hz, seeded, threshold_db)
   # [3]    drag header (active, startX, startY, mode)
   # [4]    grab record (lane, origLoX, origHiX, origThreshold)
-  # [5]    current pointer (curX, curY, spare, spare)
+  # [5]    current pointer (curX, curY, spare, newest event consumed - asuint)
   - { name: bands, structured: true, element_size: 16, element_count: 6,    persistent: true }
   # lane*515 + 0        : (base_db, last_fire_hop, hop_count, env)
   # lane*515 + 1        : (count, read_cursor, write_idx, peak_flux)
@@ -96,6 +100,8 @@ buffers:
   # the reducer fills only the first _Resolution.x entries, so the spectrum keeps
   # one column per real pixel as the dock resizes.
   - { name: cols,  structured: true, element_size: 16, element_count: 2561, persistent: true }
+  # The UI kit's draw list: layout records the type and chrome, ui rasterizes it over render.
+  - { name: dl,    structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 
 # Band edges are the one genuinely spatial choice here, so they are a drag on
 # the image rather than a pair of Hz sliders typed against a picture you cannot
@@ -172,6 +178,7 @@ passes:
       - { slot: 0, source: "data:0" }
     output: "buffer:cols"
 
+  # The drawing: spectrum, bands and faders, trace strips. No type: layout records that.
   - name: render
     shader: render.hlsl
     target: cs_5_0
@@ -179,7 +186,30 @@ passes:
       - { slot: 0, source: "buffer:cols" }
       - { slot: 1, source: "buffer:bands" }
       - { slot: 2, source: "buffer:det" }
-    output: output
+
+  # The UI kit: one thread group records the type, plate borders, lamps, readouts, inspector and
+  # keycap footer into the draw list; ui rasterizes it over the drawing at the panel's extent.
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:cols" }
+      - { slot: 1, source: "buffer:bands" }
+      - { slot: 2, source: "buffer:det" }
+    output: "buffer:dl"
+
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:render" }
 
 control_outputs:
   - { name: kick,        buffer: det, element: 0,    field_offset: 12, description: "Kick envelope 0..1" }
@@ -211,4 +241,4 @@ control_outputs:
   - { name: hat_level,   buffer: det, element: 1032, field_offset: 0,  description: "Hat band level (dB)" }
 
 outputs:
-  - { name: "Bands", pass: render }
+  - { name: "Bands", pass: ui }

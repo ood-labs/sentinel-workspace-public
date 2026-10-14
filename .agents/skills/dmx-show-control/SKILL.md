@@ -51,6 +51,12 @@ common jobs ship in `tools/templates/dmx/`.
    change and drops to the keepalive rate when they hold.
 5. For crossfades between looks, blend fixture-level values before the
    universe is written; raw DMX universes switch without blending.
+6. A visualiser on this machine (Depence, Capture) needs UDP 6454 for its
+   Art-Net input. Set the DMX Out's `source_port` to `any`: it then sends from
+   a temporary port (the node body reads `Port N, not 6454`) and the visualiser
+   can start before or after Sentinel. A DMX In in the same project still holds
+   6454, so remove it or move one of them to another adapter or to sACN.
+   `Get-NetUDPEndpoint -LocalPort 6454` names the process holding the port.
 
 ## Workflow: OSC out
 
@@ -58,7 +64,7 @@ Create `oscout`, set `target_host` and `target_port`, then add one message
 per value with a single action:
 
 ```text
-sentinel_state action=invoke path=/sentinel/pipelines/<id>/actions/add_message address=/live/brightness type=float expr=ref("audio_in/control_outputs/level")
+sentinel_state action=invoke path=/sentinel/pipelines/<id>/actions/add_message args={"address": "/live/brightness", "type": "float", "expr": "ref(\"audio_in/control_outputs/level\")"}
 ```
 
 `list_messages` shows each message and its last send.

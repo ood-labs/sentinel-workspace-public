@@ -318,7 +318,7 @@ These are the compiler-injected names. Do NOT redeclare them or you get "redefin
 
 ### Motion vocabulary
 
-For authored motion, prefer the common animation vocabulary instead of hand-rolling easing or spring equations. A portable implementation is bundled as generic infrastructure in `projects/scientific_organism/modules/_shared/anim/anim.hlsli`; vendor it into the owning project when those helpers are needed:
+For authored motion, prefer the common animation vocabulary instead of hand-rolling easing or spring equations. A portable implementation is bundled as generic infrastructure in `tools/templates/module-includes/anim/anim.hlsli`; vendor it into the owning project's `modules/_shared/anim/` when those helpers are needed:
 
 ```hlsl
 #include "../_shared/anim/anim.hlsli"
@@ -362,9 +362,10 @@ parameters:
 - Compounds decompose into per-channel StateTree nodes (`tint_r/_g/_b`, `center_x/_y`),
   each independently OSC-mappable; the UI folds them into one color picker / XY pad.
 - Keep `point2D` values unmodified. When drawing or hit-testing a spatial pad, vendor
-  and use the Style Authority `sui3PadPoint` / `sui3PadValue` contract; never add a
-  local `1.0 - value.y`, never publish a flipped copy, and prove top/bottom through
-  real pad interaction plus parameter and output readback.
+  and use one value/pixel helper pair (`sui3PadPoint` / `sui3PadValue` from
+  `tools/templates/module-ui/`; Interaction Lab's `ilPadPoint` / `ilPadValue` follow
+  the same contract); never add a local `1.0 - value.y`, never publish a flipped copy,
+  and prove top/bottom through real pad interaction plus parameter and output readback.
 - A `group: "Parent/Child"` label nests a collapsible sub-tree in the Properties panel.
 - The manifests under this skill's `examples/` directory demonstrate compound controls, enums, buffers, and multi-pass outputs.
 

@@ -15,6 +15,11 @@ output_format: RGBA16F
 buffers:
   # 2040 tiles (60 x 34 at 32 px) x 4096 slots. [0] count, [1] overflow, [2..4095] indices.
   - { name: bins, structured: true, element_size: 4, element_count: 8355840, persistent: false }
+  # One SegPx (view.hlsli) per traced segment slot, LT_PATH_TOTAL of them: segs.hlsl resolves
+  # each segment into program pixels once, and both the binner and the renderer read that.
+  - { name: segs, structured: true, element_size: 48, element_count: 53760, persistent: false }
+  # 34 rows of tiles x (1 + LT_PATH_TOTAL): each row's shortlist, [0] count, [1..] indices.
+  - { name: rows, structured: true, element_size: 4, element_count: 1827874, persistent: false }
 
 data_inputs:
   - name: "Bench"
@@ -86,16 +91,46 @@ parameters:
     group: "Room"
 
 passes:
+  # One thread per segment slot: 840 x 64 = LT_PATH_TOTAL.
+  - name: segs
+    shader: segs.hlsl
+    target: cs_5_0
+    time_dependent: false
+    dispatch: [840, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:segs"
+    inputs:
+      - { slot: 0, source: "data:1" }
+  # One group per row of tiles: 34 = LT_TILES_Y (view.hlsli).
+  - name: rows
+    shader: rows.hlsl
+    target: cs_5_0
+    time_dependent: false
+    dispatch: [34, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:rows"
+    inputs:
+      - { slot: 0, source: "data:1" }
+      - { slot: 1, source: "buffer:segs" }
+      # Order edge: Sentinel 0.6.3 orders passes by `pass:` inputs only, so without it this pass
+      # can shortlist the previous cook's segments. No shader reads slot 7.
+      - { slot: 7, source: "pass:segs" }
+  # One group per tile: 2040 = LT_TILES (view.hlsli).
   - name: bins
     shader: bins.hlsl
     target: cs_5_0
     time_dependent: false
-    dispatch: [32, 1, 1]
+    dispatch: [2040, 1, 1]
     thread_group_x: 64
     thread_group_y: 1
     output: "buffer:bins"
     inputs:
-      - { slot: 0, source: "data:1" }
+      - { slot: 0, source: "buffer:segs" }
+      - { slot: 1, source: "buffer:rows" }
+      # Order edge, as above.
+      - { slot: 7, source: "pass:rows" }
   - name: scene
     shader: scene.hlsl
     target: cs_5_0
@@ -104,6 +139,11 @@ passes:
       - { slot: 0, source: "data:0" }
       - { slot: 1, source: "data:1" }
       - { slot: 2, source: "buffer:bins" }
+      - { slot: 3, source: "buffer:segs" }
+      # Order edge: Sentinel 0.6.3 orders passes by `pass:` inputs only, so without it this pass
+      # can run before `bins` and light the scene with the previous cook's bins (or none at all
+      # on open). No shader reads slot 7.
+      - { slot: 7, source: "pass:bins" }
 
 outputs:
   - { name: "Field", pass: scene }

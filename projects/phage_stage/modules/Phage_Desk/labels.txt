@@ -1,0 +1,28 @@
+# Phage_Desk - the desk's own type. Pad names, headers and readouts are the host controls' labels
+# (manifest.yaml, renamable by the Surface through panel.label); these are the words layout.hlsl adds.
+# Regenerate: python tools/phage_desk.py (it runs tools/il_type.py labels Phage_Desk)
+TITLE       @bold @track=0.14 = PHAGE
+SUBTITLE    @sans = show desk
+LIVE        @bold = LIVE
+
+# readout captions
+TEMPO       @bold @track=0.08 = TEMPO
+BPM         @bold @track=0.08 = BPM
+BAR         @bold @track=0.08 = BAR
+BEAT        @bold @track=0.08 = BEAT
+DASH        @mono = -
+HOLD        @bold @track=0.08 = HOLD
+POSE        @bold @track=0.08 = POSE
+ORBIT       @bold @track=0.08 = ORBIT  /  HEIGHT
+ZOOM        @bold @track=0.08 = ZOOM
+
+# the live equation: FULL LOOK = STATIC + TRUSS POSE + EFFECTS + COLOR (this order: layout.hlsl counts on it)
+C_FULL      @bold @track=0.08 = FULL LOOK
+C_STATIC    @bold @track=0.08 = STATIC
+C_POSE      @bold @track=0.08 = TRUSS POSE
+C_EFFECTS   @bold @track=0.08 = EFFECTS
+C_COLOR     @bold @track=0.08 = COLOR
+EQ          @sans = =
+PLUS        @sans = +
+NONE        @sans = none
+QUIET       @sans = no feedback yet: the Surface Script is not answering this desk

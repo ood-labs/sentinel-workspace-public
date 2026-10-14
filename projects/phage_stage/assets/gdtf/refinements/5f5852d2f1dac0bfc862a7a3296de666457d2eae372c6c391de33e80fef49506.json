@@ -1,0 +1,82 @@
+{
+ "accepted": [],
+ "gdtf": {
+  "data_version": "1.2",
+  "file": "Sentinel@Halo Beam.gdtf",
+  "fixture_type_id": "30B9F28D-159D-596A-A4CF-2FBAE45F259C",
+  "manufacturer": "Sentinel",
+  "name": "Halo Beam",
+  "sha256": "5f5852d2f1dac0bfc862a7a3296de666457d2eae372c6c391de33e80fef49506"
+ },
+ "notes": [],
+ "overrides": [
+  {
+   "address": "axis:Pan/sense",
+   "author": "agent",
+   "date": "2026-10-03",
+   "reason": "Confirmed, not changed: PHAGE's Phage_DMX encodes every Halo Beam's pan and tilt through this type's DMX ranges, decodes them back, rebuilds the beam with this sense and compares it with the beam PHAGE's renderer draws for the same pose: worst error 0.04 degrees over 100 movers, held and moving (16-bit quantisation).",
+   "source": {
+    "document": "PHAGE Phage_DMX verify pass (projects/phage_stage/modules/Phage_DMX/verify.hlsl), beam_error_deg control output",
+    "kind": "reference_capture",
+    "note": "Sentinel's own design: tools/phage_gdtf.py writes this type from the renderer's constants (modules/_shared/phage_fixture.hlsli); measured 2026-10-03 on Sentinel 0.6.4"
+   },
+   "value": -1
+  },
+  {
+   "address": "axis:Tilt/sense",
+   "author": "agent",
+   "date": "2026-10-03",
+   "reason": "Confirmed, not changed: the same Phage_DMX check rebuilds each Halo Beam's beam from the decoded tilt with this sense; worst error 0.04 degrees over 100 movers against the beam PHAGE draws.",
+   "source": {
+    "document": "PHAGE Phage_DMX verify pass (projects/phage_stage/modules/Phage_DMX/verify.hlsl), beam_error_deg control output",
+    "kind": "reference_capture",
+    "note": "Sentinel's own design: tools/phage_gdtf.py; measured 2026-10-03 on Sentinel 0.6.4"
+   },
+   "value": -1
+  },
+  {
+   "address": "face:face1/cells",
+   "author": "agent",
+   "date": "2026-10-03",
+   "reason": "Confirmed, not changed: the halo cells are written Ring 1 to Ring 24 at 15 degree steps starting at the head's +Y, counter-clockwise seen from in front of the lens, from the same formula PHAGE's renderer and Lighting use for ring pixel k (phage_fixture.hlsli, optics.hlsl); Phage_DMX sends ring record k to cell k.",
+   "source": {
+    "document": "PHAGE fixture spec, projects/phage_stage/assets/gdtf/FIXTURES.md (Sentinel Halo Beam, Cells)",
+    "kind": "datasheet",
+    "note": "Sentinel's own design, written by tools/phage_gdtf.py, 2026-10-03"
+   },
+   "value": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ]
+  }
+ ],
+ "schema": "sentinel.gdtf-refinement",
+ "verification": {
+  "by": "agent",
+  "date": "2026-10-03",
+  "reference": "PHAGE renderer (the design this type is written from) via Phage_DMX: 100 movers encoded through this type and decoded back within 0.04 deg of PHAGE's drawn beams; 57 universes over Art-Net loopback, 0 channels different held still (Sentinel 0.6.4, 2026-10-03)"
+ },
+ "version": 1
+}

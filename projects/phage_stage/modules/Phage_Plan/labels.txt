@@ -1,0 +1,56 @@
+# Phage_Plan - the construction plan's words. Regenerate: python tools/il_type.py labels Phage_Plan
+TITLE        @bold @track=0.14 = PHAGE
+SUBTITLE     @sans = construction plan
+STANCE       @bold @track=0.08 = STANCE
+# the stance enum, in the manifest's order (layout.hlsl counts from ST_REFERENCE)
+ST_REFERENCE @bold @track=0.08 = REFERENCE
+ST_SPIDER    @bold @track=0.08 = SPIDER
+ST_MANTIS    @bold @track=0.08 = MANTIS
+ST_CRAB      @bold @track=0.08 = CRAB
+SYM_ON       @bold @track=0.08 = SYMMETRY ON
+SYM_OFF      @bold @track=0.08 = SYMMETRY OFF
+
+PLAN         @bold @track=0.08 = PLAN
+SECTION      @bold @track=0.08 = SECTION THROUGH LEG
+AUDIENCE     @bold @track=0.08 = AUDIENCE
+DJ           @bold @track=0.08 = DJ
+HEAD         @sans = head clearance 2 m
+UPPER        @bold @track=0.08 = UPPER
+LOWER        @bold @track=0.08 = LOWER
+REACH        @bold @track=0.08 = REACH
+M            @sans = m
+PCT          @sans = %
+OUT          @bold @track=0.08 = OUT OF REACH
+
+# fixture types, in identity order (layout.hlsl counts from T_MOVERS)
+T_MOVERS     @bold @track=0.08 = MOVERS
+T_STROBES    @bold @track=0.08 = STROBES
+T_BARS       @bold @track=0.08 = BARS
+
+# footer (pairs)
+K_DRAG       @sans = Drag
+K_LEG        @sans = 1-6
+K_S          @sans = S
+K_R          @sans = R
+K_ESC        @sans = Esc
+D_DRAG       @sans = feet in plan, knees in section
+D_LEG        @sans = leg
+D_S          @sans = symmetry
+D_R          @sans = reset
+D_ESC        @sans = clear
+
+# the leg card
+LEG          @bold @track=0.08 = LEG
+SELECTED     @sans = selected
+K_CLICK      @sans = Click
+V_FOOT       @sans = move the foot
+V_KNEE       @sans = move the knee
+V_SELECT     @sans = select this leg
+MOVING_FOOT  @bold @track=0.08 = MOVING THE FOOT
+MOVING_KNEE  @bold @track=0.08 = MOVING THE KNEE
+NO_EDITS     @sans = no hand edits: the stance as designed
+FOOT         @bold @track=0.08 = FOOT
+KNEE         @bold @track=0.08 = KNEE
+W_OUT        @sans = out
+W_ACROSS     @sans = across
+W_UP         @sans = up

@@ -1,0 +1,135 @@
+name: "BR Shell"
+version: "1.0"
+mode: generator
+execution: on_dirty
+resolution: [1280, 960]
+# An instrument canvas, not a renderer: skipping the legacy optimizer keeps edits iterable
+# (the drawing pass is a few hundred cheap ops per pixel either way).
+compile_optimization: fast_compile
+
+# The ARCHITECTURE AUTHORITY for breathing_room. Owns the room box, wall thickness, trim and every
+# opening (windows, doors, archway, fireplace). It is the only node that decides where a wall or
+# an opening is; every other node reads the published Shell records.
+#
+# Edits are deltas over a procedural base (see shell.hlsl): parameters below generate a complete
+# room, the canvas overrides individual records, and the two keep composing.
+#
+# The canvas is an UNFOLDED ROOM: plan in the middle, each wall's interior elevation folded out
+# from its own plan edge, sharing the along-wall axis -- the way an interior designer draws a room.
+# It is built on the Interaction Lab UI kit (_shared/ui): plate draws the room per pixel, layout
+# records the type, dimensions, handles and corner cards into a draw list, ui rasterizes it.
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+panel:
+  mode: canvas
+  output: "Unfolded Room"
+  resolution: follow_panel
+
+buffers:
+  - { name: shell, structured: true, element_size: 64, element_count: 32, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+state_buffers:
+  - name: shell
+    max_elements: 32
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+parameters:
+  - { name: style, display: "Style", type: enum, options: [Parlor, Loft, Cottage, Modern], default: 0, flags: button_grid, group: "Room" }
+  - { name: room_width, display: "Width (E-W)", type: float, min: 3.5, max: 10.0, default: 6.4, group: "Room" }
+  - { name: room_depth, display: "Depth (N-S)", type: float, min: 3.5, max: 10.0, default: 5.0, group: "Room" }
+  - { name: ceiling, display: "Ceiling Height", type: float, min: 2.3, max: 4.5, default: 2.85, group: "Room" }
+  - { name: wall_thickness, display: "Wall Thickness", type: float, min: 0.10, max: 0.60, default: 0.30, group: "Room" }
+
+  - { name: window_wall, display: "Window Wall", type: enum, options: [South, East, North, West], default: 3, flags: button_grid, group: "Openings" }
+  - { name: window_count, display: "Windows", type: int, min: 1, max: 3, default: 2, group: "Openings" }
+  - { name: fireplace, display: "Fireplace", type: bool, default: true, group: "Openings" }
+  - { name: door, display: "Door", type: bool, default: true, group: "Openings" }
+  - { name: archway, display: "Archway", type: bool, default: false, group: "Openings" }
+  - { name: radiators, display: "Radiators", type: bool, default: true, group: "Openings" }
+  - { name: curtains, display: "Curtains", type: bool, default: true, group: "Openings" }
+
+  - { name: floor_pattern, display: "Floor", type: enum, options: [Herringbone, Chevron, Plank, Basketweave], default: 0, flags: button_grid, group: "Finish" }
+  - { name: plank_width, display: "Slat Width", type: float, min: 0.05, max: 0.30, default: 0.085, group: "Finish" }
+  - { name: baseboard, display: "Baseboard Height", type: float, min: 0.0, max: 0.35, default: 0.19, group: "Finish" }
+  - { name: crown, display: "Crown Molding", type: bool, default: true, group: "Finish" }
+  - { name: picture_rail, display: "Picture Rail", type: bool, default: true, group: "Finish" }
+  - { name: rail_height, display: "Rail Height", type: float, min: 1.8, max: 3.2, default: 2.45, group: "Finish" }
+
+  - { name: snap, display: "Snap (m)", type: float, min: 0.0, max: 0.25, default: 0.05, group: "Editor" }
+
+viewport:
+  hint: "Click select | drag openings along or onto another wall | drag edges to resize | drag a wall face or ceiling line | K kind  X on/off  A add  C curtains  R reset  0 reset all"
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [k, x, a, c, r, "0", escape]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Select opening, wall face or ceiling" }
+    - { gesture: left_drag, action: edit, label: "Move, resize or re-host" }
+    - { key: k, action: cycle_kind, label: "Cycle opening kind" }
+    - { key: x, action: toggle, label: "Opening on/off" }
+    - { key: a, action: add, label: "Add an opening under the pointer" }
+    - { key: c, action: curtains, label: "Toggle curtains" }
+    - { key: r, action: reset, label: "Reset selected" }
+    - { key: "0", action: reset_all, label: "Reset all edits" }
+    - { key: escape, action: deselect, label: "Clear selection" }
+
+passes:
+  - name: shell
+    shader: shell.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:shell"
+  - name: plate
+    shader: plate.hlsl
+    time_dependent: false
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:shell" }
+      - { slot: 7, source: "pass:shell" }
+  - name: layout
+    shader: layout.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+    inputs:
+      - { slot: 0, source: "buffer:shell" }
+      - { slot: 7, source: "pass:plate" }
+  - name: ui
+    shader: ui.hlsl
+    time_dependent: false
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:plate" }
+      - { slot: 7, source: "pass:layout" }
+
+data_outputs:
+  - name: "Shell"
+    buffer: "shell"
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+outputs:
+  - { name: "Unfolded Room", pass: ui }

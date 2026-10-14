@@ -4,6 +4,7 @@
 //  2..17 = stamp canvas x/y, angle, generation
 // 18 = clear flag, previous clear button, queue count, middle-gesture suppression
 // 19 = view pan x/y (canvas UV), zoom, middle-button state
+// 20 = newest viewport event sequence consumed (asuint in x)
 RWStructuredBuffer<float4> OutputBuffer : register(u0);
 
 static const float2 PC_CANVAS_PIXELS = float2(1080.0, 1350.0);
@@ -30,6 +31,11 @@ float2 pcScreenToCanvas(float2 screenUv, float2 viewPan, float viewZoom)
     return (screenPx - centerPx) / (PC_CANVAS_PIXELS * pcFitScale() * max(viewZoom, 0.01)) + 0.5 + viewPan;
 }
 
+// The host hands an event back on later cooks until newer input replaces it, so each event is
+// consumed once, by sequence (knowledge/ui-authoring.md). Without it one wheel notch with the mouse
+// held still zoomed on every cook to the 12x clamp, and a held stroke kept re-stamping.
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
+
 [numthreads(1, 1, 1)]
 void main(uint3 id : SV_DispatchThreadID)
 {
@@ -37,11 +43,13 @@ void main(uint3 id : SV_DispatchThreadID)
     float4 dragState = OutputBuffer[1];
     float4 meta = OutputBuffer[18];
     float4 view = OutputBuffer[19];
+    uint lastSeq = asuint(OutputBuffer[20].x);
     if (ctrl.a < 0.5) {
         ctrl = float4(0.0, brush_size, brush_size, 1.0);
         dragState = float4(0.5, 0.5, rotation, 0.0);
         meta = 0.0;
         view = float4(0.0, 0.0, 1.0, 0.0);
+        lastSeq = 0u;
     }
     if (abs(brush_size - ctrl.z) > 0.00001) {
         ctrl.y = brush_size;
@@ -53,8 +61,14 @@ void main(uint3 id : SV_DispatchThreadID)
     float clearValue = clear_canvas != 0 ? 1.0 : 0.0;
     bool clearNow = abs(clearValue - meta.y) > 0.5;
     uint count = min(_ViewportEventCount, 64u);
+    uint ringMax = 0u;
+    [loop] for (uint r = 0u; r < count; ++r) ringMax = max(ringMax, _ViewportEvents[r].sequence);
+    if (count > 0u && ringMax < lastSeq) lastSeq = 0u;   // the host's counter restarted (app restart, reload)
+    uint newLast = lastSeq;
     [loop] for (uint i = 0u; i < count; ++i) {
         ViewportEvent e = _ViewportEvents[i];
+        if (!isFresh(e.sequence, lastSeq)) continue;      // consumed on an earlier cook
+        newLast = (e.sequence > lastSeq) ? max(newLast, e.sequence) : e.sequence;
         if (e.type == 4u && e.phase == 1u && e.code == 24u) clearNow = true; // X
         if ((e.flags & VIEWPORT_EVENT_FLAG_HOST_CONSUMED) != 0u) continue;
 
@@ -83,7 +97,7 @@ void main(uint3 id : SV_DispatchThreadID)
             view.xy -= deltaCanvas;
         }
         if (e.type == 3u && e.position.y * _Resolution.y >= PC_TOOLBAR_PX) {
-            float notches = abs(e.value) > 0.001 ? e.value : e.delta.y;
+            float notches = clamp(abs(e.value) > 0.001 ? e.value : e.delta.y, -3.0, 3.0);
             if ((e.modifiers & VIEWPORT_MODIFIER_ALT) != 0u) {
                 ctrl.y = clamp(ctrl.y * pow(1.12, notches), 0.025, 0.50);
             } else {
@@ -138,4 +152,5 @@ void main(uint3 id : SV_DispatchThreadID)
     }
     OutputBuffer[18] = float4(clearNow ? 1.0 : 0.0, clearValue, (float)queued, meta.w);
     OutputBuffer[19] = view;
+    OutputBuffer[20] = float4(asfloat(newLast), 0.0, 0.0, 0.0);
 }

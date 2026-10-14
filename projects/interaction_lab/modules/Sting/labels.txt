@@ -1,0 +1,6 @@
+# Sting - the labels of the Sting's slate. Regenerate: python tools/il_type.py labels Sting
+NOMOTION    @sans = connect the Timeline's Motion
+FRAME       @sans = frame
+SHUTTER     @sans = shutter
+DEG         @sans = deg
+SAMPLES     @sans = samples

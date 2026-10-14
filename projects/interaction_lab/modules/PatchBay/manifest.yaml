@@ -1,0 +1,104 @@
+name: "Patch Bay"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# A modulation patch bay: five sources (a sine, a triangle, a ramp, a sample and hold, a smooth drift)
+# and an external input, patched with cables into six outputs. Each output rests on its base and
+# every cable into it swings it by depth x the source, bipolar (a negative depth inverts):
+#   out = base + sum(depth * (2 * source - 1) * 0.5), clamped 0..1
+# The outputs are the control outputs out_1 .. out_6, so any parameter in the show can ride one
+# through an expression:  =ref("Patch_Bay/control_outputs/out_3")
+# and the external input is itself a parameter, so the bay can take another node's control output
+# in (here the Curve Desk's ball) and redistribute it. The patch is the first 23 records of one
+# state buffer, so it saves with the project, recalls with node presets and undoes with the host.
+#
+# All three passes run every cook: the sources move. (On 0.6.3 passes run in reverse manifest
+# order, so the picture trails the reducer by a cook; nothing here depends on the order.)
+
+panel:
+  mode: canvas
+  output: "Patch Bay"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  - { name: rate_1, display: "LFO 1",  type: float, min: 0.01, max: 8.0, default: 0.25, group: "Sources", description: "The sine's rate (Hz)" }
+  - { name: rate_2, display: "LFO 2",  type: float, min: 0.01, max: 8.0, default: 0.6,  group: "Sources", description: "The triangle's rate (Hz)" }
+  - { name: rate_3, display: "Ramp",   type: float, min: 0.01, max: 8.0, default: 0.1,  group: "Sources", description: "The ramp's rate: it rises 0 to 1 and drops back once a cycle (Hz)" }
+  - { name: rate_4, display: "S&H",    type: float, min: 0.01, max: 8.0, default: 1.5,  group: "Sources", description: "Sample and hold: a new random level each cycle (Hz)" }
+  - { name: rate_5, display: "Drift",  type: float, min: 0.01, max: 8.0, default: 0.3,  group: "Sources", description: "A smooth random walk: a new level eased to each cycle (Hz)" }
+  - { name: input,  display: "Input",  type: float, min: 0.0,  max: 1.0, default: 0.5,  group: "Sources", description: "The external source. Give it an expression to bring any control output into the bay" }
+
+viewport:
+  hint: "Drag from a source jack to an output jack (or back): patch a cable. Drag a plug out of an output jack: move it to another output, or let go in the air to unplug it. Click a cable or a matrix cell: select it (a click on an empty cell patches it; on the selected cell, unplugs it). Drag the selected cable's knob, or a cell, up and down: depth (below zero inverts). Drag along a meter: that output's base. Tab: next cable. Up / Down: depth. Backspace: unplug. M: mute every cable. R: the default patch (Z brings yours back). Z: undo."
+  interactions: [events]
+  input:
+    pointer: [left]
+    keyboard: [backspace, tab, m, r, z, up, down]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_drag, action: patch, label: "Patch a cable jack to jack; move or unplug a plug; depth on a knob or a cell; base along a meter" }
+    - { gesture: left_click, action: select, label: "Select a cable or a cell; patch an empty cell; unplug the selected cell" }
+    - { key: tab, action: next, label: "Select the next cable" }
+    - { key: up, action: deeper, label: "Depth +0.05" }
+    - { key: down, action: shallower, label: "Depth -0.05" }
+    - { key: backspace, action: unplug, label: "Unplug the selected cable" }
+    - { key: m, action: mute, label: "Mute every cable: the outputs rest on their bases" }
+    - { key: r, action: defaults, label: "The default patch (Z brings yours back)" }
+    - { key: z, action: undo, label: "Undo (again: redo)" }
+
+buffers:
+  # bay.hlsli: the patch (head, bases, 16 cables), then working state, the undo snapshot and the rings
+  - { name: state, structured: true, element_size: 16, element_count: 224, persistent: true }
+  - { name: dl,    structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+# The head, the six bases and the sixteen cables (23 records) serialize into the project, node presets
+# and undo payloads; the working state after them is never restored.
+state_buffers:
+  - name: state
+    max_elements: 23
+    schema:
+      - { name: v, type: float4 }
+
+passes:
+  - name: reduce
+    shader: reduce.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:state"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:state" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Patch Bay", pass: raster }
+
+control_outputs:
+  - { name: out_1, buffer: state, element: 30, field_offset: 0,  description: "Output 1, 0..1 (patched to the Bloom's petal count)" }
+  - { name: out_2, buffer: state, element: 30, field_offset: 4,  description: "Output 2, 0..1 (the Bloom's petal depth)" }
+  - { name: out_3, buffer: state, element: 30, field_offset: 8,  description: "Output 3, 0..1 (the Bloom's twist)" }
+  - { name: out_4, buffer: state, element: 30, field_offset: 12, description: "Output 4, 0..1 (the Bloom's spin)" }
+  - { name: out_5, buffer: state, element: 31, field_offset: 0,  description: "Output 5, 0..1 (the Bloom's size)" }
+  - { name: out_6, buffer: state, element: 31, field_offset: 4,  description: "Output 6, 0..1 (the Bloom's hue)" }

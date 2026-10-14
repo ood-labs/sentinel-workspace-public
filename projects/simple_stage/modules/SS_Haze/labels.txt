@@ -1,0 +1,28 @@
+# SS_Haze - the haze drawing's words. Regenerate: python tools/il_type.py labels SS_Haze
+TITLE        @bold @track=0.14 = SIMPLE STAGE
+SUBTITLE     @sans = haze
+PLAN         @bold @track=0.08 = PLAN
+SECTION      @bold @track=0.08 = LONG SECTION
+STAGE        @bold @track=0.08 = STAGE
+AUDIENCE     @bold @track=0.08 = AUDIENCE
+SHOW_HAZE    @sans = haze, averaged through the hall
+SHOW_AIR     @sans = air speed, averaged through the hall
+SHOW_HEAT    @sans = warmth above the room, averaged through the hall
+
+ROOM         @bold @track=0.08 = THE AIR
+HAZE         @bold @track=0.08 = HAZE IN THE HALL
+UNITS        @sans = haze
+DENSEST      @sans = densest
+AIR          @bold @track=0.08 = FASTEST AIR
+MS           @sans = m/s
+HEAT         @sans = mean warmth
+K            @sans = K
+SOLVE        @bold @track=0.08 = PRESSURE SOLVE
+PCT          @sans = %
+LEFT         @sans = of the divergence left
+HAZERS       @bold @track=0.08 = HAZERS
+BACK         @sans = back
+FRONT        @sans = front
+TOGETHER     @bold @track=0.08 = ALL FOUR TOGETHER
+HELD         @sans = held
+DROP         @sans = on the drop

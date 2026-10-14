@@ -23,7 +23,7 @@ VT_Plan ──Plan──┬─────────────────�
 | --- | --- |
 | `VT_Plan` | The plan authority. Owns stage space and the horizon, generates the whole composition, holds hand edits. Interactive editor. |
 | `VT_Stage` | Cyclorama wall gradient, sprayed-plaster relief, horizon seam, receding reflective floor. |
-| `VT_Growth` | Expands mass anchors into world-space capsule chains and stroke anchors into stage-space polylines. Publishes bounding spheres for culling. |
+| `VT_Growth` | Expands mass anchors into world-space capsule chains and stroke anchors into stage-space polylines. Publishes bounding spheres for culling. Its preview shows the stage and the group tally; hover a group or its tally bar to inspect it. |
 | `VT_Volumes` | Ray-marches the masses. Clay / chrome / frost / gloss. Owns the internal camera. |
 | `VT_Strokes` | Draws the stroke limbs as lit tubes with a cylindrical fake normal. |
 | `VT_Plates` | The flat graphic family, split into back and front layers. |
@@ -81,7 +81,7 @@ re-derives it rather than deciding it a second time.
   completely and the melt came out a smooth horseshoe. ~0.31 keeps the tube continuous while the
   lobes stay legible.
 - **Node count matters as much as direction.** Fifty nodes inside one containment disc packs into
-  a ball no matter how the directions are chosen. The reference's figures are ~15-node trees.
+  a ball no matter how the directions are chosen. The figures that inspired the look are ~15-node trees.
 - **Stroke thickness must be absolute, not a fraction of the extent.** Scaling it by the wander
   extent turned the wide black vein network into a solid blob while leaving tight hairlines
   sub-pixel.
@@ -107,27 +107,31 @@ Scene Group.
 
 Click to select a record, drag to move it. `K` cycles kind, `M` cycles material, `X` toggles
 active, `N` re-rolls that record, `R` reseeds the layout, `C` clears the selection. Edits set
-`F_EDITED` and survive until the layout signature changes.
+`F_EDITED` and survive until the layout signature changes. Hover a record to inspect it: the card
+reads the record under the pointer with the same hit test a click uses, so what lights is what a
+click takes.
 
-**Not machine-verified.** Injected input does not reach Module viewport events, so the
-click/drag/key path could not be proven from this session. The plan generates a complete
-composition procedurally before anything is touched, and the edit code path is the same one
-`matik_plate` uses, but a human needs to exercise the console preview to confirm it.
+**Exercised with injected viewport input, and partly with real input.** Select, drag, `K`, `M`, `X`,
+`N`, `R` and `C` were driven through the panel and each changed the published Plan buffer as
+described (kind, material, `F_EDITED`, position, active count, seed, layout, selection). With real
+mouse and keyboard events (Windows `SendInput`), a click selects a mass, and `K` and `M` each step
+it once, staying put through later parameter edits. Drag, `X`, `N`, `R` and `C` have not had a
+real-input pass.
 
 ## Exploration record
 
 Four axes were built as shipped `enum` presets, swept, and the losers repaired rather than
 deleted.
 
-- **Layout preset** (`VT_Plan`) — *Vitrine* won: the transcribed reference arrangement. Column
+- **Layout preset** (`VT_Plan`): *Vitrine* won, the project's own arrangement, drawn after the reference that inspired it. Column
   Rack is a strong second. Salon Wall and Diagonal Drift both originally bunched a short cast into
   the top rows; both were reworked to spread (coprime slot shuffle, deterministic diagonal march).
 - **Growth mode** (`VT_Growth`) — ***Bundle* won decisively.** It is the only mode that produces
-  the reference's raised-arm branching hand. Branching is a good, more even second. Tendril is a
+  the raised-arm branching hand the look is built around. Branching is a good, more even second. Tendril is a
   strong distinct direction (coiling intestinal tubes). Coral lost badly — short bonds plus heavy
   jitter packed every cluster into a featureless potato; repaired to radiate outward from the root
   with near-full bonds, which gives the knobbly head the preset was named for.
-- **Stroke style** (`VT_Strokes`) — *Round Tube* won (the reference's glossy extruded marks).
+- **Stroke style** (`VT_Strokes`): *Round Tube* won (glossy extruded marks).
   Ribbon is an attractive flat-strap alternative. Flat Marker is a genuinely useful graphic mode.
   Beaded lost — at 22 cycles the bead period was shorter than the spacing between published
   points, so the swell aliased away on every hairline; repaired to 7 cycles with a deeper pinch.
@@ -136,9 +140,9 @@ deleted.
 
 ## The arrangement randomizer
 
-`Variation` (0–1) on `VT_Plan` blends the transcribed reference arrangement into a free draw from
+`Variation` (0–1) on `VT_Plan` blends the Vitrine arrangement into a free draw from
 the same vocabulary: positions, kinds, materials, palette and layer membership all re-roll.
-`Seed` picks which draw you get — scrub it to shuffle. **`Variation = 0` reproduces the reference
+`Seed` picks which draw you get — scrub it to shuffle. **`Variation = 0` reproduces the Vitrine
 arrangement exactly**, so the default cannot be lost by exploring.
 
 Three things keep a random draw looking composed rather than looking like a bug:
@@ -155,12 +159,12 @@ Three things keep a random draw looking composed rather than looking like a bug:
    weight uniformly makes every seed read as flat spaghetti.
 
 `Anchor Spacing` then relaxes any residual mass overlaps using the reserve radii the records
-already carry. Relaxation runs **only** when `Variation > 0`, so the reference positions are never
-nudged off their transcribed values.
+already carry. Relaxation runs **only** when `Variation > 0`, so the Vitrine positions are never
+nudged off their authored values.
 
 ## Scene Group presets
 
-- **Vitrine (Reference)** — the default: `Variation = 0`, the reference-matched arrangement.
+- **Vitrine (Reference)**: the default, `Variation = 0`, the Vitrine arrangement.
   Verified recallable in one call; `recall_scene_group_preset` restores it exactly.
 - **Diagonal Tendril** — Diagonal Drift layout, Tendril growth, Flat Marker strokes, Sand clay.
   Found while proving the exposed controls and kept because it is a good look in its own right.
@@ -182,3 +186,35 @@ per-node GPU/CPU profiling was left disabled, so per-node timings were not measu
 above is the graph frame total from `sentinel_graph profile`. The ray-marcher is the expensive
 node by construction; it stays cheap because each pixel tests 16 bounding spheres before touching
 any of the 295 mass nodes.
+
+**Quality ladder** (`VT_Volumes` node presets, project scope, `aa_samples` and `march_steps`
+alone). Rays per axis is the entire cost: the marcher pays per ray, and march steps barely
+register (80 and 110 measured the same).
+
+| Rung | Rays per pixel | VT_Volumes GPU | Graph GPU |
+| --- | --- | --- | --- |
+| **Live** (default) | 1 | 1.0 | 1.0 |
+| Beauty | 2 × 2 | 3.9× | 3.1× |
+| Hero (capture only) | 3 × 3 | not measured | — |
+
+Measured on an RTX 5060 laptop (8 GB, Sentinel 0.6.8, heat-soaked at about 100 W, the saved panel
+layout): Live is about 8 ms of GPU for the whole graph, about 9 while the plan is being edited,
+and holds 60 fps; Beauty (the default before 0.6.8) is about 24.5 ms and runs at 30. One ray per pixel softens the silhouettes of the
+chrome and clay slightly; through `VT_Post` the difference is under 1 % of pixels. Recall Beauty
+for stills.
+
+`VT_Growth`'s Growth View follows its panel and redraws every frame the growth breathes. Each 8 × 8
+group of stage pixels first shortlists the groups and nodes whose marks can reach it, so a pixel
+walks a handful of records rather than all 768, and the picture is unchanged (3.6 → 1.1 ms on the
+laptop). The stage stays capped at 900 px a side, the 900 × 900 the node rendered at before; the
+words, tally and inspector (the layout and ui passes) cost under a tenth of the preview.
+
+`VT_Plan`'s canvas wakes with every plan edit and every hover, and each pixel used to draw every
+record, a stroke's twelve-segment spine included. Each record now first checks whether the pixel
+is within its reach, a radius read off its own drawing beyond which every mark is exactly zero,
+so the canvas is unchanged and costs about a quarter of what it did while editing (2.5 → 0.6 ms).
+
+## Type
+
+The UI type is IBM Plex Sans Condensed and IBM Plex Mono (SIL OFL 1.1), baked by
+`tools/il_type.py` into `modules/_shared/type/il_type.png` with its licence beside it.

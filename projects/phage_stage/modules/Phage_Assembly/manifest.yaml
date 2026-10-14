@@ -2,6 +2,20 @@ name: PHAGE / Truss Assembly
 version: '1.0'
 mode: generator
 resolution: [1280, 760]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+panel:
+  mode: canvas
+  output: Truss Axonometric
+  resolution: follow_panel
+viewport:
+  hint: 'Point at a member: its tubes light, and the card (Tooltips) gives the part, its length, truss width, bays and tubes.'
+  interactions: [events]
+  input:
+    pointer: [left]
+parameters:
+  - {name: tooltips, display: Tooltips, type: bool, default: true, description: 'The card beside the pointer that names the truss member under it: the part, its length, truss width, bays and tubes. Turn it off to keep the canvas clear while you work.'}
 data_inputs:
   - name: Members
     slot: 0
@@ -13,7 +27,9 @@ data_inputs:
 buffers:
   - {name: structure, structured: true, element_size: 64, element_count: 13312}
   - {name: marks, structured: true, element_size: 64, element_count: 224}
+  - {name: hover, structured: true, element_size: 16, element_count: 1}
   - {name: bins, structured: true, element_size: 4, element_count: 786432}
+  - {name: dl, structured: true, element_size: 16, element_count: 24577}   # il_draw IL_DL_SIZE
 passes:
   - name: structure
     shader: structure.hlsl
@@ -30,6 +46,15 @@ passes:
       - {slot: 0, source: 'data:0'}
       - {slot: 1, source: buffer:structure}
     output: buffer:marks
+  - name: hover
+    shader: hover.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:marks}
+    output: buffer:hover
   - name: bins
     shader: bins.hlsl
     target: cs_5_0
@@ -44,7 +69,27 @@ passes:
       - {slot: 1, source: buffer:structure}
       - {slot: 2, source: buffer:marks}
       - {slot: 3, source: buffer:bins}
-    output: output
+      - {slot: 4, source: buffer:hover}
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: 'buffer:marks'}
+      - {slot: 1, source: buffer:hover}
+      - {slot: 2, source: 'data:0'}
+    output: buffer:dl
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
+      - {slot: 2, source: 'pass:preview'}
 data_outputs:
   - name: Structure
     buffer: structure
@@ -55,4 +100,4 @@ data_outputs:
       - {name: d, type: float4}
 outputs:
   - name: Truss Axonometric
-    pass: preview
+    pass: ui

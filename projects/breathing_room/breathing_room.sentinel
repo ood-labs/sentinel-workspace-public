@@ -1,0 +1,1523 @@
+{
+  "binds": [
+    [
+      "/sentinel/groups/annotation_9/parameters/BR_Trip_arc",
+      "/sentinel/pipelines/BR_Trip/parameters/arc"
+    ],
+    [
+      "/sentinel/groups/annotation_9/parameters/BR_Trip_geometry",
+      "/sentinel/pipelines/BR_Trip/parameters/geometry"
+    ],
+    [
+      "/sentinel/groups/annotation_9/parameters/BR_Trip_motif",
+      "/sentinel/pipelines/BR_Trip/parameters/motif"
+    ],
+    [
+      "/sentinel/groups/annotation_9/parameters/BR_Light_time_of_day",
+      "/sentinel/pipelines/BR_Light/parameters/time_of_day"
+    ],
+    [
+      "/sentinel/groups/annotation_9/parameters/BR_Light_lamp_master",
+      "/sentinel/pipelines/BR_Light/parameters/lamp_master"
+    ],
+    [
+      "/sentinel/groups/annotation_9/parameters/BR_Lens_exposure",
+      "/sentinel/pipelines/BR_Lens/parameters/exposure"
+    ],
+    [
+      "/sentinel/groups/annotation_9/parameters/BR_Trip_dose",
+      "/sentinel/pipelines/BR_Trip/parameters/dose"
+    ],
+    [
+      "/sentinel/groups/annotation_9/parameters/BR_Trip_furniture",
+      "/sentinel/pipelines/BR_Trip/parameters/furniture"
+    ]
+  ],
+  "display": {
+    "fpsLimit": 60.0,
+    "vsyncEnabled": false
+  },
+  "graph": {
+    "canvasZoom": 0.7052171230316162,
+    "links": [
+      {
+        "endPinId": 7,
+        "id": 1,
+        "startPinId": 3
+      },
+      {
+        "endPinId": 9,
+        "id": 2,
+        "startPinId": 6
+      },
+      {
+        "endPinId": 17,
+        "id": 3,
+        "startPinId": 3
+      },
+      {
+        "endPinId": 20,
+        "id": 4,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 21,
+        "id": 5,
+        "startPinId": 3
+      },
+      {
+        "endPinId": 23,
+        "id": 6,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 25,
+        "id": 7,
+        "startPinId": 24
+      },
+      {
+        "endPinId": 26,
+        "id": 8,
+        "startPinId": 3
+      },
+      {
+        "endPinId": 28,
+        "id": 9,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 30,
+        "id": 10,
+        "startPinId": 29
+      },
+      {
+        "endPinId": 31,
+        "id": 11,
+        "startPinId": 14
+      },
+      {
+        "endPinId": 33,
+        "id": 12,
+        "startPinId": 29
+      },
+      {
+        "endPinId": 34,
+        "id": 13,
+        "startPinId": 15
+      },
+      {
+        "endPinId": 35,
+        "id": 14,
+        "startPinId": 19
+      },
+      {
+        "endPinId": 38,
+        "id": 15,
+        "startPinId": 37
+      }
+    ],
+    "nextLinkId": 16,
+    "nextNodeId": 10,
+    "nextPinId": 39,
+    "nodes": [
+      {
+        "bodyHeight": 207.1237335205078,
+        "bodyWidth": 235.056396484375,
+        "displayName": "BR Shell",
+        "entityId": "BR_Shell",
+        "id": 1,
+        "logicalPreview": [
+          8.0,
+          39.599998474121094,
+          235.10000610351563,
+          207.10000610351563
+        ],
+        "logicalSize": [
+          251.10000610351563,
+          254.6999969482422
+        ],
+        "posX": 0.0,
+        "posY": 300.0,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "bodyHeight": 270.2119140625,
+        "bodyWidth": 277.5462341308594,
+        "displayName": "BR Finish",
+        "entityId": "BR_Finish",
+        "id": 2,
+        "logicalPreview": [
+          8.0,
+          39.599998474121094,
+          277.5,
+          270.20001220703125
+        ],
+        "logicalSize": [
+          293.5,
+          317.79998779296875
+        ],
+        "posX": 216.926513671875,
+        "posY": 571.5629272460938,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "bodyHeight": 156.7142791748047,
+        "bodyWidth": 245.3333740234375,
+        "displayName": "BR Render",
+        "entityId": "BR_Render",
+        "id": 3,
+        "logicalPreview": [
+          8.0,
+          39.599998474121094,
+          245.3000030517578,
+          156.6999969482422
+        ],
+        "logicalSize": [
+          261.29998779296875,
+          204.3000030517578
+        ],
+        "posX": 857.533935546875,
+        "posY": 329.0998840332031,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "bodyHeight": 189.5127716064453,
+        "bodyWidth": 204.3457794189453,
+        "displayName": "BR Furnish",
+        "entityId": "BR_Furnish",
+        "id": 4,
+        "logicalPreview": [
+          8.0,
+          39.599998474121094,
+          204.3000030517578,
+          189.5
+        ],
+        "logicalSize": [
+          220.3000030517578,
+          237.10000610351563
+        ],
+        "posX": 288.3007507324219,
+        "posY": 321.9981689453125,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "bodyHeight": 180.62033081054688,
+        "bodyWidth": 256.810791015625,
+        "displayName": "BR Light",
+        "entityId": "BR_Light",
+        "id": 5,
+        "logicalPreview": [
+          8.0,
+          39.599998474121094,
+          256.79998779296875,
+          180.60000610351563
+        ],
+        "logicalSize": [
+          272.79998779296875,
+          228.1999969482422
+        ],
+        "posX": 529.706787109375,
+        "posY": 171.75222778320313,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "bodyHeight": 184.38136291503906,
+        "bodyWidth": 247.50726318359375,
+        "displayName": "BR Trip",
+        "entityId": "BR_Trip",
+        "id": 6,
+        "logicalPreview": [
+          8.0,
+          39.599998474121094,
+          247.5,
+          184.39999389648438
+        ],
+        "logicalSize": [
+          263.5,
+          232.0
+        ],
+        "posX": 548.0485229492188,
+        "posY": 662.1113891601563,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "bodyHeight": 213.32862854003906,
+        "bodyWidth": 344.1922302246094,
+        "displayName": "BR Lens",
+        "entityId": "BR_Lens",
+        "id": 7,
+        "inputTilesOverride": 0,
+        "logicalPreview": [
+          8.0,
+          39.599998474121094,
+          344.20001220703125,
+          213.3000030517578
+        ],
+        "logicalSize": [
+          360.20001220703125,
+          260.8999938964844
+        ],
+        "posX": 1146.9295654296875,
+        "posY": 305.1417541503906,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "bodyHeight": 221.25015258789063,
+        "bodyWidth": 232.00140380859375,
+        "displayName": "BR Rug",
+        "entityId": "BR_Rug",
+        "id": 8,
+        "logicalPreview": [
+          8.0,
+          39.599998474121094,
+          232.0,
+          221.3000030517578
+        ],
+        "logicalSize": [
+          248.0,
+          268.79998779296875
+        ],
+        "posX": 551.8544311523438,
+        "posY": 397.8232116699219,
+        "positionSet": true,
+        "previewVisible": true,
+        "type": 1
+      },
+      {
+        "annotationBody": "A realistic SDF living room that trips. Shell, Finish, Furnish, Light, Trip and Rug are the editors; Render draws the room, Lens is the eye.",
+        "annotationColor": "#4A443CFF",
+        "annotationTitle": "Breathing Room",
+        "displayName": "Breathing Room",
+        "entityId": "annotation_9",
+        "height": 1029.787353515625,
+        "id": 9,
+        "posX": -40.0,
+        "posY": -70.0,
+        "positionSet": true,
+        "previewVisible": false,
+        "sceneGroup": true,
+        "sceneGroupActivePreset": "Performance",
+        "sceneGroupEnabled": true,
+        "sceneGroupParameters": [
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1",
+            "description": "Envelope",
+            "displayName": "Envelope",
+            "enumValues": [
+              "Steady",
+              "Waves",
+              "Come Up"
+            ],
+            "group": "Trip",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "BR_Trip_arc",
+            "orderIndex": 1,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/BR_Trip/parameters/arc",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.600000",
+            "description": "Geometry",
+            "displayName": "Geometry",
+            "enumValues": [],
+            "group": "Channels",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "BR_Trip_geometry",
+            "orderIndex": 2,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/BR_Trip/parameters/geometry",
+            "type": "float",
+            "value": "0.331",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0",
+            "description": "Geometry Motif",
+            "displayName": "Geometry Motif",
+            "enumValues": [
+              "Girih",
+              "Lattice",
+              "Mandala",
+              "Moire"
+            ],
+            "group": "Channels",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "BR_Trip_motif",
+            "orderIndex": 3,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/BR_Trip/parameters/motif",
+            "type": "enum",
+            "value": "0",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "16.250000",
+            "description": "Time Of Day (h)",
+            "displayName": "Time Of Day (h)",
+            "enumValues": [],
+            "group": "Sun",
+            "maxValue": 24.0,
+            "minValue": 0.0,
+            "name": "BR_Light_time_of_day",
+            "orderIndex": 4,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/BR_Light/parameters/time_of_day",
+            "type": "float",
+            "value": "16.25",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1.000000",
+            "description": "Lamp Dimmer",
+            "displayName": "Lamp Dimmer",
+            "enumValues": [],
+            "group": "Lamps",
+            "maxValue": 4.0,
+            "minValue": 0.0,
+            "name": "BR_Light_lamp_master",
+            "orderIndex": 5,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/BR_Light/parameters/lamp_master",
+            "type": "float",
+            "value": "1.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "1.000000",
+            "description": "Exposure (EV)",
+            "displayName": "Exposure (EV)",
+            "enumValues": [],
+            "group": "Exposure",
+            "maxValue": 4.0,
+            "minValue": -4.0,
+            "name": "BR_Lens_exposure",
+            "orderIndex": 6,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/BR_Lens/parameters/exposure",
+            "type": "float",
+            "value": "1.000000",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.500000",
+            "description": "Dose",
+            "displayName": "Dose",
+            "enumValues": [],
+            "group": "Trip",
+            "maxValue": 3.0,
+            "minValue": 0.0,
+            "name": "BR_Trip_dose",
+            "orderIndex": 6,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/BR_Trip/parameters/dose",
+            "type": "float",
+            "value": "1.457",
+            "widget": ""
+          },
+          {
+            "compoundIndex": 0,
+            "compoundKey": "",
+            "defaultValue": "0.000000",
+            "description": "Furniture",
+            "displayName": "Furniture",
+            "enumValues": [],
+            "group": "Channels",
+            "maxValue": 1.0,
+            "minValue": 0.0,
+            "name": "BR_Trip_furniture",
+            "orderIndex": 7,
+            "subgroup": "",
+            "targetPath": "/sentinel/pipelines/BR_Trip/parameters/furniture",
+            "type": "float",
+            "value": "0.000000",
+            "widget": ""
+          }
+        ],
+        "sceneGroupPresets": [
+          {
+            "childGroupPresets": {},
+            "name": "Performance",
+            "pipelineBypass": {
+              "BR_Finish": true,
+              "BR_Furnish": true,
+              "BR_Lens": true,
+              "BR_Light": true,
+              "BR_Render": true,
+              "BR_Rug": true,
+              "BR_Shell": true,
+              "BR_Trip": true
+            },
+            "pipelineOperatorModes": {
+              "BR_Finish": "normal",
+              "BR_Furnish": "normal",
+              "BR_Lens": "normal",
+              "BR_Light": "normal",
+              "BR_Render": "normal",
+              "BR_Rug": "normal",
+              "BR_Shell": "normal",
+              "BR_Trip": "normal"
+            },
+            "pipelineValues": {},
+            "values": {
+              "BR_Lens_exposure": "1.000000",
+              "BR_Light_lamp_master": "1.000000",
+              "BR_Light_time_of_day": "16.25",
+              "BR_Trip_arc": "0",
+              "BR_Trip_dose": "1.457",
+              "BR_Trip_furniture": "0.000000",
+              "BR_Trip_geometry": "0.331",
+              "BR_Trip_motif": "0"
+            }
+          }
+        ],
+        "type": 4,
+        "width": 1549.1011962890625
+      }
+    ],
+    "pins": [
+      {
+        "id": 2,
+        "kind": 1,
+        "name": "Unfolded Room",
+        "nodeId": 1,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 3,
+        "kind": 1,
+        "name": "Shell",
+        "nodeId": 1,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 5,
+        "kind": 1,
+        "name": "Finish Schedule",
+        "nodeId": 2,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 6,
+        "kind": 1,
+        "name": "Finish",
+        "nodeId": 2,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 7,
+        "kind": 0,
+        "name": "Shell",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 9,
+        "kind": 0,
+        "name": "Finish",
+        "nodeId": 3,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 20,
+        "kind": 0,
+        "name": "Furnish",
+        "nodeId": 3,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 25,
+        "kind": 0,
+        "name": "Light",
+        "nodeId": 3,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 30,
+        "kind": 0,
+        "name": "Trip",
+        "nodeId": 3,
+        "slotIndex": 4,
+        "type": 6
+      },
+      {
+        "id": 38,
+        "kind": 0,
+        "name": "Rug",
+        "nodeId": 3,
+        "slotIndex": 5,
+        "type": 6
+      },
+      {
+        "id": 8,
+        "kind": 1,
+        "name": "Preview",
+        "nodeId": 3,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 14,
+        "kind": 1,
+        "name": "HDR",
+        "nodeId": 3,
+        "slotIndex": 1,
+        "type": 0
+      },
+      {
+        "id": 15,
+        "kind": 1,
+        "name": "Scene",
+        "nodeId": 3,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 16,
+        "kind": 1,
+        "name": "Apertures",
+        "nodeId": 3,
+        "slotIndex": 3,
+        "type": 6
+      },
+      {
+        "id": 17,
+        "kind": 0,
+        "name": "Shell",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 18,
+        "kind": 1,
+        "name": "Furnishing Plan",
+        "nodeId": 4,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 19,
+        "kind": 1,
+        "name": "Furnish",
+        "nodeId": 4,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 21,
+        "kind": 0,
+        "name": "Shell",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 23,
+        "kind": 0,
+        "name": "Furnish",
+        "nodeId": 5,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 22,
+        "kind": 1,
+        "name": "Light",
+        "nodeId": 5,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 24,
+        "kind": 1,
+        "name": "Light",
+        "nodeId": 5,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 26,
+        "kind": 0,
+        "name": "Shell",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 28,
+        "kind": 0,
+        "name": "Furnish",
+        "nodeId": 6,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 27,
+        "kind": 1,
+        "name": "Trip",
+        "nodeId": 6,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 29,
+        "kind": 1,
+        "name": "Trip",
+        "nodeId": 6,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 31,
+        "kind": 0,
+        "name": "HDR",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 33,
+        "kind": 0,
+        "name": "Trip",
+        "nodeId": 7,
+        "slotIndex": 1,
+        "type": 6
+      },
+      {
+        "id": 34,
+        "kind": 0,
+        "name": "Scene",
+        "nodeId": 7,
+        "slotIndex": 2,
+        "type": 6
+      },
+      {
+        "id": 32,
+        "kind": 1,
+        "name": "Lens",
+        "nodeId": 7,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 35,
+        "kind": 0,
+        "name": "Furnish",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 6
+      },
+      {
+        "id": 36,
+        "kind": 1,
+        "name": "Rug",
+        "nodeId": 8,
+        "slotIndex": 0,
+        "type": 0
+      },
+      {
+        "id": 37,
+        "kind": 1,
+        "name": "Rug",
+        "nodeId": 8,
+        "slotIndex": 1,
+        "type": 6
+      }
+    ]
+  },
+  "input": {
+    "activeSource": ""
+  },
+  "layout": "[Window][Sources]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Outputs]\nPos=0,237\nSize=504,663\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Stats]\nPos=0,866\nSize=807,663\nCollapsed=0\nDockId=0x00000005,0\n\n[Window][Log]\nPos=0,866\nSize=807,663\nCollapsed=0\nDockId=0x00000005,1\n\n[Window][Properties]\nPos=1987,25\nSize=573,839\nCollapsed=0\nDockId=0x00000002,0\n\n[Window][Graph]\nPos=809,866\nSize=1751,663\nCollapsed=0\nDockId=0x00000006,0\n\n[Window][DockSpace]\nPos=0,25\nSize=2560,1504\nCollapsed=0\n\n[Window][Debug##Default]\nPos=60,60\nSize=400,400\nCollapsed=0\n\n[Window][Settings]\nPos=590,200\nSize=566,678\nCollapsed=0\n\n[Window][streamdiff_0]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][mediapipe_0]\nPos=0,25\nSize=3258,1430\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][##LoadingOverlay]\nPos=600,420\nSize=400,60\nCollapsed=0\n\n[Window][features_0]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][pose_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,0\n\n[Window][Expressive_Flow_Layers]\nPos=0,25\nSize=758,1249\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][matting_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,2\n\n[Window][depthestimation_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,5\n\n[Window][Engines]\nPos=699,249\nSize=622,911\nCollapsed=0\n\n[Window][opticalflow_0]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][New Project?]\nPos=823,979\nSize=272,122\nCollapsed=0\n\n[Window][SDF_Sphere_Minus_Cube]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Wave_Field_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][Crop_Select_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][Crop_Present_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][Phase_Loop_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][UV_Remap_Bitdepth_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][LFO_Panel_Example]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][Cube_Sphere_Subtract_SDF]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Psychedelic_SDF_Overmind]\nPos=0,25\nSize=1253,626\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Void_Reactor_SDF]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Ghost_Infrastructure]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][Prismatic_Data_Object]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][Topology_Worm]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][White_Growth_Index]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][Filament_Relic]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][Vector_Cartography_Engine]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,8\n\n[Window][Binary_Textile_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,7\n\n[Window][Red_Failure_Cube]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][Contour_Collapse]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,9\n\n[Window][Soft_Singularity_Field]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,10\n\n[Window][Infinite_Singularity_Tunnel]\nPos=0,25\nSize=966,516\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Ref_Biomorphic_Scene]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Ref_Macro_Post]\nPos=0,25\nSize=1546,100\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][Poster_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Poster_V2_Crisp_Post]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Poster_V2_Compositor]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][Poster_V2_Rail_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][Poster_V2_Block_Plan]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][Poster_V2_Spline_Mask_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][Poster_V2_Accent_Line_Renderer]\nPos=0,25\nSize=1380,970\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][Poster_V3_Grid_Plan]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Poster_V3_Accent_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][Poster_V3_Compositor]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][Poster_V3_Crisp_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Poster_V3_Route_Expander]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][Poster_V3_Slab_Mask_Renderer]\nPos=0,25\nSize=1320,970\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][About Sentinel]\nPos=624,351\nSize=351,198\nCollapsed=0\n\n[Window][LV_Compositor]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][LV_Central_Plate]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][LV_Heightfield]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][LV_Microdetail]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][LV_Space_Field]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][LV_Route_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002F,7\n\n[Window][LV_Contour_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][LV_HUD_Ring_Plan]\nPos=0,25\nSize=1320,884\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][link_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][link_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002F,7\n\n[Window][post]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][field_gen]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][compositor]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][frame_hud]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][contour_accent]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][tunnel_geo]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][walls]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][floor_rails]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][post_grade]\nPos=0,25\nSize=2406,1265\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][hud_leaders]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][hud_labels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][hud_orbits]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][prim_atlas]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][widget_render]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][hud_comp]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][layout_gen]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,7\n\n[Window][hud_bg]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][hud_gauge]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][ps_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,7\n\n[Window][ps_hero]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,7\n\n[Window][spawn_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,9\n\n[Window][ps_mark]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,7\n\n[Window][pg_panels]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,8\n\n[Window][r_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][focal]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,10\n\n[Window][r_tabs]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,8\n\n[Window][r_inst]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,7\n\n[Window][r_panels]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][abstract_post]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][abstract_solids]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][abstract_comp]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][abstract_ribbon]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][abstract_column]\nPos=0,25\nSize=2406,1269\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][abstract_shape_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][abstract_shape_gen]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][abstract_triangle_render]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][abstract_ribbon_path]\nPos=1274,25\nSize=1246,1816\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][industrial_mono_post]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][sdf_industrial_scene_render]\nPos=0,25\nSize=1951,1265\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][lattice]\nPos=0,25\nSize=1496,906\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Octomech_Post]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Octomech_Hero]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][Octomech_Signal]\nPos=0,25\nSize=2520,1346\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][Recover Project]\nPos=477,271\nSize=646,358\nCollapsed=0\n\n[Window][r_mark]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][pg_mark]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,8\n\n[Window][Neon_Cube_Chamber]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Neon_Cube_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][V2_Comp]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][V2_Rail_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][V2_Object_Render]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][V2_AA_Resolve]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][V2_Post]\nPos=0,25\nSize=2520,1086\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][cad_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][cad_line_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][cad_symbol_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][cad_composite]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][symbol_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][debris_atlas_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][codex_post]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][ruler_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][tags_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][codex_comp]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][mech_atlas]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][hub_render]\nPos=0,25\nSize=2423,1086\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][cl_render]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][cl_cloner]\nPos=0,25\nSize=1180,100\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][pulse_star]\nPos=0,25\nSize=1180,529\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][c1_polyhedron_hero]\nPos=0,25\nSize=1180,755\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][C1_Comp]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][botany]\nPos=0,25\nSize=1472,873\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][kidpix_comp]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][kidpix_scribble]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][kidpix_stamp_atlas]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][kidpix_cube]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][kidpix_ui]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002F,6\n\n[Window][kidpix_trail]\nPos=0,25\nSize=1336,1202\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][kidpix_stroke]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][kidpix_swarm]\nPos=0,25\nSize=3258,1239\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][kidpix_roil]\nPos=0,25\nSize=1955,1307\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][bb_comp]\nPos=0,25\nSize=1472,684\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][botany3d]\nPos=0,25\nSize=1472,1012\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][botany_comp]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][botany_render]\nPos=0,25\nSize=1180,411\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][blob_render]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][corner_thread]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][plate_comp]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][Probe_Track]\nPos=744,25\nSize=749,676\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][Collage_Finish]\nPos=0,25\nSize=1511,559\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][Accum]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][SD_Face]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,0\n\n[Window][Face_Stitch]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,1\n\n[Window][Face_Cutout]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][Overlay_Comp]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Clone_Overlay]\nPos=873,25\nSize=878,1370\nCollapsed=0\nDockId=0x00000026,3\n\n[Window][Face_Guide]\nPos=1753,25\nSize=1505,1424\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][streamdiff_1]\nPos=750,25\nSize=743,946\nCollapsed=0\nDockId=0x0000000C,0\n\n[Window][mux_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][atlas_0]\nPos=0,25\nSize=1493,880\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][Fruit_Scene]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][Fruit_Atlas]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][Fruit_SD]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Fruit_LFO]\nPos=0,25\nSize=989,700\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][Face_Track]\nPos=0,25\nSize=1751,1424\nCollapsed=0\nDockId=0x00000026,2\n\n[Window][r_fan]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,9\n\n[Window][spline_render]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,10\n\n[Window][pg_hero]\nPos=0,25\nSize=1496,1011\nCollapsed=0\nDockId=0x0000002F,11\n\n[Window][dada_render]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][dada_layout]\nPos=0,25\nSize=1496,954\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][Terminal]\nPos=0,866\nSize=807,663\nCollapsed=0\nDockId=0x00000005,2\n\n[Window][Tableau_Comp]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Neural_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][Lattice_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][Signal_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][Orbit_Plan]\nPos=0,25\nSize=1501,924\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][MIDI_Controller_Post]\nPos=0,25\nSize=1980,1309\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][MIDI_SDF_Controller]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][LR_Cinematic_Grade]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][LR_Architecture]\nPos=0,25\nSize=1256,665\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_SDF_Renderer]\nPos=925,25\nSize=100,210\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][LR_Furnishings]\nPos=0,25\nSize=923,210\nCollapsed=0\nDockId=0x0000002D,0\n\n[Window][LR_Lighting]\nPos=1093,25\nSize=2418,1297\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][LR_Materials]\nPos=0,25\nSize=619,399\nCollapsed=0\nDockId=0x0000001B,0\n\n[Window][kp_spawn]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][kp_grid]\nPos=0,25\nSize=3511,1297\nCollapsed=0\nDockId=0x0000002F,5\n\n[Window][detection_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,3\n\n[Window][personseg_0]\nPos=0,25\nSize=1751,1307\nCollapsed=0\nDockId=0x00000023,1\n\n[Window][blob_layout]\nPos=0,25\nSize=300,1577\nCollapsed=0\nDockId=0x00000021,0\n\n[Window][marble_panel]\nPos=0,25\nSize=1336,1282\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][cm_finish]\nPos=0,25\nSize=1841,1175\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][SD_Parts]\nPos=1753,25\nSize=1505,1211\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][Fruit_Guide]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][node_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][label_gen]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][label_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][node_render]\nPos=0,25\nSize=3258,1379\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][QC_Dimensional_Portal]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][QC_Spectral_Memory]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][QC_Reciprocal_Field_2D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][QC_Icosahedral_SDF_3D]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][QC_Cut_Project]\nPos=0,25\nSize=1305,1241\nCollapsed=0\nDockId=0x0000002F,4\n\n[Window][Save Node Preset]\nPos=979,782\nSize=420,515\nCollapsed=0\n\n[Window][Fruit_Depth]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][Fruit_Matte]\nPos=0,25\nSize=2680,1399\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][BR_Shell]\nPos=0,25\nSize=698,839\nCollapsed=0\nDockId=0x0000002F,0\n\n[Window][BR_Finish]\nPos=0,25\nSize=698,839\nCollapsed=0\nDockId=0x0000002F,1\n\n[Window][BR_Render]\nPos=700,25\nSize=1285,839\nCollapsed=0\nDockId=0x00000030,0\n\n[Window][BR_Furnish]\nPos=0,25\nSize=698,839\nCollapsed=0\nDockId=0x0000002F,2\n\n[Window][BR_Light]\nPos=0,25\nSize=698,839\nCollapsed=0\nDockId=0x0000002F,3\n\n[Window][BR_Trip]\nPos=0,914\nSize=807,663\nCollapsed=0\nDockId=0x00000005,3\n\n[Window][BR_Lens]\nPos=700,25\nSize=1285,839\nCollapsed=0\nDockId=0x00000030,1\n\n[Window][BR_Rug]\nPos=700,25\nSize=1285,839\nCollapsed=0\nDockId=0x00000030,2\n\n[Window][BP_Architecture]\nPos=0,25\nSize=1025,214\nCollapsed=0\n\n[Window][Phage_Plan]\nPos=0,25\nSize=833,752\nCollapsed=0\n\n[Window][Phage_Kinetics]\nPos=0,25\nSize=833,752\nCollapsed=0\n\n[Window][Phage_Renderer]\nPos=835,25\nSize=1440,752\nCollapsed=0\n\n[Window][Phage_Lighting]\nPos=0,25\nSize=833,752\nCollapsed=0\n\n[Window][Phage_Desk]\nPos=0,779\nSize=1141,750\nCollapsed=0\n\n[Window][Phage_Rig_1]\nPos=0,25\nSize=833,752\nCollapsed=0\n\n[Window][SS_Stage]\nPos=1061,25\nSize=924,791\nCollapsed=0\n\n[Window][SS_Lighting]\nPos=0,866\nSize=1440,663\nCollapsed=0\n\n[Window][SS_Renderer]\nPos=1061,25\nSize=924,791\nCollapsed=0\n\n[Window][SS_Desk]\nPos=0,25\nSize=1059,791\nCollapsed=0\n\n[Window][Generated_Over_Original]\nPos=1310,25\nSize=675,787\nCollapsed=0\n\n[Window][Variant_Switcher_UI]\nPos=0,25\nSize=1440,791\nCollapsed=0\n\n[Window][Collage_Diffusion]\nPos=0,25\nSize=1117,748\nCollapsed=0\n\n[Window][Pattern_Canvas]\nPos=0,25\nSize=1117,748\nCollapsed=0\n\n[Window][Paint_Canvas]\nPos=0,25\nSize=1440,748\nCollapsed=0\n\n[Window][Pattern_Depth_SDF]\nPos=0,25\nSize=1440,772\nCollapsed=0\n\n[Window][Generation_Controller]\nPos=713,799\nSize=752,239\nCollapsed=0\n\n[Window][Pattern_Depth_SDF_1]\nPos=0,25\nSize=1440,772\nCollapsed=0\n\n[Window][LT_Lens]\nPos=891,25\nSize=1246,787\nCollapsed=0\n\n[Window][LT_Field]\nPos=891,25\nSize=1246,787\nCollapsed=0\n\n[Window][LT_Bench]\nPos=0,25\nSize=889,787\nCollapsed=0\n\n[Window][LT_Trace]\nPos=891,25\nSize=1246,787\nCollapsed=0\n\n[Window][VT_Plan]\nPos=620,25\nSize=540,159\nCollapsed=0\n\n[Window][VT_Post]\nPos=620,25\nSize=980,159\nCollapsed=0\n\n[Window][Mapping_Editor]\nPos=0,25\nSize=800,787\nCollapsed=0\n\n[Window][Laser_Previs]\nPos=802,25\nSize=424,156\nCollapsed=0\n\n[Window][KA_Rally]\nPos=0,25\nSize=717,567\nCollapsed=0\n\n[Window][KA_Robot]\nPos=719,25\nSize=1440,787\nCollapsed=0\n\n[Window][KA_Pose]\nPos=0,25\nSize=717,787\nCollapsed=0\n\n[Window][FM_Plan]\nPos=751,846\nSize=1440,683\nCollapsed=0\n\n[Window][FM_Post]\nPos=751,25\nSize=1440,787\nCollapsed=0\n\n[Window][FM_Colony]\nPos=751,846\nSize=1440,683\nCollapsed=0\n\n[Window][FM_Stage]\nPos=751,25\nSize=1440,787\nCollapsed=0\n\n[Window][FM_Bands]\nPos=0,25\nSize=749,787\nCollapsed=0\n\n[Window][cloth_engine]\nPos=745,25\nSize=1240,787\nCollapsed=0\n\n[Window][cloth_bands]\nPos=0,25\nSize=743,787\nCollapsed=0\n\n[Window][Native_Camera_Reference]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Kit]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Touch]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Handles]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Still_Life]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Pulse]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Path_Desk]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Program]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Desk]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Curve_Desk]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Ramp_Desk]\nPos=0,25\nSize=1440,787\nCollapsed=0\n\n[Window][Previs]\nPos=768,25\nSize=374,366\nCollapsed=0\n\n[Window][BLINK_LaserMask_A]\nPos=0,247\nSize=766,144\nCollapsed=0\n\n[Window][bundlesplit_0]\nPos=0,25\nSize=766,220\nCollapsed=0\n\n[Window][Adaptive_Mapping_A]\nPos=0,25\nSize=766,220\nCollapsed=0\n\n[Window][Mapping_Editor_B]\nPos=0,25\nSize=766,220\nCollapsed=0\n\n[Window][Adaptive_Mapping_B]\nPos=0,25\nSize=766,220\nCollapsed=0\n\n[Window][SS_Rig]\nPos=0,25\nSize=1059,791\nCollapsed=0\n\n[Window][SS_Show]\nPos=0,25\nSize=1059,791\nCollapsed=0\n\n[Window][SS_Program]\nPos=0,25\nSize=1059,791\nCollapsed=0\n\n[Window][SS_Venue]\nPos=0,25\nSize=1059,791\nCollapsed=0\n\n[Docking][Data]\nDockSpace                                     ID=0xCCBD8CF7 Window=0x3DA2F1DE Pos=0,25 Size=2560,1504 Split=Y\n  DockNode                                    ID=0x00000003 Parent=0xCCBD8CF7 SizeRef=1222,1399 Split=X Selected=0x376FDC27\n    DockNode                                  ID=0x00000007 Parent=0x00000003 SizeRef=772,733 Split=X Selected=0x49E0C22C\n      DockNode                                ID=0x00000001 Parent=0x00000007 SizeRef=2386,1284 Split=X Selected=0x5AAC8CBA\n        DockNode                              ID=0x00000009 Parent=0x00000001 SizeRef=742,790 Selected=0x9E38CE87\n        DockNode                              ID=0x0000000A Parent=0x00000001 SizeRef=749,790 Split=X Selected=0x376FDC27\n          DockNode                            ID=0x0000000B Parent=0x0000000A SizeRef=748,946 Split=X Selected=0xE70A4581\n            DockNode                          ID=0x0000000D Parent=0x0000000B SizeRef=744,1033 Selected=0x20D93D22\n            DockNode                          ID=0x0000000E Parent=0x0000000B SizeRef=750,1033 Split=X Selected=0x02C97118\n              DockNode                        ID=0x0000000F Parent=0x0000000E SizeRef=538,954 Selected=0x20D93D22\n              DockNode                        ID=0x00000010 Parent=0x0000000E SizeRef=956,954 Split=X Selected=0xE0A9D438\n                DockNode                      ID=0x00000011 Parent=0x00000010 SizeRef=507,1466 Selected=0x02C97118\n                DockNode                      ID=0x00000012 Parent=0x00000010 SizeRef=514,1466 Split=X Selected=0x5143A3F3\n                  DockNode                    ID=0x00000013 Parent=0x00000012 SizeRef=1655,933 Split=X Selected=0x1AEF5FB2\n                    DockNode                  ID=0x00000015 Parent=0x00000013 SizeRef=694,924 Split=X Selected=0x42F69FEE\n                      DockNode                ID=0x00000017 Parent=0x00000015 SizeRef=1091,1089 Split=Y Selected=0x5143A3F3\n                        DockNode              ID=0x00000019 Parent=0x00000017 SizeRef=1649,240 Split=X Selected=0x5143A3F3\n                          DockNode            ID=0x0000001B Parent=0x00000019 SizeRef=619,546 Selected=0x9532010E\n                          DockNode            ID=0x0000001C Parent=0x00000019 SizeRef=470,546 Selected=0x5143A3F3\n                        DockNode              ID=0x0000001A Parent=0x00000017 SizeRef=1649,538 Selected=0x1AEF5FB2\n                      DockNode                ID=0x00000018 Parent=0x00000015 SizeRef=460,1089 Split=X Selected=0x02C97118\n                        DockNode              ID=0x0000001D Parent=0x00000018 SizeRef=1751,1297 Split=X Selected=0xE0A9D438\n                          DockNode            ID=0x00000023 Parent=0x0000001D SizeRef=871,1307 Selected=0x20EB7BCC\n                          DockNode            ID=0x00000024 Parent=0x0000001D SizeRef=878,1307 Split=X Selected=0xE0A9D438\n                            DockNode          ID=0x00000025 Parent=0x00000024 SizeRef=871,1370 Selected=0x20D93D22\n                            DockNode          ID=0x00000026 Parent=0x00000024 SizeRef=878,1370 Selected=0x20D93D22\n                        DockNode              ID=0x0000001E Parent=0x00000018 SizeRef=1758,1297 Split=X Selected=0x6F8F03EC\n                          DockNode            ID=0x0000001F Parent=0x0000001E SizeRef=1625,1430 Selected=0x126EDD9C\n                          DockNode            ID=0x00000020 Parent=0x0000001E SizeRef=1631,1430 Split=X Selected=0x6F8F03EC\n                            DockNode          ID=0x00000021 Parent=0x00000020 SizeRef=300,1230 Selected=0x2E9591B9\n                            DockNode          ID=0x00000022 Parent=0x00000020 SizeRef=1678,1230 Split=X Selected=0x1AEF5FB2\n                              DockNode        ID=0x00000027 Parent=0x00000022 SizeRef=1625,1379 Split=Y Selected=0x5143A3F3\n                                DockNode      ID=0x00000029 Parent=0x00000027 SizeRef=1625,691 Selected=0x5143A3F3\n                                DockNode      ID=0x0000002A Parent=0x00000027 SizeRef=1625,686 Selected=0x1AEF5FB2\n                              DockNode        ID=0x00000028 Parent=0x00000022 SizeRef=1631,1379 Split=X Selected=0x1AEF5FB2\n                                DockNode      ID=0x0000002B Parent=0x00000028 SizeRef=490,1360 Selected=0x5143A3F3\n                                DockNode      ID=0x0000002C Parent=0x00000028 SizeRef=1747,1360 Split=X Selected=0x42F69FEE\n                                  DockNode    ID=0x0000002D Parent=0x0000002C SizeRef=1399,1338 Selected=0x1AEF5FB2\n                                  DockNode    ID=0x0000002E Parent=0x0000002C SizeRef=1864,1338 Split=X Selected=0x476F43E6\n                                    DockNode  ID=0x0000002F Parent=0x0000002E SizeRef=698,887 CentralNode=1 Selected=0x9DBCDEDC\n                                    DockNode  ID=0x00000030 Parent=0x0000002E SizeRef=1285,887 Selected=0x45044B39\n                    DockNode                  ID=0x00000016 Parent=0x00000013 SizeRef=689,924 Selected=0x39098FBF\n                  DockNode                    ID=0x00000014 Parent=0x00000012 SizeRef=1650,933 Selected=0x39098FBF\n          DockNode                            ID=0x0000000C Parent=0x0000000A SizeRef=743,946 Selected=0x0F7EB38B\n      DockNode                                ID=0x00000002 Parent=0x00000007 SizeRef=573,1284 Selected=0x8C72BEA8\n    DockNode                                  ID=0x00000008 Parent=0x00000003 SizeRef=768,733 Selected=0xF8DF7B23\n  DockNode                                    ID=0x00000004 Parent=0xCCBD8CF7 SizeRef=1222,663 Split=X Selected=0xF12F3499\n    DockNode                                  ID=0x00000005 Parent=0x00000004 SizeRef=808,707 Selected=0xD33228A6\n    DockNode                                  ID=0x00000006 Parent=0x00000004 SizeRef=1752,707 Selected=0xF12F3499\n\n",
+  "name": "breathing_room",
+  "nodePresets": [
+    {
+      "created": "2026-10-01T19:32:04",
+      "id": "448b77f9-759d-724d-c0f01bcce17e",
+      "modified": "2026-10-01T19:32:04",
+      "name": "Frame - Hearth",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "camera_mode",
+          "value": "0"
+        },
+        {
+          "name": "camera_pos_x",
+          "value": "2.95"
+        },
+        {
+          "name": "camera_pos_y",
+          "value": "1.42"
+        },
+        {
+          "name": "camera_pos_z",
+          "value": "0.85"
+        },
+        {
+          "name": "camera_yaw",
+          "value": "-1.75"
+        },
+        {
+          "name": "camera_pitch",
+          "value": "-0.17"
+        },
+        {
+          "name": "camera_fov",
+          "value": "64.000000"
+        }
+      ],
+      "pipelineType": "module:BR_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-10-01T19:32:15",
+      "id": "ebaeab4e-fb64-22ba-1c76a5a75eb1",
+      "modified": "2026-10-01T19:32:15",
+      "name": "Frame - Fireplace",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "camera_mode",
+          "value": "0"
+        },
+        {
+          "name": "camera_pos_x",
+          "value": "0.35"
+        },
+        {
+          "name": "camera_pos_y",
+          "value": "1.15"
+        },
+        {
+          "name": "camera_pos_z",
+          "value": "-1.000000"
+        },
+        {
+          "name": "camera_yaw",
+          "value": "0.05"
+        },
+        {
+          "name": "camera_pitch",
+          "value": "-0.12"
+        },
+        {
+          "name": "camera_fov",
+          "value": "58.000000"
+        }
+      ],
+      "pipelineType": "module:BR_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-10-01T19:32:15",
+      "id": "3d61b990-dc46-c7d2-ebf964b0efda",
+      "modified": "2026-10-01T19:32:15",
+      "name": "Frame - Corner",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "camera_mode",
+          "value": "0"
+        },
+        {
+          "name": "camera_pos_x",
+          "value": "2.7"
+        },
+        {
+          "name": "camera_pos_y",
+          "value": "1.3"
+        },
+        {
+          "name": "camera_pos_z",
+          "value": "1.9"
+        },
+        {
+          "name": "camera_yaw",
+          "value": "-2.35"
+        },
+        {
+          "name": "camera_pitch",
+          "value": "-0.12"
+        },
+        {
+          "name": "camera_fov",
+          "value": "58.000000"
+        }
+      ],
+      "pipelineType": "module:BR_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-10-01T19:33:39",
+      "id": "e667b26b-767f-90aa-0d4f122b7535",
+      "modified": "2026-10-01T19:33:39",
+      "name": "Quality - Hero (capture only)",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "render_scale",
+          "value": "1.0"
+        },
+        {
+          "name": "march_steps",
+          "value": "320"
+        },
+        {
+          "name": "shadow_steps",
+          "value": "160"
+        },
+        {
+          "name": "refl_steps",
+          "value": "160"
+        },
+        {
+          "name": "gi_budget",
+          "value": "4096"
+        },
+        {
+          "name": "fog_steps",
+          "value": "96"
+        },
+        {
+          "name": "taa_floor",
+          "value": "0.02"
+        }
+      ],
+      "pipelineType": "module:BR_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-10-01T19:33:39",
+      "id": "8aebb3e3-c923-ad1a-7cc8026ad89c",
+      "modified": "2026-10-01T19:33:39",
+      "name": "Quality - Beauty",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "render_scale",
+          "value": "1.0"
+        },
+        {
+          "name": "march_steps",
+          "value": "200"
+        },
+        {
+          "name": "shadow_steps",
+          "value": "96"
+        },
+        {
+          "name": "refl_steps",
+          "value": "96"
+        },
+        {
+          "name": "gi_budget",
+          "value": "2048"
+        },
+        {
+          "name": "fog_steps",
+          "value": "48"
+        },
+        {
+          "name": "taa_floor",
+          "value": "0.03"
+        }
+      ],
+      "pipelineType": "module:BR_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-10-01T19:33:39",
+      "id": "85be45c2-4232-aee1-a09e4896e298",
+      "modified": "2026-10-01T19:33:39",
+      "name": "Quality - Draft",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "render_scale",
+          "value": "1.0"
+        },
+        {
+          "name": "march_steps",
+          "value": "96"
+        },
+        {
+          "name": "shadow_steps",
+          "value": "32"
+        },
+        {
+          "name": "refl_steps",
+          "value": "0"
+        },
+        {
+          "name": "gi_budget",
+          "value": "512"
+        },
+        {
+          "name": "fog_steps",
+          "value": "16"
+        },
+        {
+          "name": "taa_floor",
+          "value": "0.06"
+        }
+      ],
+      "pipelineType": "module:BR_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-10-01T19:33:39",
+      "id": "09bf035a-0ff4-f8b6-86e0bb6064e9",
+      "modified": "2026-10-01T19:33:39",
+      "name": "Quality - Live",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "render_scale",
+          "value": "1.0"
+        },
+        {
+          "name": "march_steps",
+          "value": "128"
+        },
+        {
+          "name": "shadow_steps",
+          "value": "48"
+        },
+        {
+          "name": "refl_steps",
+          "value": "48"
+        },
+        {
+          "name": "gi_budget",
+          "value": "1024"
+        },
+        {
+          "name": "fog_steps",
+          "value": "24"
+        },
+        {
+          "name": "taa_floor",
+          "value": "0.04"
+        }
+      ],
+      "pipelineType": "module:BR_Render",
+      "scope": "project"
+    },
+    {
+      "created": "2026-10-06T12:00:00",
+      "id": "5d1e7a40-6b2c-4f19-9a83c2e4b7d1",
+      "modified": "2026-10-06T12:00:00",
+      "name": "Quality - Laptop",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "render_scale",
+          "value": "0.4"
+        },
+        {
+          "name": "march_steps",
+          "value": "128"
+        },
+        {
+          "name": "shadow_steps",
+          "value": "24"
+        },
+        {
+          "name": "refl_steps",
+          "value": "16"
+        },
+        {
+          "name": "gi_budget",
+          "value": "512"
+        },
+        {
+          "name": "fog_steps",
+          "value": "16"
+        },
+        {
+          "name": "taa_floor",
+          "value": "0.04"
+        }
+      ],
+      "pipelineType": "module:BR_Render",
+      "scope": "project"
+    }
+  ],
+  "osc": {
+    "enabled": true,
+    "receivePort": 9002,
+    "sendFeedback": true,
+    "sendHost": "127.0.0.1",
+    "sendPort": 9021,
+    "stateTreeBridge": true
+  },
+  "outputObjects": [],
+  "outputs": [],
+  "pipelines": [
+    {
+      "displayName": "BR Shell",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "BR_Shell",
+      "inputSlotSourceIds": [],
+      "operator_mode": "normal",
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "BR_Shell",
+      "panelOpen": true,
+      "parameters": {
+        "archway": "0.000000",
+        "baseboard": "0.190000",
+        "ceiling": "2.850000",
+        "crown": "1.000000",
+        "curtains": "1.000000",
+        "door": "1.000000",
+        "fireplace": "1.000000",
+        "floor_pattern": "0.000000",
+        "picture_rail": "1.000000",
+        "plank_width": "0.085000",
+        "project_dir": "modules/BR_Shell",
+        "radiators": "1.000000",
+        "rail_height": "2.450000",
+        "resolution_height": "960",
+        "resolution_width": "1280",
+        "room_depth": "5.000000",
+        "room_width": "6.400000",
+        "snap": "0.050000",
+        "style": "0.000000",
+        "wall_thickness": "0.300000",
+        "window_count": "2.000000",
+        "window_wall": "3.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "BR Finish",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "BR_Finish",
+      "inputSlotSourceIds": [],
+      "operator_mode": "normal",
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "BR_Finish",
+      "panelOpen": true,
+      "parameters": {
+        "brass_colour_b": "0.480000",
+        "brass_colour_g": "0.780000",
+        "brass_colour_r": "0.950000",
+        "brass_rough": "0.280000",
+        "ceiling_paint_b": "0.830000",
+        "ceiling_paint_g": "0.880000",
+        "ceiling_paint_r": "0.900000",
+        "floor_grain_b": "0.120000",
+        "floor_grain_g": "0.240000",
+        "floor_grain_r": "0.400000",
+        "floor_rough": "0.320000",
+        "floor_tone_b": "0.250000",
+        "floor_tone_g": "0.430000",
+        "floor_tone_r": "0.640000",
+        "floor_varnish": "0.850000",
+        "glaze_colour_b": "0.300000",
+        "glaze_colour_g": "0.500000",
+        "glaze_colour_r": "0.460000",
+        "leaf_colour_b": "0.160000",
+        "leaf_colour_g": "0.400000",
+        "leaf_colour_r": "0.250000",
+        "leather_colour_b": "0.140000",
+        "leather_colour_g": "0.290000",
+        "leather_colour_r": "0.560000",
+        "linen_colour_b": "0.570000",
+        "linen_colour_g": "0.670000",
+        "linen_colour_r": "0.740000",
+        "project_dir": "modules/BR_Finish",
+        "radiator_paint_b": "0.720000",
+        "radiator_paint_g": "0.790000",
+        "radiator_paint_r": "0.820000",
+        "resolution_height": "860",
+        "resolution_width": "1280",
+        "shade_colour_b": "0.780000",
+        "shade_colour_g": "0.890000",
+        "shade_colour_r": "0.950000",
+        "sheer_colour_b": "0.860000",
+        "sheer_colour_g": "0.920000",
+        "sheer_colour_r": "0.950000",
+        "sheer_trans": "0.620000",
+        "stone_base_b": "0.840000",
+        "stone_base_g": "0.870000",
+        "stone_base_r": "0.880000",
+        "stone_vein_b": "0.440000",
+        "stone_vein_g": "0.450000",
+        "stone_vein_r": "0.460000",
+        "terracotta_colour_b": "0.270000",
+        "terracotta_colour_g": "0.420000",
+        "terracotta_colour_r": "0.740000",
+        "texture_scale": "1.000000",
+        "travertine_colour_b": "0.620000",
+        "travertine_colour_g": "0.740000",
+        "travertine_colour_r": "0.820000",
+        "trim_paint_b": "0.820000",
+        "trim_paint_g": "0.880000",
+        "trim_paint_r": "0.900000",
+        "trim_rough": "0.380000",
+        "velvet_colour_b": "0.170000",
+        "velvet_colour_g": "0.300000",
+        "velvet_colour_r": "0.660000",
+        "wall_paint_b": "0.720000",
+        "wall_paint_g": "0.810000",
+        "wall_paint_r": "0.860000",
+        "wall_rough": "0.880000",
+        "walnut_colour_b": "0.170000",
+        "walnut_colour_g": "0.270000",
+        "walnut_colour_r": "0.420000",
+        "window_paint_b": "0.800000",
+        "window_paint_g": "0.860000",
+        "window_paint_r": "0.880000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "BR Lens",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "BR_Lens",
+      "inputSlotSourceIds": [
+        "BR_Render",
+        "BR_Trip",
+        "BR_Render"
+      ],
+      "mousePassthroughSlot": 0,
+      "operator_mode": "normal",
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "BR_Lens",
+      "panelOpen": true,
+      "parameters": {
+        "aberration": "0.300000",
+        "bloom": "0.350000",
+        "bloom_threshold": "1.200000",
+        "contrast": "1.060000",
+        "exposure": "1.000000",
+        "grain": "0.250000",
+        "lamp_rainbows": "0.150000",
+        "project_dir": "modules/BR_Lens",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "saturation": "1.000000",
+        "trip_warp": "0.420000",
+        "view": "0.000000",
+        "vignette": "0.280000",
+        "white_balance": "4300.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "BR Light",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "BR_Light",
+      "inputSlotSourceIds": [
+        "BR_Shell",
+        "BR_Furnish"
+      ],
+      "operator_mode": "normal",
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "BR_Light",
+      "panelOpen": true,
+      "parameters": {
+        "compass": "0.000000",
+        "day_of_year": "265.000000",
+        "fire": "1.000000",
+        "fire_flicker": "0.600000",
+        "fire_power": "1.000000",
+        "lamp_kelvin": "2700.000000",
+        "lamp_master": "1.000000",
+        "lamps_on": "1.000000",
+        "latitude": "51.500000",
+        "project_dir": "modules/BR_Light",
+        "resolution_height": "900",
+        "resolution_width": "1280",
+        "sky_gain": "1.000000",
+        "sun_intensity": "16.000000",
+        "sun_softness": "0.008000",
+        "time_of_day": "16.250000",
+        "trees": "0.500000",
+        "wind": "0.350000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "BR Render",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "BR_Render",
+      "inputSlotSourceIds": [
+        "BR_Shell",
+        "BR_Finish",
+        "BR_Furnish",
+        "BR_Light",
+        "BR_Trip",
+        "BR_Rug"
+      ],
+      "operator_mode": "normal",
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "BR_Render",
+      "panelOpen": true,
+      "parameters": {
+        "ao_gain": "0.850000",
+        "ao_radius": "0.450000",
+        "camera_distance": "5.000000",
+        "camera_far": "100.000000",
+        "camera_fov": "64.000000",
+        "camera_look_sensitivity": "6.000000",
+        "camera_mode": "0",
+        "camera_move_speed": "0.714362",
+        "camera_near": "0.100000",
+        "camera_pitch": "-0.127081",
+        "camera_pos_x": "2.782661",
+        "camera_pos_y": "1.182584",
+        "camera_pos_z": "1.724264",
+        "camera_target_x": "0.000000",
+        "camera_target_y": "1.000000",
+        "camera_target_z": "0.000000",
+        "camera_yaw": "-2.239995",
+        "dust_amount": "0.600000",
+        "fog_density": "0.018000",
+        "fog_steps": "16.000000",
+        "gi_bounce": "0.920000",
+        "gi_budget": "512.000000",
+        "gi_gain": "1.000000",
+        "gi_hysteresis": "0.015000",
+        "march_steps": "128.000000",
+        "preview_ev": "1.000000",
+        "project_dir": "modules/BR_Render",
+        "refl_steps": "16.000000",
+        "render_scale": "0.400000",
+        "reset_accum": "0.000000",
+        "resolution_height": "720",
+        "resolution_width": "1280",
+        "shadow_steps": "24.000000",
+        "sky_intensity": "1.000000",
+        "sun_azimuth": "250.000000",
+        "sun_direct": "1.000000",
+        "sun_elevation": "24.000000",
+        "sun_intensity": "16.000000",
+        "sun_softness": "0.008000",
+        "taa": "1.000000",
+        "taa_floor": "0.040000",
+        "tree_density": "0.600000",
+        "tree_wind": "0.350000",
+        "view": "0.000000",
+        "white_balance": "4300.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "BR Trip",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "BR_Trip",
+      "inputSlotSourceIds": [
+        "BR_Shell",
+        "BR_Furnish"
+      ],
+      "operator_mode": "normal",
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "BR_Trip",
+      "panelOpen": false,
+      "parameters": {
+        "arc": "0.000000",
+        "breathe": "0.596000",
+        "colour": "0.294000",
+        "dose": "1.457000",
+        "drift": "0.664000",
+        "furniture": "0.000000",
+        "geometry": "0.331000",
+        "melt": "1.000000",
+        "motif": "0.000000",
+        "project_dir": "modules/BR_Trip",
+        "resolution_height": "900",
+        "resolution_width": "1280",
+        "swim_scale": "0.443000",
+        "tempo": "1.000000",
+        "variation": "0.000000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "BR Furnish",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "BR_Furnish",
+      "inputSlotSourceIds": [
+        "BR_Shell"
+      ],
+      "operator_mode": "normal",
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "BR_Furnish",
+      "panelOpen": true,
+      "parameters": {
+        "arrangement": "0.000000",
+        "coffee_gap": "0.450000",
+        "layering": "1.000000",
+        "project_dir": "modules/BR_Furnish",
+        "resolution_height": "960",
+        "resolution_width": "1280",
+        "snap": "0.050000",
+        "variation": "7.000000",
+        "walkway": "0.900000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    },
+    {
+      "displayName": "BR Rug",
+      "enabled": true,
+      "expressions": null,
+      "fitMode": 1,
+      "id": "BR_Rug",
+      "inputSlotSourceIds": [
+        "BR_Furnish"
+      ],
+      "operator_mode": "normal",
+      "outputFitMode": 1,
+      "outputSinkId": "",
+      "panelAnchorId": "BR_Rug",
+      "panelOpen": true,
+      "parameters": {
+        "abrash": "0.500000",
+        "border": "0.115000",
+        "field_scale": "0.240000",
+        "knot": "0.003400",
+        "medallion": "0.420000",
+        "palette": "0.000000",
+        "project_dir": "modules/BR_Rug",
+        "resolution_height": "900",
+        "resolution_width": "1280",
+        "seed": "0.000000",
+        "style": "0.000000",
+        "wear": "0.300000"
+      },
+      "running": true,
+      "secondaryInputFilePaths": null,
+      "type": "module"
+    }
+  ],
+  "saved_at_ms": 1791275004812,
+  "sources": [],
+  "statePayloads": {
+    "BR_Furnish": {
+      "furnish": {
+        "data": "0000f0410000a04000000000000000000000000090c235bf00000000000000009a993940a69b443c9a9919404822a93d000070410000704100000000000080bf0000f0410000803f000000000000803f000000006766f6bf0000000000000000cdcc0c403d0a573f3333733f4146063f000020410000404100000000000000000000f041000000400000803f000000409a99a9bf9d99d9bea783ad3f000000006666663fcdcc4c3f6666663f10a2dc3e000080410000404100000000000000000000f0410000004000000040000040403e0aa73f9d99d9bea783adbf0000000085eb513f85eb913ff6285c3f8e9b0d3f000020410000404100000000000000000000f041000040400000803f0000804000000000686606bf00000000000000003333733fec51b83e3333733f4481cc3e0000b8410000504100000000000000000000f04100008040000000400000a0401f85abbfec5108c000000000000000003d0ad73e8fc2f53e3d0ad73e8c8f813e0000604100006041000000000000803f0000f04100008040000000400000c0401f85ab3fec5108c000000000000000003d0ad73e8fc2f53e3d0ad73eceef3c3f0000604100006041000000000000803f0000f0410000e0400000803f0000e0401f85abbf713d0ac0000000008fc2f53e9a99993ee17a143f9a99993e5cda173e000050410000a041000000410000a0400000f0410000e0400000803f000000411f85ab3f713d0ac0000000008fc2f53e9a99993ee17a143f9a99993e1e24a23e000050410000a041000000410000c0400000f0410000c0400000000000001041713deabfd7a310c03b17543f00000000cdcccc3e9a99f93fcdcccc3e63466e3f000050410000a041000000410000803f0000f04100000041000000000000204100000000686606bf00000000ffffdf3fcdcccc3ecdcccc3ecdcccc3ea2a7413f0000a0410000504100000041000080400000f041000010410000803f00003041333303c0f6281440db0f49c0000000003333b33f8fc2f53fec51b83ea1cc1f3f000040410000884100000000000080c00000f041000010410000803f0000404133330340f6281440db0f49c0000000003333b33f8fc2f53fec51b83e90de403f000040410000884100000000000080c00000f04100002041000000000000504152b83e4053b81ebfdb0fc9bf00000000cdcccc3f52b81e3f3d0ad73e30ef243e000040410000504100000000000040c00000f041000030410000000000006041d7a330c0b81e05c0db0fc93f00000000cdcc4c3f0ad7e33fcdcc4c3f04a6823e0000904100009841000000000000a0c00000f041000030410000803f00007041c2f5e83f713d0ac000000000000000003d0ad73eae47613f3d0ad73ed4a51c3e0000904100009841000000000000803f0000f0410000304100000040000080410ad733c0ec510840db0fc93f000000003333333f0000c03f3333333f848bb03e0000904100006041000000400000a0c00000f04100004041000000000000884100000000000020c000000000703d8a3f0ad7233f3d0a573f295c0f3de7e2183f0000b0410000884100000000000000c00000f041000040410000803f00009041cdcc4c4053b81ebfdb0fc9bfec51983fcdcc8c3f5c8f423fec51383d9769303f000088410000884100000000000040c00000f04100004041000000400000984100000000d7a30840db0f49c048e1ba3fcdcc4c3fcdcc4c3f295c0f3da810e43e000050410000a04000000000000080c00000f04100005041000000000000a041d8a330bfe27af4bf8fc2f53d6666e63e1f85eb3e1f85eb3e9a99193e3122233f0000304100008041000000000000803f0000f04100005041000000000000a841d8a3303fe27af4bfcdccccbd6666e63e1f85eb3e1f85eb3e9a99193e88c98e3d0000304100008041000000000000803f0000f041000050410000803f0000b041cdcc4c3dc74bf7bf8fc2f53c6666e63e295c0f3fec51b83e295c0f3e7eff8e3e0000204100008041000000400000803f0000f04100005041000000000000b841ed5ab7bfafa0e5bea783ad3ff628dc3e1f85eb3e1f85eb3e9a99193e9f19483f000080410000804100000040000000400000f04100006041000000000000c0410ad723be49e11abf3333b33eec51b83e295c8f3eb81e053e3d0a573e02e6423f000088410000884100000000000080400000f04100007041000000000000c841ec51383e9d99d9be00000000ec51b83eec51383ee17a143fec51383e69040e3f000060410000904100000000000080400000f04100006041000000000000d041a4703d402a5c8fbf74a9a2bf52b81e3f295c8f3eb81e053e3d0a573e0d86483f000088410000884100000040000050410000f0410000e040000000000000d84152b83e40a0c275bddb0fc9bf52b81e3f5c8fc23e0ad7233f5c8fc23e3ca1ad3e000060410000a04100000041000050410000f04100007041000000000000e041e17a143fe17a0440db0f49c052b89e3fec51383ee17a143fec51383e0043df3e0000604100009041000000400000c0c00000f04100008041000000000000e8410000000066661640db0f49c0295c0f3de17a143fae47613e9a99993e5048ab3d000040410000b041000000000000e0c00000f04100000000000000000000f0410000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f04100000000000000000000f8410000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000000420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000004420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000008420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f041000000000000000000000c420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000010420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000014420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000018420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f041000000000000000000001c420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000020420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000024420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000028420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f041000000000000000000002c420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000030420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000034420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f0410000000000000000000038420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf0000f041000000000000000000003c420000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000080bf00000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000803f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100004040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000080400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000a0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000c0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000e0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100001041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000020410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000304100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100004041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000050410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000604100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100007041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000080410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000884100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100009041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000098410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000a0410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000a8410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000b0410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000b8410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000c0410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000c8410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000d0410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000d8410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000e0410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000e841000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c42000080bf000000406666a63f0000000000000000000000000000000000000000000000000000000000000000ac0500000000e0410000000033339b4000001c42000000400000000000000000ffff5b42000064420000000000000000000000000000000000000000000000000000000000000000000000009c7e1ca9000000000000803f000000000000c040000000000080b5440000000000000000000000000000000000000000000000000000000000000000000000000000000000001c420000803f00001041000000006566e63eec5128408428963fd04ec63f00d7a3bb343393bf176cc13fb86dab3f0000404000004040ebafbd400000000000001c420000004000000000000000009a9919c076dbb63defeeeebfddb64d3f00000000686606bf0000000033339b400000004000000040000040400000804000001c42000000400000803f000000003fe993bfb86d7b3f388ee3beb86d7b3f00000000686606bf0000000033339b400000004000000040000040400000804000001c420000004000000040000000008a88883eb86d7b3fa64f7a3fb86d7b3f00000000686606bf0000000033339b400000004000000040000040400000804000001c42000000400000404000000000832dd83f2549c23f9a9919402549c23f00000000686606bf0000000033339b400000004000000040000040400000804000001c4200000040000080400000000000003040d7a3e03f000000000000000000000000686606bf0000000033339b400000004000000040000040400000804000001c42000000400000a040000000000000000000000000000000000000000000000000686606bf0000000033339b400000004000000040000040400000804000001c42000000400000c040000000000000000000000000000000000000000000000000686606bf0000000033339b400000004000000040000040400000804000001c42000000400000e040000000000000000000000000000000000000000000000000686606bf0000000033339b400000004000000040000040400000804000001c420000004000000041000000000000000000000000000000000000000000000000686606bf0000000033339b400000004000000040000040400000804000001c420000004000001041000000000000000000000000000000000000000000000000686606bf0000000033339b400000004000000040000040400000804000001c420000004000002041000000000000000000000000000000000000000000000000686606bf0000000033339b400000004000000040000040400000804000001c420000004000003041000000000000000000000000000000000000000000000000686606bf0000000033339b4000000040000000400000404000008040",
+        "element_count": 112,
+        "element_size": 64,
+        "encoding": "hex",
+        "schema_signature": "15364426862648167621"
+      }
+    },
+    "BR_Light": {
+      "light": {
+        "data": "000020420000803f00000000000000007b9565bfcab9883e9e98b4be000080410000803f6f12033c3333b33e0000003f000082410080844300004e4200000000000024420000e0400000803f0000e0400000003f00c02845000000000000803f4edeff3f76ec483f8a22423e0000803f1f85abbf7a146e3f713d0ac00000000000002442000000410000803f0000e0400000003f00c02845000000000000803f4edeff3f76ec483f8a22423e0000803f1f85ab3f7a146e3f713d0ac00000000000002442000010410000803f0000c0406666663f00c02845000000000000803f4edeff3f76ec483f8a22423e0000803fe2696cbfd81d853f58d6b6bf0000000000002442000020410000803f000000413333333f00c02845000000000000803f4edeff3f76ec483f8a22423e0000803f000000009999f93f686606bf00000000000024420000d8410000803f0000e0400000003f00c02845000000000000803f4edeff3f76ec483f8a22423e0000803f52b83e40c2f5883fa0c275bd00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000024420000c6420000803f000000009a99993f0040e7449a99193f0000803fa2c12b408cb7193f000000000000803f00000000b81e853e8fc21540000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044420000803f000000000000000052c3be402c4f90419be7d4401ac68a414ed077419b8778430000824100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004442000080bf000000000000803f000000000000000000000000000000000000d94300804e44000080bf000000004f01000000009e4300802e4400804b4400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000c642000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000803f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100004040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000080400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000a0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "element_count": 32,
+        "element_size": 64,
+        "encoding": "hex",
+        "schema_signature": "10898310683186591471"
+      }
+    },
+    "BR_Rug": {
+      "rug": {
+        "data": "0000704200000000a470bd3e0000803f1f85eb3d3d0ad73e8fc2753e0000003f9a99993e89d25e3b00000000000000003133143f1f3a283ed267083e00000000000070420000c84200000000000000001cdeb23e32ce653d1a1e383c000000000000000000000000000000000000000000000000000000000000000000000000000070420000ca420000000000000000a9b8583ced58313df47eed3c000000000000000000000000000000000000000000000000000000000000000000000000000070420000cc420000000000000000ac713c3fb507213f5925d43e000000000000000000000000000000000000000000000000000000000000000000000000000070420000ce4200000000000000008369183f59759a3e32ce653d000000000000000000000000000000000000000000000000000000000000000000000000000070420000d0420000000000000000ed58313dd267083e7bacb23d000000000000000000000000000000000000000000000000000000000000000000000000000070420000d24200000000000000009ddc173efb6c893e043ecd3e000000000000000000000000000000000000000000000000000000000000000000000000000070420000d44200000000000000000bfcfe3bb6aa3c3b01fdb33a00000000000000000000000000000000000000000000000000000000000000000000000000008a4200000000000000000000803f9a99b93f9a99993f0000803f00000000000055430000d243000080bf000080bfe600000000800f4400a0a04400804b4400000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000803f00000000000000000000803f00001041000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "element_count": 16,
+        "element_size": 64,
+        "encoding": "hex",
+        "schema_signature": "1551291527884744359"
+      }
+    },
+    "BR_Shell": {
+      "shell": {
+        "data": "0000803f000000000000000000007041cdcc4cc0cdcc4c40000020c000002040666636409a99993e5c8f423eb81e053ecdcc1c407b14ae3d0000404000c01b440000004000000000000080bf00000000cdcc4cc0cdcc4c40000020c0cdcccc40000000000000803f000080bf000000000000000000000000000000000000803f000000400000803f000080bf00000000000020c000002040cdcc4c400000a040000080bf0000000000000000000080bf0000803f00000000000000000000803f0000004000000040000080bf00000000cdcc4cc0cdcc4c4000002040cdcccc4000000000000080bf0000803f000000000000803f00000000000000000000803f0000004000004040000080bf00000000000020c000002040cdcc4cc00000a0400000803f00000000000000000000803f0000004000000000000000000000803f000040400000803f00004040000000000000a0bf6666863fc3f5e83fcdcc0c3f000000400000803f000000000000803f0000803f000000000000803f00000000000040400000803f000040400000803f0000a03f6666863fc3f5e83fcdcc0c3f000000400000803f000000000000803f0000803f000000000000803f00000000000040400000803f0000404000000040cdccfc3f6666863fc3f5e83fcdcc0c3f000000400000803f000000000000803f0000803f000000000000000000000000000040400000e0400000004000004040000000006666e63f52b89e3f00000000f6285c3fcdcc4c3fec51b83e0000000000000000000000000000803f00000000000040400000a0400000803f00008040d7a3e03f9a99593f66660640000000000000004000004040000000000000000000000000000000000000803f00000000000040400000c040000000000000a040000000406666a63f666616400000000000000000000000000000000000000000000000000000000000000000000000000000404000000000000040400000c040000000000000803f6666e63f9a99193f0000803f0000803f0000000000000000000000000000000000000000000000000000404000000000000040400000e040000000000000803f6666e63f9a99193f0000803f0000803f000000000000000000000000000000000000000000000000000000000000803f000000000000c040000000400040224400000000000000000000004200004040000000400080204400000000000000000000000000000000000010410000803f0000000000000000000000000000000000000000000000000000dc4200802c44cdcc4cc00000204000802e4400804b4400000000000000000000104100000000000080bf0000404000000000000000000000000000000000000000000000000000000000000000008902000000c01b440000000000000000000000410000803f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "element_count": 32,
+        "element_size": 64,
+        "encoding": "hex",
+        "schema_signature": "6216636976720682073"
+      }
+    },
+    "BR_Trip": {
+      "trip": {
+        "data": "000048420000803f00004041000000000000803f7593183fe7fb293f0000803fd578a93e2b87963ee8fbe93e000000000e8f95470000803f0000803f0000803f00004c4200004040000000000000803f000000000000000090c235bf2506813f0000403f295c8f3d7e8cc2403824ce3e000000000000803f000000000000000000004c42000080400000803f0000803f0000000066663640686606bfcdccac3fcdcc4c3fec51b83db700663fc4486c3e00000000000080bf000000000000803f00004c420000803f000000400000803f79e9c6bf6666c63f000020c0f0a7a63f3333333f8fc2f53dede40b404c660c3e00000000000000000000803f0000004000004c4200008040000080400000803f00000000b81ee53fc2f50840cdcc0c3f9a99193f0ad7a33da71280406d88483f0000000000000000000080bf0000404000004c4200000040000080400000803f00000000f6289c3f0ad7034052b81e3fcdcc0c3f8fc2753da083023d4479263f0000000000000000000080bf0000804000004c4200004040000000400000803f00000000ffffbf3f000020c02506013f9a99193fcdcccc3dc7a69a40dcd5113f00000000000000000000803f0000a04000004c420000a040000000000000803f00000000000000003433933e3333933f0000003f295c8f3dc503ef3f0fe1303f000000000000803f000000000000c04000004c420000803f0000803f00000000343313c0666636400000a0bf9a99993f9a99193fae47e13d34d95840a9965c3f00000000000080bf000000000000e04000004c420000803f000088410000803f000000003d0ad73e6766f6bf6666663f3333333fb81e053e6e48d63f703a053e000000000000803f000000000000004100004c42000040400000f04100000000d7a330c00ad7633fb81e05c09a99193f9a99193fec51b83d0a565040247a683f000000000000803f000000000000104100004c42000000400000a0410000803f00000000ec51383e686606bf9a99193f9a99193fcdcc4c3d4cd43040aa0ec43e000000000000803f000000000000204100004c420000a0400000404000000000cdcc4c400000a03f3333b3bf6666663f0000003f0ad7a33d1ccbac40e8890e3e000080bf00000000000000000000304100006c42000000400000000000000000000000400000004000000040000000400000803f0000000000000000000000000000803f00000000000000000000000000006c42000080bf000000000000803f000000000000000000000000000000000020784400804e440000e040000080bf9c02000000000e440000a044000061440000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000803f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100004040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000080400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000a0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000c0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000e040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000104100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100002041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041000030410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000410000c64200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005042000000000000000000000000e5d0e23ef693134719d4c54600000000000000000000000000000000000000000000000000000000000000000000000000000041000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "element_count": 32,
+        "element_size": 64,
+        "encoding": "hex",
+        "schema_signature": "10494001612574907454"
+      }
+    }
+  },
+  "version": 7
+}

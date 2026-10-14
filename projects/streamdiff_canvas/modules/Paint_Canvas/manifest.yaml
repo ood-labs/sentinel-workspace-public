@@ -2,7 +2,9 @@ name: "Paint Canvas"
 version: "1.2"
 mode: generator
 resolution: [960, 720]
-time_dependent: true
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 
 panel:
   mode: canvas
@@ -56,14 +58,12 @@ viewport:
     - { gesture: wheel, action: zoom_canvas, label: "Zoom Canvas" }
     - { key: f, action: fit_canvas, label: "Fit Canvas" }
     - { key: x, action: clear, label: "Clear Canvas" }
-  # ui-label: title = PAINT CANVAS
-  # ui-label: nav = LMB PAINT  /  MMB PAN  /  WHEEL ZOOM  /  ALT WHEEL SIZE  /  F FIT  /  X CLEAR
-  # ui-label: clear = CLEAR
 
 buffers:
-  - { name: paint_state, structured: true, element_size: 16, element_count: 20, persistent: true }
+  - { name: paint_state, structured: true, element_size: 16, element_count: 21, persistent: true }
   - { name: poster, structured: true, element_size: 32, element_count: 1458000, persistent: true }
   - { name: poster_previous, structured: true, element_size: 32, element_count: 1458000, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 
 passes:
   - name: events
@@ -123,14 +123,36 @@ passes:
     inputs:
       - { slot: 0, source: "buffer:poster" }
 
+  - name: view
+    shader: view.hlsl
+    target: cs_5_0
+    format: RGBA8
+    inputs:
+      - { slot: 0, source: "pass:clean" }
+      - { slot: 1, source: "buffer:paint_state" }
+      - { slot: 2, source: "pass:depth" }
+      - { slot: 3, source: "pass:mask" }
+
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: 'buffer:paint_state'}
+    output: buffer:dl
+
   - name: ui
     shader: ui.hlsl
     target: cs_5_0
     format: RGBA8
-    output: output
+    thread_group_x: 16
+    thread_group_y: 16
     inputs:
-      - { slot: 0, source: "pass:clean" }
-      - { slot: 1, source: "buffer:paint_state" }
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
+      - {slot: 2, source: 'pass:view'}
 
 outputs:
   - { name: "UI", pass: ui }

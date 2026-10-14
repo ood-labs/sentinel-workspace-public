@@ -96,7 +96,7 @@ Basic smoke recipe:
 3. Create `sentinel_pipeline action=create type=detection name=object_track`.
 4. Wire the image/video source to the detection node with `sentinel_pipeline action=set_input` or `sentinel_graph action=add_link`.
 5. Inspect `sentinel_pipeline action=info pipeline_id=object_track`; the `Detections` data port reports boxes, confidence, and class fields.
-6. Use `sentinel_capture action=pipeline pipeline_id=object_track` for a visual overlay proof, or `sentinel_pipeline action=capture_data_port pipeline_id=object_track port=Detections` for records.
+6. Use `sentinel_capture action=pipeline pipeline_id=object_track` for a visual overlay proof, or `sentinel_pipeline action=capture_data_port pipeline_id=object_track port_name=Detections` for records.
 
 ## Pose
 

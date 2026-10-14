@@ -24,20 +24,43 @@ function M.execute(rig,args)
             assert(args[3]=="blackout" or args[3]=="strobe","Unknown momentary effect")
             get("side_fx").set(if args[3]=="blackout" then 0 else 1,args[4]=="1")
         elseif args[2]=="select" then rig.select(string.split(args[3] or "",","),args[4]=="toggle")
+        elseif args[2]=="pads" then
+            -- The Push pad page (Octave Up / Down): 1 looks (STATIC / EFFECTS / COLOR / FULL), 2 the Halo Beams (MOVE /
+            -- BEAM / HALO / HALO BEAMS), 3 the Linear Strobes (TUBE / PLATES / STROBES), 4 the Pixel Battens (PIXELS /
+            -- CHASE / BATTENS).
+            local ui=get("programmer_surface");ui.set_page(assert(tonumber(args[3]),"Pad page must be 1-4"));ui.lights()
+        elseif args[2]=="bank" then
+            -- The knob bank the Push shows: its number or id (position, levels, color, movement, chase, look, strobe).
+            local n=tonumber(args[3])
+            if not n then for i,b in ipairs(C.banks) do if b.id==args[3] then n=i end end end
+            assert(n and C.banks[n],"Unknown knob bank")
+            rig.editor_bank.value=n
+        elseif args[2]=="name" then
+            -- Name a fixture pad: name|<bank>|<slot>|<text>. An empty text drops the stored name, back to the
+            -- generated title (or none).
+            assert(rig.FX_FAMILIES[args[3]]~=nil,"Unknown fixture bank")
+            local slot=assert(tonumber(args[4]),"Slot must be a number")
+            assert(slot>=1 and slot<=16 and slot%1==0,"Slot out of range")
+            local text=string.upper(string.sub(string.gsub(args[5] or "","[;=]",""),1,16))   -- names travel as k=v;k=v
+            rig.fx_names[args[3].." "..slot]=if text~="" then text else nil
+            rig.publish_fx_names()
         elseif args[2]=="encoder" then
-            assert(rig.rows[1][args[3]]~=nil,"Unknown attribute")
+            assert(C.attributes[args[3]]~=nil,"Unknown attribute")
             rig.request("encoder",{attribute=args[3],value=assert(tonumber(args[4])),absolute=args[5]=="absolute",discrete=true})
         elseif args[2]=="preset" then
-            assert(table.find({"static","effects","color","rhythm","complete"},args[4]),"Unknown preset bank")
+            assert(table.find({"static","effects","color","rhythm","complete"},args[4]) or rig.FX_FAMILIES[args[4]]~=nil,"Unknown preset bank")
             rig.preset_kind=args[4];rig.mask=args[6] or "all"
             rig.mode=if args[3]=="store" then "store" else ""
-            local slot=assert(tonumber(args[5]));assert(slot>=1 and slot<=16);rig.recall(slot)
+            local slot=assert(tonumber(args[5]))
+            assert(slot>=1 and slot<=16 and slot%1==0,"Slot out of range")
+            rig.recall(slot)
         elseif args[2]=="rows" then
-            -- Paste one packed 32-slot partition into the live programmer (undoable, not stored).
+            -- Paste one packed partition into the live programmer (undoable, not stored); a partition packed before the
+            -- layers existed (32 base rows) gains them as a stored bank does.
             assert(args[3]=="static" or args[3]=="effects","Unknown row kind")
             local bank=assert(tonumber(args[4]));assert(bank>=0 and bank<rig.bank_count and bank%1==0,"Bank out of range")
             rig.remember()
-            Codec.unpack(args[5] or "",rig.rows,C[args[3]],bank*32+1,math.min(#rig.rows,bank*32+32),C.attributes)
+            Codec.unpack(args[5] or "",rig.rows,C[args[3]],rig.partitions[bank],C.attributes,args[3])
             rig.save_live()
         elseif args[2]=="camera" then
             -- Same as the Push 2 arrows / GLOBAL camera buttons: <up|down|left|right|in|out|home>, time, save, reset.

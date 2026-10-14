@@ -1,0 +1,10 @@
+# Relief - the labels of the Relief plate. Regenerate: python tools/il_type.py labels Relief
+ELEV        @bold @track=0.08 = ELEVATION
+M           @mono = m
+CONT        @sans = contours every
+SEA         @sans = sea level
+FROM        @sans = tints from the Ramp Desk
+BLEND_0     @sans = blended in OKLab
+BLEND_1     @sans = blended in OKLCH
+BLEND_2     @sans = blended in sRGB
+NOPAL       @sans = no palette connected: grey

@@ -2,6 +2,13 @@ name: "KA Cell"
 version: "0.1"
 mode: generator
 resolution: [1024, 640]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+panel:
+  mode: canvas
+  output: "Cell Plan"
+  resolution: follow_panel
 
 # The plan authority for kuka_cell. Owns CELL SPACE: where every robot base sits, which way it
 # faces, how big a frame it is, which control channel drives it, and whether it is live.
@@ -16,6 +23,7 @@ resolution: [1024, 640]
 
 buffers:
   - { name: cell, structured: true, element_size: 48, element_count: 50, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 
 state_buffers:
   - name: cell
@@ -54,6 +62,7 @@ viewport:
     - { key: c, action: clear_selection, label: "Clear selection" }
 
 parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The card beside the pointer that names the arm or target under it, with its channel, frame, position, heading and reach. Turn it off to keep the canvas clear while you work." }
   # ARRANGEMENT. An array's identity is its lattice, so these are the exploration handles and
   # `variation` perturbs THEM rather than drawing free coordinates per arm.
   - name: arrangement
@@ -137,6 +146,24 @@ passes:
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:cell" }
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:cell" }
+    output: "buffer:dl"
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:canvas" }
 
 data_outputs:
   - name: "Cell"
@@ -154,4 +181,4 @@ data_outputs:
       - { name: spare, type: float }
 
 outputs:
-  - { name: "Cell Plan", pass: canvas }
+  - { name: "Cell Plan", pass: ui }

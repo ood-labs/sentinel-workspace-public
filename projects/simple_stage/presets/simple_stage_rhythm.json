@@ -1,0 +1,38 @@
+{
+ "id": "simple_stage_rhythm",
+ "paths": [
+  "/sentinel/pipelines/SS_Surface/state/rhythm_1_cycle",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_1_mode",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_1_offset",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_1_rest",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_2_cycle",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_2_mode",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_2_offset",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_2_rest",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_3_cycle",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_3_mode",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_3_offset",
+  "/sentinel/pipelines/SS_Surface/state/rhythm_3_rest"
+ ],
+ "presets": [
+  {
+   "id": "simple_stage_rhythm:rhythm 1",
+   "name": "rhythm 1",
+   "revision": 1,
+   "snapshot": {
+    "/sentinel/pipelines/SS_Surface/state/rhythm_1_mode": 0.0,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_1_cycle": 1.0,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_1_rest": 0.0,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_1_offset": 0.0,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_2_mode": 0.0,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_2_cycle": 1.0,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_2_rest": 1.0,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_2_offset": 1.0,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_3_mode": 0.0,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_3_cycle": 0.5,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_3_rest": 0.5,
+    "/sentinel/pipelines/SS_Surface/state/rhythm_3_offset": 0.5
+   }
+  }
+ ]
+}

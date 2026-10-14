@@ -2,6 +2,21 @@ name: "VT Growth"
 version: "0.1"
 mode: generator
 resolution: [900, 900]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+# The Growth View is only ever looked at (no node takes it as video), so it fills its panel and
+# lays out from the live extent (growth_view.hlsli). Hover inspects a group: nothing is stored.
+panel:
+  mode: canvas
+  output: "Growth View"
+  resolution: follow_panel
+viewport:
+  hint: "Hover a group on the stage, or its bar in the tally, to inspect it"
+  interactions: [events]
+  input:
+    pointer: [left]
 
 # Expands the plan's mass anchors into world-space capsule chains and its stroke anchors into
 # stage-space polylines. One Limbs buffer, `role` discriminated, with a bounding-sphere group
@@ -12,6 +27,7 @@ resolution: [900, 900]
 
 buffers:
   - { name: limbs, structured: true, element_size: 48, element_count: 768 }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
 
 data_inputs:
   - name: "Plan"
@@ -29,6 +45,7 @@ data_inputs:
       - { name: active, type: float }
 
 parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The card beside the pointer that inspects the growth group under it: its family, nodes or points, bound, depth and centre. Turn it off to keep the canvas clear while you work." }
   # EXPLORATION AXIS 2 — how a limb subdivides. Structural, not cosmetic.
   - name: growth_mode
     display: "Growth"
@@ -69,11 +86,34 @@ passes:
     inputs:
       - { slot: 0, source: "data:0" }
     output: "buffer:limbs"
+  # preview draws the stage; layout records the words, counts, tally, inspector and verb; ui (the
+  # shared UI kit) draws them over it. Each names the pass it follows, so one cook is coherent.
   - name: preview
     shader: preview.hlsl
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:limbs" }
+      - { slot: 7, source: "pass:grow" }
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:limbs" }
+      - { slot: 7, source: "pass:preview" }
+    output: "buffer:dl"
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:preview" }
+      - { slot: 7, source: "pass:layout" }
 
 data_outputs:
   - name: "Limbs"
@@ -91,4 +131,4 @@ data_outputs:
       - { name: active, type: float }
 
 outputs:
-  - { name: "Growth View", pass: preview }
+  - { name: "Growth View", pass: ui }

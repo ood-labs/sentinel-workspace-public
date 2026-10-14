@@ -51,6 +51,13 @@ static const float THR_GRAB_UNITS = 4.5;
 static const float MIN_HALF = 0.004;
 static const float MAX_HALF = 0.5;
 
+// The host hands an event back on later cooks until newer input replaces it,
+// so each event is consumed once, by sequence (knowledge/ui-authoring.md).
+// Unguarded, a press and its first drag update arriving in one cook and then
+// replayed re-latched the grab from the band they had already moved, and moved
+// it again on every cook until the pointer moved.
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
+
 [numthreads(1, 1, 1)]
 void main(uint3 tid : SV_DispatchThreadID) {
     // Bin width from the producer's own header, never assumed. This is what
@@ -95,8 +102,17 @@ void main(uint3 tid : SV_DispatchThreadID) {
 
     uint count = min(_ViewportEventCount, 64u);
 
+    // The newest event consumed rides in the pointer record's spare w (asuint).
+    uint lastSeq = asuint(cur.w);
+    uint ringMax = 0u;
+    [loop] for (uint r = 0u; r < count; ++r) ringMax = max(ringMax, _ViewportEvents[r].sequence);
+    if (count > 0u && ringMax < lastSeq) lastSeq = 0u;   // the host's counter restarted (app restart, reload)
+    uint newLast = lastSeq;
+
     [loop] for (uint e = 0u; e < count; ++e) {
         ViewportEvent ev = _ViewportEvents[e];
+        if (!isFresh(ev.sequence, lastSeq)) continue;     // consumed on an earlier cook
+        newLast = (ev.sequence > lastSeq) ? max(newLast, ev.sequence) : ev.sequence;
 
         bool press   = (ev.type == 2u && ev.phase == 1u);
         bool release = (ev.type == 2u && ev.phase == 3u);
@@ -199,6 +215,7 @@ void main(uint3 tid : SV_DispatchThreadID) {
         Bands[L] = b;
     }
 
+    cur.w = asfloat(newLast);
     Bands[AB_DRAG] = drag;
     Bands[AB_GRAB] = grab;
     Bands[AB_CUR]  = cur;

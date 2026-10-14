@@ -1,0 +1,39 @@
+name: "Bloom"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+# A guilloche rosette - rings of rose curves, the pattern an engine-turning lathe cuts into a
+# banknote - drawn as fine ink on paper. Six parameters shape it, and in the lab each rides one of
+# the Patch Bay's control outputs through an expression, for example
+#   petals = 3 + 9 * ref("Patch_Bay/control_outputs/out_1")
+# so every cable in the bay has a visible face here: the sample and hold steps the petal count, an
+# LFO breathes the notches, the ramp winds the twist, another LFO rocks the spin, the Curve Desk's
+# ball (through the bay's input) pumps the size and the drift walks the hue.
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+parameters:
+  - { name: petals,  display: "Petals", type: float, min: 3.0,  max: 12.0,  default: 6.0,  group: "Shape", description: "How many lobes. Rounded to a whole count except across the middle fifth between two counts, where the curve morphs from one to the other" }
+  - { name: depth,   display: "Depth",  type: float, min: 0.0,  max: 1.0,   default: 0.5,  group: "Shape", description: "How deep the notches between the lobes cut: 0 a circle, 1 to the centre" }
+  - { name: twist,   display: "Twist",  type: float, min: -1.0, max: 1.0,   default: 0.0,  group: "Shape", description: "How far each ring turns past the one inside it (1: the outer ring one and a half lobes past the inner)" }
+  - { name: spin,    display: "Spin",   type: float, min: 0.0,  max: 1.0,   default: 0.0,  group: "Shape", description: "The whole rosette's turn (turns)" }
+  - { name: size,    display: "Size",   type: float, min: 0.25, max: 0.95,  default: 0.6,  group: "Shape", description: "The outer radius, as a fraction of the half height" }
+  - { name: hue,     display: "Hue",    type: float, min: 0.0,  max: 360.0, default: 30.0, group: "Ink",   description: "The ink's hue in OKLCH degrees: its lightness and chroma stay put, so only the hue moves" }
+  - { name: rings,   display: "Rings",  type: int,   min: 4,    max: 32,    default: 18,   group: "Ink",   description: "Rings in each of the two families" }
+  - { name: readout, display: "Readout", type: bool, default: true, group: "Ink", description: "The six inputs' live values, bottom left" }
+
+passes:
+  - name: bloom
+    shader: bloom.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Bloom", pass: bloom }

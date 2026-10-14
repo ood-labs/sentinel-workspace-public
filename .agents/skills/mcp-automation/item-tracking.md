@@ -95,7 +95,7 @@ for p in pipelines:
     print(f"{p['id']}: {p['fps']:.1f} FPS, {p['framesProcessed']} frames")
 
 # Get detailed info with parameters
-info = client.get_pipeline_info("colorcorrect_0")
+info = client.get_pipeline_info("mux_0")
 print(f"Pipeline: {info['name']} v{info['version']}")
 
 for param in info['parameters']:

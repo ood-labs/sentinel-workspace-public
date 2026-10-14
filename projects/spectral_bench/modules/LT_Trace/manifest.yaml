@@ -3,6 +3,22 @@ version: "0.1"
 mode: generator
 execution: on_dirty
 resolution: [768, 432]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+# The Scope is only ever looked at (nothing consumes it as video), so it is a Canvas. It keeps its
+# 768 x 432 extent rather than following the panel: `execution: on_dirty` requires a fixed
+# resolution, and retained output is what lets the node idle between bench edits. The viewport is
+# HOVER ONLY: pointing at a traced line inspects its lane (viewport input requests the cook), and
+# nothing is ever written.
+panel:
+  mode: canvas
+  output: "Scope"
+viewport:
+  hint: "Point at a traced line to inspect its lane: source, wavelength, power and what happened where it ends"
+  interactions: [events]
+  input:
+    pointer: [left]
 
 # The physics node. Consumes LT_Bench's records, publishes the traced spectral paths, and decides
 # nothing about the bench. Every parameter here buys QUALITY, never look — which is what makes the
@@ -10,6 +26,8 @@ resolution: [768, 432]
 
 buffers:
   - { name: paths, structured: true, element_size: 52, element_count: 53761, persistent: false }
+  # The UI kit's draw list (il_draw IL_DL_SIZE): layout.hlsl records, ui.hlsl rasterizes.
+  - { name: dl,    structured: true, element_size: 16, element_count: 24577 }
 
 data_inputs:
   - name: "Bench"
@@ -35,6 +53,7 @@ data_inputs:
       - { name: wl1,    type: float }
 
 parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The card beside the pointer that names the light path under it: its source, wavelength, power and what happens where it ends. Turn it off to keep the canvas clear while you work." }
   # THE QUALITY LADDER. Quality is bought along the WAVELENGTH axis first, because that is the
   # axis the image is about: two more wavelengths beat four times the rays at a fraction of the
   # cost. Defaults are a rung you can comfortably work in, never the top one.
@@ -46,6 +65,10 @@ parameters:
   # reflection at the exit face. All three are visible in the photograph.
   - { name: branch_count, display: "Light Paths",  type: int, min: 1, max: 3,  default: 3,  group: "Quality" }
 
+# ORDER EDGES. Sentinel 0.6.3 orders passes by their `pass:` inputs only. A pass that reads
+# another pass's `buffer:` with no `pass:` edge to it can run first and read the PREVIOUS cook's
+# paths, so this scope sits one bench edit behind and opens empty. Each buffer reader below also
+# names its writer as a `pass:` input on a spare slot that no shader reads.
 passes:
   - name: trace
     shader: trace.hlsl
@@ -64,6 +87,32 @@ passes:
     inputs:
       - { slot: 0, source: "data:0" }
       - { slot: 1, source: "buffer:paths" }
+      - { slot: 2, source: "pass:trace" }      # order edge
+  # The canvas: scope draws the traced lines, layout records the type, frame, legend and
+  # inspector, ui rasterizes them and places the scope's image over the bench.
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    time_dependent: false
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "buffer:paths" }
+      - { slot: 2, source: "pass:trace" }      # order edge
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    time_dependent: false
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:scope" }
+      - { slot: 3, source: "pass:layout" }     # order edge
 
 data_outputs:
   - name: "Paths"
@@ -82,4 +131,4 @@ data_outputs:
       - { name: ior,    type: float }
 
 outputs:
-  - { name: "Scope", pass: scope }
+  - { name: "Scope", pass: ui }

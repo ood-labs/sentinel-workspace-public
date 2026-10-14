@@ -1,0 +1,96 @@
+name: "Kit"
+version: "4.0"
+mode: generator
+resolution: [1280, 720]
+compile_optimization: fast_compile
+# The Interaction Lab's living specimen: SDF type, the instrument palette, and every host-owned viewport control kind drawn from the host's own state, with the XY pad authority proof.
+
+panel:
+  mode: canvas
+  output: "Kit"
+  resolution: follow_panel
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt); baked by tools/il_type.py
+assets:
+  - name: type
+    type: texture
+    file: ../_shared/type/il_type.png
+    srgb: false
+
+parameters:
+  - { name: type_size, display: "Live Type Size", type: float, min: 8.0, max: 64.0, default: 22.0, group: "Specimen" }
+  - { name: k_amount,  display: "Amount", type: float, min: 0.0, max: 1.0, default: 0.62, group: "Controls" }
+  - { name: k_enabled, display: "Enabled", type: bool, default: true, group: "Controls" }
+  - { name: k_fire,    display: "Fire", type: button, group: "Controls" }
+  - { name: k_mode,    display: "Mode", type: int, min: 0, max: 2, default: 1, group: "Controls" }
+  - { name: k_hold,    display: "Hold", type: bool, default: false, group: "Controls" }
+  - { name: k_latch,   display: "Latch", type: bool, default: false, group: "Controls" }
+  - { name: k_point,   display: "Point", type: point2D, min: [0.0, 0.0], max: [1.0, 1.0], default: [0.66, 0.72], group: "Controls" }
+  - { name: k_level,   display: "Level", type: float, min: 0.0, max: 1.0, default: 0.7, group: "Controls" }
+
+viewport:
+  hint: "Every host control kind, drawn from the host's own state. The row under the pad proves stored = published = host."
+  controls:
+    - { id: amount,  kind: slider, param: k_amount,  rect: [0.635, 0.185, 0.960, 0.235], label: "Amount" }
+    - { id: enabled, kind: toggle, param: k_enabled, rect: [0.635, 0.270, 0.760, 0.320], label: "Enabled" }
+    - { id: fire,    kind: button, param: k_fire,    rect: [0.790, 0.270, 0.960, 0.320], label: "FIRE" }
+    - { id: mode_a,  kind: pad, mode: radio, value: 0, param: k_mode, rect: [0.635, 0.355, 0.735, 0.410], label: "A" }
+    - { id: mode_b,  kind: pad, mode: radio, value: 1, param: k_mode, rect: [0.745, 0.355, 0.850, 0.410], label: "B" }
+    - { id: mode_c,  kind: pad, mode: radio, value: 2, param: k_mode, rect: [0.860, 0.355, 0.960, 0.410], label: "C" }
+    - { id: hold,    kind: pad, mode: momentary, param: k_hold, rect: [0.635, 0.445, 0.790, 0.500], label: "HOLD" }
+    - { id: latch,   kind: pad, mode: toggle, param: k_latch,   rect: [0.805, 0.445, 0.960, 0.500], label: "LATCH" }
+    - { id: point,   kind: xypad,  param: k_point,   rect: [0.635, 0.540, 0.840, 0.860], label: "Point" }
+    - { id: level,   kind: fader,  param: k_level,   rect: [0.865, 0.540, 0.960, 0.860], label: "Level" }
+
+buffers:
+  - { name: kit_state, structured: true, element_size: 16, element_count: 4, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
+
+passes:
+  - name: state
+    shader: state.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:kit_state"
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:kit_state" }
+    output: "buffer:dl"
+  - name: raster
+    shader: raster.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Kit", pass: raster }
+
+data_outputs:
+  - name: "Draw List"
+    buffer: "dl"
+    description: "The station's GPU draw list: [0] header (commands, glyphs, dropped, width), then 4 float4 per command, then glyphs."
+    schema:
+      - { name: x, type: float }
+      - { name: y, type: float }
+      - { name: z, type: float }
+      - { name: w, type: float }
+
+control_outputs:
+  - { name: point_x,    buffer: kit_state, element: 0, field_offset: 0,  description: "XY pad x, host value unmodified (Y-up contract)" }
+  - { name: point_y,    buffer: kit_state, element: 0, field_offset: 4,  description: "XY pad y, host value unmodified (Y-up: top of the pad = 1)" }
+  - { name: amount,     buffer: kit_state, element: 0, field_offset: 8,  description: "Slider value" }
+  - { name: level,      buffer: kit_state, element: 0, field_offset: 12, description: "Fader value" }
+  - { name: fire_count, buffer: kit_state, element: 1, field_offset: 0,  description: "Monotonic count of FIRE presses (rising edges of the host held flag)" }
+  - { name: mode,       buffer: kit_state, element: 1, field_offset: 4,  description: "Radio pad selection 0..2" }

@@ -11,10 +11,10 @@ Worked examples, each strong in a different place — read the README of whichev
 
 | Project | Read it for |
 | --- | --- |
-| `projects/matik_plate/` | the applied form of this method end to end |
-| `projects/sunward_corridor/` | a scaffold **tailored** to its subject: plan-over-elevation, path scrub, a correctness readout |
+| `projects/phage_stage/` | the method end to end, from inventorying the reference to a saved, proven show, recorded step by step in `projects/phage_stage/docs/PROCESS.md` |
+| `projects/spectral_bench/` | a scaffold **tailored** to its subject: a bench plan over a spectral rail, with its failure modes drawn |
 | `projects/soft_vitrine/` | editing flexibility, and a coordinate randomiser that still composes |
-| `projects/vitreous_cross/` | a **relational** randomiser, and quality as a shipped preset ladder |
+| `projects/kuka_cell/` | a **relational** randomiser that perturbs lattice parameters instead of coordinates, and plan over elevation at one scale |
 
 ---
 
@@ -91,13 +91,17 @@ along an axis that a front elevation cannot show.
 | connection, flow, or dependency | a network/graph view, not a spatial one |
 | a repeating period | one period drawn once, with the wrap marked |
 
-`projects/sunward_corridor/modules/SC_Plan` is the bar for tailoring. Its preview is a
-draughtsman's **plan over elevation sharing one z axis** — the plan strip owns lateral drift,
-the elevation strip owns rise, and the *same handle* edits both, which is how you draw a
-corridor on paper rather than two sliders that disagree. It also carries a correctness readout
-the renderer cannot give you: the flight axis drawn as a dashed line that **turns red where it
-leaves the tunnel**, so a corridor bent through its own wall is visible in the diagram instead
-of being discovered later as a black frame.
+`projects/spectral_bench/modules/LT_Bench` is the bar for tailoring. A plan of an optical bench
+shows where the lines go, but not what happened at each interaction, and not the axis the subject
+is organised along — **wavelength**. So its preview is a **bench plan over a spectral rail**: an
+event ladder of wavelength by interaction, each cell coloured by what happened there, and a
+deviation profile whose width *is* the dispersion. It also carries correctness readouts the
+renderer cannot give you: an element no light reaches gets a red cross, and a wavelength that
+totally internally reflects instead of dispersing turns its ladder cells red, so a broken bench is
+visible in the diagram instead of being discovered later as a dark frame.
+`projects/kuka_cell/modules/KA_Cell` is the plan-over-elevation form of the same idea: a plan
+strip over an elevation strip sharing one metres-per-pixel scale, where the *same handle* edits
+both, which is how you draw it on paper rather than two sliders that disagree.
 
 Two things to steal from that, whatever you are building:
 
@@ -276,7 +280,7 @@ correct there because a vitrine full of objects genuinely is a scatter.
 If the answer names **interlocking, containment, attachment, adjacency, periodicity, or
 support**, then coordinates are not what the subject is made of, and drawing them fresh per
 record destroys exactly the relationships that make it recognisable. It does not look like a
-different arrangement of the same thing; it looks like debris. `vitreous_cross` is a worked
+different arrangement of the same thing; it looks like debris. A glass-sculpture build is a worked
 case: a first randomiser drew stratified coordinates for every record and produced bubbles
 floating in open air with no glass to lens them, plates detached into space, and volumes that
 no longer touched — from code that was, considered per record, perfectly reasonable.
@@ -300,7 +304,7 @@ free draw, and stay continuous and valid the whole way, with `variation = 0` sti
 ### Guarantee the draw; do not hope for it
 
 A relational randomiser needs explicit guarantees or it fails in ways that look like bugs.
-Every one of these was added to `vitreous_cross` because a seed looked broken without it:
+Every one of these was added to that glass-sculpture build because a seed looked broken without it:
 
 | Guarantee | Without it |
 | --- | --- |
@@ -337,11 +341,15 @@ lighting words decide mattability, why exposure must be measured rather than tun
 feedback hygiene that stops held stills degrading — is in `knowledge/streamdiff.md`
 ("Generated Subjects In An Authored Composition").
 
-### You will not be able to machine-prove the gestures — build them anyway
+### Build every gesture, then prove the ones automation can reach
 
-Injected input does not reach Module viewport events, so click/drag/key paths generally
-cannot be verified over MCP. **This is a reporting obligation, not a reason to omit the
-feature.** Build the full gesture set, verify everything reachable (buffer persistence,
+`sentinel_ui action=click_at` and `drag_at` deliver real clicks and drags to a Module viewport at
+client coordinates when its panel is open and in front; a docked tab hidden behind another receives
+nothing. The viewport rectangle is at `/sentinel/pipelines/<id>/viewport/rect/*`, and
+`/sentinel/pipelines/<id>/viewport/delivered_boundary_count` grows by 3 per delivered click. Use
+them, then read back the records the gesture should have changed. Wheel and key paths have no
+verified injection: **that is a reporting obligation, not a reason to omit the feature.** Build
+the full gesture set, verify everything reachable (buffer persistence,
 signature behaviour, pick maths against known record coordinates, the preview's selection
 readout), then say plainly which gestures the user needs to exercise by hand.
 
@@ -442,7 +450,7 @@ when an explicit design choice is gated behind the same randomness it is meant t
 
 The rule: **randomization controls may key off `variation`; design choices must not.** Give an
 explicit choice its own axis, defaulted so the transcription is unchanged, and let it apply at
-every variation including zero. `pink_monolith` has two of these — `armature_pull` and
+every variation including zero. A flat collage build had two of these — `armature_pull` and
 `blade_cast` — and both were initially wrong in the same way.
 
 ---
@@ -496,8 +504,8 @@ Before reporting done:
   verdicts.
 - Produce proof: a final capture, a motion clip if anything animates, a proof bundle.
 
-**Report what you could not verify.** Injected input does not reach Module viewport events,
-so an authored click/drag/key path usually cannot be machine-proven — say so plainly and say
+**Report what you could not verify.** Clicks and drags can be injected and read back; wheel
+and key paths usually cannot be machine-proven — say so plainly and say
 what the user needs to exercise. An honest gap costs nothing; a silent one costs trust.
 
 ---

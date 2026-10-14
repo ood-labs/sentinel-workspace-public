@@ -1,0 +1,313 @@
+name: SIMPLE STAGE / Haze
+version: '1.0'
+mode: generator
+resolution: [1280, 720]
+# The hall's air and the haze it carries, simulated: four hazers puff clouds that the air takes up, the rig's heat
+# lifts, the stage fans throw over the booth and the house air turns over the crowd, so the movers' beams cut
+# through uneven, travelling haze instead of a uniform fog. After the volumetrics a friend of the project built for
+# his own show on this stage (EmberGen's method); the physics is his, the storage is rebuilt for this host.
+#
+# Haze Field is the contract with the renderer (_shared/ss_haze.hlsli): one 2048 x 2200 RGBA16F texture holding
+# this frame's haze, the air and the wisp noise. Haze View is the instrument: the field averaged through the hall
+# in plan over long section, the machines, and the numbers that prove the solve.
+output_format: RGBA16F
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+panel:
+  mode: canvas
+  output: Haze View
+  resolution: follow_panel
+data_inputs:
+  - name: Venue
+    slot: 0
+    schema:
+      - {name: value, type: float4}
+  - name: Rig Fixtures
+    slot: 1
+    schema:
+      - {name: ids, type: uint, count: 4}
+      - {name: run, type: uint, count: 4}
+      - {name: patch, type: uint, count: 4}
+      - {name: x, type: float4}
+      - {name: y, type: float4}
+      - {name: z, type: float4}
+      - {name: o, type: float4}
+      - {name: rest, type: float4}
+  - name: Show State
+    slot: 2
+    schema:
+      - {name: value, type: float4}
+parameters:
+  - {name: haze_pump, display: Hazer Output, type: float, default: 1.0, min: 0, max: 3, group: HAZERS, description: 'How hard the four hazers pump. Each puffs a cloud every 6-12 s on its own cycle over a low trickle, and all four go together on the drop. 0 = they stop and the hall clears to Clear Air.'}
+  - {name: hazers_full, display: Hazers Full, type: bool, default: false, group: HAZERS, description: 'Hold all four hazers flat out together, the way an operator leans on them. They keep going two seconds after it is released. The show''s drop (the moment a BUILD lands) fires them the same way.'}
+  - {name: haze_base, display: Clear Air, type: float, default: 0.2, min: 0, max: 2, group: HAZERS, description: 'The haze the hall settles back to between puffs, in the same units as the clouds (1 = the haze the renderer''s Haze control describes).'}
+  - {name: haze_life, display: Haze Life, type: float, default: 150, min: 10, max: 600, group: HAZERS, description: 'Seconds for a cloud to settle out and be extracted back to Clear Air.'}
+  - {name: haze_drift, display: Air Movement, type: float, default: 1.0, min: 0, max: 3, group: AIR, description: 'The house air (supply low at the back of the hall, extract in the roof) and the slow drafts: how much the hall''s air turns over by itself.'}
+  - {name: haze_heat, display: Heat Plumes, type: float, default: 1.0, min: 0, max: 3, group: AIR, description: 'The rig''s heat (a moving head is ~0.6 kW, all of it heat) and the crowd''s: warm air rising off them lifts the haze. 1 = physical.'}
+  - {name: haze_swirl, display: Swirl, type: float, default: 1.0, min: 0, max: 3, group: AIR, description: 'Vorticity confinement: feeds back the small eddies the grid smears away, so the clouds curl and break up.'}
+  - {name: haze_fans, display: Stage Fans, type: float, default: 0.6, min: 0, max: 3, group: AIR, description: 'Two turbine fans on the deck throwing the haze out over the booth into the front rows. They lean in harder while all four hazers go together.'}
+  - name: field_view
+    display: View
+    type: enum
+    options: [Haze, Air, Heat]
+    default: 0
+    flags: button_grid
+    group: VIEW
+    description: 'What the drawing averages through the hall: the haze, how fast the air moves, or how warm it runs above the room.'
+buffers:
+  # hzT: [0] tick, time, fresh, dt  [1] grid origin, cell size  [2] hall  [3] centre z, burst time, version, BUILD ramp
+  - {name: hzT, structured: true, element_size: 16, element_count: 4, persistent: true}
+  # hzA: the air (hz_grid.hlsli): U, HAT, NEW, CURL (4 x 422400) + the four multigrid levels (482625)
+  - {name: hzA, structured: true, element_size: 16, element_count: 2172225, persistent: true}
+  # hzD: the haze, two slots that swap each tick + the forward estimate (3 x 3379200)
+  - {name: hzD, structured: true, element_size: 4, element_count: 10137600, persistent: true}
+  # hzN: the wisp noise, 64^3, baked on fresh frames
+  - {name: hzN, structured: true, element_size: 4, element_count: 262144, persistent: true}
+  # hzP: the projections (hz_proj.hlsli), hzS: the readouts (hzstats.hlsl)
+  - {name: hzP, structured: true, element_size: 16, element_count: 76800}
+  - {name: hzS, structured: true, element_size: 16, element_count: 4}
+  - {name: dl, structured: true, element_size: 16, element_count: 24577}   # il_draw IL_DL_SIZE
+passes:
+  # ---- the frame: the clock, the noise (fresh frames only), the solids, the air as it starts the frame
+  # Order edges: Sentinel orders passes by `pass:` inputs only, so every pass names the one before it on slot 7.
+  # No shader reads slot 7.
+  - name: hzclock
+    shader: hzclock.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: 'data:2'}
+    output: buffer:hzT
+  - name: hznoise
+    shader: hznoise.hlsl
+    target: cs_5_0
+    dispatch: [4096, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 7, source: 'pass:hzclock'}
+    output: buffer:hzN
+  - name: hzsolid
+    shader: hzsolid.hlsl
+    target: cs_5_0
+    dispatch: [7542, 1, 1]       # MG_N = 482625
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 7, source: 'pass:hznoise'}
+    output: buffer:hzA
+  - name: hzvpack
+    shader: hzvpack.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    resolution: [1024, 440]      # fixed: 11 tiles of 88 x 40 across, 11 rows
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - {slot: 0, source: buffer:hzA}
+      - {slot: 7, source: 'pass:hzsolid'}
+  # ---- the air: advect, vorticity, forces
+  - name: hzadv1
+    shader: hzadv1.hlsl
+    target: cs_5_0
+    dispatch: [6600, 1, 1]       # AN = 422400
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: 'pass:hzvpack'}
+    output: buffer:hzA
+  - name: hzadv2
+    shader: hzadv2.hlsl
+    target: cs_5_0
+    dispatch: [6600, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: 'pass:hzvpack'}
+      - {slot: 7, source: 'pass:hzadv1'}
+    output: buffer:hzA
+  - name: hzcurl
+    shader: hzcurl.hlsl
+    target: cs_5_0
+    dispatch: [6600, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 7, source: 'pass:hzadv2'}
+    output: buffer:hzA
+  - name: hzforce
+    shader: hzforce.hlsl
+    target: cs_5_0
+    dispatch: [6600, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: 'data:1'}
+      - {slot: 7, source: 'pass:hzcurl'}
+    output: buffer:hzA
+  # ---- the projection: divergence, a multigrid V-cycle (levels 0-3), an SOR finish, the pressure gradient
+  - name: hzdiv
+    shader: hzdiv.hlsl
+    target: cs_5_0
+    dispatch: [6600, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 7, source: 'pass:hzforce'}
+    output: buffer:hzA
+  - {name: mg_a0r, shader: hzmg_s0r.hlsl, target: cs_5_0, dispatch: [6600, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:hzdiv'}], output: buffer:hzA}
+  - {name: mg_a0b, shader: hzmg_s0b.hlsl, target: cs_5_0, dispatch: [6600, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_a0r'}], output: buffer:hzA}
+  - {name: mg_b0r, shader: hzmg_s0r.hlsl, target: cs_5_0, dispatch: [6600, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_a0b'}], output: buffer:hzA}
+  - {name: mg_b0b, shader: hzmg_s0b.hlsl, target: cs_5_0, dispatch: [6600, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_b0r'}], output: buffer:hzA}
+  - {name: mg_r1, shader: hzmg_r1.hlsl, target: cs_5_0, dispatch: [825, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_b0b'}], output: buffer:hzA}
+  - {name: mg_a1r, shader: hzmg_s1r.hlsl, target: cs_5_0, dispatch: [825, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_r1'}], output: buffer:hzA}
+  - {name: mg_a1b, shader: hzmg_s1b.hlsl, target: cs_5_0, dispatch: [825, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_a1r'}], output: buffer:hzA}
+  - {name: mg_b1r, shader: hzmg_s1r.hlsl, target: cs_5_0, dispatch: [825, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_a1b'}], output: buffer:hzA}
+  - {name: mg_b1b, shader: hzmg_s1b.hlsl, target: cs_5_0, dispatch: [825, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_b1r'}], output: buffer:hzA}
+  - {name: mg_r2, shader: hzmg_r2.hlsl, target: cs_5_0, dispatch: [104, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_b1b'}], output: buffer:hzA}
+  - {name: mg_a2r, shader: hzmg_s2r.hlsl, target: cs_5_0, dispatch: [104, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_r2'}], output: buffer:hzA}
+  - {name: mg_a2b, shader: hzmg_s2b.hlsl, target: cs_5_0, dispatch: [104, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_a2r'}], output: buffer:hzA}
+  - {name: mg_b2r, shader: hzmg_s2r.hlsl, target: cs_5_0, dispatch: [104, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_a2b'}], output: buffer:hzA}
+  - {name: mg_b2b, shader: hzmg_s2b.hlsl, target: cs_5_0, dispatch: [104, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_b2r'}], output: buffer:hzA}
+  - {name: mg_r3, shader: hzmg_r3.hlsl, target: cs_5_0, dispatch: [13, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_b2b'}], output: buffer:hzA}
+  - {name: mg_c3, shader: hzmg_c3.hlsl, target: cs_5_0, dispatch: [1, 1, 1], thread_group_x: 256, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_r3'}], output: buffer:hzA}
+  - {name: mg_p2, shader: hzmg_p2.hlsl, target: cs_5_0, dispatch: [104, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_c3'}], output: buffer:hzA}
+  - {name: mg_c2r, shader: hzmg_s2r.hlsl, target: cs_5_0, dispatch: [104, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_p2'}], output: buffer:hzA}
+  - {name: mg_c2b, shader: hzmg_s2b.hlsl, target: cs_5_0, dispatch: [104, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_c2r'}], output: buffer:hzA}
+  - {name: mg_p1, shader: hzmg_p1.hlsl, target: cs_5_0, dispatch: [825, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_c2b'}], output: buffer:hzA}
+  - {name: mg_c1r, shader: hzmg_s1r.hlsl, target: cs_5_0, dispatch: [825, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_p1'}], output: buffer:hzA}
+  - {name: mg_c1b, shader: hzmg_s1b.hlsl, target: cs_5_0, dispatch: [825, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_c1r'}], output: buffer:hzA}
+  - {name: mg_p0, shader: hzmg_p0.hlsl, target: cs_5_0, dispatch: [6600, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_c1b'}], output: buffer:hzA}
+  - {name: mg_c0r, shader: hzmg_s0r.hlsl, target: cs_5_0, dispatch: [6600, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_p0'}], output: buffer:hzA}
+  - {name: mg_c0b, shader: hzmg_s0b.hlsl, target: cs_5_0, dispatch: [6600, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_c0r'}], output: buffer:hzA}
+  - {name: mg_or, shader: hzmg_or.hlsl, target: cs_5_0, dispatch: [6600, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_c0b'}], output: buffer:hzA}
+  - {name: mg_ob, shader: hzmg_ob.hlsl, target: cs_5_0, dispatch: [6600, 1, 1], thread_group_x: 64, thread_group_y: 1, inputs: [{slot: 7, source: 'pass:mg_or'}], output: buffer:hzA}
+  - name: hzproj
+    shader: hzproj.hlsl
+    target: cs_5_0
+    dispatch: [6600, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 7, source: 'pass:mg_ob'}
+    output: buffer:hzA
+  - name: hzcheck
+    shader: hzcheck.hlsl
+    target: cs_5_0
+    dispatch: [6600, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 7, source: 'pass:hzproj'}
+    output: buffer:hzA
+  # ---- the haze, carried by the air as it started the frame
+  - name: hzdfwd
+    shader: hzdfwd.hlsl
+    target: cs_5_0
+    dispatch: [52800, 1, 1]      # FN = 3379200
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: 'pass:hzvpack'}
+      - {slot: 7, source: 'pass:hzcheck'}
+    output: buffer:hzD
+  - name: hzdcorr
+    shader: hzdcorr.hlsl
+    target: cs_5_0
+    dispatch: [52800, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: 'pass:hzvpack'}
+      - {slot: 7, source: 'pass:hzdfwd'}
+    output: buffer:hzD
+  # ---- what leaves the node: the field for the renderer, the projections and numbers for the drawing
+  - name: hzfield
+    shader: hzfield.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    resolution: [2048, 2200]     # fixed: the Haze Field layout (ss_haze.hlsli)
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: buffer:hzD}
+      - {slot: 2, source: buffer:hzA}
+      - {slot: 3, source: buffer:hzN}
+      - {slot: 7, source: 'pass:hzdcorr'}
+  - name: hzsum
+    shader: hzsum.hlsl
+    target: cs_5_0
+    dispatch: [1200, 1, 1]       # P_END = 76800
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: buffer:hzD}
+      - {slot: 2, source: buffer:hzA}
+      - {slot: 7, source: 'pass:hzfield'}
+    output: buffer:hzP
+  - name: hzstats
+    shader: hzstats.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 256
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: buffer:hzP}
+      - {slot: 7, source: 'pass:hzsum'}
+    output: buffer:hzS
+  - name: hzart
+    shader: hzart.hlsl
+    target: cs_5_0
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: buffer:hzP}
+      - {slot: 7, source: 'pass:hzstats'}
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:hzT}
+      - {slot: 1, source: buffer:hzS}
+      - {slot: 7, source: 'pass:hzstats'}
+    output: buffer:dl
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
+      - {slot: 2, source: 'pass:hzart'}
+      - {slot: 7, source: 'pass:layout'}
+outputs:
+  - name: Haze View
+    pass: ui
+  - name: Haze Field
+    pass: hzfield
+control_outputs:
+  - {name: haze_mean, buffer: hzS, element: 0, field_offset: 0, description: 'Mean haze in the hall (Haze units: 1 = what the renderer''s Haze control describes).'}
+  - {name: haze_peak, buffer: hzS, element: 0, field_offset: 4, description: 'The densest haze anywhere in the hall.'}
+  - {name: air_speed, buffer: hzS, element: 0, field_offset: 8, description: 'The fastest air in the hall, m/s.'}
+  - {name: divergence_left, buffer: hzS, element: 0, field_offset: 12, description: 'How much of the air''s divergence survives the pressure solve (0-1; a healthy solve leaves a few percent).'}
+  - {name: all_together, buffer: hzS, element: 2, field_offset: 0, description: 'All four hazers together (0-1): held by Hazers Full or fired by the drop.'}

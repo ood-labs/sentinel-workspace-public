@@ -17,6 +17,8 @@
 StructuredBuffer<KaBall> Rally : register(t0);
 RWStructuredBuffer<KaUi> Ui : register(u0);
 
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
+
 [numthreads(1, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
 {
@@ -50,10 +52,22 @@ void main(uint3 DTid : SV_DispatchThreadID)
     // makes this a toggle instead of a strobe: a held key is down for every cook, and this module
     // cooks hundreds of times a second, so a level test would flip the state hundreds of times
     // before the key came back up. That is exactly the mistake the Serve button shipped with.
+    //
+    // The press edge alone is not enough either: the host hands the same event back on later
+    // cooks until newer input replaces it, so a tap of R still flipped the view once per cook
+    // until its key-up arrived. Each event is consumed once, by sequence (isFresh), with the
+    // newest consumed kept in s2 (knowledge/ui-authoring.md).
     uint n = min(_ViewportEventCount, 64u);
+    uint lastSeq = asuint(u.s2);
+    uint ringMax = 0u;
+    for (uint r = 0u; r < n; r++) ringMax = max(ringMax, _ViewportEvents[r].sequence);
+    if (n > 0u && ringMax < lastSeq) lastSeq = 0u;   // the host's counter restarted (app restart, reload)
+    uint newLast = lastSeq;
     for (uint i = 0u; i < n; i++)
     {
         ViewportEvent e = _ViewportEvents[i];
+        if (!isFresh(e.sequence, lastSeq)) continue;      // consumed on an earlier cook
+        newLast = (e.sequence > lastSeq) ? max(newLast, e.sequence) : e.sequence;
         if (e.type == 4u && e.phase == 1u && e.code == 18u &&
             (e.flags & VIEWPORT_EVENT_FLAG_REPEAT) == 0u)
         {
@@ -62,6 +76,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
             u.s1 = 0.0;         // ...and restarts the hit count, so the next cut is a full run
         }
     }
+    u.s2 = asfloat(newLast);
 
     // AUTO CYCLE — the show mode: alternate the two views on a timer so the thing can be left
     // running on a screen and read without anybody touching it.

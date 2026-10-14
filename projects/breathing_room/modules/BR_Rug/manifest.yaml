@@ -1,0 +1,128 @@
+name: "BR Rug"
+version: "1.0"
+mode: generator
+execution: on_dirty
+resolution: [1280, 900]
+compile_optimization: fast_compile
+
+# The RUG DESIGN authority for breathing_room: what is woven into the rug BR_Furnish placed (its
+# size and place stay BR_Furnish's). Families: Tabriz medallion, Isfahan all-over, Heriz geometric.
+# Proportions (border width, medallion size, field scale), a palette of dyes per colour slot,
+# abrash, wear and the knot pitch. The canvas lays the rug flat and weaves it with the SAME
+# function the renderer uses (_shared/br_rug.hlsli), so what you design is what is on the floor.
+# Direct manipulation: drag the medallion's tip to size it, drag the border's inner edge to widen
+# it, click a dye swatch to step it along a dyer's list; chips for family, palette, re-roll, reset.
+# The canvas is built on the Interaction Lab UI kit (_shared/ui): plate weaves the rug per pixel,
+# layout records the chrome, handles and type into a draw list, and ui rasterizes it over the rug.
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+panel:
+  mode: canvas
+  output: "Rug"
+  resolution: follow_panel
+
+buffers:
+  - { name: rug, structured: true, element_size: 64, element_count: 16, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }    # il_draw IL_DL_SIZE
+
+state_buffers:
+  - name: rug
+    max_elements: 16
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+data_inputs:
+  - name: "Furnish"
+    slot: 0
+    schema: [ { name: head, type: float4 }, { name: dims, type: float4 }, { name: look, type: float4 }, { name: meta, type: float4 } ]
+
+parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The card beside a handle you hover or hold: the medallion's size or the border's depth. Turn it off to keep the canvas clear while you work." }
+  - name: style
+    display: "Family"
+    type: enum
+    options: [Tabriz Medallion, Isfahan All-Over, Heriz Geometric]
+    default: 0
+    group: "Design"
+  - name: palette
+    display: "Palette"
+    type: enum
+    options: [Tabriz, Kashan, Isfahan, Heriz]
+    default: 0
+    group: "Design"
+  - { name: border,      display: "Border Width",   type: float, min: 0.04, max: 0.25, default: 0.115, group: "Design" }
+  - { name: medallion,   display: "Medallion Size", type: float, min: 0.2,  max: 0.8,  default: 0.42,  group: "Design" }
+  - { name: field_scale, display: "Field Scale (m)", type: float, min: 0.12, max: 0.45, default: 0.24,  group: "Design" }
+  - { name: seed,        display: "Drawing Seed",   type: int,   min: 0, max: 999, default: 0, group: "Design" }
+  - { name: abrash,      display: "Abrash",         type: float, min: 0.0, max: 1.0, default: 0.5, group: "Weave" }
+  - { name: wear,        display: "Wear",           type: float, min: 0.0, max: 1.0, default: 0.3, group: "Weave" }
+  - { name: knot,        display: "Knot Pitch (m)", type: float, min: 0.002, max: 0.008, default: 0.0034, group: "Weave" }
+
+viewport:
+  hint: "Drag the medallion's tip to size it, the border's inner edge to widen it | click a dye swatch to change it | chips: family, palette, re-roll, reset"
+  interactions: [events]
+  input:
+    pointer: [left]
+    gestures: [click, drag]
+  bindings:
+    - { gesture: left_click, action: select, label: "Change a dye, or press a chip" }
+    - { gesture: left_drag, action: edit, label: "Size the medallion or the border" }
+
+passes:
+  - name: rug
+    shader: rug.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:rug"
+    inputs:
+      - { slot: 0, source: "data:0" }
+  - name: plate
+    shader: plate.hlsl
+    time_dependent: false
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "buffer:rug" }
+      - { slot: 7, source: "pass:rug" }
+  - name: layout
+    shader: layout.hlsl
+    time_dependent: false
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    output: "buffer:dl"
+    inputs:
+      - { slot: 0, source: "buffer:rug" }
+      - { slot: 7, source: "pass:plate" }
+  - name: ui
+    shader: ui.hlsl
+    time_dependent: false
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:plate" }
+      - { slot: 7, source: "pass:layout" }
+
+data_outputs:
+  - name: "Rug"
+    buffer: "rug"
+    schema:
+      - { name: head, type: float4 }
+      - { name: dims, type: float4 }
+      - { name: look, type: float4 }
+      - { name: meta, type: float4 }
+
+outputs:
+  - { name: "Rug", pass: ui }

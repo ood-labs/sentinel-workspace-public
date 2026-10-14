@@ -1,5 +1,6 @@
 // The crowd: five boxes per person (legs, torso, head, two arms), arms raised per record, a small
 // bounce locked to the conductor beat. Near-black cloth, so they read as silhouettes against haze.
+#include "taa.hlsli"
 #include "../_shared/room_materials.hlsli"
 #include "surface_lights.hlsli"
 struct Person{float4 p;float4 look;};
@@ -19,7 +20,7 @@ V VSMain(uint id:SV_VertexID){V o=(V)0;o.pos=float4(0,0,-1,1);uint pi=id/180,v=i
   cen=sh+dir*len*.5;hy=dir;hx=normalize(cross(float3(0,0,1),hy));if(dot(hx,hx)<.1)hx=float3(1,0,0);hz=cross(hx,hy);half_=float3(.05,len*.5,.05);o.skin=raise>.5?.5:0;}
  float3 lp=cen+hx*q.x*half_.x+hy*q.y*half_.y+hz*q.z*half_.z;float3 ln=hx*n.x+hy*n.y+hz*n.z;
  float s=sin(r.look.x),c=cos(r.look.x);float3 wp=float3(c*lp.x+s*lp.z,lp.y+bob,-s*lp.x+c*lp.z)+r.p.xyz;float3 wn=float3(c*ln.x+s*ln.z,ln.y,-s*ln.x+c*ln.z);
- o.world=wp;o.normal=wn;o.pos=mul(_ViewProjMatrix,float4(wp,1));return o;}
+ o.world=wp;o.normal=wn;o.pos=taaClip(wp);return o;}
 float4 PSMain(V i):SV_TARGET0{
  float3 n=normalize(i.normal),v=normalize(_CameraPos-i.world);if(dot(n,v)<0)n=-n;RoomSettings room=roomSettings();
  float3 albedo=lerp(float3(.022,.021,.024),float3(.12,.085,.07),i.skin);

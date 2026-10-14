@@ -1,7 +1,7 @@
 // FM_Plan / canvas.hlsl — the draughtsman's drawing of the arrangement.
 //
 // Plan over route diagram. See layout.hlsli for why there are two strips and what the second
-// one is for. This file only DRAWS; every number on it is read back out of the plan buffer or
+// one is for. This file only DRAWS; every mark on it is read back out of the plan buffer or
 // out of a live measurement fed in from FM_Colony, and nothing here decides anything.
 //
 // Styling follows the shared instrument palette: mostly monochrome, hue only where it carries
@@ -10,81 +10,19 @@
 //   ALARM    a route that passes through an obstacle or leaves the arena
 //   IDENTITY food kind — three kinds all drawn as discs, so shape cannot tell them apart
 //   RAMP     payload rank and recruitment weight, which are ordinal, so no hue is spent on them
+//
+// The type and chrome — title row, plate borders and captions, the ruler's numbers, lane tags,
+// the readout column, the hover inspector and the keycap footer — are recorded by layout.hlsl and
+// drawn over this by the shared UI kit (ui.hlsl). The canvas follows its panel: every rect is a
+// fraction of the live extent, through layout.hlsli (which plan.hlsl hit-tests) and plan_view.hlsli.
 #include "../_shared/formic.hlsli"
-#include "../_shared/plan_theme.hlsli"
-#include "../_shared/microfont.hlsli"
+#include "../_shared/ui/il_core.hlsli"
 #include "layout.hlsli"
 
 RWTexture2D<float4> OutputUAV : register(u0);
 StructuredBuffer<FmRec> Plan : register(t0);
 
-// letters: A=10 ... Z=35, digits 0-9 = 0-9, '-'=36 '.'=37 '/'=38 ':'=39 '+'=40 '>'=41
-#define GA 10u
-#define GB 11u
-#define GC 12u
-#define GD 13u
-#define GE 14u
-#define GF 15u
-#define GG 16u
-#define GH 17u
-#define GI 18u
-#define GK 20u
-#define GL 21u
-#define GM 22u
-#define GN 23u
-#define GO 24u
-#define GP 25u
-#define GR 27u
-#define GS 28u
-#define GT 29u
-#define GU 30u
-#define GV 31u
-#define GX 33u
-#define GY 34u
-#define GDASH 36u
-#define GDOT  37u
-#define GCOL  39u
-
-// A label anchored at its left edge. `h` is the glyph cell height in pixels; the advance
-// includes the font's one column of tracking, so a rendered string's width is predictable and
-// two labels stacked in a column line up.
-float fmLabel(float2 px, float2 org, float h, uint2 packed, uint count)
-{
-    float cw = h * (5.0 / 7.0) * 1.2;
-    float2 lp = (px - org) / float2(cw * (float)count, h);
-    return mf_text(lp, packed, count);
-}
-
-float fmLabelW(float h, uint count) { return h * (5.0 / 7.0) * 1.2 * (float)count; }
-
-// A right-aligned fixed-width integer. Leading zeros are kept deliberately: a fixed-width
-// reading does not reflow as the value changes, which is what stops a column of numbers
-// twitching sideways while the colony walks.
-float fmNumR(float2 px, float2 rightOrg, float h, uint value, uint digits)
-{
-    float cw = h * (5.0 / 7.0) * 1.2;
-    float2 lp = (px - (rightOrg - float2(cw * (float)digits, 0.0))) / float2(cw * (float)digits, h);
-    return mf_num(lp, value, digits);
-}
-
-// Fixed-point: value shown with two decimals as NNN.DD. Built from two integer fields plus a
-// dot so it needs no float formatting, and it never loses its decimal point to rounding.
-float fmFixed(float2 px, float2 org, float h, float value, uint intDigits)
-{
-    float cw = h * (5.0 / 7.0) * 1.2;
-    float v = max(value, 0.0);
-    uint ip = (uint)floor(v);
-    uint fp = (uint)floor(frac(v) * 100.0 + 0.5);
-    if (fp >= 100u) { fp = 0u; ip += 1u; }
-
-    float m = 0.0;
-    m = max(m, mf_num((px - org) / float2(cw * (float)intDigits, h), ip, intDigits));
-    float2 dOrg = org + float2(cw * (float)intDigits, 0.0);
-    m = max(m, mf_glyph((px - dOrg) / float2(cw, h) * float2(1.2, 1.0), GDOT));
-    float2 fOrg = dOrg + float2(cw, 0.0);
-    m = max(m, mf_num((px - fOrg) / float2(cw * 2.0, h), fp, 2u));
-    return m;
-}
+#include "plan_view.hlsli"
 
 // Quadratic Bezier distance. Analytic rather than a polyline scan: ten routes sampled at 48
 // points each would be 480 segment tests per pixel, which is a frame-rate cliff on a canvas
@@ -149,35 +87,12 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     FmLayout L = fmLayout(res, arena, maxRoute, lanes);
 
-    float3 col = PT_FIELD;
+    float3 col = IL_FIELD;
+    float s = fmS(res);
 
     // Uniform hairline weight across the whole instrument. One number, so a rule in the plan
     // strip and a rule in the flow strip cannot end up different weights.
     float hair = max(res.x / 1200.0, 0.75);
-
-    // ---------------------------------------------------------------------------
-    // TITLE BAND
-    // ---------------------------------------------------------------------------
-    float titleY = FM_TITLE_B * res.y;
-    if (px.y < titleY)
-    {
-        float th = 11.0 * hair;
-        float2 org = float2(FM_DRAW_L * res.x, titleY * 0.5 - th * 0.5);
-        // "FORMICARY"
-        float m = fmLabel(px, org, th, uint2(mf_pack1(GF, GO, GR, GM, GI), mf_pack1(GC, GA, GR, GY, 0u)), 9u);
-        col = fmInk(col, PT_INK, m);
-
-        // The arrangement is drawn as a fixed caption plus a RANK rather than spelled out: four
-        // enum names of four different widths make the whole header reflow every time the enum
-        // changes, and a header that moves is a header you stop reading.
-        float2 org2 = org + float2(fmLabelW(th, 9u) + 22.0 * hair, 0.0);
-        float th2 = th * 0.82;
-        col = fmInk(col, PT_DIM, fmLabel(px, org2, th2,
-                    uint2(mf_pack1(GA, GR, GR, GA, GN), mf_pack1(GG, GE, 0u, 0u, 0u)), 7u));
-        col = fmInk(col, PT_MID, fmNumR(px, org2 + float2(fmLabelW(th2, 10u), 0.0), th2, (uint)arrangement, 2u));
-    }
-    col = fmInk(col, PT_RULE, fmLineMask(px, float2(FM_DRAW_L * res.x, titleY),
-                                         float2(FM_COL_R * res.x, titleY), hair));
 
     // ---------------------------------------------------------------------------
     // PLAN STRIP — the arena from above.
@@ -185,13 +100,14 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float2 planLo = float2(FM_DRAW_L * res.x, FM_PLAN_T * res.y);
     float2 planHi = float2(FM_DRAW_R * res.x, FM_PLAN_B * res.y);
 
+    ilOver(col, IL_PANEL, ilFill(ilSdBox(px, fmPlanRect(res), IL_RADIUS * s)));
     if (px.x >= planLo.x && px.x <= planHi.x && px.y >= planLo.y && px.y <= planHi.y)
     {
         float2 w = fmPxToPlan(L, px);                       // world millimetres
         float2 half = fmArenaHalf(arena);
         bool inArena = (abs(w.x) <= half.x && abs(w.y) <= half.y);
 
-        if (inArena) col = PT_WELL;
+        if (inArena) col = IL_WELL;
 
         // A 10 mm grid. The ruler of the whole drawing, and the reason a twig reads as 18 mm
         // long rather than "quite long".
@@ -483,8 +399,6 @@ void main(uint3 DTid : SV_DispatchThreadID)
             col = fmInk(col, PT_DIM, fmLineMask(px, sb, sbe, hair * 1.4));
             col = fmInk(col, PT_DIM, fmLineMask(px, sb + float2(0, -4) * hair, sb + float2(0, 4) * hair, hair * 1.4));
             col = fmInk(col, PT_DIM, fmLineMask(px, sbe + float2(0, -4) * hair, sbe + float2(0, 4) * hair, hair * 1.4));
-            col = fmInk(col, PT_DIM, fmLabel(px, sb + float2(0.0, -13.0 * hair), 8.0 * hair,
-                                             uint2(mf_pack1(1u, 0u, GM, GM, 0u), 0u), 4u));
             float2 ab = sb + float2(0.0, 9.0 * hair);
             float2 abe = ab + float2(4.0 * L.scale, 0.0);
             col = fmInk(col, PT_MID, fmLineMask(px, ab, abe, hair * 2.6));
@@ -497,8 +411,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     // ---------------------------------------------------------------------------
     float2 flowLo = float2(FM_DRAW_L * res.x, FM_FLOW_T * res.y);
     float2 flowHi = float2(FM_DRAW_R * res.x, FM_FLOW_B * res.y);
-    col = fmInk(col, PT_RULE, fmLineMask(px, float2(flowLo.x, flowLo.y - 8.0 * hair),
-                                         float2(FM_COL_R * res.x, flowLo.y - 8.0 * hair), hair * 0.9) * 0.55);
+    ilOver(col, IL_PANEL, ilFill(ilSdBox(px, fmFlowRect(res), IL_RADIUS * s)));
 
     if (px.x >= flowLo.x && px.x <= flowHi.x && px.y >= flowLo.y && px.y <= flowHi.y)
     {
@@ -516,17 +429,12 @@ void main(uint3 DTid : SV_DispatchThreadID)
             float h = ((t % 4u) == 0u) ? 1.0 : 0.55;
             col = fmInk(col, PT_GRID, fmLineMask(px, float2(x, rulerA.y),
                                                  float2(x, rulerB.y), hair) * h);
-            // Distance labels on the hundreds, so the strip is a ruler rather than a shape.
-            if ((t % 4u) == 0u && t > 0u)
-                col = fmInk(col, PT_DIM, fmNumR(px, float2(x + fmLabelW(7.0 * hair, 3u) * 0.5, rulerB.y + 3.0 * hair),
-                                                7.0 * hair, (uint)dmm, 3u) * 0.85);
+            // (layout.hlsl numbers the hundreds, so the strip is a ruler rather than a shape)
         }
 
         // The distance origin — the nest end of every lane.
         col = fmInk(col, PT_RULE, fmLineMask(px, float2(L.flowO.x, rulerA.y),
                                              float2(L.flowO.x, rulerB.y), hair * 1.6));
-        col = fmInk(col, PT_DIM, fmLabel(px, float2(flowLo.x, blk.x - 13.0 * hair), 7.5 * hair,
-                    uint2(mf_pack1(GR, GO, GU, GT, GE), mf_pack1(GDASH, GM, GM, 0u, 0u)), 8u) * 0.9);
 
         uint lane = 0u;
         for (uint ei = 0u; ei < FM_EDGES; ei++)
@@ -593,163 +501,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
             col = fmInk(col, selHere ? PT_ACCENT : ptSampleFill(ptId((int)dst.kind)),
                         fmDiscMask(px, b, (2.5 + 4.0 * saturate(dst.p0)) * hair));
 
-            // lane tag
-            col = fmInk(col, PT_DIM, fmNumR(px, float2(a.x - 6.0 * hair, a.y - 3.5 * hair), 7.0 * hair, lane, 2u));
-
             lane++;
-        }
-    }
-
-    // ---------------------------------------------------------------------------
-    // READOUT COLUMN — every field read straight back out of the buffer or off a live input.
-    // ---------------------------------------------------------------------------
-    float colL = FM_COL_L * res.x;
-    if (px.x >= colL - 10.0 * hair)
-    {
-        col = fmInk(col, PT_RULE, fmLineMask(px, float2(colL - 12.0 * hair, FM_PLAN_T * res.y),
-                                             float2(colL - 12.0 * hair, FM_FLOW_B * res.y), hair) * 0.7);
-
-        float th = 8.5 * hair;
-        float row = 15.0 * hair;
-        float y = FM_PLAN_T * res.y + 6.0 * hair;
-        float2 rightEdge = float2(FM_COL_R * res.x, 0.0);
-
-        // --- ARRANGEMENT block
-        col = fmInk(col, PT_DIM, fmLabel(px, float2(colL, y), th,
-                    uint2(mf_pack1(GP, GL, GA, GN, 0u), 0u), 4u));
-        y += row * 1.35;
-
-        // caches / edges / obstacles
-        col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GF, GO, GO, GD, 0u), 0u), 4u));
-        col = fmInk(col, PT_INK, fmNumR(px, float2(rightEdge.x, y), th, (uint)hdr.tint.y, 2u));
-        y += row;
-        col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GT, GR, GA, GI, GL), 0u), 5u));
-        {
-            // Counted from the records, not read from a cached header field. The header ran out
-            // of room when the stage command counter moved in, and a count is cheap enough that
-            // caching it was never buying anything — the obstacle row below always did this.
-            uint ne = 0u;
-            for (uint k = 0u; k < FM_EDGES; k++) if (Plan[FM_EDGE_0 + k].active > 0.5) ne++;
-            col = fmInk(col, PT_INK, fmNumR(px, float2(rightEdge.x, y), th, ne, 2u));
-        }
-        y += row;
-        // stations
-        col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GS, GT, GA, 0u, 0u), 0u), 3u));
-        {
-            uint ns = 0u;
-            for (uint k = 0u; k < FM_STAS; k++) if (Plan[FM_STA_0 + k].active > 0.5) ns++;
-            col = fmInk(col, ns > 0u ? PT_INK : PT_DIM, fmNumR(px, float2(rightEdge.x, y), th, ns, 2u));
-        }
-        y += row;
-        col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GO, GB, GS, GT, 0u), 0u), 4u));
-        {
-            uint no = 0u;
-            for (uint k = 0u; k < FM_OBSTS; k++) if (Plan[FM_OBST_0 + k].active > 0.5) no++;
-            col = fmInk(col, PT_INK, fmNumR(px, float2(rightEdge.x, y), th, no, 2u));
-        }
-        y += row * 1.5;
-
-        // --- ROUTE cost block
-        col = fmInk(col, PT_DIM, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GR, GO, GU, GT, GE), 0u), 5u));
-        y += row * 1.25;
-        col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GM, GA, GX, 0u, 0u), 0u), 3u));
-        col = fmInk(col, PT_INK, fmFixed(px, float2(rightEdge.x - fmLabelW(th, 6u), y), th, maxRoute, 3u));
-        y += row;
-        col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GR, GC, GR, GT, 0u), 0u), 4u));
-        col = fmInk(col, PT_INK, fmFixed(px, float2(rightEdge.x - fmLabelW(th, 5u), y), th, hdr.p2, 2u));
-        y += row * 1.5;
-
-        // --- LIVE block. The accent is spent here on purpose: these are the only numbers on the
-        // canvas that were MEASURED rather than authored.
-        //
-        // But the accent is spent only when there IS a measurement. Before FM_Colony's control
-        // outputs are wired, every one of these reads a hard zero, and a hard zero drawn in the
-        // reserved live colour claims a reading that was never taken — the exact dishonesty the
-        // strip exists to avoid. The per-lane share defaults to -1 precisely so the canvas can
-        // tell "measured zero" from "not measured", and the whole block goes grey when it is
-        // the latter.
-        bool measured = (live_e0 >= 0.0);
-        float3 liveInk = measured ? PT_ACCENT : PT_RULE;
-
-        col = fmInk(col, measured ? PT_ACCENT : PT_DIM,
-                    fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GL, GI, GV, GE, 0u), 0u), 4u));
-        if (!measured)
-            col = fmInk(col, PT_RULE, fmLabel(px, float2(colL + fmLabelW(th, 5u), y), th,
-                        uint2(mf_pack1(GDASH, GDASH, 0u, 0u, 0u), 0u), 2u) * 0.8);
-        y += row * 1.25;
-        col = fmInk(col, PT_MID,  fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GT, GR, GA, GF, 0u), 0u), 4u));
-        col = fmInk(col, liveInk, fmNumR(px, float2(rightEdge.x, y), th, (uint)max(live_traffic, 0.0), 3u));
-        y += row;
-        col = fmInk(col, PT_MID,  fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GL, GA, GD, GN, 0u), 0u), 4u));
-        col = fmInk(col, liveInk, fmFixed(px, float2(rightEdge.x - fmLabelW(th, 4u), y), th, saturate(live_laden), 1u));
-        y += row;
-        col = fmInk(col, PT_MID,  fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GS, GP, GD, 0u, 0u), 0u), 3u));
-        col = fmInk(col, liveInk, fmFixed(px, float2(rightEdge.x - fmLabelW(th, 6u), y), th, max(live_speed, 0.0), 3u));
-        y += row;
-        // Foot slip is a CORRECTNESS reading, not a performance one: past about a third of a
-        // millimetre per step the ants are skating rather than walking, so it turns alarm red at
-        // the threshold instead of merely getting bigger.
-        col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GS, GL, GI, GP, 0u), 0u), 4u));
-        col = fmInk(col, (measured && live_slip > 0.35) ? PT_ALARM : liveInk,
-                    fmFixed(px, float2(rightEdge.x - fmLabelW(th, 4u), y), th, max(live_slip, 0.0), 1u));
-        y += row * 1.5;
-
-        // --- SELECTION block
-        col = fmInk(col, PT_DIM, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GS, GE, GL, 0u, 0u), 0u), 3u));
-        if (selSlot != 0xffffffffu)
-        {
-            FmRec s = Plan[selSlot];
-            col = fmInk(col, PT_ACCENT, fmNumR(px, float2(rightEdge.x, y), th, selSlot, 2u));
-            y += row;
-            // role, then the one number that defines this kind of record
-            if (s.role == ROLE_CACHE)
-            {
-                col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GP, GA, GY, 0u, 0u), 0u), 3u));
-                col = fmInk(col, PT_ACCENT, fmFixed(px, float2(rightEdge.x - fmLabelW(th, 4u), y), th, s.p0, 1u));
-            }
-            else if (s.role == ROLE_EDGE)
-            {
-                col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GR, GC, GR, GT, 0u), 0u), 4u));
-                col = fmInk(col, PT_ACCENT, fmFixed(px, float2(rightEdge.x - fmLabelW(th, 4u), y), th, s.p2, 1u));
-                y += row;
-                col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GC, GL, GR, 0u, 0u), 0u), 3u));
-                col = fmInk(col, (s.pad1 < 0.0) ? PT_ALARM : PT_ACCENT,
-                            fmFixed(px, float2(rightEdge.x - fmLabelW(th, 6u), y), th, abs(s.pad1), 3u));
-            }
-            else if (s.role == ROLE_OBST)
-            {
-                col = fmInk(col, PT_MID, fmLabel(px, float2(colL, y), th, uint2(mf_pack1(GL, GE, GN, 0u, 0u), 0u), 3u));
-                col = fmInk(col, PT_ACCENT, fmFixed(px, float2(rightEdge.x - fmLabelW(th, 6u), y), th, s.dims.x * 2.0, 3u));
-            }
-        }
-        else
-        {
-            col = fmInk(col, PT_RULE, fmLabel(px, float2(rightEdge.x - fmLabelW(th, 2u), y), th,
-                        uint2(mf_pack1(GDASH, GDASH, 0u, 0u, 0u), 0u), 2u));
-        }
-    }
-
-    // ---------------------------------------------------------------------------
-    // STATUS ROW — the one place the arrangement announces it is broken in words rather than
-    // only in the drawing, so a blocked route cannot be missed at a glance.
-    // ---------------------------------------------------------------------------
-    float statY = FM_STAT_T * res.y;
-    if (px.y >= statY)
-    {
-        float th = 9.0 * hair;
-        float2 org = float2(FM_DRAW_L * res.x, statY + 6.0 * hair);
-        uint blocked = (uint)hdr.tint.z;
-        if (blocked > 0u)
-        {
-            // "BLOCKED" then the count
-            float m = fmLabel(px, org, th, uint2(mf_pack1(GB, GL, GO, GC, GK), mf_pack1(GE, GD, 0u, 0u, 0u)), 7u);
-            col = fmInk(col, PT_ALARM, m);
-            col = fmInk(col, PT_ALARM, fmNumR(px, org + float2(fmLabelW(th, 11u), 0.0), th, blocked, 2u));
-        }
-        else
-        {
-            float m = fmLabel(px, org, th, uint2(mf_pack1(GC, GL, GE, GA, GR), 0u), 5u);
-            col = fmInk(col, PT_DIM, m * 0.8);
         }
     }
 

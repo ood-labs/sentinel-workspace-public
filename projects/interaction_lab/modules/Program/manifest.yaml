@@ -1,0 +1,60 @@
+name: "Program"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+# The Score's show, rendered: the hall through this module's INTERNAL camera, which the Score drives
+# by expression (its cam_x / cam_y / cam_z / cam_yaw / cam_pitch / cam_fov control outputs on
+# camera_pos_x / y / z, camera_yaw, camera_pitch, camera_fov), lit by the act showing - day, dusk or
+# night - with the hand-offs the Score resolves (cut; dip through black; glide: between rails the light
+# blends with the camera, with a card it dissolves) and the cards themselves.
+#
+# One pass: the march and the composite read the same frame of the Score, so no hand-off can show a
+# stale picture (on 0.6.3 a module's passes run in reverse manifest order). While only a card shows,
+# nothing is marched. Clear the six camera expressions to fly the camera yourself (RMB look, WASD).
+#
+# Quality: march, shadow, occlusion and reflection steps, and rays per pixel. Project presets
+# "Program Quality 1-4" are the ladder (Draft, Live - the default -, Beauty, Hero), scoped to those
+# five parameters alone; Hero (four rays) is for captures only.
+
+features: [camera]
+
+panel:
+  mode: standard
+  output: "Program"
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+data_inputs:
+  - name: "Score"
+    slot: 0
+    schema:
+      - { name: v, type: float4 }
+
+parameters:
+  - { name: march_steps,   display: "March Steps",      type: int,   min: 32, max: 256, default: 96, group: "Quality", description: "Steps along each camera ray: 64 draft, 96 working, 160+ for captures" }
+  - { name: shadow_steps,  display: "Shadow Steps",     type: int,   min: 0,  max: 64,  default: 20, group: "Quality", description: "Steps toward the sun, moon or nearest lamp for soft shadows (0: none)" }
+  - { name: ao_taps,       display: "Occlusion Taps",   type: int,   min: 0,  max: 8,   default: 4,  group: "Quality", description: "Ambient occlusion samples along the normal (0: none)" }
+  - { name: reflect_steps, display: "Reflection Steps", type: int,   min: 0,  max: 96,  default: 40, group: "Quality", description: "Steps for one traced reflection off the glossy works - the steel ring, the glazed sphere (0: they see the sky)" }
+  - { name: rays,          display: "Rays per Pixel",   type: enum,  options: ["One ray", "Four rays (capture only)"], default: 0, group: "Quality", description: "Four rotated-grid rays clear stair-stepped edges at four times the cost" }
+  - { name: exposure,      display: "Exposure",         type: float, min: 0.2, max: 3.0, default: 1.0, group: "Look", description: "Before the filmic curve" }
+
+viewport:
+  hint: "The Score's camera, through this module's own: clear the camera expressions to fly it (RMB look, WASD move, wheel speed)."
+  interactions: [camera]
+
+passes:
+  - name: program
+    shader: program.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 8
+    thread_group_y: 8
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Program", pass: program }

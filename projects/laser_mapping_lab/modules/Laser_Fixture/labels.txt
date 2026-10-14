@@ -1,0 +1,60 @@
+# Laser_Fixture - the Plan and Elevation canvas's words. Regenerate: python -B tools/il_type.py labels Laser_Fixture
+TITLE        @bold @track=0.14 = LASER FIXTURE
+SUBTITLE     @sans = plan and elevation
+# the header's two states, in their parameters' option order (layout.hlsl counts from IN_0, MODEL_0)
+INPUT        @bold @track=0.08 = INPUT
+IN_0         @sans = mapped scan
+IN_1         @sans = sent stream
+MODEL        @bold @track=0.08 = SCANNER
+MODEL_0      @sans = ideal
+MODEL_1      @sans = galvo
+
+# the plates
+PLAN         @bold @track=0.08 = PLAN
+PLAN_D       @sans = from above, +x up, metres
+ELEV         @bold @track=0.08 = ELEVATION
+ELEV_D       @sans = from the side, +y up, metres
+WALL         @bold @track=0.08 = WALL
+FLOOR        @bold @track=0.08 = FLOOR
+FIXTURE      @bold @track=0.08 = FIXTURE
+
+# the readout panes: FIXTURE rows R_X .. R_FIELD, then BEAMS rows R_LIT .. R_CENTRE, in order
+BEAMS        @bold @track=0.08 = BEAMS
+R_X          @sans = x, across
+R_Y          @sans = y, height
+R_Z          @sans = z, from the wall
+R_AIM        @sans = yaw, pitch
+R_AT         @sans = aim lands at
+R_THROW      @sans = throw to the wall
+R_FIELD      @sans = scan field
+R_LIT        @sans = lit pieces
+R_SIZE       @sans = on the wall
+R_CENTRE     @sans = centred at
+NO_SIGNAL    @sans = no scan signal
+NO_WALL      @sans = none reach the wall
+U_M          @sans = m
+U_DEG        @sans = deg
+U_MS         @sans = ms
+U_REL        @sans = relative
+U_COMMA      @sans = ,
+U_TIMES      @sans = x
+OF           @sans = of
+
+# the inspector
+I_BEAM       @bold @track=0.08 = BEAM
+I_LANDS      @bold @track=0.08 = LANDS AT
+I_SWEEPS     @bold @track=0.08 = SWEEPS TO
+I_LENGTH     @bold @track=0.08 = SWEEP
+I_START      @bold @track=0.08 = STARTS AT
+I_LASTS      @bold @track=0.08 = LASTS
+I_FROM       @bold @track=0.08 = FROM FIXTURE
+I_AT         @bold @track=0.08 = AT
+I_AIM        @bold @track=0.08 = AIM
+I_POWER      @bold @track=0.08 = POWER
+I_EMIT       @bold @track=0.08 = EMITTING
+DWELL        @sans = a dwell, no sweep
+MISS         @sans = misses the wall
+
+# footer
+K_HOVER      @sans = Hover
+D_HOVER      @sans = inspect a beam or the fixture

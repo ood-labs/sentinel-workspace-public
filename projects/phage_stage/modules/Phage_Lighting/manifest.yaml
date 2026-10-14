@@ -2,7 +2,18 @@ name: PHAGE / Fixtures
 version: '1.0'
 mode: generator
 resolution: [1600, 900]
+# The show's fixtures are the Fixture Rig's (Phage_Rig: Fixtures and FixtureRender). rig_*.hlsl build the fixture table
+# every frame: which rig record each PHAGE slot plays (the plot's own, then guests in free slots of their role), where
+# the truss carries it, and its pan and tilt limits from its GDTF. Every pass here plays those mounts, and the table is
+# published (Rig Fixtures, Rig Mounts, Rig Slots, rig_word*) for the visualiser and the Surface.
+# It is also the console's output stage: the pixel-bar content (pixels.hlsl, LED Pixels) and every rig fixture's DMX
+# through its GDTF (dmx_*.hlsl, DMX): state from what the looks play, encoded through each type's channel ranges, with
+# the proof (dmx_verify: decoded beam error, loopback).
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
 parameters:
+  - {name: tooltips, display: Tooltips, type: bool, default: true, description: 'The card beside the pointer that names the fixture under it, its groups and its live output. Turn it off to keep the canvas clear while you work.'}
   - {name: dimmer, type: float, default: 1, min: 0, max: 1, group: OUTPUT}
   - {name: boost, type: float, default: 3, min: 0, max: 8, group: OUTPUT}
   - {name: main_master, label: Beam master, type: float, default: 1.000000, min: 0, max: 1, group: OUTPUT}
@@ -12,6 +23,7 @@ parameters:
   - {name: beam_angle, label: Beam angle (deg), type: float, default: 3, min: 1, max: 20, group: OPTICS}
   - {name: pan_speed, label: Pan speed (deg/s), type: float, default: 300, min: 10, max: 720, group: MOTORS}
   - {name: tilt_speed, label: Tilt speed (deg/s), type: float, default: 220, min: 10, max: 720, group: MOTORS}
+  - {name: bar_level, label: Bar level, type: float, default: 1, min: 0, max: 4, group: OUTPUT}
   - {name: highlight, label: Highlight selected, type: bool, default: false, group: PROGRAMMING}
   - {name: solo_selected, label: Solo selected, type: bool, default: false, group: PROGRAMMING}
   - {name: selection_apply, type: float, default: 0, min: 0, max: 10000000, hidden: true}
@@ -67,6 +79,26 @@ data_inputs:
       - {name: b, type: float4}
       - {name: n, type: float4}
       - {name: w, type: float4}
+  - name: Fixtures
+    slot: 5
+    schema:
+      - {name: axis_x, type: float4}
+      - {name: axis_y, type: float4}
+      - {name: axis_z, type: float4}
+      - {name: origin, type: float4}
+      - {name: ids, type: uint, count: 4}
+      - {name: dmx01, type: uint, count: 4}
+      - {name: dmx23, type: uint, count: 4}
+      - {name: meta, type: uint, count: 4}
+  - name: FixtureRender
+    slot: 6
+    schema:
+      - {name: w, type: uint, count: 4}
+  # A DMX In receiving what Phage_ArtNet sends, for the loopback proof (dmx_verify.hlsl).
+  - name: Loopback
+    slot: 7
+    schema:
+      - {name: channels, type: uint, count: 512}
 buffers:
   - {name: poses, structured: true, element_size: 64, element_count: 128, persistent: true}
   - {name: optics, structured: true, element_size: 80, element_count: 3248}
@@ -74,23 +106,101 @@ buffers:
   - {name: marks, structured: true, element_size: 64, element_count: 2032}
   - {name: groups, structured: true, element_size: 16, element_count: 16}
   - {name: bins, structured: true, element_size: 4, element_count: 786432}
+  - {name: dl, structured: true, element_size: 16, element_count: 24577}   # il_draw IL_DL_SIZE
+  - {name: rigraw, structured: true, element_size: 128, element_count: 1024}   # PhRigFix per Fixtures record
+  - {name: rigmap, structured: true, element_size: 4, element_count: 256}      # slot -> record + 1
+  - {name: rigfix, structured: true, element_size: 128, element_count: 1024}
+  - {name: rigmounts, structured: true, element_size: 80, element_count: 248}  # PhMount per slot, from the rig
+  - {name: rigslots, structured: true, element_size: 32, element_count: 248}   # PhRigSlot
+  - {name: rigstat, structured: true, element_size: 16, element_count: 20}
+  - {name: dmxinst, structured: true, element_size: 32, element_count: 1024}
+  - {name: occ, structured: true, element_size: 4, element_count: 32768}
+  - {name: dmxstate, structured: true, element_size: 8, element_count: 1048576}
+  - {name: dmx, structured: true, element_size: 2048, element_count: 73}
+  - {name: dmxstatus, structured: true, element_size: 16, element_count: 4}
 passes:
+  - name: rig_inst
+    shader: rig_inst.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - {slot: 0, source: 'data:0'}
+      - {slot: 1, source: 'data:3'}
+      - {slot: 2, source: 'data:4'}
+      - {slot: 3, source: 'data:5'}
+      - {slot: 4, source: 'data:6'}
+    output: buffer:rigraw
+  - name: rig_assign
+    shader: rig_assign.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:rigraw}
+      - {slot: 1, source: 'data:0'}
+    output: buffer:rigmap
+  - name: rig_out
+    shader: rig_out.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:rigraw}
+      - {slot: 1, source: buffer:rigmap}
+    output: buffer:rigfix
+  - name: rig_mounts
+    shader: rig_mounts.hlsl
+    target: cs_5_0
+    dispatch: [4, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:rigfix}
+      - {slot: 1, source: buffer:rigmap}
+      - {slot: 2, source: 'data:0'}
+    output: buffer:rigmounts
+  - name: rig_slots
+    shader: rig_slots.hlsl
+    target: cs_5_0
+    dispatch: [4, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:rigfix}
+      - {slot: 1, source: buffer:rigmap}
+      - {slot: 2, source: 'data:6'}
+    output: buffer:rigslots
+  - name: rig_words
+    shader: rig_words.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:rigmounts}
+      - {slot: 1, source: buffer:rigfix}
+      - {slot: 2, source: buffer:rigmap}
+    output: buffer:rigstat
+  # The pixel bars' content: one texture row per run, u along the whole run.
+  - name: pixels
+    shader: pixels.hlsl
+    target: cs_5_0
+    format: RGBA16F
+    resolution: [512, 288]     # fixed: the renderer and the Venue sample it, so it must not follow the panel
+    inputs:
+      - {slot: 0, source: 'data:1'}
+      - {slot: 1, source: 'data:2'}
+      - {slot: 2, source: buffer:rigmounts}
+      - {slot: 3, source: 'data:4'}
   - name: select
     shader: select.hlsl
     target: cs_5_0
     dispatch: [1, 1, 1]
     inputs:
-      - {slot: 0, source: 'data:0'}
+      - {slot: 0, source: buffer:rigmounts}
     output: buffer:selection
   - name: motors
     shader: motors.hlsl
     target: cs_5_0
     dispatch: [2, 1, 1]
     inputs:
-      - {slot: 0, source: 'data:0'}
+      - {slot: 0, source: buffer:rigmounts}
       - {slot: 1, source: 'data:1'}
       - {slot: 2, source: 'data:2'}
       - {slot: 3, source: 'data:3'}
+      - {slot: 4, source: buffer:rigslots}
     output: buffer:poses
   - name: optics
     shader: optics.hlsl
@@ -101,7 +211,7 @@ passes:
       - {slot: 1, source: buffer:selection}
       - {slot: 2, source: 'data:1'}
       - {slot: 3, source: 'data:2'}
-      - {slot: 4, source: 'data:0'}
+      - {slot: 4, source: buffer:rigmounts}
       - {slot: 5, source: 'data:3'}
     output: buffer:optics
   - name: groups
@@ -109,7 +219,7 @@ passes:
     target: cs_5_0
     dispatch: [16, 1, 1]
     inputs:
-      - {slot: 0, source: 'data:0'}
+      - {slot: 0, source: buffer:rigmounts}
       - {slot: 1, source: buffer:selection}
     output: buffer:groups
   - name: marks
@@ -118,7 +228,7 @@ passes:
     dispatch: [32, 1, 1]
     inputs:
       - {slot: 0, source: buffer:optics}
-      - {slot: 1, source: 'data:0'}
+      - {slot: 1, source: buffer:rigmounts}
       - {slot: 2, source: buffer:selection}
       - {slot: 3, source: 'data:4'}
     output: buffer:marks
@@ -138,7 +248,85 @@ passes:
       - {slot: 2, source: buffer:selection}
       - {slot: 3, source: buffer:groups}
       - {slot: 4, source: 'data:1'}
-    output: output
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - {slot: 0, source: buffer:selection}
+      - {slot: 1, source: buffer:groups}
+      - {slot: 2, source: 'data:1'}
+      - {slot: 3, source: buffer:rigmounts}
+      - {slot: 4, source: 'data:4'}
+      - {slot: 5, source: buffer:optics}
+      - {slot: 6, source: buffer:poses}
+    output: buffer:dl
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - {slot: 0, source: buffer:dl}
+      - {slot: 1, source: 'asset:type'}
+      - {slot: 2, source: 'pass:preview'}
+  # DMX: every rig fixture's state from what the looks play, encoded through its GDTF, and the proof.
+  - name: dmx_inst
+    shader: dmx_inst.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:rigfix}
+      - {slot: 1, source: 'data:6'}
+    output: buffer:dmxinst
+  - name: dmx_occ
+    shader: dmx_occ.hlsl
+    target: cs_5_0
+    dispatch: [8, 64, 1]
+    inputs:
+      - {slot: 0, source: buffer:dmxinst}
+      - {slot: 1, source: 'data:6'}
+    output: buffer:occ
+  - name: dmx_state
+    shader: dmx_state.hlsl
+    target: cs_5_0
+    dispatch: [16, 1024, 1]
+    inputs:
+      - {slot: 0, source: buffer:dmxinst}
+      - {slot: 1, source: 'data:6'}
+      - {slot: 2, source: buffer:poses}
+      - {slot: 3, source: buffer:optics}
+      - {slot: 4, source: 'data:4'}
+      - {slot: 5, source: 'pass:pixels'}
+      - {slot: 6, source: 'data:1'}
+      - {slot: 7, source: buffer:rigfix}
+    output: buffer:dmxstate
+  - name: dmx_encode
+    shader: dmx_encode.hlsl
+    target: cs_5_0
+    dispatch: [8, 73, 1]
+    inputs:
+      - {slot: 0, source: buffer:dmxinst}
+      - {slot: 1, source: buffer:dmxstate}
+      - {slot: 2, source: buffer:occ}
+      - {slot: 3, source: 'data:6'}
+    output: buffer:dmx
+  - name: dmx_verify
+    shader: dmx_verify.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - {slot: 0, source: buffer:dmx}
+      - {slot: 1, source: buffer:dmxinst}
+      - {slot: 2, source: 'data:5'}
+      - {slot: 3, source: 'data:6'}
+      - {slot: 4, source: buffer:poses}
+      - {slot: 5, source: buffer:optics}
+      - {slot: 6, source: 'data:7'}
+      - {slot: 7, source: buffer:rigfix}
+    output: buffer:dmxstatus
 data_outputs:
   - name: Pose
     buffer: poses
@@ -172,9 +360,44 @@ data_outputs:
     buffer: selection
     schema:
       - {name: value, type: float4}
+  # The fixture table (rig_*.hlsl; _shared/phage_rig.hlsli PhRigFix, PhMount, PhRigSlot).
+  - name: Rig Fixtures
+    buffer: rigfix
+    schema:
+      - {name: ids, type: uint, count: 4}
+      - {name: run, type: uint, count: 4}
+      - {name: patch, type: uint, count: 4}
+      - {name: x, type: float4}
+      - {name: y, type: float4}
+      - {name: z, type: float4}
+      - {name: o, type: float4}
+      - {name: rest, type: float4}
+  - name: Rig Mounts
+    buffer: rigmounts
+    schema:
+      - {name: position, type: float3}
+      - {name: fixture_id, type: float}
+      - {name: up, type: float3}
+      - {name: kind, type: float}
+      - {name: fwd, type: float3}
+      - {name: active, type: float}
+      - {name: extra, type: float4}
+      - {name: rest, type: float4}
+  - name: Rig Slots
+    buffer: rigslots
+    schema:
+      - {name: info, type: float4}
+      - {name: limits, type: float4}
+  # Every rig fixture's DMX (dmx_schema_v2): link it to the Art-Net out and to the visualiser.
+  - name: DMX
+    buffer: dmx
+    schema:
+      - {name: channels, type: uint, count: 512}
 outputs:
   - name: Fixture Canvas
-    pass: preview
+    pass: ui
+  - name: LED Pixels
+    pass: pixels
 panel:
   mode: canvas
   output: Fixture Canvas
@@ -211,3 +434,40 @@ control_outputs:
   - {name: selection_word13, buffer: selection, element: 265, field_offset: 0}
   - {name: selection_word14, buffer: selection, element: 266, field_offset: 0}
   - {name: selection_word15, buffer: selection, element: 267, field_offset: 0}
+  # The rig as the programmer sees it (rig_words.hlsl): slot presence words and counts.
+  - {name: rig_word0, buffer: rigstat, element: 0, field_offset: 0}
+  - {name: rig_word1, buffer: rigstat, element: 1, field_offset: 0}
+  - {name: rig_word2, buffer: rigstat, element: 2, field_offset: 0}
+  - {name: rig_word3, buffer: rigstat, element: 3, field_offset: 0}
+  - {name: rig_word4, buffer: rigstat, element: 4, field_offset: 0}
+  - {name: rig_word5, buffer: rigstat, element: 5, field_offset: 0}
+  - {name: rig_word6, buffer: rigstat, element: 6, field_offset: 0}
+  - {name: rig_word7, buffer: rigstat, element: 7, field_offset: 0}
+  - {name: rig_word8, buffer: rigstat, element: 8, field_offset: 0}
+  - {name: rig_word9, buffer: rigstat, element: 9, field_offset: 0}
+  - {name: rig_word10, buffer: rigstat, element: 10, field_offset: 0}
+  - {name: rig_word11, buffer: rigstat, element: 11, field_offset: 0}
+  - {name: rig_word12, buffer: rigstat, element: 12, field_offset: 0}
+  - {name: rig_word13, buffer: rigstat, element: 13, field_offset: 0}
+  - {name: rig_word14, buffer: rigstat, element: 14, field_offset: 0}
+  - {name: rig_word15, buffer: rigstat, element: 15, field_offset: 0}
+  - {name: rig_movers, buffer: rigstat, element: 16, field_offset: 0}
+  - {name: rig_strobes, buffer: rigstat, element: 16, field_offset: 4}
+  - {name: rig_battens, buffer: rigstat, element: 16, field_offset: 8}
+  - {name: rig_guests, buffer: rigstat, element: 16, field_offset: 12}
+  - {name: rig_unplaced, buffer: rigstat, element: 17, field_offset: 0}
+  - {name: rig_fixtures, buffer: rigstat, element: 17, field_offset: 4}
+  - {name: rig_runs, buffer: rigstat, element: 17, field_offset: 8}
+  # The DMX and its proof (dmx_verify.hlsl).
+  - {name: dmx_fixtures, buffer: dmxstatus, element: 0, field_offset: 0, description: Fixtures encoded}
+  - {name: dmx_movers, buffer: dmxstatus, element: 0, field_offset: 4, description: Movers encoded}
+  - {name: dmx_strobes, buffer: dmxstatus, element: 0, field_offset: 8, description: Strobes encoded}
+  - {name: dmx_battens, buffer: dmxstatus, element: 0, field_offset: 12, description: Battens encoded}
+  - {name: dmx_universes, buffer: dmxstatus, element: 1, field_offset: 0, description: Live universes}
+  - {name: dmx_lit_channels, buffer: dmxstatus, element: 1, field_offset: 4, description: Channels sending above zero}
+  - {name: dmx_loopback_universes, buffer: dmxstatus, element: 1, field_offset: 8, description: Universes the loopback DMX In received}
+  - {name: dmx_loopback_differ, buffer: dmxstatus, element: 1, field_offset: 12, description: Channels received different from sent (0 when held still)}
+  - {name: dmx_beam_error_deg, buffer: dmxstatus, element: 2, field_offset: 0, description: Worst angle between a decoded mover beam and the beam the looks play}
+  - {name: dmx_movers_checked, buffer: dmxstatus, element: 2, field_offset: 4, description: Movers whose beam was decoded and compared}
+  - {name: dmx_tilt_clamped, buffer: dmxstatus, element: 2, field_offset: 8, description: Movers asked for a tilt their GDTF range cannot reach}
+  - {name: dmx_loopback_linked, buffer: dmxstatus, element: 2, field_offset: 12, description: 1 when a DMX In is linked to Loopback}

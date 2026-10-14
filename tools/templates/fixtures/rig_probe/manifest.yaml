@@ -1,0 +1,199 @@
+name: "Rig Probe"
+version: "1.0"
+# Draws any Fixture Rig from its three ports and a DMX port, with no per-type code: each fixture's body boxes from
+# its GDTF models, its beams posed by decoded pan and tilt, coloured by decoded colour and lit by dimmer and shutter,
+# in a plan view and a front view. A new GDTF type shows up with no recompile. The three gdtf_*.hlsli files are
+# copies of Sentinel's resources/module-includes/fixtures; copy this folder into a project as is.
+mode: generator
+resolution: [1280, 720]
+
+data_inputs:
+  - name: "Fixtures"
+    slot: 0
+    schema:
+      - { name: axis_x, type: float4 }
+      - { name: axis_y, type: float4 }
+      - { name: axis_z, type: float4 }
+      - { name: origin, type: float4 }
+      - { name: ids,    type: uint, count: 4 }
+      - { name: dmx01,  type: uint, count: 4 }
+      - { name: dmx23,  type: uint, count: 4 }
+      - { name: meta,   type: uint, count: 4 }
+  - name: "FixtureTypes"
+    slot: 1
+    schema:
+      - { name: w, type: uint, count: 4 }
+  - name: "DMX"
+    slot: 2
+    schema:
+      - { name: channels, type: uint, count: 512 }
+  - name: "SceneObjects"
+    slot: 3
+    schema:
+      - { name: axis_x, type: float4 }
+      - { name: axis_y, type: float4 }
+      - { name: axis_z, type: float4 }
+      - { name: origin, type: float4 }
+      - { name: kind,   type: uint }
+      - { name: group,  type: uint }
+      - { name: parent, type: uint }
+      - { name: geometry_ref, type: uint }
+      - { name: extents, type: float4 }
+
+buffers:
+  - { name: table,      structured: true, element_size: 4,  element_count: 1024 }
+  - { name: state,      structured: true, element_size: 48, element_count: 4096 }
+  - { name: cellcolour, structured: true, element_size: 16, element_count: 524288 }
+  - { name: plan,       structured: true, element_size: 32, element_count: 197633 }
+  - { name: items,      structured: true, element_size: 48, element_count: 786432 }
+  - { name: bounds,     structured: true, element_size: 16, element_count: 2 }
+  - { name: canvas,     structured: true, element_size: 4,  element_count: 1843200 }
+
+data_outputs:
+  - name: "State"
+    description: "One record per Fixtures record: intensity (dimmer level times shutter), dimmer level, pan, tilt; fixture colour and open; cells, global mode, decodable."
+    buffer: state
+    schema:
+      - { name: s0, type: float4 }
+      - { name: s1, type: float4 }
+      - { name: s2, type: float4 }
+  - name: "Items"
+    description: "192 slots per fixture, one per draw plan entry of its mode: origin and geometry index, rotation quaternion, and for a Beam its colour and intensity, in stage metres."
+    buffer: items
+    schema:
+      - { name: a, type: float4 }
+      - { name: b, type: float4 }
+      - { name: c, type: float4 }
+  - name: "Plan"
+    description: "The draw plan: record 0 holds the FixtureTypes generation and mode count; each mode has a header (entries, root geometry, dropped) and its entries (geometry, parent entry, cell, flags; Pan or Tilt channel, kind)."
+    buffer: plan
+    schema:
+      - { name: r0, type: uint, count: 4 }
+      - { name: r1, type: uint, count: 4 }
+  - name: "Canvas"
+    description: "Two keys per 1280 by 720 pixel: the nearest body (depth, shade) and the brightest beam."
+    buffer: canvas
+    schema:
+      - { name: k, type: uint }
+
+# Passes run in dependency order, and only `pass:` inputs create dependencies (buffer reads do not), so each pass
+# names the passes it must follow at the top input slots.
+passes:
+  - name: index
+    shader: index.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - { slot: 2, source: "data:2" }
+    output: "buffer:table"
+  - name: decode
+    shader: decode.hlsl
+    target: cs_5_0
+    dispatch: [64, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "buffer:table" }
+      - { slot: 15, source: "pass:index" }
+    output: "buffer:state"
+  - name: cells
+    shader: cells.hlsl
+    target: cs_5_0
+    dispatch: [8192, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "buffer:table" }
+      - { slot: 15, source: "pass:index" }
+    output: "buffer:cellcolour"
+  - name: plan
+    shader: plan.hlsl
+    target: cs_5_0
+    dispatch: [16, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+    output: "buffer:plan"
+  - name: plan_mark
+    shader: plan_mark.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 15, source: "pass:plan" }
+    output: "buffer:plan"
+  - name: items
+    shader: items.hlsl
+    target: cs_5_0
+    dispatch: [12288, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 3, source: "buffer:table" }
+      - { slot: 4, source: "buffer:state" }
+      - { slot: 5, source: "buffer:cellcolour" }
+      - { slot: 6, source: "buffer:plan" }
+      - { slot: 15, source: "pass:decode" }
+      - { slot: 14, source: "pass:cells" }
+      - { slot: 13, source: "pass:plan_mark" }
+    output: "buffer:items"
+  - name: bounds
+    shader: bounds.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+    output: "buffer:bounds"
+  - name: clear
+    shader: clear.hlsl
+    target: cs_5_0
+    dispatch: [28800, 1, 1]
+    output: "buffer:canvas"
+  - name: bodies
+    shader: bodies.hlsl
+    target: cs_5_0
+    dispatch: [12288, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 5, source: "buffer:bounds" }
+      - { slot: 6, source: "buffer:plan" }
+      - { slot: 7, source: "buffer:items" }
+      - { slot: 15, source: "pass:clear" }
+      - { slot: 14, source: "pass:items" }
+      - { slot: 13, source: "pass:bounds" }
+    output: "buffer:canvas"
+  - name: beams
+    shader: beams.hlsl
+    target: cs_5_0
+    dispatch: [12288, 1, 1]
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 5, source: "buffer:bounds" }
+      - { slot: 6, source: "buffer:plan" }
+      - { slot: 7, source: "buffer:items" }
+      - { slot: 15, source: "pass:bodies" }
+    output: "buffer:canvas"
+  - name: view
+    shader: view.hlsl
+    target: cs_5_0
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "data:1" }
+      - { slot: 2, source: "data:2" }
+      - { slot: 4, source: "data:3" }
+      - { slot: 5, source: "buffer:bounds" }
+      - { slot: 8, source: "buffer:canvas" }
+      - { slot: 15, source: "pass:beams" }
+    output: output

@@ -6,7 +6,7 @@ clearances) into a generated project-local Module that publishes flat 48-byte
 dimensions and relationships: chairs tucked under tables, machines seated on
 counters, clear aisles, lamps facing a street. Hierarchy and relations resolve at
 compile time; the renderer contract never changes. The complete bundled renderer
-reference is `projects/living_room_sdf/modules/LR_SDF_Renderer`.
+reference is `tools/templates/blueprints/living_room/modules/LR_SDF_Renderer`.
 
 ## When To Use Which Lane
 
@@ -36,7 +36,7 @@ An explicit kind-registry YAML describes each SDF object kind: numeric `id` (the
 record `kind_id`), real dimensions, footprint radius, and named anchors. The
 registry is the compiler's ground truth for relation arithmetic, validation,
 relaxation, and the overlap checker. The curated example is
-`projects/living_room_sdf/blueprints/living_room_sdf_kinds.yaml`.
+`tools/templates/blueprints/living_room/blueprints/living_room_sdf_kinds.yaml`.
 
 ## Compiler Actions (sentinel_blueprint)
 
@@ -78,4 +78,4 @@ An audit measures the live distance field, so a wrong offset fails mechanically 
 3. Capture and evaluate with `sentinel_vision action=eval` (or one-call `action=eval_pipeline`), using the blueprint's counts and relations as the checklist. If the key is missing, follow the setup flow in `knowledge/vision-eval.md`.
 4. `audit` for measured dimensions and forbidden overlaps.
 
-The curated reference blueprints under `projects/living_room_sdf/blueprints/` are `living_room_architecture.yaml` and `living_room_furnishings.yaml`, with solved sidecars and a project-specific kind registry.
+The curated reference blueprints under `tools/templates/blueprints/living_room/blueprints/` are `living_room_architecture.yaml` and `living_room_furnishings.yaml`, with solved sidecars and their kind registry; the template's README compiles them and wires the renderer, materials and lighting Modules beside them.

@@ -1,0 +1,30 @@
+# KA_Robot - the Scope's words. Regenerate: python -B tools/il_type.py labels KA_Robot
+TITLE        @bold @track=0.14 = ARMS
+SUBTITLE     @sans = cell scope
+ARMS         @bold @track=0.08 = ARMS
+ALARM        @bold @track=0.08 = ALARM
+RALLY        @bold @track=0.08 = RALLY
+ARM          @bold @track=0.08 = ARM
+CAMERA       @bold @track=0.08 = CAMERA
+AX_X         @bold @track=0.06 = X
+AX_Y         @bold @track=0.06 = Y
+AX_Z         @bold @track=0.06 = Z
+M            @sans = m
+MPS          @sans = m/s
+
+# footer: the keys this view answers to (layout counts from K_R and D_R), then the legend for the
+# marks (layout counts from LG_CHANNEL, in this order)
+K_R          @sans = R
+K_RMB        @sans = RMB
+K_WASD       @sans = WASD
+K_WHEEL      @sans = Wheel
+D_R          @sans = program / scope
+D_RMB        @sans = look
+D_WASD       @sans = move
+D_WHEEL      @sans = fly speed
+LG_CHANNEL   @sans = channel
+LG_CONTACT   @sans = contact
+LG_PATH      @sans = predicted path
+LG_VEL       @sans = velocity, 1/3 s
+LG_BALL      @sans = ball
+LG_LIMIT     @sans = on a limit

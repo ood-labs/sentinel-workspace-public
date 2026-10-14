@@ -1,0 +1,55 @@
+# Adaptive_Mapping - the Mapped Path canvas's words. Regenerate: python -B tools/il_type.py labels Adaptive_Mapping
+TITLE        @bold @track=0.14 = LASER MAPPING
+SUBTITLE     @sans = adaptive path compiler
+
+# the compiler's status, in stats.hlsl's order (layout.hlsl counts from ST_0)
+ST_0         @bold @track=0.08 = READY
+ST_1         @bold @track=0.08 = REDUCED DETAIL
+ST_2         @bold @track=0.08 = OUTPUT CAPACITY EXCEEDED
+ST_3         @bold @track=0.08 = INVALID INPUT / MAP
+MODE         @bold @track=0.08 = MAPPING
+MODE_0       @sans = adaptive
+MODE_1       @sans = endpoints only
+
+FIELD        @bold @track=0.08 = SCANNER FIELD
+FIELD_D      @sans = ILDA, +y up
+NO_PATHS     @sans = no paths
+
+# the panes, in amPane order
+P_RECORDS    @bold @track=0.08 = RECORDS
+P_TOL        @bold @track=0.08 = TOLERANCE
+P_CYCLE      @bold @track=0.08 = CYCLE
+P_TRACE      @bold @track=0.08 = RECORDS OUT
+TRACE_D      @sans = last 4 s, budget dashed
+R_IN         @sans = in
+R_OUT        @sans = out
+R_BUDGET     @sans = preferred budget
+R_REQ        @sans = requested
+R_EFF        @sans = effective
+R_HITS       @sans = depth-limit hits
+R_CYCLE      @sans = cycle
+R_LENGTH     @sans = lit length
+R_BLANK      @sans = blanked
+R_DWELL      @sans = dwell
+U_MS         @sans = ms
+U_FIELD      @sans = field
+U_REC        @sans = records
+
+# the inspector
+I_RECORD     @bold @track=0.08 = RECORD
+OF           @sans = of
+I_FROM       @bold @track=0.08 = FROM
+I_TO         @bold @track=0.08 = TO
+I_LENGTH     @bold @track=0.08 = LENGTH
+I_START      @bold @track=0.08 = STARTS AT
+I_LASTS      @bold @track=0.08 = LASTS
+I_JOINT      @bold @track=0.08 = JOINT
+U_COMMA      @sans = ,
+# the joint flag on a lit record's start (timing.z), in its order: 0 Laser Out judges, 1, 2
+J_0          @sans = Laser Out judges
+J_1          @sans = smooth
+J_2          @sans = corner
+
+# footer
+K_HOVER      @sans = Hover
+D_HOVER      @sans = inspect a lit record

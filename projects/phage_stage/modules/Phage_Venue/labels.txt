@@ -1,0 +1,26 @@
+# Phage_Venue - the arena drawing's words. Regenerate: python tools/il_type.py labels Phage_Venue
+TITLE        @bold @track=0.14 = PHAGE
+SUBTITLE     @sans = arena
+PLAN         @bold @track=0.08 = PLAN
+SECTION      @bold @track=0.08 = LONG SECTION
+STAGE        @bold @track=0.08 = STAGE
+AUDIENCE     @bold @track=0.08 = AUDIENCE
+ROOF_STEEL   @bold @track=0.08 = ROOF STEEL
+KINETIC_MAX  @bold @track=0.08 = KINETIC MAX
+M            @sans = m
+X            @sans = x
+
+ROOM         @bold @track=0.08 = ROOM
+PEOPLE       @bold @track=0.08 = PEOPLE
+HALL         @bold @track=0.08 = HALL
+BARS_LIT     @bold @track=0.08 = BARS LIT
+OF_96        @sans = of 96
+CAPSID_TOP   @bold @track=0.08 = CAPSID TOP AT REST
+CLEARANCE    @bold @track=0.08 = ROOF CLEARANCE AT KINETIC MAX
+TOO_LOW      @bold @track=0.08 = TOO LOW
+
+# the cursor's inspector
+Z            @sans = z
+HEIGHT       @sans = height
+FROM_PHAGE   @sans = from the phage's centre
+UNDER_STEEL  @sans = under the roof steel

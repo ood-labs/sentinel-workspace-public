@@ -34,10 +34,13 @@ float2 move(float x,float v,float target,float2 lim,float dt){
  uint mode=(uint)drive;if(mode==0&&!prog)mode=3;A[24].y=mode;
  for(uint k=0;k<PH_AXES;k++){
   float2 raw=0;
+  // HEADING (the row's level): FREE turns the axis as the pose and effects say; FRONT holds its pan (body yaw,
+  // capsid spin, leg swing) at 0, for a beam shape aimed with the capsid facing front. Its tilt still plays.
   if(mode==0){PhProgram pr=Program[PH_AXIS0+k];float2 pt=pr.aim.xy;uint lane=phLaneIndex(pr.routing.z);
    if(lane>0){float4 l=Show[2+lane];PhMount rm=phAxisMount(D,phRest(),k);
     float rank=phRank(float4(rm.position,phHash1((PH_AXIS0+k)*1.618+.37)),rm.extra.z,pr.extra.x,pr.timing.z);
     if(phSpinFx(pr.timing.w))pt.x+=phSpinAngle(pr,l,rank);else pt+=phMoveOffset(pr,l,lane,rank,PH_AXIS0+k);}
+   if(pr.aim.z<.5)pt.x=0;
    raw=mapAxis(k,pt);}
   else if(mode==1){
    if(k==0)raw=float2(manual_height,manual_yaw);else if(k==1)raw=float2(manual_spin,manual_contract);

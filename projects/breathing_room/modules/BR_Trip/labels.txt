@@ -1,0 +1,124 @@
+# BR_Trip - the trip authority's words. Regenerate: python tools/il_type.py labels BR_Trip
+TITLE        @bold @track=0.14 = BR TRIP
+SUBTITLE     @sans = replication over the unfolded room
+NET          @bold @track=0.08 = ROOM, UNFOLDED
+SCOPE        @bold @track=0.08 = PULSES AND DOSE
+TRIP         @bold @track=0.08 = TRIP
+ANCHOR       @bold @track=0.08 = ANCHOR
+
+# title-strip readouts
+DOSE         @sans = dose
+TIME         @sans = trip time
+COLON        @mono = :
+ANCHORS      @sans = anchors running
+
+# surfaces, in host order (TH_FLOOR, TH_CEIL, then walls S, E, N, W; layout.hlsl counts from H_FLOOR)
+H_FLOOR      @bold @track=0.08 = FLOOR
+H_CEIL       @bold @track=0.08 = CEILING
+H_WS         @bold @track=0.08 = SOUTH WALL
+H_WE         @bold @track=0.08 = EAST WALL
+H_WN         @bold @track=0.08 = NORTH WALL
+H_WW         @bold @track=0.08 = WEST WALL
+# furniture kinds 1..16, in FK order (layout.hlsl counts from O1)
+O1           @sans = sofa
+O2           @sans = chair
+O3           @sans = coffee table
+O4           @sans = side table
+O5           @sans = rug
+O6           @sans = floor lamp
+O7           @sans = table lamp
+O8           @sans = pendant
+O9           @sans = shelves
+O10          @sans = console
+O11          @sans = plant
+O12          @sans = picture
+O13          @sans = cushion
+O14          @sans = books
+O15          @sans = vase
+O16          @sans = logs
+# surfaces again, as a host value in the inspector (same order as H_FLOOR..)
+V_FLOOR      @sans = floor
+V_CEIL       @sans = ceiling
+V_WS         @sans = south wall
+V_WE         @sans = east wall
+V_WN         @sans = north wall
+V_WW         @sans = west wall
+
+# anchor kinds, TK_BREATHE..TK_FLOW (layout.hlsl counts from K_BREATHE)
+K_BREATHE    @bold @track=0.08 = BREATHE
+K_MELT       @bold @track=0.08 = MELT
+K_SWIRL      @bold @track=0.08 = SWIRL
+K_BLOOM      @bold @track=0.08 = BLOOM
+K_FLOW       @bold @track=0.08 = FLOW
+# motifs, in the manifest's order (layout.hlsl counts from M_GIRIH)
+M_GIRIH      @sans = Girih
+M_LATTICE    @sans = Lattice
+M_MANDALA    @sans = Mandala
+M_MOIRE      @sans = Moire
+# envelopes, in the manifest's order (layout.hlsl counts from A_STEADY)
+A_STEADY     @sans = Steady
+A_WAVES      @sans = Waves
+A_COMEUP     @sans = Come Up
+
+# inspector captions
+C_HOST       @sans = on
+C_STATE      @sans = state
+C_STRENGTH   @sans = strength
+C_RADIUS     @sans = reach
+C_RATE       @sans = rate
+C_PULSE      @sans = pulse now
+C_DOSE       @sans = dose
+C_PUSH       @sans = overdrive
+C_ENV        @sans = envelope
+C_MOTIF      @sans = motif
+C_TEMPO      @sans = tempo
+C_STRETCH    @sans = object stretch
+ON           @sans = running
+OFF          @sans = off
+HOLDING      @sans = holding
+M            @sans = m
+PERMIN       @sans = / min
+X            @sans = x
+CHANNELS     @bold @track=0.08 = CHANNELS
+# channels, in display order (layout.hlsl counts from CH_BREATHE)
+CH_BREATHE   @sans = breathing
+CH_DRIFT     @sans = drift
+CH_MELT      @sans = melt
+CH_GEOM      @sans = geometry
+CH_COLOUR    @sans = colour
+CH_FURN      @sans = furniture
+ALARM        @sans = warp too strong for the march
+
+# chips with an anchor selected, in tChipRect order (layout.hlsl counts from CA_KIND)
+CA_KIND      @sans = Kind
+CA_ONOFF     @sans = On / Off
+CA_STRONGER  @sans = Stronger
+CA_WEAKER    @sans = Weaker
+CA_FASTER    @sans = Faster
+CA_SLOWER    @sans = Slower
+CA_RESET     @sans = Reset
+CA_CLOSE     @sans = Close
+# chips with nothing selected, in tChipRect order (layout.hlsl counts from CG_REROLL)
+CG_REROLL    @sans = Re-roll
+CG_MOTIF     @sans = Motif
+CG_CALMER    @sans = Calmer
+CG_DEEPER    @sans = Deeper
+CG_ADD       @sans = Add anchor
+CG_RESTART   @sans = Restart
+CG_RESETALL  @sans = Reset all
+CG_HOLD      @sans = Hold
+CG_RUN       @sans = Run
+
+# scope axis
+NOW          @bold @track=0.08 = NOW
+AGO          @sans = -24 s
+AHEAD        @sans = +6 s
+
+# hints (pairs)
+K_DRAG       @sans = Drag
+K_RING       @sans = Drag ring
+K_CLICK      @sans = Click
+D_DRAG       @sans = an anchor, across a fold or onto furniture
+D_RING       @sans = its reach
+D_CLICK      @sans = select
+ADDHINT      @sans = click a surface or a piece of furniture to place the new anchor

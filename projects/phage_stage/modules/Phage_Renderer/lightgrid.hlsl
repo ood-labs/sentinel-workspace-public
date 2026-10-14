@@ -12,7 +12,7 @@ groupshared float4 gE0[PV_EMITTERS],gE1[PV_EMITTERS],gE2[PV_EMITTERS];   // a + 
 float3 closestOnSegment(float3 p,float3 a,float3 b){float3 ab=b-a;return a+ab*saturate(dot(p-a,ab)/max(dot(ab,ab),1e-4));}
 uint packHalf(float a,float b){return f32tof16(a)|(f32tof16(b)<<16);}
 [numthreads(64,1,1)]void main(uint3 tid:SV_DispatchThreadID,uint gi:SV_GroupIndex){
- bool ok=_Data4_Count>=PV_COUNT;   // Venue is the Module's data input 4; the sources buffer is always 352 rows
+ bool ok=_Data4_Count>=PV_COUNT;   // Venue is the Module's data input 4; the sources buffer is always LG_SOURCES rows
  float gain=ok?Venue[PV_ROOM+2].w:0;
  [loop]for(uint k=gi;k<LG_CANDIDATES;k+=64){PhOptical b=(PhOptical)0;if(ok)b=Sources[lgSourceRow(k)];
   bool on=b.active>.5&&b.intensity>=.001&&any(b.colour>0);gL0[k]=float4(b.position,on?b.reach:-1);gL1[k]=float4(b.normal,b.field_tangent);}

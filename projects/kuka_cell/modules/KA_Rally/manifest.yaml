@@ -2,6 +2,18 @@ name: "KA Rally"
 version: "0.1"
 mode: generator
 resolution: [1024, 640]
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+panel:
+  mode: canvas
+  output: "Court"
+  resolution: follow_panel
+viewport:
+  hint: "Point at a player on the court to inspect it"
+  interactions: [events]
+  input:
+    pointer: [left]
 
 # The rally authority. Owns THE BALL and the question "who hits it next".
 #
@@ -17,6 +29,9 @@ resolution: [1024, 640]
 
 buffers:
   - { name: rally, structured: true, element_size: 96, element_count: 90, persistent: true }
+  - { name: dl, structured: true, element_size: 16, element_count: 24577 }   # il_draw IL_DL_SIZE
+  # the PLAY pane's memory: a head record and the lengths of the last 24 rallies (history.hlsl)
+  - { name: hist, structured: true, element_size: 16, element_count: 25, persistent: true }
 
 state_buffers:
   - name: rally
@@ -57,10 +72,11 @@ data_inputs:
       - { name: spare, type: float }
 
 parameters:
+  - { name: tooltips, display: "Tooltips", type: bool, default: true, description: "The card beside the pointer that shows the player under it: its role, timing, hit tally, swing and reach. Turn it off to keep the canvas clear while you work." }
   # MOTORS. A multiplier on the real per-axis speed limits (105/101/107/136/129/206 deg/s for
   # A1..A6). At 1.0 the arms move exactly as fast as the machine they are drawn from, which is
   # what stops the poses reading as cuts between positions. Below 1 they get visibly heavy;
-  # above 1 they stop being a KUKA.
+  # above 1 they stop reading as that machine.
   - { name: motor_speed, display: "Motor Speed", type: float, min: 0.15, max: 4.0, default: 1.00, group: "Motors" }
   - { name: rally_on, display: "Rally", type: bool, default: true, group: "Play" }
   - { name: play_a, display: "Channel A Plays", type: bool, default: true, group: "Play" }
@@ -166,12 +182,43 @@ passes:
     output: "buffer:rally"
     inputs:
       - { slot: 0, source: "data:0" }
+  # Reads the rally header's monotonic counters and books each finished rally's length into a
+  # 24-slot ring for the PLAY pane. Display only: nothing else reads hist.
+  - name: history
+    shader: history.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 1
+    thread_group_y: 1
+    output: "buffer:hist"
+    inputs:
+      - { slot: 0, source: "buffer:rally" }
   - name: court
     shader: court.hlsl
     target: cs_5_0
     inputs:
       - { slot: 0, source: "buffer:rally" }
       - { slot: 1, source: "data:0" }
+  - name: layout
+    shader: layout.hlsl
+    target: cs_5_0
+    dispatch: [1, 1, 1]
+    thread_group_x: 64
+    thread_group_y: 1
+    inputs:
+      - { slot: 0, source: "buffer:rally" }
+      - { slot: 1, source: "data:0" }
+      - { slot: 2, source: "buffer:hist" }
+    output: "buffer:dl"
+  - name: ui
+    shader: ui.hlsl
+    target: cs_5_0
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "buffer:dl" }
+      - { slot: 1, source: "asset:type" }
+      - { slot: 2, source: "pass:court" }
 
 data_outputs:
   - name: "Rally"
@@ -221,4 +268,4 @@ control_outputs:
   - { name: miss_max,   buffer: rally, element: 89, field_offset: 68, description: "Worst single miss (m)" }
 
 outputs:
-  - { name: "Court", pass: court }
+  - { name: "Court", pass: ui }

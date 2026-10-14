@@ -99,6 +99,11 @@ further you go, with nothing in health or logs to say why. There is no unclamped
 from, because the parameter *is* the published interface, and the follower's own position parameter
 is clamped identically. The mirror cannot be repaired, only removed.
 
+The angles stay inside their ranges by themselves: `camera_yaw` wraps into -pi..pi as the camera turns,
+and `camera_pitch` stops at 89 degrees up or down, so a recompile never turns a flown view. Sentinel
+0.6.3 and earlier let a Fly-mode yaw run past 2 pi, and the next recompile clamped it to -6.28 or
+6.28 and turned the camera.
+
 Even inside the range, a following node is a frame behind and carries its own cook, so marks lag
 the geometry they annotate whenever anything moves.
 

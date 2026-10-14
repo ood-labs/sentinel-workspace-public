@@ -14,9 +14,9 @@ GPU running Sentinel 0.5.90.
 
 ## The brief
 
-The brief was a reference image and a spoken paragraph:
+The brief was my concept image and a spoken paragraph:
 
-- Build a stage like the image on the existing stage-rig show system.
+- Build a stage like my concept image on the existing stage-rig show system.
 - The truss should move.
 - Use at most three fixture types: strobes, moving heads, and a linear
   fixture that can chase along the legs.
@@ -166,11 +166,14 @@ checked live before the next:
 | 6 | `Phage_Program` | 248 rows written and committed as one revision |
 | 7 | `Phage_Show`, `Phage_Clock` | Five lanes animating at 126 BPM from three `ref()` drivers |
 | 8 | `Phage_Lighting` | Beams in haze; 24 fixtures selected through the remote path |
-| 9 | `Phage_LED` | 47 bars running the reference chase on the render |
+| 9 | `Phage_LED` (later folded into Lighting) | 47 bars running the reference chase on the render |
 | 10 | Optimisation pass | See below |
 | 11 | `Phage_Surface` | Push 2 OS runtime RUNNING; looks recalled through `rig_command` |
 | 12 | `Phage_Desk`, `Phage_Push2_Display` | Every pad's command proven; pads lit by feedback |
 | 13 | Look banks | All 64 looks recalled and captured on the live rig |
+| 14 | GDTFs, `Phage_Rig`, `Phage_ArtNet` | 561 fixtures of three GDTF types imported from the MVR; every channel encoded through its GDTF and read back over Art-Net loopback, 0 channels different |
+| 15 | Rig authority | Lighting builds its fixture table from the rig; the DMX and Vis nodes folded into Lighting and the renderer; two dropped-in MAC Auras played, aimed and drew |
+| 16 | Layered programmer | 616 program rows (MOVE, BEAM, HALO; TUBE, PLATES; PIXELS, CHASE); every one of the 64 looks plays the same with the layers read from their own rows, DMX within one fine-channel step; layer pads stack on the Push's pad pages 2-4 |
 
 ## Module rules the build ran into
 
@@ -191,7 +194,7 @@ any Module:
 | The canvas said WAITING FOR MOUNTS | `_DataN_Count` is numbered by manifest data-input order | Check the index against the manifest, not the pass slot. |
 | A 43 s compile (Venue preview) and a 16 s compile (Plan marks) | FXC inlines every call: per-pixel leg IK and about 25 text call sites | Precompute geometry in a one-thread pass. Give each heavy routine one call site. Queue text and draw it in one loop. Mark loops `[loop]`. Both compiles dropped under a second. |
 | Black 8 x 8 tiles in the render | NaN in a data port, spread by tile-shared light staging | Guard degenerate maths: `atan2(0, 0)` for a mount on the body axis, and `pow` of a tiny negative base. Scan every data port for non-finite values. Let integrators restart an axis whose state goes non-finite. |
-| Injected clicks did nothing on the canvases | Injected input does not reach Module viewport events | Prove selection through a remote parameter path, and list the gestures that need a hand test. |
+| Injected clicks did nothing on the canvases | Injected input did not reach Module viewport events on that build (it does on 0.6.2, through `sentinel_ui click_at`/`drag_at`) | Prove selection through a remote parameter path, and list the gestures that need a hand test. |
 
 ## Optimising: 41 ms to 5.8 ms
 
@@ -268,9 +271,11 @@ segment for every pixel. They now share one pattern (`_shared/ph_marks.hlsli`):
 3. **Draw.** The pixel shader draws only the marks in its own tile. An
    overflow flag falls back to the full loop.
 
-Captions go through a queue (`_shared/ph_textq.hlsli`) that each tile filters
-by bounding box. The glyph routine then has a single call site, which also
-fixed the compile times.
+Captions first went through a per-pixel queue that each tile filtered by
+bounding box. They now come from the shared UI kit instead: each canvas's
+`layout` pass records its type and chrome into a draw list, and the kit's
+`ui` pass rasterizes that list over the drawing in 16 px tiles. The Show
+monitor has no per-pixel drawing at all.
 
 Two refinements followed from profiling:
 
@@ -468,9 +473,13 @@ The banks own disjoint attributes, so they mix freely:
 
 The FULL bank climbs the same energy ladder as the effects:
 
-- GENESIS and LULL open the set.
-- ASCENT, PRESSURE, IGNITION and ZERO build.
-- RIOT, STORM, SHATTER and SUPERNOVA are the drops.
+- GENESIS and TIDEWATER open the set.
+- IGNITION, INJECTION, CHARGE and ASCENT build (the journeys and the BUILD lane).
+- DETONATION, SHOCKWAVE, CASCADE and SUPERNOVA are the drops.
+
+The second generation of EFFECTS and FULL looks was built from the
+choreographed fixture banks and the whole-rig SEQUENCES, so every look moves
+the light, the heads and the truss through the rig together.
 
 ## The tuning loop
 
@@ -522,9 +531,15 @@ consumers can never disagree:
 - the Module manifest;
 - the shader layout;
 - the Surface's index map;
-- the `_ui.generated.hlsli` contract that `tools/module-ui.ps1` validates.
+- the `_ui.generated.hlsli` contract the example validator checks.
 
 Pad titles come from the look definitions, so renaming a look renames its pad.
+
+The desk was later redrawn on the Interaction Lab UI kit with one colour
+language: amber only for what is live, red only for BLACKOUT, an identity
+colour per bank and a step mark per energy tier (the first desk coloured pads
+by tier, which spent four hues on an ordered set and left none to say "live").
+The redraw moved rects only, so the Surface's index map did not change.
 
 Lit pads have to tell the truth:
 
@@ -574,8 +589,9 @@ else is cooking, so publish ratios.
 - The vendored runtime is marked `-text` in `.gitattributes`.
 
 **Not verified by automation.** Plan drags, Lighting clicks and box selection,
-the Desk's click-to-Event hop, and Push 2 hardware. The README lists them for
-a hand test.
+and Push 2 hardware. The README lists them for a hand test. (The Desk's
+click-to-Event hop was on this list until the desk redraw proved it with real
+presses.)
 
 ## Lessons for the next rig
 

@@ -1,6 +1,6 @@
 ---
 name: laser-trace-tuning
-description: Dial in Laser Trace and Laser Out on real scanners. Covers the trace graph (content, square crop or Depth Slice, Laser Trace, Laser Out over ShowNET), arming and link stability, the scanner protection profile and speed-aware retiming, Trace parameter tuning by symptom, depth-slice line content from StreamDiffusion, and the offline bench against MadMapper. Use when a traced path is incomplete, flickers, blanks, stutters, drops the link, refuses to arm, or when preparing new content for the tracer.
+description: Dial in Laser Trace and Laser Out on real scanners. Covers the trace graph (content, square crop or Depth Slice, Laser Trace, Laser Out over ShowNET), arming and link stability, the scanner protection profile and speed-aware retiming, Trace parameter tuning by symptom, depth-slice line content from StreamDiffusion, and the offline bench against an external tracer. Use when a traced path is incomplete, flickers, blanks, stutters, drops the link, refuses to arm, or when preparing new content for the tracer.
 ---
 
 # Laser Trace Tuning
@@ -20,7 +20,7 @@ Safety rules that always apply:
 - ShowNET credentials are NDA-confidential. They live only in
   `~/.sentinel/shownet_credentials.txt` via `SHOWNET_CREDENTIALS_FILE`; never
   echo them into chat, docs, commits or logs.
-- Never kill or relaunch MadMapper, and never send it OSC while it is running
+- Never kill or relaunch the external laser software, and never send it OSC while it is running
   a show; an earlier OSC send crashed it.
 
 ## The graph

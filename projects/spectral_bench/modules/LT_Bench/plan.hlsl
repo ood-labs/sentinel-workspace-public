@@ -206,6 +206,12 @@ uint ltSignature(uint salt)
     return s;
 }
 
+// The host hands an event back on later cooks until newer input replaces it, so each event is
+// consumed once, by sequence (knowledge/ui-authoring.md). This pass only cooks when something
+// changes, which hid it: but any parameter change is such a cook, so after one wheel notch on a
+// prism, every cook of a Properties slider drag grew the prism by another x1.10.
+bool isFresh(uint seq, uint lastSeq) { return seq > lastSeq || (lastSeq - seq) > (1u << 20); }
+
 [numthreads(1, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
 {
@@ -226,6 +232,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
     float2 grab    = valid ? float2(clamp(H.hdg, -4.0, 4.0), clamp(H.r0, -4.0, 4.0)) : float2(0, 0);
     int  dragRot   = valid ? (int)clamp(H.wl1, 0.0, 1.0) : 0;   // 0 = moving, 1 = rotating
     float cmd      = valid ? H.gen : 0.0;
+    // Read before the signature check below, which rebuilds the header from zero.
+    uint lastSeq   = valid ? asuint(H.flags) : 0u;
 
     float apexRr = radians(clamp(prism_apex, 18.0, 86.0));
     uint sig = ltSignature(salt);
@@ -485,9 +493,17 @@ void main(uint3 DTid : SV_DispatchThreadID)
     // =========================================================================================
     LtLayout L = ltLayout(_Resolution.xy);
 
-    [loop] for (uint e = 0u; e < min(_ViewportEventCount, 64u); ++e)
+    uint evCount = min(_ViewportEventCount, 64u);
+    uint ringMax = 0u;
+    [loop] for (uint er = 0u; er < evCount; ++er) ringMax = max(ringMax, _ViewportEvents[er].sequence);
+    if (evCount > 0u && ringMax < lastSeq) lastSeq = 0u;   // the host's counter restarted (app restart, reload)
+    uint newLast = lastSeq;
+
+    [loop] for (uint e = 0u; e < evCount; ++e)
     {
         ViewportEvent ev = _ViewportEvents[e];
+        if (!isFresh(ev.sequence, lastSeq)) continue;      // consumed on an earlier cook
+        newLast = (ev.sequence > lastSeq) ? max(newLast, ev.sequence) : ev.sequence;
         float2 px = ev.position * _Resolution.xy;
 
         bool isClick  = (ev.type == 5u && ev.code == 1u && ev.phase == 7u);
@@ -980,5 +996,6 @@ void main(uint3 DTid : SV_DispatchThreadID)
     H.par = dispersion;          // downstream nodes read the gain from here, never their own copy
     H.wl0 = degrees(chiefDev);
     H.wl1 = (float)dragRot;      // the live gesture's mode, latched at drag-begin
+    H.flags = asfloat(newLast);  // the newest viewport event consumed (see isFresh)
     Bench[LT_HEADER] = H;
 }

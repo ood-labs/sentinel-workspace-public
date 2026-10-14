@@ -1,0 +1,43 @@
+name: "Sting"
+version: "1.0"
+mode: generator
+resolution: [1280, 720]
+# The Timeline's title sting, rendered: the four layers keyed in the Timeline, shaded exactly as its
+# stage shows them (_shared/timeline.hlsli), with motion blur - the picture averaged across the
+# shutter from the curves themselves, in linear light. The editor previews one instant; this is what
+# leaves the show.
+#
+# Quality: `samples` instants per pixel out of 32, one per stratum of the shutter, jittered (a blurred
+# edge dithers instead of stepping). Project presets "Quality 1-4" are the ladder, scoped to samples +
+# resolution only (measured beside 18 open stations): Draft 1 @ 720p (no blur) 1x, Live 8 @ 720p 2x
+# (the default), Beauty 16 @ 1080p 7x, Hero 32 @ 2160p 30x - capture only.
+
+# IBM Plex Sans Condensed + IBM Plex Mono, SIL OFL 1.1 (_shared/type/IBM_PLEX_OFL.txt)
+assets:
+  - { name: type, type: texture, file: ../_shared/type/il_type.png, srgb: false }
+
+data_inputs:
+  - name: "Motion"
+    slot: 0
+    schema:
+      - { name: v, type: float4 }
+
+parameters:
+  - { name: shutter, display: "Shutter", type: float, min: 0.0, max: 360.0, default: 180.0, group: "Motion blur", description: "How much of a frame the shutter stays open (degrees): 180 is film's look, 0 no blur, 360 a full frame of smear" }
+  - { name: samples, display: "Samples", type: int,   min: 1,   max: 32,    default: 8,     group: "Motion blur", description: "Instants averaged across the shutter (of 32): 1 = no blur, 8 working, 16 for fast moves, 32 for captures" }
+  - { name: burn_in, display: "Slate",   type: bool,  default: false, group: "Review", description: "Burn the frame, shutter and samples into the bottom left" }
+
+passes:
+  - name: sting
+    shader: sting.hlsl
+    target: cs_5_0
+    format: RGBA8
+    thread_group_x: 16
+    thread_group_y: 16
+    inputs:
+      - { slot: 0, source: "data:0" }
+      - { slot: 1, source: "asset:type" }
+    output: output
+
+outputs:
+  - { name: "Sting", pass: sting }

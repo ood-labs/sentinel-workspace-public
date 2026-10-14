@@ -55,7 +55,7 @@ three data slots. Wire by semantic pin name and place the new node visibly:
 
 ```text
 sentinel_graph action="add_link" from_entity="Imported_Mesh" from_slot="Mesh" to_entity="Mesh_Renderer" to_slot="Mesh"
-sentinel_graph action="place_relative" entity="Mesh_Renderer" reference="Imported_Mesh" direction="right"
+sentinel_graph action="place_relative" entity_id="Mesh_Renderer" relative_to="Imported_Mesh" direction="right"
 ```
 
 Mesh Unpack is for specialized graphs that require separate raw vertex, index,

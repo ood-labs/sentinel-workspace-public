@@ -1,0 +1,57 @@
+# BR_Rug - the rug designer's words. Regenerate: python tools/il_type.py labels BR_Rug
+TITLE        @bold @track=0.14 = BR RUG
+SUBTITLE     @sans = the parlour rug, hand-knotted
+LINKED       @sans = size and place from BR_Furnish
+STANDIN      @sans = BR_Furnish not linked: a 2.5 x 3.4 m stand-in
+RUG          @bold @track=0.08 = RUG, LAID FLAT
+DESIGN       @bold @track=0.08 = DESIGN
+
+# families, in the manifest's order (layout.hlsl counts from F_TABRIZ)
+F_TABRIZ     @bold @track=0.04 = TABRIZ MEDALLION
+F_ISFAHAN    @bold @track=0.04 = ISFAHAN ALL-OVER
+F_HERIZ      @bold @track=0.04 = HERIZ GEOMETRIC
+# palettes, in the manifest's order (layout.hlsl counts from P_TABRIZ)
+P_TABRIZ     @sans = Tabriz
+P_KASHAN     @sans = Kashan
+P_ISFAHAN    @sans = Isfahan
+P_HERIZ      @sans = Heriz
+
+# the design table
+C_FAMILY     @sans = family
+C_PALETTE    @sans = palette
+C_SIZE       @sans = size
+C_BORDER     @sans = border depth
+C_MEDALLION  @sans = medallion
+NONE         @sans = none: an all-over field
+M            @sans = m
+X            @sans = x
+PCT          @sans = %
+
+# dye slots, in record order (layout.hlsl counts from S_FIELD)
+S_FIELD      @sans = field
+S_BORDER     @sans = border
+S_IVORY      @sans = ivory
+S_GOLD       @sans = gold
+S_GREEN      @sans = green
+S_BLUE       @sans = blue
+S_OUTLINE    @sans = outline
+S_ROSE       @sans = rose
+DYES         @bold @track=0.08 = DYES
+DYES_HINT    @sans = click a slot to step its dye
+OF6          @sans = of 6
+
+# chips, in rChipRect order (layout.hlsl counts from CH_FAMILY)
+CH_FAMILY    @sans = Family
+CH_PALETTE   @sans = Palette
+CH_REROLL    @sans = Re-roll
+CH_RESET     @sans = Reset
+
+# the handles' cards
+H_MEDALLION  @bold @track=0.08 = MEDALLION
+H_BORDER     @bold @track=0.08 = BORDER
+
+# hints (pairs)
+K_DRAG       @sans = Drag
+K_CLICK      @sans = Click
+D_DRAG       @sans = the medallion tip or the border edge
+D_CLICK      @sans = a dye or a chip

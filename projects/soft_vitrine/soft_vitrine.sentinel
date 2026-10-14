@@ -1072,6 +1072,63 @@
       ],
       "pipelineType": "module:style_authority",
       "scope": "project"
+    },
+    {
+      "created": "2026-10-06T12:00:00",
+      "id": "f00469aa-2e24-3879-361a2aeb804a",
+      "modified": "2026-10-06T12:00:00",
+      "name": "Quality - Live",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "aa_samples",
+          "value": "1"
+        },
+        {
+          "name": "march_steps",
+          "value": "110"
+        }
+      ],
+      "pipelineType": "module:VT_Volumes",
+      "scope": "project"
+    },
+    {
+      "created": "2026-10-06T12:00:00",
+      "id": "b90263a2-2da2-2c74-d57e40f28412",
+      "modified": "2026-10-06T12:00:00",
+      "name": "Quality - Beauty",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "aa_samples",
+          "value": "2"
+        },
+        {
+          "name": "march_steps",
+          "value": "110"
+        }
+      ],
+      "pipelineType": "module:VT_Volumes",
+      "scope": "project"
+    },
+    {
+      "created": "2026-10-06T12:00:00",
+      "id": "d94999dd-9c88-d78f-6bfd162194b6",
+      "modified": "2026-10-06T12:00:00",
+      "name": "Quality - Hero (capture only)",
+      "operatorMode": "normal",
+      "parameters": [
+        {
+          "name": "aa_samples",
+          "value": "3"
+        },
+        {
+          "name": "march_steps",
+          "value": "110"
+        }
+      ],
+      "pipelineType": "module:VT_Volumes",
+      "scope": "project"
     }
   ],
   "osc": {
@@ -1134,7 +1191,7 @@
       "panelAnchorId": "VT_Volumes",
       "panelOpen": false,
       "parameters": {
-        "aa_samples": "2.000000",
+        "aa_samples": "1.000000",
         "ao_amt": "0.850000",
         "blend": "0.030000",
         "bounce": "0.600000",
