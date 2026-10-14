@@ -38,7 +38,7 @@
                   },
                   {
                       "path":  ".agents/skills/laser-content-authoring/SKILL.md",
-                      "sha256":  "58bc9780b0fc772128b052d5913a35c1a2870190c8e58887364d1b263dcea323"
+                      "sha256":  "ed749d36a36a2e46461bc0f2ab4bb05d3246b32c228cb4c6a96d0da3cdf50414"
                   },
                   {
                       "path":  ".agents/skills/laser-show-setup/SKILL.md",
@@ -46,7 +46,7 @@
                   },
                   {
                       "path":  ".agents/skills/laser-trace-tuning/SKILL.md",
-                      "sha256":  "c333d79b33d6c0097003a4df011abc92434ec7eba599959996e70891bacf3876"
+                      "sha256":  "b812e02132c93a8113c2d1b6b6d851aeabc02d269afe43250907eb833be11e23"
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/ipc-reference.md",
@@ -58,7 +58,7 @@
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/SKILL.md",
-                      "sha256":  "c6e25f419ea4c2a108ed98a9101a930259e3fdfe44fe0124b4dfab2a25b676b3"
+                      "sha256":  "bba6253a17af8a90df801f9b623e45926b94033470721172c707e138c1adda4a"
                   },
                   {
                       "path":  ".agents/skills/mcp-automation/state-tree.md",
@@ -226,7 +226,7 @@
                   },
                   {
                       "path":  ".claude/skills/laser-content-authoring/SKILL.md",
-                      "sha256":  "58bc9780b0fc772128b052d5913a35c1a2870190c8e58887364d1b263dcea323"
+                      "sha256":  "ed749d36a36a2e46461bc0f2ab4bb05d3246b32c228cb4c6a96d0da3cdf50414"
                   },
                   {
                       "path":  ".claude/skills/laser-show-setup/SKILL.md",
@@ -234,7 +234,7 @@
                   },
                   {
                       "path":  ".claude/skills/laser-trace-tuning/SKILL.md",
-                      "sha256":  "c333d79b33d6c0097003a4df011abc92434ec7eba599959996e70891bacf3876"
+                      "sha256":  "b812e02132c93a8113c2d1b6b6d851aeabc02d269afe43250907eb833be11e23"
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/ipc-reference.md",
@@ -246,7 +246,7 @@
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/SKILL.md",
-                      "sha256":  "c6e25f419ea4c2a108ed98a9101a930259e3fdfe44fe0124b4dfab2a25b676b3"
+                      "sha256":  "bba6253a17af8a90df801f9b623e45926b94033470721172c707e138c1adda4a"
                   },
                   {
                       "path":  ".claude/skills/mcp-automation/state-tree.md",
@@ -418,7 +418,7 @@
                   },
                   {
                       "path":  "knowledge/EXAMPLE-MAP.md",
-                      "sha256":  "66f996d88351f54ed722cb1061a0e6e4aaf02080d89b068a37239658339f38d5"
+                      "sha256":  "2657df2a173f0653fef823ff8897c95656915d1db9b02b21b721cc956a8b31fa"
                   },
                   {
                       "path":  "knowledge/expressions-and-drivers.md",
@@ -434,7 +434,7 @@
                   },
                   {
                       "path":  "knowledge/first-run-engines.md",
-                      "sha256":  "3d0d59accc65d0ebe17925a62b0e72a8e7e8474dad2791877e549a0f8cadd0b2"
+                      "sha256":  "e7cc56cdf70551859215301422c3973584ee8c0d03b292a6015aa597b6838d6d"
                   },
                   {
                       "path":  "knowledge/fixture-import.md",
@@ -2126,11 +2126,11 @@
                   },
                   {
                       "path":  "projects/kuka_cell/kuka_cell.sentinel",
-                      "sha256":  "66028376b7d227f1cc04eab0e111337ab842a83d70fc25cfb6cfebe8b440e8cd"
+                      "sha256":  "dcd03ef9fbf114521ca39960f3862b0cc6d565bd327144fb61158d8deca45e43"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/_shared/cell.hlsli",
-                      "sha256":  "b7f1c2a23ab0d3055335f0a40e8ac88c8109ae1ca5f2a8d05b5374e1c1d5d119"
+                      "sha256":  "58638000953b12942cbd411d0645b2e92cdc69ba1307e8a36d0062a997bb68b2"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/_shared/ka_ui.hlsli",
@@ -2170,7 +2170,7 @@
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Cell/_labels.generated.hlsli",
-                      "sha256":  "4f7d59148fab507d91d8dc148eb6426203d83eafae4291acbcd9913edf1941ed"
+                      "sha256":  "2001c0b0d5e1c316b5ae4d976305a6d2c1b58be6376d87024f49420d843d0346"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Cell/canvas.hlsl",
@@ -2178,7 +2178,7 @@
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Cell/labels.txt",
-                      "sha256":  "8a5a3eb7075a3bc65def1a776a48a09b55561dc63c6450175d87ba8b60754636"
+                      "sha256":  "e4d1a84fcd28aa89164906feef03edd849eb3dbdfc4953e743b40b066c284074"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Cell/layout.hlsl",
@@ -2206,11 +2206,11 @@
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Pose/_labels.generated.hlsli",
-                      "sha256":  "5b1e32ceb1148345df93145174555e051ff882f5c6f82bf0159fd982aa53cca8"
+                      "sha256":  "a9c4995bd05a23637a0dffd0ed2981f895ab78c945ff2a891906f1f3fa551ff6"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Pose/labels.txt",
-                      "sha256":  "d8725e007faa876b8804d181b0b4bcaa7eaf03e3c94a6fa88a8ab9863af0e688"
+                      "sha256":  "7835615cd507934ea4848ee14e91e70b4a1555563a16ecbf7490c188e4b4414d"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Pose/layout.hlsl",
@@ -2238,7 +2238,7 @@
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Rally/_labels.generated.hlsli",
-                      "sha256":  "8c54cfcb6bb5725c36a6bfc9426af918e25db55217dc7f88ff131ba515c2a143"
+                      "sha256":  "dd3ecef6350c6b3d997aacef51d28b0f52becda55a80d2b383a9be152566f65c"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Rally/court.hlsl",
@@ -2254,7 +2254,7 @@
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Rally/labels.txt",
-                      "sha256":  "182d1e774d2b3feb5e07cebbc001ea2b67c40cdf5504c04a2d5302f4ddd4074a"
+                      "sha256":  "429dd9d9ba5f1f4c970526694643027999e65af845c297a1df636d15b8b55af8"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Rally/layout.hlsl",
@@ -2262,7 +2262,7 @@
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Rally/manifest.yaml",
-                      "sha256":  "6e482019d6f640ce858ae1e2137dbdcf276dd613ad44ea3d09c76e7a5bc18a8a"
+                      "sha256":  "3b258f16012bb911272eea1ff4e8b1935d0aa99bc3fe53e7b2c08242b0d479e9"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Rally/rally.hlsl",
@@ -2274,19 +2274,19 @@
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Robot/_labels.generated.hlsli",
-                      "sha256":  "431186e994a086ad4b594559bbc62b411163a5fb6c3f1b16fb1ee479c7b300ec"
+                      "sha256":  "46842e281c9a5214721323c532d65d1d40ea0cc98c417d5525b18b9f3add704d"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Robot/arm.hlsli",
-                      "sha256":  "af3ea76b9c7248bd9436a63371bd75186c3c758d76d1a0e63148f7c3eac67d05"
+                      "sha256":  "8790d450049c98fdb841818c647ba9e71b1ad48fd9e4b5630edf3e665d59d1b1"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Robot/labels.txt",
-                      "sha256":  "07d9340b7babf98f8c7e86e9642db7bf11908e48ffbc7d6a5478ac30e396335c"
+                      "sha256":  "d49733dbce7c6252829ba0bbda04bf3ab9fcdd68ea5d1b1de8fbbbee42ed6214"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Robot/manifest.yaml",
-                      "sha256":  "61caca860ab0da57f7d7117103010b862b5cf80ed3cdc104a36f66d62e0940df"
+                      "sha256":  "f79c25f3f1f85b60211b367ba4a0e6d3bd26a4545d7abac1d4984bca9f038956"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Robot/program.hlsl",
@@ -2294,7 +2294,7 @@
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Robot/render.hlsl",
-                      "sha256":  "155771e204d910f975c14b28f0ec05b8a5ec0f7e65cbe5d29ab7779df7611c99"
+                      "sha256":  "71a2abd097583ccef4b5f9064c042525c2a34654bacf3ecc62d7db5bfcd7cb1a"
                   },
                   {
                       "path":  "projects/kuka_cell/modules/KA_Robot/scope.hlsl",
@@ -2606,7 +2606,7 @@
                   },
                   {
                       "path":  "projects/laser_mapping_lab/modules/Laser_Previs/manifest.yaml",
-                      "sha256":  "355813929a4cd19751012bf5c79a265b6d6b0e218369576d0ac924c700773034"
+                      "sha256":  "a2a7de5af5f490fc9a5568f572eebf634d9292e5593ff8fe1b18df9b2ce8f617"
                   },
                   {
                       "path":  "projects/laser_mapping_lab/modules/Laser_Previs/previs.hlsl",
@@ -2622,7 +2622,7 @@
                   },
                   {
                       "path":  "projects/laser_mapping_lab/modules/Laser_Previs/site.hlsli",
-                      "sha256":  "86b18d36d50b31d8d86aa7d2c16003a4e39661de777a66fb946dd1932edb343d"
+                      "sha256":  "3e3b153b1d4104e2a4715bd01b659706a75eb93997acfb143e3e20f25f7f9663"
                   },
                   {
                       "path":  "projects/laser_mapping_lab/modules/Laser_Previs/streak_seed.hlsl",
@@ -15268,5 +15268,5 @@
                               }
                           ],
     "schema_version":  1,
-    "source_commit":  "a0edf71a54781ef44cbc95da5698f28636c08e8c"
+    "source_commit":  "9108dd3520165bbe055a9882dd81f36447940cd8"
 }
